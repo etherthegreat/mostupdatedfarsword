@@ -365,4 +365,6 @@ func matchEventOutcome(eventButtonID, eventType, eventID, eventCountry):
 							match eventButtonID:
 								"PDT_Wolverina0-1":
 									print("YOUVE COMPLETED THE CHAIN")
+								"PDT_Wolverina0-2":
+									print("What's UP Chump?")
 	pass

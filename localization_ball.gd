@@ -53,7 +53,7 @@ func matchEventLabels():
 									eventShortDescription = "...for her comrades still enslaved in the Anlaxian Estates."
 									eventLongDescription = "I wasn't truly born until I was eleven or twelve years old.  Until then, I wasn't anything except a flesh puppet for the demonic wizards to twist and ruin.  But for some reason, either by divine intervention or random chance, I awoke.  When the wizards discovered me, they chased me and attempted to murder their failure.  But through sheer force of will I escaped and found the others who were like me, living here in this mountain pass.  Surrounded by corruption on all sides and constantly under threat of wandering demonic gangs, we do not know how much longer we can survive like this."
 									newEventButton("Something Must Change", "PDT_Wolverina0-1")
-									
+									newEventButton("TheEndTimes Approach", "PDT_Wolverina0-2")
 					pass
 				"national":
 					pass
