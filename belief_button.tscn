@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://c6nonjhme7pse"]
+
+[ext_resource type="Script" uid="uid://dkfddygigmoox" path="res://belief_button.gd" id="1_mgpe5"]
+
+[node name="BeliefButton" type="Button"]
+offset_right = 141.0
+offset_bottom = 52.0
+script = ExtResource("1_mgpe5")

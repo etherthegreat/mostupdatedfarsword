@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://c1ci78g38o3n7"]
+
+[ext_resource type="Script" uid="uid://l3e0hqmwyabe" path="res://tech_unlock_button.gd" id="1_iw3w1"]
+
+[node name="TechUnlockButton" type="Button"]
+offset_right = 8.0
+offset_bottom = 8.0
+theme_override_colors/font_disabled_color = Color(0.676979, 0, 0.191873, 1)
+theme_override_colors/icon_pressed_color = Color(1, 1, 1, 1)
+script = ExtResource("1_iw3w1")

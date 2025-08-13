@@ -1,0 +1,49 @@
+[gd_scene load_steps=4 format=3 uid="uid://dr216ju681y5o"]
+
+[ext_resource type="Script" uid="uid://b43kqi3mlkxgy" path="res://mil_mod.gd" id="1_l6ayy"]
+[ext_resource type="Texture2D" uid="uid://dulvehn0f7o87" path="res://art assets/Placeholder Art/UI Art/resources/manpowerREALLYSMALL.png" id="2_d1xk6"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hgtmf"]
+size = Vector2(16, 20)
+
+[node name="MilMod" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_l6ayy")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_d1xk6")
+
+[node name="InfoPanel" type="Panel" parent="Sprite2D"]
+offset_left = -117.0
+offset_top = 10.0
+offset_right = -7.0
+offset_bottom = 78.0
+
+[node name="MilModNameLabel" type="Label" parent="Sprite2D/InfoPanel"]
+layout_mode = 0
+offset_right = 109.0
+offset_bottom = 23.0
+mouse_filter = 0
+theme_override_font_sizes/font_size = 15
+text = "mil mod name"
+horizontal_alignment = 1
+
+[node name="MilModDescriptionLabel" type="RichTextLabel" parent="Sprite2D/InfoPanel"]
+layout_mode = 0
+offset_top = 23.0
+offset_right = 109.0
+offset_bottom = 92.0
+bbcode_enabled = true
+text = "mil mod description label"
+fit_content = true
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_hgtmf")
+
+[connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]

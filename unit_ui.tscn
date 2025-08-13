@@ -1,0 +1,157 @@
+[gd_scene load_steps=2 format=3 uid="uid://2asjxq2s8ns0"]
+
+[ext_resource type="Script" uid="uid://w51gsk23fphv" path="res://unit_ui.gd" id="1_xgapy"]
+
+[node name="UnitUI" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
+script = ExtResource("1_xgapy")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_top = -81.0
+offset_right = 230.0
+offset_bottom = 267.0
+mouse_filter = 2
+
+[node name="UnitNameLabel" type="Label" parent="Panel"]
+layout_mode = 0
+offset_top = 7.0
+offset_right = 103.0
+offset_bottom = 30.0
+text = "Unit Type"
+horizontal_alignment = 1
+
+[node name="UnitTypeButton" type="Button" parent="Panel"]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 31.0
+offset_right = 126.0
+offset_bottom = 190.0
+
+[node name="WeaponTypeButton" type="Button" parent="Panel"]
+layout_mode = 0
+offset_left = 124.0
+offset_top = 3.0
+offset_right = 226.0
+offset_bottom = 95.0
+
+[node name="OreTypeButton" type="Button" parent="Panel"]
+layout_mode = 0
+offset_left = 124.0
+offset_top = 99.0
+offset_right = 226.0
+offset_bottom = 191.0
+
+[node name="ManpowerLabel" type="RichTextLabel" parent="Panel"]
+layout_mode = 2
+offset_left = 67.0
+offset_top = 247.0
+offset_right = 217.0
+offset_bottom = 271.0
+bbcode_enabled = true
+text = "[img = 13x17]res://art assets/Placeholder Art/UI Art/resources/manpowerREALLYSMALL.png[/img] [hint=Manpower] 1000/1000 [/hint]"
+autowrap_mode = 0
+
+[node name="UnitStrengthContainer" type="VBoxContainer" parent="Panel"]
+layout_mode = 0
+offset_left = 65.0
+offset_top = 201.0
+offset_right = 192.0
+offset_bottom = 272.0
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="UnitAttackLabel" type="Label" parent="Panel/UnitStrengthContainer"]
+layout_mode = 2
+text = "Attack: 25?"
+horizontal_alignment = 1
+
+[node name="UnitDefenceLabel" type="Label" parent="Panel/UnitStrengthContainer"]
+layout_mode = 2
+text = "Defence: 25?"
+horizontal_alignment = 1
+
+[node name="Label" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 200.0
+offset_right = 131.0
+offset_bottom = 223.0
+
+[node name="LevelLabel" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 94.0
+offset_top = 4.0
+offset_right = 135.0
+offset_bottom = 28.0
+text = "3"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="Panel"]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 286.0
+offset_right = 215.0
+offset_bottom = 319.0
+mouse_filter = 2
+theme_override_constants/h_separation = 28
+theme_override_constants/v_separation = 32
+columns = 8
+
+[node name="Button" type="Button" parent="Panel"]
+visible = false
+layout_mode = 0
+offset_left = 251.0
+offset_top = 98.0
+offset_right = 379.0
+offset_bottom = 205.0
+mouse_filter = 2
+text = "-100 manpower"
+
+[node name="WeaponsChoicePanel" type="Panel" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 1.0
+offset_top = -81.0
+offset_right = 233.0
+offset_bottom = 268.0
+
+[node name="GridContainer" type="GridContainer" parent="WeaponsChoicePanel"]
+layout_mode = 0
+offset_right = 230.0
+offset_bottom = 348.0
+mouse_filter = 2
+columns = 2
+
+[node name="OresChoicePanel" type="Panel" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 1.0
+offset_top = -81.0
+offset_right = 233.0
+offset_bottom = 268.0
+
+[node name="GridContainer" type="GridContainer" parent="OresChoicePanel"]
+layout_mode = 0
+offset_right = 230.0
+offset_bottom = 348.0
+mouse_filter = 2
+columns = 2
+
+[node name="UpgradeButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 84.0
+offset_top = 236.0
+offset_right = 164.0
+offset_bottom = 264.0
+theme_override_colors/icon_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/icon_normal_color = Color(0, 0.466667, 0, 1)
+text = "Upgrade"
+
+[connection signal="pressed" from="Panel/WeaponTypeButton" to="." method="_on_weapon_type_button_pressed"]
+[connection signal="pressed" from="Panel/OreTypeButton" to="." method="_on_ore_type_button_pressed"]
+[connection signal="pressed" from="Panel/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="UpgradeButton" to="." method="_on_upgrade_button_pressed"]

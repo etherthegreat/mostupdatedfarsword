@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://f1k3dljm8f2o"]
+
+[ext_resource type="Script" uid="uid://cov6r5sa1qjpi" path="res://localization_ball.gd" id="1_bg5yj"]
+
+[node name="LocalizationBall" type="Node2D"]
+script = ExtResource("1_bg5yj")

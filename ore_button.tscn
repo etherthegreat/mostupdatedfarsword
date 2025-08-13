@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://brciqffod2cje"]
+
+[ext_resource type="Script" uid="uid://dg4fy7r4b75xy" path="res://ore_button.gd" id="1_bl7yn"]
+
+[node name="OreButton" type="Button"]
+offset_right = 8.0
+offset_bottom = 8.0
+script = ExtResource("1_bl7yn")

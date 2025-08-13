@@ -1,0 +1,930 @@
+[gd_scene load_steps=28 format=3 uid="uid://bfbouq3jfwkxl"]
+
+[ext_resource type="Script" path="res://Game Scenes and Scripts/world.gd" id="1_6bnro"]
+[ext_resource type="Texture2D" uid="uid://ymy7tu133b71" path="res://art assets/Placeholder Art/map/map.png" id="2_160f8"]
+[ext_resource type="Script" path="res://Game Scenes and Scripts/tile.gd" id="3_i2j74"]
+[ext_resource type="Texture2D" uid="uid://ccmbmwa6o75ss" path="res://art assets/Map Art/1 Tile.png" id="4_2o1by"]
+[ext_resource type="Texture2D" uid="uid://djd1b77k1c0yq" path="res://art assets/Map Art/1 Ring.png" id="5_yk20q"]
+[ext_resource type="Texture2D" uid="uid://stferc3mpdhg" path="res://art assets/Map Art/2 Ring.png" id="6_i4k7e"]
+[ext_resource type="Texture2D" uid="uid://c68trjakrr6va" path="res://art assets/Map Art/2 Tile.png" id="7_o8lmt"]
+[ext_resource type="Texture2D" uid="uid://da20yo37qy68b" path="res://art assets/Map Art/3 Ring.png" id="8_vmkhf"]
+[ext_resource type="Texture2D" uid="uid://e3rnxadkd2ph" path="res://art assets/Map Art/3 Tile.png" id="9_j2eth"]
+[ext_resource type="PackedScene" uid="uid://cyiii8hcpiwbm" path="res://tile_info_panel.tscn" id="10_7wljm"]
+[ext_resource type="Texture2D" uid="uid://cff1ols1mv13a" path="res://art assets/Map Art/4Ring.png" id="10_pip0v"]
+[ext_resource type="Texture2D" uid="uid://c8b3cs5llus0s" path="res://art assets/Map Art/4BG.png" id="11_okfap"]
+[ext_resource type="PackedScene" uid="uid://ch23xv2ch3jl6" path="res://building_info_panel.tscn" id="13_yj2eu"]
+[ext_resource type="PackedScene" uid="uid://bwwryt2mmw8bm" path="res://spellbook.tscn" id="14_6mpca"]
+[ext_resource type="Script" path="res://Game Scenes and Scripts/ResourceBar.gd" id="15_b2ctf"]
+[ext_resource type="Texture2D" uid="uid://dpa3jb3g0q5al" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/faith.png" id="15_gxwbr"]
+[ext_resource type="Texture2D" uid="uid://vu0teomjtckk" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/food.png" id="16_ekld7"]
+[ext_resource type="Texture2D" uid="uid://eelq4yxqnbt2" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/gold.png" id="16_ks6ev"]
+[ext_resource type="Script" path="res://Game Scenes and Scripts/resource_info_panel.gd" id="17_wu4x8"]
+[ext_resource type="Texture2D" uid="uid://drifybbnrpta7" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/wood.png" id="18_5sv2k"]
+[ext_resource type="Texture2D" uid="uid://dauok6wt717hv" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/Metal.png" id="19_hesf6"]
+[ext_resource type="Texture2D" uid="uid://bmgon5mm6nkvc" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/weapons.png" id="20_gqt8h"]
+[ext_resource type="Texture2D" uid="uid://bcdyjy74pf6s8" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/Science.png" id="21_gpwvd"]
+[ext_resource type="Texture2D" uid="uid://jrg01q8jnayd" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/Magic.png" id="23_hjg8m"]
+[ext_resource type="Script" path="res://Game Scenes and Scripts/tech_tree.gd" id="25_7asq5"]
+[ext_resource type="Texture2D" uid="uid://b87kh26a6dn0c" path="res://art assets/Placeholder Art/UI Art/resources/4-15-Eli-Prompt.png" id="26_01y6w"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2v3gw"]
+size = Vector2(100, 102)
+
+[node name="World" type="Node2D"]
+position = Vector2(2204, 632)
+script = ExtResource("1_6bnro")
+
+[node name="FarswordStaticMap" type="Sprite2D" parent="."]
+texture = ExtResource("2_160f8")
+
+[node name="TileController" type="Node2D" parent="."]
+
+[node name="Tile1" type="Node2D" parent="TileController"]
+position = Vector2(-1271, -54)
+script = ExtResource("3_i2j74")
+EXPTileNumber = 1
+
+[node name="TileGraphic" type="Sprite2D" parent="TileController/Tile1"]
+position = Vector2(-2, -5)
+texture = ExtResource("4_2o1by")
+
+[node name="Ring" type="Sprite2D" parent="TileController/Tile1"]
+position = Vector2(-2, -5)
+texture = ExtResource("5_yk20q")
+
+[node name="Area2D" type="Area2D" parent="TileController/Tile1"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TileController/Tile1/Area2D"]
+position = Vector2(-2, -5)
+polygon = PackedVector2Array(14, -61, 6, -58, 0, -55, -14, -48, -29, -37, -38, -31, -46, -29, -59, -21, -67, -16, -74, -12, -79, -6, -80, -3, -80, 9, -77, 17, -73, 23, -72, 35, -67, 41, -41, 51, -15, 59, 2, 62, 13, 61, 24, 53, 36, 43, 58, 30, 81, 19, 89, 11, 89, -4, 80, -23, 75, -34, 67, -51, 54, -57, 43, -58, 38, -59, 21, -61)
+
+[node name="Tile2" type="Node2D" parent="TileController"]
+position = Vector2(-724, -104)
+script = ExtResource("3_i2j74")
+EXPTileNumber = 2
+
+[node name="Ring" type="Sprite2D" parent="TileController/Tile2"]
+position = Vector2(36, 7)
+texture = ExtResource("6_i4k7e")
+
+[node name="TileGraphic" type="Sprite2D" parent="TileController/Tile2"]
+position = Vector2(36, 7)
+texture = ExtResource("7_o8lmt")
+
+[node name="Area2D" type="Area2D" parent="TileController/Tile2"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TileController/Tile2/Area2D"]
+position = Vector2(36, 7)
+polygon = PackedVector2Array(-6, -37, -12, -40, -26, -40, -31, -37, -38, -31, -43, -23, -52, -20, -63, -14, -75, -1, -75, 15, -69, 39, -66, 39, -43, 37, -32, 32, -23, 25, -18, 21, -13, 18, 2, 18, 6, 19, 11, 28, 13, 22, 14, 16, 15, 10, 15, 0, 13, -9, 11, -16, 9, -19, 8, -22, 6, -24, 5, -29, 3, -31, -1, -34)
+
+[node name="Tile3" type="Node2D" parent="TileController"]
+position = Vector2(-944, 821)
+script = ExtResource("3_i2j74")
+EXPTileNumber = 3
+
+[node name="Ring" type="Sprite2D" parent="TileController/Tile3"]
+position = Vector2(0, 8)
+texture = ExtResource("8_vmkhf")
+
+[node name="TileGraphic" type="Sprite2D" parent="TileController/Tile3"]
+position = Vector2(0, 8)
+texture = ExtResource("9_j2eth")
+
+[node name="Area2D" type="Area2D" parent="TileController/Tile3"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TileController/Tile3/Area2D"]
+position = Vector2(0, 8)
+polygon = PackedVector2Array(65, -121, 60, -118, 55, -115, 51, -112, 35, -97, 25, -91, 18, -78, 9, -66, -3, -60, -11, -58, -26, -48, -30, -46, -36, -38, -50, -37, -54, -41, -57, -46, -61, -45, -65, -44, -68, -39, -70, -32, -72, -21, -75, -13, -76, -7, -72, -5, -66, -5, -61, -7, -52, -5, -43, -2, -39, -1, -39, 3, -31, 19, -24, 27, -18, 32, -7, 36, 3, 37, 15, 37, 34, 33, 54, 30, 70, 26, 78, 25, 81, 23, 83, 22, 83, 19, 79, 14, 77, 11, 72, 3, 66, 0, 59, 0, 56, -1, 53, -5, 49, -13, 47, -20, 57, -52, 56, -56, 59, -68, 74, -78, 84, -100, 83, -118, 81, -123, 78, -125, 71, -125)
+
+[node name="Tile4" type="Node2D" parent="TileController"]
+position = Vector2(-798, 881)
+script = ExtResource("3_i2j74")
+EXPTileNumber = 4
+
+[node name="Ring" type="Sprite2D" parent="TileController/Tile4"]
+texture = ExtResource("10_pip0v")
+
+[node name="TileGraphic" type="Sprite2D" parent="TileController/Tile4"]
+texture = ExtResource("11_okfap")
+
+[node name="Area2D" type="Area2D" parent="TileController/Tile4"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TileController/Tile4/Area2D"]
+polygon = PackedVector2Array(-31, -57, -34, -56, -34, -53, -67, -43, -68, -40, -61, -31, -67, -23, -75, -15, -82, -6, -80, 15, -78, 47, -64, 56, -51, 55, -49, 48, -46, 42, -39, 40, -34, 37, -29, 30, -25, 27, -2, 16, 5, 13, 14, 14, 25, 20, 34, 22, 40, 23, 48, 28, 55, 39, 60, 39, 69, 52, 79, 54, 84, 58, 93, 62, 98, 64, 104, 66, 112, 65, 117, 63, 119, 60, 120, 57, 121, 46, 114, 39, 107, 36, 98, 30, 93, 25, 89, 14, 95, 9, 106, 3, 107, -4, 109, -16, 96, -23, 90, -32, 85, -36, 76, -37, 68, -31, 60, -35, 53, -37, 43, -37, 35, -34, 23, -23, 2, -23, -1, -30, 8, -36, 11, -39, 11, -49, 1, -55, -15, -57)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="PanelOpenerControl" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ButtonPanel" type="Panel" parent="CanvasLayer/PanelOpenerControl"]
+layout_mode = 0
+offset_left = 1807.0
+offset_top = 156.0
+offset_right = 1917.0
+offset_bottom = 895.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/PanelOpenerControl/ButtonPanel"]
+layout_mode = 0
+offset_left = 9.0
+offset_right = 109.0
+offset_bottom = 942.0
+theme_override_constants/separation = 105
+
+[node name="TechTreeControl" type="Control" parent="CanvasLayer/PanelOpenerControl/ButtonPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="TechTreeButton" type="Button" parent="CanvasLayer/PanelOpenerControl/ButtonPanel/VBoxContainer/TechTreeControl"]
+layout_mode = 2
+offset_left = -9.0
+offset_top = 2.0
+offset_right = 99.0
+offset_bottom = 110.0
+icon = ExtResource("21_gpwvd")
+
+[node name="TechTreeControl2" type="Control" parent="CanvasLayer/PanelOpenerControl/ButtonPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="TechTreeButton" type="Button" parent="CanvasLayer/PanelOpenerControl/ButtonPanel/VBoxContainer/TechTreeControl2"]
+layout_mode = 2
+offset_left = -9.0
+offset_top = 2.0
+offset_right = 99.0
+offset_bottom = 110.0
+icon = ExtResource("21_gpwvd")
+
+[node name="TechTreeControl3" type="Control" parent="CanvasLayer/PanelOpenerControl/ButtonPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="TechTreeButton" type="Button" parent="CanvasLayer/PanelOpenerControl/ButtonPanel/VBoxContainer/TechTreeControl3"]
+layout_mode = 2
+offset_left = -9.0
+offset_top = 2.0
+offset_right = 99.0
+offset_bottom = 110.0
+icon = ExtResource("21_gpwvd")
+
+[node name="TechTreeControl4" type="Control" parent="CanvasLayer/PanelOpenerControl/ButtonPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="TechTreeButton" type="Button" parent="CanvasLayer/PanelOpenerControl/ButtonPanel/VBoxContainer/TechTreeControl4"]
+layout_mode = 2
+offset_left = -9.0
+offset_top = 2.0
+offset_right = 99.0
+offset_bottom = 110.0
+icon = ExtResource("21_gpwvd")
+
+[node name="TechTreeControl5" type="Control" parent="CanvasLayer/PanelOpenerControl/ButtonPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="TechTreeButton" type="Button" parent="CanvasLayer/PanelOpenerControl/ButtonPanel/VBoxContainer/TechTreeControl5"]
+layout_mode = 2
+offset_left = -9.0
+offset_top = 2.0
+offset_right = 99.0
+offset_bottom = 110.0
+icon = ExtResource("21_gpwvd")
+
+[node name="TechTreeControl6" type="Control" parent="CanvasLayer/PanelOpenerControl/ButtonPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="TechTreeButton" type="Button" parent="CanvasLayer/PanelOpenerControl/ButtonPanel/VBoxContainer/TechTreeControl6"]
+layout_mode = 2
+offset_left = -9.0
+offset_top = 2.0
+offset_right = 99.0
+offset_bottom = 110.0
+icon = ExtResource("21_gpwvd")
+
+[node name="TechTreeControl7" type="Control" parent="CanvasLayer/PanelOpenerControl/ButtonPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="TechTreeButton" type="Button" parent="CanvasLayer/PanelOpenerControl/ButtonPanel/VBoxContainer/TechTreeControl7"]
+layout_mode = 2
+offset_left = -9.0
+offset_top = 2.0
+offset_right = 99.0
+offset_bottom = 110.0
+icon = ExtResource("21_gpwvd")
+
+[node name="TileInfoPanel" parent="CanvasLayer" node_paths=PackedStringArray("EXPMthisTile") instance=ExtResource("10_7wljm")]
+visible = false
+offset_left = 335.0
+offset_top = 612.0
+offset_right = 335.0
+offset_bottom = 612.0
+EXPMthisTile = NodePath("../../TileController/Tile3")
+
+[node name="BuildingInfoPanel" parent="CanvasLayer" node_paths=PackedStringArray("EXPMthisTile") instance=ExtResource("13_yj2eu")]
+visible = false
+offset_left = 99.0
+offset_top = 2.0
+offset_right = 99.0
+offset_bottom = 2.0
+EXPMthisTile = NodePath("../../TileController/Tile3")
+
+[node name="Spellbook" parent="CanvasLayer" instance=ExtResource("14_6mpca")]
+visible = false
+offset_left = 1556.0
+offset_top = 6.0
+offset_right = 1556.0
+offset_bottom = 6.0
+
+[node name="Resource Bar (TOP)" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+script = ExtResource("15_b2ctf")
+
+[node name="Panel" type="Panel" parent="CanvasLayer/Resource Bar (TOP)"]
+layout_mode = 0
+offset_right = 985.0
+offset_bottom = 138.0
+
+[node name="container" type="GridContainer" parent="CanvasLayer/Resource Bar (TOP)"]
+layout_mode = 0
+offset_right = 1000.0
+offset_bottom = 137.0
+theme_override_constants/h_separation = 125
+theme_override_constants/v_separation = 70
+columns = 8
+
+[node name="GoldControl" type="Control" parent="CanvasLayer/Resource Bar (TOP)/container"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/Resource Bar (TOP)/container/GoldControl"]
+position = Vector2(54, 54)
+texture = ExtResource("16_ks6ev")
+
+[node name="GoldArea2D" type="Area2D" parent="CanvasLayer/Resource Bar (TOP)/container/GoldControl"]
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/Resource Bar (TOP)/container/GoldControl/GoldArea2D"]
+position = Vector2(53, 52)
+shape = SubResource("RectangleShape2D_2v3gw")
+
+[node name="FoodControl" type="Control" parent="CanvasLayer/Resource Bar (TOP)/container"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/Resource Bar (TOP)/container/FoodControl"]
+position = Vector2(54, 54)
+texture = ExtResource("16_ekld7")
+
+[node name="FoodArea2D" type="Area2D" parent="CanvasLayer/Resource Bar (TOP)/container/FoodControl"]
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/Resource Bar (TOP)/container/FoodControl/FoodArea2D"]
+position = Vector2(53, 52)
+shape = SubResource("RectangleShape2D_2v3gw")
+
+[node name="WoodControl" type="Control" parent="CanvasLayer/Resource Bar (TOP)/container"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/Resource Bar (TOP)/container/WoodControl"]
+position = Vector2(54, 54)
+texture = ExtResource("18_5sv2k")
+
+[node name="WoodArea2D" type="Area2D" parent="CanvasLayer/Resource Bar (TOP)/container/WoodControl"]
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/Resource Bar (TOP)/container/WoodControl/WoodArea2D"]
+position = Vector2(53, 52)
+shape = SubResource("RectangleShape2D_2v3gw")
+
+[node name="MetalControl" type="Control" parent="CanvasLayer/Resource Bar (TOP)/container"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/Resource Bar (TOP)/container/MetalControl"]
+position = Vector2(54, 54)
+texture = ExtResource("19_hesf6")
+
+[node name="MetalArea2D" type="Area2D" parent="CanvasLayer/Resource Bar (TOP)/container/MetalControl"]
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/Resource Bar (TOP)/container/MetalControl/MetalArea2D"]
+position = Vector2(53, 52)
+shape = SubResource("RectangleShape2D_2v3gw")
+
+[node name="WeaponsControl" type="Control" parent="CanvasLayer/Resource Bar (TOP)/container"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/Resource Bar (TOP)/container/WeaponsControl"]
+position = Vector2(54, 54)
+texture = ExtResource("20_gqt8h")
+
+[node name="WeaponsArea" type="Area2D" parent="CanvasLayer/Resource Bar (TOP)/container/WeaponsControl"]
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/Resource Bar (TOP)/container/WeaponsControl/WeaponsArea"]
+position = Vector2(53, 52)
+shape = SubResource("RectangleShape2D_2v3gw")
+
+[node name="ScienceControl" type="Control" parent="CanvasLayer/Resource Bar (TOP)/container"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/Resource Bar (TOP)/container/ScienceControl"]
+position = Vector2(54, 54)
+texture = ExtResource("21_gpwvd")
+
+[node name="ScienceArea" type="Area2D" parent="CanvasLayer/Resource Bar (TOP)/container/ScienceControl"]
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/Resource Bar (TOP)/container/ScienceControl/ScienceArea"]
+position = Vector2(53, 52)
+shape = SubResource("RectangleShape2D_2v3gw")
+
+[node name="FaithControl" type="Control" parent="CanvasLayer/Resource Bar (TOP)/container"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/Resource Bar (TOP)/container/FaithControl"]
+position = Vector2(54, 54)
+texture = ExtResource("15_gxwbr")
+
+[node name="FaithControl" type="Area2D" parent="CanvasLayer/Resource Bar (TOP)/container/FaithControl"]
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/Resource Bar (TOP)/container/FaithControl/FaithControl"]
+position = Vector2(53, 52)
+shape = SubResource("RectangleShape2D_2v3gw")
+
+[node name="MagicControl" type="Control" parent="CanvasLayer/Resource Bar (TOP)/container"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/Resource Bar (TOP)/container/MagicControl"]
+position = Vector2(54, 54)
+texture = ExtResource("23_hjg8m")
+
+[node name="MagicArea" type="Area2D" parent="CanvasLayer/Resource Bar (TOP)/container/MagicControl"]
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/Resource Bar (TOP)/container/MagicControl/MagicArea"]
+position = Vector2(53, 52)
+shape = SubResource("RectangleShape2D_2v3gw")
+
+[node name="GoldLabel" type="Control" parent="CanvasLayer/Resource Bar (TOP)/container"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Resource Bar (TOP)/container/GoldLabel"]
+layout_mode = 2
+offset_left = 27.0
+offset_top = 38.0
+offset_right = 73.0
+offset_bottom = 61.0
+text = "10000"
+
+[node name="FoodLabel" type="Control" parent="CanvasLayer/Resource Bar (TOP)/container"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Resource Bar (TOP)/container/FoodLabel"]
+layout_mode = 2
+offset_left = 27.0
+offset_top = 38.0
+offset_right = 73.0
+offset_bottom = 61.0
+text = "10000"
+
+[node name="WoodLabel" type="Control" parent="CanvasLayer/Resource Bar (TOP)/container"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Resource Bar (TOP)/container/WoodLabel"]
+layout_mode = 2
+offset_left = 27.0
+offset_top = 38.0
+offset_right = 73.0
+offset_bottom = 61.0
+text = "10000"
+
+[node name="MetalLabel" type="Control" parent="CanvasLayer/Resource Bar (TOP)/container"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Resource Bar (TOP)/container/MetalLabel"]
+layout_mode = 2
+offset_left = 27.0
+offset_top = 38.0
+offset_right = 73.0
+offset_bottom = 61.0
+text = "10000"
+
+[node name="WeaponsLabel" type="Control" parent="CanvasLayer/Resource Bar (TOP)/container"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Resource Bar (TOP)/container/WeaponsLabel"]
+layout_mode = 2
+offset_left = 27.0
+offset_top = 38.0
+offset_right = 73.0
+offset_bottom = 61.0
+text = "10000"
+
+[node name="ScienceLabel" type="Control" parent="CanvasLayer/Resource Bar (TOP)/container"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Resource Bar (TOP)/container/ScienceLabel"]
+layout_mode = 2
+offset_left = 27.0
+offset_top = 38.0
+offset_right = 73.0
+offset_bottom = 61.0
+text = "10000"
+
+[node name="FaithLabel" type="Control" parent="CanvasLayer/Resource Bar (TOP)/container"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Resource Bar (TOP)/container/FaithLabel"]
+layout_mode = 2
+offset_left = 27.0
+offset_top = 38.0
+offset_right = 73.0
+offset_bottom = 61.0
+text = "10000"
+
+[node name="MagicLabel" type="Control" parent="CanvasLayer/Resource Bar (TOP)/container"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Resource Bar (TOP)/container/MagicLabel"]
+layout_mode = 2
+offset_left = 27.0
+offset_top = 38.0
+offset_right = 73.0
+offset_bottom = 61.0
+text = "10000"
+
+[node name="Test ResourceButton" type="Button" parent="CanvasLayer/Resource Bar (TOP)"]
+layout_mode = 0
+offset_top = 144.0
+offset_right = 274.0
+offset_bottom = 232.0
+text = "Collect Taxes"
+
+[node name="ResourceInfoPanel" type="Panel" parent="CanvasLayer"]
+visible = false
+offset_left = 6.0
+offset_top = 138.0
+offset_right = 223.0
+offset_bottom = 432.0
+script = ExtResource("17_wu4x8")
+
+[node name="ResourceBBC" type="RichTextLabel" parent="CanvasLayer/ResourceInfoPanel"]
+visible = false
+layout_mode = 0
+offset_left = -6.0
+offset_top = -3.0
+offset_right = 214.0
+offset_bottom = 292.0
+bbcode_enabled = true
+
+[node name="ResourceIcon" type="Sprite2D" parent="CanvasLayer/ResourceInfoPanel"]
+position = Vector2(104, 35)
+scale = Vector2(0.44, 0.44)
+texture = ExtResource("16_ekld7")
+
+[node name="TotalResourceLabel" type="Label" parent="CanvasLayer/ResourceInfoPanel"]
+layout_mode = 0
+offset_left = 11.0
+offset_top = 74.0
+offset_right = 207.0
+offset_bottom = 105.0
+
+[node name="ResourceIncomeLab" type="Label" parent="CanvasLayer/ResourceInfoPanel"]
+layout_mode = 0
+offset_left = 11.0
+offset_top = 124.0
+offset_right = 207.0
+offset_bottom = 155.0
+
+[node name="ResourceExpenseLab" type="Label" parent="CanvasLayer/ResourceInfoPanel"]
+layout_mode = 0
+offset_left = 11.0
+offset_top = 174.0
+offset_right = 207.0
+offset_bottom = 205.0
+
+[node name="OtherResources" type="Label" parent="CanvasLayer/ResourceInfoPanel"]
+layout_mode = 0
+offset_left = 11.0
+offset_top = 236.0
+offset_right = 207.0
+offset_bottom = 267.0
+
+[node name="TechTree" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -4.0
+offset_top = 5.0
+offset_right = 36.0
+offset_bottom = 45.0
+script = ExtResource("25_7asq5")
+
+[node name="TechPanel" type="Panel" parent="CanvasLayer/TechTree"]
+layout_mode = 0
+offset_right = 1917.0
+offset_bottom = 1065.0
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/TechTree/TechPanel"]
+layout_mode = 0
+offset_right = 1925.0
+offset_bottom = 1074.0
+color = Color(0.24355, 0.565626, 0.846885, 1)
+
+[node name="Background" type="Sprite2D" parent="CanvasLayer/TechTree/TechPanel"]
+position = Vector2(960.667, 533.5)
+scale = Vector2(1.50417, 1.50417)
+texture = ExtResource("26_01y6w")
+
+[node name="Label" type="Label" parent="CanvasLayer/TechTree/TechPanel"]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 29.0
+offset_right = 1374.0
+offset_bottom = 118.0
+theme_override_font_sizes/font_size = 71
+text = "TECHNOLOGY IS COOL!"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="CloseButton" type="Button" parent="CanvasLayer/TechTree/TechPanel"]
+layout_mode = 0
+offset_left = 28.0
+offset_top = 16.0
+offset_right = 147.0
+offset_bottom = 122.0
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_font_sizes/font_size = 56
+text = "X"
+
+[node name="GridContainer" type="GridContainer" parent="CanvasLayer/TechTree/TechPanel"]
+layout_mode = 0
+offset_left = 89.0
+offset_top = 223.0
+offset_right = 1872.0
+offset_bottom = 1040.0
+theme_override_constants/h_separation = 365
+theme_override_constants/v_separation = 145
+columns = 5
+
+[node name="AgricultureControl" type="Control" parent="CanvasLayer/TechTree/TechPanel/GridContainer"]
+layout_mode = 2
+
+[node name="AgricultureButton" type="Button" parent="CanvasLayer/TechTree/TechPanel/GridContainer/AgricultureControl"]
+layout_mode = 2
+offset_left = -9.0
+offset_top = -11.0
+offset_right = 307.0
+offset_bottom = 97.0
+theme_override_colors/font_disabled_color = Color(0.338686, 0.528249, 0.700882, 1)
+theme_override_colors/font_pressed_color = Color(0.145413, 0.205351, 0.5822, 1)
+theme_override_colors/icon_pressed_color = Color(0.19621, 0.30811, 0.584453, 1)
+theme_override_colors/icon_disabled_color = Color(0.209152, 0.281094, 0.73112, 1)
+theme_override_font_sizes/font_size = 38
+disabled = true
+toggle_mode = true
+text = "Agriculture"
+icon = ExtResource("16_ekld7")
+
+[node name="EarlyToolsControl" type="Control" parent="CanvasLayer/TechTree/TechPanel/GridContainer"]
+layout_mode = 2
+
+[node name="Early ToolsButton" type="Button" parent="CanvasLayer/TechTree/TechPanel/GridContainer/EarlyToolsControl"]
+layout_mode = 2
+offset_left = -16.0
+offset_top = -10.0
+offset_right = 321.0
+offset_bottom = 98.0
+theme_override_colors/font_disabled_color = Color(0.50137, 0.745997, 0.630387, 1)
+theme_override_colors/font_pressed_color = Color(0.187497, 0.46039, 0.566166, 1)
+theme_override_colors/icon_pressed_color = Color(0.161489, 0.227259, 0.6127, 1)
+theme_override_colors/icon_disabled_color = Color(0.135098, 0.236313, 0.466502, 1)
+theme_override_font_sizes/font_size = 46
+disabled = true
+toggle_mode = true
+text = "Early Tool"
+icon = ExtResource("20_gqt8h")
+
+[node name="DomesticationControl" type="Control" parent="CanvasLayer/TechTree/TechPanel/GridContainer"]
+layout_mode = 2
+
+[node name="Domestication" type="Button" parent="CanvasLayer/TechTree/TechPanel/GridContainer/DomesticationControl"]
+layout_mode = 2
+offset_left = -12.0
+offset_right = 323.0
+offset_bottom = 78.0
+disabled = true
+
+[node name="Control4" type="Control" parent="CanvasLayer/TechTree/TechPanel/GridContainer"]
+layout_mode = 2
+
+[node name="TechButton" type="Button" parent="CanvasLayer/TechTree/TechPanel/GridContainer/Control4"]
+layout_mode = 2
+offset_left = -12.0
+offset_right = 323.0
+offset_bottom = 78.0
+disabled = true
+
+[node name="Control5" type="Control" parent="CanvasLayer/TechTree/TechPanel/GridContainer"]
+layout_mode = 2
+
+[node name="TechButton" type="Button" parent="CanvasLayer/TechTree/TechPanel/GridContainer/Control5"]
+layout_mode = 2
+offset_left = -12.0
+offset_right = 323.0
+offset_bottom = 78.0
+disabled = true
+
+[node name="Control6" type="Control" parent="CanvasLayer/TechTree/TechPanel/GridContainer"]
+layout_mode = 2
+
+[node name="TechButton" type="Button" parent="CanvasLayer/TechTree/TechPanel/GridContainer/Control6"]
+layout_mode = 2
+offset_left = -12.0
+offset_right = 323.0
+offset_bottom = 78.0
+disabled = true
+
+[node name="Control7" type="Control" parent="CanvasLayer/TechTree/TechPanel/GridContainer"]
+layout_mode = 2
+
+[node name="TechButton" type="Button" parent="CanvasLayer/TechTree/TechPanel/GridContainer/Control7"]
+layout_mode = 2
+offset_left = -12.0
+offset_right = 323.0
+offset_bottom = 78.0
+disabled = true
+
+[node name="Control8" type="Control" parent="CanvasLayer/TechTree/TechPanel/GridContainer"]
+layout_mode = 2
+
+[node name="TechButton" type="Button" parent="CanvasLayer/TechTree/TechPanel/GridContainer/Control8"]
+layout_mode = 2
+offset_left = -12.0
+offset_right = 323.0
+offset_bottom = 78.0
+disabled = true
+
+[node name="Control9" type="Control" parent="CanvasLayer/TechTree/TechPanel/GridContainer"]
+layout_mode = 2
+
+[node name="TechButton" type="Button" parent="CanvasLayer/TechTree/TechPanel/GridContainer/Control9"]
+layout_mode = 2
+offset_left = -12.0
+offset_right = 323.0
+offset_bottom = 78.0
+disabled = true
+
+[node name="Control10" type="Control" parent="CanvasLayer/TechTree/TechPanel/GridContainer"]
+layout_mode = 2
+
+[node name="TechButton" type="Button" parent="CanvasLayer/TechTree/TechPanel/GridContainer/Control10"]
+layout_mode = 2
+offset_left = -12.0
+offset_right = 323.0
+offset_bottom = 78.0
+disabled = true
+
+[node name="Control11" type="Control" parent="CanvasLayer/TechTree/TechPanel/GridContainer"]
+layout_mode = 2
+
+[node name="TechButton" type="Button" parent="CanvasLayer/TechTree/TechPanel/GridContainer/Control11"]
+layout_mode = 2
+offset_left = -12.0
+offset_right = 323.0
+offset_bottom = 78.0
+disabled = true
+
+[node name="Control12" type="Control" parent="CanvasLayer/TechTree/TechPanel/GridContainer"]
+layout_mode = 2
+
+[node name="TechButton" type="Button" parent="CanvasLayer/TechTree/TechPanel/GridContainer/Control12"]
+layout_mode = 2
+offset_left = -12.0
+offset_right = 323.0
+offset_bottom = 78.0
+disabled = true
+
+[node name="Control13" type="Control" parent="CanvasLayer/TechTree/TechPanel/GridContainer"]
+layout_mode = 2
+
+[node name="TechButton" type="Button" parent="CanvasLayer/TechTree/TechPanel/GridContainer/Control13"]
+layout_mode = 2
+offset_left = -12.0
+offset_right = 323.0
+offset_bottom = 78.0
+disabled = true
+
+[node name="Control14" type="Control" parent="CanvasLayer/TechTree/TechPanel/GridContainer"]
+layout_mode = 2
+
+[node name="TechButton" type="Button" parent="CanvasLayer/TechTree/TechPanel/GridContainer/Control14"]
+layout_mode = 2
+offset_left = -12.0
+offset_right = 323.0
+offset_bottom = 78.0
+disabled = true
+
+[node name="Control15" type="Control" parent="CanvasLayer/TechTree/TechPanel/GridContainer"]
+layout_mode = 2
+
+[node name="TechButton" type="Button" parent="CanvasLayer/TechTree/TechPanel/GridContainer/Control15"]
+layout_mode = 2
+offset_left = -12.0
+offset_right = 323.0
+offset_bottom = 78.0
+disabled = true
+
+[node name="Control16" type="Control" parent="CanvasLayer/TechTree/TechPanel/GridContainer"]
+layout_mode = 2
+
+[node name="TechButton" type="Button" parent="CanvasLayer/TechTree/TechPanel/GridContainer/Control16"]
+layout_mode = 2
+offset_left = -12.0
+offset_right = 323.0
+offset_bottom = 78.0
+disabled = true
+
+[node name="Control17" type="Control" parent="CanvasLayer/TechTree/TechPanel/GridContainer"]
+layout_mode = 2
+
+[node name="TechButton" type="Button" parent="CanvasLayer/TechTree/TechPanel/GridContainer/Control17"]
+layout_mode = 2
+offset_left = -12.0
+offset_right = 323.0
+offset_bottom = 78.0
+disabled = true
+
+[node name="Control18" type="Control" parent="CanvasLayer/TechTree/TechPanel/GridContainer"]
+layout_mode = 2
+
+[node name="TechButton" type="Button" parent="CanvasLayer/TechTree/TechPanel/GridContainer/Control18"]
+layout_mode = 2
+offset_left = -12.0
+offset_right = 323.0
+offset_bottom = 78.0
+disabled = true
+
+[node name="Control19" type="Control" parent="CanvasLayer/TechTree/TechPanel/GridContainer"]
+layout_mode = 2
+
+[node name="TechButton" type="Button" parent="CanvasLayer/TechTree/TechPanel/GridContainer/Control19"]
+layout_mode = 2
+offset_left = -12.0
+offset_right = 323.0
+offset_bottom = 78.0
+disabled = true
+
+[node name="Control20" type="Control" parent="CanvasLayer/TechTree/TechPanel/GridContainer"]
+layout_mode = 2
+
+[node name="TechButton" type="Button" parent="CanvasLayer/TechTree/TechPanel/GridContainer/Control20"]
+layout_mode = 2
+offset_left = -12.0
+offset_right = 323.0
+offset_bottom = 78.0
+disabled = true
+
+[node name="Control21" type="Control" parent="CanvasLayer/TechTree/TechPanel/GridContainer"]
+layout_mode = 2
+
+[node name="TechButton" type="Button" parent="CanvasLayer/TechTree/TechPanel/GridContainer/Control21"]
+layout_mode = 2
+offset_left = -12.0
+offset_right = 323.0
+offset_bottom = 78.0
+disabled = true
+
+[node name="Control22" type="Control" parent="CanvasLayer/TechTree/TechPanel/GridContainer"]
+layout_mode = 2
+
+[node name="TechButton" type="Button" parent="CanvasLayer/TechTree/TechPanel/GridContainer/Control22"]
+layout_mode = 2
+offset_left = -12.0
+offset_right = 323.0
+offset_bottom = 78.0
+disabled = true
+
+[node name="Control23" type="Control" parent="CanvasLayer/TechTree/TechPanel/GridContainer"]
+layout_mode = 2
+
+[node name="TechButton" type="Button" parent="CanvasLayer/TechTree/TechPanel/GridContainer/Control23"]
+layout_mode = 2
+offset_left = -12.0
+offset_right = 323.0
+offset_bottom = 78.0
+disabled = true
+
+[node name="Control24" type="Control" parent="CanvasLayer/TechTree/TechPanel/GridContainer"]
+layout_mode = 2
+
+[node name="TechButton" type="Button" parent="CanvasLayer/TechTree/TechPanel/GridContainer/Control24"]
+layout_mode = 2
+offset_left = -12.0
+offset_right = 323.0
+offset_bottom = 78.0
+disabled = true
+
+[node name="Control25" type="Control" parent="CanvasLayer/TechTree/TechPanel/GridContainer"]
+layout_mode = 2
+
+[node name="TechButton" type="Button" parent="CanvasLayer/TechTree/TechPanel/GridContainer/Control25"]
+layout_mode = 2
+offset_left = -12.0
+offset_right = 323.0
+offset_bottom = 78.0
+disabled = true
+
+[node name="Control26" type="Control" parent="CanvasLayer/TechTree/TechPanel/GridContainer"]
+layout_mode = 2
+
+[node name="TechButton" type="Button" parent="CanvasLayer/TechTree/TechPanel/GridContainer/Control26"]
+layout_mode = 2
+offset_left = -12.0
+offset_right = 323.0
+offset_bottom = 78.0
+disabled = true
+
+[node name="Control27" type="Control" parent="CanvasLayer/TechTree/TechPanel/GridContainer"]
+layout_mode = 2
+
+[node name="TechButton" type="Button" parent="CanvasLayer/TechTree/TechPanel/GridContainer/Control27"]
+layout_mode = 2
+offset_left = -12.0
+offset_right = 323.0
+offset_bottom = 78.0
+disabled = true
+
+[node name="Control28" type="Control" parent="CanvasLayer/TechTree/TechPanel/GridContainer"]
+layout_mode = 2
+
+[node name="TechButton" type="Button" parent="CanvasLayer/TechTree/TechPanel/GridContainer/Control28"]
+layout_mode = 2
+offset_left = -12.0
+offset_right = 323.0
+offset_bottom = 78.0
+disabled = true
+
+[node name="Control29" type="Control" parent="CanvasLayer/TechTree/TechPanel/GridContainer"]
+layout_mode = 2
+
+[node name="TechButton" type="Button" parent="CanvasLayer/TechTree/TechPanel/GridContainer/Control29"]
+layout_mode = 2
+offset_left = -12.0
+offset_right = 323.0
+offset_bottom = 78.0
+disabled = true
+
+[node name="Control30" type="Control" parent="CanvasLayer/TechTree/TechPanel/GridContainer"]
+layout_mode = 2
+
+[node name="TechButton" type="Button" parent="CanvasLayer/TechTree/TechPanel/GridContainer/Control30"]
+layout_mode = 2
+offset_left = -12.0
+offset_right = 323.0
+offset_bottom = 78.0
+disabled = true
+
+[node name="CountryController" type="Node2D" parent="."]
+visible = false
+
+[connection signal="pressed" from="CanvasLayer/PanelOpenerControl/ButtonPanel/VBoxContainer/TechTreeControl/TechTreeButton" to="CanvasLayer/TechTree" method="_on_tech_tree_button_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/Resource Bar (TOP)/container/GoldControl/GoldArea2D" to="." method="_on_gold_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/Resource Bar (TOP)/container/GoldControl/GoldArea2D" to="." method="_on_gold_area_2d_mouse_exited"]
+[connection signal="mouse_entered" from="CanvasLayer/Resource Bar (TOP)/container/FoodControl/FoodArea2D" to="." method="_on_food_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/Resource Bar (TOP)/container/FoodControl/FoodArea2D" to="." method="_on_food_area_2d_mouse_exited"]
+[connection signal="mouse_entered" from="CanvasLayer/Resource Bar (TOP)/container/WoodControl/WoodArea2D" to="." method="_on_wood_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/Resource Bar (TOP)/container/WoodControl/WoodArea2D" to="." method="_on_wood_area_2d_mouse_exited"]
+[connection signal="mouse_entered" from="CanvasLayer/Resource Bar (TOP)/container/MetalControl/MetalArea2D" to="." method="_on_metal_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/Resource Bar (TOP)/container/MetalControl/MetalArea2D" to="." method="_on_metal_area_2d_mouse_exited"]
+[connection signal="mouse_entered" from="CanvasLayer/Resource Bar (TOP)/container/WeaponsControl/WeaponsArea" to="." method="_on_weapons_area_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/Resource Bar (TOP)/container/WeaponsControl/WeaponsArea" to="." method="_on_weapons_area_mouse_exited"]
+[connection signal="mouse_entered" from="CanvasLayer/Resource Bar (TOP)/container/ScienceControl/ScienceArea" to="." method="_on_science_area_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/Resource Bar (TOP)/container/ScienceControl/ScienceArea" to="." method="_on_science_area_mouse_exited"]
+[connection signal="mouse_entered" from="CanvasLayer/Resource Bar (TOP)/container/FaithControl/FaithControl" to="." method="_on_faith_control_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/Resource Bar (TOP)/container/FaithControl/FaithControl" to="." method="_on_faith_control_mouse_exited"]
+[connection signal="mouse_entered" from="CanvasLayer/Resource Bar (TOP)/container/MagicControl/MagicArea" to="." method="_on_magic_area_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/Resource Bar (TOP)/container/MagicControl/MagicArea" to="." method="_on_magic_area_mouse_exited"]
+[connection signal="pressed" from="CanvasLayer/Resource Bar (TOP)/Test ResourceButton" to="." method="_on_test_resource_button_pressed"]
+[connection signal="addTechToPlayer" from="CanvasLayer/TechTree" to="." method="_on_tech_tree_add_tech_to_player"]
+[connection signal="pressed" from="CanvasLayer/TechTree/TechPanel/CloseButton" to="CanvasLayer/TechTree" method="_on_close_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/TechTree/TechPanel/GridContainer/EarlyToolsControl/Early ToolsButton" to="CanvasLayer/TechTree" method="_on_early_tools_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/TechTree/TechPanel/GridContainer/DomesticationControl/Domestication" to="CanvasLayer/TechTree" method="_on_domestication_pressed"]

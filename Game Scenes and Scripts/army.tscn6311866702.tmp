@@ -1,0 +1,217 @@
+[gd_scene load_steps=13 format=3 uid="uid://cxmy8mdrrj0yl"]
+
+[ext_resource type="Script" uid="uid://cdkg2sl6mii80" path="res://Game Scenes and Scripts/army.gd" id="1_clqeb"]
+[ext_resource type="Texture2D" uid="uid://bmgon5mm6nkvc" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/weapons.png" id="2_sw8vy"]
+[ext_resource type="Texture2D" uid="uid://vu0teomjtckk" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/food.png" id="3_0pwip"]
+[ext_resource type="Texture2D" uid="uid://eelq4yxqnbt2" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/gold.png" id="4_f4g6h"]
+[ext_resource type="Texture2D" uid="uid://dmf7id8k52mxp" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/mandate 100 x 100.png" id="5_jetgm"]
+[ext_resource type="Texture2D" uid="uid://jrg01q8jnayd" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/Magic.png" id="6_37b15"]
+[ext_resource type="Texture2D" uid="uid://dpa3jb3g0q5al" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/faith.png" id="7_wl1as"]
+[ext_resource type="Texture2D" uid="uid://drifybbnrpta7" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/wood.png" id="8_ad57i"]
+[ext_resource type="Texture2D" uid="uid://dauok6wt717hv" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/Metal.png" id="9_wbfja"]
+[ext_resource type="Texture2D" uid="uid://deaxhpkfk86qj" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/harmony 100 x 100.png" id="10_yntle"]
+[ext_resource type="Texture2D" uid="uid://lk2vylhlsw1l" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/influence 100 x 100.png" id="11_3lsu5"]
+[ext_resource type="Texture2D" uid="uid://d35c3runx4oca" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/manpower 100 x 100.png" id="12_ugqif"]
+
+[node name="Army" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
+script = ExtResource("1_clqeb")
+
+[node name="RadicalCoolTestPanel" type="Panel" parent="."]
+layout_mode = 0
+offset_left = -221.0
+offset_top = -126.0
+offset_right = 1349.0
+offset_bottom = 298.0
+mouse_filter = 2
+
+[node name="UnitContainer" type="HBoxContainer" parent="RadicalCoolTestPanel"]
+layout_mode = 0
+offset_left = 260.0
+offset_right = 1557.0
+offset_bottom = 40.0
+mouse_filter = 2
+
+[node name="UnitUIContainer" type="HBoxContainer" parent="RadicalCoolTestPanel"]
+layout_mode = 0
+offset_left = 262.0
+offset_top = 119.0
+offset_right = 1553.0
+offset_bottom = 331.0
+mouse_filter = 2
+theme_override_constants/separation = 235
+
+[node name="Weapons Sprite" type="Sprite2D" parent="RadicalCoolTestPanel"]
+position = Vector2(84, 201)
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("2_sw8vy")
+
+[node name="Food Sprite" type="Sprite2D" parent="RadicalCoolTestPanel"]
+position = Vector2(84, 122)
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("3_0pwip")
+
+[node name="Gold Sprite" type="Sprite2D" parent="RadicalCoolTestPanel"]
+position = Vector2(84, 47)
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("4_f4g6h")
+
+[node name="Mandate Sprite" type="Sprite2D" parent="RadicalCoolTestPanel"]
+position = Vector2(208, 199)
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("5_jetgm")
+
+[node name="Magic Sprite" type="Sprite2D" parent="RadicalCoolTestPanel"]
+position = Vector2(208, 120)
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("6_37b15")
+
+[node name="Faith Sprite" type="Sprite2D" parent="RadicalCoolTestPanel"]
+position = Vector2(208, 45)
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("7_wl1as")
+
+[node name="WoodSprite" type="Sprite2D" parent="RadicalCoolTestPanel"]
+position = Vector2(86, 359)
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("8_ad57i")
+
+[node name="Metal Sprite" type="Sprite2D" parent="RadicalCoolTestPanel"]
+position = Vector2(86, 280)
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("9_wbfja")
+
+[node name="Harmony Sprite" type="Sprite2D" parent="RadicalCoolTestPanel"]
+position = Vector2(210, 357)
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("10_yntle")
+
+[node name="Influence Sprite" type="Sprite2D" parent="RadicalCoolTestPanel"]
+position = Vector2(210, 278)
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("11_3lsu5")
+
+[node name="WeaponsCost" type="Label" parent="."]
+layout_mode = 0
+offset_left = -206.0
+offset_top = 66.0
+offset_right = -148.0
+offset_bottom = 89.0
+text = "N/A"
+
+[node name="FoodCost" type="Label" parent="."]
+layout_mode = 0
+offset_left = -210.0
+offset_top = -14.0
+offset_right = -152.0
+offset_bottom = 9.0
+text = "N/A"
+
+[node name="GoldCost" type="Label" parent="."]
+layout_mode = 0
+offset_left = -210.0
+offset_top = -90.0
+offset_right = -152.0
+offset_bottom = -67.0
+text = "N/A"
+
+[node name="MandateCost" type="Label" parent="."]
+layout_mode = 0
+offset_left = -86.0
+offset_top = 63.0
+offset_right = -28.0
+offset_bottom = 86.0
+text = "N/A"
+
+[node name="MagicCost" type="Label" parent="."]
+layout_mode = 0
+offset_left = -90.0
+offset_top = -17.0
+offset_right = -32.0
+offset_bottom = 6.0
+text = "N/A"
+
+[node name="FaithCost" type="Label" parent="."]
+layout_mode = 0
+offset_left = -90.0
+offset_top = -93.0
+offset_right = -32.0
+offset_bottom = -70.0
+text = "N/A"
+
+[node name="WoodCost" type="Label" parent="."]
+layout_mode = 0
+offset_left = -204.0
+offset_top = 224.0
+offset_right = -146.0
+offset_bottom = 247.0
+text = "N/A"
+
+[node name="MetalCost" type="Label" parent="."]
+layout_mode = 0
+offset_left = -208.0
+offset_top = 144.0
+offset_right = -150.0
+offset_bottom = 167.0
+text = "N/A"
+
+[node name="HarmonyCost" type="Label" parent="."]
+layout_mode = 0
+offset_left = -84.0
+offset_top = 221.0
+offset_right = -26.0
+offset_bottom = 244.0
+text = "N/A"
+
+[node name="InfluenceCost" type="Label" parent="."]
+layout_mode = 0
+offset_left = -88.0
+offset_top = 141.0
+offset_right = -30.0
+offset_bottom = 164.0
+text = "N/A"
+
+[node name="AttackDefencePanel" type="Panel" parent="."]
+layout_mode = 0
+offset_left = -392.0
+offset_top = -118.0
+offset_right = -230.0
+offset_bottom = 286.0
+
+[node name="Attack" type="Label" parent="AttackDefencePanel"]
+layout_mode = 0
+offset_left = 43.0
+offset_top = 193.0
+offset_right = 116.0
+offset_bottom = 221.0
+
+[node name="Manpower" type="Label" parent="AttackDefencePanel"]
+layout_mode = 0
+offset_left = 43.0
+offset_top = 99.0
+offset_right = 116.0
+offset_bottom = 127.0
+
+[node name="Defense" type="Label" parent="AttackDefencePanel"]
+layout_mode = 0
+offset_left = 44.0
+offset_top = 271.0
+offset_right = 117.0
+offset_bottom = 299.0
+
+[node name="AttackSprite" type="Sprite2D" parent="AttackDefencePanel"]
+position = Vector2(74, 169)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("2_sw8vy")
+
+[node name="ManpowerSprite" type="Sprite2D" parent="AttackDefencePanel"]
+position = Vector2(74, 78)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("12_ugqif")
+
+[node name="DefenseSprite" type="Sprite2D" parent="AttackDefencePanel"]
+position = Vector2(75, 247)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("2_sw8vy")

@@ -1,0 +1,143 @@
+[gd_scene load_steps=7 format=3 uid="uid://dhg43vhi18g7k"]
+
+[ext_resource type="Script" uid="uid://oskxr531oljk" path="res://Menu Scenes and Scripts/new_game_selection.gd" id="1_l7tiv"]
+[ext_resource type="Texture2D" uid="uid://bb1db6rh066fo" path="res://art assets/Placeholder Art/character/F4 - Copy.png" id="2_o7vlo"]
+[ext_resource type="Texture2D" uid="uid://ba5jt6t2e7fv1" path="res://art assets/Placeholder Art/character/F3 - Copy.png" id="3_8worc"]
+[ext_resource type="Texture2D" uid="uid://cdbcq4hgnjwlj" path="res://art assets/Placeholder Art/character/F11 - Copy.png" id="4_mmfx6"]
+[ext_resource type="Texture2D" uid="uid://dhr3u11scg6jq" path="res://art assets/Placeholder Art/character/F12 - Copy.png" id="5_rpjul"]
+[ext_resource type="Texture2D" uid="uid://dkc5utxkt0nna" path="res://art assets/Placeholder Art/character/F13 - Copy.png" id="6_swy51"]
+
+[node name="NewGameSelection" type="Node2D"]
+scale = Vector2(1.68, 1.68)
+script = ExtResource("1_l7tiv")
+
+[node name="ScenePanel" type="Panel" parent="."]
+offset_right = 1152.0
+offset_bottom = 651.0
+
+[node name="ReturnButton" type="Button" parent="."]
+offset_left = 9.0
+offset_top = 572.0
+offset_right = 235.0
+offset_bottom = 635.0
+text = "Back to Main Menu"
+
+[node name="PlayButton" type="Button" parent="."]
+offset_left = 977.0
+offset_top = 567.0
+offset_right = 1132.0
+offset_bottom = 631.0
+disabled = true
+text = "PLAY!"
+
+[node name="SelectionPanel" type="Panel" parent="."]
+offset_right = 646.0
+offset_bottom = 556.0
+
+[node name="AnlaxiaButton" type="Button" parent="SelectionPanel"]
+layout_mode = 0
+offset_left = 102.0
+offset_top = 71.0
+offset_right = 292.0
+offset_bottom = 251.0
+
+[node name="Sprite2D" type="Sprite2D" parent="SelectionPanel/AnlaxiaButton"]
+position = Vector2(92, 88.0001)
+scale = Vector2(0.145435, 0.145435)
+texture = ExtResource("2_o7vlo")
+
+[node name="PenderTalButton" type="Button" parent="SelectionPanel"]
+layout_mode = 0
+offset_left = 361.0
+offset_top = 71.0
+offset_right = 551.0
+offset_bottom = 251.0
+
+[node name="Sprite2D" type="Sprite2D" parent="SelectionPanel/PenderTalButton"]
+position = Vector2(106, 90)
+scale = Vector2(0.142395, 0.142395)
+texture = ExtResource("3_8worc")
+
+[node name="EighthHouseButton" type="Button" parent="SelectionPanel"]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 308.0
+offset_right = 220.0
+offset_bottom = 488.0
+
+[node name="Sprite2D" type="Sprite2D" parent="SelectionPanel/EighthHouseButton"]
+position = Vector2(105, 88)
+scale = Vector2(0.156195, 0.156195)
+texture = ExtResource("4_mmfx6")
+
+[node name="DemonEmpireButton" type="Button" parent="SelectionPanel"]
+layout_mode = 0
+offset_left = 238.0
+offset_top = 308.0
+offset_right = 428.0
+offset_bottom = 488.0
+
+[node name="Sprite2D" type="Sprite2D" parent="SelectionPanel/DemonEmpireButton"]
+position = Vector2(97, 89)
+scale = Vector2(0.128788, 0.128788)
+texture = ExtResource("5_rpjul")
+
+[node name="ValterianOrderButton" type="Button" parent="SelectionPanel"]
+layout_mode = 0
+offset_left = 442.0
+offset_top = 308.0
+offset_right = 632.0
+offset_bottom = 488.0
+
+[node name="Sprite2D" type="Sprite2D" parent="SelectionPanel/ValterianOrderButton"]
+position = Vector2(82, 99)
+scale = Vector2(0.153631, 0.153631)
+texture = ExtResource("6_swy51")
+
+[node name="CountryInfoPanel" type="Panel" parent="."]
+offset_left = 653.0
+offset_right = 1148.0
+offset_bottom = 556.0
+
+[node name="CountrySelectionPanel" type="Panel" parent="CountryInfoPanel"]
+layout_mode = 0
+offset_left = 48.0
+offset_top = 14.0
+offset_right = 466.0
+offset_bottom = 79.0
+
+[node name="CountrySelectionLabel" type="Label" parent="CountryInfoPanel/CountrySelectionPanel"]
+layout_mode = 0
+offset_right = 414.0
+offset_bottom = 61.0
+text = "NO COUNTRY SELECTED"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="InfoPanel" type="Panel" parent="CountryInfoPanel"]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 88.0
+offset_right = 481.0
+offset_bottom = 540.0
+
+[node name="CountryArt" type="Sprite2D" parent="CountryInfoPanel/InfoPanel"]
+position = Vector2(359, 147)
+scale = Vector2(0.294855, 0.297611)
+
+[node name="LeaderArt" type="Sprite2D" parent="CountryInfoPanel/InfoPanel"]
+position = Vector2(364, 341)
+scale = Vector2(0.187702, 0.187702)
+
+[node name="DescriptionLabel" type="Label" parent="CountryInfoPanel/InfoPanel"]
+layout_mode = 0
+offset_right = 242.0
+offset_bottom = 446.0
+autowrap_mode = 3
+
+[connection signal="pressed" from="ReturnButton" to="." method="_on_return_button_pressed"]
+[connection signal="pressed" from="SelectionPanel/AnlaxiaButton" to="." method="_on_anlaxia_button_pressed"]
+[connection signal="pressed" from="SelectionPanel/PenderTalButton" to="." method="_on_pender_tal_button_pressed"]
+[connection signal="pressed" from="SelectionPanel/EighthHouseButton" to="." method="_on_eighth_house_button_pressed"]
+[connection signal="pressed" from="SelectionPanel/DemonEmpireButton" to="." method="_on_demon_empire_button_pressed"]
+[connection signal="pressed" from="SelectionPanel/ValterianOrderButton" to="." method="_on_valterian_order_button_pressed"]

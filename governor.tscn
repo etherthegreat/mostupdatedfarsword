@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://beyem55yfgu60"]
+
+[ext_resource type="Script" uid="uid://demwxjgqp4llk" path="res://governor.gd" id="1_otrvm"]
+
+[node name="Governor" type="Node2D"]
+script = ExtResource("1_otrvm")

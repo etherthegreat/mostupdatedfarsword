@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dcd20q1stkc0x"]
+
+[ext_resource type="Script" uid="uid://ikmdor5e4m32" path="res://belief.gd" id="1_78bd2"]
+
+[node name="Belief" type="Node2D"]
+script = ExtResource("1_78bd2")

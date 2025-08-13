@@ -1,0 +1,38 @@
+[gd_scene load_steps=3 format=3 uid="uid://bwwryt2mmw8bm"]
+
+[ext_resource type="Script" uid="uid://hvx1as7a0clt" path="res://spellbook.gd" id="1_axphf"]
+[ext_resource type="Texture2D" uid="uid://bs7hc10gkpl1m" path="res://art assets/Placeholder Art/UI Art/book.jpg" id="2_44iid"]
+
+[node name="Spellbook" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 1533.0
+offset_top = 23.0
+offset_right = 1533.0
+offset_bottom = 23.0
+script = ExtResource("1_axphf")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_left = -523.0
+offset_right = 356.0
+offset_bottom = 485.0
+
+[node name="BookSprite" type="Sprite2D" parent="Panel"]
+position = Vector2(438, 244)
+scale = Vector2(1.96444, 1.69123)
+texture = ExtResource("2_44iid")
+
+[node name="TileSpellsGridContainer" type="GridContainer" parent="Panel"]
+layout_mode = 0
+offset_left = 83.0
+offset_top = 54.0
+offset_right = 408.0
+offset_bottom = 436.0
+
+[node name="ArmySpellsGridContainer" type="GridContainer" parent="Panel"]
+layout_mode = 0
+offset_left = 472.0
+offset_top = 56.0
+offset_right = 813.0
+offset_bottom = 436.0

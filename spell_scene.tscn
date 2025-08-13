@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://crse30kkhaxeg"]
+
+[ext_resource type="Script" uid="uid://bq1wr4vdllrsn" path="res://spell_scene.gd" id="1_f47c2"]
+[ext_resource type="Texture2D" uid="uid://kjhhk7jj22fr" path="res://art assets/Placeholder Art/UI Art/resources/Plentify.png" id="2_s0p47"]
+
+[node name="SpellScene" type="Sprite2D"]
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("2_s0p47")
+script = ExtResource("1_f47c2")

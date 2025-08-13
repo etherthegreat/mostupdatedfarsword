@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://ceaa50bsb0hpd"]
+
+[ext_resource type="Texture2D" uid="uid://cf41vsdq7n11f" path="res://art assets/Placeholder Art/UI Art/resources/clubsmall.png" id="1_gken3"]
+[ext_resource type="Script" uid="uid://cjsanmt2tnmkc" path="res://weapon_button.gd" id="2_m4o6c"]
+
+[node name="WeaponButton" type="Button"]
+offset_right = 8.0
+offset_bottom = 8.0
+icon = ExtResource("1_gken3")
+script = ExtResource("2_m4o6c")

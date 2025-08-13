@@ -1,0 +1,219 @@
+[gd_scene load_steps=3 format=3 uid="uid://d0v0xfksecnno"]
+
+[ext_resource type="Script" uid="uid://dtw37fho4s163" path="res://governor_selection.gd" id="1_c4d0j"]
+[ext_resource type="Texture2D" uid="uid://bb1db6rh066fo" path="res://art assets/Placeholder Art/character/F4 - Copy.png" id="2_c4d0j"]
+
+[node name="GovernorSelection" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_c4d0j")
+
+[node name="MasterPanel" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 552.0
+offset_bottom = 227.0
+
+[node name="GovernorNameLabel" type="Label" parent="MasterPanel"]
+layout_mode = 0
+offset_right = 168.0
+offset_bottom = 23.0
+text = "governornamehere"
+horizontal_alignment = 1
+
+[node name="levelLabel" type="Label" parent="MasterPanel"]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 31.0
+offset_right = 42.0
+offset_bottom = 54.0
+text = "lvl"
+horizontal_alignment = 1
+
+[node name="selectGovernorPanel" type="Panel" parent="MasterPanel"]
+layout_mode = 0
+offset_left = 157.0
+offset_top = 34.0
+offset_right = 543.0
+offset_bottom = 218.0
+
+[node name="selectGovernorButton" type="Button" parent="MasterPanel/selectGovernorPanel"]
+layout_mode = 0
+offset_left = -144.0
+offset_top = 20.0
+offset_right = -14.0
+offset_bottom = 184.0
+icon = ExtResource("2_c4d0j")
+icon_alignment = 1
+expand_icon = true
+
+[node name="confirmGovernorButton" type="Button" parent="MasterPanel/selectGovernorPanel"]
+layout_mode = 0
+offset_left = 92.0
+offset_top = 112.0
+offset_right = 163.0
+offset_bottom = 143.0
+text = "Confirm"
+
+[node name="declineGovernorButton" type="Button" parent="MasterPanel/selectGovernorPanel"]
+layout_mode = 0
+offset_left = 219.0
+offset_top = 112.0
+offset_right = 290.0
+offset_bottom = 143.0
+theme_override_colors/font_disabled_color = Color(0.513233, 0.513233, 0.513233, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.848158, 0, 0.38775, 1)
+theme_override_colors/font_hover_color = Color(0.69246, 1.92523e-06, 2.88785e-07, 1)
+theme_override_colors/icon_disabled_color = Color(0.871734, 0.204312, 0.372442, 1)
+theme_override_colors/icon_hover_pressed_color = Color(0.862335, 0.234026, 0.453789, 1)
+theme_override_colors/icon_hover_color = Color(0.880839, 0.185622, 0.413414, 1)
+theme_override_colors/icon_pressed_color = Color(0.539252, 0.317296, 0.432752, 1)
+theme_override_colors/icon_focus_color = Color(0.798768, 0.18194, 0.403422, 1)
+theme_override_colors/icon_normal_color = Color(0.937255, 0.113725, 0.384314, 0.992157)
+theme_override_colors/font_outline_color = Color(0.531574, 0.0799623, 0.225347, 1)
+theme_override_colors/font_color = Color(0.626034, 0.353036, 0.48152, 1)
+theme_override_colors/font_focus_color = Color(0.844218, 0.211044, 0.372402, 1)
+theme_override_colors/font_pressed_color = Color(0.880066, 0.176251, 0.441985, 1)
+text = "Decline"
+
+[node name="confirmationLabel" type="Label" parent="MasterPanel/selectGovernorPanel"]
+layout_mode = 0
+offset_left = 61.0
+offset_top = 57.0
+offset_right = 318.0
+offset_bottom = 80.0
+text = "confirm adding 'governor' to 'tile'"
+
+[node name="governorPanel" type="Panel" parent="MasterPanel"]
+layout_mode = 0
+offset_left = 157.0
+offset_top = 34.0
+offset_right = 543.0
+offset_bottom = 218.0
+
+[node name="governorInfoButton" type="Button" parent="MasterPanel/governorPanel"]
+layout_mode = 0
+offset_left = 142.0
+offset_top = -32.0
+offset_right = 261.0
+offset_bottom = -1.0
+theme_override_font_sizes/font_size = 12
+text = "As Governor"
+autowrap_mode = 2
+
+[node name="shortDescLabel" type="Label" parent="MasterPanel/governorPanel"]
+layout_mode = 0
+offset_right = 386.0
+offset_bottom = 43.0
+text = "governor"
+
+[node name="commanderPanel" type="Panel" parent="MasterPanel"]
+layout_mode = 0
+offset_left = 157.0
+offset_top = 34.0
+offset_right = 543.0
+offset_bottom = 218.0
+
+[node name="commanderInfoButton" type="Button" parent="MasterPanel/commanderPanel"]
+layout_mode = 0
+offset_left = 267.0
+offset_top = -32.0
+offset_right = 386.0
+offset_bottom = -1.0
+theme_override_font_sizes/font_size = 10
+text = "As Commander"
+
+[node name="shortDescLabel" type="Label" parent="MasterPanel/commanderPanel"]
+layout_mode = 0
+offset_right = 386.0
+offset_bottom = 43.0
+text = "commander"
+
+[node name="labellvl1" type="Label" parent="MasterPanel/commanderPanel"]
+layout_mode = 2
+offset_left = 4.0
+offset_top = 33.0
+offset_right = 107.0
+offset_bottom = 56.0
+text = "lvl 1 milmods"
+
+[node name="labellvl2" type="Label" parent="MasterPanel/commanderPanel"]
+layout_mode = 2
+offset_left = 4.0
+offset_top = 83.0
+offset_right = 107.0
+offset_bottom = 106.0
+text = "lvl 2 milmods"
+
+[node name="labellvl3" type="Label" parent="MasterPanel/commanderPanel"]
+layout_mode = 2
+offset_left = 4.0
+offset_top = 137.0
+offset_right = 107.0
+offset_bottom = 160.0
+text = "lvl 3 milmods"
+
+[node name="HBoxContainerLVL1" type="HBoxContainer" parent="MasterPanel/commanderPanel"]
+layout_mode = 0
+offset_left = 151.0
+offset_top = 44.0
+offset_right = 395.0
+offset_bottom = 84.0
+theme_override_constants/separation = 100
+
+[node name="HBoxContainerLVL2" type="HBoxContainer" parent="MasterPanel/commanderPanel"]
+layout_mode = 0
+offset_left = 151.0
+offset_top = 82.0
+offset_right = 395.0
+offset_bottom = 122.0
+theme_override_constants/separation = 100
+
+[node name="HBoxContainerLVL3" type="HBoxContainer" parent="MasterPanel/commanderPanel"]
+layout_mode = 0
+offset_left = 151.0
+offset_top = 133.0
+offset_right = 395.0
+offset_bottom = 173.0
+theme_override_constants/separation = 100
+
+[node name="characterInfoPanel" type="Panel" parent="MasterPanel"]
+layout_mode = 0
+offset_left = 157.0
+offset_top = 34.0
+offset_right = 543.0
+offset_bottom = 218.0
+
+[node name="characterInfoButton" type="Button" parent="MasterPanel/characterInfoPanel"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = -32.0
+offset_right = 135.0
+offset_bottom = -1.0
+theme_override_font_sizes/font_size = 12
+disabled = true
+text = "Character Info"
+
+[node name="shortDescLabel" type="Label" parent="MasterPanel/characterInfoPanel"]
+layout_mode = 0
+offset_right = 386.0
+offset_bottom = 43.0
+text = "character"
+autowrap_mode = 3
+
+[node name="biographyDescLabel" type="Label" parent="MasterPanel/characterInfoPanel"]
+layout_mode = 0
+offset_top = 55.0
+offset_right = 386.0
+offset_bottom = 185.0
+theme_override_font_sizes/font_size = 10
+text = "character"
+autowrap_mode = 3
+
+[connection signal="pressed" from="MasterPanel/selectGovernorPanel/selectGovernorButton" to="." method="_on_select_governor_button_pressed"]
+[connection signal="pressed" from="MasterPanel/selectGovernorPanel/confirmGovernorButton" to="." method="_on_confirm_governor_button_pressed"]
+[connection signal="pressed" from="MasterPanel/selectGovernorPanel/declineGovernorButton" to="." method="_on_decline_governor_button_pressed"]
+[connection signal="pressed" from="MasterPanel/governorPanel/governorInfoButton" to="." method="_on_governor_info_button_pressed"]
+[connection signal="pressed" from="MasterPanel/commanderPanel/commanderInfoButton" to="." method="_on_commander_info_button_pressed"]
+[connection signal="pressed" from="MasterPanel/characterInfoPanel/characterInfoButton" to="." method="_on_character_info_button_pressed"]

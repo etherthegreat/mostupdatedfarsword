@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://b8d5lar7kxy5q"]
+
+[ext_resource type="Script" uid="uid://dmgne1hayuitw" path="res://unit.gd" id="1_0sy3d"]
+
+[node name="Unit" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_0sy3d")

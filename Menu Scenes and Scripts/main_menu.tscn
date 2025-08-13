@@ -1,0 +1,64 @@
+[gd_scene load_steps=3 format=3 uid="uid://dep7mbivwnnvj"]
+
+[ext_resource type="Texture2D" uid="uid://cshr00lp8jc7v" path="res://art assets/Placeholder Art/map/placeholder menu art.png" id="1_o0gaq"]
+[ext_resource type="Script" uid="uid://b81ynt4qwcsri" path="res://Menu Scenes and Scripts/main_menu.gd" id="1_rf07e"]
+
+[node name="MainMenu" type="Node2D"]
+script = ExtResource("1_rf07e")
+
+[node name="Panel" type="Panel" parent="."]
+offset_right = 1925.0
+offset_bottom = 1084.0
+
+[node name="Sprite2D" type="Sprite2D" parent="Panel"]
+position = Vector2(963.823, 543)
+scale = Vector2(0.514863, 0.505556)
+texture = ExtResource("1_o0gaq")
+
+[node name="NewGameButton" type="Button" parent="Panel/Sprite2D"]
+offset_left = -362.114
+offset_top = -497.195
+offset_right = 649.886
+offset_bottom = -302.195
+theme_override_colors/font_color = Color(0.882353, 0.886275, 1, 1)
+theme_override_font_sizes/font_size = 120
+text = "New Game"
+
+[node name="LoadGameButton" type="Button" parent="Panel/Sprite2D"]
+offset_left = -362.114
+offset_top = -227.195
+offset_right = 649.886
+offset_bottom = -32.195
+theme_override_colors/font_color = Color(0.882353, 0.886275, 1, 1)
+theme_override_font_sizes/font_size = 120
+text = "Load Game"
+
+[node name="GalleryButton" type="Button" parent="Panel/Sprite2D"]
+offset_left = -362.114
+offset_top = 36.2196
+offset_right = 649.886
+offset_bottom = 231.22
+theme_override_colors/font_color = Color(0.882353, 0.886275, 1, 1)
+theme_override_font_sizes/font_size = 120
+text = "Gallery"
+
+[node name="SettingsButton" type="Button" parent="Panel/Sprite2D"]
+offset_left = -362.114
+offset_top = 293.049
+offset_right = 649.886
+offset_bottom = 488.049
+theme_override_colors/font_color = Color(0.882353, 0.886275, 1, 1)
+theme_override_font_sizes/font_size = 120
+text = "Settings
+"
+
+[node name="ExitButton" type="Button" parent="Panel/Sprite2D"]
+offset_left = -362.114
+offset_top = 549.878
+offset_right = 649.886
+offset_bottom = 744.878
+theme_override_colors/font_color = Color(0.882353, 0.886275, 1, 1)
+theme_override_font_sizes/font_size = 120
+text = "Exit"
+
+[connection signal="pressed" from="Panel/Sprite2D/NewGameButton" to="." method="_on_new_game_button_pressed"]

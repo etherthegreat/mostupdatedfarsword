@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://03f7wk4lne03"]
+
+[ext_resource type="Script" uid="uid://b5cd3wdoc8pf5" path="res://tile_eco_modifier.gd" id="1_u0i2x"]
+
+[node name="TileEcoModifier" type="Node2D"]
+script = ExtResource("1_u0i2x")

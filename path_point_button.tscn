@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://3w6l28pyvce1"]
+
+[ext_resource type="Script" uid="uid://d3n4sp11wsv68" path="res://path_point_button.gd" id="1_fdcwa"]
+[ext_resource type="Texture2D" uid="uid://c6f2mqjmwi22k" path="res://art assets/Placeholder Art/UI Art/resources/bleed.png" id="2_fdcwa"]
+
+[node name="PathPointButton" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_fdcwa")
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 0
+offset_right = 32.0
+offset_bottom = 44.0
+button_mask = 2
+icon = ExtResource("2_fdcwa")
+icon_alignment = 1
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

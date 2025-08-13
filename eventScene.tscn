@@ -1,0 +1,66 @@
+[gd_scene load_steps=4 format=3 uid="uid://dwonmrxv1pcck"]
+
+[ext_resource type="Texture2D" uid="uid://djnvumtpui13d" path="res://art assets/Placeholder Art/character/8 11 experimental.png" id="1_lrrym"]
+[ext_resource type="Script" uid="uid://brege513eyw2c" path="res://event_scene.gd" id="1_y3087"]
+[ext_resource type="PackedScene" uid="uid://d08snuhy2ac40" path="res://event_button.tscn" id="3_apgmq"]
+
+[node name="EventControl" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_y3087")
+
+[node name="EventPanel" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 374.0
+offset_top = 188.0
+offset_right = 1644.0
+offset_bottom = 844.0
+
+[node name="EventNameLabel" type="Label" parent="EventPanel"]
+layout_mode = 0
+offset_right = 789.0
+offset_bottom = 66.0
+theme_override_font_sizes/font_size = 46
+text = "NAME OF THE EVENT GOES HERE"
+
+[node name="EventShortDescriptionLabel" type="Label" parent="EventPanel"]
+layout_mode = 0
+offset_left = 808.0
+offset_top = 5.0
+offset_right = 1263.0
+offset_bottom = 69.0
+theme_override_font_sizes/font_size = 16
+text = "SHORT DESCRIPTION OF THE EVENT GOES HERE"
+horizontal_alignment = 2
+vertical_alignment = 2
+autowrap_mode = 3
+
+[node name="EventLongDescriptionLabel" type="Label" parent="EventPanel"]
+layout_mode = 0
+offset_left = 9.0
+offset_top = 83.0
+offset_right = 906.0
+offset_bottom = 548.0
+theme_override_font_sizes/font_size = 31
+text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="EventSprite2D" type="Sprite2D" parent="EventPanel"]
+position = Vector2(1082, 301)
+scale = Vector2(0.336022, 0.336022)
+texture = ExtResource("1_lrrym")
+
+[node name="eventButtons" type="HBoxContainer" parent="EventPanel"]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 532.0
+offset_right = 1259.0
+offset_bottom = 1184.0
+alignment = 1
+
+[node name="EventButtonControl" parent="EventPanel/eventButtons" instance=ExtResource("3_apgmq")]
+layout_mode = 2

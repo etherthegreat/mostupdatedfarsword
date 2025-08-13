@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://ba3ux7nifdgk4"]
+
+[ext_resource type="Script" uid="uid://tjre0w54k3qm" path="res://law.gd" id="1_s7yc5"]
+
+[node name="Law" type="Node2D"]
+script = ExtResource("1_s7yc5")

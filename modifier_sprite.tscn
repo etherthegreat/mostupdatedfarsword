@@ -1,0 +1,33 @@
+[gd_scene load_steps=4 format=3 uid="uid://cjue2stsqntpm"]
+
+[ext_resource type="Texture2D" uid="uid://direkrud67qna" path="res://art assets/ModifierIcons/TileEcoModifiers/CorruptionHeavy.png" id="1_pc8g2"]
+[ext_resource type="Script" uid="uid://bignvkmuljbig" path="res://modifier_sprite.gd" id="1_s82gk"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_f8cag"]
+radius = 14.2053
+
+[node name="ModifierSprite" type="Sprite2D"]
+position = Vector2(988, 548)
+texture = ExtResource("1_pc8g2")
+script = ExtResource("1_s82gk")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, 4)
+scale = Vector2(18.0952, 18.0952)
+shape = SubResource("CircleShape2D_f8cag")
+
+[node name="Panel" type="Panel" parent="."]
+offset_left = -387.0
+offset_top = -735.0
+offset_right = 383.0
+offset_bottom = -277.0
+
+[node name="Label" type="Label" parent="Panel"]
+layout_mode = 0
+offset_right = 764.0
+offset_bottom = 456.0
+
+[connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]

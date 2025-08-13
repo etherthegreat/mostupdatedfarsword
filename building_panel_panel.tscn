@@ -1,0 +1,256 @@
+[gd_scene load_steps=18 format=3 uid="uid://cek2jmk2gpc2h"]
+
+[ext_resource type="Script" uid="uid://qjjads4hn2fq" path="res://building_panel_panel.gd" id="1_ltv48"]
+[ext_resource type="Texture2D" uid="uid://ct6whogyqhymx" path="res://art assets/Placeholder Art/UI Art/resources/Farm.png" id="2_sa72o"]
+[ext_resource type="Texture2D" uid="uid://vu0teomjtckk" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/food.png" id="3_xlc2e"]
+[ext_resource type="Texture2D" uid="uid://dauok6wt717hv" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/Metal.png" id="4_yoll7"]
+[ext_resource type="Texture2D" uid="uid://drifybbnrpta7" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/wood.png" id="5_14kuu"]
+[ext_resource type="Texture2D" uid="uid://eelq4yxqnbt2" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/gold.png" id="6_eipaq"]
+[ext_resource type="Texture2D" uid="uid://b1davws52n0ja" path="res://art assets/Placeholder Art/UI Art/resources/wood.png" id="7_vqebs"]
+[ext_resource type="Texture2D" uid="uid://bqtabfkctmxau" path="res://art assets/Placeholder Art/UI Art/resources/Metal.png" id="8_vb6of"]
+[ext_resource type="Texture2D" uid="uid://h8vhnn8tit4b" path="res://art assets/Placeholder Art/UI Art/resources/gold.png" id="9_xrg8m"]
+[ext_resource type="Texture2D" uid="uid://d35c3runx4oca" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/manpower 100 x 100.png" id="10_24vi8"]
+[ext_resource type="Texture2D" uid="uid://bmgon5mm6nkvc" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/weapons.png" id="11_matsx"]
+[ext_resource type="Texture2D" uid="uid://bcdyjy74pf6s8" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/Science.png" id="12_seqr0"]
+[ext_resource type="Texture2D" uid="uid://cf40ble7dja83" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/culture 100 x 100.png" id="13_mvprl"]
+[ext_resource type="Texture2D" uid="uid://dpa3jb3g0q5al" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/faith.png" id="14_xgso5"]
+[ext_resource type="Texture2D" uid="uid://jrg01q8jnayd" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/Magic.png" id="15_ub4fl"]
+[ext_resource type="Texture2D" uid="uid://dmf7id8k52mxp" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/mandate 100 x 100.png" id="16_naj3l"]
+[ext_resource type="Texture2D" uid="uid://lk2vylhlsw1l" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/influence 100 x 100.png" id="17_3sydm"]
+
+[node name="buildingPanelPanel" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_ltv48")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 538.0
+offset_bottom = 551.0
+
+[node name="BuildingSprite" type="Sprite2D" parent="Panel"]
+position = Vector2(262, 86)
+scale = Vector2(0.462798, 0.425953)
+texture = ExtResource("2_sa72o")
+
+[node name="BuildingTypeLabel" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 162.0
+offset_right = 540.0
+offset_bottom = 278.0
+scale = Vector2(0.44, 0.48)
+theme_override_font_sizes/font_size = 45
+text = "test"
+horizontal_alignment = 1
+
+[node name="BuildingLevelLabel" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 161.0
+offset_top = 162.0
+offset_right = 699.0
+offset_bottom = 278.0
+scale = Vector2(0.44, 0.48)
+theme_override_font_sizes/font_size = 45
+text = "test"
+horizontal_alignment = 1
+
+[node name="BuildingMaxLevelLabel" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 301.0
+offset_top = 162.0
+offset_right = 839.0
+offset_bottom = 278.0
+scale = Vector2(0.44, 0.48)
+theme_override_font_sizes/font_size = 45
+text = "test"
+horizontal_alignment = 1
+
+[node name="Upgrade" type="Button" parent="Panel"]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 398.0
+offset_right = 124.0
+offset_bottom = 497.0
+text = "Upgrade"
+
+[node name="Downgrade" type="Button" parent="Panel"]
+layout_mode = 0
+offset_left = 429.0
+offset_top = 402.0
+offset_right = 527.0
+offset_bottom = 497.0
+text = "Downgrade"
+
+[node name="FoodLabel" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 213.0
+offset_top = 402.0
+offset_right = 246.0
+offset_bottom = 428.0
+text = "450"
+
+[node name="MetalLabel" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 212.0
+offset_top = 471.0
+offset_right = 245.0
+offset_bottom = 497.0
+text = "450"
+
+[node name="WoodLabel" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 371.0
+offset_top = 400.0
+offset_right = 404.0
+offset_bottom = 426.0
+text = "450"
+
+[node name="GoldLabel" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 370.0
+offset_top = 469.0
+offset_right = 403.0
+offset_bottom = 495.0
+text = "450"
+
+[node name="FoodSprite" type="Sprite2D" parent="Panel"]
+position = Vector2(168, 412)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3_xlc2e")
+
+[node name="Metal Sprite" type="Sprite2D" parent="Panel"]
+position = Vector2(170, 479)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("4_yoll7")
+
+[node name="WoodSprite" type="Sprite2D" parent="Panel"]
+position = Vector2(330, 414)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("5_14kuu")
+
+[node name="Gold Sprite" type="Sprite2D" parent="Panel"]
+position = Vector2(332, 481)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("6_eipaq")
+
+[node name="OutputsControl" type="GridContainer" parent="Panel"]
+layout_mode = 0
+offset_left = 113.0
+offset_top = 231.0
+offset_right = 465.0
+offset_bottom = 350.0
+theme_override_constants/h_separation = 80
+theme_override_constants/v_separation = 25
+columns = 4
+
+[node name="FoodOutputLabel" type="Label" parent="Panel/OutputsControl" groups=["OutputLabel"]]
+layout_mode = 2
+text = "350"
+
+[node name="Sprite2D" type="Sprite2D" parent="Panel/OutputsControl/FoodOutputLabel"]
+position = Vector2(-35.5, 10.5)
+scale = Vector2(0.37, 0.37)
+texture = ExtResource("3_xlc2e")
+
+[node name="WoodOutputLabel" type="Label" parent="Panel/OutputsControl" groups=["OutputLabel"]]
+layout_mode = 2
+text = "350"
+
+[node name="Sprite2D" type="Sprite2D" parent="Panel/OutputsControl/WoodOutputLabel"]
+position = Vector2(-35.5, 10.5)
+scale = Vector2(0.37, 0.37)
+texture = ExtResource("7_vqebs")
+
+[node name="MetalOutputLabel" type="Label" parent="Panel/OutputsControl" groups=["OutputLabel"]]
+layout_mode = 2
+text = "350"
+
+[node name="Sprite2D" type="Sprite2D" parent="Panel/OutputsControl/MetalOutputLabel"]
+position = Vector2(-35.5, 10.5)
+scale = Vector2(0.37, 0.37)
+texture = ExtResource("8_vb6of")
+
+[node name="GoldOutputLabel" type="Label" parent="Panel/OutputsControl" groups=["OutputLabel"]]
+layout_mode = 2
+text = "350"
+
+[node name="Sprite2D" type="Sprite2D" parent="Panel/OutputsControl/GoldOutputLabel"]
+position = Vector2(-35.5, 10.5)
+scale = Vector2(0.37, 0.37)
+texture = ExtResource("9_xrg8m")
+
+[node name="ManpowerOutputLabel" type="Label" parent="Panel/OutputsControl" groups=["OutputLabel"]]
+layout_mode = 2
+text = "350"
+
+[node name="Sprite2D" type="Sprite2D" parent="Panel/OutputsControl/ManpowerOutputLabel"]
+position = Vector2(-35.5, 10.5)
+scale = Vector2(0.37, 0.37)
+texture = ExtResource("10_24vi8")
+
+[node name="WeaponsOutputLabel" type="Label" parent="Panel/OutputsControl" groups=["OutputLabel"]]
+layout_mode = 2
+text = "350"
+
+[node name="Sprite2D" type="Sprite2D" parent="Panel/OutputsControl/WeaponsOutputLabel"]
+position = Vector2(-35.5, 10.5)
+scale = Vector2(0.37, 0.37)
+texture = ExtResource("11_matsx")
+
+[node name="ScienceOutputLabel" type="Label" parent="Panel/OutputsControl" groups=["OutputLabel"]]
+layout_mode = 2
+text = "350"
+
+[node name="Sprite2D" type="Sprite2D" parent="Panel/OutputsControl/ScienceOutputLabel"]
+position = Vector2(-35.5, 10.5)
+scale = Vector2(0.37, 0.37)
+texture = ExtResource("12_seqr0")
+
+[node name="CultureOutputLabel" type="Label" parent="Panel/OutputsControl" groups=["OutputLabel"]]
+layout_mode = 2
+text = "350"
+
+[node name="Sprite2D" type="Sprite2D" parent="Panel/OutputsControl/CultureOutputLabel"]
+position = Vector2(-35.5, 10.5)
+scale = Vector2(0.37, 0.37)
+texture = ExtResource("13_mvprl")
+
+[node name="FaithOutputLabel" type="Label" parent="Panel/OutputsControl" groups=["OutputLabel"]]
+layout_mode = 2
+text = "350"
+
+[node name="Sprite2D" type="Sprite2D" parent="Panel/OutputsControl/FaithOutputLabel"]
+position = Vector2(-35.5, 10.5)
+scale = Vector2(0.37, 0.37)
+texture = ExtResource("14_xgso5")
+
+[node name="MagicOutputLabel" type="Label" parent="Panel/OutputsControl" groups=["OutputLabel"]]
+layout_mode = 2
+text = "350"
+
+[node name="Sprite2D" type="Sprite2D" parent="Panel/OutputsControl/MagicOutputLabel"]
+position = Vector2(-35.5, 10.5)
+scale = Vector2(0.37, 0.37)
+texture = ExtResource("15_ub4fl")
+
+[node name="MandateOutputLabel" type="Label" parent="Panel/OutputsControl" groups=["OutputLabel"]]
+layout_mode = 2
+text = "350"
+
+[node name="Sprite2D" type="Sprite2D" parent="Panel/OutputsControl/MandateOutputLabel"]
+position = Vector2(-35.5, 10.5)
+scale = Vector2(0.37, 0.37)
+texture = ExtResource("16_naj3l")
+
+[node name="InfluenceOutputLabel" type="Label" parent="Panel/OutputsControl" groups=["OutputLabel"]]
+layout_mode = 2
+text = "350"
+
+[node name="Sprite2D" type="Sprite2D" parent="Panel/OutputsControl/InfluenceOutputLabel"]
+position = Vector2(-35.5, 10.5)
+scale = Vector2(0.37, 0.37)
+texture = ExtResource("17_3sydm")
+
+[connection signal="pressed" from="Panel/Upgrade" to="." method="_on_upgrade_pressed"]
+[connection signal="pressed" from="Panel/Downgrade" to="." method="_on_downgrade_pressed"]

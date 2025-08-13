@@ -1,0 +1,106 @@
+[gd_scene load_steps=4 format=3 uid="uid://c71ol0x3x4bmy"]
+
+[ext_resource type="Script" uid="uid://cqgqsfbrvj3vm" path="res://barracks_button.gd" id="1_je2jb"]
+[ext_resource type="Texture2D" uid="uid://ct6whogyqhymx" path="res://art assets/Placeholder Art/UI Art/resources/Farm.png" id="2_4mabx"]
+[ext_resource type="Texture2D" uid="uid://bjbx6e8ns8a0a" path="res://art assets/Placeholder Art/sword.png" id="3_yxbhs"]
+
+[node name="BarracksButton" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_je2jb")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 157.0
+offset_bottom = 319.0
+
+[node name="BarracksSprite" type="Sprite2D" parent="Panel"]
+position = Vector2(78, 64)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("2_4mabx")
+
+[node name="tileName" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 1.0
+offset_right = 156.0
+offset_bottom = 24.0
+text = "tilename"
+horizontal_alignment = 1
+
+[node name="barrackslvl" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 23.0
+offset_top = 105.0
+offset_right = 143.0
+offset_bottom = 138.0
+text = "barracks lvl"
+horizontal_alignment = 1
+
+[node name="builtArmyInfoPanel" type="Panel" parent="Panel"]
+visible = false
+layout_mode = 0
+offset_left = 10.0
+offset_top = 147.0
+offset_right = 146.0
+offset_bottom = 313.0
+
+[node name="armyName" type="Label" parent="Panel/builtArmyInfoPanel"]
+layout_mode = 0
+offset_left = -7.0
+offset_right = 146.0
+offset_bottom = 23.0
+theme_override_colors/font_color = Color(0.606841, 0.514271, 0.188722, 1)
+text = "army name"
+horizontal_alignment = 1
+
+[node name="AddNewArmyButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 19.0
+offset_top = 145.0
+offset_right = 142.0
+offset_bottom = 268.0
+icon = ExtResource("3_yxbhs")
+
+[node name="Label" type="Label" parent="AddNewArmyButton"]
+layout_mode = 0
+offset_top = 133.0
+offset_right = 125.0
+offset_bottom = 156.0
+text = "Build New Army"
+
+[node name="ArmyContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 558.0
+offset_top = 76.0
+offset_right = 650.0
+offset_bottom = 172.0
+
+[node name="NameAndConfirmPanel" type="Panel" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 166.0
+offset_top = 5.0
+offset_right = 902.0
+offset_bottom = 308.0
+
+[node name="TextEdit" type="TextEdit" parent="NameAndConfirmPanel"]
+layout_mode = 0
+offset_left = 80.0
+offset_top = 120.0
+offset_right = 661.0
+offset_bottom = 177.0
+
+[node name="ConfirmButton" type="Button" parent="NameAndConfirmPanel"]
+layout_mode = 0
+offset_left = 264.0
+offset_top = 205.0
+offset_right = 433.0
+offset_bottom = 257.0
+text = "Confirm"
+
+[connection signal="pressed" from="AddNewArmyButton" to="." method="_on_add_new_army_button_pressed"]
+[connection signal="text_changed" from="NameAndConfirmPanel/TextEdit" to="." method="_on_text_edit_text_changed"]
+[connection signal="pressed" from="NameAndConfirmPanel/ConfirmButton" to="." method="_on_confirm_button_pressed"]

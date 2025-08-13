@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://d08snuhy2ac40"]
+
+[ext_resource type="Script" uid="uid://b6tgqbml0bar1" path="res://event_button.gd" id="1_5ewhb"]
+
+[node name="EventButtonControl" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 353.0
+offset_bottom = 188.0
+script = ExtResource("1_5ewhb")
+
+[node name="EventButton" type="Button" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[connection signal="pressed" from="EventButton" to="." method="_on_event_button_pressed"]
