@@ -28,4 +28,5 @@ func buildSelf(eventType, eventID, eventCountry, language):
 func pressedEventButton(eventButtonID):
 	print("Event ID", eventButtonID, TYPE, ID, COUNTRY)
 	emit_signal("eventButtonPressed", eventButtonID, TYPE, ID, COUNTRY)
+	self.queue_free()
 	pass

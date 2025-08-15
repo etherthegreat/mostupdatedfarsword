@@ -150,3 +150,7 @@ func confirmGovernor(confirmedGovernor):
 	emit_signal("confirmThisGovernor", confirmedGovernor, selectedTile)
 	$governorTileControlPanel.visible = false
 	pass
+
+
+func _on_factions_button_pressed() -> void:
+	pass # Replace with function body.

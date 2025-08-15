@@ -202,7 +202,6 @@ func calculateMilModChange(newMilMod):
 			unitOffensiveScore += 5
 		"Visionary:":
 			unitOffensiveScore += 5
-
 func matchPlayerTemplateScores():
 	
 	pass

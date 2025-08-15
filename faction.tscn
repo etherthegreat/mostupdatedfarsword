@@ -1,6 +1,111 @@
-[gd_scene load_steps=2 format=3 uid="uid://bs2a3cboiei7w"]
+[gd_scene load_steps=5 format=3 uid="uid://bs2a3cboiei7w"]
 
 [ext_resource type="Script" uid="uid://khnhojdd7jei" path="res://faction.gd" id="1_oyqq2"]
+[ext_resource type="Texture2D" uid="uid://dhr3u11scg6jq" path="res://art assets/Placeholder Art/character/F12 - Copy.png" id="2_daaxj"]
+[ext_resource type="Texture2D" uid="uid://dmf7id8k52mxp" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/mandate 100 x 100.png" id="3_xgtw1"]
 
-[node name="Faction" type="Node2D"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xgtw1"]
+size = Vector2(807, 29)
+
+[node name="Faction" type="Control"]
+layout_mode = 3
+anchors_preset = 0
 script = ExtResource("1_oyqq2")
+
+[node name="FactionPanel" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 1142.0
+offset_bottom = 228.0
+mouse_filter = 2
+
+[node name="LeaderSprite" type="Sprite2D" parent="FactionPanel"]
+position = Vector2(213, 106)
+scale = Vector2(0.131313, 0.131313)
+texture = ExtResource("2_daaxj")
+
+[node name="FactionLeaderNameLabel" type="Label" parent="FactionPanel"]
+layout_mode = 0
+offset_left = 149.0
+offset_top = 175.0
+offset_right = 282.0
+offset_bottom = 224.0
+text = "faction leader name"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Faction Symbol" type="Sprite2D" parent="FactionPanel"]
+position = Vector2(81, 123)
+texture = ExtResource("3_xgtw1")
+
+[node name="FactionNameLabel" type="Label" parent="FactionPanel"]
+layout_mode = 0
+offset_top = 16.0
+offset_right = 151.0
+offset_bottom = 70.0
+text = "name of the faction goes here"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="GovernorsContainer" type="HBoxContainer" parent="FactionPanel"]
+layout_mode = 0
+offset_left = 282.0
+offset_top = 24.0
+offset_right = 1128.0
+offset_bottom = 72.0
+
+[node name="ProgressBar" type="ProgressBar" parent="FactionPanel"]
+layout_mode = 0
+offset_left = 304.0
+offset_top = 155.0
+offset_right = 1109.0
+offset_bottom = 182.0
+max_value = 90.0
+value = 66.0
+show_percentage = false
+
+[node name="ProgressBarArea2D" type="Area2D" parent="FactionPanel/ProgressBar"]
+position = Vector2(9, 13)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FactionPanel/ProgressBar/ProgressBarArea2D"]
+position = Vector2(393.5, 0.5)
+shape = SubResource("RectangleShape2D_xgtw1")
+
+[node name="FactionRewards" type="HBoxContainer" parent="FactionPanel"]
+layout_mode = 0
+offset_left = 571.0
+offset_top = 123.0
+offset_right = 1106.0
+offset_bottom = 154.0
+theme_override_constants/separation = 265
+
+[node name="FactionTutorialPanel" type="Panel" parent="FactionPanel"]
+visible = false
+layout_mode = 0
+offset_left = 303.0
+offset_top = 82.0
+offset_right = 553.0
+offset_bottom = 152.0
+mouse_filter = 2
+
+[node name="FactionTutorialLabel" type="Label" parent="FactionPanel/FactionTutorialPanel"]
+layout_mode = 0
+offset_top = -3.0
+offset_right = 249.0
+offset_bottom = 75.0
+text = "Complete quests for governors aligned with this faction to unlock faction rewards."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="UpgradeFactionButton" type="Button" parent="FactionPanel"]
+layout_mode = 0
+offset_left = 301.0
+offset_top = 105.0
+offset_right = 548.0
+offset_bottom = 138.0
+text = "Upgrade Faction"
+
+[connection signal="mouse_entered" from="FactionPanel/ProgressBar/ProgressBarArea2D" to="." method="_on_progress_bar_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="FactionPanel/ProgressBar/ProgressBarArea2D" to="." method="_on_progress_bar_area_2d_mouse_exited"]
+[connection signal="pressed" from="FactionPanel/UpgradeFactionButton" to="." method="_on_upgrade_faction_button_pressed"]

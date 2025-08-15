@@ -42,3 +42,11 @@ func _on_belief_panel_button_pressed() -> void:
 				Control.visible = false
 		$BeliefControl.visible = true
 	pass # Replace with function body.
+
+
+func _on_factions_button_pressed() -> void:
+	if $FactionControl.visible == true:
+		$FactionControl.visible = false
+	else:
+		$FactionControl.visible = true
+	pass # Replace with function body.

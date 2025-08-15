@@ -365,6 +365,13 @@ func matchEventOutcome(eventButtonID, eventType, eventID, eventCountry):
 							match eventButtonID:
 								"PDT_Wolverina0-1":
 									print("YOUVE COMPLETED THE CHAIN")
+									var tempGov = governor.new()
+									for Tile in playerCountryNode.OwnedTileList:
+										if Tile.tileGovernor != null:
+											match Tile.tileGovernor.governorType:
+												"Wolverina Gundo":
+													tempGov = Tile.tileGovernor
+									$CanvasLayer/FactionControl.addFaction("ANL_Republicans", 10, tempGov)
 								"PDT_Wolverina0-2":
 									print("What's UP Chump?")
 	pass

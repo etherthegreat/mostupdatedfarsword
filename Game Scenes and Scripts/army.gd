@@ -104,7 +104,7 @@ func updateSelf(Name, countryNode, TileNumber):
 			newUnitUI.updateControl
 			$RadicalCoolTestPanel/UnitUIContainer.add_child(newUnitUI)
 			#print("Unit", Unit.unitType, "Level", Unit.unitLevel)
-	#surveySelf()
+	surveySelf()
 	pass
 
 var UnitConfirmationList: Array = []
@@ -173,7 +173,8 @@ func surveySelf():
 	armyInfluenceCost = 0
 	armyHarmonyCost = 0
 	armyFaithCost = 0
-	if raised == true:
+	print("Surveyingg Self")
+	if raised == true || raised != true:
 		#for Unit in unitsList:
 			#var unitManpower: int = Unit.unitCurrentManpower
 			#maxManpower += (Unit.unitLevel * Unit.unitMaxManpower)
@@ -256,6 +257,7 @@ func surveySelf():
 		$AttackDefencePanel/Attack.text = str(armyAttackScore)
 		$AttackDefencePanel/Defense.text = str(armyDefenseScore)
 		$AttackDefencePanel/Manpower.text = str(manpowerInArmy, "/", maxManpower)
+		print("Yeehaw Cowboy")
 	else:
 		for Unit in unitsList:
 		#manpower
@@ -287,6 +289,7 @@ func addUnitCommander(newCommander):
 		commanderModifiers3.append(MilMod)
 	print("MILMODS IN 1", commanderModifiers1)
 	commanderCheck()
+	surveySelf()
 	pass
 
 func commanderCheck():
