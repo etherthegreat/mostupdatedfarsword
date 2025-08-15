@@ -1,4 +1,4 @@
-[gd_scene load_steps=68 format=3 uid="uid://bfbouq3jfwkxl"]
+[gd_scene load_steps=69 format=3 uid="uid://bfbouq3jfwkxl"]
 
 [ext_resource type="Script" uid="uid://dthx176t72xxr" path="res://Game Scenes and Scripts/world.gd" id="1_6bnro"]
 [ext_resource type="Texture2D" uid="uid://ymy7tu133b71" path="res://art assets/Placeholder Art/map/map.png" id="2_160f8"]
@@ -64,6 +64,7 @@
 [ext_resource type="Texture2D" uid="uid://bjbx6e8ns8a0a" path="res://art assets/Placeholder Art/sword.png" id="52_78kig"]
 [ext_resource type="PackedScene" uid="uid://3w6l28pyvce1" path="res://path_point_button.tscn" id="53_78kig"]
 [ext_resource type="Script" uid="uid://bqoa1uaifkk6g" path="res://Game Scenes and Scripts/faction_control.gd" id="54_sv2u8"]
+[ext_resource type="Script" uid="uid://idfuyp443x0" path="res://Game Scenes and Scripts/government_control.gd" id="55_w7ifc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2v3gw"]
 size = Vector2(100, 102)
@@ -972,7 +973,7 @@ icon = ExtResource("25_uabur")
 [node name="LawsControl" type="Control" parent="CanvasLayer/PanelOpenerControl/ButtonPanel/VBoxContainer"]
 layout_mode = 2
 
-[node name="TechTreeButton" type="Button" parent="CanvasLayer/PanelOpenerControl/ButtonPanel/VBoxContainer/LawsControl"]
+[node name="LawsButton" type="Button" parent="CanvasLayer/PanelOpenerControl/ButtonPanel/VBoxContainer/LawsControl"]
 layout_mode = 2
 offset_left = -9.0
 offset_top = 2.0
@@ -1069,6 +1070,51 @@ layout_mode = 0
 offset_right = 1116.0
 offset_bottom = 995.0
 theme_override_constants/separation = 240
+
+[node name="GovernmentControl" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("55_w7ifc")
+
+[node name="GovernmentPanel" type="Panel" parent="CanvasLayer/GovernmentControl"]
+layout_mode = 0
+offset_left = 875.0
+offset_top = 78.0
+offset_right = 1808.0
+offset_bottom = 1077.0
+mouse_filter = 2
+
+[node name="PanelTitle" type="Label" parent="CanvasLayer/GovernmentControl/GovernmentPanel"]
+layout_mode = 0
+offset_right = 936.0
+offset_bottom = 67.0
+theme_override_font_sizes/font_size = 24
+text = "CONSTITUTION OF THE KINGDOM OF ANLAXIA"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="GridContainer" type="GridContainer" parent="CanvasLayer/GovernmentControl/GovernmentPanel"]
+layout_mode = 0
+offset_left = 181.0
+offset_top = 119.0
+offset_right = 809.0
+offset_bottom = 437.0
+theme_override_constants/h_separation = 145
+theme_override_constants/v_separation = 150
+columns = 5
+
+[node name="PossibleContainer" type="GridContainer" parent="CanvasLayer/GovernmentControl/GovernmentPanel"]
+layout_mode = 0
+offset_left = 105.0
+offset_top = 489.0
+offset_right = 858.0
+offset_bottom = 950.0
+theme_override_constants/h_separation = 185
+theme_override_constants/v_separation = 140
+columns = 5
 
 [node name="CountryController" type="Node2D" parent="."]
 visible = false
@@ -1323,4 +1369,5 @@ texture = ExtResource("32_vnwtn")
 [connection signal="pressed" from="CanvasLayer/PanelOpenerControl/ButtonPanel/VBoxContainer/TechTreeControl/TechTreeButton" to="CanvasLayer" method="_on_tech_tree_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/PanelOpenerControl/ButtonPanel/VBoxContainer/BeliefsControl/BeliefPanelButton" to="CanvasLayer" method="_on_belief_panel_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/PanelOpenerControl/ButtonPanel/VBoxContainer/SpellbookControl/SpellBookButton" to="CanvasLayer" method="_on_spell_book_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/PanelOpenerControl/ButtonPanel/VBoxContainer/LawsControl/LawsButton" to="CanvasLayer" method="_on_laws_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/PanelOpenerControl/ButtonPanel/VBoxContainer/FactionsControl/FactionsButton" to="CanvasLayer" method="_on_factions_button_pressed"]

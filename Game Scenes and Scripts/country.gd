@@ -99,7 +99,7 @@ var CountryFlags: Array = []
 #Pretty much all cost Mandate per month, as well as a second resource per month
 #revoking a law causes a temporary debuff for a unique amount of time
 var unlockedLaws: Array = []
-var lawsInUse: Array = []
+var lawsInConstitution: Array = []
 var lawsRecentlyRevoked: Array = []
 
 #Country Religion and Faith
@@ -209,6 +209,7 @@ func NewGameBuild():
 		addCulturalTradition("Humble Folk")
 		addCulturalTradition("Guardian Cats")
 		addGovernmentLaw("Mercantilism")
+		addGovernmentLaw("Citizen Militia")
 		addFaction("Vargo-Tal", 50) # Traditionalists
 		addFaction("Wixinx", 10) # Liberators
 		addFaction("Elto-Tal", 20) # Moderates
@@ -338,6 +339,16 @@ func addGovernmentLaw(Name):
 	var newLaw = law.new()
 	newLaw.lawType = Name
 	unlockedLaws.append(newLaw)
+	pass
+
+func addLawToConstitution(newLaw):
+	for law in unlockedLaws:
+		if law.lawType == newLaw:
+			unlockedLaws.erase(law)
+	var newSelection = law.new()
+	newSelection.lawType = newLaw
+	lawsInConstitution.append(newSelection)
+	pass
 
 func addCulturalTradition(Name):
 	var newTradition = tradition.new()

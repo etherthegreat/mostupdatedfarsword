@@ -108,6 +108,8 @@ func updatePlayerUI():
 	$CanvasLayer/MilitaryPanelControl.buildSelf(playerCountryNode)
 	$CanvasLayer/MilitaryPanelControl.newArmySignal.connect(buildNewPlayerArmy)
 	playerCountryNode.displayCommander.connect(UICommander)
+	$CanvasLayer/GovernmentControl.buildSelf(playerCountryNode)
+	$CanvasLayer/GovernmentControl.addToConstitution.connect(addLawToCountry)
 	#print("ALL I NEED")
 	pass
 
@@ -291,6 +293,12 @@ func assignGovernor(governorToAssign, tileToAssignTo):
 
 func openGovernorsPanel(tile):
 	$CanvasLayer/TileInfoPanel.calculateAvailableGovernor(playerCountryNode, selectedTile)
+	pass
+
+#Government Code
+func addLawToCountry(lawType):
+	playerCountryNode.addLawToConstitution(lawType)
+	$CanvasLayer/GovernmentControl.updateGovernmentPanel()
 	pass
 
 #Army World Code

@@ -50,3 +50,12 @@ func _on_factions_button_pressed() -> void:
 	else:
 		$FactionControl.visible = true
 	pass # Replace with function body.
+
+
+func _on_laws_button_pressed() -> void:
+	$GovernmentControl.updateGovernmentPanel()
+	if $GovernmentControl.visible == true:
+		$GovernmentControl.visible = false
+	else:
+		$GovernmentControl.visible = true
+	pass # Replace with function body.

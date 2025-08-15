@@ -1,6 +1,119 @@
-[gd_scene load_steps=2 format=3 uid="uid://ba3ux7nifdgk4"]
+[gd_scene load_steps=4 format=3 uid="uid://ba3ux7nifdgk4"]
 
 [ext_resource type="Script" uid="uid://tjre0w54k3qm" path="res://law.gd" id="1_s7yc5"]
+[ext_resource type="Texture2D" uid="uid://1rjs0lw3lq14" path="res://art assets/Placeholder Art/UI Art/resources/weapons.png" id="2_wgb1v"]
 
-[node name="Law" type="Node2D"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ocpcd"]
+size = Vector2(128, 121)
+
+[node name="Law" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
 script = ExtResource("1_s7yc5")
+
+[node name="LawPanel" type="Panel" parent="."]
+layout_mode = 0
+offset_left = -64.0
+offset_top = -60.0
+offset_right = 64.0
+offset_bottom = 60.0
+mouse_filter = 2
+
+[node name="LawSelectionButton" type="Button" parent="LawPanel"]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 4.0
+offset_right = 123.0
+offset_bottom = 116.0
+mouse_filter = 1
+
+[node name="LawSprite" type="Sprite2D" parent="LawPanel"]
+visible = false
+position = Vector2(65, 61)
+texture = ExtResource("2_wgb1v")
+
+[node name="LawInfoPanel" type="Panel" parent="LawPanel"]
+visible = false
+layout_mode = 0
+offset_left = -115.0
+offset_top = -231.0
+offset_right = 229.0
+offset_bottom = -1.0
+mouse_filter = 2
+
+[node name="LawInfoLabel" type="Label" parent="LawPanel/LawInfoPanel"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 9.0
+offset_right = 172.0
+offset_bottom = 220.0
+autowrap_mode = 3
+
+[node name="Add LawLabel" type="Label" parent="LawPanel/LawInfoPanel"]
+layout_mode = 0
+offset_left = 172.0
+offset_right = 348.0
+offset_bottom = 129.0
+text = "Add law \"law name here\" to our constituion?  This will cost \"int\" mandate per month."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="ConfirmButton" type="Button" parent="LawPanel/LawInfoPanel"]
+layout_mode = 0
+offset_left = 193.0
+offset_top = 139.0
+offset_right = 334.0
+offset_bottom = 170.0
+text = "Confirm"
+
+[node name="Not NowButton" type="Button" parent="LawPanel/LawInfoPanel"]
+layout_mode = 0
+offset_left = 193.0
+offset_top = 179.0
+offset_right = 334.0
+offset_bottom = 210.0
+text = "Not Now"
+
+[node name="Area2D" type="Area2D" parent="LawPanel"]
+visible = false
+position = Vector2(1, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LawPanel/Area2D"]
+position = Vector2(64, 59.5)
+shape = SubResource("RectangleShape2D_ocpcd")
+
+[node name="SelectedPanel" type="Panel" parent="LawPanel"]
+visible = false
+layout_mode = 0
+offset_left = -172.0
+offset_top = 126.0
+offset_right = 304.0
+offset_bottom = 321.0
+
+[node name="LawDescriptionLabel" type="Label" parent="LawPanel/SelectedPanel"]
+layout_mode = 0
+offset_left = 7.0
+offset_top = 3.0
+offset_right = 466.0
+offset_bottom = 121.0
+text = "Citizen Militias will guard their homes with their lives.  All of our centers of government will be stocked with arms for the people to use in case demonic tyranny again shows its face and rears its teeth."
+autowrap_mode = 3
+
+[node name="LawCostsLabel" type="Label" parent="LawPanel/SelectedPanel"]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 120.0
+offset_right = 470.0
+offset_bottom = 190.0
+text = "+5 Weapons per Governor's Mansion lvl
++25 Manpower Per Farm
+-3 Mandate Per Turn"
+horizontal_alignment = 2
+
+[connection signal="pressed" from="LawPanel/LawSelectionButton" to="." method="_on_law_selection_button_pressed"]
+[connection signal="pressed" from="LawPanel/LawInfoPanel/ConfirmButton" to="." method="_on_confirm_button_pressed"]
+[connection signal="pressed" from="LawPanel/LawInfoPanel/Not NowButton" to="." method="_on_not_now_button_pressed"]
+[connection signal="mouse_entered" from="LawPanel/Area2D" to="." method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="LawPanel/Area2D" to="." method="_on_area_2d_mouse_exited"]
