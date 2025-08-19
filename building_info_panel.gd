@@ -25,5 +25,6 @@ func displayBuildingInfo(tile):
 
 func inspectBuilding(building):
 	#emit_signal("updateBuildingPanelUI", building)
+	#print("get tricked")
 	$buildingPanelPanel.updateInspector(building)
 	pass

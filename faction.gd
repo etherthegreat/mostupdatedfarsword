@@ -72,7 +72,9 @@ func addFactionReward(rewardType, rewardDescription, rewardTexture, slot):
 	factionRewards.append(newReward)
 	pass
 
+signal sendRewardType
 func forwardRewardType(factionRewardType):
+	emit_signal("sendRewardType", factionRewardType)
 	print("faction reward type", factionRewardType)
 	pass
 

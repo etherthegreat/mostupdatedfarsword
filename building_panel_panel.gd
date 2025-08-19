@@ -14,6 +14,11 @@ var white = Color(1.0,1.0,1.0,1.0)
 var green = Color(0, 1, 0, 1)
 
 func updateInspector(building):
+	#print("dkdkdkdkdkd")
+	if self.visible == false:
+		self.visible = true
+	else:
+		self.visible = false
 	buildingUnderInspection = building
 	if buildingUnderInspection != null:
 		calculateUpgradeCost(buildingUnderInspection)

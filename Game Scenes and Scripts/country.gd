@@ -132,6 +132,14 @@ var rDEM #this country's attitude toward the Demon Empire
 var rANL #this country's attitude toward Anlaxia
 #eventually, fill with every country in the game
 
+#MagicSchools
+var alcPoints: int #alchemy
+var illPoints: int #illusion
+var sumPoints: int #summoning
+var druPoints: int #druidism
+var elePoints: int #elementalism
+var divPoints: int #divination
+
 #CountryModifiers
 var ecoModList: Array = [] #all economic modifiers
 var diploModList: Array = [] #all diplomatic modifiers
@@ -209,7 +217,7 @@ func NewGameBuild():
 		addCulturalTradition("Humble Folk")
 		addCulturalTradition("Guardian Cats")
 		addGovernmentLaw("Mercantilism")
-		addGovernmentLaw("Citizen Militia")
+		#addGovernmentLaw("Citizen Militia")
 		addFaction("Vargo-Tal", 50) # Traditionalists
 		addFaction("Wixinx", 10) # Liberators
 		addFaction("Elto-Tal", 20) # Moderates
@@ -217,7 +225,6 @@ func NewGameBuild():
 		addMilMod("Berserkers")
 		addArmy("Palace Guards", 3)
 		addGovernorToGovernorPool("Wolverina Gundo", 1)
-		addGovernorToGovernorPool("Wello Jenni-Tur", 1)
 		armyReinforceRate = 3 #add a function to determin reinforce rate
 			
 		for Army in countryArmyList:
@@ -227,6 +234,29 @@ func NewGameBuild():
 				addNewUnit(Army, "Infantry", 1, "Club", "Wood")
 	if Player == true:
 		pass
+	pass
+
+func connectBuilding(building):
+	countryBuildingList.append(building)
+	building.towerBuilding.connect(assignTower)
+	pass
+
+func assignTower():
+	print("ddd")
+	pass
+
+func createFactionReward(rewardType):
+	match rewardType:
+		"Local Elections":
+			addGovernmentLaw("Local Elections")
+			addGovernmentLaw("Democratic Mandate")
+		"Equality Starts Here":
+			addGovernmentLaw("Universal Citizenship")
+			addGovernmentLaw("Disability Care")
+			addGovernorToGovernorPool("Wello Jenni-Tur", 1)
+		"Citizen Militias":
+			addGovernmentLaw("Armed Peasantry")
+			addGovernmentLaw("Homeland Defense")
 	pass
 
 func addGovernorToGovernorPool(governorType, governorLevel):
@@ -632,6 +662,12 @@ func surveyResources():
 		NDT += Tile.buildingMandateOutput
 		NPM += Tile.buildingInfluenceOutput
 		MAN += Tile.buildingManpowerOutput
+		alcPoints += Tile.alcPointsOutput
+		sumPoints += Tile.sumPointsOutput
+		elePoints += Tile.elePointsOutput
+		illPoints += Tile.illPointsOutput
+		divPoints += Tile.divPointsOutput
+		druPoints += Tile.druPointsOutput
 	pass
 
 func payUnitMaintenance():

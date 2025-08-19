@@ -110,6 +110,7 @@ func updatePlayerUI():
 	playerCountryNode.displayCommander.connect(UICommander)
 	$CanvasLayer/GovernmentControl.buildSelf(playerCountryNode)
 	$CanvasLayer/GovernmentControl.addToConstitution.connect(addLawToCountry)
+	$CanvasLayer/FactionControl.newRewardSend.connect(addNewRewards)
 	#print("ALL I NEED")
 	pass
 
@@ -123,6 +124,8 @@ func tileClicked(tile):
 	$CanvasLayer/TileInfoPanel.displayTileInfo(tile)
 	if $CanvasLayer/TileInfoPanel.visible == false:
 		$CanvasLayer/TileInfoPanel.visible = true
+	else:
+		$CanvasLayer/TileInfoPanel.visible = false
 	#$CanvasLayer/TileInfoPanel.thisTile = tile
 	#$CanvasLayer/TileInfoPanel.displayTileInfo()
 	#$CanvasLayer/BuildingInfoPanel.thisTile = tile
@@ -137,7 +140,8 @@ func matchCountryBuildings():
 		for Tile in $TileController.get_children():
 			if Tile.tileOwner == country.CID:
 				for building in Tile.tileBuildingsList:
-					country.countryBuildingList.append(building)
+					country.connectBuilding(building)
+					#building.buildingTower.connect()
 	if playerCountryNode.CID == "PDT":
 		#print("country building List for PDT:", playerCountryNode.countryBuildingList)
 		pass
@@ -280,6 +284,10 @@ func _on_building_panel_panel_downgrade_building(thisBuilding) -> void:
 
 func assignSelectedTile(tileToSelect):
 	#selectedTile = tileToSelect
+	pass
+
+func addNewRewards(rewardType):
+	playerCountryNode.createFactionReward(rewardType)
 	pass
 
 func assignGovernor(governorToAssign, tileToAssignTo):

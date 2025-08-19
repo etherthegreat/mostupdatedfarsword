@@ -44,6 +44,14 @@ var theaterGovernorReq: bool = false
 var towerGovernorReq: bool = false
 var granaryGovernorReq: bool = false
 
+#magicPoints
+var alcPointsOutput: int #alchemy
+var illPointsOutput: int #illusion
+var sumPointsOutput: int #summoning
+var druPointsOutput: int #druidism
+var elePointsOutput: int #elementalism
+var divPointsOutput: int #divination
+
 #province neighbors, used for calculating movements, colonization, fog of war, etc.
 var TileNeighbors: Array = [] #only add other tiles to this list after all tiles have been spawned
 var TileCrossingNeighbors: Array = [] #used for strait crossing calculations
@@ -594,6 +602,19 @@ func surveyTile(playerCountryNode):
 				else:
 					bathGovernorReq = false
 			"Tower":
+				match building.magicOutput:
+					"alc":
+						alcPointsOutput = (1 * building.buildingLevel)
+					"sum":
+						sumPointsOutput = (1 * building.buildingLevel)
+					"ele":
+						elePointsOutput = (1 * building.buildingLevel)
+					"dru":
+						druPointsOutput = (1 * building.buildingLevel)
+					"ill":
+						illPointsOutput = (1 * building.buildingLevel)
+					"div":
+						divPointsOutput = (1 * building.buildingLevel)
 				if building.buildingLevel >= 3:
 					towerGovernorReq = true
 				else:

@@ -85,8 +85,9 @@ var scienceStorageIncrease: int #libraries
 var cultureStorageIncrease: int #monuments
 var metalStorageIncrease: int #warehouse
 
+var magicOutput: String
 
-
+signal towerBuilding
 func buildBuilding():
 	if buildingType == "Farm":
 		buildingSprite = load("res://art assets/Placeholder Art/UI Art/resources/Farm.png")
@@ -115,6 +116,8 @@ func buildBuilding():
 		metalCostPerLevel += 2
 		woodCostPerLevel += 2
 		goldCostPerLevel += 2
+		if magicOutput == null:
+			emit_signal("towerBuilding")
 	if buildingType == "Library":
 		buildingSprite = load("res://art assets/Placeholder Art/UI Art/library.png")
 		goldCostPerLevel += 1

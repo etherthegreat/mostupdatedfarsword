@@ -53,7 +53,6 @@
 [ext_resource type="Texture2D" uid="uid://bs7hc10gkpl1m" path="res://art assets/Placeholder Art/UI Art/book.jpg" id="30_4wrj5"]
 [ext_resource type="Texture2D" uid="uid://cudj2gvqfnm0v" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/test 1.png" id="32_vnwtn"]
 [ext_resource type="Texture2D" uid="uid://cb08osdpathpa" path="res://art assets/Placeholder Art/UI Art/resources/faith.png" id="35_o3iuu"]
-[ext_resource type="Texture2D" uid="uid://dyt026y1xe1v" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/test 2.png" id="37_6tiyx"]
 [ext_resource type="Script" uid="uid://b1e4cr0ob85l3" path="res://Game Scenes and Scripts/military_panel_control.gd" id="38_0kf4p"]
 [ext_resource type="Texture2D" uid="uid://dbg7fk5qjv7bf" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/test 3.png" id="38_sleii"]
 [ext_resource type="Texture2D" uid="uid://xc856v6ceb4n" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/test 4.png" id="39_jpc3q"]
@@ -65,6 +64,7 @@
 [ext_resource type="PackedScene" uid="uid://3w6l28pyvce1" path="res://path_point_button.tscn" id="53_78kig"]
 [ext_resource type="Script" uid="uid://bqoa1uaifkk6g" path="res://Game Scenes and Scripts/faction_control.gd" id="54_sv2u8"]
 [ext_resource type="Script" uid="uid://idfuyp443x0" path="res://Game Scenes and Scripts/government_control.gd" id="55_w7ifc"]
+[ext_resource type="Texture2D" uid="uid://de0ftj0x1dhpw" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/IMG_2814.jpg" id="60_w7ifc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2v3gw"]
 size = Vector2(100, 102)
@@ -321,6 +321,35 @@ offset_top = 41.0
 offset_right = 379.0
 offset_bottom = 516.0
 theme_override_constants/separation = 235
+
+[node name="OpenBuildingsButton" type="Button" parent="CanvasLayer/TileInfoPanel"]
+layout_mode = 0
+offset_left = 200.0
+offset_top = -101.0
+offset_right = 347.0
+offset_bottom = 17.0
+text = "buildigns"
+
+[node name="WizardButton" type="Button" parent="CanvasLayer/TileInfoPanel"]
+layout_mode = 0
+offset_left = 98.0
+offset_top = -294.0
+offset_right = 176.0
+offset_bottom = -190.0
+
+[node name="WizardTileControl" type="Control" parent="CanvasLayer/TileInfoPanel"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -335.0
+offset_top = -612.0
+offset_right = -295.0
+offset_bottom = -572.0
+
+[node name="Panel" type="Panel" parent="CanvasLayer/TileInfoPanel/WizardTileControl"]
+visible = false
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
 
 [node name="BuildingInfoPanel" parent="CanvasLayer" groups=["ScreenPanels"] instance=ExtResource("13_yj2eu")]
 visible = false
@@ -886,8 +915,10 @@ text = "test"
 [node name="PanelOpenerControl" type="Control" parent="CanvasLayer"]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = -3.0
+offset_top = -17.0
+offset_right = 37.0
+offset_bottom = 23.0
 
 [node name="ButtonPanel" type="Panel" parent="CanvasLayer/PanelOpenerControl"]
 layout_mode = 0
@@ -1072,6 +1103,7 @@ offset_bottom = 995.0
 theme_override_constants/separation = 240
 
 [node name="GovernmentControl" type="Control" parent="CanvasLayer"]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
@@ -1120,7 +1152,6 @@ columns = 5
 visible = false
 
 [node name="PathControl" type="Control" parent="."]
-visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
@@ -1254,7 +1285,6 @@ expPath = NodePath("../../Pender Tal South Path")
 expPathNumber = 82
 
 [node name="ExperimentsController" type="Control" parent="."]
-visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
@@ -1268,8 +1298,10 @@ texture = ExtResource("32_vnwtn")
 
 [node name="W 2_5 H 1_5" type="Sprite2D" parent="ExperimentsController"]
 visible = false
-position = Vector2(-862, 338)
-texture = ExtResource("37_6tiyx")
+z_index = 100
+position = Vector2(-1078, 309.171)
+scale = Vector2(0.0487013, 0.0487013)
+texture = ExtResource("60_w7ifc")
 
 [node name="w 215p h 180p" type="Sprite2D" parent="ExperimentsController"]
 visible = false
@@ -1332,6 +1364,8 @@ texture = ExtResource("32_vnwtn")
 [connection signal="mouse_entered" from="TileController/Tile10/Area2D" to="TileController/Tile10" method="_on_area_2d_mouse_entered"]
 [connection signal="mouse_exited" from="TileController/Tile10/Area2D" to="TileController/Tile10" method="_on_area_2d_mouse_exited"]
 [connection signal="pressed" from="CanvasLayer/TileInfoPanel/governorButton" to="CanvasLayer/TileInfoPanel" method="_on_governor_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/TileInfoPanel/OpenBuildingsButton" to="CanvasLayer" method="_on_open_buildings_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/TileInfoPanel/WizardButton" to="CanvasLayer" method="_on_wizard_button_pressed"]
 [connection signal="downgradeBuilding" from="CanvasLayer/BuildingInfoPanel/buildingPanelPanel" to="." method="_on_building_panel_panel_downgrade_building"]
 [connection signal="upgradeBuilding" from="CanvasLayer/BuildingInfoPanel/buildingPanelPanel" to="." method="_on_building_panel_panel_upgrade_building"]
 [connection signal="mouse_entered" from="CanvasLayer/BeliefControl/BeliefPanel/GridContainer/beliefButton" to="CanvasLayer/BeliefControl" method="_on_belief_button_mouse_entered"]

@@ -59,3 +59,16 @@ func _on_laws_button_pressed() -> void:
 	else:
 		$GovernmentControl.visible = true
 	pass # Replace with function body.
+
+
+func _on_open_buildings_button_pressed() -> void:
+	if $BuildingInfoPanel.visible == false:
+		$BuildingInfoPanel.visible = true
+	else:
+		$BuildingInfoPanel.visible = false
+	pass # Replace with function body.
+
+
+func _on_wizard_button_pressed() -> void:
+	
+	pass # Replace with function body.
