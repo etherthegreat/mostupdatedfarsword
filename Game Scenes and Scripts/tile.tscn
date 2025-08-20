@@ -2,5 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bvmjvd2dcfw4q" path="res://Game Scenes and Scripts/tile.gd" id="1_3fsam"]
 
-[node name="Tile" type="Node2D"]
+[node name="Tile" type="Control"]
+layout_mode = 3
+anchors_preset = 0
 script = ExtResource("1_3fsam")

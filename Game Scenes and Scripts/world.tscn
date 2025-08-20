@@ -1,9 +1,10 @@
-[gd_scene load_steps=69 format=3 uid="uid://bfbouq3jfwkxl"]
+[gd_scene load_steps=70 format=3 uid="uid://bfbouq3jfwkxl"]
 
 [ext_resource type="Script" uid="uid://dthx176t72xxr" path="res://Game Scenes and Scripts/world.gd" id="1_6bnro"]
 [ext_resource type="Texture2D" uid="uid://ymy7tu133b71" path="res://art assets/Placeholder Art/map/map.png" id="2_160f8"]
-[ext_resource type="Script" uid="uid://bvmjvd2dcfw4q" path="res://Game Scenes and Scripts/tile.gd" id="3_i2j74"]
+[ext_resource type="Script" uid="uid://ctob3kkek0bpu" path="res://Game Scenes and Scripts/tile_controller.gd" id="3_xmfu7"]
 [ext_resource type="Texture2D" uid="uid://ccmbmwa6o75ss" path="res://art assets/Map Art/1 Tile.png" id="4_2o1by"]
+[ext_resource type="PackedScene" uid="uid://4ulncpaxqymo" path="res://Game Scenes and Scripts/tile.tscn" id="4_xmfu7"]
 [ext_resource type="Texture2D" uid="uid://djd1b77k1c0yq" path="res://art assets/Map Art/1 Ring.png" id="5_yk20q"]
 [ext_resource type="Texture2D" uid="uid://stferc3mpdhg" path="res://art assets/Map Art/2 Ring.png" id="6_i4k7e"]
 [ext_resource type="Texture2D" uid="uid://c68trjakrr6va" path="res://art assets/Map Art/2 Tile.png" id="7_o8lmt"]
@@ -62,8 +63,8 @@
 [ext_resource type="Script" uid="uid://c424luv26ql5l" path="res://Game Scenes and Scripts/path_control.gd" id="51_tqcrl"]
 [ext_resource type="Texture2D" uid="uid://bjbx6e8ns8a0a" path="res://art assets/Placeholder Art/sword.png" id="52_78kig"]
 [ext_resource type="PackedScene" uid="uid://3w6l28pyvce1" path="res://path_point_button.tscn" id="53_78kig"]
-[ext_resource type="Script" uid="uid://bqoa1uaifkk6g" path="res://Game Scenes and Scripts/faction_control.gd" id="54_sv2u8"]
-[ext_resource type="Script" uid="uid://idfuyp443x0" path="res://Game Scenes and Scripts/government_control.gd" id="55_w7ifc"]
+[ext_resource type="Script" path="res://Game Scenes and Scripts/faction_control.gd" id="54_sv2u8"]
+[ext_resource type="Script" path="res://Game Scenes and Scripts/government_control.gd" id="55_w7ifc"]
 [ext_resource type="Texture2D" uid="uid://de0ftj0x1dhpw" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/IMG_2814.jpg" id="60_w7ifc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2v3gw"]
@@ -88,31 +89,39 @@ script = ExtResource("1_6bnro")
 [node name="FarswordStaticMap" type="Sprite2D" parent="."]
 texture = ExtResource("2_160f8")
 
-[node name="TileController" type="Node2D" parent="."]
+[node name="TileController" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("3_xmfu7")
 
-[node name="Tile1" type="Node2D" parent="TileController"]
-position = Vector2(-1271, -54)
-script = ExtResource("3_i2j74")
+[node name="Tile1" parent="TileController" instance=ExtResource("4_xmfu7")]
+offset_left = -1272.0
+offset_top = -57.0
+offset_right = -1272.0
+offset_bottom = -57.0
 EXPTileNumber = 1
 
 [node name="TileGraphic" type="Sprite2D" parent="TileController/Tile1"]
-position = Vector2(-2, -5)
+position = Vector2(0, 2)
 texture = ExtResource("4_2o1by")
 
 [node name="Ring" type="Sprite2D" parent="TileController/Tile1"]
 z_index = 5
-position = Vector2(-2, -5)
+position = Vector2(0, 2)
 texture = ExtResource("5_yk20q")
 
 [node name="Area2D" type="Area2D" parent="TileController/Tile1"]
+position = Vector2(2, 7)
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TileController/Tile1/Area2D"]
 position = Vector2(-2, -5)
 polygon = PackedVector2Array(14, -61, 6, -58, 0, -55, -14, -48, -29, -37, -38, -31, -46, -29, -59, -21, -67, -16, -74, -12, -79, -6, -80, -3, -80, 9, -77, 17, -73, 23, -72, 35, -67, 41, -41, 51, -15, 59, 2, 62, 13, 61, 24, 53, 36, 43, 58, 30, 81, 19, 89, 11, 89, -4, 80, -23, 75, -34, 67, -51, 54, -57, 43, -58, 38, -59, 21, -61)
 
-[node name="Tile2" type="Node2D" parent="TileController"]
-position = Vector2(-724, -104)
-script = ExtResource("3_i2j74")
+[node name="Tile2" parent="TileController" instance=ExtResource("4_xmfu7")]
+offset_left = -726.0
+offset_top = -94.0
+offset_right = -726.0
+offset_bottom = -94.0
 EXPTileNumber = 2
 
 [node name="Ring" type="Sprite2D" parent="TileController/Tile2"]
@@ -130,141 +139,179 @@ texture = ExtResource("7_o8lmt")
 position = Vector2(36, 7)
 polygon = PackedVector2Array(-6, -37, -12, -40, -26, -40, -31, -37, -38, -31, -43, -23, -52, -20, -63, -14, -75, -1, -75, 15, -69, 39, -66, 39, -43, 37, -32, 32, -23, 25, -18, 21, -13, 18, 2, 18, 6, 19, 11, 28, 13, 22, 14, 16, 15, 10, 15, 0, 13, -9, 11, -16, 9, -19, 8, -22, 6, -24, 5, -29, 3, -31, -1, -34)
 
-[node name="Tile3" type="Node2D" parent="TileController"]
-position = Vector2(-944, 821)
-script = ExtResource("3_i2j74")
+[node name="Tile3" parent="TileController" instance=ExtResource("4_xmfu7")]
+offset_left = -937.0
+offset_top = 801.0
+offset_right = -937.0
+offset_bottom = 801.0
 EXPTileNumber = 3
 
 [node name="Ring" type="Sprite2D" parent="TileController/Tile3"]
 z_index = 5
-position = Vector2(0, 8)
+position = Vector2(-7, 28)
 texture = ExtResource("8_vmkhf")
 
 [node name="TileGraphic" type="Sprite2D" parent="TileController/Tile3"]
-position = Vector2(0, 8)
+position = Vector2(-7, 28)
 texture = ExtResource("9_j2eth")
 
 [node name="Area2D" type="Area2D" parent="TileController/Tile3"]
+position = Vector2(-7, 20)
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TileController/Tile3/Area2D"]
 position = Vector2(0, 8)
 polygon = PackedVector2Array(65, -121, 60, -118, 55, -115, 51, -112, 35, -97, 25, -91, 18, -78, 9, -66, -3, -60, -11, -58, -26, -48, -30, -46, -36, -38, -50, -37, -54, -41, -57, -46, -61, -45, -65, -44, -68, -39, -70, -32, -72, -21, -75, -13, -76, -7, -72, -5, -66, -5, -61, -7, -52, -5, -43, -2, -39, -1, -39, 3, -31, 19, -24, 27, -18, 32, -7, 36, 3, 37, 15, 37, 34, 33, 54, 30, 70, 26, 78, 25, 81, 23, 83, 22, 83, 19, 79, 14, 77, 11, 72, 3, 66, 0, 59, 0, 56, -1, 53, -5, 49, -13, 47, -20, 57, -52, 56, -56, 59, -68, 74, -78, 84, -100, 83, -118, 81, -123, 78, -125, 71, -125)
 
-[node name="Tile4" type="Node2D" parent="TileController"]
-position = Vector2(-799, 880)
-script = ExtResource("3_i2j74")
+[node name="Tile4" parent="TileController" instance=ExtResource("4_xmfu7")]
+offset_left = -801.0
+offset_top = 874.0
+offset_right = -801.0
+offset_bottom = 874.0
 EXPTileNumber = 4
 
 [node name="Ring" type="Sprite2D" parent="TileController/Tile4"]
 z_index = 5
+position = Vector2(2, 6)
 texture = ExtResource("10_pip0v")
 
 [node name="TileGraphic" type="Sprite2D" parent="TileController/Tile4"]
+position = Vector2(2, 6)
 texture = ExtResource("11_okfap")
 
 [node name="Area2D" type="Area2D" parent="TileController/Tile4"]
+position = Vector2(2, 6)
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TileController/Tile4/Area2D"]
 polygon = PackedVector2Array(-31, -57, -34, -56, -34, -53, -67, -43, -68, -40, -61, -31, -67, -23, -75, -15, -82, -6, -80, 15, -78, 47, -64, 56, -51, 55, -49, 48, -46, 42, -39, 40, -34, 37, -29, 30, -25, 27, -2, 16, 5, 13, 14, 14, 25, 20, 34, 22, 40, 23, 48, 28, 55, 39, 60, 39, 69, 52, 79, 54, 84, 58, 93, 62, 98, 64, 104, 66, 112, 65, 117, 63, 119, 60, 120, 57, 121, 46, 114, 39, 107, 36, 98, 30, 93, 25, 89, 14, 95, 9, 106, 3, 107, -4, 109, -16, 96, -23, 90, -32, 85, -36, 76, -37, 68, -31, 60, -35, 53, -37, 43, -37, 35, -34, 23, -23, 2, -23, -1, -30, 8, -36, 11, -39, 11, -49, 1, -55, -15, -57)
 
-[node name="Tile5" type="Node2D" parent="TileController"]
-position = Vector2(-809, 786)
-script = ExtResource("3_i2j74")
+[node name="Tile5" parent="TileController" instance=ExtResource("4_xmfu7")]
+offset_left = -833.0
+offset_top = 760.0
+offset_right = -833.0
+offset_bottom = 760.0
 EXPTileNumber = 5
 
 [node name="Ring" type="Sprite2D" parent="TileController/Tile5"]
 z_index = 5
+position = Vector2(24, 26)
 texture = ExtResource("12_7p31k")
 
 [node name="TileGraphic" type="Sprite2D" parent="TileController/Tile5"]
+position = Vector2(24, 26)
 texture = ExtResource("13_r0s6e")
 
 [node name="Area2D" type="Area2D" parent="TileController/Tile5"]
+position = Vector2(24, 26)
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TileController/Tile5/Area2D"]
 polygon = PackedVector2Array(38, -9, 31, -9, 11, 6, -6, 7, -12, 13, -11, 16, -2, 19, -3, 31, -11, 37, -36, 46, -57, 52, -59, 50, -63, 45, -69, 44, -77, 43, -80, 40, -53, -23, -53, -32, -38, -61, -34, -81, -26, -90, -15, -98, -3, -103, 12, -108, 21, -101, 30, -96, 33, -89, 33, -73, 36, -49)
 
-[node name="Tile6" type="Node2D" parent="TileController"]
-position = Vector2(-881, 672)
-script = ExtResource("3_i2j74")
-EXPTileNumber = 5
+[node name="Tile6" parent="TileController" instance=ExtResource("4_xmfu7")]
+offset_left = -887.0
+offset_top = 645.0
+offset_right = -887.0
+offset_bottom = 645.0
+EXPTileNumber = 6
 
 [node name="Ring" type="Sprite2D" parent="TileController/Tile6"]
 z_index = 5
+position = Vector2(6, 27)
 texture = ExtResource("15_j6x3e")
 
 [node name="TileGraphic" type="Sprite2D" parent="TileController/Tile6"]
+position = Vector2(6, 27)
 texture = ExtResource("14_fe1xh")
 
 [node name="Area2D" type="Area2D" parent="TileController/Tile6"]
+position = Vector2(6, 27)
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TileController/Tile6/Area2D"]
 polygon = PackedVector2Array(-44, -63, -37, -63, -28, -74, -12, -79, -8, -78, -4, -78, -4, -74, -5, -70, 2, -60, 5, -57, 20, -57, 31, -63, 40, -63, 54, -57, 65, -52, 76, -51, 91, -50, 97, -17, 97, -3, 84, 5, 66, 11, 50, 20, 43, 20, 36, 18, 32, 14, 20, 14, 0, 23, -15, 33, -26, 36, -38, 37, -48, 32, -56, 25, -63, 18, -70, 13, -96, -1, -105, -6, -109, -12, -109, -16, -105, -22, -97, -36, -93, -36, -80, -45, -67, -47, -59, -44, -53, -44, -49, -50, -43, -52, -43, -58, -45, -60)
 
-[node name="Tile7" type="Node2D" parent="TileController"]
-position = Vector2(-965, 909)
-script = ExtResource("3_i2j74")
-EXPTileNumber = 5
+[node name="Tile7" parent="TileController" instance=ExtResource("4_xmfu7")]
+offset_left = -939.0
+offset_top = 902.0
+offset_right = -939.0
+offset_bottom = 902.0
+EXPTileNumber = 7
 
 [node name="Ring" type="Sprite2D" parent="TileController/Tile7"]
 z_index = 5
+position = Vector2(-26, 7)
 texture = ExtResource("17_f7ca6")
 
 [node name="TileGraphic" type="Sprite2D" parent="TileController/Tile7"]
+position = Vector2(-26, 7)
 texture = ExtResource("16_dlxus")
 
 [node name="Area2D" type="Area2D" parent="TileController/Tile7"]
+position = Vector2(-26, 7)
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TileController/Tile7/Area2D"]
 polygon = PackedVector2Array(88, -7, 86, -15, 85, -32, 81, -39, 65, -40, 53, -36, 26, -36, 1, -39, -17, -49, -26, -56, -33, -56, -41, -51, -47, -36, -50, -17, -52, -2, -52, 8, -45, 11, -45, 16, -47, 19, -47, 21, -32, 34, -29, 43, 60, 43, 63, 42, 68, 42, 75, 34, 81, 23, 85, 21, 88, 20, 88, 9, 87, -2)
 
-[node name="Tile8" type="Node2D" parent="TileController"]
-position = Vector2(-952, 1004)
-script = ExtResource("3_i2j74")
-EXPTileNumber = 5
+[node name="Tile8" parent="TileController" instance=ExtResource("4_xmfu7")]
+offset_left = -953.0
+offset_top = 981.0
+offset_right = -953.0
+offset_bottom = 981.0
+EXPTileNumber = 8
 
 [node name="Ring" type="Sprite2D" parent="TileController/Tile8"]
 z_index = 5
+position = Vector2(1, 23)
 texture = ExtResource("19_73u0w")
 
 [node name="TileGraphic" type="Sprite2D" parent="TileController/Tile8"]
+position = Vector2(1, 23)
 texture = ExtResource("18_7c8hp")
 
 [node name="Area2D" type="Area2D" parent="TileController/Tile8"]
+position = Vector2(1, 23)
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TileController/Tile8/Area2D"]
 polygon = PackedVector2Array(-43, -51, 47, -51, 48, -52, 56, -52, 58, -48, 62, -43, 74, -38, 84, -30, 84, -15, 74, -6, 71, 0, 71, 5, 77, 11, 87, 17, 87, 22, 82, 34, 78, 39, 71, 39, 64, 40, 61, 42, 41, 42, 18, 35, 11, 35, 8, 38, -1, 39, -5, 42, -17, 42, -32, 36, -33, 32, -32, 28, -36, 19, -41, 18, -55, 18, -59, 21, -65, 27, -70, 34, -77, 38, -82, 38, -92, 30, -92, 24, -90, 16, -83, 8, -71, -1, -50, -13, -48, -19, -48, -26, -52, -33, -52, -39, -46, -45)
 
-[node name="Tile9" type="Node2D" parent="TileController"]
-position = Vector2(-1017, 726)
-script = ExtResource("3_i2j74")
-EXPTileNumber = 5
+[node name="Tile9" parent="TileController" instance=ExtResource("4_xmfu7")]
+offset_left = -1028.0
+offset_top = 730.0
+offset_right = -1028.0
+offset_bottom = 730.0
+EXPTileNumber = 9
 
 [node name="Ring" type="Sprite2D" parent="TileController/Tile9"]
 z_index = 5
+position = Vector2(11, -4)
 texture = ExtResource("21_y0g7h")
 
 [node name="TileGraphic" type="Sprite2D" parent="TileController/Tile9"]
+position = Vector2(11, -4)
 texture = ExtResource("20_jqmbm")
 
 [node name="Area2D" type="Area2D" parent="TileController/Tile9"]
+position = Vector2(11, -4)
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TileController/Tile9/Area2D"]
 polygon = PackedVector2Array(-126, -43, -113, -43, -110, -39, -103, -36, -95, -29, -87, -24, -77, -16, -67, -12, -59, -11, -53, -11, -44, -15, -41, -22, -34, -28, -29, -32, -26, -40, -16, -49, -5, -54, 9, -56, 14, -58, 20, -65, 27, -71, 28, -63, 38, -56, 50, -50, 63, -41, 70, -39, 78, -30, 91, -20, 100, -17, 112, -17, 112, -13, 105, -6, 99, 3, 90, 12, 77, 28, 62, 38, 50, 43, 42, 44, 30, 47, 21, 49, 6, 49, -14, 42, -34, 37, -48, 36, -69, 36, -76, 33, -90, 33, -100, 23, -105, 21, -110, 11, -120, 5, -127, 1, -134, -6, -139, -10, -139, -16, -135, -20, -134, -27, -133, -37)
 
-[node name="Tile10" type="Node2D" parent="TileController"]
-position = Vector2(-1011, 852)
-script = ExtResource("3_i2j74")
-EXPTileNumber = 5
+[node name="Tile10" parent="TileController" instance=ExtResource("4_xmfu7")]
+offset_left = -1047.0
+offset_top = 836.0
+offset_right = -1047.0
+offset_bottom = 836.0
+EXPTileNumber = 10
 
 [node name="Ring" type="Sprite2D" parent="TileController/Tile10"]
 z_index = 5
+position = Vector2(36, 16)
 texture = ExtResource("23_sv2u8")
 
 [node name="TileGraphic" type="Sprite2D" parent="TileController/Tile10"]
+position = Vector2(36, 16)
 texture = ExtResource("22_aq1ft")
 
 [node name="Area2D" type="Area2D" parent="TileController/Tile10"]
+position = Vector2(36, 16)
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TileController/Tile10/Area2D"]
 polygon = PackedVector2Array(10, -29, 10, -7, 12, -3, 12, 2, 6, 5, 0, 18, -3, 35, -5, 50, -7, 66, -14, 66, -36, 60, -45, 55, -47, 48, -58, 41, -73, 35, -76, 30, -76, 25, -73, 22, -73, 18, -86, 10, -90, 5, -90, -1, -86, -8, -75, -11, -65, -16, -62, -23, -63, -33, -67, -39, -72, -42, -78, -48, -77, -53, -73, -57, -65, -57, -62, -60, -63, -63, -67, -66, -75, -70, -84, -77, -94, -82, -97, -90, -94, -93, -82, -93, -70, -90, -40, -89, -24, -85, -8, -81, 3, -77, 9, -76, 9, -69, 3, -67, -1, -61, -3, -52, -7, -38, -8, -34, -8, -30, -4, -28, 2, -28, 7, -31)
@@ -273,13 +320,12 @@ polygon = PackedVector2Array(10, -29, 10, -7, 12, -3, 12, 2, 6, 5, 0, 18, -3, 35
 layer = 2
 script = ExtResource("12_lbt1a")
 
-[node name="TileInfoPanel" parent="CanvasLayer" node_paths=PackedStringArray("EXPMthisTile") groups=["ScreenPanels"] instance=ExtResource("10_7wljm")]
+[node name="TileInfoPanel" parent="CanvasLayer" groups=["ScreenPanels"] instance=ExtResource("10_7wljm")]
 visible = false
 offset_left = 335.0
 offset_top = 612.0
 offset_right = 335.0
 offset_bottom = 612.0
-EXPMthisTile = NodePath("../../TileController/Tile3")
 
 [node name="GovernorSelection" parent="CanvasLayer/TileInfoPanel" instance=ExtResource("26_aq1ft")]
 visible = false
@@ -350,6 +396,15 @@ visible = false
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
+
+[node name="wizardTypeLabel" type="Label" parent="CanvasLayer/TileInfoPanel"]
+layout_mode = 0
+offset_left = 76.0
+offset_top = -175.0
+offset_right = 204.0
+offset_bottom = -152.0
+text = "no wizard :("
+horizontal_alignment = 1
 
 [node name="BuildingInfoPanel" parent="CanvasLayer" groups=["ScreenPanels"] instance=ExtResource("13_yj2eu")]
 visible = false
@@ -1333,36 +1388,6 @@ visible = false
 position = Vector2(-923, 494)
 texture = ExtResource("32_vnwtn")
 
-[connection signal="input_event" from="TileController/Tile1/Area2D" to="TileController/Tile1" method="_on_area_2d_input_event"]
-[connection signal="mouse_entered" from="TileController/Tile1/Area2D" to="TileController/Tile1" method="_on_area_2d_mouse_entered"]
-[connection signal="mouse_exited" from="TileController/Tile1/Area2D" to="TileController/Tile1" method="_on_area_2d_mouse_exited"]
-[connection signal="input_event" from="TileController/Tile2/Area2D" to="TileController/Tile2" method="_on_area_2d_input_event"]
-[connection signal="mouse_entered" from="TileController/Tile2/Area2D" to="TileController/Tile2" method="_on_area_2d_mouse_entered"]
-[connection signal="mouse_exited" from="TileController/Tile2/Area2D" to="TileController/Tile2" method="_on_area_2d_mouse_exited"]
-[connection signal="input_event" from="TileController/Tile3/Area2D" to="TileController/Tile3" method="_on_area_2d_input_event"]
-[connection signal="mouse_entered" from="TileController/Tile3/Area2D" to="TileController/Tile3" method="_on_area_2d_mouse_entered"]
-[connection signal="mouse_exited" from="TileController/Tile3/Area2D" to="TileController/Tile3" method="_on_area_2d_mouse_exited"]
-[connection signal="input_event" from="TileController/Tile4/Area2D" to="TileController/Tile4" method="_on_area_2d_input_event"]
-[connection signal="mouse_entered" from="TileController/Tile4/Area2D" to="TileController/Tile4" method="_on_area_2d_mouse_entered"]
-[connection signal="mouse_exited" from="TileController/Tile4/Area2D" to="TileController/Tile4" method="_on_area_2d_mouse_exited"]
-[connection signal="input_event" from="TileController/Tile5/Area2D" to="TileController/Tile5" method="_on_area_2d_input_event"]
-[connection signal="mouse_entered" from="TileController/Tile5/Area2D" to="TileController/Tile5" method="_on_area_2d_mouse_entered"]
-[connection signal="mouse_exited" from="TileController/Tile5/Area2D" to="TileController/Tile5" method="_on_area_2d_mouse_exited"]
-[connection signal="input_event" from="TileController/Tile6/Area2D" to="TileController/Tile6" method="_on_area_2d_input_event"]
-[connection signal="mouse_entered" from="TileController/Tile6/Area2D" to="TileController/Tile6" method="_on_area_2d_mouse_entered"]
-[connection signal="mouse_exited" from="TileController/Tile6/Area2D" to="TileController/Tile6" method="_on_area_2d_mouse_exited"]
-[connection signal="input_event" from="TileController/Tile7/Area2D" to="TileController/Tile7" method="_on_area_2d_input_event"]
-[connection signal="mouse_entered" from="TileController/Tile7/Area2D" to="TileController/Tile7" method="_on_area_2d_mouse_entered"]
-[connection signal="mouse_exited" from="TileController/Tile7/Area2D" to="TileController/Tile7" method="_on_area_2d_mouse_exited"]
-[connection signal="input_event" from="TileController/Tile8/Area2D" to="TileController/Tile8" method="_on_area_2d_input_event"]
-[connection signal="mouse_entered" from="TileController/Tile8/Area2D" to="TileController/Tile8" method="_on_area_2d_mouse_entered"]
-[connection signal="mouse_exited" from="TileController/Tile8/Area2D" to="TileController/Tile8" method="_on_area_2d_mouse_exited"]
-[connection signal="input_event" from="TileController/Tile9/Area2D" to="TileController/Tile9" method="_on_area_2d_input_event"]
-[connection signal="mouse_entered" from="TileController/Tile9/Area2D" to="TileController/Tile9" method="_on_area_2d_mouse_entered"]
-[connection signal="mouse_exited" from="TileController/Tile9/Area2D" to="TileController/Tile9" method="_on_area_2d_mouse_exited"]
-[connection signal="input_event" from="TileController/Tile10/Area2D" to="TileController/Tile10" method="_on_area_2d_input_event"]
-[connection signal="mouse_entered" from="TileController/Tile10/Area2D" to="TileController/Tile10" method="_on_area_2d_mouse_entered"]
-[connection signal="mouse_exited" from="TileController/Tile10/Area2D" to="TileController/Tile10" method="_on_area_2d_mouse_exited"]
 [connection signal="pressed" from="CanvasLayer/TileInfoPanel/governorButton" to="CanvasLayer/TileInfoPanel" method="_on_governor_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/TileInfoPanel/OpenBuildingsButton" to="CanvasLayer" method="_on_open_buildings_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/TileInfoPanel/WizardButton" to="CanvasLayer" method="_on_wizard_button_pressed"]

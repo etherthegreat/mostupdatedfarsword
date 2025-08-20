@@ -14,9 +14,20 @@ var eventLongDescription: String
 
 var eventButtons: Array = []
 
+var eventTile: Tile
+
 func buildSelf(eT, eID, eC, eL):
 	eventType = eT
 	eventID = eID
+	eventCountry = eC
+	eventLanguage = eL
+	matchEventLabels()
+	pass
+
+func buildTileEvent(eT, eID, eTile, eC, eL):
+	eventType = eT
+	eventID = eID
+	eventTile = eTile
 	eventCountry = eC
 	eventLanguage = eL
 	matchEventLabels()
@@ -33,6 +44,19 @@ func matchEventLabels():
 				"military":
 					pass
 				"tile":
+					match eventID:
+						"wizardSelect":
+							match eventLanguage:
+								"eng":
+									eventName = "Assigning a Wizard to Our New Tower"
+									eventShortDescription = "This will affect our magic for years to come"
+									eventLongDescription = "With the completions of our new tower, it is time to assign it a spell school."
+									newEventButton("For the Druid cause!", "GEN_AssignDruidWizard")
+									newEventButton("Assign a Master Elementalist", "GEN_AssignElementalWizard")
+									newEventButton("An Illusionist will do quite nicely", "GEN_AssignIllusionWizard")
+									newEventButton("Only a Diviner is worthy to sit atop this Tower", "GEN_AssignDivinerWizard")
+									newEventButton("Summon a summoner to come summon for us", "GEN_AssignSummonerWizard")
+									newEventButton("Build a new laboratory, we are giving this tower to the alchemists", "GEN_AssignAlchemistWizard")
 					pass
 				"religion":
 					pass
@@ -104,7 +128,13 @@ func matchEventLabels():
 var eventButtonScene = load("res://event_button.tscn")
 
 func newEventButton(buttonText, buttonID):
-	var buttonOption = eventButtonScene.instantiate()
-	buttonOption.buildSelf(buttonText, buttonID)
-	eventButtons.append(buttonOption)
+	match eventType:
+		"governor":
+			var buttonOption = eventButtonScene.instantiate()
+			buttonOption.buildSelf(buttonText, buttonID, "governor")
+			eventButtons.append(buttonOption)
+		"tile":
+			var buttonOption = eventButtonScene.instantiate()
+			buttonOption.buildTileEventButton(buttonText, buttonID, eventTile, "tile")
+			eventButtons.append(buttonOption)
 	pass

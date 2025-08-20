@@ -55,6 +55,8 @@ func newGameBuild():
 	dayOfMonth = 1
 	age = 2
 	armyMode = false
+	$TileController.connectTileSignals()
+	$TileController.transfer.connect(calculateTileEvent)
 	for Tile in $TileController.get_children():
 		Tile.onNewGame()
 		Tile.calculateSeason(month)
@@ -138,10 +140,10 @@ func tileClicked(tile):
 func matchCountryBuildings():
 	for country in aliveCountriesList:
 		for Tile in $TileController.get_children():
-			if Tile.tileOwner == country.CID:
+			if Tile.tileOwner == playerCountryNode.CID:
 				for building in Tile.tileBuildingsList:
-					country.connectBuilding(building)
-					#building.buildingTower.connect()
+					playerCountryNode.connectBuilding(building)
+					#building.towerBuilding.connect(signalTowerInTile)
 	if playerCountryNode.CID == "PDT":
 		#print("country building List for PDT:", playerCountryNode.countryBuildingList)
 		pass
@@ -280,7 +282,6 @@ func _on_building_panel_panel_downgrade_building(thisBuilding) -> void:
 					building.downgradeBuilding()
 	pass # Replace with function body.
 
-#Tile Interaction Code
 
 func assignSelectedTile(tileToSelect):
 	#selectedTile = tileToSelect
@@ -353,7 +354,16 @@ func activateArmyControl():
 	pass
 
 var eventScene = load("res://eventScene.tscn")
+
+var temporaryTile: Tile
 #EVENT SYSTEM
+func calculateTileEvent(tile, type):
+	print("most up to date", tile.tileName, type)
+	match type:
+		"wizard":
+			createNewTileEvent("tile", "wizardSelect", "GEN", tile, gameLanguage)
+	pass
+
 func calculateGovernorEvent(governor):
 	match governor.governorType:
 		"Wolverina Gundo":
@@ -364,8 +374,18 @@ func calculateGovernorEvent(governor):
 
 func createNewEvent(type, id, CID, language):
 	var newEvent = eventScene.instantiate()
-	newEvent.buildSelf(type, id, CID, language)
-	newEvent.eventButtonPressed.connect(matchEventOutcome)
+	match type:
+		"governor":
+			newEvent.buildSelf(type, id, CID, language)
+			newEvent.eventButtonPressed.connect(matchEventOutcome)
+			$CanvasLayer/EventControl/EventContainer.add_child(newEvent)
+			
+	pass
+
+func createNewTileEvent(type, id, CID, tile, language):
+	var newEvent = eventScene.instantiate()
+	newEvent.buildTileEventSelf(type, id, CID, tile, language)
+	newEvent.tileEventButtonPressed.connect(matchTileEventOutcome)
 	$CanvasLayer/EventControl/EventContainer.add_child(newEvent)
 	pass
 
@@ -390,4 +410,22 @@ func matchEventOutcome(eventButtonID, eventType, eventID, eventCountry):
 									$CanvasLayer/FactionControl.addFaction("ANL_Republicans", 10, tempGov)
 								"PDT_Wolverina0-2":
 									print("What's UP Chump?")
+	pass
+
+func matchTileEventOutcome(eventButtonID, eventType, eventCountry, eventTile):
+	match eventCountry:
+		"GEN":
+			match eventButtonID:
+				"GEN_AssignDruidWizard":
+					eventTile.addWizard("Druid")
+				"GEN_AssignElementalWizard":
+					eventTile.addWizard("Elementalist")
+				"GEN_AssignIllusionWizard":
+					eventTile.addWizard("Illusionist")
+				"GEN_AssignDivinerWizard":
+					eventTile.addWizard("Diviner")
+				"GEN_AssignSummonerWizard":
+					eventTile.addWizard("Summoner")
+				"GEN_AssignAlchemistWizard":
+					eventTile.addWizard("Alchemist")
 	pass

@@ -62,6 +62,8 @@ func displayTileInfo(tile):
 		else:
 			$governorButton.icon = load("res://art assets/Placeholder Art/character/8 11 experimental.png")
 			$governorButton/govnameLabel.text = "No Assigned Governor"
+		if selectedTile.tileWizard != null:
+			$wizardTypeLabel.text = selectedTile.tileWizard.wizardType
 	pass
 
 signal governorButtonPressed

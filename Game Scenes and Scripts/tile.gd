@@ -1,4 +1,4 @@
-extends Node2D
+extends Control
 
 class_name Tile
 
@@ -143,6 +143,9 @@ var tileGraphic
 var tileSpawnPath: String
 var tileSpawnPathPoint: int
 
+signal tileLoaded
+signal tileEvent
+
 signal onNewGameWorldBuild
 func onNewGame():
 	#pretty much every variable of a tile will be determined in this function
@@ -221,71 +224,23 @@ func onNewGame():
 		tileMilModifiers
 		corruption = 0
 		TileNeighbors
+		emit_signal("tileLoaded", self)
 		var tileCrop = crop.new()
 		tileCrop.cropType = "Wereroot"
 		cropSlot = tileCrop
 		var tileOre = ore.new()
 		tileOre.oreType = "Iron"
 		oreSlot = tileOre
-		var Tower = building.new()
-		Tower.buildingType = "Tower"
-		Tower.buildingLevel = 1
-		Tower.tile = self
-		Tower.number = tileNumber
-		Tower.buildBuilding()
-		tileBuildingsList.append(Tower)
-		var Farm = building.new()
-		Farm.buildingType = "1"
-		Farm.buildingLevel = 3
-		Farm.tile = self
-		Farm.number = tileNumber
-		Farm.buildBuilding()
-		tileBuildingsList.append(Farm)
-		var Granary = building.new()
-		Granary.buildingType = "Granary"
-		Granary.buildingLevel = 1
-		Granary.tile = self
-		Granary.number = tileNumber
-		Granary.buildBuilding()
-		tileBuildingsList.append(Granary)
-		var Barracks = building.new()
-		Barracks.buildingType = "Barracks"
-		Barracks.buildingLevel = 2
-		Barracks.tile = self
-		Barracks.number = tileNumber
-		Barracks.buildBuilding()
-		tileBuildingsList.append(Barracks)
-		var Library = building.new()
-		Library.buildingType = "Library"
-		Library.buildingLevel = 3
-		Library.tile = self
-		Library.number = tileNumber
-		Library.buildBuilding()
-		tileBuildingsList.append(Library)
-		var Mine = building.new()
-		Mine.buildingType = "Mine"
-		Mine.buildingLevel = 1
-		Mine.tile = self
-		Mine.number = tileNumber
-		Mine.buildBuilding()
-		tileBuildingsList.append(Mine)
-		var Forge = building.new()
-		Forge.buildingType = "Forge"
-		Forge.buildingLevel = 1
-		Forge.tile = self
-		Forge.number = tileNumber
-		Forge.buildBuilding()
-		tileBuildingsList.append(Forge)
-		var Camp = building.new()
-		Camp.buildingType = "Camp"
-		Camp.buildingLevel = 5
-		Camp.tile = self
-		Camp.number = tileNumber
-		Camp.buildBuilding()
-		tileBuildingsList.append(Camp)
-		var actingWizard = wizard.new()
-		actingWizard.wizardType = "DRUID"
-		tileWizard = actingWizard
+		#addWizard("Druid")
+		addBuilding("Tower", 1)
+		addBuilding("Farm", 3)
+		addBuilding("Granary", 1)
+		addBuilding("Barracks", 2)
+		addBuilding("Library", 1)
+		addBuilding("Mine", 2)
+		addBuilding("Forge", 1)
+		addBuilding("Camp", 5)
+		
 		var actingSpell = spell.new()
 		actingSpell.spellType = "Celebration"
 		tileSpell = actingSpell
@@ -625,6 +580,38 @@ func surveyTile(playerCountryNode):
 				else:
 					granaryGovernorReq = false
 	#print("buildingMagicOutput", buildingMagicOutput)
+	pass
+
+func addWizard(wizardType):
+	var actingWizard = wizard.new()
+	actingWizard.wizardType = wizardType
+	tileWizard = actingWizard
+	wizardCheck()
+	pass
+
+func wizardCheck():
+	if tileWizard == null:
+		print("No mother fuckin wizard type found")
+		emit_signal("tileEvent", self, "wizard")
+		pass
+	else:
+		print(tileWizard.wizardType, " wizardType in ", tileName)
+		pass
+	pass
+
+
+
+func addBuilding(buildingType, level):
+	var newBuild = building.new()
+	newBuild.buildingType = buildingType
+	newBuild.buildingLevel = level
+	newBuild.tile = self
+	newBuild.number = tileNumber
+	tileBuildingsList.append(newBuild)
+	self.add_child(newBuild)
+	if newBuild.buildingType == "Tower":
+		newBuild.towerBuilding.connect(wizardCheck)
+	newBuild.buildBuilding()
 	pass
 
 func addStationedArmy(armyNode):
