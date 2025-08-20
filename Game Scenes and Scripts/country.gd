@@ -668,6 +668,7 @@ func surveyResources():
 		illPoints += Tile.illPointsOutput
 		divPoints += Tile.divPointsOutput
 		druPoints += Tile.druPointsOutput
+		print("points", alcPoints, sumPoints, elePoints, illPoints, divPoints, druPoints)
 	pass
 
 func payUnitMaintenance():

@@ -1,6 +1,12 @@
 extends CanvasLayer
 
 
+var playerNode: country
+
+func assignPlayerNode(playerCountryNode):
+	playerNode = playerCountryNode
+	pass
+
 func _on_tech_tree_button_pressed() -> void:
 	if $TechTree.visible == true:
 		$TechTree.visible = false
@@ -71,4 +77,13 @@ func _on_open_buildings_button_pressed() -> void:
 
 func _on_wizard_button_pressed() -> void:
 	
+	pass # Replace with function body.
+
+func _on_magic_button_pressed() -> void:
+	for MagicAmountControl in $SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox.get_children():
+		MagicAmountControl.update(playerNode)
+	if $SpellSchoolsControl.visible == false:
+		$SpellSchoolsControl.visible = true
+	else:
+		$SpellSchoolsControl.visible = false
 	pass # Replace with function body.

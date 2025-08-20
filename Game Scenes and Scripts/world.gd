@@ -99,6 +99,7 @@ func connectCountrySignals():
 	pass
 
 func updatePlayerUI():
+	$CanvasLayer.assignPlayerNode(playerCountryNode)
 	$CanvasLayer/TileInfoPanel.selectThisTile.connect(assignSelectedTile)
 	$CanvasLayer/TileInfoPanel.governorButtonPressed.connect(openGovernorsPanel)
 	$CanvasLayer/TileInfoPanel.confirmThisGovernor.connect(assignGovernor)
@@ -376,13 +377,14 @@ func createNewEvent(type, id, CID, language):
 	var newEvent = eventScene.instantiate()
 	match type:
 		"governor":
+			#print(type, id, CID, language, "looking gay")
 			newEvent.buildSelf(type, id, CID, language)
 			newEvent.eventButtonPressed.connect(matchEventOutcome)
 			$CanvasLayer/EventControl/EventContainer.add_child(newEvent)
-			
 	pass
 
 func createNewTileEvent(type, id, CID, tile, language):
+	#print("like a door", type, id, CID, tile, language)
 	var newEvent = eventScene.instantiate()
 	newEvent.buildTileEventSelf(type, id, CID, tile, language)
 	newEvent.tileEventButtonPressed.connect(matchTileEventOutcome)
@@ -390,6 +392,7 @@ func createNewTileEvent(type, id, CID, tile, language):
 	pass
 
 func matchEventOutcome(eventButtonID, eventType, eventID, eventCountry):
+	print("signal received ")
 	match eventCountry:
 		"GEN":
 			pass
@@ -413,19 +416,21 @@ func matchEventOutcome(eventButtonID, eventType, eventID, eventCountry):
 	pass
 
 func matchTileEventOutcome(eventButtonID, eventType, eventCountry, eventTile):
+	print(eventButtonID, "marvel rivals")
 	match eventCountry:
 		"GEN":
 			match eventButtonID:
 				"GEN_AssignDruidWizard":
-					eventTile.addWizard("Druid")
+					eventTile.addWizard("druid")
 				"GEN_AssignElementalWizard":
-					eventTile.addWizard("Elementalist")
+					eventTile.addWizard("elementalist")
 				"GEN_AssignIllusionWizard":
-					eventTile.addWizard("Illusionist")
+					eventTile.addWizard("illusionist")
 				"GEN_AssignDivinerWizard":
-					eventTile.addWizard("Diviner")
+					eventTile.addWizard("diviner")
 				"GEN_AssignSummonerWizard":
-					eventTile.addWizard("Summoner")
+					eventTile.addWizard("summoner")
 				"GEN_AssignAlchemistWizard":
-					eventTile.addWizard("Alchemist")
+					eventTile.addWizard("alchemist")
+			print(eventTile.tileWizard, "tileWizard")
 	pass

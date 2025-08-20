@@ -53,11 +53,12 @@ position = Vector2(1082, 301)
 scale = Vector2(0.336022, 0.336022)
 texture = ExtResource("1_lrrym")
 
-[node name="eventButtons" type="HBoxContainer" parent="EventPanel"]
+[node name="eventButtons" type="GridContainer" parent="EventPanel"]
 layout_mode = 0
-offset_left = 22.0
-offset_top = 532.0
-offset_right = 1259.0
-offset_bottom = 1184.0
-theme_override_constants/separation = 250
-alignment = 1
+offset_left = 23.0
+offset_top = 519.0
+offset_right = 1260.0
+offset_bottom = 649.0
+theme_override_constants/h_separation = 435
+theme_override_constants/v_separation = 70
+columns = 3

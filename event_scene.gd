@@ -18,7 +18,7 @@ func buildSelf(eventType, eventID, eventCountry, language):
 	LANGUAGE = language
 	var newLocBall = LocBall.new()
 	match eventType:
-		"Governor":
+		"governor":
 			newLocBall.buildSelf(eventType, eventID, eventCountry, language)
 			for EventButton in newLocBall.eventButtons:
 				$EventPanel/eventButtons.add_child(EventButton)
@@ -31,6 +31,7 @@ func buildSelf(eventType, eventID, eventCountry, language):
 
 
 func buildTileEventSelf(eventType, eventID, eventCountry, tile, language):
+	#print("wake up child")
 	TYPE = eventType
 	ID = eventID
 	COUNTRY = eventCountry
@@ -39,19 +40,21 @@ func buildTileEventSelf(eventType, eventID, eventCountry, tile, language):
 	var newLocBall = LocBall.new()
 	newLocBall.buildTileEvent(TYPE, ID, targetTile, COUNTRY, LANGUAGE)
 	for EventButton in newLocBall.eventButtons:
+		EventButton.buildTileEventButton
 		$EventPanel/eventButtons.add_child(EventButton)
-		EventButton.tileSignalPressed.connect(pressedEventButton)
+		EventButton.tileSignalPressed.connect(pressedTileEventButton)
 	$EventPanel/EventNameLabel.text = newLocBall.eventName
 	$EventPanel/EventShortDescriptionLabel.text = newLocBall.eventShortDescription
 	$EventPanel/EventLongDescriptionLabel.text = newLocBall.eventLongDescription
 	pass
 
 func pressedEventButton(eventButtonID):
-	print("Event ID", eventButtonID, TYPE, ID, COUNTRY)
 	emit_signal("eventButtonPressed", eventButtonID, TYPE, ID, COUNTRY)
 	self.queue_free()
 	pass
 
 func pressedTileEventButton(tile, buttonID):
+	print("Event ID", tile, buttonID)
 	emit_signal("tileEventButtonPressed", buttonID, TYPE, COUNTRY, tile)
+	self.queue_free()
 	pass

@@ -11,14 +11,18 @@ signal tileSignalPressed
 
 var eventTile: Tile
 
-func buildSelf(buttonText, buttonID, eventButtonType):
+func buildSelf(buttonText, buttonID, buttonType):
+	eventButtonType = buttonType
 	$EventButton.text = buttonText
 	eventButtonID = buttonID
 	pass
 
 
-func buildTileEventButton(buttonText, buttonID, eventTile, eventButtonType):
-	
+func buildTileEventButton(buttonText, buttonID, tile, buttonType):
+	$EventButton.text = buttonText
+	eventButtonID = buttonID
+	eventTile = tile
+	eventButtonType = buttonType
 	pass
 
 func _on_event_button_pressed() -> void:
@@ -29,5 +33,6 @@ func _on_event_button_pressed() -> void:
 			emit_signal("EventButtonPressed", eventButtonID)
 		"tile":
 			emit_signal("tileSignalPressed", eventTile, eventButtonID)
+			print("gangnam style")
 			pass
 	pass # Replace with function body.

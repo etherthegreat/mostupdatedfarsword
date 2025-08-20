@@ -1,4 +1,4 @@
-[gd_scene load_steps=70 format=3 uid="uid://bfbouq3jfwkxl"]
+[gd_scene load_steps=71 format=3 uid="uid://bfbouq3jfwkxl"]
 
 [ext_resource type="Script" uid="uid://dthx176t72xxr" path="res://Game Scenes and Scripts/world.gd" id="1_6bnro"]
 [ext_resource type="Texture2D" uid="uid://ymy7tu133b71" path="res://art assets/Placeholder Art/map/map.png" id="2_160f8"]
@@ -54,6 +54,7 @@
 [ext_resource type="Texture2D" uid="uid://bs7hc10gkpl1m" path="res://art assets/Placeholder Art/UI Art/book.jpg" id="30_4wrj5"]
 [ext_resource type="Texture2D" uid="uid://cudj2gvqfnm0v" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/test 1.png" id="32_vnwtn"]
 [ext_resource type="Texture2D" uid="uid://cb08osdpathpa" path="res://art assets/Placeholder Art/UI Art/resources/faith.png" id="35_o3iuu"]
+[ext_resource type="PackedScene" uid="uid://b3odh5q7qlkoj" path="res://magic_amount_control.tscn" id="36_mhn20"]
 [ext_resource type="Script" uid="uid://b1e4cr0ob85l3" path="res://Game Scenes and Scripts/military_panel_control.gd" id="38_0kf4p"]
 [ext_resource type="Texture2D" uid="uid://dbg7fk5qjv7bf" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/test 3.png" id="38_sleii"]
 [ext_resource type="Texture2D" uid="uid://xc856v6ceb4n" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/test 4.png" id="39_jpc3q"]
@@ -63,8 +64,8 @@
 [ext_resource type="Script" uid="uid://c424luv26ql5l" path="res://Game Scenes and Scripts/path_control.gd" id="51_tqcrl"]
 [ext_resource type="Texture2D" uid="uid://bjbx6e8ns8a0a" path="res://art assets/Placeholder Art/sword.png" id="52_78kig"]
 [ext_resource type="PackedScene" uid="uid://3w6l28pyvce1" path="res://path_point_button.tscn" id="53_78kig"]
-[ext_resource type="Script" path="res://Game Scenes and Scripts/faction_control.gd" id="54_sv2u8"]
-[ext_resource type="Script" path="res://Game Scenes and Scripts/government_control.gd" id="55_w7ifc"]
+[ext_resource type="Script" uid="uid://bqoa1uaifkk6g" path="res://Game Scenes and Scripts/faction_control.gd" id="54_sv2u8"]
+[ext_resource type="Script" uid="uid://idfuyp443x0" path="res://Game Scenes and Scripts/government_control.gd" id="55_w7ifc"]
 [ext_resource type="Texture2D" uid="uid://de0ftj0x1dhpw" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/IMG_2814.jpg" id="60_w7ifc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2v3gw"]
@@ -487,6 +488,55 @@ offset_bottom = 158.0
 
 [node name="TechTree" parent="CanvasLayer" instance=ExtResource("16_f3t73")]
 visible = false
+
+[node name="SpellSchoolsControl" type="Control" parent="CanvasLayer"]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="SpellSchoolsPanel" type="Panel" parent="CanvasLayer/SpellSchoolsControl"]
+layout_mode = 0
+offset_right = 1918.0
+offset_bottom = 1090.0
+
+[node name="SchoolsAmounts" type="Panel" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel"]
+layout_mode = 0
+offset_right = 237.0
+offset_bottom = 1087.0
+
+[node name="SpellsVBox" type="VBoxContainer" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts"]
+layout_mode = 0
+offset_left = 104.0
+offset_top = 101.0
+offset_right = 238.0
+offset_bottom = 940.0
+theme_override_constants/separation = 175
+
+[node name="MagicAmountControl" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox" instance=ExtResource("36_mhn20")]
+layout_mode = 2
+schoolTypeEXP = "alchemist"
+
+[node name="MagicAmountControl2" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox" instance=ExtResource("36_mhn20")]
+layout_mode = 2
+schoolTypeEXP = "diviner"
+
+[node name="MagicAmountControl3" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox" instance=ExtResource("36_mhn20")]
+layout_mode = 2
+schoolTypeEXP = "druid"
+
+[node name="MagicAmountControl4" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox" instance=ExtResource("36_mhn20")]
+layout_mode = 2
+schoolTypeEXP = "elementalist"
+
+[node name="MagicAmountControl5" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox" instance=ExtResource("36_mhn20")]
+layout_mode = 2
+schoolTypeEXP = "illusionist"
+
+[node name="MagicAmountControl6" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox" instance=ExtResource("36_mhn20")]
+layout_mode = 2
+schoolTypeEXP = "summoner"
 
 [node name="Spellbook" parent="CanvasLayer" groups=["ScreenPanels"] instance=ExtResource("14_6mpca")]
 visible = false
@@ -1388,6 +1438,36 @@ visible = false
 position = Vector2(-923, 494)
 texture = ExtResource("32_vnwtn")
 
+[connection signal="input_event" from="TileController/Tile1/Area2D" to="TileController/Tile1" method="_on_area_2d_input_event"]
+[connection signal="mouse_entered" from="TileController/Tile1/Area2D" to="TileController/Tile1" method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="TileController/Tile1/Area2D" to="TileController/Tile1" method="_on_area_2d_mouse_exited"]
+[connection signal="input_event" from="TileController/Tile2/Area2D" to="TileController/Tile2" method="_on_area_2d_input_event"]
+[connection signal="mouse_entered" from="TileController/Tile2/Area2D" to="TileController/Tile2" method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="TileController/Tile2/Area2D" to="TileController/Tile2" method="_on_area_2d_mouse_exited"]
+[connection signal="input_event" from="TileController/Tile3/Area2D" to="TileController/Tile3" method="_on_area_2d_input_event"]
+[connection signal="mouse_entered" from="TileController/Tile3/Area2D" to="TileController/Tile3" method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="TileController/Tile3/Area2D" to="TileController/Tile3" method="_on_area_2d_mouse_exited"]
+[connection signal="input_event" from="TileController/Tile4/Area2D" to="TileController/Tile4" method="_on_area_2d_input_event"]
+[connection signal="mouse_entered" from="TileController/Tile4/Area2D" to="TileController/Tile4" method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="TileController/Tile4/Area2D" to="TileController/Tile4" method="_on_area_2d_mouse_exited"]
+[connection signal="input_event" from="TileController/Tile5/Area2D" to="TileController/Tile5" method="_on_area_2d_input_event"]
+[connection signal="mouse_entered" from="TileController/Tile5/Area2D" to="TileController/Tile5" method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="TileController/Tile5/Area2D" to="TileController/Tile5" method="_on_area_2d_mouse_exited"]
+[connection signal="input_event" from="TileController/Tile6/Area2D" to="TileController/Tile6" method="_on_area_2d_input_event"]
+[connection signal="mouse_entered" from="TileController/Tile6/Area2D" to="TileController/Tile6" method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="TileController/Tile6/Area2D" to="TileController/Tile6" method="_on_area_2d_mouse_exited"]
+[connection signal="input_event" from="TileController/Tile7/Area2D" to="TileController/Tile7" method="_on_area_2d_input_event"]
+[connection signal="mouse_entered" from="TileController/Tile7/Area2D" to="TileController/Tile7" method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="TileController/Tile7/Area2D" to="TileController/Tile7" method="_on_area_2d_mouse_exited"]
+[connection signal="input_event" from="TileController/Tile8/Area2D" to="TileController/Tile8" method="_on_area_2d_input_event"]
+[connection signal="mouse_entered" from="TileController/Tile8/Area2D" to="TileController/Tile8" method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="TileController/Tile8/Area2D" to="TileController/Tile8" method="_on_area_2d_mouse_exited"]
+[connection signal="input_event" from="TileController/Tile9/Area2D" to="TileController/Tile9" method="_on_area_2d_input_event"]
+[connection signal="mouse_entered" from="TileController/Tile9/Area2D" to="TileController/Tile9" method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="TileController/Tile9/Area2D" to="TileController/Tile9" method="_on_area_2d_mouse_exited"]
+[connection signal="input_event" from="TileController/Tile10/Area2D" to="TileController/Tile10" method="_on_area_2d_input_event"]
+[connection signal="mouse_entered" from="TileController/Tile10/Area2D" to="TileController/Tile10" method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="TileController/Tile10/Area2D" to="TileController/Tile10" method="_on_area_2d_mouse_exited"]
 [connection signal="pressed" from="CanvasLayer/TileInfoPanel/governorButton" to="CanvasLayer/TileInfoPanel" method="_on_governor_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/TileInfoPanel/OpenBuildingsButton" to="CanvasLayer" method="_on_open_buildings_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/TileInfoPanel/WizardButton" to="CanvasLayer" method="_on_wizard_button_pressed"]
@@ -1427,6 +1507,7 @@ texture = ExtResource("32_vnwtn")
 [connection signal="pressed" from="CanvasLayer/PanelOpenerControl/ButtonPanel/VBoxContainer/ArmyControl/ArmyButton" to="." method="_on_army_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/PanelOpenerControl/ButtonPanel/VBoxContainer/TechTreeControl/TechTreeButton" to="CanvasLayer" method="_on_tech_tree_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/PanelOpenerControl/ButtonPanel/VBoxContainer/BeliefsControl/BeliefPanelButton" to="CanvasLayer" method="_on_belief_panel_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/PanelOpenerControl/ButtonPanel/VBoxContainer/MagicControl/MagicButton" to="CanvasLayer" method="_on_magic_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/PanelOpenerControl/ButtonPanel/VBoxContainer/SpellbookControl/SpellBookButton" to="CanvasLayer" method="_on_spell_book_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/PanelOpenerControl/ButtonPanel/VBoxContainer/LawsControl/LawsButton" to="CanvasLayer" method="_on_laws_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/PanelOpenerControl/ButtonPanel/VBoxContainer/FactionsControl/FactionsButton" to="CanvasLayer" method="_on_factions_button_pressed"]

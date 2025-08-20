@@ -558,17 +558,17 @@ func surveyTile(playerCountryNode):
 					bathGovernorReq = false
 			"Tower":
 				match building.magicOutput:
-					"alc":
+					"alchemist":
 						alcPointsOutput = (1 * building.buildingLevel)
-					"sum":
+					"summoner":
 						sumPointsOutput = (1 * building.buildingLevel)
-					"ele":
+					"elementalist":
 						elePointsOutput = (1 * building.buildingLevel)
-					"dru":
+					"druid":
 						druPointsOutput = (1 * building.buildingLevel)
-					"ill":
+					"illusionist":
 						illPointsOutput = (1 * building.buildingLevel)
-					"div":
+					"diviner":
 						divPointsOutput = (1 * building.buildingLevel)
 				if building.buildingLevel >= 3:
 					towerGovernorReq = true
@@ -595,8 +595,9 @@ func wizardCheck():
 		emit_signal("tileEvent", self, "wizard")
 		pass
 	else:
-		print(tileWizard.wizardType, " wizardType in ", tileName)
-		pass
+		for building in tileBuildingsList:
+			if building.buildingType == "Tower":
+				building.magicOutput = tileWizard.wizardType
 	pass
 
 
