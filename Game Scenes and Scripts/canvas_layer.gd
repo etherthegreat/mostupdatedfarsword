@@ -24,6 +24,7 @@ func _on_close_button_pressed() -> void:
 
 
 func _on_spell_book_button_pressed() -> void:
+	$Spellbook.displaySpells(playerNode)
 	if $Spellbook.visible == true:
 		$Spellbook.visible = false
 	elif $Spellbook.visible == false:

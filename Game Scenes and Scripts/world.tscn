@@ -1,4 +1,4 @@
-[gd_scene load_steps=71 format=3 uid="uid://bfbouq3jfwkxl"]
+[gd_scene load_steps=73 format=3 uid="uid://bfbouq3jfwkxl"]
 
 [ext_resource type="Script" uid="uid://dthx176t72xxr" path="res://Game Scenes and Scripts/world.gd" id="1_6bnro"]
 [ext_resource type="Texture2D" uid="uid://ymy7tu133b71" path="res://art assets/Placeholder Art/map/map.png" id="2_160f8"]
@@ -55,6 +55,7 @@
 [ext_resource type="Texture2D" uid="uid://cudj2gvqfnm0v" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/test 1.png" id="32_vnwtn"]
 [ext_resource type="Texture2D" uid="uid://cb08osdpathpa" path="res://art assets/Placeholder Art/UI Art/resources/faith.png" id="35_o3iuu"]
 [ext_resource type="PackedScene" uid="uid://b3odh5q7qlkoj" path="res://magic_amount_control.tscn" id="36_mhn20"]
+[ext_resource type="Script" uid="uid://bpfawxk0gtyii" path="res://Game Scenes and Scripts/spell_schools_control.gd" id="36_qt86y"]
 [ext_resource type="Script" uid="uid://b1e4cr0ob85l3" path="res://Game Scenes and Scripts/military_panel_control.gd" id="38_0kf4p"]
 [ext_resource type="Texture2D" uid="uid://dbg7fk5qjv7bf" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/test 3.png" id="38_sleii"]
 [ext_resource type="Texture2D" uid="uid://xc856v6ceb4n" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/test 4.png" id="39_jpc3q"]
@@ -82,6 +83,9 @@ _data = {
 "points": PackedVector2Array(0, 0, 0, 0, -875, 839, 0, 0, 0, 0, -832, 855, 0, 0, 0, 0, -848, 889, 0, 0, 0, 0, -944, 910, 0, 0, 0, 0, -1026, 876, 0, 0, 0, 0, -1049, 847, 0, 0, 0, 0, -1032, 798)
 }
 point_count = 7
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qt86y"]
+size = Vector2(3775, 2210)
 
 [node name="World" type="Node2D"]
 position = Vector2(1819, 33)
@@ -495,6 +499,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+script = ExtResource("36_qt86y")
 
 [node name="SpellSchoolsPanel" type="Panel" parent="CanvasLayer/SpellSchoolsControl"]
 layout_mode = 0
@@ -544,6 +549,7 @@ offset_left = 528.0
 offset_top = 593.0
 offset_right = 528.0
 offset_bottom = 593.0
+mouse_filter = 2
 
 [node name="CloseSpellbook" type="Button" parent="CanvasLayer/Spellbook"]
 layout_mode = 0
@@ -551,6 +557,7 @@ offset_left = -527.0
 offset_top = -58.0
 offset_right = -458.0
 offset_bottom = 3.0
+mouse_filter = 2
 theme_override_colors/font_color = Color(0.778684, 0.136903, 0.658632, 1)
 theme_override_font_sizes/font_size = 36
 text = "X"
@@ -1438,6 +1445,12 @@ visible = false
 position = Vector2(-923, 494)
 texture = ExtResource("32_vnwtn")
 
+[node name="RightClickDetector" type="Area2D" parent="."]
+
+[node name="RightClickDetection" type="CollisionShape2D" parent="RightClickDetector"]
+position = Vector2(10.5, 10)
+shape = SubResource("RectangleShape2D_qt86y")
+
 [connection signal="input_event" from="TileController/Tile1/Area2D" to="TileController/Tile1" method="_on_area_2d_input_event"]
 [connection signal="mouse_entered" from="TileController/Tile1/Area2D" to="TileController/Tile1" method="_on_area_2d_mouse_entered"]
 [connection signal="mouse_exited" from="TileController/Tile1/Area2D" to="TileController/Tile1" method="_on_area_2d_mouse_exited"]
@@ -1511,3 +1524,4 @@ texture = ExtResource("32_vnwtn")
 [connection signal="pressed" from="CanvasLayer/PanelOpenerControl/ButtonPanel/VBoxContainer/SpellbookControl/SpellBookButton" to="CanvasLayer" method="_on_spell_book_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/PanelOpenerControl/ButtonPanel/VBoxContainer/LawsControl/LawsButton" to="CanvasLayer" method="_on_laws_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/PanelOpenerControl/ButtonPanel/VBoxContainer/FactionsControl/FactionsButton" to="CanvasLayer" method="_on_factions_button_pressed"]
+[connection signal="input_event" from="RightClickDetector" to="." method="_on_right_click_detector_input_event"]

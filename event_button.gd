@@ -31,6 +31,8 @@ func _on_event_button_pressed() -> void:
 		"governor":
 			print("PIRESTS OF THE CARI")
 			emit_signal("EventButtonPressed", eventButtonID)
+		"spell":
+			emit_signal("EventButtonPressed", eventButtonID)
 		"tile":
 			emit_signal("tileSignalPressed", eventTile, eventButtonID)
 			print("gangnam style")

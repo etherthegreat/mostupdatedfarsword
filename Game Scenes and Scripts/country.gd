@@ -19,7 +19,6 @@ var isPuppet #determines if this country is a Puppet of another country
 
 var primaryCapital #tile that acts as this country's capital city
 
-var spellCostDiscount: int = 0
 
 var countryFactionList: Array = []
 
@@ -140,6 +139,17 @@ var druPoints: int #druidism
 var elePoints: int #elementalism
 var divPoints: int #divination
 
+var alcLevel: int
+var illLevel: int
+var sumLevel: int
+var druLevel: int
+var eleLevel: int
+var divLevel: int
+
+var spellBaseCost: int #used to calculate the base cost of all spells
+var spellCostModifier: int #used when debuffs are applied for spell costs
+var spellDiscountModifier: int #used as a reward to discount spell costs
+
 #CountryModifiers
 var ecoModList: Array = [] #all economic modifiers
 var diploModList: Array = [] #all diplomatic modifiers
@@ -175,7 +185,9 @@ func NewGameBuild():
 	#completely dynamically created by the World.  if its a new game, will use the new game stats, otherwise,
 	#will use the func LoadGameBuild():
 	if CID == "PDT":
-		
+		spellBaseCost = 15
+		spellCostModifier = 0
+		spellDiscountModifier = 0
 		#starting resources
 		TotalGold += 50
 		TotalFood += 75
@@ -190,7 +202,7 @@ func NewGameBuild():
 		TotalMandate += 15
 		TotalInfluence += 0
 		TotalManpower += 1000
-		
+		setStartingMagic()
 		mandateThreshold = 50
 		foodStorageMax = 1000
 		#DON"T TRY AND ADD NEW TYPES OF UNLOCKABLES UNTIL YOU FIGURE OUT HOW TO GET AN INFO PANEL TO APPEAR WITH MOUSE
@@ -211,7 +223,6 @@ func NewGameBuild():
 		addTechnologicalDiscovery("Agriculture")
 		addTechnologicalDiscovery("Copper Working")
 		addTechnologicalDiscovery("Artistry")
-		addSpellToSpellbook("Plentify", 1, 0)
 		addReligiousBelief("Benaxtara")
 		addReligiousBelief("TYLA DYN")
 		addCulturalTradition("Humble Folk")
@@ -234,6 +245,21 @@ func NewGameBuild():
 				addNewUnit(Army, "Infantry", 1, "Club", "Wood")
 	if Player == true:
 		pass
+	pass
+
+func setStartingMagic():
+	alcPoints = 0
+	illPoints = 0
+	sumPoints = 0
+	druPoints = 0
+	elePoints = 0
+	divPoints = 0
+	alcLevel = 0
+	illLevel = 0
+	sumLevel = 0
+	druLevel = 0
+	eleLevel = 0
+	divLevel = 0
 	pass
 
 func connectBuilding(building):
@@ -385,15 +411,32 @@ func addCulturalTradition(Name):
 	newTradition.traditionType = Name
 	unlockedTraditions.append(newTradition)
 	pass
-
+	
+var spellScene = load("res://spell.tscn")
 func addSpellToSpellbook(Name, Level, Experience):
-	var newSpell = spell.new()
+	var newSpell = spellScene.instantiate()
 	newSpell.spellType = Name
 	newSpell.spellLevel = Level
 	newSpell.experience = Experience
 	newSpell.newGameSpellAssignment()
 	unlockedSpells.append(newSpell)
 	#print ("country is", CID, "Spells are:", unlockedSpells)
+	pass
+
+func levelUpSchool(type):
+	match type:
+		"alchemy":
+			alcLevel += 1
+		"elementalist":
+			eleLevel += 1
+		"druid":
+			druLevel += 1
+		"diviner":
+			divLevel += 1
+		"summoner":
+			sumLevel += 1
+		"illusionist":
+			illLevel += 1
 	pass
 
 func addTechnologicalDiscovery(Name):

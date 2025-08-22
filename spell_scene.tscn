@@ -3,7 +3,64 @@
 [ext_resource type="Script" uid="uid://bq1wr4vdllrsn" path="res://spell_scene.gd" id="1_f47c2"]
 [ext_resource type="Texture2D" uid="uid://kjhhk7jj22fr" path="res://art assets/Placeholder Art/UI Art/resources/Plentify.png" id="2_s0p47"]
 
-[node name="SpellScene" type="Sprite2D"]
+[node name="SpellScene" type="Control"]
+layout_mode = 3
+anchors_preset = 0
 scale = Vector2(0.2, 0.2)
-texture = ExtResource("2_s0p47")
+mouse_filter = 2
 script = ExtResource("1_f47c2")
+
+[node name="SpellButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = -100.0
+offset_top = -90.0
+offset_right = 104.0
+offset_bottom = 85.0
+mouse_filter = 1
+icon = ExtResource("2_s0p47")
+expand_icon = true
+
+[node name="DescriptionPanel" type="Panel" parent="."]
+visible = false
+layout_mode = 0
+offset_left = -100.0
+offset_top = -335.0
+offset_right = 420.0
+offset_bottom = -95.0
+mouse_filter = 2
+
+[node name="DescriptionLabel" type="Label" parent="DescriptionPanel"]
+layout_mode = 0
+offset_left = 15.0
+offset_top = 65.0
+offset_right = 505.0
+offset_bottom = 225.0
+text = "upgradesomethingcool"
+autowrap_mode = 3
+
+[node name="SpellNameLabel" type="Label" parent="DescriptionPanel"]
+layout_mode = 0
+offset_left = 15.0
+offset_top = 10.0
+offset_right = 310.0
+offset_bottom = 60.0
+theme_override_font_sizes/font_size = 36
+text = "PLENTIFY"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SpellCostLabel" type="Label" parent="DescriptionPanel"]
+layout_mode = 0
+offset_left = 375.0
+offset_top = 10.0
+offset_right = 495.0
+offset_bottom = 60.0
+theme_override_colors/font_color = Color(0.637944, 0.186536, 0.78003, 1)
+theme_override_font_sizes/font_size = 36
+text = "25"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="mouse_entered" from="SpellButton" to="." method="_on_spell_button_mouse_entered"]
+[connection signal="mouse_exited" from="SpellButton" to="." method="_on_spell_button_mouse_exited"]
+[connection signal="pressed" from="SpellButton" to="." method="_on_spell_button_pressed"]

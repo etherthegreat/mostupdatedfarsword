@@ -19,14 +19,25 @@ func buildSelf(eventType, eventID, eventCountry, language):
 	var newLocBall = LocBall.new()
 	match eventType:
 		"governor":
-			newLocBall.buildSelf(eventType, eventID, eventCountry, language)
+			newLocBall.buildSelf(TYPE, ID, COUNTRY, LANGUAGE)
 			for EventButton in newLocBall.eventButtons:
 				$EventPanel/eventButtons.add_child(EventButton)
 				EventButton.EventButtonPressed.connect(pressedEventButton)
+			$EventPanel/EventNameLabel.text = newLocBall.eventName
+			$EventPanel/EventShortDescriptionLabel.text = newLocBall.eventShortDescription
+			$EventPanel/EventLongDescriptionLabel.text = newLocBall.eventLongDescription
+		"spell":
+			newLocBall.buildSelf(TYPE, ID, COUNTRY, LANGUAGE)
+			for EventButton in newLocBall.eventButtons:
+				$SpellSchoolUnlocked/HBoxContainer/SpellButtonControl.add_child(EventButton)
+				EventButton.EventButtonPressed.connect(pressedEventButton)
+			$EventPanel.visible = false
+			$SpellSchoolUnlocked/SpellName.text = newLocBall.unlockableName
+			$SpellSchoolUnlocked/EffectsOfSpellLabel.text = newLocBall.eventLongDescription
+			$SpellSchoolUnlocked/UnlockedSpell.text = newLocBall.eventName
+			$SpellSchoolUnlocked/SpellType.text = newLocBall.eventShortDescription
+			$SpellSchoolUnlocked.visible = true
 	print(newLocBall.eventName, "event name")
-	$EventPanel/EventNameLabel.text = newLocBall.eventName
-	$EventPanel/EventShortDescriptionLabel.text = newLocBall.eventShortDescription
-	$EventPanel/EventLongDescriptionLabel.text = newLocBall.eventLongDescription
 	pass
 
 

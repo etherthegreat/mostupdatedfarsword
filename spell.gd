@@ -24,13 +24,5 @@ func newGameSpellAssignment():
 	if spellType == "Plentify":
 		militarySpell = false
 		spellSprite = load("res://art assets/Placeholder Art/UI Art/resources/Plentify.png")
-		if spellLevel == 1:
-			spellCastCostPerMonth = 4
-			spellCastCost = (50)
-		elif spellLevel == 2:
-			spellCastCostPerMonth = 6
-			spellCastCost = (70)
-		elif spellLevel == 3:
-			spellCastCostPerMonth = 8
-			spellCastCost = (90)
+		spellCastCost = 15
 	pass

@@ -9,8 +9,8 @@ size = Vector2(69, 112)
 [node name="MagicAmountControl" type="Control"]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_right = 25.0
+offset_bottom = 38.0
 script = ExtResource("1_qdpjc")
 
 [node name="MagicSprite2D" type="Sprite2D" parent="."]

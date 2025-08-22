@@ -44,6 +44,7 @@ func _ready() -> void:
 	worldCreation = true
 	newGameBuild()
 	worldCreation = false
+	$RightClickDetector.visible = true
 	pass
 
 signal calculateSeason
@@ -71,7 +72,7 @@ func newGameBuild():
 	$CanvasLayer/TileInfoPanel.TilesCalculated()
 	#$CanvasLayer/TileInfoPanel.displayTileInfo()
 	#$CanvasLayer/BuildingInfoPanel.displayBuildingInfo()
-	$CanvasLayer/Spellbook.displaySpells(playerCountryNode)
+	#$CanvasLayer/Spellbook.displaySpells(playerCountryNode)
 	updatePlayerUI()
 	pass
 
@@ -114,6 +115,10 @@ func updatePlayerUI():
 	$CanvasLayer/GovernmentControl.buildSelf(playerCountryNode)
 	$CanvasLayer/GovernmentControl.addToConstitution.connect(addLawToCountry)
 	$CanvasLayer/FactionControl.newRewardSend.connect(addNewRewards)
+	$CanvasLayer/SpellSchoolsControl.connectSchools()
+	$CanvasLayer/SpellSchoolsControl.lvlUpSpell.connect(newSpellEvent)
+	$CanvasLayer/Spellbook.spellToUse.connect(activateSpellMapMode)
+	$TileController.spellAssignedToTile.connect(spellPurchased)
 	#print("ALL I NEED")
 	pass
 
@@ -256,6 +261,7 @@ func _on_test_resource_button_pressed() -> void:
 	playerCountryNode.surveyResources()
 	playerCountryNode.payUnitMaintenance()
 	playerCountryNode.collectTaxes()
+	$CanvasLayer/SpellSchoolsControl.updateMagicAmounts(playerCountryNode)
 	pass # Replace with function body.
 
 func _on_tech_tree_add_tech_to_player(techName) -> void:
@@ -303,6 +309,18 @@ func assignGovernor(governorToAssign, tileToAssignTo):
 
 func openGovernorsPanel(tile):
 	$CanvasLayer/TileInfoPanel.calculateAvailableGovernor(playerCountryNode, selectedTile)
+	pass
+
+#Magic Code
+
+func newSpellEvent(schoolType, currentLvl):
+	var sType = schoolType
+	var lvl = currentLvl
+	match sType:
+		"elementalist":
+			match lvl:
+				0:
+					createNewEvent("spell", "GEN_PLENTIFY_UNLOCK", "GEN", gameLanguage)
 	pass
 
 #Government Code
@@ -357,6 +375,17 @@ func activateArmyControl():
 var eventScene = load("res://eventScene.tscn")
 
 var temporaryTile: Tile
+#MAP INTERACTION
+func activateSpellMapMode(spell, cost):
+	$TileController.spellSelectionMode(spell, cost, playerCountryNode)
+	pass
+
+func spellPurchased(cost):
+	playerCountryNode.TotalMagic -= cost
+	$TileController.normalMode()
+	$CanvasLayer/Spellbook.displaySpells(playerCountryNode)
+	pass
+
 #EVENT SYSTEM
 func calculateTileEvent(tile, type):
 	print("most up to date", tile.tileName, type)
@@ -381,6 +410,10 @@ func createNewEvent(type, id, CID, language):
 			newEvent.buildSelf(type, id, CID, language)
 			newEvent.eventButtonPressed.connect(matchEventOutcome)
 			$CanvasLayer/EventControl/EventContainer.add_child(newEvent)
+		"spell":
+			newEvent.buildSelf(type, id, CID, language)
+			newEvent.eventButtonPressed.connect(matchEventOutcome)
+			$CanvasLayer/EventControl/EventContainer.add_child(newEvent)
 	pass
 
 func createNewTileEvent(type, id, CID, tile, language):
@@ -395,6 +428,14 @@ func matchEventOutcome(eventButtonID, eventType, eventID, eventCountry):
 	print("signal received ")
 	match eventCountry:
 		"GEN":
+			match eventType:
+				"spell":
+					match eventID:
+						"GEN_PLENTIFY_UNLOCK":
+							match eventButtonID:
+								"GEN_Plentify_Unlock_1":
+									playerCountryNode.addSpellToSpellbook("Plentify", 1, 0)
+									playerCountryNode.levelUpSchool("elementalist")
 			pass
 		"PDT":
 			match eventType:
@@ -433,4 +474,20 @@ func matchTileEventOutcome(eventButtonID, eventType, eventCountry, eventTile):
 				"GEN_AssignAlchemistWizard":
 					eventTile.addWizard("alchemist")
 			print(eventTile.tileWizard, "tileWizard")
+	pass
+
+
+func _on_right_click_detector_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
+	if Input.is_action_just_pressed('Right Click'):
+		resetUI()
+	pass # Replace with function body.
+
+func resetUI():
+	for Tile in $TileController.get_children():
+		Tile.visible = true
+	$TileController.normalMode()
+	for Control in $CanvasLayer.get_children():
+		Control.visible = false
+		$CanvasLayer/PanelOpenerControl.visible = true
+		$"CanvasLayer/Resource Bar (TOP)".visible = true
 	pass

@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://dwonmrxv1pcck"]
+[gd_scene load_steps=4 format=3 uid="uid://dwonmrxv1pcck"]
 
 [ext_resource type="Texture2D" uid="uid://djnvumtpui13d" path="res://art assets/Placeholder Art/character/8 11 experimental.png" id="1_lrrym"]
 [ext_resource type="Script" uid="uid://brege513eyw2c" path="res://event_scene.gd" id="1_y3087"]
+[ext_resource type="Texture2D" uid="uid://kjhhk7jj22fr" path="res://art assets/Placeholder Art/UI Art/resources/Plentify.png" id="3_apgmq"]
 
 [node name="EventControl" type="Control"]
 layout_mode = 3
@@ -9,6 +10,11 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("1_y3087")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 1925.0
+offset_bottom = 1086.0
 
 [node name="EventPanel" type="Panel" parent="."]
 layout_mode = 0
@@ -62,3 +68,75 @@ offset_bottom = 649.0
 theme_override_constants/h_separation = 435
 theme_override_constants/v_separation = 70
 columns = 3
+
+[node name="SpellSchoolUnlocked" type="Panel" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 677.0
+offset_top = 356.0
+offset_right = 1181.0
+offset_bottom = 749.0
+
+[node name="SpellSprite" type="Sprite2D" parent="SpellSchoolUnlocked"]
+position = Vector2(158, 153)
+scale = Vector2(0.35, 0.35)
+texture = ExtResource("3_apgmq")
+
+[node name="UnlockedSpell" type="Label" parent="SpellSchoolUnlocked"]
+layout_mode = 0
+offset_top = -1.0
+offset_right = 503.0
+offset_bottom = 38.0
+theme_override_font_sizes/font_size = 20
+text = "Unlocked Elementalist Spell"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SpellName" type="Label" parent="SpellSchoolUnlocked"]
+layout_mode = 0
+offset_left = 140.0
+offset_top = 267.0
+offset_right = 377.0
+offset_bottom = 311.0
+theme_override_font_sizes/font_size = 30
+text = "PLENTIFY"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="EffectsOfSpellLabel" type="Label" parent="SpellSchoolUnlocked"]
+layout_mode = 0
+offset_left = 287.0
+offset_top = 102.0
+offset_right = 485.0
+offset_bottom = 268.0
+text = "+1 Food Per Farm
++1 Food Per Dock
++1 Culture Per Farm
++1 Culture Per Dock
+-2 Magic Per Farm
+-2 Magic Per Dock
+"
+horizontal_alignment = 2
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="SpellType" type="Label" parent="SpellSchoolUnlocked"]
+layout_mode = 0
+offset_left = 281.0
+offset_top = 53.0
+offset_right = 491.0
+offset_bottom = 93.0
+text = "Focus: Tiles"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="VBoxContainer" parent="SpellSchoolUnlocked"]
+layout_mode = 0
+offset_left = 116.0
+offset_top = 310.0
+offset_right = 419.0
+offset_bottom = 350.0
+alignment = 1
+
+[node name="SpellButtonControl" type="Control" parent="SpellSchoolUnlocked/HBoxContainer"]
+layout_mode = 2

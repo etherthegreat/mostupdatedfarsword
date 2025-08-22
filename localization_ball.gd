@@ -12,11 +12,14 @@ var eventName: String
 var eventShortDescription: String
 var eventLongDescription: String
 
+var unlockableName: String
+
 var eventButtons: Array = []
 
 var eventTile: Tile
 
 func buildSelf(eT, eID, eC, eL):
+	print(eT, eID, eC, eL, "kangaroo")
 	eventType = eT
 	eventID = eID
 	eventCountry = eC
@@ -62,7 +65,21 @@ func matchEventLabels():
 					pass
 				"faction":
 					pass
-				"magic":
+				"spell":
+					match eventID:
+						"GEN_PLENTIFY_UNLOCK":
+							match eventLanguage:
+								"eng":
+									eventName = "New Elementalism Spell Unlocked"
+									eventShortDescription = "Focus: Tiles"
+									unlockableName = "PLENTIFY"
+									eventLongDescription = "+1 Food Per Farm
+										+1 Food Per Dock
+										+1 Culture Per Farm
+										+1 Culture Per Dock
+										-2 Magic Per Farm
+										-2 Magic Per Dock"
+									newEventButton("Plenty More Where That Came From", "GEN_Plentify_Unlock_1")
 					pass
 				"expedition":
 					pass
@@ -136,5 +153,9 @@ func newEventButton(buttonText, buttonID):
 		"tile":
 			var buttonOption = eventButtonScene.instantiate()
 			buttonOption.buildTileEventButton(buttonText, buttonID, eventTile, "tile")
+			eventButtons.append(buttonOption)
+		"spell":
+			var buttonOption = eventButtonScene.instantiate()
+			buttonOption.buildSelf(buttonText, buttonID, "spell")
 			eventButtons.append(buttonOption)
 	pass

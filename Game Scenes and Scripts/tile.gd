@@ -241,9 +241,9 @@ func onNewGame():
 		addBuilding("Forge", 1)
 		addBuilding("Camp", 5)
 		
-		var actingSpell = spell.new()
-		actingSpell.spellType = "Celebration"
-		tileSpell = actingSpell
+		#var actingSpell = spell.new()
+		#actingSpell.spellType = "Celebration"
+		#tileSpell = actingSpell
 	pass
 	if tileNumber == 4:
 		tileSpawnPath = "Pender Tal South"
@@ -619,11 +619,18 @@ func addStationedArmy(armyNode):
 	stationedArmy = armyNode
 	pass
 
+signal spellAssigned
 func _on_area_2d_input_event(viewport, event, shape_idx):
 		if event is InputEventMouseButton and event.pressed:
 			if Input.is_action_just_pressed('Left Click'):
-				emit_signal("clicked", self)
-
+				if spellToCast == null:
+					emit_signal("clicked", self)
+				else:
+					tileSpell = spellToCast
+					emit_signal("spellAssigned", spellCostToCast)
+					spellToCast = null
+					spellCostToCast = 0
+					print(tileName, tileSpell.spellType, "patronix")
 
 func _on_area_2d_mouse_entered() -> void:
 	tileRing.modulate = Color(0, 0, 0)
@@ -638,4 +645,27 @@ func _on_area_2d_mouse_exited() -> void:
 
 func assignNewGovernor(newGovernor):
 	tileGovernor = newGovernor
+	pass
+
+var spellToCast: spell
+var spellCostToCast: int
+func spellCastMode(spell, cost, playerCountryNode):
+	if tileOwner == playerCountryNode.CID:
+		if tileSpell != null:
+			if tileSpell.spellType != spell.spellType:
+				spellToCast = spell
+				spellCostToCast = cost
+			else:
+				visible = false
+		else:
+			spellToCast = spell
+			spellCostToCast = cost
+	else:
+		visible = false
+	pass
+
+func normalMode():
+	spellToCast = null
+	spellCostToCast = 0
+	visible = true
 	pass
