@@ -89,7 +89,15 @@ func matchEventLabels():
 									eventLongDescription = str("-2 corruption in per turn in this tile
 										-4 magic per turn")
 									newEventButton("Who Smelt it Dealt It", "GEN_Healing_Winds_Unlock_1")
-					pass
+						"GEN_RAISE_SPRING_UNLOCK":
+							match eventLanguage:
+								"eng":
+									eventName = "New Elementalism Spell Unlocked"
+									eventShortDescription = "Focus: Dry Tiles"
+									unlockableName = "RAISE SPRING"
+									eventLongDescription = str("Raise a spring in this tile, granting 
+										permanent access to fresh water")
+									newEventButton("Fetch me my bladder, I'm thirsty!", "GEN_Raise_Spring_Unlock_1")
 				"expedition":
 					pass
 		"PDT":

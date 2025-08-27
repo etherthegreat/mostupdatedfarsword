@@ -302,7 +302,6 @@ func onNewGame():
 		Bath.buildBuilding()
 		tileBuildingsList.append(Bath)
 		calculateCorruption()
-		calculateTerrain()
 	pass
 	if tileNumber == 5:
 		tileName
@@ -318,7 +317,6 @@ func onNewGame():
 		corruption
 		TileNeighbors
 	calculateCorruption()
-	calculateTerrain()
 	pass
 
 
@@ -418,30 +416,34 @@ func calculateDailyTileEcoChanges():
 
 
 func calculateCorruption():
-	if tileEcoModifiers != null:
-		for tileEcoModifier in tileEcoModifiers:
-			if tileEcoModifier.modType == "CORRUPTION":
-				if corruption >= 80:
-					tileEcoModifier.modName = "TotalCorruption"
-					tileEcoModifier.buildTileEcoMod()
-					return
-				if corruption >= 60 && corruption < 80:
-					tileEcoModifier.modName = "HeavyCorruption"
-					tileEcoModifier.buildTileEcoMod()
-					return
-				if corruption >= 40 && corruption < 60:
-					tileEcoModifier.modName = "ModerateCorruption"
-					tileEcoModifier.buildTileEcoMod()
-					return
-				if corruption >= 20 && corruption < 40:
-					tileEcoModifier.modName = "LightCorruption"
-					tileEcoModifier.buildTileEcoMod()
-					return
-				if corruption < 20:
-					tileEcoModifier.modName = "NoCorruption"
-					tileEcoModifier.buildTileEcoMod()
-					return
+	tileEcoModifiers.clear()
+	if corruption >= 80:
+		var newtileEco = tileEcoModifier.new()
+		newtileEco.modName = "TotalCorruption"
+		newtileEco.buildTileEcoMod()
+		tileEcoModifiers.append(newtileEco)
+	elif corruption >= 60 || corruption < 80:
+		var newtileEco = tileEcoModifier.new()
+		newtileEco.modName = "HeavyCorruption"
+		newtileEco.buildTileEcoMod()
+		tileEcoModifiers.append(newtileEco)
+	elif corruption >= 40 || corruption < 60:
+		var newtileEco = tileEcoModifier.new()
+		newtileEco.modName = "ModerateCorruption"
+		newtileEco.buildTileEcoMod()
+		tileEcoModifiers.append(newtileEco)
+	elif corruption >= 20 || corruption < 40:
+		var newtileEco = tileEcoModifier.new()
+		newtileEco.modName = "LightCorruption"
+		newtileEco.buildTileEcoMod()
+		tileEcoModifiers.append(newtileEco)
+	else:
+		var newtileEco = tileEcoModifier.new()
+		newtileEco.modName = "NoCorruption"
+		newtileEco.buildTileEcoMod()
+		tileEcoModifiers.append(newtileEco)
 	corruptionChange = 0
+	calculateTerrain()
 	pass
 
 func calculateTerrain():
@@ -631,7 +633,11 @@ func _on_area_2d_input_event(viewport, event, shape_idx):
 					emit_signal("spellAssigned", spellCostToCast)
 					spellToCast = null
 					spellCostToCast = 0
-					print(tileName, tileSpell.spellType, "patronix")
+					match tileSpell.spellType:
+						"Raise Spring":
+							freshWater = true
+							tileSpell = null
+					calculateCorruption()
 
 func _on_area_2d_mouse_entered() -> void:
 	tileRing.modulate = Color(0, 0, 0)
@@ -654,13 +660,19 @@ func spellCastMode(spell, cost, playerCountryNode):
 	if tileOwner == playerCountryNode.CID:
 		if tileSpell != null:
 			if tileSpell.spellType != spell.spellType:
-				spellToCast = spell
-				spellCostToCast = cost
+				if spell.spellType == "Raise Spring" && freshWater == true:
+					visible = false
+				else: 
+					spellToCast = spell
+					spellCostToCast = cost
 			else:
 				visible = false
 		else:
-			spellToCast = spell
-			spellCostToCast = cost
+			if spell.spellType == "Raise Spring" && freshWater == true:
+				visible = false
+			else:
+				spellToCast = spell
+				spellCostToCast = cost
 	else:
 		visible = false
 	pass

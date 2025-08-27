@@ -30,4 +30,8 @@ func newGameSpellAssignment():
 			militarySpell = false
 			spellSprite = load("res://art assets/Placeholder Art/UI Art/resources/Older Icons/Magic.png")
 			spellCastCost = 20
+		"Raise Spring":
+			militarySpell = false
+			spellSprite = load("res://art assets/ModifierIcons/TileEcoModifiers/FreshWater.png")
+			spellCastCost = 100
 	pass
