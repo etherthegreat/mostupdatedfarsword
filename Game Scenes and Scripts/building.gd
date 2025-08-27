@@ -21,7 +21,7 @@ var enabled: bool #Some buildings can become Disabled, like breeding pits if you
 var buildingModifiers: Array = []
 var playerCountry: country #the country that controls this building
 var playerPolicies: Array = [] #government upgrades
-var tileSpell: spell # the spell affecting this tile 
+var tileSpell: spellArt # the spell affecting this tile 
 var religiousBeliefs: Array = [] #used to determine religious beliefs in calculations
 var traditionsList: Array = [] #used to determine cultural traditions in calculations
 var Governor: governor
@@ -157,663 +157,821 @@ func buildBuilding():
 
 func matchPlayerUnlockables(playerCountryNode):
 	playerCountry = playerCountryNode
-	if buildingType == "Farm":
-		cropSlot = tile.cropSlot
-		for Technology in playerCountry.unlockedTechnologies:
-			if Technology.techName == "Agriculture":
-				foodPerLevel += 1
-			if Technology.techName == "Irrigation":
-				foodPerLevel += 1
-			if Technology.techName == "Calendar":
-				foodPerLevel += 1
-			if Technology.techName == "Engineering":
-				foodPerLevel += 1
-		for law in playerCountry.unlockedLaws:
-			if law.lawType == "Rural Education Initiative":
-				sciencePerLevel += 1
-				goldCostPerLevel +=1
-			if law.lawType == "Mercantilism":
-				goldPerLevel +=1
-		if tile.tileGovernor != null:
-			Governor = tile.tileGovernor
-			if Governor.governorType == "BREWER":
-				goldPerLevel += 2
-			if Governor.governorType == "FARMER":
-				foodPerLevel += (2 * Governor.governorLevel)
-				mandateCostPerLevel += (1 * Governor.governorLevel)
-			if Governor.governorType == "RECRUITER":
-				manpowerPerLevel += (200 * Governor.governorLevel)
-				mandateCostPerLevel += (1 * Governor.governorLevel)
-		for tradition in playerCountry.unlockedTraditions:
-			if tradition.traditionType == "Humble Folk":
-				faithPerLevel += 1
-			if tradition.traditionType == "Peasant Militias":
-				manpowerPerLevel += 250
-		if tile.tileSpell != null:
-			tileSpell = tile.tileSpell
-			if tileSpell.spellType == "Plentify":
-				foodPerLevel +=1
-				woodPerLevel +=1
-				magicCostPerLevel += 4
-			if tileSpell.spellType == "Gentle Rains":
-				foodPerLevel += 2
-				magicCostPerLevel += 5
-		for belief in playerCountry.selectedBeliefs:
-			if belief.beliefType == "Gentle Shepherds":
-				foodPerLevel += 1
-			if belief.beliefType == "SARATIAN":
-				culturePerLevel += 1
-		if cropSlot != null:
-			if cropSlot.cropType == "Bananas":
-				foodPerLevel += 1
-				magicPerLevel += 1
-			if cropSlot.cropType == "Razorberry":
-				goldPerLevel += 5
-				faithCostPerLevel +=2
-				foodCostPerLevel +=1
-			if cropSlot.cropType == "Mushrooms":
-				magicPerLevel +=1
-				sciencePerLevel +=1
-			if cropSlot.cropType == "Spices":
-				goldPerLevel += 1
-				culturePerLevel += 1
-			if cropSlot.cropType == "Wheat":
-				foodPerLevel += 2
-			if cropSlot.cropType == "Seaweed":
-				foodPerLevel += 1
-				culturePerLevel += 1
-			if cropSlot.cropType == "Copperflower":
-				metalPerLevel +=1
-				sciencePerLevel +=1 
-			if cropSlot.cropType == "Incense":
-				faithPerLevel +=2
-			if cropSlot.cropType == "Cannabis":
-				culturePerLevel +=2
-			if cropSlot.cropType == "Wereroot":
-				woodPerLevel +=1
-				faithPerLevel +=1
-			if cropSlot.cropType == "Bamboo":
-				woodPerLevel +=2
-			if cropSlot.cropType == "Cloudbean":
-				magicPerLevel +=2
-			if cropSlot.cropType == "Papyrus":
-				sciencePerLevel +=2
-			if cropSlot.cropType == "Cotton":
-				goldPerLevel +=2
-		else:
-			print("error, no crop in", tile.tileNumber)
-	if buildingType == "Granary":
-		for Technology in playerCountry.unlockedTechnologies:
-			if Technology.techName == "Calendar":
-				foodPerLevel += 1
-				goldCostPerLevel += 1
-			if Technology.techName == "Engineering":
-				foodPerLevel += 1
-				goldCostPerLevel += 1
-		if playerCountry.mandateFromGranaries == true:
-			mandatePerLevel += 1
+	match buildingType:
+		"Farm":
+			cropSlot = tile.cropSlot
 			for Technology in playerCountry.unlockedTechnologies:
-				if Technology.techName == "Statecraft":
-					mandatePerLevel += 1
-			for tradition in playerCountry.unlockedTraditions:
-				if tradition.traditionType == "Meticulous Organizers":
-					mandatePerLevel += 1
-			for belief in playerCountry.selectedBeliefs:
-				if belief.beliefType == "FA ENEPO":
-					mandatePerLevel += 1
+				if Technology.techName == "Agriculture":
+					foodPerLevel += 1
+				if Technology.techName == "Irrigation":
+					foodPerLevel += 1
+				if Technology.techName == "Calendar":
+					foodPerLevel += 1
+				if Technology.techName == "Engineering":
+					foodPerLevel += 1
+			for law in playerCountry.lawsInConstitution:
+				if law.lawType == "Rural Education Initiative":
+					sciencePerLevel += 1
+					goldCostPerLevel +=1
+				if law.lawType == "Mercantilism":
+					goldPerLevel += 1000
 			if tile.tileGovernor != null:
-				if tile.tileGovernor.governorType == "Administrator":
-					mandatePerLevel += 1
+				match tile.tileGovernor.governorPosition:
+					"BREWER":
+						match tile.tileGovernor.governorLevel:
+							1:
+								goldPerLevel += 1
+							2:
+								goldPerLevel += 2
+								culturePerLevel += 1
+							3: 
+								goldPerLevel += 3
+								culturePerLevel += 2
+								mandatePerLevel += 1
+					"FARMER":
+						match tile.tileGovernor.governorLevel:
+							1:
+								foodPerLevel += 1000
+							2:
+								foodPerLevel += 2
+								woodPerLevel += 1
+							3: 
+								foodPerLevel += 3
+								woodPerLevel += 2
+								goldPerLevel += 1
+					"RECRUITER":
+						match tile.tileGovernor.governorLevel:
+							1:
+								manpowerPerLevel += 10
+							2:
+								manpowerPerLevel += 20
+							3: 
+								manpowerPerLevel += 30
+			for tradition in playerCountry.unlockedTraditions:
+				if tradition.traditionType == "Humble Folk":
+					faithPerLevel += 1
+				if tradition.traditionType == "Peasant Militias":
+					manpowerPerLevel += 250
 			if tile.tileSpell != null:
-				if tile.tileSpell.spellType == "Celebration":
+				match tile.tileSpell.spellType:
+					"Plentify":
+						foodPerLevel +=1
+						woodPerLevel +=1
+						magicCostPerLevel += 4
+					"Gentle Rains":
+						foodPerLevel += 2
+						magicCostPerLevel += 5
+			for belief in playerCountry.selectedBeliefs:
+				if belief.beliefType == "Gentle Shepherds":
+					foodPerLevel += 1
+				if belief.beliefType == "SARATIAN":
+					culturePerLevel += 1
+			if cropSlot != null:
+				match cropSlot.cropType:
+					"Bananas":
+						foodPerLevel += 1
+						magicPerLevel += 1
+					"Razorberry":
+						goldPerLevel += 5
+						faithCostPerLevel +=2
+						foodCostPerLevel +=1
+					"Mushrooms":
+						magicPerLevel +=1
+						sciencePerLevel +=1
+					"Spices":
+						goldPerLevel += 1
+						culturePerLevel += 1
+					"Wheat":
+						foodPerLevel += 2
+					"Seaweed":
+						foodPerLevel += 1
+						culturePerLevel += 1
+					"Copperflower":
+						metalPerLevel +=1
+						sciencePerLevel +=1 
+					"Incense":
+						faithPerLevel +=2
+					"Cannabis":
+						culturePerLevel +=2
+					"Wereroot":
+						woodPerLevel +=1
+						faithPerLevel +=1
+					"Bamboo":
+						woodPerLevel +=2
+					"Cloudbean":
+						magicPerLevel +=2
+					"Papyrus":
+						sciencePerLevel +=2
+					"Cotton":
+						goldPerLevel +=2
+			else:
+				print("error, no crop in", tile.tileNumber)
+		"Granary":
+			for Technology in playerCountry.unlockedTechnologies:
+				if Technology.techName == "Calendar":
+					foodPerLevel += 1
+					goldCostPerLevel += 1
+				if Technology.techName == "Engineering":
+					foodPerLevel += 1
+					goldCostPerLevel += 1
+			if playerCountry.mandateFromGranaries == true:
+				mandatePerLevel += 1
+				for Technology in playerCountry.unlockedTechnologies:
+					if Technology.techName == "Statecraft":
+						mandatePerLevel += 1
+				for tradition in playerCountry.unlockedTraditions:
+					if tradition.traditionType == "Meticulous Organizers":
+						mandatePerLevel += 1
+				for belief in playerCountry.selectedBeliefs:
+					if belief.beliefType == "FA ENEPO":
+						mandatePerLevel += 1
+				if tile.tileGovernor != null:
+					match tile.tileGovernor.governorPosition:
+						"ADMINISTRATOR":
+							match tile.tileGovernor.governorLevel:
+								1:
+									foodPerLevel += 1
+								2:
+									foodPerLevel += 2
+									mandatePerLevel += 1
+								3: 
+									foodPerLevel += 3
+									mandatePerLevel += 2
+									harmonyPerLevel += 1
+				if tile.tileSpell != null:
+					match tile.tileSpell.spellType:
+						"Celebration":
+							mandatePerLevel += 1
+							magicCostPerLevel += 4
+		"Mine":
+			oreSlot = tile.oreSlot
+			if oreSlot != null:
+				match oreSlot.oreType:
+					"Copper":
+						metalPerLevel +=2
+						goldPerLevel +=1
+					"Iron":
+						metalPerLevel +=3
+					"Marble":
+						goldPerLevel +=1
+						culturePerLevel +=2
+					"Gold":
+						goldPerLevel +=2
+						mandatePerLevel +=1
+					"Jewels":
+						mandatePerLevel +=1
+						goldPerLevel +=1
+						faithPerLevel +=1
+					"Floodstone":
+						metalPerLevel +=1
+						magicPerLevel +=2
+					"Ivoroid":
+						faithPerLevel +=2
+						magicPerLevel +=1
+					"Moonbone":
+						metalPerLevel +=1
+						harmonyPerLevel +=1
+						culturePerLevel +=1
+					"Zylfire":
+						foodPerLevel +=2
+						metalPerLevel +=1
+			else:
+				print("error, no ore in", tile.tileNumber)
+			for Technology in playerCountry.unlockedTechnologies:
+				if Technology.techName == "Steam Engine":
+					metalPerLevel += 3
+					magicCostPerLevel += 1
+					woodCostPerLevel += 1
+					foodCostPerLevel += 1
+			for law in playerCountry.lawsInConstitution:
+				if law.lawType == "Free Land Prospecting":
+					goldPerLevel += 1
+				if law.lawType == "State-Operated Mines":
+					goldCostPerLevel +=1
+					harmonyCostPerLevel +=1
+					metalPerLevel += 2
+			if tile.tileGovernor != null:
+				match tile.tileGovernor.governorPosition:
+					"MINER":
+						match tile.tileGovernor.governorLevel:
+							1: 
+								metalPerLevel += 1
+							2: 
+								metalPerLevel += 2
+								goldPerLevel += 1
+							3: 
+								metalPerLevel += 3
+								goldPerLevel += 2
+								woodPerLevel += 1
+					"BUILDER":
+						match tile.tileGovernor.governorLevel:
+							2: 
+								metalPerLevel += 1
+							3:
+								metalPerLevel += 2
+			for tradition in playerCountry.unlockedTraditions:
+				if tradition.traditionType == "Home Underground":
+					culturePerLevel += 1
+				if tradition.traditionType == "Dungeon Gourmet":
+					foodPerLevel +=1
+				if tradition.traditionType == "Valued Expertise":
+					influencePerLevel +=1
+			if tile.tileSpell != null:
+				match tile.tileSpell.spellType:
+					"Nightvision":
+						metalPerLevel += 1
+						magicCostPerLevel += 3
+					"Divining Rods":
+						metalPerLevel +=1
+						goldPerLevel +=2
+						magicCostPerLevel += 6
+					"Replenishment":
+						metalPerLevel += 4
+						magicCostPerLevel += 12
+			for belief in playerCountry.selectedBeliefs:
+				if belief.beliefType == "BIBWEY":
+					metalPerLevel += 1
+				if belief.beliefType == "Precious Metals":
+					faithPerLevel += 1
+		"Temple":
+			faithChurchLevel = playerCountry.churchLevel
+			match faithChurchLevel:
+				0:
+					faithPerLevel += 1
+					goldPerLevel +=1
 					mandatePerLevel += 1
-					magicCostPerLevel += 4
-	pass
-	if buildingType == "Mine":
-		oreSlot = tile.oreSlot
-		if oreSlot != null:
-			if oreSlot.oreType == "Copper":
-				metalPerLevel +=2
-				goldPerLevel +=1
-			if oreSlot.oreType == "Iron":
-				metalPerLevel +=3
-			if oreSlot.oreType == "Marble":
-				goldPerLevel +=1
-				culturePerLevel +=2
-			if oreSlot.oreType == "Gold":
-				goldPerLevel +=2
-				mandatePerLevel +=1
-			if oreSlot.oreType == "Jewels":
-				mandatePerLevel +=1
-				goldPerLevel +=1
-				faithPerLevel +=1
-			if oreSlot.oreType == "Floodstone":
-				metalPerLevel +=1
-				magicPerLevel +=2
-			if oreSlot.oreType == "Ivoroid":
-				faithPerLevel +=2
-				magicPerLevel +=1
-			if oreSlot.oreType == "Moonbone":
-				metalPerLevel +=1
-				harmonyPerLevel +=1
-				culturePerLevel +=1
-			if oreSlot.oreType == "Zylfire":
-				foodPerLevel +=2
-				metalPerLevel +=1
-		else:
-			print("error, no ore in", tile.tileNumber)
-		for Technology in playerCountry.unlockedTechnologies:
-			if Technology.techName == "Steam Engine":
-				metalPerLevel += 3
-				magicCostPerLevel += 1
-				woodCostPerLevel += 1
-				foodCostPerLevel += 1
-		for law in playerCountry.unlockedLaws:
-			if law.lawType == "Free Land Prospecting":
-				goldPerLevel += 1
-			if law.lawType == "State-Operated Mines":
-				goldCostPerLevel +=1
-				harmonyCostPerLevel +=1
-				metalPerLevel += 2
-		if tile.tileGovernor != null:
-			Governor = tile.tileGovernor
-			if Governor.governorType == "MINER":
-				metalPerLevel +=2
-			if Governor.governorType == "BUILDER":
-				woodPerLevel += 1
-				metalPerLevel += 1
-		for tradition in playerCountry.unlockedTraditions:
-			if tradition.traditionType == "Home Underground":
-				culturePerLevel += 1
-			if tradition.traditionType == "Dungeon Gourmet":
-				foodPerLevel +=1
-			if tradition.traditionType == "Valued Expertise":
-				influencePerLevel +=1
-		if tile.tileSpell != null:
-			tileSpell = tile.tileSpell
-			if tileSpell.spellType == "Nightvision":
-				metalPerLevel += 1
-				magicCostPerLevel += 3
-			if tileSpell.spellType == "Divining Rods":
-				metalPerLevel +=1
-				goldPerLevel +=2
-				magicCostPerLevel += 6
-			if tileSpell.spellType == "Replenishment":
-				metalPerLevel += 4
-				magicCostPerLevel += 12
-		for belief in playerCountry.selectedBeliefs:
-			if belief.beliefType == "BIBWEY":
-				metalPerLevel += 1
-			if belief.beliefType == "Precious Metals":
+					harmonyPerLevel += 1
+				1:
+					faithPerLevel += 1
+					goldPerLevel +=1
+					mandatePerLevel +=1
+				2:
+					goldPerLevel +=1
+					mandatePerLevel +=1
+				3:
+					goldPerLevel +=1
+				-1:
+					faithPerLevel += 1
+					goldPerLevel +=1
+					harmonyPerLevel +=1
+				-2:
+					faithPerLevel += 1
+					harmonyPerLevel +=1
+				-3:
+					faithPerLevel += 1
+			for Technology in playerCountry.unlockedTechnologies:
+				if Technology.techName == "Architecture":
+					woodCostPerLevel +=1
+					metalCostPerLevel +=1
+					cultureCostPerLevel +=2
+			for law in playerCountry.lawsInConstitution:
+				if law.lawType == "Pacifist Sanctuaries":
+					harmonyPerLevel +=1
+				if law.lawType == "Clerical Administration":
+					faithPerLevel +=1
+			if tile.tileGovernor != null:
+				match tile.tileGovernor.governorPosition:
+					"NUN":
+						match tile.tileGovernor.governorLevel:
+							1:
+								faithPerLevel += 1
+							2:
+								faithPerLevel += 2
+								foodPerLevel += 1
+							3:
+								faithPerLevel += 3
+								foodPerLevel += 2
+								culturePerLevel += 1
+					"BISHOP":
+						match tile.tileGovernor.governorLevel:
+							1: 
+								faithPerLevel += 1
+							2:
+								faithPerLevel += 2
+								harmonyPerLevel += 1
+							3:
+								faithPerLevel += 3
+								harmonyPerLevel += 2
+								mandatePerLevel += 1
+			for tradition in playerCountry.unlockedTraditions:
+				if tradition.traditionType == "Studious Monks":
+					sciencePerLevel += 1
+				if tradition.traditionType == "Quiet Gardens":
+					faithPerLevel +=1
+			if tile.tileSpell != null:
+				match tile.tileSpell.spellType:
+					"Foresight":
+						mandatePerLevel += 2
+						magicCostPerLevel += 6
+					"Omniscient Direction":
+						faithPerLevel += 2
+						mandatePerLevel += 5
+						magicCostPerLevel += 15
+			for belief in playerCountry.selectedBeliefs:
+				if belief.beliefType == "Religious Arts":
+					culturePerLevel += 1
+				if belief.beliefType == "Protected Pilgrims":
+					influencePerLevel += 1
+				if belief.beliefType == "VIBIAN KARIK":
+					foodPerLevel += 2
+					goldCostPerLevel += 1
+			cropSlot = tile.cropSlot
+			if cropSlot.cropType == "Incense":
 				faithPerLevel += 1
-	if buildingType == "Temple":
-		faithChurchLevel = playerCountry.churchLevel
-		if faithChurchLevel == 0:
-			faithPerLevel += 1
-			goldPerLevel +=1
-			mandatePerLevel +=1
-			harmonyPerLevel +=1
-		elif faithChurchLevel == 1:
-			faithPerLevel += 1
-			goldPerLevel +=1
-			mandatePerLevel +=1
-		elif faithChurchLevel == 2:
-			goldPerLevel +=1
-			mandatePerLevel +=1
-		elif faithChurchLevel == 3:
-			goldPerLevel +=1
-		elif faithChurchLevel == -1:
-			faithPerLevel += 1
-			goldPerLevel +=1
-			harmonyPerLevel +=1
-		elif faithChurchLevel == -2:
-			faithPerLevel += 1
-			harmonyPerLevel +=1
-		elif faithChurchLevel == -3:
-			faithPerLevel += 1
-		else:
-			print("error, no faith / church level found in player country Node")
-		for Technology in playerCountry.unlockedTechnologies:
-			if Technology.techName == "Architecture":
-				woodCostPerLevel +=1
-				metalCostPerLevel +=1
-				cultureCostPerLevel +=2
-		for law in playerCountry.unlockedLaws:
-			if law.lawType == "Pacifist Sanctuaries":
-				harmonyPerLevel +=1
-			if law.lawType == "Clerical Administration":
-				faithPerLevel +=1
-		if tile.tileGovernor != null:
-			Governor = tile.tileGovernor
-			if Governor.governorType == "NUN":
-				faithPerLevel += (1 * Governor.governorLevel)
-				influencePerLevel += (1 * Governor.governorLevel)
-			if Governor.governorType == "BISHOP":
-				faithPerLevel += (1 * Governor.governorLevel)
-				mandatePerLevel += (1 * Governor.governorLevel)
-		for tradition in playerCountry.unlockedTraditions:
-			if tradition.traditionType == "Studious Monks":
-				sciencePerLevel += 1
-			if tradition.traditionType == "Quiet Gardens":
-				faithPerLevel +=1
-		if tile.tileSpell != null:
-			tileSpell = tile.tileSpell
-			if tileSpell.spellType == "Foresight":
-				mandatePerLevel += 2
-				magicCostPerLevel += 6
-			if tileSpell.spellType == "Omniscient Direction":
-				faithPerLevel += 2
-				mandatePerLevel += 5
-				magicCostPerLevel += 15
-		for belief in playerCountry.selectedBeliefs:
-			if belief.beliefType == "Religious Arts":
-				culturePerLevel += 1
-			if belief.beliefType == "Protected Pilgrims":
-				influencePerLevel += 1
-			if belief.beliefType == "VIBIAN KARIK":
-				foodPerLevel += 2
-				goldCostPerLevel += 1
-		cropSlot = tile.cropSlot
-		if cropSlot.cropType == "Incense":
-			faithPerLevel += 1
-	if buildingType == "Camp":
-		for belief in playerCountry.selectedBeliefs:
-			if belief.beliefType == "TYLA DYN":
-				foodPerLevel += 1
-			if belief.beliefType == "Tree of Life":
-				harmonyPerLevel += 1
-		for Technology in playerCountry.unlockedTechnologies:
-			if Technology.techName == "Bronze Working":
-				woodPerLevel +=2
-				metalCostPerLevel +=1
-			if Technology.techName == "Iron Working":
-				woodPerLevel +=2
-				metalCostPerLevel +=1
-		for law in playerCountry.unlockedLaws:
-			if law.lawType == "Universal Land Rights":
-				harmonyPerLevel +=1
-			if law.lawType == "Land Conservation":
-				culturePerLevel +=1
-		if tile.tileGovernor != null:
-			Governor = tile.tileGovernor
-			if Governor.governorType == "FORESTER":
-				woodPerLevel += (2 * Governor.governorLevel)
-			if Governor.governorType == "ADMIRAL":
-				woodPerLevel += 1
-				manpowerPerLevel += (200 * Governor.governorLevel)
-			if Governor.governorType == "ARTISAN":
-				culturePerLevel += (1 * Governor.governorLevel)
-				influencePerLevel += (1 * Governor.governorLevel)
-		for tradition in playerCountry.unlockedTraditions:
-			if tradition.traditionType == "Hunting Parties":
-				foodPerLevel += (1 * Governor.governorLevel)
-				manpowerPerLevel += (50 * Governor.governorLevel)
-			if tradition.traditionType == "Forest Wardens":
-				mandatePerLevel +=1
-		if tile.tileSpell != null:
-			tileSpell = tile.tileSpell
-			if tileSpell.spellType == "Ent Tongue":
-				woodPerLevel +=1
-				culturePerLevel += 1
-				magicCostPerLevel += 4
-			if tileSpell.spellType == "Hunter's Mark":
-				foodPerLevel += 1
-				magicCostPerLevel += 2
-	if buildingType == "Tower":
-		if tile.tileWizard != null:
-			wizardSlot = tile.tileWizard
-			if wizardSlot.wizardType == "DRUID":
-				woodPerLevel += 3
-			elif wizardSlot.wizardType == "ALCHEMIST":
-				goldPerLevel += 3
-			elif wizardSlot.wizardType == "ELEMENTALST":
-				foodPerLevel += 3
-			elif wizardSlot.wizardType == "SUMMONER":
-				metalPerLevel += 2
-			elif wizardSlot.wizardType == "SEER":
-				faithPerLevel += 3
-			elif wizardSlot.wizardType == "PSIONICIST":
-				foodPerLevel += 1
-				woodPerLevel += 1
-				goldPerLevel += 1
-				metalPerLevel += 1
+		"Camp":
+			for belief in playerCountry.selectedBeliefs:
+				if belief.beliefType == "TYLA DYN":
+					foodPerLevel += 1
+				if belief.beliefType == "Tree of Life":
+					harmonyPerLevel += 1
+			for Technology in playerCountry.unlockedTechnologies:
+				if Technology.techName == "Bronze Working":
+					woodPerLevel +=2
+					metalCostPerLevel +=1
+				if Technology.techName == "Iron Working":
+					woodPerLevel +=2
+					metalCostPerLevel +=1
+			for law in playerCountry.lawsInConstitution:
+				if law.lawType == "Universal Land Rights":
+					harmonyPerLevel +=1
+				if law.lawType == "Land Conservation":
+					culturePerLevel +=1
+				if law.lawType == "Mercantilism":
+					goldPerLevel += 1
+			if tile.tileGovernor != null:
+				match tile.tileGovernor.governorPosition:
+					"FORESTER":
+						match tile.tileGovernor.governorLevel:
+							1:
+								woodPerLevel += 1
+							2:
+								woodPerLevel += 2
+								foodPerLevel += 1
+							3:
+								woodPerLevel += 3
+								foodPerLevel += 2
+								faithPerLevel += 1
+					"ADMIRAL":
+						match tile.tileGovernor.governorLevel:
+							2:
+								woodPerLevel += 1
+							3:
+								woodPerLevel += 2
+					"ARTISAN":
+						match tile.tileGovernor.governorLevel:
+							3:
+								culturePerLevel += 1
+			for tradition in playerCountry.unlockedTraditions:
+				if tradition.traditionType == "Hunting Parties":
+					foodPerLevel += (1 * Governor.governorLevel)
+					manpowerPerLevel += (50 * Governor.governorLevel)
+				if tradition.traditionType == "Forest Wardens":
+					mandatePerLevel +=1
+			if tile.tileSpell != null:
+				match tile.tileSpell.spellType:
+					"Ent Tongue":
+						woodPerLevel +=1
+						culturePerLevel += 1
+						magicCostPerLevel += 4
+					"Hunter's Mark":
+						foodPerLevel += 1
+						magicCostPerLevel += 2
+		"Tower":
+			if tile.tileWizard != null:
+				match tile.tileWizard.wizardType:
+					"DRUID":
+						woodPerLevel += 3
+					"ALCHEMIST":
+						goldPerLevel += 3
+					"ELEMENTALST":
+						foodPerLevel += 3
+					"SUMMONER":
+						metalPerLevel += 2
+					"SEER":
+						faithPerLevel += 3
+					"PSIONICIST":
+						foodPerLevel += 1
+						woodPerLevel += 1
+						goldPerLevel += 1
+						metalPerLevel += 1
 			else:
 				print("no assigned wizard to tile:", tile.tileNumber)
-		for belief in playerCountry.selectedBeliefs:
-			if belief.beliefType == "ORIL-RA":
-				magicPerLevel += 2
-			if belief.beliefType == "VANODAM":
-				faithPerLevel += 1
-				magicPerLevel += 1
-			if belief.beliefType == "Wandering Exorcists":
-				manpowerPerLevel == 250
-		for Technology in playerCountry.unlockedTechnologies:
-			if Technology.techName == "Lenscraft":
-				magicPerLevel += 1
-				sciencePerLevel += 1
-				metalCostPerLevel +=1
-		for law in playerCountry.unlockedLaws:
-			if law.lawType == "Freedom of Movement":
-				harmonyPerLevel +=2
-			if law.lawType == "Record Keeping Act":
+			for belief in playerCountry.selectedBeliefs:
+				if belief.beliefType == "ORIL-RA":
+					magicPerLevel += 2
+				if belief.beliefType == "VANODAM":
+					faithPerLevel += 1
+					magicPerLevel += 1
+				if belief.beliefType == "Wandering Exorcists":
+					manpowerPerLevel == 250
+			for Technology in playerCountry.unlockedTechnologies:
+				if Technology.techName == "Lenscraft":
+					magicPerLevel += 1
+					sciencePerLevel += 1
+					metalCostPerLevel +=1
+			for law in playerCountry.lawsInConstitution:
+				if law.lawType == "Freedom of Movement":
+					harmonyPerLevel +=2
+				if law.lawType == "Record Keeping Act":
+					culturePerLevel +=1
+					sciencePerLevel +=1
+				if law.lawType == "Apprenticeship Programs":
+					magicPerLevel += 2
+			if tile.tileGovernor != null:
+				match tile.tileGovernor.governorPosition:
+					"ASTROLOGER":
+						match tile.tileGovernor.governorLevel:
+							1:
+								magicPerLevel += 1
+							2:
+								magicPerLevel += 2
+								sciencePerLevel += 1
+							3:
+								magicPerLevel += 3
+								sciencePerLevel += 2
+								faithPerLevel += 1
+					"MYSTIC":
+						match tile.tileGovernor.governorLevel:
+							1:
+								faithPerLevel += 1
+							2:
+								faithPerLevel += 2
+								magicPerLevel += 1
+							3:
+								faithPerLevel += 3
+								magicPerLevel += 2
+								mandatePerLevel += 1
+			for tradition in playerCountry.unlockedTraditions:
+				if tradition.traditionType == "Cosmic Inspiration":
+					sciencePerLevel += 1
+				if tradition.traditionType == "Ancient Wizdom":
+					influencePerLevel +=1
+				if tradition.traditionType == "Natural Order":
+					mandatePerLevel +=1
+			if tile.tileSpell != null:
+				match tile.tileSpell.spellType:
+					"Extradimensional Servants":
+						woodPerLevel +=1
+						foodPerLevel += 1
+						goldPerLevel += 1
+						metalPerLevel += 1
+						magicCostPerLevel += 4
+					"Clear Skies":
+						sciencePerLevel += 1
+						faithPerLevel += 1
+						magicCostPerLevel += 5
+					"Peace":
+						harmonyPerLevel += 1
+						influencePerLevel += 1
+						magicCostPerLevel += 5
+			cropSlot = tile.cropSlot
+			if cropSlot.cropType == "Cannabis":
 				culturePerLevel +=1
-				sciencePerLevel +=1
-			if law.lawType == "Apprenticeship Programs":
-				magicPerLevel += 2
-		if tile.tileGovernor != null:
-			Governor = tile.tileGovernor
-			if Governor.governorType == "ASTROLOGER":
-				sciencePerLevel += (1 * Governor.governorLevel)
-				magicPerLevel += (1 * Governor.governorLevel)
-			if Governor.governorType == "MYSTIC":
-				culturePerLevel += (1 *Governor.governorLevel)
-				faithPerLevel += (1* Governor.governorLevel)
-		for tradition in playerCountry.unlockedTraditions:
-			if tradition.traditionType == "Cosmic Inspiration":
+				magicCostPerLevel += 1
+			if cropSlot.cropType == "Cloudbean":
+				magicPerLevel +=1
+			oreSlot = tile.oreSlot
+			if oreSlot.oreType == "Floodstone":
+				magicPerLevel +=1
+			pass
+		"Library":
+			for belief in playerCountry.selectedBeliefs:
+				if belief.beliefType == "DILNITH-AMEN":
+					sciencePerLevel += 2
+				if belief.beliefType == "Divine Spark":
+					sciencePerLevel += 1
+				if belief.beliefType == "Church Records":
+					faithPerLevel += 1
+			for Technology in playerCountry.unlockedTechnologies:
+				if Technology.techName == "Statecraft":
+					sciencePerLevel += 1
+					mandatePerLevel += 1
+					goldCostPerLevel += 1
+				if Technology.techName == "Paper":
+					sciencePerLevel += 1
+					woodPerLevel += 1
+				if Technology.techName == "Alphabet":
+					sciencePerLevel += 1
+			for law in playerCountry.lawsInConstitution:
+				if law.lawType == "Standardized Measurements":
+					sciencePerLevel += 1
+				if law.lawType == "Philosopher Kings":
+					influencePerLevel += 1
+				if law.lawType == "Freedom of the Press":
+					harmonyPerLevel += 1
+			if tile.tileGovernor != null:
+				match tile.tileGovernor.governorPosition:
+					"SCHOLAR":
+						match tile.tileGovernor.governorLevel:
+							1:
+								sciencePerLevel += 1
+							2:
+								sciencePerLevel += 2
+								magicPerLevel += 1
+							3:
+								sciencePerLevel += 3
+								magicPerLevel += 2
+								faithPerLevel += 1
+					"INVENTOR":
+						match tile.tileGovernor.governorLevel:
+							1:
+								sciencePerLevel += 1
+							2:
+								sciencePerLevel += 2
+								goldPerLevel += 1
+							3:
+								sciencePerLevel += 3
+								goldPerLevel += 2
+								culturePerLevel += 1
+			for tradition in playerCountry.unlockedTraditions:
+				if tradition.traditionType == "Free Thinkers":
+					sciencePerLevel += 1
+				if tradition.traditionType == "Renaissance Men":
+					culturePerLevel +=1
+			if tile.tileSpell != null:
+				match tile.tileSpell.spellType:
+					"Potion: Focusing Dust":
+						sciencePerLevel +=1
+						magicCostPerLevel += 2
+					"Inspiration":
+						sciencePerLevel += 3
+						culturePerLevel += 1
+						magicCostPerLevel += 8
+					"Hive Mind":
+						harmonyPerLevel += 1
+						sciencePerLevel += 2
+						magicCostPerLevel += 6
+			cropSlot = tile.cropSlot
+			if cropSlot.cropType == "Papyrus":
 				sciencePerLevel += 1
-			if tradition.traditionType == "Ancient Wizdom":
-				influencePerLevel +=1
-			if tradition.traditionType == "Natural Order":
-				mandatePerLevel +=1
-		if tile.tileSpell != null:
-			tileSpell = tile.tileSpell
-			if tileSpell.spellType == "Extradimensional Servants":
-				woodPerLevel +=1
-				foodPerLevel += 1
 				goldPerLevel += 1
-				metalPerLevel += 1
-				magicCostPerLevel += 4
-			if tileSpell.spellType == "Clear Skies":
-				sciencePerLevel += 1
-				faithPerLevel += 1
-				magicCostPerLevel += 5
-			if tileSpell.spellType == "Peace":
-				harmonyPerLevel += 1
-				influencePerLevel += 1
-				magicCostPerLevel += 5
-		cropSlot = tile.cropSlot
-		if cropSlot.cropType == "Cannabis":
-			culturePerLevel +=1
-			magicCostPerLevel += 1
-		if cropSlot.cropType == "Cloudbean":
-			magicPerLevel +=1
-		oreSlot = tile.oreSlot
-		if oreSlot.oreType == "Floodstone":
-			magicPerLevel +=1
-		pass
-	if buildingType == "Library":
-		for belief in playerCountry.selectedBeliefs:
-			if belief.beliefType == "DILNITH-AMEN":
-				sciencePerLevel += 2
-			if belief.beliefType == "Divine Spark":
-				sciencePerLevel += 1
-			if belief.beliefType == "Church Records":
-				faithPerLevel += 1
-		for Technology in playerCountry.unlockedTechnologies:
-			if Technology.techName == "Statecraft":
-				sciencePerLevel += 1
-				mandatePerLevel += 1
-				goldCostPerLevel += 1
-			if Technology.techName == "Paper":
-				sciencePerLevel += 1
-				woodPerLevel += 1
-			if Technology.techName == "Alphabet":
-				sciencePerLevel += 1
-		for law in playerCountry.unlockedLaws:
-			if law.lawType == "Standardized Measurements":
-				sciencePerLevel += 1
-			if law.lawType == "Philosopher Kings":
-				influencePerLevel += 1
-			if law.lawType == "Freedom of the Press":
-				harmonyPerLevel += 1
-		if tile.tileGovernor != null:
-			Governor = tile.tileGovernor
-			if Governor.governorType == "SCHOLAR":
-				sciencePerLevel += (2 * Governor.governorLevel)
-			if Governor.governorType == "INVENTOR":
-				sciencePerLevel += (1 * Governor.governorLevel)
-				goldPerLevel += (1 * Governor.governorLevel)
-		for tradition in playerCountry.unlockedTraditions:
-			if tradition.traditionType == "Free Thinkers":
-				sciencePerLevel += 1
-			if tradition.traditionType == "Renaissance Men":
-				culturePerLevel +=1
-		if tile.tileSpell != null:
-			tileSpell = tile.tileSpell
-			if tileSpell.spellType == "Potion: Focusing Dust":
-				sciencePerLevel +=1
-				magicCostPerLevel += 2
-			if tileSpell.spellType == "Inspiration":
-				sciencePerLevel += 3
-				culturePerLevel += 1
-				magicCostPerLevel += 8
-			if tileSpell.spellType == "Hive Mind":
-				harmonyPerLevel += 1
-				sciencePerLevel += 2
-				magicCostPerLevel += 6
-		cropSlot = tile.cropSlot
-		if cropSlot.cropType == "Papyrus":
-			sciencePerLevel +=1
-			woodPerLevel += 1
-	if buildingType == "Workshop":
-		for belief in playerCountry.selectedBeliefs:
-			if belief.beliefType == "Valued Idolatry":
-				faithPerLevel += 1
-				mandatePerLevel += 1
-				metalCostPerLevel += 2
-			if belief.beliefType == "TYRUS":
-				goldPerLevel += 2
-				metalCostPerLevel += 1
-			if belief.beliefType == "Busy Hands":
-				faithPerLevel += 2
-				woodCostPerLevel += 1
-				foodCostPerLevel += 1
-		for Technology in playerCountry.unlockedTechnologies:
-			if Technology.techName == "Banking":
-				goldPerLevel += 2
-			if Technology.techName == "Craftsmenship":
-				goldPerLevel += 2
-				woodCostPerLevel += 2
-			if Technology.techName == "Metal Casting":
-				metalCostPerLevel += 1
-				goldPerLevel += 2
-		for law in playerCountry.unlockedLaws:
-			if law.lawType == "Labor Contracts":
-				goldPerLevel += 2
-				foodCostPerLevel += 2
-			if law.lawType == "Protected Supply Chain":
-				foodCostPerLevel += 1
-				metalCostPerLevel += 1
-				goldPerLevel += 2
-			if law.lawType == "Military Engineers":
-				manpowerPerLevel += 300
-		if tile.tileGovernor != null:
-			Governor = tile.tileGovernor
-			if Governor.governorType == "MINTER":
-				goldPerLevel += (2 * Governor.governorLevel)
-			if Governor.governorType == "BUILDER":
-				metalPerLevel += 1
-				woodPerLevel += 1
-		for tradition in playerCountry.unlockedTraditions:
-			if tradition.traditionType == "Artist Enclaves":
-				culturePerLevel += 1
-			if tradition.traditionType == "Guild Education":
-				sciencePerLevel +=1
-			if tradition.traditionType == "Meritocracy":
-				mandatePerLevel += 1
-		if tile.tileSpell != null:
-			tileSpell = tile.tileSpell
-			if tileSpell.spellType == "Potion: Stamina":
-				goldPerLevel += 2
-				metalCostPerLevel += 1
-				woodCostPerLevel += 1
-				magicCostPerLevel += 2
-			if tileSpell.spellType == "Duplication":
-				goldPerLevel += 4
-				harmonyCostPerLevel += 1
-				magicCostPerLevel += 7
-	if buildingType == "Bath":
-		for belief in playerCountry.selectedBeliefs:
-			if belief.beliefType == "Healing Waters":
-				faithPerLevel += 1
-				corruptionLossPerLevel -= 1
-			if belief.beliefType == "JERRIWIX":
-				corruptionLossPerLevel -= 1
-				mandatePerLevel += 1
-		for Technology in playerCountry.unlockedTechnologies:
-			if Technology.techName == "Engineering":
-				goldPerLevel += 1
-				corruptionLossPerLevel -= 1
-		for law in playerCountry.unlockedLaws:
-			if law.lawType == "Pollution Control":
-				corruptionLossPerLevel -= 1
-				foodPerLevel += 1
-			if law.lawType == "Mandatory Hygiene":
-				culturePerLevel += 1
-				corruptionLossPerLevel -= 1
-			if law.lawType == "Freedom of Speech":
-				influencePerLevel +=1
-				mandatePerLevel += 1
-		if tile.tileGovernor != null:
-			Governor = tile.tileGovernor
-			if Governor.governorType == "MASSEUSE":
-				magicPerLevel += 1
-				corruptionLossPerLevel -= 1
-			if Governor.governorType == "SPY":
-				influencePerLevel += 1
-				corruptionLossPerLevel -= 1
-		for tradition in playerCountry.unlockedTraditions:
-			if tradition.traditionType == "Communal Bathing":
-				mandatePerLevel += 1
-			if tradition.traditionType == "Beautiful Spaces":
-				culturePerLevel += 1
-			if tradition.traditionType == "Soaps, Lotions, Perfumes":
-				harmonyPerLevel += 1
-		if tile.tileSpell != null:
-			tileSpell = tile.tileSpell
-			if tileSpell.spellType == "Geothermic Well":
-				goldPerLevel += 3
-				culturePerLevel += 2
-				magicCostPerLevel += 10
-			if tileSpell.spellType == "Vitamins and Minerals":
-				#-1 corruption in this tile per level
-				sciencePerLevel += 1
-				faithPerLevel += 1
-				magicCostPerLevel += 6
-		print("corruption change from bath ", corruptionLossPerLevel)
-	if buildingType == "Faire":
-		for belief in playerCountry.selectedBeliefs:
-			if belief.beliefType == "Holiday Feasts":
-				faithPerLevel += 1
-				culturePerLevel += 1
-				foodCostPerLevel += 2
-			if belief.beliefType == "BENAXTARA":
-				mandatePerLevel += 2
-		for Technology in playerCountry.unlockedTechnologies:
-			if Technology.techName == "Architecture":
-				culturePerLevel += 2
-				woodPerLevel += 2
-		for law in playerCountry.unlockedLaws:
-			if law.lawType == "National Exhibitions":
-				influencePerLevel += 1
-			if law.lawType == "Freedom of Expression":
-				culturePerLevel += 1
-			if law.lawType == "Sanctified Sports":
-				manpowerPerLevel += 250
-		if tile.tileGovernor != null:
-			Governor = tile.tileGovernor
-			if Governor.governorType == "TAMER":
-				# corruption in this tile -= (1 * Governor.governorLevel)
-				culturePerLevel += (1 * Governor.governorLevel)
-			if Governor.governorType == "EXPLORER":
-				manpowerPerLevel += (250 * Governor.governorLevel)
-				culturePerLevel += (1 * Governor.governorLevel)
-		for tradition in playerCountry.unlockedTraditions:
-			if tradition.traditionType == "Gastronomic Studies":
-				culturePerLevel += 1
-			if tradition.traditionType == "Art Trade":
-				goldPerLevel += 1
-			if tradition.traditionType == "Bread and Circuses":
-				foodPerLevel += 1
-				pass
-		if tile.tileSpell != null:
-			tileSpell = tile.tileSpell
-			if tileSpell.spellType == "Celebration":
-				goldPerLevel += 1
-				culturePerLevel += 1
-				foodPerLevel += 1
-				magicCostPerLevel += 6
-			if tileSpell.spellType == "Fireworks":
-				harmonyPerLevel += 3
-				magicCostPerLevel +=7
-	if buildingType == "Forge":
-		for belief in playerCountry.selectedBeliefs:
-			if belief.beliefType == "Sacred Bladecraft":
-				faithPerLevel += 1
-				weaponsPerLevel += 1
-				metalCostPerLevel += 1
-			if belief.beliefType == "QALIN LING":
-				weaponsPerLevel += 2
-				metalCostPerLevel += 2
-		for Technology in playerCountry.unlockedTechnologies:
-			if Technology.techName == "Iron Working":
-				weaponsPerLevel += 2
-				metalCostPerLevel += 1
-				woodCostPerLevel += 1
-				goldCostPerLevel += 1
+		"Workshop":
+			for belief in playerCountry.selectedBeliefs:
+				if belief.beliefType == "Valued Idolatry":
+					faithPerLevel += 1
+					mandatePerLevel += 1
+					metalCostPerLevel += 2
+				if belief.beliefType == "TYRUS":
+					goldPerLevel += 2
+					metalCostPerLevel += 1
+				if belief.beliefType == "Busy Hands":
+					faithPerLevel += 2
+					woodCostPerLevel += 1
+					foodCostPerLevel += 1
+			for Technology in playerCountry.unlockedTechnologies:
+				if Technology.techName == "Banking":
+					goldPerLevel += 2
+				if Technology.techName == "Craftsmenship":
+					goldPerLevel += 2
+					woodCostPerLevel += 2
+				if Technology.techName == "Metal Casting":
+					metalCostPerLevel += 1
+					goldPerLevel += 2
+			for law in playerCountry.lawsInConstitution:
+				if law.lawType == "Labor Contracts":
+					foodCostPerLevel += 2
+				if law.lawType == "Protected Supply Chain":
+					foodCostPerLevel += 1
+					metalCostPerLevel += 1
+					goldPerLevel += 2
+				if law.lawType == "Military Engineers":
+					manpowerPerLevel += 300
+				if law.lawType == "Mercantilism":
+					goldPerLevel += 2
+					mandateCostPerLevel += 2
+			if tile.tileGovernor != null:
+				match tile.tileGovernor.governorPosition:
+					"MINTER":
+						match tile.tileGovernor.governorLevel:
+							1:
+								goldPerLevel += 1
+							2:
+								goldPerLevel += 2
+								culturePerLevel += 1
+							3:
+								goldPerLevel += 3
+								culturePerLevel += 2
+								mandatePerLevel += 1
+					"BUILDER":
+						match tile.tileGovernor.governorLevel:
+							1:
+								goldPerLevel += 1
+							2:
+								goldPerLevel += 2
+							3:
+								goldPerLevel += 3
+			for tradition in playerCountry.unlockedTraditions:
+				if tradition.traditionType == "Artist Enclaves":
+					culturePerLevel += 1
+				if tradition.traditionType == "Guild Education":
+					sciencePerLevel +=1
+				if tradition.traditionType == "Meritocracy":
+					mandatePerLevel += 1
+			if tile.tileSpell != null:
+				match tile.tileSpell.spellType:
+					"Potion: Stamina":
+						goldPerLevel += 2
+						metalCostPerLevel += 1
+						woodCostPerLevel += 1
+						magicCostPerLevel += 2
+					"Duplication":
+						goldPerLevel += 4
+						harmonyCostPerLevel += 1
+						magicCostPerLevel += 7
+		"Bath":
+			for belief in playerCountry.selectedBeliefs:
+				if belief.beliefType == "Healing Waters":
+					faithPerLevel += 1
+					corruptionLossPerLevel -= 1
+				if belief.beliefType == "JERRIWIX":
+					corruptionLossPerLevel -= 1
+					mandatePerLevel += 1
+			for Technology in playerCountry.unlockedTechnologies:
+				if Technology.techName == "Engineering":
+					goldPerLevel += 1
+					corruptionLossPerLevel -= 1
+			for law in playerCountry.lawsInConstitution:
+				if law.lawType == "Pollution Control":
+					corruptionLossPerLevel -= 1
+					foodPerLevel += 1
+				if law.lawType == "Mandatory Hygiene":
+					culturePerLevel += 1
+					corruptionLossPerLevel -= 1
+				if law.lawType == "Freedom of Speech":
+					influencePerLevel +=1
+					mandatePerLevel += 1
+			if tile.tileGovernor != null:
+				match tile.tileGovernor.governorPosition:
+					"MASSEUSE":
+						match tile.tileGovernor.governorLevel:
+							1:
+								culturePerLevel += 1
+							2:
+								culturePerLevel += 2
+								magicPerLevel += 1
+							3:
+								culturePerLevel += 3
+								magicPerLevel += 2
+								goldPerLevel += 1
+					"ARTISAN":
+						match tile.tileGovernor.governorLevel:
+							2:
+								goldPerLevel += 1
+							3:
+								goldPerLevel += 2
+			for tradition in playerCountry.unlockedTraditions:
+				if tradition.traditionType == "Communal Bathing":
+					mandatePerLevel += 1
+				if tradition.traditionType == "Beautiful Spaces":
+					culturePerLevel += 1
+				if tradition.traditionType == "Soaps, Lotions, Perfumes":
+					harmonyPerLevel += 1
+			if tile.tileSpell != null:
+				match tile.tileSpell.spellType:
+					"Geothermic Well":
+						goldPerLevel += 3
+						culturePerLevel += 2
+						magicCostPerLevel += 10
+					"Vitamins and Minerals":
+						#-1 corruption in this tile per level
+						sciencePerLevel += 1
+						faithPerLevel += 1
+						magicCostPerLevel += 6
+		"Faire":
+			for belief in playerCountry.selectedBeliefs:
+				if belief.beliefType == "Holiday Feasts":
+					faithPerLevel += 1
+					culturePerLevel += 1
+					foodCostPerLevel += 2
+				if belief.beliefType == "BENAXTARA":
+					mandatePerLevel += 2
+			for Technology in playerCountry.unlockedTechnologies:
+				if Technology.techName == "Architecture":
+					culturePerLevel += 2
+					woodPerLevel += 2
+			for law in playerCountry.lawsInConstitution:
+				if law.lawType == "National Exhibitions":
+					influencePerLevel += 1
+				if law.lawType == "Freedom of Expression":
+					culturePerLevel += 1
+				if law.lawType == "Sanctified Sports":
+					manpowerPerLevel += 15
+			if tile.tileGovernor != null:
+				match tile.tileGovernor.governorPosition:
+					"TAMER":
+						match tile.tileGovernor.governorLevel:
+							1:
+								harmonyPerLevel += 1
+							2:
+								harmonyPerLevel += 2
+								culturePerLevel += 1
+							3:
+								harmonyPerLevel += 3
+								culturePerLevel += 2
+								goldPerLevel += 1
+					"EXPLORER":
+						match tile.tileGovernor.governorLevel:
+							1:
+								manpowerPerLevel += 10
+							2:
+								manpowerPerLevel += 20
+								weaponsPerLevel += 1
+							3: 
+								manpowerPerLevel += 30
+								weaponsPerLevel += 2
+								culturePerLevel += 1
+			for tradition in playerCountry.unlockedTraditions:
+				if tradition.traditionType == "Gastronomic Studies":
+					culturePerLevel += 1
+				if tradition.traditionType == "Art Trade":
+					goldPerLevel += 1
+				if tradition.traditionType == "Bread and Circuses":
+					foodPerLevel += 1
+			if tile.tileSpell != null:
+				match tile.tileSpell.spellType:
+					"Celebration":
+						goldPerLevel += 1
+						culturePerLevel += 1
+						foodPerLevel += 1
+						magicCostPerLevel += 6
+					"Fireworks":
+						harmonyPerLevel += 3
+						magicCostPerLevel +=7
+		"Forge":
+			for belief in playerCountry.selectedBeliefs:
+				if belief.beliefType == "Sacred Bladecraft":
+					faithPerLevel += 1
+					weaponsPerLevel += 1
+					metalCostPerLevel += 1
+				if belief.beliefType == "QALIN LING":
+					weaponsPerLevel += 2
+					metalCostPerLevel += 2
+			for Technology in playerCountry.unlockedTechnologies:
+				if Technology.techName == "Iron Working":
+					weaponsPerLevel += 2
+					metalCostPerLevel += 1
+					woodCostPerLevel += 1
+					goldCostPerLevel += 1
+					#corruption in this tile +1
+				if Technology.techName == "Tempuring":
+					weaponsPerLevel += 2
+					metalCostPerLevel += 1
+					goldCostPerLevel += 1
+					#corruption in this tile +1
+			for law in playerCountry.lawsInConstitution:
+				if law.lawType == "Bulk Orders":
+					weaponsPerLevel += 2
+					goldCostPerLevel += 1
+					metalCostPerLevel += 1
+					#corruption in this tile +1
+				if law.lawType == "Licensed Swordsmen":
+					weaponsPerLevel += 1
+					#corruption in this tile +1
+					harmonyPerLevel += 1
+					metalCostPerLevel += 1
+				if law.lawType == "Recycling Centers":
+					metalPerLevel += 1
+					goldPerLevel += 1
+			if tile.tileGovernor != null:
+				match tile.tileGovernor.governorPosition:
+					"BLACKSMITH":
+						weaponsPerLevel += (2 * Governor.governorLevel)
+						#corruption in this tile +(2 * Governor.governorLevel)
+						metalCostPerLevel += (2 * Governor.governorLevel)
+					"BLADEMASTER":
+						manpowerPerLevel += (250 * Governor.governoLevel)
+						weaponsPerLevel += (1 * Governor.governorLevel)
+						#corruption in this tile +(1 * Governor.governorLevel)
+						metalCostPerLevel += (1 * Governor.governorLevel)
+					"ARTISAN":
+						match tile.tileGovernor.governorLevel:
+							1:
+								weaponsPerLevel += 1
+							2:
+								weaponsPerLevel += 2
+							3:
+								weaponsPerLevel += 3
+			for tradition in playerCountry.unlockedTraditions:
+				if tradition.traditionType == "Steady Hands":
+					weaponsPerLevel += 1
 				#corruption in this tile +1
-			if Technology.techName == "Tempuring":
-				weaponsPerLevel += 2
-				metalCostPerLevel += 1
-				goldCostPerLevel += 1
-				#corruption in this tile +1
-		for law in playerCountry.unlockedLaws:
-			if law.lawType == "Bulk Orders":
-				weaponsPerLevel += 2
-				goldCostPerLevel += 1
-				metalCostPerLevel += 1
-				#corruption in this tile +1
-			if law.lawType == "Licensed Swordsmen":
-				weaponsPerLevel += 1
-				#corruption in this tile +1
-				harmonyPerLevel += 1
-				metalCostPerLevel += 1
-			if law.lawType == "Recycling Centers":
-				metalPerLevel += 1
-				goldPerLevel += 1
-		if tile.tileGovernor != null:
-			Governor = tile.tileGovernor
-			if Governor.governorType == "BLACKSMITH":
-				weaponsPerLevel += (2 * Governor.governorLevel)
-				#corruption in this tile +(2 * Governor.governorLevel)
-				metalCostPerLevel += (2 * Governor.governorLevel)
-			if Governor.governorType == "BLADEMASTER":
-				manpowerPerLevel += (250 * Governor.governoLevel)
-				weaponsPerLevel += (1 * Governor.governorLevel)
-				#corruption in this tile +(1 * Governor.governorLevel)
-				metalCostPerLevel += (1 * Governor.governorLevel)
-		for tradition in playerCountry.unlockedTraditions:
-			if tradition.traditionType == "Steady Hands":
-				weaponsPerLevel += 1
-				#corruption in this tile +1
-			if tradition.traditionType == "Battlesmiths":
-				manpowerPerLevel += 250
-			if tradition.traditionType == "Intricate Designs":
-				culturePerLevel += 1
-				pass
-		if tile.tileSpell != null:
-			tileSpell = tile.tileSpell
-			if tileSpell.spellType == "Heart of the Forge":
-				foodPerLevel += 1
-				culturePerLevel += 1
-				faithPerLevel += 1
-				harmonyPerLevel += 1
-				magicCostPerLevel += 8
-			if tileSpell.spellType == "Resist Heat":
-				weaponsPerLevel += 3
-				#corruption in this tile +3
-				metalCostPerLevel += 3
-				magicCostPerLevel += 9
+				if tradition.traditionType == "Battlesmiths":
+					manpowerPerLevel += 250
+				if tradition.traditionType == "Intricate Designs":
+					culturePerLevel += 1
+			if tile.tileSpell != null:
+				match tile.tileSpell.spellType:
+					"Heart of the Forge":
+						foodPerLevel += 1
+						culturePerLevel += 1
+						faithPerLevel += 1
+						harmonyPerLevel += 1
+						magicCostPerLevel += 8
+					"Resist Heat":
+						weaponsPerLevel += 3
+						#corruption in this tile +3
+						metalCostPerLevel += 3
+						magicCostPerLevel += 9
 	#add Barracks Unlockables
 	pass
 

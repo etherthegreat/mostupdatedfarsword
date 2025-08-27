@@ -441,6 +441,7 @@ func calculateCorruption():
 					tileEcoModifier.modName = "NoCorruption"
 					tileEcoModifier.buildTileEcoMod()
 					return
+	corruptionChange = 0
 	pass
 
 func calculateTerrain():
@@ -579,7 +580,7 @@ func surveyTile(playerCountryNode):
 					granaryGovernorReq = true
 				else:
 					granaryGovernorReq = false
-	#print("buildingMagicOutput", buildingMagicOutput)
+	print("buildingMagicOutput1", buildingMagicOutput)
 	pass
 
 func addWizard(wizardType):
@@ -669,3 +670,11 @@ func normalMode():
 	spellCostToCast = 0
 	visible = true
 	pass
+
+func calculateSpellChanges():
+	if tileSpell != null:
+		match tileSpell.spellType:
+			"Healing Winds":
+				corruptionChange += 2
+				buildingMagicOutput -= 4
+				print(buildingMagicOutput, "buildingMagicOutput2")

@@ -321,6 +321,8 @@ func newSpellEvent(schoolType, currentLvl):
 			match lvl:
 				0:
 					createNewEvent("spell", "GEN_PLENTIFY_UNLOCK", "GEN", gameLanguage)
+				1: 
+					createNewEvent("spell", "GEN_HEALING_WINDS_UNLOCK", "GEN", gameLanguage)
 	pass
 
 #Government Code
@@ -435,6 +437,11 @@ func matchEventOutcome(eventButtonID, eventType, eventID, eventCountry):
 							match eventButtonID:
 								"GEN_Plentify_Unlock_1":
 									playerCountryNode.addSpellToSpellbook("Plentify", 1, 0)
+									playerCountryNode.levelUpSchool("elementalist")
+						"GEN_HEALING_WINDS_UNLOCK":
+							match eventButtonID:
+								"GEN_Healing_Winds_Unlock_1":
+									playerCountryNode.addSpellToSpellbook("Healing Winds", 1, 0)
 									playerCountryNode.levelUpSchool("elementalist")
 			pass
 		"PDT":

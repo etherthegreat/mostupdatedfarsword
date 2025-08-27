@@ -80,6 +80,15 @@ func matchEventLabels():
 										-2 Magic Per Farm
 										-2 Magic Per Dock"
 									newEventButton("Plenty More Where That Came From", "GEN_Plentify_Unlock_1")
+						"GEN_HEALING_WINDS_UNLOCK":
+							match eventLanguage:
+								"eng":
+									eventName = "New Elementalism Spell Unlocked"
+									eventShortDescription = "Focus: Corruption"
+									unlockableName = "HEALING WINDS"
+									eventLongDescription = str("-2 corruption in per turn in this tile
+										-4 magic per turn")
+									newEventButton("Who Smelt it Dealt It", "GEN_Healing_Winds_Unlock_1")
 					pass
 				"expedition":
 					pass

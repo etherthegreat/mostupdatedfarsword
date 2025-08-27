@@ -26,10 +26,13 @@ texture = ExtResource("2_44iid")
 
 [node name="TileSpellsGridContainer" type="GridContainer" parent="Panel"]
 layout_mode = 0
-offset_left = 83.0
-offset_top = 54.0
-offset_right = 408.0
+offset_left = 131.0
+offset_top = 111.0
+offset_right = 763.0
 offset_bottom = 436.0
+theme_override_constants/h_separation = 200
+theme_override_constants/v_separation = 170
+columns = 4
 
 [node name="ArmySpellsGridContainer" type="GridContainer" parent="Panel"]
 layout_mode = 0

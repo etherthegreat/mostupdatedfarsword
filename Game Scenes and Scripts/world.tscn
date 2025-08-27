@@ -65,8 +65,8 @@
 [ext_resource type="Script" uid="uid://c424luv26ql5l" path="res://Game Scenes and Scripts/path_control.gd" id="51_tqcrl"]
 [ext_resource type="Texture2D" uid="uid://bjbx6e8ns8a0a" path="res://art assets/Placeholder Art/sword.png" id="52_78kig"]
 [ext_resource type="PackedScene" uid="uid://3w6l28pyvce1" path="res://path_point_button.tscn" id="53_78kig"]
-[ext_resource type="Script" uid="uid://bqoa1uaifkk6g" path="res://Game Scenes and Scripts/faction_control.gd" id="54_sv2u8"]
-[ext_resource type="Script" uid="uid://idfuyp443x0" path="res://Game Scenes and Scripts/government_control.gd" id="55_w7ifc"]
+[ext_resource type="Script" path="res://Game Scenes and Scripts/faction_control.gd" id="54_sv2u8"]
+[ext_resource type="Script" path="res://Game Scenes and Scripts/government_control.gd" id="55_w7ifc"]
 [ext_resource type="Texture2D" uid="uid://de0ftj0x1dhpw" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/IMG_2814.jpg" id="60_w7ifc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2v3gw"]

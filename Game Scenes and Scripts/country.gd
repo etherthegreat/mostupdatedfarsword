@@ -692,6 +692,7 @@ func surveyResources():
 	MAN =0
 	for Tile in OwnedTileList:
 		Tile.surveyTile(self)
+		Tile.calculateSpellChanges()
 		FPM += Tile.buildingFoodOutput
 		WPM += Tile.buildingWoodOutput
 		MPM += Tile.buildingMetalOutput

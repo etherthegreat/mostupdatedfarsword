@@ -2,7 +2,9 @@ extends Node2D
 
 class_name governor
 
-var governorType: String
+var governorType: String #used to calculate rewards and quests
+var governorPosition: String #used to determine the character's name
+
 var governorLevel: int
 var governorTexture: Texture
 var governorDescription: String
@@ -32,6 +34,7 @@ func buildSelf(gT, gL):
 			governorBiography = "born in 1845, pittsburg ohio, sloberina gundo is the son of john f kennedy, also known as professor sex of the sex men.  will wolverina live up to her father's expectations or cum before the lord unashamed and loved dearly."
 			coastal = false
 			governorBuildingRequirement = "None"
+			governorPosition = "FARMER"
 			addMilMod("Visionary", 123)
 			addMilMod("Champion of the Sun", 23)
 			addMilMod("Healer", 3)
@@ -40,6 +43,7 @@ func buildSelf(gT, gL):
 			governorDescription = "Robo Cyborg visionary of the science demon wizard goblins."
 			governorBiography = "born in 1845, pittsburg ohio, sloberina gundo is the son of john f kennedy, also known as professor sex of the sex men.  will wolverina live up to her father's expectations or cum before the lord unashamed and loved dearly."
 			coastal = false
+			governorPosition = "FARMER"
 			governorBuildingRequirement = "None"
 	pass
 

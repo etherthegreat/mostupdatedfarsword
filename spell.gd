@@ -21,8 +21,13 @@ var militarySpell: bool
 func newGameSpellAssignment():
 	#var discount: int
 	#discount = countryID.spellCostDiscount
-	if spellType == "Plentify":
-		militarySpell = false
-		spellSprite = load("res://art assets/Placeholder Art/UI Art/resources/Plentify.png")
-		spellCastCost = 15
+	match spellType:
+		"Plentify":
+			militarySpell = false
+			spellSprite = load("res://art assets/Placeholder Art/UI Art/resources/Plentify.png")
+			spellCastCost = 15
+		"Healing Winds":
+			militarySpell = false
+			spellSprite = load("res://art assets/Placeholder Art/UI Art/resources/Older Icons/Magic.png")
+			spellCastCost = 20
 	pass
