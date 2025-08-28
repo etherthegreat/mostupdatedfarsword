@@ -1,0 +1,76 @@
+[gd_scene load_steps=4 format=3 uid="uid://drfuquyl0gp4t"]
+
+[ext_resource type="Script" uid="uid://su422mqfmq5s" path="res://spell_unlock_icon.gd" id="1_eoopp"]
+[ext_resource type="Texture2D" uid="uid://kjhhk7jj22fr" path="res://art assets/Placeholder Art/UI Art/resources/Plentify.png" id="2_kh5ve"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_u8dbi"]
+size = Vector2(679.803, 589.163)
+
+[node name="SpellUnlockIcon" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -32.0
+offset_top = -26.0
+offset_right = 33.0
+offset_bottom = 28.0
+script = ExtResource("1_eoopp")
+
+[node name="SpellUnlockSprite" type="Sprite2D" parent="."]
+position = Vector2(32, 25)
+scale = Vector2(0.0882609, 0.0882609)
+texture = ExtResource("2_kh5ve")
+
+[node name="Area2D" type="Area2D" parent="."]
+position = Vector2(32, 25)
+scale = Vector2(0.0882609, 0.0882609)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(2.2268e-05, -7.39479e-05)
+scale = Vector2(1, 1)
+shape = SubResource("RectangleShape2D_u8dbi")
+
+[node name="SpellExplanationPanel" type="Panel" parent="."]
+visible = false
+layout_mode = 0
+offset_left = -25.0
+offset_top = -126.0
+offset_right = 90.0
+offset_bottom = -2.0
+
+[node name="SpellName" type="Label" parent="SpellExplanationPanel"]
+layout_mode = 0
+offset_right = 116.0
+offset_bottom = 23.0
+text = "plentify"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SpellShortDescription" type="Label" parent="SpellExplanationPanel"]
+layout_mode = 0
+offset_top = 25.0
+offset_right = 116.0
+offset_bottom = 118.0
+theme_override_font_sizes/font_size = 10
+text = "the description of the spell goes here and can continue to spell words and descriptions of things that are interesting "
+autowrap_mode = 3
+
+[node name="CalculationsPanel" type="Panel" parent="."]
+offset_left = -9.0
+offset_top = -90.0
+offset_right = 72.0
+offset_bottom = -3.0
+
+[node name="CalculationsLabel" type="Label" parent="CalculationsPanel"]
+layout_mode = 0
+offset_top = -2.0
+offset_right = 81.0
+offset_bottom = 90.0
+theme_override_font_sizes/font_size = 14
+text = "Spell Unlocks In
+5
+Turns"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]

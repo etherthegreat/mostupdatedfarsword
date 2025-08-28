@@ -253,6 +253,7 @@ func _on_manpower_area_mouse_entered() -> void:
 	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
 	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 12)
 	pass # Replace with function body.
+
 func _on_manpower_area_mouse_exited() -> void:
 	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
 	pass # Replace with function body.
@@ -325,6 +326,7 @@ func newSpellEvent(schoolType, currentLvl):
 					createNewEvent("spell", "GEN_HEALING_WINDS_UNLOCK", "GEN", gameLanguage)
 				2:
 					createNewEvent("spell", "GEN_RAISE_SPRING_UNLOCK", "GEN", gameLanguage)
+				
 	pass
 
 #Government Code
