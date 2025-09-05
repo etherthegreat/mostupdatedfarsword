@@ -494,6 +494,7 @@ offset_bottom = 158.0
 visible = false
 
 [node name="SpellSchoolsControl" type="Control" parent="CanvasLayer"]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
@@ -1149,9 +1150,9 @@ icon = ExtResource("28_2yctp")
 visible = false
 layout_mode = 3
 anchors_preset = 0
-offset_left = -520.0
+offset_left = -718.0
 offset_top = 43.0
-offset_right = -480.0
+offset_right = -678.0
 offset_bottom = 83.0
 mouse_filter = 2
 script = ExtResource("38_0kf4p")

@@ -26,7 +26,6 @@ scale = Vector2(0.0882609, 0.0882609)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(2.2268e-05, -7.39479e-05)
-scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_u8dbi")
 
 [node name="SpellExplanationPanel" type="Panel" parent="."]
@@ -55,6 +54,7 @@ text = "the description of the spell goes here and can continue to spell words a
 autowrap_mode = 3
 
 [node name="CalculationsPanel" type="Panel" parent="."]
+layout_mode = 0
 offset_left = -9.0
 offset_top = -90.0
 offset_right = 72.0
