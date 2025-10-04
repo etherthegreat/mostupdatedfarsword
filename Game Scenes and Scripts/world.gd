@@ -76,8 +76,10 @@ func newGameBuild():
 	updatePlayerUI()
 	pass
 
+var countryNode = load("res://Game Scenes and Scripts/country.tscn")
+
 func spawnNewGameCountries():
-	var penderTal = country.new()
+	var penderTal = countryNode.instantiate()
 	if playerCountry == "PDT":
 		penderTal.Player = true
 	else:
@@ -97,6 +99,10 @@ func spawnNewGameCountries():
 func connectCountrySignals():
 	for country in aliveCountriesList:
 		country.raiseThisArmySignal.connect(raiseArmyFromWorld)
+	pass
+
+func updateBeliefControl():
+	$CanvasLayer/BeliefControl.updateSelf()
 	pass
 
 func updatePlayerUI():

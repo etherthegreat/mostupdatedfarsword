@@ -106,6 +106,8 @@ var selectedBeliefs: Array = []
 var churchLevel: int #ranges from -3 to 3.  is calculated by finding the church beliefs by faith beliefs
 var faithBeliefs: int
 var churchBeliefs: int
+var availableDocs: Array = []
+var availableGods: Array = []
 
 #Country Armies, a place to store all armies
 var countryMaxArmySize
@@ -180,10 +182,12 @@ const unitScene = preload("res://unit.tscn")
 const unitUIScene = preload("res://unit_ui.tscn")
 
 var availableOres: Array
+var religionControl = load("res://religion_data.gd")
 
 func NewGameBuild():
 	#completely dynamically created by the World.  if its a new game, will use the new game stats, otherwise,
 	#will use the func LoadGameBuild():
+	$religionData.buildSelf()
 	if CID == "PDT":
 		spellBaseCost = 15
 		spellCostModifier = 0
@@ -223,9 +227,12 @@ func NewGameBuild():
 		addTechnologicalDiscovery("Agriculture")
 		addTechnologicalDiscovery("Copper Working")
 		addTechnologicalDiscovery("Artistry")
-		addReligiousBelief("Benaxtara")
-		addReligiousBelief("TYLA DYN")
-		addCulturalTradition("Humble Folk")
+		loadBeliefsList("GenericDoc1")
+		#loadBeliefsList("genericGods1")
+		loadBeliefsList("PDT1")
+		#addReligiousBelief("Standing Stones")
+		#addReligiousBelief("TYLA DYN")
+		#addCulturalTradition("Humble Folk")
 		addCulturalTradition("Guardian Cats")
 		addGovernmentLaw("Mercantilism")
 		#addGovernmentLaw("Citizen Militia")
@@ -390,6 +397,20 @@ func addReligiousBelief(Name):
 	newBelief.beliefType = Name
 	newBelief.buildBelief()
 	selectedBeliefs.append(newBelief)
+
+signal updateBeliefsSignal
+func loadBeliefsList(listTitle):
+	match listTitle:
+		"GenericDoc1":
+			var genericDoc1Array: Array = $religionData.genericDoc1
+			for String in genericDoc1Array:
+				availableDocs.append(String)
+		"PDTDoc1":
+			var PDTDoc1Array: Array = $religionData.PDTDoc1
+			for String in PDTDoc1Array:
+				availableDocs.append(String)
+	print(availableDocs, "DEBUG_FOUND", "SNEHA")
+	pass
 
 func addGovernmentLaw(Name):
 	var newLaw = law.new()

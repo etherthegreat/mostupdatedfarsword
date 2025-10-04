@@ -1,4 +1,4 @@
-[gd_scene load_steps=73 format=3 uid="uid://bfbouq3jfwkxl"]
+[gd_scene load_steps=74 format=3 uid="uid://bfbouq3jfwkxl"]
 
 [ext_resource type="Script" uid="uid://dthx176t72xxr" path="res://Game Scenes and Scripts/world.gd" id="1_6bnro"]
 [ext_resource type="Texture2D" uid="uid://ymy7tu133b71" path="res://art assets/Placeholder Art/map/map.png" id="2_160f8"]
@@ -40,8 +40,6 @@
 [ext_resource type="Texture2D" uid="uid://bcdyjy74pf6s8" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/Science.png" id="21_gpwvd"]
 [ext_resource type="Texture2D" uid="uid://yghg0v0u1af0" path="res://art assets/Map Art/9 Ring.png" id="21_y0g7h"]
 [ext_resource type="Texture2D" uid="uid://rqnub4a1u628" path="res://art assets/Map Art/10 Tile.png" id="22_aq1ft"]
-[ext_resource type="Texture2D" uid="uid://bgl55l8kgs4am" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/god 1.png" id="22_mic1l"]
-[ext_resource type="Script" uid="uid://dkfddygigmoox" path="res://belief_button.gd" id="22_v2h6f"]
 [ext_resource type="Texture2D" uid="uid://jrg01q8jnayd" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/Magic.png" id="23_hjg8m"]
 [ext_resource type="Texture2D" uid="uid://dg7xcep6h1ini" path="res://art assets/Map Art/10 Ring.png" id="23_sv2u8"]
 [ext_resource type="Texture2D" uid="uid://cf40ble7dja83" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/culture 100 x 100.png" id="25_uabur"]
@@ -53,6 +51,9 @@
 [ext_resource type="Texture2D" uid="uid://d35c3runx4oca" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/manpower 100 x 100.png" id="29_lxun5"]
 [ext_resource type="Texture2D" uid="uid://bs7hc10gkpl1m" path="res://art assets/Placeholder Art/UI Art/book.jpg" id="30_4wrj5"]
 [ext_resource type="Texture2D" uid="uid://cudj2gvqfnm0v" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/test 1.png" id="32_vnwtn"]
+[ext_resource type="PackedScene" uid="uid://c6ywed71drmm1" path="res://religion_data.tscn" id="33_mhn20"]
+[ext_resource type="Texture2D" uid="uid://dkwttunvoemck" path="res://art assets/finishedAssets/religiousIcons/IMG_1145.JPG" id="33_xbjiy"]
+[ext_resource type="Texture2D" uid="uid://cocrc1hdqliru" path="res://art assets/finishedAssets/religiousIcons/IMG_1146.PNG" id="34_pqr4i"]
 [ext_resource type="Texture2D" uid="uid://cb08osdpathpa" path="res://art assets/Placeholder Art/UI Art/resources/faith.png" id="35_o3iuu"]
 [ext_resource type="PackedScene" uid="uid://b3odh5q7qlkoj" path="res://magic_amount_control.tscn" id="36_mhn20"]
 [ext_resource type="Script" uid="uid://bpfawxk0gtyii" path="res://Game Scenes and Scripts/spell_schools_control.gd" id="36_qt86y"]
@@ -429,6 +430,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+mouse_filter = 2
 script = ExtResource("20_lkwti")
 
 [node name="BeliefPanel" type="Panel" parent="CanvasLayer/BeliefControl"]
@@ -437,6 +439,7 @@ offset_left = -37.0
 offset_top = -24.0
 offset_right = 1949.0
 offset_bottom = 1108.0
+mouse_filter = 2
 
 [node name="BeliefPanelSprite" type="Sprite2D" parent="CanvasLayer/BeliefControl/BeliefPanel"]
 position = Vector2(987.5, 559)
@@ -449,38 +452,78 @@ offset_left = 85.0
 offset_top = 196.0
 offset_right = 1023.0
 offset_bottom = 1124.0
+mouse_filter = 2
 theme_override_constants/h_separation = 30
 columns = 4
 
-[node name="beliefButton" type="Button" parent="CanvasLayer/BeliefControl/BeliefPanel/GridContainer"]
-layout_mode = 2
-theme_override_colors/icon_disabled_color = Color(1, 1, 1, 1)
-icon = ExtResource("22_mic1l")
-icon_alignment = 1
-script = ExtResource("22_v2h6f")
-exportBeliefName = "Benaxtara"
+[node name="DoctrineContainer" type="GridContainer" parent="CanvasLayer/BeliefControl/BeliefPanel"]
+layout_mode = 0
+offset_left = 1127.0
+offset_top = 574.0
+offset_right = 1836.0
+offset_bottom = 1113.0
+mouse_filter = 2
+theme_override_constants/h_separation = 360
+theme_override_constants/v_separation = 130
+columns = 2
 
-[node name="beliefButton2" type="Button" parent="CanvasLayer/BeliefControl/BeliefPanel/GridContainer"]
-layout_mode = 2
-theme_override_colors/icon_disabled_color = Color(1, 1, 1, 1)
-script = ExtResource("22_v2h6f")
-exportBeliefName = "Bibwey"
+[node name="PurchasePanel" type="Panel" parent="CanvasLayer/BeliefControl/BeliefPanel"]
+visible = false
+layout_mode = 0
+offset_left = 790.0
+offset_top = 105.0
+offset_right = 1256.0
+offset_bottom = 296.0
 
-[node name="beliefButton3" type="Button" parent="CanvasLayer/BeliefControl/BeliefPanel/GridContainer"]
-layout_mode = 2
-script = ExtResource("22_v2h6f")
-exportBeliefName = "Dilnith-Amen"
+[node name="PPSprite" type="Sprite2D" parent="CanvasLayer/BeliefControl/BeliefPanel/PurchasePanel"]
+position = Vector2(71.25, 84.25)
+scale = Vector2(0.0745, 0.0745)
+texture = ExtResource("33_xbjiy")
 
-[node name="beliefButton4" type="Button" parent="CanvasLayer/BeliefControl/BeliefPanel/GridContainer"]
-layout_mode = 2
-script = ExtResource("22_v2h6f")
-exportBeliefName = "Fa Enepo"
+[node name="PPBorderSprite" type="Sprite2D" parent="CanvasLayer/BeliefControl/BeliefPanel/PurchasePanel"]
+position = Vector2(71.25, 84.25)
+scale = Vector2(0.0745, 0.0745)
+texture = ExtResource("34_pqr4i")
 
-[node name="beliefButton5" type="Button" parent="CanvasLayer/BeliefControl/BeliefPanel/GridContainer"]
-layout_mode = 2
-icon_alignment = 1
-script = ExtResource("22_v2h6f")
-exportBeliefName = "Jerriwix"
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/BeliefControl/BeliefPanel/PurchasePanel"]
+layout_mode = 0
+offset_left = 134.0
+offset_top = 16.0
+offset_right = 461.0
+offset_bottom = 167.0
+
+[node name="PurchaseButton" type="Button" parent="CanvasLayer/BeliefControl/BeliefPanel/PurchasePanel"]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 125.0
+offset_right = 121.0
+offset_bottom = 159.0
+text = "Purchase"
+
+[node name="Price" type="RichTextLabel" parent="CanvasLayer/BeliefControl/BeliefPanel/PurchasePanel"]
+layout_mode = 0
+offset_left = 69.7499
+offset_top = 162.75
+offset_right = 124.75
+offset_bottom = 192.75
+bbcode_enabled = true
+text = "500 "
+
+[node name="FaithIcon" type="Sprite2D" parent="CanvasLayer/BeliefControl/BeliefPanel/PurchasePanel"]
+position = Vector2(53.75, 173.75)
+scale = Vector2(0.235001, 0.235001)
+texture = ExtResource("15_gxwbr")
+
+[node name="Label" type="Label" parent="CanvasLayer/BeliefControl/BeliefPanel/PurchasePanel"]
+layout_mode = 0
+offset_left = 3.0
+offset_top = -3.0
+offset_right = 141.0
+offset_bottom = 51.0
+text = "Healing Waters"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="BeliefInfoPanel" type="Panel" parent="CanvasLayer/BeliefControl"]
 visible = false
@@ -489,9 +532,14 @@ offset_left = 136.0
 offset_top = 12.0
 offset_right = 416.0
 offset_bottom = 158.0
+mouse_filter = 2
+
+[node name="religionData" parent="CanvasLayer/BeliefControl" instance=ExtResource("33_mhn20")]
+position = Vector2(-310, 242)
 
 [node name="TechTree" parent="CanvasLayer" instance=ExtResource("16_f3t73")]
 visible = false
+mouse_filter = 2
 
 [node name="SpellSchoolsControl" type="Control" parent="CanvasLayer"]
 visible = false
@@ -499,6 +547,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+mouse_filter = 2
 script = ExtResource("36_qt86y")
 
 [node name="SpellSchoolsPanel" type="Panel" parent="CanvasLayer/SpellSchoolsControl"]
@@ -968,6 +1017,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+mouse_filter = 2
 
 [node name="ResourceInfoPanel" type="Sprite2D" parent="CanvasLayer/ResourceInfoControl"]
 position = Vector2(240, 285)
@@ -1031,6 +1081,7 @@ offset_left = -3.0
 offset_top = -17.0
 offset_right = 37.0
 offset_bottom = 23.0
+mouse_filter = 2
 
 [node name="ButtonPanel" type="Panel" parent="CanvasLayer/PanelOpenerControl"]
 layout_mode = 0
@@ -1265,6 +1316,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+mouse_filter = 2
 
 [node name="CountryController" type="Node2D" parent="."]
 visible = false
@@ -1493,8 +1545,6 @@ shape = SubResource("RectangleShape2D_qt86y")
 [connection signal="pressed" from="CanvasLayer/TileInfoPanel/WizardButton" to="CanvasLayer" method="_on_wizard_button_pressed"]
 [connection signal="downgradeBuilding" from="CanvasLayer/BuildingInfoPanel/buildingPanelPanel" to="." method="_on_building_panel_panel_downgrade_building"]
 [connection signal="upgradeBuilding" from="CanvasLayer/BuildingInfoPanel/buildingPanelPanel" to="." method="_on_building_panel_panel_upgrade_building"]
-[connection signal="mouse_entered" from="CanvasLayer/BeliefControl/BeliefPanel/GridContainer/beliefButton" to="CanvasLayer/BeliefControl" method="_on_belief_button_mouse_entered"]
-[connection signal="mouse_exited" from="CanvasLayer/BeliefControl/BeliefPanel/GridContainer/beliefButton" to="CanvasLayer/BeliefControl" method="_on_belief_button_mouse_exited"]
 [connection signal="addTechToPlayer" from="CanvasLayer/TechTree" to="." method="_on_tech_tree_add_tech_to_player"]
 [connection signal="pressed" from="CanvasLayer/Spellbook/CloseSpellbook" to="CanvasLayer" method="_on_close_spellbook_pressed"]
 [connection signal="mouse_entered" from="CanvasLayer/Resource Bar (TOP)/container/GoldControl/GoldArea2D" to="." method="_on_gold_area_2d_mouse_entered"]

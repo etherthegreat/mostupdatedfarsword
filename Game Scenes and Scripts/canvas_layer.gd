@@ -39,8 +39,9 @@ func _on_close_spellbook_pressed() -> void:
 	$Spellbook.visible = false
 	pass # Replace with function body.
 
-
+signal beliefUpdate
 func _on_belief_panel_button_pressed() -> void:
+	$BeliefControl.updateSelf()
 	if $BeliefControl.visible == true:
 		$BeliefControl.visible = false
 	elif $BeliefControl.visible == false:
