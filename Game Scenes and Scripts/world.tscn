@@ -425,7 +425,6 @@ offset_top = 74.0
 offset_bottom = 74.0
 
 [node name="BeliefControl" type="Control" parent="CanvasLayer" groups=["ScreenPanels"]]
-visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
@@ -470,9 +469,9 @@ columns = 2
 [node name="PurchasePanel" type="Panel" parent="CanvasLayer/BeliefControl/BeliefPanel"]
 visible = false
 layout_mode = 0
-offset_left = 790.0
+offset_left = 822.0
 offset_top = 105.0
-offset_right = 1256.0
+offset_right = 1225.0
 offset_bottom = 296.0
 
 [node name="PPSprite" type="Sprite2D" parent="CanvasLayer/BeliefControl/BeliefPanel/PurchasePanel"]
@@ -488,8 +487,8 @@ texture = ExtResource("34_pqr4i")
 [node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/BeliefControl/BeliefPanel/PurchasePanel"]
 layout_mode = 0
 offset_left = 134.0
-offset_top = 16.0
-offset_right = 461.0
+offset_top = 47.0
+offset_right = 395.0
 offset_bottom = 167.0
 
 [node name="PurchaseButton" type="Button" parent="CanvasLayer/BeliefControl/BeliefPanel/PurchasePanel"]
@@ -498,6 +497,8 @@ offset_left = 25.0
 offset_top = 125.0
 offset_right = 121.0
 offset_bottom = 159.0
+theme_override_colors/icon_disabled_color = Color(0.643685, 0.111242, 0.120301, 1)
+theme_override_colors/icon_normal_color = Color(0, 0.471946, 0, 1)
 text = "Purchase"
 
 [node name="Price" type="RichTextLabel" parent="CanvasLayer/BeliefControl/BeliefPanel/PurchasePanel"]
@@ -524,6 +525,16 @@ text = "Healing Waters"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
+
+[node name="purchasedBeliefsGrid" type="GridContainer" parent="CanvasLayer/BeliefControl/BeliefPanel"]
+layout_mode = 0
+offset_left = 1226.0
+offset_top = 111.0
+offset_right = 1821.0
+offset_bottom = 556.0
+theme_override_constants/h_separation = 160
+theme_override_constants/v_separation = 165
+columns = 2
 
 [node name="BeliefInfoPanel" type="Panel" parent="CanvasLayer/BeliefControl"]
 visible = false
@@ -1545,6 +1556,8 @@ shape = SubResource("RectangleShape2D_qt86y")
 [connection signal="pressed" from="CanvasLayer/TileInfoPanel/WizardButton" to="CanvasLayer" method="_on_wizard_button_pressed"]
 [connection signal="downgradeBuilding" from="CanvasLayer/BuildingInfoPanel/buildingPanelPanel" to="." method="_on_building_panel_panel_downgrade_building"]
 [connection signal="upgradeBuilding" from="CanvasLayer/BuildingInfoPanel/buildingPanelPanel" to="." method="_on_building_panel_panel_upgrade_building"]
+[connection signal="purchasedBelief" from="CanvasLayer/BeliefControl" to="." method="_on_belief_control_purchased_belief"]
+[connection signal="pressed" from="CanvasLayer/BeliefControl/BeliefPanel/PurchasePanel/PurchaseButton" to="CanvasLayer/BeliefControl" method="_on_purchase_button_pressed"]
 [connection signal="addTechToPlayer" from="CanvasLayer/TechTree" to="." method="_on_tech_tree_add_tech_to_player"]
 [connection signal="pressed" from="CanvasLayer/Spellbook/CloseSpellbook" to="CanvasLayer" method="_on_close_spellbook_pressed"]
 [connection signal="mouse_entered" from="CanvasLayer/Resource Bar (TOP)/container/GoldControl/GoldArea2D" to="." method="_on_gold_area_2d_mouse_entered"]

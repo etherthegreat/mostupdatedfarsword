@@ -280,13 +280,7 @@ func onNewGame():
 		Granary.number = tileNumber
 		Granary.buildBuilding()
 		tileBuildingsList.append(Granary)
-		var Temple = building.new()
-		Temple.buildingType = "Temple"
-		Temple.buildingLevel = 3
-		Temple.tile = self
-		Temple.number = tileNumber
-		Temple.buildBuilding()
-		tileBuildingsList.append(Temple)
+		addBuilding("Temple", 10)
 		var Barracks = building.new()
 		Barracks.buildingType = "Barracks"
 		Barracks.buildingLevel = 1

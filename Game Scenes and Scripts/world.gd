@@ -513,3 +513,10 @@ func resetUI():
 		$CanvasLayer/PanelOpenerControl.visible = true
 		$"CanvasLayer/Resource Bar (TOP)".visible = true
 	pass
+
+
+func _on_belief_control_purchased_belief(beliefName, beliefCost) -> void:
+	playerCountryNode.addReligiousBelief(beliefName)
+	playerCountryNode.payBill("faith", beliefCost)
+	$CanvasLayer/BeliefControl.updateSelf()
+	pass # Replace with function body.

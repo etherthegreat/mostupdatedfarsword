@@ -1,0 +1,41 @@
+[gd_scene load_steps=5 format=3 uid="uid://bkhw3d2crh8ir"]
+
+[ext_resource type="Script" uid="uid://c6e48effuc6d2" path="res://purchased_doctrine.gd" id="1_6lsml"]
+[ext_resource type="Texture2D" uid="uid://dxt6e30klymw8" path="res://art assets/finishedAssets/religiousIcons/IMG_1143.JPG" id="2_il11v"]
+[ext_resource type="Texture2D" uid="uid://cocrc1hdqliru" path="res://art assets/finishedAssets/religiousIcons/IMG_1146.PNG" id="3_i7748"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ar56c"]
+size = Vector2(77, 77)
+
+[node name="PurchasedDoctrine" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 77.0
+offset_bottom = 77.0
+mouse_filter = 2
+script = ExtResource("1_6lsml")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 77.0
+offset_bottom = 77.0
+mouse_filter = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="Panel"]
+position = Vector2(38.5, 38.5)
+scale = Vector2(0.077, 0.077)
+texture = ExtResource("2_il11v")
+
+[node name="SpriteBorder" type="Sprite2D" parent="Panel"]
+position = Vector2(38.5, 38.5)
+scale = Vector2(0.077, 0.077)
+texture = ExtResource("3_i7748")
+
+[node name="Area2D" type="Area2D" parent="Panel"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Panel/Area2D"]
+position = Vector2(38.5, 38.5)
+shape = SubResource("RectangleShape2D_ar56c")
+
+[connection signal="mouse_entered" from="Panel/Area2D" to="." method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="Panel/Area2D" to="." method="_on_area_2d_mouse_exited"]

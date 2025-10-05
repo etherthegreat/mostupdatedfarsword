@@ -228,9 +228,9 @@ func NewGameBuild():
 		addTechnologicalDiscovery("Copper Working")
 		addTechnologicalDiscovery("Artistry")
 		loadBeliefsList("GenericDoc1")
-		#loadBeliefsList("genericGods1")
-		loadBeliefsList("PDT1")
-		#addReligiousBelief("Standing Stones")
+		loadBeliefsList("genericGods1")
+		#loadBeliefsList("PDTDoc1")
+		addReligiousBelief("Tower Control")
 		#addReligiousBelief("TYLA DYN")
 		#addCulturalTradition("Humble Folk")
 		addCulturalTradition("Guardian Cats")
@@ -395,8 +395,11 @@ func addFaction(Name, Loyalty):
 func addReligiousBelief(Name):
 	var newBelief = belief.new()
 	newBelief.beliefType = Name
-	newBelief.buildBelief()
+	newBelief.buildBelief(Name)
 	selectedBeliefs.append(newBelief)
+	for String in availableDocs:
+		if String == Name:
+			availableDocs.erase(String)
 
 signal updateBeliefsSignal
 func loadBeliefsList(listTitle):
@@ -409,7 +412,14 @@ func loadBeliefsList(listTitle):
 			var PDTDoc1Array: Array = $religionData.PDTDoc1
 			for String in PDTDoc1Array:
 				availableDocs.append(String)
-	print(availableDocs, "DEBUG_FOUND", "SNEHA")
+		"GenericGods1":
+			var genericGods1Array: Array = $religionData.genericGods1
+			for String in genericGods1Array:
+				availableGods.append(String)
+		"PDTGods1":
+			var PDTGods1Array: Array = $religionData.PDTGods1
+			for String in PDTGods1Array:
+				availableGods.append(String)
 	pass
 
 func addGovernmentLaw(Name):
@@ -821,4 +831,12 @@ func calculateUniqueBuildingAttributes():
 		churchLevel = -3  
 	#print("beliefDifference", beliefDifference, "church Level", churchLevel)
 	#here is where the modifier for 
+	pass
+
+
+func payBill(type, amount):
+	match type:
+		"faith":
+			TotalFaith -= amount
+			print("debug")
 	pass
