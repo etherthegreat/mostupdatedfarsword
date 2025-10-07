@@ -8,13 +8,14 @@ var bbPurchased: bool
 var bbBWImage: Texture
 var bbCost : int
 var beliefDesc: String
+var borderImage: Texture
 
 #for testing
 
 #beliefDesc = "We worship the tree of life because everybody else seems to be doing it and wed hate to be left out on the coolest, hippest religious imagery"
 #bbName = "Tree of Life"
 
-func buildSelf(id, image, bwImage, purch, cost, hint):
+func buildSelf(id, image, bwImage, purch, cost, hint, border):
 	$TitleRichLabel.bbcode_enabled = true
 	bbName = id
 	bbImage = image
@@ -22,6 +23,8 @@ func buildSelf(id, image, bwImage, purch, cost, hint):
 	bbPurchased = purch
 	bbCost = cost
 	beliefDesc = hint
+	borderImage = border
+	$BeliefPanel/BeliefBorderSprite.texture = border
 	$BeliefPanel/BeliefSprite.texture = image
 	$TitleRichLabel.push_hint(str(beliefDesc, "Faith: ", bbCost))
 	$TitleRichLabel.append_text(bbName)
@@ -56,5 +59,5 @@ signal LabelClicked
 func _on_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.is_action_pressed("Left Click"):
 		if bbPurchased == false:
-			emit_signal("LabelClicked", bbName, bbCost, bbImage, beliefDesc)
+			emit_signal("LabelClicked", bbName, bbCost, bbImage, beliefDesc, borderImage)
 	pass # Replace with function body.

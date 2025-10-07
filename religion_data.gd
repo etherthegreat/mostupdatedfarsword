@@ -32,12 +32,28 @@ var healingWatersBWIcon: Texture = load("res://art assets/finishedAssets/religio
 var towerControlIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/tower1.JPG")
 var towerControlBWIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1149.JPG")
 
+var bibweyIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1156.JPG")
+var bibweyBWIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1156 - Copy.JPG")
+var tylaDinIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1157.JPG")
+var tylaDinIconBW: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1157 - Copy.JPG")
+var ornilRaIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1158.JPG")
+var ornilRaIconBW: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1158 - Copy.JPG")
+var dilnithAmenIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1159.JPG")
+var dilnithAmenIconBW: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1159 - Copy.JPG")
+var faEnepoIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1160.JPG")
+var faEnepoIconBW: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1160 - Copy.JPG")
+var benaxtaraIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1161.JPG")
+var benaxtaraBWIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1161 - Copy.JPG")
 
 #borderSprites
 var border1 = load("res://art assets/finishedAssets/religiousIcons/IMG_1146.PNG")
+var border2 = load("res://art assets/finishedAssets/religiousIcons/IMG_1155.PNG")
+var border3 = load("res://art assets/finishedAssets/religiousIcons/IMG_1154.PNG")
+var border4 = load("res://art assets/finishedAssets/religiousIcons/IMG_1153.PNG")
+var border5 = load("res://art assets/finishedAssets/religiousIcons/IMG_1152.PNG")
 
 func buildSelf():
 	genericDoc1 = ["Sacred Groves", "Midsummer Celebrations", "Tree of Life", "Standing Stones", "Valued Idolatry", "Healing Waters"]
 	PDTDoc1 = ["Tower Control"]
-	genericGods1 = ["BENAXTARA", "TYLA-DYN", "FA ENEPO", "BIBWEY", "DILNITH-AMEN", "ORNIL-RA"]
+	genericGods1 = ["Benaxtara", "Tyla-Dyn", "Fa Enepo", "Bibwey", "Dilnith-Amen", "Ornil-Ra"]
 	pass

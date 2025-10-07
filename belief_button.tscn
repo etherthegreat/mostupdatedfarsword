@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://c6nonjhme7pse"]
+[gd_scene load_steps=6 format=3 uid="uid://c6nonjhme7pse"]
 
 [ext_resource type="Script" uid="uid://dkfddygigmoox" path="res://belief_button.gd" id="1_mgpe5"]
+[ext_resource type="Texture2D" uid="uid://b8maa5p0egucx" path="res://art assets/finishedAssets/religiousIcons/IMG_1166.PNG" id="2_1yg1a"]
 [ext_resource type="Texture2D" uid="uid://dxt6e30klymw8" path="res://art assets/finishedAssets/religiousIcons/IMG_1143.JPG" id="2_vdgxi"]
 [ext_resource type="Texture2D" uid="uid://cocrc1hdqliru" path="res://art assets/finishedAssets/religiousIcons/IMG_1146.PNG" id="3_1yg1a"]
 
@@ -19,9 +20,14 @@ script = ExtResource("1_mgpe5")
 
 [node name="BeliefPanel" type="Panel" parent="."]
 layout_mode = 0
-offset_right = 309.0
-offset_bottom = 96.0
+offset_right = 304.0
+offset_bottom = 93.0
 mouse_filter = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="BeliefPanel"]
+position = Vector2(154, 48.5)
+scale = Vector2(0.110714, 0.097)
+texture = ExtResource("2_1yg1a")
 
 [node name="BeliefSprite" type="Sprite2D" parent="BeliefPanel"]
 position = Vector2(48, 49)
@@ -41,7 +47,6 @@ offset_right = 305.0
 offset_bottom = 84.0
 theme_override_font_sizes/normal_font_size = 21
 bbcode_enabled = true
-text = "scooby doo time for me"
 fit_content = true
 horizontal_alignment = 1
 vertical_alignment = 1

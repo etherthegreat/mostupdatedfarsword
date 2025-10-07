@@ -1,4 +1,4 @@
-[gd_scene load_steps=74 format=3 uid="uid://bfbouq3jfwkxl"]
+[gd_scene load_steps=80 format=3 uid="uid://bfbouq3jfwkxl"]
 
 [ext_resource type="Script" uid="uid://dthx176t72xxr" path="res://Game Scenes and Scripts/world.gd" id="1_6bnro"]
 [ext_resource type="Texture2D" uid="uid://ymy7tu133b71" path="res://art assets/Placeholder Art/map/map.png" id="2_160f8"]
@@ -57,10 +57,16 @@
 [ext_resource type="Texture2D" uid="uid://cb08osdpathpa" path="res://art assets/Placeholder Art/UI Art/resources/faith.png" id="35_o3iuu"]
 [ext_resource type="PackedScene" uid="uid://b3odh5q7qlkoj" path="res://magic_amount_control.tscn" id="36_mhn20"]
 [ext_resource type="Script" uid="uid://bpfawxk0gtyii" path="res://Game Scenes and Scripts/spell_schools_control.gd" id="36_qt86y"]
+[ext_resource type="Texture2D" uid="uid://k1rvpr0qxcw1" path="res://art assets/finishedAssets/religiousIcons/IMG_1170.PNG" id="37_y3tfg"]
 [ext_resource type="Script" uid="uid://b1e4cr0ob85l3" path="res://Game Scenes and Scripts/military_panel_control.gd" id="38_0kf4p"]
 [ext_resource type="Texture2D" uid="uid://dbg7fk5qjv7bf" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/test 3.png" id="38_sleii"]
+[ext_resource type="Texture2D" uid="uid://bms0cferfujkf" path="res://art assets/finishedAssets/religiousIcons/IMG_1170 - Copy.PNG" id="38_xyhgj"]
+[ext_resource type="Texture2D" uid="uid://beeamy6jaliiu" path="res://art assets/finishedAssets/religiousIcons/IMG_1170 - Copy (3).PNG" id="39_3ll13"]
 [ext_resource type="Texture2D" uid="uid://xc856v6ceb4n" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/test 4.png" id="39_jpc3q"]
+[ext_resource type="Texture2D" uid="uid://c8rb650bdiooq" path="res://art assets/finishedAssets/religiousIcons/IMG_1170 - Copy (2).PNG" id="40_mkdpd"]
 [ext_resource type="Texture2D" uid="uid://dmpi0sruv26np" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/god dimensions 215 x 180.png" id="41_5uqnc"]
+[ext_resource type="Texture2D" uid="uid://sy5akyb1n1ih" path="res://art assets/finishedAssets/religiousIcons/IMG_1171.PNG" id="41_q1qis"]
+[ext_resource type="Texture2D" uid="uid://b8maa5p0egucx" path="res://art assets/finishedAssets/religiousIcons/IMG_1166.PNG" id="42_mr1jf"]
 [ext_resource type="Texture2D" uid="uid://obdo6188442u" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/church unlockables.png" id="42_ytc6g"]
 [ext_resource type="Texture2D" uid="uid://bcalqpyyglp78" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/tiny unlockabes.png" id="43_ltui7"]
 [ext_resource type="Script" uid="uid://c424luv26ql5l" path="res://Game Scenes and Scripts/path_control.gd" id="51_tqcrl"]
@@ -445,15 +451,16 @@ position = Vector2(987.5, 559)
 scale = Vector2(1.01927, 1.03704)
 texture = ExtResource("20_d81aa")
 
-[node name="GridContainer" type="GridContainer" parent="CanvasLayer/BeliefControl/BeliefPanel"]
+[node name="GodsContainer" type="GridContainer" parent="CanvasLayer/BeliefControl/BeliefPanel"]
 layout_mode = 0
-offset_left = 85.0
-offset_top = 196.0
-offset_right = 1023.0
-offset_bottom = 1124.0
+offset_left = 172.0
+offset_top = 574.0
+offset_right = 881.0
+offset_bottom = 1113.0
 mouse_filter = 2
-theme_override_constants/h_separation = 30
-columns = 4
+theme_override_constants/h_separation = 360
+theme_override_constants/v_separation = 130
+columns = 2
 
 [node name="DoctrineContainer" type="GridContainer" parent="CanvasLayer/BeliefControl/BeliefPanel"]
 layout_mode = 0
@@ -532,9 +539,29 @@ offset_left = 1226.0
 offset_top = 111.0
 offset_right = 1821.0
 offset_bottom = 556.0
+mouse_filter = 2
 theme_override_constants/h_separation = 160
 theme_override_constants/v_separation = 165
 columns = 2
+
+[node name="purchasedGodsGrid" type="GridContainer" parent="CanvasLayer/BeliefControl/BeliefPanel"]
+layout_mode = 0
+offset_left = 245.0
+offset_top = 111.0
+offset_right = 840.0
+offset_bottom = 556.0
+mouse_filter = 2
+theme_override_constants/h_separation = 160
+theme_override_constants/v_separation = 165
+columns = 2
+
+[node name="testLabel" type="Label" parent="CanvasLayer/BeliefControl/BeliefPanel"]
+layout_mode = 0
+offset_left = 970.0
+offset_top = 423.0
+offset_right = 1105.0
+offset_bottom = 504.0
+text = "test"
 
 [node name="BeliefInfoPanel" type="Panel" parent="CanvasLayer/BeliefControl"]
 visible = false
@@ -547,6 +574,64 @@ mouse_filter = 2
 
 [node name="religionData" parent="CanvasLayer/BeliefControl" instance=ExtResource("33_mhn20")]
 position = Vector2(-310, 242)
+
+[node name="FaithPoints" type="Control" parent="CanvasLayer/BeliefControl"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="FaithBackdropSprite" type="Sprite2D" parent="CanvasLayer/BeliefControl/FaithPoints"]
+position = Vector2(592, 493)
+scale = Vector2(0.388571, 0.388571)
+texture = ExtResource("37_y3tfg")
+
+[node name="-1LevelSpriteBW" type="Sprite2D" parent="CanvasLayer/BeliefControl/FaithPoints"]
+position = Vector2(744, 493)
+scale = Vector2(0.388571, 0.388571)
+texture = ExtResource("38_xyhgj")
+
+[node name="-2LevelSpriteBW" type="Sprite2D" parent="CanvasLayer/BeliefControl/FaithPoints"]
+position = Vector2(591, 493)
+scale = Vector2(0.388571, 0.388571)
+texture = ExtResource("39_3ll13")
+
+[node name="-3LevelSpriteBW" type="Sprite2D" parent="CanvasLayer/BeliefControl/FaithPoints"]
+position = Vector2(438, 493)
+scale = Vector2(0.388571, 0.388571)
+texture = ExtResource("40_mkdpd")
+
+[node name="DividerSprite" type="Sprite2D" parent="CanvasLayer/BeliefControl/FaithPoints"]
+position = Vector2(592, 493)
+scale = Vector2(0.388571, 0.388571)
+texture = ExtResource("41_q1qis")
+
+[node name="FaithPointsInfoPanel" type="Panel" parent="CanvasLayer/BeliefControl/FaithPoints"]
+layout_mode = 0
+offset_left = 426.0
+offset_top = 294.0
+offset_right = 729.0
+offset_bottom = 414.0
+
+[node name="FaithPointsInfoSprite" type="Sprite2D" parent="CanvasLayer/BeliefControl/FaithPoints/FaithPointsInfoPanel"]
+position = Vector2(151.5, 63)
+scale = Vector2(0.108929, 0.126)
+texture = ExtResource("42_mr1jf")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/BeliefControl/FaithPoints/FaithPointsInfoPanel/FaithPointsInfoSprite"]
+offset_left = -1336.0
+offset_top = -437.0
+offset_right = 1336.0
+offset_bottom = 460.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 106
+theme_override_font_sizes/bold_font_size = 106
+bbcode_enabled = true
+text = "[b]Zealous Communion: Pantheon Level 2
+
+All temples provide [color= Green] +3[/color] [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/faith.png[/img][color=white] Faith[/color], [color= Green] +2[/color] [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/food.png[/img][color=pink] Food[/color], and [color= green] +1[/color] [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/wood.png[/img][color=brown] Wood[/color]
+
+Unlocks Unit Ability: [img]res://art assets/Placeholder Art/sword.png[img] [color=purple] Divine Charge"
 
 [node name="TechTree" parent="CanvasLayer" instance=ExtResource("16_f3t73")]
 visible = false

@@ -228,7 +228,7 @@ func NewGameBuild():
 		addTechnologicalDiscovery("Copper Working")
 		addTechnologicalDiscovery("Artistry")
 		loadBeliefsList("GenericDoc1")
-		loadBeliefsList("genericGods1")
+		loadBeliefsList("GenericGods1")
 		#loadBeliefsList("PDTDoc1")
 		addReligiousBelief("Tower Control")
 		#addReligiousBelief("TYLA DYN")
@@ -400,6 +400,10 @@ func addReligiousBelief(Name):
 	for String in availableDocs:
 		if String == Name:
 			availableDocs.erase(String)
+	for String in availableGods:
+		if String == Name:
+			availableGods.erase(String)
+
 
 signal updateBeliefsSignal
 func loadBeliefsList(listTitle):

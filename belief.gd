@@ -21,6 +21,16 @@ func buildBelief(type):
 			faithBelief = false
 		"Tower Control":
 			faithBelief = false
-		"BENAXTARA":
+		"Benaxtara":
+			faithBelief = true
+		"Tyla-Dyn":
+			faithBelief = true
+		"Bibwey":
+			faithBelief = true
+		"Dilnith-Amen":
+			faithBelief = true
+		"Ornil-Ra":
+			faithBelief = true
+		"Fa Enepo":
 			faithBelief = true
 	pass
