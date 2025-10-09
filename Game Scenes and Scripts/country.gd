@@ -819,19 +819,19 @@ func calculateUniqueBuildingAttributes():
 			faithBeliefs +=1
 	#print("faith beliefs:", faithBeliefs, "church beliefs", churchBeliefs)
 	var beliefDifference = (churchBeliefs - faithBeliefs)
-	if beliefDifference == 0:
+	if beliefDifference >= -1 && beliefDifference <= 1:
 		churchLevel = 0
-	elif beliefDifference == 1:
+	elif beliefDifference >= 2 && beliefDifference <= 3:
 		churchLevel = 1
-	elif beliefDifference == 2:
+	elif beliefDifference >= 4 && beliefDifference <= 5:
 		churchLevel = 2
-	elif beliefDifference >= 3:
+	elif beliefDifference >= 6:
 		churchLevel = 3
-	elif beliefDifference == -1:
+	elif beliefDifference >= -3 && beliefDifference <= -2:
 		churchLevel = -1
-	elif beliefDifference == -2:
+	elif beliefDifference >= -5 && beliefDifference <= 4:
 		churchLevel = -2
-	elif beliefDifference <= -3:
+	elif beliefDifference <= -6:
 		churchLevel = -3  
 	#print("beliefDifference", beliefDifference, "church Level", churchLevel)
 	#here is where the modifier for 

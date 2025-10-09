@@ -180,6 +180,7 @@ func _process(delta: float) -> void:
 			$BeliefPanel/PurchasePanel/PurchaseButton.disabled = true
 	if self.visible == true:
 		$BeliefPanel/testLabel.text = str(player.churchLevel)
+		matchFaithPointsIcons()
 	pass
 
 signal purchasedBelief
@@ -188,4 +189,168 @@ func _on_purchase_button_pressed() -> void:
 	pendingBelief = ""
 	pendingCost = 0
 	$BeliefPanel/PurchasePanel.visible = false
+	pass # Replace with function body.
+
+func matchFaithPointsIcons():
+	match player.churchLevel:
+		3:
+			$"FaithPoints/1LevelSpriteBW".visible = false
+			$"FaithPoints/2LevelSpriteBW".visible = false
+			$"FaithPoints/3LevelSpriteBW".visible = false
+			$FaithPoints/BalanceSpriteBW.visible = true
+			$"FaithPoints/-1LevelSpriteBW".visible = true
+			$"FaithPoints/-2LevelSpriteBW".visible = true
+			$"FaithPoints/-3LevelSpriteBW".visible = true
+		2:
+			$"FaithPoints/1LevelSpriteBW".visible = false
+			$"FaithPoints/2LevelSpriteBW".visible = false
+			$"FaithPoints/3LevelSpriteBW".visible = true
+			$FaithPoints/BalanceSpriteBW.visible = true
+			$"FaithPoints/-1LevelSpriteBW".visible = true
+			$"FaithPoints/-2LevelSpriteBW".visible = true
+			$"FaithPoints/-3LevelSpriteBW".visible = true
+		1:
+			$"FaithPoints/1LevelSpriteBW".visible = false
+			$"FaithPoints/2LevelSpriteBW".visible = true
+			$"FaithPoints/3LevelSpriteBW".visible = true
+			$FaithPoints/BalanceSpriteBW.visible = true
+			$"FaithPoints/-1LevelSpriteBW".visible = true
+			$"FaithPoints/-2LevelSpriteBW".visible = true
+			$"FaithPoints/-3LevelSpriteBW".visible = true
+		0:
+			$"FaithPoints/1LevelSpriteBW".visible = true
+			$"FaithPoints/2LevelSpriteBW".visible = true
+			$"FaithPoints/3LevelSpriteBW".visible = true
+			$FaithPoints/BalanceSpriteBW.visible = false
+			$"FaithPoints/-1LevelSpriteBW".visible = true
+			$"FaithPoints/-2LevelSpriteBW".visible = true
+			$"FaithPoints/-3LevelSpriteBW".visible = true
+		-1:
+			$"FaithPoints/1LevelSpriteBW".visible = true
+			$"FaithPoints/2LevelSpriteBW".visible = true
+			$"FaithPoints/3LevelSpriteBW".visible = true
+			$FaithPoints/BalanceSpriteBW.visible = true
+			$"FaithPoints/-1LevelSpriteBW".visible = false
+			$"FaithPoints/-2LevelSpriteBW".visible = true
+			$"FaithPoints/-3LevelSpriteBW".visible = true
+		-2:
+			$"FaithPoints/1LevelSpriteBW".visible = true
+			$"FaithPoints/2LevelSpriteBW".visible = true
+			$"FaithPoints/3LevelSpriteBW".visible = true
+			$FaithPoints/BalanceSpriteBW.visible = true
+			$"FaithPoints/-1LevelSpriteBW".visible = false
+			$"FaithPoints/-2LevelSpriteBW".visible = false
+			$"FaithPoints/-3LevelSpriteBW".visible = true
+		-3:
+			$"FaithPoints/1LevelSpriteBW".visible = true
+			$"FaithPoints/2LevelSpriteBW".visible = true
+			$"FaithPoints/3LevelSpriteBW".visible = true
+			$FaithPoints/BalanceSpriteBW.visible = true
+			$"FaithPoints/-1LevelSpriteBW".visible = false
+			$"FaithPoints/-2LevelSpriteBW".visible = false
+			$"FaithPoints/-3LevelSpriteBW".visible = false
+	pass
+
+
+func _on_faith_1_area_2d_mouse_entered() -> void:
+	$FaithPoints/FaithPointsInfoPanel/FaithPointsInfoSprite/RichTextLabel.clear()
+	$FaithPoints/FaithPointsInfoPanel/FaithPointsInfoSprite/RichTextLabel.append_text("[b]Zealous Communion: Pantheon Level 2
+
+All temples provide [color= Green] +3[/color] [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/faith.png[/img][color=white] Faith[/color], [color= Green] +2[/color] [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/food.png[/img][color=pink] Food[/color], and [color= green] +1[/color] [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/wood.png[/img][color=brown] Wood[/color]
+
+Unlocks Unit Ability: [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/divinity big.png[img] [color=purple] Big LaBIIA")
+	$FaithPoints/FaithPointsInfoPanel.visible = true
+	pass # Replace with function body.
+
+func _on_faith_1_area_2d_mouse_exited() -> void:
+	$FaithPoints/FaithPointsInfoPanel.visible = false
+	pass # Replace with function body.
+
+func _on_faith_2_area_2d_mouse_entered() -> void:
+	$FaithPoints/FaithPointsInfoPanel/FaithPointsInfoSprite/RichTextLabel.clear()
+	$FaithPoints/FaithPointsInfoPanel/FaithPointsInfoSprite/RichTextLabel.append_text("[b]Zealous Communion: Pantheon Level 2
+
+All temples provide [color= Green] +3[/color] [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/faith.png[/img][color=white] Faith[/color], [color= Green] +2[/color] [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/food.png[/img][color=pink] Food[/color], and [color= green] +1[/color] [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/wood.png[/img][color=brown] Wood[/color]
+
+Unlocks Unit Ability: [img]res://art assets/Placeholder Art/sword.png[img] [color=purple] Divine Charge")
+	$FaithPoints/FaithPointsInfoPanel.visible = true
+	pass # Replace with function body.
+
+func _on_faith_2_area_2d_mouse_exited() -> void:
+	$FaithPoints/FaithPointsInfoPanel.visible = false
+	pass # Replace with function body.
+
+func _on_faith_3_area_2d_mouse_entered() -> void:
+	$FaithPoints/FaithPointsInfoPanel/FaithPointsInfoSprite/RichTextLabel.clear()
+	$FaithPoints/FaithPointsInfoPanel/FaithPointsInfoSprite/RichTextLabel.append_text("[b]Zealous Communion: Pantheon Level 2
+
+All temples provide [color= Green] +3[/color] [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/faith.png[/img][color=white] Faith[/color], [color= Green] +2[/color] [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/food.png[/img][color=pink] Food[/color], and [color= green] +1[/color] [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/wood.png[/img][color=brown] Wood[/color]
+
+Unlocks Unit Ability: [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/food.png[img] [color=purple] Wiener Vacuum")
+	$FaithPoints/FaithPointsInfoPanel.visible = true
+	pass # Replace with function body.
+
+func _on_faith_3_area_2d_mouse_exited() -> void:
+	$FaithPoints/FaithPointsInfoPanel.visible = false
+	pass # Replace with function body.
+
+
+func _on_church_1_area_2d_mouse_entered() -> void:
+	$FaithPoints/ChurchPointsInfoPanel/ChurchPointsInfoSprite/RichTextLabel.clear()
+	$FaithPoints/ChurchPointsInfoPanel/ChurchPointsInfoSprite/RichTextLabel.append_text("[b]Zealous Communion: Church Level 1
+
+All temples provide [color= Green] +3[/color] [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/faith.png[/img][color=white] Faith[/color], [color= Green] +2[/color] [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/food.png[/img][color=pink] Food[/color], and [color= green] +1[/color] [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/wood.png[/img][color=brown] Wood[/color]
+
+Unlocks Unit Ability: [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/divinity big.png[img] [color=purple] Organized Faith")
+	$FaithPoints/ChurchPointsInfoPanel.visible = true
+	pass # Replace with function body.
+
+func _on_church_1_area_2d_mouse_exited() -> void:
+	$FaithPoints/ChurchPointsInfoPanel.visible = false
+	pass # Replace with function body.
+
+func _on_church_2_area_2d_mouse_entered() -> void:
+	$FaithPoints/ChurchPointsInfoPanel/ChurchPointsInfoSprite/RichTextLabel.clear()
+	$FaithPoints/ChurchPointsInfoPanel/ChurchPointsInfoSprite/RichTextLabel.append_text("[b]Zealous Communion: Church Level 2
+
+All temples provide [color= Green] +3[/color] [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/faith.png[/img][color=white] Faith[/color], [color= Green] +2[/color] [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/food.png[/img][color=pink] Food[/color], and [color= green] +1[/color] [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/wood.png[/img][color=brown] Wood[/color]
+
+Unlocks Unit Ability: [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/divinity big.png[img] [color=purple] Organized Priesthood")
+	$FaithPoints/ChurchPointsInfoPanel.visible = true
+	pass # Replace with function body.
+
+func _on_church_2_area_2d_mouse_exited() -> void:
+	$FaithPoints/ChurchPointsInfoPanel.visible = false
+	pass # Replace with function body.
+
+
+func _on_church_3_area_2d_mouse_entered() -> void:
+	$FaithPoints/ChurchPointsInfoPanel/ChurchPointsInfoSprite/RichTextLabel.clear()
+	$FaithPoints/ChurchPointsInfoPanel/ChurchPointsInfoSprite/RichTextLabel.append_text("[b]Zealous Communion: Church Level 3
+
+All temples provide [color= Green] +3[/color] [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/faith.png[/img][color=white] Faith[/color], [color= Green] +2[/color] [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/food.png[/img][color=pink] Food[/color], and [color= green] +1[/color] [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/wood.png[/img][color=brown] Wood[/color]
+
+Unlocks Unit Ability: [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/divinity big.png[img] [color=purple] Organized Religion")
+	$FaithPoints/ChurchPointsInfoPanel.visible = true
+	pass # Replace with function body.
+
+
+func _on_church_3_area_2d_mouse_exited() -> void:
+	$FaithPoints/ChurchPointsInfoPanel.visible = false
+	pass # Replace with function body.
+
+
+func _on_balance_area_2d_mouse_entered() -> void:
+	$FaithPoints/BalancePointsInfoPanel/BalancePointsInfoPanel/RichTextLabel.clear()
+	$FaithPoints/BalancePointsInfoPanel/BalancePointsInfoPanel/RichTextLabel.append_text("[b]Zealous Communion: Church Level 3
+
+All temples provide [color= Green] +3[/color] [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/faith.png[/img][color=white] Faith[/color], [color= Green] +2[/color] [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/food.png[/img][color=pink] Food[/color], and [color= green] +1[/color] [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/wood.png[/img][color=brown] Wood[/color]
+
+Unlocks Unit Ability: [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/divinity big.png[img] [color=purple] Perfectly Balanced")
+	$FaithPoints/BalancePointsInfoPanel.visible = true
+	pass # Replace with function body.
+
+
+func _on_balance_area_2d_mouse_exited() -> void:
+	$FaithPoints/BalancePointsInfoPanel.visible = false
 	pass # Replace with function body.
