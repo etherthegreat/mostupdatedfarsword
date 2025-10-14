@@ -16,13 +16,13 @@ func updateSelf():
 	$BeliefPanel/PurchasePanel.visible = false
 	pendingBelief = ""
 	pendingCost = 0
-	if $BeliefPanel/GodsContainer.get_children!=null:
-		for beliefButton in $BeliefPanel/GodsContainer.get_children():
-			$BeliefPanel/GodsContainer.remove_child(beliefButton)
+	if $BeliefPanel/GodsScrollContainer/GodsContainer.get_children!=null:
+		for beliefButton in $BeliefPanel/GodsScrollContainer/GodsContainer.get_children():
+			$BeliefPanel/GodsScrollContainer/GodsContainer.remove_child(beliefButton)
 			beliefButton.queue_free()
-	if $BeliefPanel/DoctrineContainer.get_children() != null:
-		for beliefButton in $BeliefPanel/DoctrineContainer.get_children():
-			$BeliefPanel/DoctrineContainer.remove_child(beliefButton)
+	if $BeliefPanel/DoctrineScrollContainer/DoctrineContainer.get_children() != null:
+		for beliefButton in $BeliefPanel/DoctrineScrollContainer/DoctrineContainer.get_children():
+			$BeliefPanel/DoctrineScrollContainer/DoctrineContainer.remove_child(beliefButton)
 			beliefButton.queue_free()
 	for String in player.availableDocs:
 		var newBB = beliefButt.instantiate()
@@ -41,7 +41,7 @@ func updateSelf():
 				newBB.buildSelf("Tree of Life", $religionData.treeOfLifeIcon, $religionData.treeOfLifeBWIcon, false, 160, "Trees are everything and everywhere and make perfect indoctrination imagery for dummies.", $religionData.border1)
 			"Tower Control":
 				newBB.buildSelf("Tower Control", $religionData.towerControlIcon, $religionData.towerControlBWIcon, false, 250, "The wizards have implemented strict mind control, including the removal of faith from society.", $religionData.border1)
-		$BeliefPanel/DoctrineContainer.add_child(newBB)
+		$BeliefPanel/DoctrineScrollContainer/DoctrineContainer.add_child(newBB)
 		newBB.LabelClicked.connect(purchasePanel)
 	for String in player.availableGods:
 		var newBB = beliefButt.instantiate()
@@ -58,7 +58,7 @@ func updateSelf():
 				newBB.buildSelf("Dilnith-Amen", $religionData.dilnithAmenIcon, $religionData.dilnithAmenIconBW, false, 185, "The Enlightened One, the great Meditator.  Dilnith Amen figured out the secrets to enlightenment before the Demon King arrived.", $religionData.border2)
 			"Ornil-Ra":
 				newBB.buildSelf("Ornil-Ra", $religionData.ornilRaIcon, $religionData.ornilRaIconBW, false, 280, "The great destroyer and the great provider.  The inciter of cycles, of change, of chaos.", $religionData.border4)
-		$BeliefPanel/GodsContainer.add_child(newBB)
+		$BeliefPanel/GodsScrollContainer/GodsContainer.add_child(newBB)
 		newBB.LabelClicked.connect(purchasePanel)
 	if $BeliefPanel/purchasedBeliefsGrid.get_children() != null:
 		for purchasedDoctrine in $BeliefPanel/purchasedBeliefsGrid.get_children():
@@ -155,8 +155,8 @@ func _on_belief_button_mouse_exited() -> void:
 	pass # Replace with function body.
 
 func _process(delta: float) -> void:
-	if $BeliefPanel/DoctrineContainer.get_children != null:
-		for beliefButton in $BeliefPanel/DoctrineContainer.get_children():
+	if $BeliefPanel/DoctrineScrollContainer/DoctrineContainer.get_children != null:
+		for beliefButton in $BeliefPanel/DoctrineScrollContainer/DoctrineContainer.get_children():
 			if beliefButton.bbPurchased != true:
 				if beliefButton.bbCost <= player.TotalFaith:
 					beliefButton.makePurchaseable()
@@ -164,8 +164,8 @@ func _process(delta: float) -> void:
 					beliefButton.cantAfford()
 			else:
 				beliefButton.purchased()
-	if $BeliefPanel/GodsContainer.get_children != null:
-		for beliefButton in $BeliefPanel/GodsContainer.get_children():
+	if $BeliefPanel/GodsScrollContainer/GodsContainer.get_children != null:
+		for beliefButton in $BeliefPanel/GodsScrollContainer/GodsContainer.get_children():
 			if beliefButton.bbPurchased != true:
 				if beliefButton.bbCost <= player.TotalFaith:
 					beliefButton.makePurchaseable()

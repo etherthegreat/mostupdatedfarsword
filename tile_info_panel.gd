@@ -1,4 +1,4 @@
-extends Panel
+extends Control
 
 class_name TileInfoPanel
 
@@ -29,18 +29,20 @@ func displayTileInfo(tile):
 	emit_signal("selectThisTile", tile)
 	selectedTile = tile
 	if firstTime == false:
-		for Control in $Panel/TerrainModifiersGridContainer.get_children():
+		for Control in $TerrainModifiersGridContainer.get_children():
 			print(Control)
 			#Control.queue_free() #this is really important to come back to.  I'm not removing the nodes, I'm just
 			#removing them from being children of the container.  theoretically this could be a huge performance issue 
-			$Panel/TerrainModifiersGridContainer.remove_child(Control)
-		for ModifierSprite in $Panel/TerrainModifiersGridContainer.get_children():
+			$TerrainModifiersGridContainer.remove_child(Control)
+		for ModifierSprite in $TerrainModifiersGridContainer.get_children():
 			print(ModifierSprite)
 			#ModifierSprite.queue_free() #same with this guy
-			$Panel/TerrainModifiersGridContainer.remove_child(ModifierSprite)
+			$TerrainModifiersGridContainer.remove_child(ModifierSprite)
+			ModifierSprite.queue_free()
 	else:
 		firstTime = false
-	$Panel/Label.text = tile.tileName
+	$Label.text = tile.tileName
+	matchTileNaturals()
 	for tileEcoModifier in tile.tileEcoModifiers:
 		var modifierControl = Control.new()
 		var modiSprite = ModifierSprite.new()
@@ -49,7 +51,7 @@ func displayTileInfo(tile):
 		#that allows it to display info about the modifier.
 		modiSprite.buildModifier(tileEcoModifier)
 		modifierControl.add_child(modiSprite)
-		$Panel/TerrainModifiersGridContainer.add_child(modifierControl)
+		$TerrainModifiersGridContainer.add_child(modifierControl)
 		if selectedTile.tileGovernor != null:
 			if selectedTile.tileGovernor.governorTexture != null:
 				$governorButton.icon = selectedTile.tileGovernor.governorTexture
@@ -87,6 +89,34 @@ func _on_governor_button_pressed() -> void:
 	pass # Replace with function body.
 
 var governorSelectionScene = preload("res://governor_selection.tscn")
+func matchTileNaturals():
+	if selectedTile.cropSlot != null:
+		$CropPanelSprite.texture = load("res://art assets/finishedAssets/religiousIcons/cropIconFilled.PNG")
+		match selectedTile.cropSlot.cropType:
+			"Bamboo":
+				$CropSprite.texture = load("res://art assets/finishedAssets/ores/Bamboo.PNG")
+			"Bananas":
+				$CropSprite.texture = load("res://art assets/finishedAssets/ores/Bananas.PNG")
+			"Cannabis":
+				$CropSprite.texture = load("res://art assets/finishedAssets/ores/Cannabis.PNG")
+			"Razorberry":
+				$CropSprite.texture = load("res://art assets/finishedAssets/ores/Razorberry.PNG")
+			"Seaweed":
+				$CropSprite.texture = load("res://art assets/finishedAssets/ores/Seaweed.PNG")
+			"Wereroot":
+				$CropSprite.texture = load("res://art assets/finishedAssets/ores/Wereroot.PNG")
+			"Wheat":
+				$CropSprite.texture = load("res://art assets/finishedAssets/ores/Wheat.PNG")
+	else:
+		$CropPanelSprite.texture = load("res://art assets/finishedAssets/religiousIcons/cropIconEmpty.PNG")
+		$CropSprite.texture = null
+	if selectedTile.oreSlot != null:
+		$OrePanelSprite.texture = load("res://art assets/finishedAssets/religiousIcons/oreIconFilled.PNG")
+		$OreSprite.texture = selectedTile.oreSlot.oreImage
+	else:
+		$OrePanelSprite.texture = load("res://art assets/finishedAssets/religiousIcons/oreIconDisabled.PNG")
+		$OreSprite.texture = null
+	pass
 func calculateAvailableGovernor(playerNode, tile):
 	var tileReplica: Tile
 	tileReplica = tile

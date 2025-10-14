@@ -520,3 +520,8 @@ func _on_belief_control_purchased_belief(beliefName, beliefCost) -> void:
 	playerCountryNode.payBill("faith", beliefCost)
 	$CanvasLayer/BeliefControl.updateSelf()
 	pass # Replace with function body.
+
+
+func _on_government_control_slider_changed(amount, type) -> void:
+	playerCountryNode.setNewTaxAmount(amount, type)
+	pass # Replace with function body.

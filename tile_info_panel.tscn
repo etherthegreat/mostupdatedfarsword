@@ -1,41 +1,38 @@
-[gd_scene load_steps=2 format=3 uid="uid://cyiii8hcpiwbm"]
+[gd_scene load_steps=3 format=3 uid="uid://cyiii8hcpiwbm"]
 
 [ext_resource type="Script" uid="uid://d3ugki6qoul1x" path="res://tile_info_panel.gd" id="1_437f7"]
+[ext_resource type="Texture2D" uid="uid://cta3ksrnubp7x" path="res://art assets/finishedAssets/Panels/tilePanel.PNG" id="2_ow4sj"]
 
-[node name="TileInfoPanel" type="Panel"]
-offset_left = 1562.0
-offset_top = 609.0
-offset_right = 1562.0
-offset_bottom = 609.0
+[node name="TileInfoPanel" type="Control"]
+layout_mode = 3
+anchors_preset = 0
 script = ExtResource("1_437f7")
 
-[node name="Panel" type="Panel" parent="."]
-layout_mode = 0
-offset_left = -336.0
-offset_top = -370.0
-offset_right = 355.0
-offset_bottom = 467.0
+[node name="PanelSprite" type="Sprite2D" parent="."]
+position = Vector2(252.5, 410.081)
+scale = Vector2(0.274054, 0.274054)
+texture = ExtResource("2_ow4sj")
 
-[node name="TerrainModifiersGridContainer" type="GridContainer" parent="Panel"]
+[node name="TerrainModifiersGridContainer" type="GridContainer" parent="."]
 layout_direction = 2
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 0.839
 anchor_bottom = 0.344
-offset_left = 484.0
-offset_top = 432.0
-offset_right = 98.251
-offset_bottom = 242.072
-theme_override_constants/h_separation = 150
-theme_override_constants/v_separation = 150
+offset_left = 71.0
+offset_top = 442.0
+offset_right = 221.0
+offset_bottom = 592.0
+theme_override_constants/h_separation = 110
+theme_override_constants/v_separation = 110
 columns = 2
 
-[node name="Label" type="Label" parent="Panel"]
+[node name="Label" type="Label" parent="."]
 layout_mode = 0
-offset_left = 177.0
-offset_top = 2.0
-offset_right = 571.0
-offset_bottom = 31.0
+offset_left = 16.0
+offset_top = 15.0
+offset_right = 492.0
+offset_bottom = 62.0
 text = "Tile Name Here!"
 horizontal_alignment = 1
 vertical_alignment = 1

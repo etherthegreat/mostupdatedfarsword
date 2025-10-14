@@ -184,6 +184,28 @@ const unitUIScene = preload("res://unit_ui.tscn")
 var availableOres: Array
 var religionControl = load("res://religion_data.gd")
 
+#this should literally be max but I'm stupid and don't wanna change it
+var minPosTaxationAmount: int  = 0#used to calculate 'all building' taxation figures
+var minFarmTaxAmount: int = 0
+var minCampTaxAmount: int = 0
+var minMineTaxAmount: int = 0
+var minLibraryTaxAmount: int = 0
+var minTempleTaxAmount: int = 0
+var minTowerTaxAmount: int = 0
+var minForgeTaxAmount: int = 0
+var minWorkshopTaxAmount: int = 0
+var minBathTaxAmount: int = 0
+
+var setFarmTaxAmount: int = 0
+var setCampTaxAmount: int = 0
+var setMineTaxAmount: int = 0
+var setLibraryTaxAmount: int = 0
+var setTempleTaxAmount: int = 0
+var setTowerTaxAmount: int = 0
+var setForgeTaxAmount: int = 0
+var setWorkshopTaxAmount: int = 0
+var setBathTaxAmount: int = 0
+
 func NewGameBuild():
 	#completely dynamically created by the World.  if its a new game, will use the new game stats, otherwise,
 	#will use the func LoadGameBuild():
@@ -228,6 +250,8 @@ func NewGameBuild():
 		addTechnologicalDiscovery("Copper Working")
 		addTechnologicalDiscovery("Artistry")
 		loadBeliefsList("GenericDoc1")
+		loadBeliefsList("GenericDoc1")
+		loadBeliefsList("GenericGods1")
 		loadBeliefsList("GenericGods1")
 		#loadBeliefsList("PDTDoc1")
 		addReligiousBelief("Tower Control")
@@ -236,6 +260,7 @@ func NewGameBuild():
 		addCulturalTradition("Guardian Cats")
 		addGovernmentLaw("Mercantilism")
 		#addGovernmentLaw("Citizen Militia")
+		calculateTaxationAmounts()
 		addFaction("Vargo-Tal", 50) # Traditionalists
 		addFaction("Wixinx", 10) # Liberators
 		addFaction("Elto-Tal", 20) # Moderates
@@ -253,6 +278,7 @@ func NewGameBuild():
 	if Player == true:
 		pass
 	pass
+
 
 func setStartingMagic():
 	alcPoints = 0
@@ -439,6 +465,7 @@ func addLawToConstitution(newLaw):
 	var newSelection = law.new()
 	newSelection.lawType = newLaw
 	lawsInConstitution.append(newSelection)
+	calculateTaxationAmounts()
 	pass
 
 func addCulturalTradition(Name):
@@ -837,6 +864,56 @@ func calculateUniqueBuildingAttributes():
 	#here is where the modifier for 
 	pass
 
+func calculateTaxationAmounts():
+	minFarmTaxAmount = 0
+	minCampTaxAmount = 0
+	minMineTaxAmount = 0
+	minLibraryTaxAmount = 0
+	minTempleTaxAmount = 0
+	minTowerTaxAmount = 0
+	minForgeTaxAmount = 0
+	minWorkshopTaxAmount = 0
+	minBathTaxAmount = 0
+	for law in lawsInConstitution:
+		match law.lawType:
+			"Mercantilism":
+				minPosTaxationAmount += 10
+			"Homeland Defence":
+				minForgeTaxAmount += 20
+	minPosTaxationAmount += 15
+	minFarmTaxAmount += minPosTaxationAmount
+	minCampTaxAmount += minPosTaxationAmount
+	minMineTaxAmount += minPosTaxationAmount
+	minLibraryTaxAmount += minPosTaxationAmount
+	minTempleTaxAmount += minPosTaxationAmount
+	minTowerTaxAmount += minPosTaxationAmount
+	minForgeTaxAmount += minPosTaxationAmount
+	minWorkshopTaxAmount += minPosTaxationAmount
+	minBathTaxAmount += minPosTaxationAmount
+	pass
+
+func setNewTaxAmount(amount, type):
+	match type:
+		"Farm":
+			setFarmTaxAmount = amount
+		"Camp":
+			setCampTaxAmount = amount
+		"Mine":
+			setMineTaxAmount = amount
+		"Library":
+			setLibraryTaxAmount = amount
+		"Temple":
+			setTempleTaxAmount = amount
+		"Tower":
+			setTowerTaxAmount = amount
+		"Forge":
+			setTowerTaxAmount = amount
+		"Workshop":
+			setWorkshopTaxAmount = amount
+		"Bath":
+			setBathTaxAmount = amount
+	print(type," changed to ", amount, "DEBUG")
+	pass
 
 func payBill(type, amount):
 	match type:
