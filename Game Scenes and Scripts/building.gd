@@ -29,7 +29,7 @@ var faithChurchLevel: int
 #Resources
 #each month, this building produces this amount of resources
 var foodPerLevel: int = 0
-var goldPerLevel: int = 0
+var goldPerLevel: float = 0
 var woodPerLevel: int = 0
 var magicPerLevel: int = 0
 var faithPerLevel: int = 0
@@ -38,13 +38,13 @@ var metalPerLevel: int = 0
 var sciencePerLevel: int = 0
 var culturePerLevel: int = 0
 var mandatePerLevel: int = 0
-var harmonyPerLevel: int = 0
+var harmonyPerLevel: float = 0
 var manpowerPerLevel: int = 0
 var influencePerLevel: int = 0
 var corruptionLossPerLevel: int = 0
 #each month this building costs this amount of resources
 var foodCostPerLevel: int = 0
-var goldCostPerLevel: int = 0
+var goldCostPerLevel: float = 0
 var woodCostPerLevel: int = 0
 var magicCostPerLevel: int = 0
 var faithCostPerLevel: int = 0
@@ -53,14 +53,14 @@ var metalCostPerLevel: int = 0
 var scienceCostPerLevel: int = 0
 var cultureCostPerLevel: int = 0
 var mandateCostPerLevel: int = 0
-var harmonyCostPerLevel: int = 0
+var harmonyCostPerLevel: float = 0
 var manpowerCostPerLevel: int = 0
 var influenceCostPerLevel: int = 0
 var corruptionGainPerLevel: int = 0
 
 #the balance of resourcePerLevel - resourceCostPerLevel
 var totalBuildingFood: int = 0
-var totalBuildingGold: int = 0
+var totalBuildingGold: float = 0
 var totalBuildingWood: int = 0
 var totalBuildingMagic: int = 0
 var totalBuildingFaith: int = 0
@@ -71,7 +71,7 @@ var totalBuildingMetal: int = 0
 var totalBuildingMandate: int = 0
 var totalBuildingInfluence: int = 0
 var totalBuildingManpower: int = 0
-var totalBuildingHarmony: int = 0
+var totalBuildingHarmony: float = 0
 var totalBuildingDefensiveness: int  = 0#how much defensiveness this building gives the province
 var corruptionChange: int #corruption difference
 #storage capacity buildings - used to increase max national storage capacity of resource
@@ -975,6 +975,8 @@ func matchPlayerUnlockables(playerCountryNode):
 	#add Barracks Unlockables
 	pass
 
+var goldTax: float
+var harmonyTax: float
 
 func calculateOutputs(playerCountryNode):
 	foodPerLevel = 0
@@ -1059,6 +1061,36 @@ func calculateOutputs(playerCountryNode):
 		totalBuildingInfluence *= buildingLevel
 	if corruptionLossPerLevel != 0 or corruptionGainPerLevel != 0:
 		corruptionChange = corruptionGainPerLevel - corruptionLossPerLevel
+	match buildingType:
+		"Farm":
+			goldTax = (totalBuildingFood * (playerCountry.setFarmTaxAmount * .01))
+			harmonyTax = (totalBuildingFood  * (playerCountry.setFarmTaxAmount * .02))
+		"Camp":
+			goldTax = (totalBuildingWood * (playerCountry.setCampTaxAmount * .01))
+			harmonyTax = (totalBuildingWood  * (playerCountry.setCampTaxAmount * .02))
+		"Mine":
+			goldTax = (totalBuildingMetal * (playerCountry.setMineTaxAmount * .01))
+			harmonyTax = (totalBuildingMetal  * (playerCountry.setMineTaxAmount * .02))
+		"Library":
+			goldTax = (totalBuildingScience * (playerCountry.setLibraryTaxAmount * .01))
+			harmonyTax = (totalBuildingScience  * (playerCountry.setLibraryTaxAmount * .02))
+		"Temple":
+			goldTax = (totalBuildingFaith * (playerCountry.setTempleTaxAmount * .01))
+			harmonyTax = (totalBuildingFaith  * (playerCountry.setTempleTaxAmount * .02))
+		"Tower":
+			goldTax = (totalBuildingMagic * (playerCountry.setTowerTaxAmount * .01))
+			harmonyTax = (totalBuildingMagic  * (playerCountry.setTowerTaxAmount * .02))
+		"Forge":
+			goldTax = (totalBuildingWeapons * (playerCountry.setForgeTaxAmount * .01))
+			harmonyTax = (totalBuildingWeapons  * (playerCountry.setForgeTaxAmount * .02))
+		"Workshop":
+			goldTax = (totalBuildingGold * (playerCountry.setWorkshopTaxAmount * .01))
+			harmonyTax = (totalBuildingGold * (playerCountry.setWorkshopTaxAmount * .02))
+		"Bath":
+			goldTax = (corruptionLossPerLevel * (playerCountry.setBathTaxAmount * .01))
+			harmonyTax = (corruptionLossPerLevel  * (playerCountry.setBathTaxAmount * .02))
+	totalBuildingGold += goldTax
+	totalBuildingHarmony -= harmonyTax
 	#print("totalBuildingMagic", totalBuildingMagic)
 	pass
 

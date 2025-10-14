@@ -482,6 +482,9 @@ func calculateSeason(month):
 		tileEcoModifiers.append(summerMod)
 	pass
 
+var tileGoldTax: float
+var tileHarmonyTax: float
+
 func surveyTile(playerCountryNode):
 	calculateDailyTileEcoChanges()
 	buildingFoodOutput = 0
@@ -498,6 +501,8 @@ func surveyTile(playerCountryNode):
 	buildingHarmonyOutput = 0 
 	buildingCultureOutput = 0
 	corruptionChange = 0
+	tileGoldTax = 0
+	tileHarmonyTax = 0
 	for building in tileBuildingsList:
 		building.calculateOutputs(playerCountryNode)
 		buildingFoodOutput += building.totalBuildingFood
@@ -514,6 +519,8 @@ func surveyTile(playerCountryNode):
 		buildingManpowerOutput += building.totalBuildingManpower
 		buildingInfluenceOutput += building.totalBuildingInfluence
 		corruptionChange += building.corruptionChange
+		tileGoldTax += building.goldTax
+		tileHarmonyTax += building.harmonyTax
 		match building.buildingType:
 			"Farm":
 				if building.buildingLevel >= 3:

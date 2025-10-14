@@ -1,4 +1,4 @@
-[gd_scene load_steps=109 format=3 uid="uid://bfbouq3jfwkxl"]
+[gd_scene load_steps=110 format=3 uid="uid://bfbouq3jfwkxl"]
 
 [ext_resource type="Script" uid="uid://dthx176t72xxr" path="res://Game Scenes and Scripts/world.gd" id="1_6bnro"]
 [ext_resource type="Texture2D" uid="uid://ymy7tu133b71" path="res://art assets/Placeholder Art/map/map.png" id="2_160f8"]
@@ -101,6 +101,7 @@
 [ext_resource type="Texture2D" uid="uid://dr024l67nbd3t" path="res://art assets/Placeholder Art/UI Art/forge.png" id="71_d3yvm"]
 [ext_resource type="Texture2D" uid="uid://4qfb2kjr8m8o" path="res://art assets/Placeholder Art/UI Art/Bath.png" id="72_kiqh3"]
 [ext_resource type="Texture2D" uid="uid://05g78uxd1lnk" path="res://art assets/Placeholder Art/UI Art/Workshop.png" id="72_vi180"]
+[ext_resource type="Texture2D" uid="uid://h8vhnn8tit4b" path="res://art assets/Placeholder Art/UI Art/resources/gold.png" id="74_vi180"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_y3tfg"]
 size = Vector2(365.324, 339.706)
@@ -368,6 +369,7 @@ layer = 2
 script = ExtResource("12_lbt1a")
 
 [node name="TileInfoPanel" parent="CanvasLayer" groups=["ScreenPanels"] instance=ExtResource("10_7wljm")]
+visible = false
 offset_left = 2.0
 offset_top = 259.0
 offset_right = 2.0
@@ -612,7 +614,7 @@ layout_mode = 0
 offset_left = 137.0
 offset_top = 714.0
 offset_right = 853.0
-offset_bottom = 1034.0
+offset_bottom = 1017.0
 
 [node name="GodsContainer" type="GridContainer" parent="CanvasLayer/BeliefControl/BeliefPanel/GodsScrollContainer"]
 layout_mode = 2
@@ -626,7 +628,7 @@ layout_mode = 0
 offset_left = 1091.0
 offset_top = 747.0
 offset_right = 1803.0
-offset_bottom = 1036.0
+offset_bottom = 1018.0
 
 [node name="DoctrineContainer" type="GridContainer" parent="CanvasLayer/BeliefControl/BeliefPanel/DoctrineScrollContainer"]
 layout_mode = 2
@@ -1053,7 +1055,6 @@ offset_bottom = 995.0
 theme_override_constants/separation = 240
 
 [node name="GovernmentControl" type="Control" parent="CanvasLayer"]
-visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
@@ -1110,10 +1111,10 @@ offset_bottom = 40.0
 
 [node name="FarmVSlider" type="VSlider" parent="CanvasLayer/GovernmentControl/TaxationControl"]
 layout_mode = 0
-offset_left = 825.0
-offset_top = 168.0
-offset_right = 841.0
-offset_bottom = 350.0
+offset_left = 792.358
+offset_top = 167.0
+offset_right = 808.358
+offset_bottom = 349.0
 tick_count = 2
 ticks_on_borders = true
 
@@ -1124,10 +1125,10 @@ texture = ExtResource("65_d3yvm")
 
 [node name="CampVSlider" type="VSlider" parent="CanvasLayer/GovernmentControl/TaxationControl"]
 layout_mode = 0
-offset_left = 950.642
-offset_top = 168.0
-offset_right = 966.642
-offset_bottom = 350.0
+offset_left = 918.0
+offset_top = 167.0
+offset_right = 934.0
+offset_bottom = 349.0
 tick_count = 2
 ticks_on_borders = true
 
@@ -1138,10 +1139,10 @@ texture = ExtResource("66_vi180")
 
 [node name="MineVSlider" type="VSlider" parent="CanvasLayer/GovernmentControl/TaxationControl"]
 layout_mode = 0
-offset_left = 1076.64
-offset_top = 168.0
-offset_right = 1092.64
-offset_bottom = 350.0
+offset_left = 1044.0
+offset_top = 167.0
+offset_right = 1060.0
+offset_bottom = 349.0
 tick_count = 2
 ticks_on_borders = true
 
@@ -1152,10 +1153,10 @@ texture = ExtResource("67_htw5p")
 
 [node name="LibraryVSlider" type="VSlider" parent="CanvasLayer/GovernmentControl/TaxationControl"]
 layout_mode = 0
-offset_left = 824.642
-offset_top = 440.0
-offset_right = 840.642
-offset_bottom = 622.0
+offset_left = 792.0
+offset_top = 439.0
+offset_right = 808.0
+offset_bottom = 621.0
 tick_count = 2
 ticks_on_borders = true
 
@@ -1166,10 +1167,10 @@ texture = ExtResource("68_4dsbk")
 
 [node name="TempleVSlider" type="VSlider" parent="CanvasLayer/GovernmentControl/TaxationControl"]
 layout_mode = 0
-offset_left = 950.284
-offset_top = 440.0
-offset_right = 966.284
-offset_bottom = 622.0
+offset_left = 917.642
+offset_top = 439.0
+offset_right = 933.642
+offset_bottom = 621.0
 tick_count = 2
 ticks_on_borders = true
 
@@ -1180,10 +1181,10 @@ texture = ExtResource("69_6q3wr")
 
 [node name="TowerVSlider" type="VSlider" parent="CanvasLayer/GovernmentControl/TaxationControl"]
 layout_mode = 0
-offset_left = 1076.28
-offset_top = 440.0
-offset_right = 1092.28
-offset_bottom = 622.0
+offset_left = 1043.64
+offset_top = 439.0
+offset_right = 1059.64
+offset_bottom = 621.0
 tick_count = 2
 ticks_on_borders = true
 
@@ -1194,10 +1195,10 @@ texture = ExtResource("70_8m5de")
 
 [node name="ForgeVSlider" type="VSlider" parent="CanvasLayer/GovernmentControl/TaxationControl"]
 layout_mode = 0
-offset_left = 824.642
-offset_top = 734.0
-offset_right = 840.642
-offset_bottom = 916.0
+offset_left = 792.0
+offset_top = 733.0
+offset_right = 808.0
+offset_bottom = 915.0
 tick_count = 2
 ticks_on_borders = true
 
@@ -1208,10 +1209,10 @@ texture = ExtResource("71_d3yvm")
 
 [node name="WorkshopVSlider" type="VSlider" parent="CanvasLayer/GovernmentControl/TaxationControl"]
 layout_mode = 0
-offset_left = 950.284
-offset_top = 734.0
-offset_right = 966.284
-offset_bottom = 916.0
+offset_left = 917.642
+offset_top = 733.0
+offset_right = 933.642
+offset_bottom = 915.0
 tick_count = 2
 ticks_on_borders = true
 
@@ -1222,10 +1223,10 @@ texture = ExtResource("72_vi180")
 
 [node name="BathVSlider" type="VSlider" parent="CanvasLayer/GovernmentControl/TaxationControl"]
 layout_mode = 0
-offset_left = 1076.28
-offset_top = 734.0
-offset_right = 1092.28
-offset_bottom = 916.0
+offset_left = 1043.64
+offset_top = 733.0
+offset_right = 1059.64
+offset_bottom = 915.0
 tick_count = 2
 ticks_on_borders = true
 
@@ -1233,6 +1234,456 @@ ticks_on_borders = true
 position = Vector2(1087.28, 956)
 scale = Vector2(0.171554, 0.171554)
 texture = ExtResource("72_kiqh3")
+
+[node name="AmountLabelFarm" type="Label" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+layout_mode = 0
+offset_left = 775.0
+offset_top = 168.0
+offset_right = 815.0
+offset_bottom = 191.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 11
+text = "100"
+
+[node name="AmountLabelCamp" type="Label" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+layout_mode = 0
+offset_left = 900.0
+offset_top = 168.0
+offset_right = 940.0
+offset_bottom = 191.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 11
+text = "100"
+
+[node name="AmountLabelMine" type="Label" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+layout_mode = 0
+offset_left = 1027.0
+offset_top = 168.0
+offset_right = 1067.0
+offset_bottom = 191.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 11
+text = "100"
+
+[node name="AmountLabelLibrary" type="Label" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+layout_mode = 0
+offset_left = 775.0
+offset_top = 441.0
+offset_right = 815.0
+offset_bottom = 464.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 11
+text = "100"
+
+[node name="AmountLabelTemple" type="Label" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+layout_mode = 0
+offset_left = 900.0
+offset_top = 441.0
+offset_right = 940.0
+offset_bottom = 464.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 11
+text = "100"
+
+[node name="AmountLabelTower" type="Label" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+layout_mode = 0
+offset_left = 1027.0
+offset_top = 441.0
+offset_right = 1067.0
+offset_bottom = 464.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 11
+text = "100"
+
+[node name="AmountLabelForge" type="Label" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+layout_mode = 0
+offset_left = 775.0
+offset_top = 734.0
+offset_right = 815.0
+offset_bottom = 757.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 11
+text = "100"
+
+[node name="AmountLabelWorkshop" type="Label" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+layout_mode = 0
+offset_left = 900.0
+offset_top = 734.0
+offset_right = 940.0
+offset_bottom = 757.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 11
+text = "100"
+
+[node name="AmountLabelBath" type="Label" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+layout_mode = 0
+offset_left = 1027.0
+offset_top = 734.0
+offset_right = 1067.0
+offset_bottom = 757.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 11
+text = "100"
+
+[node name="AmountLabelFarm2" type="Label" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+layout_mode = 0
+offset_left = 813.0
+offset_top = 168.0
+offset_right = 853.0
+offset_bottom = 191.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 11
+text = "100"
+
+[node name="AmountLabelCamp2" type="Label" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+layout_mode = 0
+offset_left = 938.0
+offset_top = 168.0
+offset_right = 978.0
+offset_bottom = 191.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 11
+text = "100"
+
+[node name="AmountLabelMine2" type="Label" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+layout_mode = 0
+offset_left = 1065.0
+offset_top = 168.0
+offset_right = 1105.0
+offset_bottom = 191.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 11
+text = "100"
+
+[node name="AmountLabelLibrary2" type="Label" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+layout_mode = 0
+offset_left = 813.0
+offset_top = 441.0
+offset_right = 853.0
+offset_bottom = 464.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 11
+text = "100"
+
+[node name="AmountLabelTemple2" type="Label" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+layout_mode = 0
+offset_left = 938.0
+offset_top = 441.0
+offset_right = 978.0
+offset_bottom = 464.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 11
+text = "100"
+
+[node name="AmountLabelTower2" type="Label" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+layout_mode = 0
+offset_left = 1065.0
+offset_top = 441.0
+offset_right = 1105.0
+offset_bottom = 464.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 11
+text = "100"
+
+[node name="AmountLabelForge2" type="Label" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+layout_mode = 0
+offset_left = 813.0
+offset_top = 734.0
+offset_right = 853.0
+offset_bottom = 757.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 11
+text = "100"
+
+[node name="AmountLabelWorkshop2" type="Label" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+layout_mode = 0
+offset_left = 938.0
+offset_top = 734.0
+offset_right = 978.0
+offset_bottom = 757.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 11
+text = "100"
+
+[node name="AmountLabelBath2" type="Label" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+layout_mode = 0
+offset_left = 1065.0
+offset_top = 734.0
+offset_right = 1105.0
+offset_bottom = 757.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 11
+text = "100"
+
+[node name="FoodTaxReturnLabel" type="Label" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+layout_mode = 0
+offset_left = 838.0
+offset_top = 240.0
+offset_right = 878.0
+offset_bottom = 263.0
+theme_override_colors/font_color = Color(2.64719e-07, 0.701049, 2.5028e-06, 1)
+theme_override_font_sizes/font_size = 13
+text = "1000"
+
+[node name="FoodHarmonyReturnLabel" type="Label" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+layout_mode = 0
+offset_left = 838.0
+offset_top = 324.0
+offset_right = 878.0
+offset_bottom = 347.0
+theme_override_colors/font_color = Color(0.815686, 0, 0.164706, 1)
+theme_override_font_sizes/font_size = 13
+text = "1000"
+
+[node name="GoldSprite" type="Sprite2D" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+position = Vector2(855, 213)
+scale = Vector2(0.46, 0.46)
+texture = ExtResource("74_vi180")
+
+[node name="HarmonySprite" type="Sprite2D" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+position = Vector2(855, 292)
+scale = Vector2(0.46, 0.46)
+texture = ExtResource("27_8ftsx")
+
+[node name="WoodTaxReturnLabel" type="Label" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+layout_mode = 0
+offset_left = 975.0
+offset_top = 240.0
+offset_right = 1015.0
+offset_bottom = 263.0
+theme_override_colors/font_color = Color(2.64719e-07, 0.701049, 2.5028e-06, 1)
+theme_override_font_sizes/font_size = 13
+text = "1000"
+
+[node name="WoodHarmonyReturnLabel" type="Label" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+layout_mode = 0
+offset_left = 975.0
+offset_top = 324.0
+offset_right = 1015.0
+offset_bottom = 347.0
+theme_override_colors/font_color = Color(0.815686, 0, 0.164706, 1)
+theme_override_font_sizes/font_size = 13
+text = "1000"
+
+[node name="GoldSprite2" type="Sprite2D" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+position = Vector2(992, 213)
+scale = Vector2(0.46, 0.46)
+texture = ExtResource("74_vi180")
+
+[node name="HarmonySprite2" type="Sprite2D" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+position = Vector2(992, 292)
+scale = Vector2(0.46, 0.46)
+texture = ExtResource("27_8ftsx")
+
+[node name="MetalTaxReturnLabel" type="Label" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+layout_mode = 0
+offset_left = 1100.0
+offset_top = 240.0
+offset_right = 1140.0
+offset_bottom = 263.0
+theme_override_colors/font_color = Color(2.64719e-07, 0.701049, 2.5028e-06, 1)
+theme_override_font_sizes/font_size = 13
+text = "1000"
+
+[node name="MetalHarmonyReturnLabel" type="Label" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+layout_mode = 0
+offset_left = 1100.0
+offset_top = 324.0
+offset_right = 1140.0
+offset_bottom = 347.0
+theme_override_colors/font_color = Color(0.815686, 0, 0.164706, 1)
+theme_override_font_sizes/font_size = 13
+text = "1000"
+
+[node name="GoldSprite3" type="Sprite2D" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+position = Vector2(1117, 213)
+scale = Vector2(0.46, 0.46)
+texture = ExtResource("74_vi180")
+
+[node name="HarmonySprite3" type="Sprite2D" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+position = Vector2(1117, 292)
+scale = Vector2(0.46, 0.46)
+texture = ExtResource("27_8ftsx")
+
+[node name="ScienceTaxReturnLabel" type="Label" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+layout_mode = 0
+offset_left = 838.0
+offset_top = 510.0
+offset_right = 878.0
+offset_bottom = 533.0
+theme_override_colors/font_color = Color(2.64719e-07, 0.701049, 2.5028e-06, 1)
+theme_override_font_sizes/font_size = 13
+text = "1000"
+
+[node name="ScienceHarmonyReturnLabel" type="Label" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+layout_mode = 0
+offset_left = 838.0
+offset_top = 594.0
+offset_right = 878.0
+offset_bottom = 617.0
+theme_override_colors/font_color = Color(0.815686, 0, 0.164706, 1)
+theme_override_font_sizes/font_size = 13
+text = "1000"
+
+[node name="GoldSprite4" type="Sprite2D" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+position = Vector2(855, 483)
+scale = Vector2(0.46, 0.46)
+texture = ExtResource("74_vi180")
+
+[node name="HarmonySprite4" type="Sprite2D" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+position = Vector2(855, 562)
+scale = Vector2(0.46, 0.46)
+texture = ExtResource("27_8ftsx")
+
+[node name="FaithTaxReturnLabel" type="Label" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+layout_mode = 0
+offset_left = 975.0
+offset_top = 510.0
+offset_right = 1015.0
+offset_bottom = 533.0
+theme_override_colors/font_color = Color(2.64719e-07, 0.701049, 2.5028e-06, 1)
+theme_override_font_sizes/font_size = 13
+text = "1000"
+
+[node name="FaithHarmonyReturnLabel" type="Label" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+layout_mode = 0
+offset_left = 975.0
+offset_top = 594.0
+offset_right = 1015.0
+offset_bottom = 617.0
+theme_override_colors/font_color = Color(0.815686, 0, 0.164706, 1)
+theme_override_font_sizes/font_size = 13
+text = "1000"
+
+[node name="GoldSprite5" type="Sprite2D" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+position = Vector2(992, 483)
+scale = Vector2(0.46, 0.46)
+texture = ExtResource("74_vi180")
+
+[node name="HarmonySprite5" type="Sprite2D" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+position = Vector2(992, 562)
+scale = Vector2(0.46, 0.46)
+texture = ExtResource("27_8ftsx")
+
+[node name="MagicTaxReturnLabel" type="Label" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+layout_mode = 0
+offset_left = 1100.0
+offset_top = 510.0
+offset_right = 1140.0
+offset_bottom = 533.0
+theme_override_colors/font_color = Color(2.64719e-07, 0.701049, 2.5028e-06, 1)
+theme_override_font_sizes/font_size = 13
+text = "1000"
+
+[node name="MagicHarmonyReturnLabel" type="Label" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+layout_mode = 0
+offset_left = 1100.0
+offset_top = 594.0
+offset_right = 1140.0
+offset_bottom = 617.0
+theme_override_colors/font_color = Color(0.815686, 0, 0.164706, 1)
+theme_override_font_sizes/font_size = 13
+text = "1000"
+
+[node name="GoldSprite6" type="Sprite2D" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+position = Vector2(1117, 483)
+scale = Vector2(0.46, 0.46)
+texture = ExtResource("74_vi180")
+
+[node name="HarmonySprite6" type="Sprite2D" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+position = Vector2(1117, 562)
+scale = Vector2(0.46, 0.46)
+texture = ExtResource("27_8ftsx")
+
+[node name="WeaponsTaxReturnLabel" type="Label" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+layout_mode = 0
+offset_left = 838.0
+offset_top = 803.0
+offset_right = 878.0
+offset_bottom = 826.0
+theme_override_colors/font_color = Color(2.64719e-07, 0.701049, 2.5028e-06, 1)
+theme_override_font_sizes/font_size = 13
+text = "1000"
+
+[node name="WeaponsHarmonyReturnLabel" type="Label" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+layout_mode = 0
+offset_left = 838.0
+offset_top = 887.0
+offset_right = 878.0
+offset_bottom = 910.0
+theme_override_colors/font_color = Color(0.815686, 0, 0.164706, 1)
+theme_override_font_sizes/font_size = 13
+text = "1000"
+
+[node name="GoldSprite7" type="Sprite2D" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+position = Vector2(855, 776)
+scale = Vector2(0.46, 0.46)
+texture = ExtResource("74_vi180")
+
+[node name="HarmonySprite7" type="Sprite2D" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+position = Vector2(855, 855)
+scale = Vector2(0.46, 0.46)
+texture = ExtResource("27_8ftsx")
+
+[node name="GoldTaxReturnLabel" type="Label" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+layout_mode = 0
+offset_left = 975.0
+offset_top = 803.0
+offset_right = 1015.0
+offset_bottom = 826.0
+theme_override_colors/font_color = Color(2.64719e-07, 0.701049, 2.5028e-06, 1)
+theme_override_font_sizes/font_size = 13
+text = "1000"
+
+[node name="GoldHarmonyReturnLabel" type="Label" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+layout_mode = 0
+offset_left = 975.0
+offset_top = 887.0
+offset_right = 1015.0
+offset_bottom = 910.0
+theme_override_colors/font_color = Color(0.815686, 0, 0.164706, 1)
+theme_override_font_sizes/font_size = 13
+text = "1000"
+
+[node name="GoldSprite8" type="Sprite2D" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+position = Vector2(992, 776)
+scale = Vector2(0.46, 0.46)
+texture = ExtResource("74_vi180")
+
+[node name="HarmonySprite8" type="Sprite2D" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+position = Vector2(992, 855)
+scale = Vector2(0.46, 0.46)
+texture = ExtResource("27_8ftsx")
+
+[node name="CorruptionTaxReturnLabel" type="Label" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+layout_mode = 0
+offset_left = 1100.0
+offset_top = 803.0
+offset_right = 1140.0
+offset_bottom = 826.0
+theme_override_colors/font_color = Color(2.64719e-07, 0.701049, 2.5028e-06, 1)
+theme_override_font_sizes/font_size = 13
+text = "1000"
+
+[node name="CorruptionHarmonyReturnLabel" type="Label" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+layout_mode = 0
+offset_left = 1100.0
+offset_top = 887.0
+offset_right = 1140.0
+offset_bottom = 910.0
+theme_override_colors/font_color = Color(0.815686, 0, 0.164706, 1)
+theme_override_font_sizes/font_size = 13
+text = "1000"
+
+[node name="GoldSprite9" type="Sprite2D" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+position = Vector2(1117, 776)
+scale = Vector2(0.46, 0.46)
+texture = ExtResource("74_vi180")
+
+[node name="HarmonySprite9" type="Sprite2D" parent="CanvasLayer/GovernmentControl/TaxationControl"]
+position = Vector2(1117, 855)
+scale = Vector2(0.46, 0.46)
+texture = ExtResource("27_8ftsx")
 
 [node name="TraditionsControl" type="Control" parent="CanvasLayer"]
 layout_mode = 3

@@ -23,14 +23,14 @@ var primaryCapital #tile that acts as this country's capital city
 var countryFactionList: Array = []
 
 #Resources - How much they have currently
-var TotalGold: int
+var TotalGold: float
 var TotalMetal: int
 var TotalWood: int
 var TotalFood: int
 var TotalMagic: int
 var TotalFaith: int
 var TotalCulture: int
-var TotalHarmony: int
+var TotalHarmony: float
 var TotalMandate: int
 var TotalScience: int
 var TotalWeapons: int
