@@ -3,7 +3,7 @@ extends Control
 #@class_name UIUnitScene
 
 var thisUnit: Unit
-var updateControl: bool
+var updateControl: bool = false
 
 var milModList: Array = []
 var modListCompare: Array = []
@@ -22,7 +22,7 @@ func _process(delta: float) -> void:
 	if updateControl == false:
 		return
 	else:
-		if thisUnit != null:
+		if is_instance_valid(thisUnit):
 			$Panel/UnitNameLabel.text = thisUnit.unitType
 			if thisUnit.unitWeapon != null:
 				$Panel/WeaponTypeButton.icon = thisUnit.unitWeapon.weaponImage
@@ -36,11 +36,11 @@ func _process(delta: float) -> void:
 			$Panel/ManpowerLabel.text = str("Strength: ", thisUnit.unitCurrentManpower, "/", thisUnit.unitMaxManpower)
 			#print("UPdating UI UNit HAHAHAA!")
 			#print(self, "I am here, ya ya ya", thisUnit.unitType)
-		
 	pass
 
 func assignUnit(unitforTransfer):
 	thisUnit = unitforTransfer
+	print(thisUnit, thisUnit.unitType, "DEBUG thisUnit")
 	pass
 
 func upgradeButtonCalculation(maxUnitLevel):
@@ -121,13 +121,12 @@ func _on_ore_type_button_pressed() -> void:
 		for OreButton in oresList:
 			OreButton.queue_free()
 		oresList.clear()
-	print("DEBUG AVAILABLE ORES", thisUnit.playerCountry.availableOres)
+	#print("DEBUG AVAILABLE ORES", thisUnit.playerCountry.availableOres)
 	for ore in thisUnit.playerCountry.availableOres:
 		var newOreButton = oreButtonScene.instantiate()
 		newOreButton.buildSelf(ore.oreType, ore.oreImage)
 		newOreButton.giveOreName.connect(addOre)
 		oresList.append(newOreButton)
-		print("DEBUG ORESLIST", oresList)
 		$OresChoicePanel/ScrollContainer/GridContainer.add_child(newOreButton)
 	if $OresChoicePanel.visible == false:
 		$OresChoicePanel.visible = true

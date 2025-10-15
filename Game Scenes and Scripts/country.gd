@@ -275,6 +275,8 @@ func NewGameBuild():
 				addNewUnit(Army, "Infantry", 1, "Club", "Copper")
 				addNewUnit(Army, "Ranged", 2, "Atlatl", "Wood")
 				addNewUnit(Army, "Infantry", 1, "Club", "Wood")
+				addNewUnit(Army, "Infantry", 3, "Club", "Iron")
+				addNewUnit(Army, "Infantry", 3, "Club", "Iron")
 	if Player == true:
 		pass
 	pass
@@ -329,16 +331,19 @@ func showCommander(commander):
 	emit_signal("displayCommander", commander)
 	pass
 
+var weaponScene = load("res://weapon.tscn")
+var oreScene = load("res://ore.tscn")
+
 func addNewUnit(Army, UnitType, Level, WeaponType, OreType):
 	var newUnit = unitScene.instantiate()
 	newUnit.playerCountry = self
 	newUnit.unitType = str(UnitType)
 	newUnit.unitLevel = Level
-	var newWeapon = Weapon.new()
+	var newWeapon = weaponScene.instantiate()
 	newWeapon.weaponType = str(WeaponType)
 	newWeapon.buildSelf()
 	newUnit.unitWeapon = newWeapon
-	var newOre = ore.new()
+	var newOre = oreScene.instantiate()
 	newOre.buildSelf(OreType)
 	newUnit.unitMetal = newOre
 	newUnit.calculateOreMilMod()

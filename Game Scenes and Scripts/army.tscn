@@ -17,114 +17,118 @@
 
 [node name="Army" type="Control"]
 layout_mode = 3
-anchors_preset = 0
+anchor_right = 0.504
+anchor_bottom = 0.221
+offset_top = -1.0
+offset_right = -967.68
+offset_bottom = -239.68
 mouse_filter = 2
 script = ExtResource("1_clqeb")
 
 [node name="RadicalCoolTestPanel" type="Panel" parent="."]
 layout_mode = 0
-offset_left = -221.0
-offset_top = -126.0
-offset_right = 450.0
-offset_bottom = 110.0
+offset_left = 88.0
+offset_top = 4.0
+offset_right = 968.0
+offset_bottom = 240.0
 mouse_filter = 2
 
 [node name="WeaponsCost" type="Label" parent="."]
 layout_mode = 0
-offset_left = -211.0
-offset_top = -15.0
-offset_right = -153.0
-offset_bottom = 8.0
+offset_left = 98.0
+offset_top = 115.0
+offset_right = 156.0
+offset_bottom = 138.0
 scale = Vector2(0.68, 0.64)
 text = "N/A"
 
 [node name="FoodCost" type="Label" parent="."]
 layout_mode = 0
-offset_left = -210.0
-offset_top = -60.0
-offset_right = -152.0
-offset_bottom = -37.0
+offset_left = 99.0
+offset_top = 70.0
+offset_right = 157.0
+offset_bottom = 93.0
 scale = Vector2(0.68, 0.64)
 text = "N/A"
 
 [node name="GoldCost" type="Label" parent="."]
 layout_mode = 0
-offset_left = -210.0
-offset_top = -103.0
-offset_right = -152.0
-offset_bottom = -80.0
+offset_left = 99.0
+offset_top = 27.0
+offset_right = 157.0
+offset_bottom = 50.0
 scale = Vector2(0.68, 0.64)
 text = "N/A"
 
 [node name="MandateCost" type="Label" parent="."]
 layout_mode = 0
-offset_left = -91.0
-offset_top = -18.0
-offset_right = -33.0
-offset_bottom = 5.0
+offset_left = 218.0
+offset_top = 112.0
+offset_right = 276.0
+offset_bottom = 135.0
 scale = Vector2(0.68, 0.64)
 text = "N/A"
 
 [node name="MagicCost" type="Label" parent="."]
 layout_mode = 0
-offset_left = -90.0
-offset_top = -63.0
-offset_right = -32.0
-offset_bottom = -40.0
+offset_left = 219.0
+offset_top = 67.0
+offset_right = 277.0
+offset_bottom = 90.0
 scale = Vector2(0.68, 0.64)
 text = "N/A"
 
 [node name="FaithCost" type="Label" parent="."]
 layout_mode = 0
-offset_left = -90.0
-offset_top = -106.0
-offset_right = -32.0
-offset_bottom = -83.0
+offset_left = 219.0
+offset_top = 24.0
+offset_right = 277.0
+offset_bottom = 47.0
 scale = Vector2(0.68, 0.64)
 text = "N/A"
 
 [node name="WoodCost" type="Label" parent="."]
 layout_mode = 0
-offset_left = -212.0
-offset_top = 76.0
-offset_right = -154.0
-offset_bottom = 99.0
+offset_left = 97.0
+offset_top = 206.0
+offset_right = 155.0
+offset_bottom = 229.0
 scale = Vector2(0.68, 0.64)
 text = "N/A"
 
 [node name="MetalCost" type="Label" parent="."]
 layout_mode = 0
-offset_left = -212.0
-offset_top = 29.0
-offset_right = -154.0
-offset_bottom = 52.0
+offset_left = 97.0
+offset_top = 159.0
+offset_right = 155.0
+offset_bottom = 182.0
 scale = Vector2(0.68, 0.64)
 text = "N/A"
 
 [node name="HarmonyCost" type="Label" parent="."]
 layout_mode = 0
-offset_left = -92.0
-offset_top = 73.0
-offset_right = -34.0
-offset_bottom = 96.0
+offset_left = 217.0
+offset_top = 203.0
+offset_right = 275.0
+offset_bottom = 226.0
 scale = Vector2(0.68, 0.64)
 text = "N/A"
 
 [node name="InfluenceCost" type="Label" parent="."]
 layout_mode = 0
-offset_left = -92.0
-offset_top = 26.0
-offset_right = -34.0
-offset_bottom = 49.0
+offset_left = 217.0
+offset_top = 156.0
+offset_right = 275.0
+offset_bottom = 179.0
 scale = Vector2(0.68, 0.64)
 text = "N/A"
 
 [node name="AttackDefencePanel" type="Panel" parent="."]
 layout_mode = 0
-offset_left = -305.0
-offset_top = -120.0
-offset_right = -222.0
-offset_bottom = 109.0
+offset_left = 4.0
+offset_top = 10.0
+offset_right = 87.0
+offset_bottom = 239.0
 
 [node name="Attack" type="Label" parent="AttackDefencePanel"]
 layout_mode = 0
@@ -170,10 +174,10 @@ texture = ExtResource("2_sw8vy")
 
 [node name="GridContainer" type="Control" parent="."]
 anchors_preset = 0
-offset_left = -210.0
-offset_top = -47.0
-offset_right = -8.0
-offset_bottom = 233.0
+offset_left = 99.0
+offset_top = 83.0
+offset_right = 301.0
+offset_bottom = 363.0
 
 [node name="Weapons Sprite" type="Sprite2D" parent="GridContainer"]
 position = Vector2(64, 43)
@@ -227,10 +231,10 @@ texture = ExtResource("11_3lsu5")
 
 [node name="RaiseArmy" type="Button" parent="."]
 layout_mode = 0
-offset_left = -300.0
-offset_top = 8.0
-offset_right = -232.0
-offset_bottom = 102.0
+offset_left = 9.0
+offset_top = 138.0
+offset_right = 77.0
+offset_bottom = 232.0
 theme_override_font_sizes/font_size = 11
 text = "Raise Army"
 icon = ExtResource("13_gr5rn")
@@ -251,21 +255,23 @@ expand_icon = true
 
 [node name="UnitContainer" type="HBoxContainer" parent="."]
 layout_mode = 0
-offset_left = 39.0
-offset_top = -126.0
-offset_right = 1336.0
-offset_bottom = -86.0
+offset_left = 348.0
+offset_top = 4.0
+offset_right = 1645.0
+offset_bottom = 44.0
 mouse_filter = 2
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 layout_mode = 0
-offset_left = 7.0
-offset_top = -118.0
-offset_right = 447.0
-offset_bottom = 103.0
+offset_left = 316.0
+offset_top = 12.0
+offset_right = 907.0
+offset_bottom = 233.0
+vertical_scroll_mode = 0
 
 [node name="UnitUIContainer" type="HBoxContainer" parent="ScrollContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 mouse_filter = 2
 theme_override_constants/separation = 200
 

@@ -97,11 +97,9 @@ func updateSelf(Name, countryNode, TileNumber):
 	#print("UnitUiContainer Children", $RadicalCoolTestPanel/UnitUIContainer.get_children())
 	if unitsList != null:
 		for Unit in unitsList:
-			#print("Unit in Radical Cool Panel", Unit, Unit.unitType)
 			var newUnitUI = unitUIScene.instantiate()
 			newUnitUI.assignUnit(Unit)
 			newUnitUI.findMilMods(Unit)
-			newUnitUI.updateControl
 			$ScrollContainer/UnitUIContainer.add_child(newUnitUI)
 			#print("Unit", Unit.unitType, "Level", Unit.unitLevel)
 	surveySelf()
@@ -131,7 +129,7 @@ func _process(delta: float) -> void:
 func addUnitToArmy(unitToAdd):
 	unitsList.append(unitToAdd)
 	unitToAdd.updateArmy.connect(surveySelf)
-	$ScrollContainer/UnitUIContainer.add_child(unitToAdd)
+	$UnitContainer.add_child(unitToAdd)
 	#print("units listfrom addUnit", unitsList)
 	#print("unitsConfirmation List", UnitConfirmationList)
 	
@@ -174,6 +172,13 @@ func surveySelf():
 	armyHarmonyCost = 0
 	armyFaithCost = 0
 	print("Surveyingg Self")
+	var unitCount: int
+	unitCount = 0
+	for Unit in unitsList:
+		unitCount += 1
+	var minSize: int = (unitCount * 210)
+	$ScrollContainer/UnitUIContainer.set_custom_minimum_size(Vector2(minSize, 0))
+			#print("Unit", Unit.unitType, "Level", Unit.unitLevel)
 	if raised == true:
 		#for Unit in unitsList:
 			#var unitManpower: int = Unit.unitCurrentManpower
@@ -259,8 +264,9 @@ func surveySelf():
 	else:
 		for Unit in unitsList:
 		#manpower
-			if Unit.unitCurrentManpower < Unit.unitMaxManpower:
-				armyManpowerCost += (Unit.unitLevel * (-1 * parentCountry.armyReinforceRate)) #replace -3 with - var reinforceUnraisedRate
+			if is_instance_valid(Unit):
+				if Unit.unitCurrentManpower < Unit.unitMaxManpower:
+					armyManpowerCost += (Unit.unitLevel * (-1 * parentCountry.armyReinforceRate)) #replace -3 with - var reinforceUnraisedRate
 	pass
 
 func calculateMaxUnitLevel():
@@ -291,7 +297,7 @@ func addUnitCommander(newCommander):
 	pass
 
 func commanderCheck():
-	for Unit in $RadicalCoolTestPanel/UnitContainer.get_children():
+	for Unit in $UnitContainer.get_children():
 		if Unit.militaryModifierList != null:
 			for MilMod in Unit.militaryModifierList:
 				if MilMod.commanderMod == true:

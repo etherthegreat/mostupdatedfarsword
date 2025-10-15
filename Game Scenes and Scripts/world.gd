@@ -345,6 +345,9 @@ func addLawToCountry(lawType):
 func _on_army_button_pressed() -> void:
 	if $CanvasLayer/MilitaryPanelControl.visible == false:
 		$CanvasLayer/MilitaryPanelControl.visible = true
+		$CanvasLayer/MilitaryPanelControl
+	else:
+		$CanvasLayer/MilitaryPanelControl.visible = false
 	pass # Replace with function body.
 	
 const armyScene = preload("res://Game Scenes and Scripts/army.tscn")

@@ -617,6 +617,7 @@ offset_right = 853.0
 offset_bottom = 1017.0
 
 [node name="GodsContainer" type="GridContainer" parent="CanvasLayer/BeliefControl/BeliefPanel/GodsScrollContainer"]
+custom_minimum_size = Vector2(0, 700)
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/h_separation = 360
@@ -631,6 +632,7 @@ offset_right = 1803.0
 offset_bottom = 1018.0
 
 [node name="DoctrineContainer" type="GridContainer" parent="CanvasLayer/BeliefControl/BeliefPanel/DoctrineScrollContainer"]
+custom_minimum_size = Vector2(0, 700)
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/h_separation = 360
@@ -990,9 +992,9 @@ text = "X"
 visible = false
 layout_mode = 3
 anchors_preset = 0
-offset_left = -176.0
+offset_left = -732.0
 offset_top = 38.0
-offset_right = -136.0
+offset_right = -692.0
 offset_bottom = 78.0
 mouse_filter = 2
 script = ExtResource("38_0kf4p")
@@ -1001,15 +1003,15 @@ script = ExtResource("38_0kf4p")
 layout_mode = 0
 offset_left = 1421.0
 offset_top = 53.0
-offset_right = 1985.0
+offset_right = 2743.0
 offset_bottom = 1001.0
 mouse_filter = 2
 
 [node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/MilitaryPanelControl"]
-layout_mode = 0
-offset_left = 1387.0
-offset_top = 98.0
-offset_right = 1983.0
+layout_mode = 1
+offset_left = 1440.0
+offset_top = 71.0
+offset_right = 2742.0
 offset_bottom = 983.0
 
 [node name="GridContainer" type="VBoxContainer" parent="CanvasLayer/MilitaryPanelControl/ScrollContainer"]

@@ -31,7 +31,6 @@ func buildSelf(playerCountryNode):
 			for Tile in playerNode.OwnedTileList:
 				if Tile.tileNumber == newBarracksButton.barracksTile.tileNumber:
 					if Tile.stationedArmy != null:
-						print("HOZIER IS GAS")
 						newBarracksButton.addPrebuiltArmy(Tile.stationedArmy)
 	else:
 		print("Illusion, playerBarracks = null")
