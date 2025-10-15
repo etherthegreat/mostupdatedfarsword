@@ -68,8 +68,8 @@ func calculateOreMilMod():
 
 func addOreMilMod(milModType):
 	var newUnitMetal = ore.new()
-	newUnitMetal.oreType = milModType
-	newUnitMetal.buildSelf()
+	var oreImage: Texture
+	newUnitMetal.buildSelf(milModType)
 	unitMetal = newUnitMetal
 	var newMilMod = milModScene.instantiate()
 	newMilMod.buildSelf(milModType)

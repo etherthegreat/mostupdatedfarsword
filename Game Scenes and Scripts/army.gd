@@ -91,7 +91,7 @@ func updateSelf(Name, countryNode, TileNumber):
 				inTile = Tile
 	#print("UnitUIContainer 1 Children", $RadicalCoolTestPanel/UnitUIContainer.get_children())
 	
-	for unitUIScene in $RadicalCoolTestPanel/UnitUIContainer.get_children():
+	for unitUIScene in $ScrollContainer/UnitUIContainer.get_children():
 		if is_instance_valid(unitUIScene):
 			unitUIScene.queue_free()
 	#print("UnitUiContainer Children", $RadicalCoolTestPanel/UnitUIContainer.get_children())
@@ -102,7 +102,7 @@ func updateSelf(Name, countryNode, TileNumber):
 			newUnitUI.assignUnit(Unit)
 			newUnitUI.findMilMods(Unit)
 			newUnitUI.updateControl
-			$RadicalCoolTestPanel/UnitUIContainer.add_child(newUnitUI)
+			$ScrollContainer/UnitUIContainer.add_child(newUnitUI)
 			#print("Unit", Unit.unitType, "Level", Unit.unitLevel)
 	surveySelf()
 	pass
@@ -124,27 +124,27 @@ func _process(delta: float) -> void:
 			#print("yucky had to change")
 			#pass
 	if maxUnitLevel != null:
-		for unitUIScene in $RadicalCoolTestPanel/UnitUIContainer.get_children():
+		for unitUIScene in $ScrollContainer/UnitUIContainer.get_children():
 			unitUIScene.upgradeButtonCalculation(maxUnitLevel)
 	pass
 
 func addUnitToArmy(unitToAdd):
 	unitsList.append(unitToAdd)
 	unitToAdd.updateArmy.connect(surveySelf)
-	$RadicalCoolTestPanel/UnitContainer.add_child(unitToAdd)
+	$ScrollContainer/UnitUIContainer.add_child(unitToAdd)
 	#print("units listfrom addUnit", unitsList)
 	#print("unitsConfirmation List", UnitConfirmationList)
 	
 	pass
 
 func stopUpdatingUI():
-	for unitUIScene in $RadicalCoolTestPanel/UnitUIContainer.get_children():
+	for unitUIScene in $ScrollContainer/UnitUIContainer.get_children():
 		unitUIScene.stopUpdating()
 	pass
 
 func startUpdatingUI():
 	
-	for unitUIScene in $RadicalCoolTestPanel/UnitUIContainer.get_children():
+	for unitUIScene in $ScrollContainer/UnitUIContainer.get_children():
 		unitUIScene.startUpdating()
 	pass
 
@@ -174,11 +174,10 @@ func surveySelf():
 	armyHarmonyCost = 0
 	armyFaithCost = 0
 	print("Surveyingg Self")
-	if raised == true || raised != true:
+	if raised == true:
 		#for Unit in unitsList:
 			#var unitManpower: int = Unit.unitCurrentManpower
 			#maxManpower += (Unit.unitLevel * Unit.unitMaxManpower)
-		print(unitsList,"PEEEENNNNIIIIISSSS", $RadicalCoolTestPanel/UnitContainer.get_children())
 		for Unit in unitsList:
 			#print("unit level", Unit.unitLevel)
 			#print("unit metal", Unit.unitMetal.oreType)
@@ -257,7 +256,6 @@ func surveySelf():
 		$AttackDefencePanel/Attack.text = str(armyAttackScore)
 		$AttackDefencePanel/Defense.text = str(armyDefenseScore)
 		$AttackDefencePanel/Manpower.text = str(manpowerInArmy, "/", maxManpower)
-		print("Yeehaw Cowboy")
 	else:
 		for Unit in unitsList:
 		#manpower
@@ -308,21 +306,21 @@ func commanderCheck():
 					for Unit in unitsList:
 						Unit.addMilMod(MilMod)
 						#Unit.getUnitAttributes()
-						for unitUIScene in $RadicalCoolTestPanel/UnitUIContainer.get_children():
+						for unitUIScene in $ScrollContainer/UnitUIContainer.get_children():
 							unitUIScene.armyUpdateMilMods()
 			2:
 				for MilMod in commanderModifiers2:
 					for Unit in unitsList:
 						Unit.addMilMod(MilMod)
 						#Unit.getUnitAttributes()
-						for unitUIScene in $RadicalCoolTestPanel/UnitUIContainer.get_children():
+						for unitUIScene in $ScrollContainer/UnitUIContainer.get_children():
 							unitUIScene.armyUpdateMilMods()
 			3:
 				for MilMod in commanderModifiers3:
 					for Unit in unitsList:
 						Unit.addMilMod(MilMod)
 						#Unit.getUnitAttributes()
-						for unitUIScene in $RadicalCoolTestPanel/UnitUIContainer.get_children():
+						for unitUIScene in $ScrollContainer/UnitUIContainer.get_children():
 							unitUIScene.armyUpdateMilMods()
 	pass
 

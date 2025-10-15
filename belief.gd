@@ -21,6 +21,14 @@ func buildBelief(type):
 			faithBelief = false
 		"Tower Control":
 			faithBelief = false
+		"Nature Sanctuaries":
+			faithBelief = false
+		"Conservative Orthodoxy":
+			faithBelief = false
+		"Sanctioned Cadaver Research":
+			faithBelief = false
+		"Temple Height Restrictions":
+			faithBelief = false
 		"Benaxtara":
 			faithBelief = true
 		"Tyla-Dyn":
@@ -32,5 +40,13 @@ func buildBelief(type):
 		"Ornil-Ra":
 			faithBelief = true
 		"Fa Enepo":
+			faithBelief = true
+		"Vibian Karik":
+			faithBelief = true
+		"Venodam":
+			faithBelief = true
+		"Jerriwix":
+			faithBelief = true
+		"Qalin Ling":
 			faithBelief = true
 	pass

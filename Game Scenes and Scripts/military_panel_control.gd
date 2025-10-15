@@ -25,7 +25,7 @@ func buildSelf(playerCountryNode):
 			#print(newBarracksButton.barracksTile, "RunawayTrain")
 			newBarracksButton.addNewArmy.connect(buildNewArmy)
 			newBarracksButton.buildSelf()
-			$Panel/GridContainer.add_child(newBarracksButton)
+			$ScrollContainer/GridContainer.add_child(newBarracksButton)
 		#for Army in playerNode.countryArmyList:
 			
 			for Tile in playerNode.OwnedTileList:

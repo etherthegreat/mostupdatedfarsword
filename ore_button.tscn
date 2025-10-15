@@ -1,8 +1,20 @@
-[gd_scene load_steps=2 format=3 uid="uid://brciqffod2cje"]
+[gd_scene load_steps=3 format=3 uid="uid://brciqffod2cje"]
 
+[ext_resource type="Texture2D" uid="uid://dgcf317okxtn4" path="res://art assets/finishedAssets/ores/Wood.PNG" id="1_4s57g"]
 [ext_resource type="Script" uid="uid://dg4fy7r4b75xy" path="res://ore_button.gd" id="1_bl7yn"]
 
-[node name="OreButton" type="Button"]
-offset_right = 8.0
-offset_bottom = 8.0
+[node name="OreButton" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 36.0
+offset_bottom = 37.0
 script = ExtResource("1_bl7yn")
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 0
+offset_right = 62.0
+offset_bottom = 62.0
+icon = ExtResource("1_4s57g")
+expand_icon = true
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

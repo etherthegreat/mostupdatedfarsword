@@ -174,7 +174,7 @@ func matchPlayerUnlockables(playerCountryNode):
 					sciencePerLevel += 1
 					goldCostPerLevel +=1
 				if law.lawType == "Mercantilism":
-					goldPerLevel += 10
+					goldPerLevel += 1
 			if tile.tileGovernor != null:
 				match tile.tileGovernor.governorPosition:
 					"BREWER":
@@ -737,7 +737,7 @@ func matchPlayerUnlockables(playerCountryNode):
 				if law.lawType == "Military Engineers":
 					manpowerPerLevel += 300
 				if law.lawType == "Mercantilism":
-					goldPerLevel += 2
+					goldPerLevel += 1
 					mandateCostPerLevel += 2
 			if tile.tileGovernor != null:
 				match tile.tileGovernor.governorPosition:

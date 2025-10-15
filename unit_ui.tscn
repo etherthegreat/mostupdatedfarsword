@@ -11,8 +11,8 @@ script = ExtResource("1_xgapy")
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 0
 offset_top = -81.0
-offset_right = 230.0
-offset_bottom = 267.0
+offset_right = 197.0
+offset_bottom = 155.0
 mouse_filter = 2
 
 [node name="UnitNameLabel" type="Label" parent="Panel"]
@@ -24,6 +24,7 @@ text = "Unit Type"
 horizontal_alignment = 1
 
 [node name="UnitTypeButton" type="Button" parent="Panel"]
+visible = false
 layout_mode = 0
 offset_left = 3.0
 offset_top = 31.0
@@ -32,44 +33,48 @@ offset_bottom = 190.0
 
 [node name="WeaponTypeButton" type="Button" parent="Panel"]
 layout_mode = 0
-offset_left = 124.0
-offset_top = 3.0
-offset_right = 226.0
-offset_bottom = 95.0
+offset_left = 9.0
+offset_top = 50.0
+offset_right = 97.0
+offset_bottom = 129.0
 
 [node name="OreTypeButton" type="Button" parent="Panel"]
 layout_mode = 0
-offset_left = 124.0
-offset_top = 99.0
-offset_right = 226.0
-offset_bottom = 191.0
+offset_left = 7.0
+offset_top = 137.0
+offset_right = 97.0
+offset_bottom = 229.0
+expand_icon = true
 
 [node name="ManpowerLabel" type="RichTextLabel" parent="Panel"]
 layout_mode = 2
-offset_left = 67.0
-offset_top = 247.0
-offset_right = 217.0
-offset_bottom = 271.0
+offset_left = 102.0
+offset_top = 211.0
+offset_right = 252.0
+offset_bottom = 235.0
+theme_override_font_sizes/normal_font_size = 11
 bbcode_enabled = true
 text = "[img = 13x17]res://art assets/Placeholder Art/UI Art/resources/manpowerREALLYSMALL.png[/img] [hint=Manpower] 1000/1000 [/hint]"
 autowrap_mode = 0
 
 [node name="UnitStrengthContainer" type="VBoxContainer" parent="Panel"]
 layout_mode = 0
-offset_left = 65.0
-offset_top = 201.0
-offset_right = 192.0
-offset_bottom = 272.0
+offset_left = 83.0
+offset_top = 165.0
+offset_right = 210.0
+offset_bottom = 236.0
 mouse_filter = 2
 theme_override_constants/separation = 0
 
 [node name="UnitAttackLabel" type="Label" parent="Panel/UnitStrengthContainer"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 11
 text = "Attack: 25?"
 horizontal_alignment = 1
 
 [node name="UnitDefenceLabel" type="Label" parent="Panel/UnitStrengthContainer"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 11
 text = "Defence: 25?"
 horizontal_alignment = 1
 
@@ -127,28 +132,36 @@ mouse_filter = 2
 columns = 2
 
 [node name="OresChoicePanel" type="Panel" parent="."]
-visible = false
 layout_mode = 0
-offset_left = 1.0
-offset_top = -81.0
-offset_right = 233.0
-offset_bottom = 268.0
+offset_left = 100.0
+offset_top = -51.0
+offset_right = 226.0
+offset_bottom = 84.0
 
-[node name="GridContainer" type="GridContainer" parent="OresChoicePanel"]
+[node name="ScrollContainer" type="ScrollContainer" parent="OresChoicePanel"]
 layout_mode = 0
-offset_right = 230.0
-offset_bottom = 348.0
+offset_left = 10.0
+offset_top = 9.0
+offset_right = 126.0
+offset_bottom = 135.0
+
+[node name="GridContainer" type="GridContainer" parent="OresChoicePanel/ScrollContainer"]
+layout_mode = 2
 mouse_filter = 2
+theme_override_constants/h_separation = 56
+theme_override_constants/v_separation = 60
 columns = 2
 
 [node name="UpgradeButton" type="Button" parent="."]
 layout_mode = 0
-offset_left = 84.0
-offset_top = 236.0
-offset_right = 164.0
-offset_bottom = 264.0
+offset_left = 132.0
+offset_top = -77.0
+offset_right = 194.0
+offset_bottom = -53.0
 theme_override_colors/icon_focus_color = Color(0, 0, 0, 1)
 theme_override_colors/icon_normal_color = Color(0, 0.466667, 0, 1)
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+theme_override_font_sizes/font_size = 10
 text = "Upgrade"
 
 [connection signal="pressed" from="Panel/WeaponTypeButton" to="." method="_on_weapon_type_button_pressed"]

@@ -41,6 +41,14 @@ func updateSelf():
 				newBB.buildSelf("Tree of Life", $religionData.treeOfLifeIcon, $religionData.treeOfLifeBWIcon, false, 160, "Trees are everything and everywhere and make perfect indoctrination imagery for dummies.", $religionData.border1)
 			"Tower Control":
 				newBB.buildSelf("Tower Control", $religionData.towerControlIcon, $religionData.towerControlBWIcon, false, 250, "The wizards have implemented strict mind control, including the removal of faith from society.", $religionData.border1)
+			"Nature Sanctuaries":
+				newBB.buildSelf("Nature Sanctuaries", $religionData.natureSanctuariesIcon, $religionData.natureSanctuariesIconBW, false, 100, "By harmonizing our churches with the local environments, we can fight the demon king's corruption from our churches.", $religionData.border1)
+			"Conservative Orthodoxy":
+				newBB.buildSelf("Conservative Orthodoxy", $religionData.conservativeOrthodoxyIcon, $religionData.conservativeOrthodoxyIconBW, false, 200, "Our Churches do not rely on modern revelation - all of our doctrine was divine and will always be divine.", $religionData.border1)
+			"Sanctioned Cadaver Research":
+				newBB.buildSelf("Sanctioned Cadaver Research", $religionData.sanctionedCadaverResearchIcon, $religionData.sanctionedCadaverResearchIconBW, false, 200, "Our faith will not interfere with the necessary scientific pursuit of medicine.", $religionData.border1)
+			"Temple Height Restrictions":
+				newBB.buildSelf("Temple Height Restrictions", $religionData.templeHeightLawsIcon, $religionData.templeHeightLawsIconBW, false, 120, "Our faith decrees no building will be taller than our temples in any tiles.", $religionData.border1)
 		$BeliefPanel/DoctrineScrollContainer/DoctrineContainer.add_child(newBB)
 		newBB.LabelClicked.connect(purchasePanel)
 	for String in player.availableGods:
@@ -58,6 +66,14 @@ func updateSelf():
 				newBB.buildSelf("Dilnith-Amen", $religionData.dilnithAmenIcon, $religionData.dilnithAmenIconBW, false, 185, "The Enlightened One, the great Meditator.  Dilnith Amen figured out the secrets to enlightenment before the Demon King arrived.", $religionData.border2)
 			"Ornil-Ra":
 				newBB.buildSelf("Ornil-Ra", $religionData.ornilRaIcon, $religionData.ornilRaIconBW, false, 280, "The great destroyer and the great provider.  The inciter of cycles, of change, of chaos.", $religionData.border4)
+			"Vibian Karik":
+				newBB.buildSelf("Vibian Karik", $religionData.vibianKarikIcon, $religionData.vibianKarikIconBW, false, 100, "The Great Mother Goddess of the Sea, Vibian Protects Sailors and the moon?", $religionData.border5)
+			"Venodam":
+				newBB.buildSelf("Venodam", $religionData.venodamIcon, $religionData.venodamIconBW, false, 90, "The Father God of the Sky, Sky Daddy!", $religionData.border5)
+			"Jerriwix":
+				newBB.buildSelf("Jerriwix", $religionData.jerriwixIcon, $religionData.jerriwixIconBW, false, 135, "The mysterious guide of the Spirit plane, whether Jerriwix eats you or not is up to their hunger levels in the moment of passing through.", $religionData.border3)
+			"Qalin Ling & Tyrus":
+				newBB.buildSelf("Qalin Ling & Tyrus", $religionData.qalinLingIcon, $religionData.qalinLingIconBW, false, 200, "Qalin Ling, the last Pheonix, rides atop the head of Tyrus, the last leviathan.  Together they hold the final two eggs of their species on a nest, waiting for the demon king to die to let them hatch.", $religionData.border4)
 		$BeliefPanel/GodsScrollContainer/GodsContainer.add_child(newBB)
 		newBB.LabelClicked.connect(purchasePanel)
 	if $BeliefPanel/purchasedBeliefsGrid.get_children() != null:
@@ -89,6 +105,14 @@ func buildPD(type):
 			newPD.buildSelf("Tree of Life", $religionData.treeOfLifeIcon, "Trees are everything and everywhere and make perfect indoctrination imagery for dummies.", true, $religionData.border1)
 		"Tower Control":
 			newPD.buildSelf("Tower Control", $religionData.towerControlIcon, "The wizards have implemented strict mind control, including the removal of faith from society.", true, $religionData.border1)
+		"Nature Sanctuaries":
+			newPD.buildSelf("Nature Sanctuaries", $religionData.natureSanctuariesIcon, "By harmonizing our churches with the local environments, we can fight the demon king's corruption from our churches.", true, $religionData.border1)
+		"Conservative Orthodoxy":
+			newPD.buildSelf("Conservative Orthodoxy", $religionData.conservativeOrthodoxyIcon, "Our Churches do not rely on modern revelation - all of our doctrine was divine and will always be divine.", true, $religionData.border1)
+		"Sanctioned Cadaver Research":
+			newPD.buildSelf("Sanctioned Cadaver Research", $religionData.sanctionedCadaverResearchIcon, "Our faith will not interfere with the necessary scientific pursuit of medicine.", true, $religionData.border1)
+		"Temple Height Restrictions":
+			newPD.buildSelf("Temple Height Restrictions", $religionData.templeHeightLawsIcon, "Our faith decrees no building will be taller than our temples in any tiles.", true, $religionData.border1)
 		"Benaxtara":
 			newPD.buildSelf("Benaxtara", $religionData.benaxtaraIcon, "The Great Sleeping Snake of the North - it is believed that once Benaxtara is awoken from their slumber, they will consume the entire universe.", false,  $religionData.border4)
 		"Tyla-Dyn":
@@ -101,6 +125,14 @@ func buildPD(type):
 			newPD.buildSelf("Dilnith-Amen", $religionData.dilnithAmenIcon, "The Enlightened One, the great Meditator.  Dilnith Amen figured out the secrets to enlightenment before the Demon King arrived.", false,  $religionData.border2)
 		"Ornil-Ra":
 			newPD.buildSelf("Ornil-Ra", $religionData.ornilRaIcon, "The great destroyer and the great provider.  The inciter of cycles, of change, of chaos.", false,  $religionData.border4)
+		"Vibian Karik":
+			newPD.buildSelf("Vibian Karik", $religionData.vibianKarikIcon, "The Great Mother Goddess of the Sea, Vibian Protects Sailors and the moon?", false, $religionData.border5)
+		"Venodam":
+			newPD.buildSelf("Venodam", $religionData.venodamIcon, "The Father God of the Sky, Sky Daddy!", false, $religionData.border5)
+		"Jerriwix":
+			newPD.buildSelf("Jerriwix", $religionData.jerriwixIcon, "The mysterious guide of the Spirit plane, whether Jerriwix eats you or not is up to their hunger levels in the moment of passing through.", false, $religionData.border3)
+		"Qalin Ling & Tyrus":
+			newPD.buildSelf("Qalin Ling & Tyrus", $religionData.qalinLingIcon, "Qalin Ling, the last Pheonix, rides atop the head of Tyrus, the last leviathan.  Together they hold the final two eggs of their species on a nest, waiting for the demon king to die to let them hatch.", false, $religionData.border4)
 	match newPD.doctrineType:
 		true:
 			$BeliefPanel/purchasedBeliefsGrid.add_child(newPD)

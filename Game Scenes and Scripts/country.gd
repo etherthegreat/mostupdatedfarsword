@@ -235,24 +235,24 @@ func NewGameBuild():
 		#OVER.  SHOULD BE A DYNAMICALLY SIZED PANEL.
 		var newOre = ore.new()
 		newOre.oreType = "Wood"
-		newOre.buildSelf()
+		newOre.buildSelf("Wood")
 		availableOres.append(newOre)
 		var goldOre = ore.new()
 		goldOre.oreType = "Gold"
-		goldOre.buildSelf()
+		goldOre.buildSelf("Gold")
 		availableOres.append(goldOre)
 		var floodstoneOre = ore.new()
 		floodstoneOre.oreType = "Floodstone"
-		floodstoneOre.buildSelf()
+		floodstoneOre.buildSelf("Floodstone")
 		availableOres.append(floodstoneOre)
 		addTechnologicalDiscovery("Language")
 		addTechnologicalDiscovery("Agriculture")
 		addTechnologicalDiscovery("Copper Working")
 		addTechnologicalDiscovery("Artistry")
 		loadBeliefsList("GenericDoc1")
-		loadBeliefsList("GenericDoc1")
+		loadBeliefsList("GenericDoc2")
 		loadBeliefsList("GenericGods1")
-		loadBeliefsList("GenericGods1")
+		loadBeliefsList("GenericGods2")
 		#loadBeliefsList("PDTDoc1")
 		addReligiousBelief("Tower Control")
 		#addReligiousBelief("TYLA DYN")
@@ -339,8 +339,7 @@ func addNewUnit(Army, UnitType, Level, WeaponType, OreType):
 	newWeapon.buildSelf()
 	newUnit.unitWeapon = newWeapon
 	var newOre = ore.new()
-	newOre.oreType = str(OreType)
-	newOre.buildSelf()
+	newOre.buildSelf(OreType)
 	newUnit.unitMetal = newOre
 	newUnit.calculateOreMilMod()
 	newUnit.getUnitInfo.connect(updateUnit)
@@ -370,8 +369,7 @@ func prospectForOres():
 	for Tile in OwnedTileList:
 		if Tile.oreSlot != null:
 			var newOre = ore.new()
-			newOre.oreType = Tile.oreSlot.oreType
-			newOre.buildSelf()
+			newOre.buildSelf(Tile.oreSlot.oreType)
 			var oreCheck: bool =  false
 			if availableOres != null:
 				for ore in availableOres:
@@ -381,7 +379,7 @@ func prospectForOres():
 				newOre.queue_free()
 			else:
 				availableOres.append(newOre)
-			#print("availableOres", availableOres)
+			print("availableOres", availableOres, "DEBUG")
 	pass
 
 func addMilMod(Type):
@@ -438,6 +436,10 @@ func loadBeliefsList(listTitle):
 			var genericDoc1Array: Array = $religionData.genericDoc1
 			for String in genericDoc1Array:
 				availableDocs.append(String)
+		"GenericDoc2":
+			var genericDoc2Array: Array = $religionData.genericDoc2
+			for String in genericDoc2Array:
+				availableDocs.append(String)
 		"PDTDoc1":
 			var PDTDoc1Array: Array = $religionData.PDTDoc1
 			for String in PDTDoc1Array:
@@ -445,6 +447,10 @@ func loadBeliefsList(listTitle):
 		"GenericGods1":
 			var genericGods1Array: Array = $religionData.genericGods1
 			for String in genericGods1Array:
+				availableGods.append(String)
+		"GenericGods2":
+			var genericGods2Array: Array = $religionData.genericGods2
+			for String in genericGods2Array:
 				availableGods.append(String)
 		"PDTGods1":
 			var PDTGods1Array: Array = $religionData.PDTGods1

@@ -229,8 +229,7 @@ func onNewGame():
 		tileCrop.cropType = "Wereroot"
 		cropSlot = tileCrop
 		var tileOre = ore.new()
-		tileOre.oreType = "Iron"
-		tileOre.buildSelf()
+		tileOre.buildSelf("Copper")
 		oreSlot = tileOre
 		#addWizard("Druid")
 		addBuilding("Tower", 1)
@@ -265,8 +264,7 @@ func onNewGame():
 		tileCrop.cropType = "Razorberry"
 		cropSlot = tileCrop
 		var tileOre = ore.new()
-		tileOre.oreType = "Marble"
-		tileOre.buildSelf()
+		tileOre.buildSelf("Marble")
 		oreSlot = tileOre
 		var Farm = building.new()
 		Farm.buildingType = "Farm"

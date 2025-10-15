@@ -990,10 +990,10 @@ text = "X"
 visible = false
 layout_mode = 3
 anchors_preset = 0
-offset_left = -718.0
-offset_top = 43.0
-offset_right = -678.0
-offset_bottom = 83.0
+offset_left = -176.0
+offset_top = 38.0
+offset_right = -136.0
+offset_bottom = 78.0
 mouse_filter = 2
 script = ExtResource("38_0kf4p")
 
@@ -1005,12 +1005,17 @@ offset_right = 1985.0
 offset_bottom = 1001.0
 mouse_filter = 2
 
-[node name="GridContainer" type="VBoxContainer" parent="CanvasLayer/MilitaryPanelControl/Panel"]
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/MilitaryPanelControl"]
 layout_mode = 0
-offset_right = 568.0
-offset_bottom = 665.0
+offset_left = 1387.0
+offset_top = 98.0
+offset_right = 1983.0
+offset_bottom = 983.0
+
+[node name="GridContainer" type="VBoxContainer" parent="CanvasLayer/MilitaryPanelControl/ScrollContainer"]
+layout_mode = 2
 mouse_filter = 2
-theme_override_constants/separation = 360
+theme_override_constants/separation = 245
 
 [node name="EventControl" type="Control" parent="CanvasLayer"]
 layout_mode = 3
@@ -1055,6 +1060,7 @@ offset_bottom = 995.0
 theme_override_constants/separation = 240
 
 [node name="GovernmentControl" type="Control" parent="CanvasLayer"]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0

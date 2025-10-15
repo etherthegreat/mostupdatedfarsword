@@ -13,29 +13,32 @@ script = ExtResource("1_je2jb")
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 0
-offset_right = 157.0
-offset_bottom = 319.0
+offset_left = 44.0
+offset_top = 1.0
+offset_right = 155.0
+offset_bottom = 235.0
 
 [node name="BarracksSprite" type="Sprite2D" parent="Panel"]
-position = Vector2(78, 64)
-scale = Vector2(0.2, 0.2)
+position = Vector2(57.2094, 53.45)
+scale = Vector2(0.138123, 0.138123)
 texture = ExtResource("2_4mabx")
 
 [node name="tileName" type="Label" parent="Panel"]
 layout_mode = 0
-offset_left = 3.0
-offset_top = 1.0
-offset_right = 156.0
-offset_bottom = 24.0
+offset_left = -17.0
+offset_top = 5.0
+offset_right = 136.0
+offset_bottom = 28.0
+theme_override_font_sizes/font_size = 12
 text = "tilename"
 horizontal_alignment = 1
 
 [node name="barrackslvl" type="Label" parent="Panel"]
 layout_mode = 0
-offset_left = 23.0
-offset_top = 105.0
-offset_right = 143.0
-offset_bottom = 138.0
+offset_top = 80.0
+offset_right = 120.0
+offset_bottom = 113.0
+theme_override_font_sizes/font_size = 10
 text = "barracks lvl"
 horizontal_alignment = 1
 
@@ -58,25 +61,29 @@ horizontal_alignment = 1
 
 [node name="AddNewArmyButton" type="Button" parent="."]
 layout_mode = 0
-offset_left = 19.0
-offset_top = 145.0
-offset_right = 142.0
-offset_bottom = 268.0
+offset_left = 76.0
+offset_top = 102.0
+offset_right = 132.0
+offset_bottom = 158.0
 icon = ExtResource("3_yxbhs")
+expand_icon = true
 
 [node name="Label" type="Label" parent="AddNewArmyButton"]
 layout_mode = 0
-offset_top = 133.0
-offset_right = 125.0
-offset_bottom = 156.0
+offset_left = -34.0
+offset_top = 58.0
+offset_right = 91.0
+offset_bottom = 81.0
+theme_override_font_sizes/font_size = 12
 text = "Build New Army"
+horizontal_alignment = 1
 
 [node name="ArmyContainer" type="VBoxContainer" parent="."]
 layout_mode = 0
-offset_left = 558.0
-offset_top = 76.0
-offset_right = 650.0
-offset_bottom = 172.0
+offset_left = 463.0
+offset_top = 126.0
+offset_right = 555.0
+offset_bottom = 222.0
 
 [node name="NameAndConfirmPanel" type="Panel" parent="."]
 visible = false
@@ -84,21 +91,21 @@ layout_mode = 0
 offset_left = 166.0
 offset_top = 5.0
 offset_right = 902.0
-offset_bottom = 308.0
+offset_bottom = 231.0
 
 [node name="TextEdit" type="TextEdit" parent="NameAndConfirmPanel"]
 layout_mode = 0
-offset_left = 80.0
-offset_top = 120.0
-offset_right = 661.0
-offset_bottom = 177.0
+offset_left = 87.0
+offset_top = 47.0
+offset_right = 668.0
+offset_bottom = 104.0
 
 [node name="ConfirmButton" type="Button" parent="NameAndConfirmPanel"]
 layout_mode = 0
-offset_left = 264.0
-offset_top = 205.0
-offset_right = 433.0
-offset_bottom = 257.0
+offset_left = 271.0
+offset_top = 132.0
+offset_right = 440.0
+offset_bottom = 184.0
 text = "Confirm"
 
 [connection signal="pressed" from="AddNewArmyButton" to="." method="_on_add_new_army_button_pressed"]

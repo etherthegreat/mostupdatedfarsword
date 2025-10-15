@@ -22,19 +22,20 @@ func _process(delta: float) -> void:
 	if updateControl == false:
 		return
 	else:
-		$Panel/UnitNameLabel.text = thisUnit.unitType
-		if thisUnit.unitWeapon != null:
-			$Panel/WeaponTypeButton.icon = thisUnit.unitWeapon.weaponImage
-		else:
-			$Panel/WeaponTypeButton.icon = null
-		if thisUnit.unitMetal != null:
-			$Panel/OreTypeButton.icon = thisUnit.unitMetal.oreImage
-		$Panel/LevelLabel.text = str(thisUnit.unitLevel)
-		$Panel/UnitStrengthContainer/UnitAttackLabel.text = str("Attack: ", thisUnit.unitOffensiveScore)
-		$Panel/UnitStrengthContainer/UnitDefenceLabel.text = str("Defence: ", thisUnit.unitDefensiveScore)
-		$Panel/ManpowerLabel.text = str("Strength: ", thisUnit.unitCurrentManpower, "/", thisUnit.unitMaxManpower)
-		#print("UPdating UI UNit HAHAHAA!")
-		#print(self, "I am here, ya ya ya", thisUnit.unitType)
+		if thisUnit != null:
+			$Panel/UnitNameLabel.text = thisUnit.unitType
+			if thisUnit.unitWeapon != null:
+				$Panel/WeaponTypeButton.icon = thisUnit.unitWeapon.weaponImage
+			else:
+				$Panel/WeaponTypeButton.icon = null
+			if thisUnit.unitMetal != null:
+				$Panel/OreTypeButton.icon = thisUnit.unitMetal.oreImage
+			$Panel/LevelLabel.text = str(thisUnit.unitLevel)
+			$Panel/UnitStrengthContainer/UnitAttackLabel.text = str("Attack: ", thisUnit.unitOffensiveScore)
+			$Panel/UnitStrengthContainer/UnitDefenceLabel.text = str("Defence: ", thisUnit.unitDefensiveScore)
+			$Panel/ManpowerLabel.text = str("Strength: ", thisUnit.unitCurrentManpower, "/", thisUnit.unitMaxManpower)
+			#print("UPdating UI UNit HAHAHAA!")
+			#print(self, "I am here, ya ya ya", thisUnit.unitType)
 		
 	pass
 
@@ -44,10 +45,11 @@ func assignUnit(unitforTransfer):
 
 func upgradeButtonCalculation(maxUnitLevel):
 	#print(thisUnit.unitLevel, "thisUnit.unitLevel", maxUnitLevel, "maxUnitLevel")
-	if thisUnit.unitLevel < maxUnitLevel && $UpgradeButton.disabled == true:
-		$UpgradeButton.disabled = false
-	elif thisUnit.unitLevel >= maxUnitLevel:
-		$UpgradeButton.disabled = true
+	if thisUnit != null:
+		if thisUnit.unitLevel < maxUnitLevel && $UpgradeButton.disabled == true:
+			$UpgradeButton.disabled = false
+		elif thisUnit.unitLevel >= maxUnitLevel:
+			$UpgradeButton.disabled = true
 	pass
 
 
@@ -113,18 +115,20 @@ func _on_weapon_type_button_pressed() -> void:
 	pass # Replace with function body.
 
 var oresList: Array = []
+var oreButtonScene = load("res://ore_button.tscn")
 func _on_ore_type_button_pressed() -> void:
 	if oresList != null:
 		for OreButton in oresList:
 			OreButton.queue_free()
 		oresList.clear()
+	print("DEBUG AVAILABLE ORES", thisUnit.playerCountry.availableOres)
 	for ore in thisUnit.playerCountry.availableOres:
-		var newOreButton = OreButton.new()
-		newOreButton.icon = ore.oreImage
-		newOreButton.oreName = ore.oreType
+		var newOreButton = oreButtonScene.instantiate()
+		newOreButton.buildSelf(ore.oreType, ore.oreImage)
 		newOreButton.giveOreName.connect(addOre)
 		oresList.append(newOreButton)
-		$OresChoicePanel/GridContainer.add_child(newOreButton)
+		print("DEBUG ORESLIST", oresList)
+		$OresChoicePanel/ScrollContainer/GridContainer.add_child(newOreButton)
 	if $OresChoicePanel.visible == false:
 		$OresChoicePanel.visible = true
 	else:

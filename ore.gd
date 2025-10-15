@@ -5,7 +5,7 @@ class_name ore
 var oreType: String
 var oreImage: Texture
 
-func buildSelf():
+func buildSelf(oreType):
 	match oreType:
 		"Copper":
 			oreImage = load("res://art assets/finishedAssets/ores/Copper.PNG")

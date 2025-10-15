@@ -25,149 +25,146 @@ script = ExtResource("1_clqeb")
 layout_mode = 0
 offset_left = -221.0
 offset_top = -126.0
-offset_right = 690.0
-offset_bottom = 261.0
+offset_right = 450.0
+offset_bottom = 110.0
 mouse_filter = 2
-
-[node name="UnitContainer" type="HBoxContainer" parent="RadicalCoolTestPanel"]
-layout_mode = 0
-offset_left = 260.0
-offset_right = 1557.0
-offset_bottom = 40.0
-mouse_filter = 2
-
-[node name="UnitUIContainer" type="HBoxContainer" parent="RadicalCoolTestPanel"]
-layout_mode = 0
-offset_left = 262.0
-offset_top = 119.0
-offset_right = 1452.0
-offset_bottom = 325.0
-mouse_filter = 2
-theme_override_constants/separation = 235
 
 [node name="WeaponsCost" type="Label" parent="."]
 layout_mode = 0
-offset_left = -206.0
-offset_top = 66.0
-offset_right = -148.0
-offset_bottom = 89.0
+offset_left = -211.0
+offset_top = -15.0
+offset_right = -153.0
+offset_bottom = 8.0
+scale = Vector2(0.68, 0.64)
 text = "N/A"
 
 [node name="FoodCost" type="Label" parent="."]
 layout_mode = 0
 offset_left = -210.0
-offset_top = -14.0
+offset_top = -60.0
 offset_right = -152.0
-offset_bottom = 9.0
+offset_bottom = -37.0
+scale = Vector2(0.68, 0.64)
 text = "N/A"
 
 [node name="GoldCost" type="Label" parent="."]
 layout_mode = 0
 offset_left = -210.0
-offset_top = -90.0
+offset_top = -103.0
 offset_right = -152.0
-offset_bottom = -67.0
+offset_bottom = -80.0
+scale = Vector2(0.68, 0.64)
 text = "N/A"
 
 [node name="MandateCost" type="Label" parent="."]
 layout_mode = 0
-offset_left = -86.0
-offset_top = 63.0
-offset_right = -28.0
-offset_bottom = 86.0
+offset_left = -91.0
+offset_top = -18.0
+offset_right = -33.0
+offset_bottom = 5.0
+scale = Vector2(0.68, 0.64)
 text = "N/A"
 
 [node name="MagicCost" type="Label" parent="."]
 layout_mode = 0
 offset_left = -90.0
-offset_top = -17.0
+offset_top = -63.0
 offset_right = -32.0
-offset_bottom = 6.0
+offset_bottom = -40.0
+scale = Vector2(0.68, 0.64)
 text = "N/A"
 
 [node name="FaithCost" type="Label" parent="."]
 layout_mode = 0
 offset_left = -90.0
-offset_top = -93.0
+offset_top = -106.0
 offset_right = -32.0
-offset_bottom = -70.0
+offset_bottom = -83.0
+scale = Vector2(0.68, 0.64)
 text = "N/A"
 
 [node name="WoodCost" type="Label" parent="."]
 layout_mode = 0
-offset_left = -204.0
-offset_top = 224.0
-offset_right = -146.0
-offset_bottom = 247.0
+offset_left = -212.0
+offset_top = 76.0
+offset_right = -154.0
+offset_bottom = 99.0
+scale = Vector2(0.68, 0.64)
 text = "N/A"
 
 [node name="MetalCost" type="Label" parent="."]
 layout_mode = 0
-offset_left = -208.0
-offset_top = 144.0
-offset_right = -150.0
-offset_bottom = 167.0
+offset_left = -212.0
+offset_top = 29.0
+offset_right = -154.0
+offset_bottom = 52.0
+scale = Vector2(0.68, 0.64)
 text = "N/A"
 
 [node name="HarmonyCost" type="Label" parent="."]
 layout_mode = 0
-offset_left = -84.0
-offset_top = 221.0
-offset_right = -26.0
-offset_bottom = 244.0
+offset_left = -92.0
+offset_top = 73.0
+offset_right = -34.0
+offset_bottom = 96.0
+scale = Vector2(0.68, 0.64)
 text = "N/A"
 
 [node name="InfluenceCost" type="Label" parent="."]
 layout_mode = 0
-offset_left = -88.0
-offset_top = 141.0
-offset_right = -30.0
-offset_bottom = 164.0
+offset_left = -92.0
+offset_top = 26.0
+offset_right = -34.0
+offset_bottom = 49.0
+scale = Vector2(0.68, 0.64)
 text = "N/A"
 
 [node name="AttackDefencePanel" type="Panel" parent="."]
 layout_mode = 0
-offset_left = -396.0
-offset_top = -126.0
-offset_right = -234.0
-offset_bottom = 278.0
+offset_left = -305.0
+offset_top = -120.0
+offset_right = -222.0
+offset_bottom = 109.0
 
 [node name="Attack" type="Label" parent="AttackDefencePanel"]
 layout_mode = 0
-offset_left = 43.0
-offset_top = 138.0
-offset_right = 116.0
-offset_bottom = 166.0
+offset_left = 29.0
+offset_top = 54.0
+offset_right = 102.0
+offset_bottom = 82.0
 text = "s"
+horizontal_alignment = 1
 
 [node name="Manpower" type="Label" parent="AttackDefencePanel"]
 layout_mode = 0
-offset_left = 47.0
-offset_top = 85.0
-offset_right = 120.0
-offset_bottom = 113.0
+offset_left = 33.0
+offset_top = 1.0
+offset_right = 106.0
+offset_bottom = 29.0
 text = "s"
+horizontal_alignment = 1
 
 [node name="Defense" type="Label" parent="AttackDefencePanel"]
 layout_mode = 0
-offset_left = 43.0
-offset_top = 195.0
-offset_right = 116.0
-offset_bottom = 223.0
+offset_left = 29.0
+offset_top = 101.0
+offset_right = 102.0
+offset_bottom = 129.0
 text = "s"
+horizontal_alignment = 1
 
 [node name="AttackSprite" type="Sprite2D" parent="AttackDefencePanel"]
-position = Vector2(76, 121)
+position = Vector2(31, 67)
 scale = Vector2(0.3, 0.3)
 texture = ExtResource("2_sw8vy")
 
 [node name="ManpowerSprite" type="Sprite2D" parent="AttackDefencePanel"]
-position = Vector2(78, 64)
+position = Vector2(33, 21)
 scale = Vector2(0.3, 0.3)
 texture = ExtResource("12_ugqif")
 
 [node name="DefenseSprite" type="Sprite2D" parent="AttackDefencePanel"]
-position = Vector2(76, 184)
+position = Vector2(31, 112)
 scale = Vector2(0.3, 0.3)
 texture = ExtResource("2_sw8vy")
 
@@ -179,65 +176,67 @@ offset_right = -8.0
 offset_bottom = 233.0
 
 [node name="Weapons Sprite" type="Sprite2D" parent="GridContainer"]
-position = Vector2(69, 138)
+position = Vector2(64, 43)
 scale = Vector2(0.42, 0.42)
 texture = ExtResource("2_sw8vy")
 
 [node name="Food Sprite" type="Sprite2D" parent="GridContainer"]
-position = Vector2(69, 59)
+position = Vector2(64, -6)
 scale = Vector2(0.42, 0.42)
 texture = ExtResource("3_0pwip")
 
 [node name="Gold Sprite" type="Sprite2D" parent="GridContainer"]
-position = Vector2(69, -16)
+position = Vector2(64, -53)
 scale = Vector2(0.42, 0.42)
 texture = ExtResource("4_f4g6h")
 
 [node name="Mandate Sprite" type="Sprite2D" parent="GridContainer"]
-position = Vector2(193, 136)
+position = Vector2(188, 41)
 scale = Vector2(0.42, 0.42)
 texture = ExtResource("5_jetgm")
 
 [node name="Magic Sprite" type="Sprite2D" parent="GridContainer"]
-position = Vector2(193, 57)
+position = Vector2(188, -8)
 scale = Vector2(0.42, 0.42)
 texture = ExtResource("6_37b15")
 
 [node name="Faith Sprite" type="Sprite2D" parent="GridContainer"]
-position = Vector2(193, -18)
+position = Vector2(188, -55)
 scale = Vector2(0.42, 0.42)
 texture = ExtResource("7_wl1as")
 
 [node name="WoodSprite" type="Sprite2D" parent="GridContainer"]
-position = Vector2(71, 296)
+position = Vector2(64, 134)
 scale = Vector2(0.42, 0.42)
 texture = ExtResource("8_ad57i")
 
 [node name="Metal Sprite" type="Sprite2D" parent="GridContainer"]
-position = Vector2(71, 217)
+position = Vector2(64, 89)
 scale = Vector2(0.42, 0.42)
 texture = ExtResource("9_wbfja")
 
 [node name="Harmony Sprite" type="Sprite2D" parent="GridContainer"]
-position = Vector2(195, 294)
+position = Vector2(188, 132)
 scale = Vector2(0.42, 0.42)
 texture = ExtResource("10_yntle")
 
 [node name="Influence Sprite" type="Sprite2D" parent="GridContainer"]
-position = Vector2(195, 215)
+position = Vector2(188, 87)
 scale = Vector2(0.42, 0.42)
 texture = ExtResource("11_3lsu5")
 
 [node name="RaiseArmy" type="Button" parent="."]
 layout_mode = 0
-offset_left = -373.0
-offset_top = 110.0
-offset_right = -250.0
-offset_bottom = 279.0
+offset_left = -300.0
+offset_top = 8.0
+offset_right = -232.0
+offset_bottom = 102.0
+theme_override_font_sizes/font_size = 11
 text = "Raise Army"
 icon = ExtResource("13_gr5rn")
 icon_alignment = 1
 vertical_icon_alignment = 0
+expand_icon = true
 
 [node name="CommanderButton" type="Button" parent="."]
 visible = false
@@ -249,6 +248,26 @@ offset_bottom = 242.0
 icon = ExtResource("14_v4rpa")
 icon_alignment = 1
 expand_icon = true
+
+[node name="UnitContainer" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 39.0
+offset_top = -126.0
+offset_right = 1336.0
+offset_bottom = -86.0
+mouse_filter = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 0
+offset_left = 7.0
+offset_top = -118.0
+offset_right = 447.0
+offset_bottom = 103.0
+
+[node name="UnitUIContainer" type="HBoxContainer" parent="ScrollContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 200
 
 [connection signal="pressed" from="RaiseArmy" to="." method="_on_raise_army_pressed"]
 [connection signal="pressed" from="CommanderButton" to="." method="_on_commander_button_pressed"]
