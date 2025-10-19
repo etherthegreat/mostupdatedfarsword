@@ -369,16 +369,15 @@ func UICommander(commander):
 	pass
 
 func raiseArmyFromWorld(Army, country, Tile):
-	var pathToSend: Path2D
-	match Tile.tileSpawnPath:
-		"Pender Tal":
-			pathToSend = $"PathControl/Pender Tal Path"
-		"Pender Tal South":
-			pathToSend = $"PathControl/Pender Tal South Path"
-	var pathNumberToSend: int
-	pathNumberToSend = Tile.tileSpawnPathPoint
+	var pathPointButtonToSend: pathPointButton
+	#this is how the armies spawn into the world, will need a redo soon
+	match Tile.tileNumber:
+		3:
+			pathPointButtonToSend = $PathControl/PathPointsControl/PDT1
+		4:
+			pathPointButtonToSend = $PathControl/PathPointsControl/PDTS1
 	if country == playerCountryNode:
-		$PathControl.raisePlayerArmy(Army, country, Tile, pathToSend, pathNumberToSend)
+		$PathControl.raisePlayerArmy(Army, country, Tile, pathPointButtonToSend)
 	else:
 		print("woah we're at this stage, good work dude")
 	pass

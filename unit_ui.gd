@@ -137,6 +137,7 @@ func _on_ore_type_button_pressed() -> void:
 func addOre(oreType):
 	if thisUnit.unitMetal != null:
 		thisUnit.removeOreMilMod(oreType)
+	
 	thisUnit.addOreMilMod(oreType)
 	$OresChoicePanel.visible = false
 	findMilMods(thisUnit)

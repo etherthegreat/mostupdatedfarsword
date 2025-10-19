@@ -53,6 +53,11 @@ var armyStrength: int #basically how much health this unit has.  once  0, this a
 
 var armyAttackScore: int
 var armyDefenseScore: int
+var armyRangedAttack: int
+var armyRangedDefense: int
+var armyMagicDefense: int
+var armyShield: int
+var armyMaxShield: int
 
 #spawning and tiles
 var awake: bool #if a unit isn't stationed in a barracks, it is awake.  if awake, can be controlled
@@ -157,6 +162,9 @@ func surveySelf():
 	armyDefenseScore = 0
 	maxManpower = 0
 	manpowerInArmy = 0
+	armyRangedAttack = 0
+	armyRangedDefense = 0
+	armyMaxShield = 0
 	
 	maxManpower = 0
 	armyFoodCost = 0
@@ -179,13 +187,12 @@ func surveySelf():
 	var minSize: int = (unitCount * 210)
 	$ScrollContainer/UnitUIContainer.set_custom_minimum_size(Vector2(minSize, 0))
 			#print("Unit", Unit.unitType, "Level", Unit.unitLevel)
-	if raised == true:
+	if raised == true || raised != true:
 		#for Unit in unitsList:
 			#var unitManpower: int = Unit.unitCurrentManpower
 			#maxManpower += (Unit.unitLevel * Unit.unitMaxManpower)
 		for Unit in unitsList:
 			#print("unit level", Unit.unitLevel)
-			#print("unit metal", Unit.unitMetal.oreType)
 			Unit.enableMilModType("All")
 			#manpower
 			if Unit.unitCurrentManpower < Unit.unitMaxManpower:
@@ -198,16 +205,22 @@ func surveySelf():
 			match Unit.unitMetal.oreType: 
 				"Wood":
 					armyWoodCost += (Unit.unitLevel * -1)
+					armyMaxShield += (Unit.unitLevel * 1)
 				"Copper":
 					armyMetalCost += (Unit.unitLevel * -1)
+					armyMaxShield += (Unit.unitLevel * 2)
 				"Iron":
 					armyMetalCost += (Unit.unitLevel * -3)
+					armyMaxShield += (Unit.unitLevel * 3)
 				"Gold":
 					armyMetalCost += (Unit.unitLevel * -1)
 					armyGoldCost += (Unit.unitLevel * -3)
+					armyMaxShield += (Unit.unitLevel * 2)
 				"Floodstone":
 					armyMetalCost += (Unit.unitLevel * -1)
 					armyMagicCost += (Unit.unitLevel * -3)
+					armyMaxShield += (Unit.unitLevel * 5)
+			print("Army Max Shield DEBUG", armyMaxShield, Unit.unitMetal.oreType)
 				#fill out the rest of the metals and ores.  also add "refined wood?" for a druid unlock?
 			match Unit.unitWeapon.weaponType:
 				"Atlatl":
@@ -218,7 +231,7 @@ func surveySelf():
 			for MilMod in Unit.militaryModifierList:
 				match MilMod.milModType:
 					"Berserkers":
-						armyHarmonyCost += (Unit.unitLevel * -2)
+						armyHarmonyCost += (Unit.unitLevel * -1)
 			if parentCountry.TotalWeapons > 0:
 				Unit.disableMilModType("Weapons")
 			if parentCountry.TotalWood > 0:
@@ -245,6 +258,8 @@ func surveySelf():
 			armyDefenseScore += Unit.unitDefensiveScore
 			maxManpower += Unit.unitMaxManpower
 			manpowerInArmy += Unit.unitCurrentManpower
+			armyRangedAttack += Unit.unitRangedOffence
+			armyRangedDefense += Unit.unitRangedDefence
 			#print("army metal maintenance cost", armyMetalCost)
 			#print("army weapons maintenance cost", armyWeaponsCost)
 		$MetalCost.text = str(armyMetalCost)
@@ -334,3 +349,9 @@ signal commanderButtonPressed
 func _on_commander_button_pressed() -> void:
 	emit_signal("commanderButtonPressed", commander)
 	pass # Replace with function body.
+
+#can do this when calculating shields of new armies
+func setMaxArmyShield():
+	surveySelf()
+	armyShield = armyMaxShield
+	pass

@@ -158,159 +158,130 @@ func onNewGame():
 	tileRing = $Ring
 	tileGraphic = $TileGraphic
 	tileNumber = EXPTileNumber
-	if tileNumber == 1:
-		tileName = "Devil's Purlicue"
-		tileOwner = "DEM"
-		countryCapital = true
-		tileContinent = "Farsword"
-		tilePop = 10
-		coastal = false
-		freshWater = false
-		terrain = "Rainforest"
-		season = "FALL"
-		corruption = 100
-		tileMilModifiers
-		TileNeighbors
-		#buildnewGameBuildings
-		var tileCrop = crop.new()
-		tileCrop.cropType = "Wheat"
-		cropSlot = tileCrop
-		var tileOre = ore.new()
-		tileOre.oreType = "Copper"
-		oreSlot = tileOre
-		var Farm = building.new()
-		Farm.buildingType = "Farm"
-		Farm.buildingLevel = 3
-		Farm.tile = self
-		Farm.number = tileNumber
-		Farm.buildBuilding()
-		tileBuildingsList.append(Farm)
-		var Granary = building.new()
-		Granary.buildingType = "Granary"
-		Granary.buildingLevel = 1
-		Granary.tile = self
-		Granary.number = tileNumber
-		Granary.buildBuilding()
-		tileBuildingsList.append(Granary)
-	pass
-	if tileNumber == 2:
-		tileName = "Eighth House"
-		tileOwner = "EIG"
-		countryCapital = true
-		tileContinent
-		tilePop
-		coastal
-		freshWater
-		terrain
-		season
-		tileEcoModifiers
-		tileMilModifiers
-		corruption = 75
-		TileNeighbors
-	pass
-	if tileNumber == 3:
-		tileSpawnPath = "Pender Tal"
-		tileSpawnPathPoint = 1
-		tileName = "Pender Tal"
-		tileOwner = "PDT"
-		countryCapital = true
-		tileContinent
-		tilePop
-		coastal = false
-		freshWater = true
-		terrain = "Rainforest"
-		season
-		tileEcoModifiers
-		tileMilModifiers
-		corruption = 0
-		TileNeighbors
-		emit_signal("tileLoaded", self)
-		var tileCrop = crop.new()
-		tileCrop.cropType = "Wereroot"
-		cropSlot = tileCrop
-		var tileOre = ore.new()
-		tileOre.buildSelf("Copper")
-		oreSlot = tileOre
-		#addWizard("Druid")
-		addBuilding("Tower", 1)
-		addBuilding("Farm", 3)
-		addBuilding("Granary", 1)
-		addBuilding("Barracks", 2)
-		addBuilding("Library", 1)
-		addBuilding("Mine", 2)
-		addBuilding("Forge", 1)
-		addBuilding("Camp", 5)
-		
+	match tileNumber:
+		1:
+			tileName = "Devil's Purlicue"
+			tileOwner = "DEM"
+			countryCapital = true
+			tileContinent = "Farsword"
+			tilePop = 10
+			coastal = false
+			freshWater = false
+			terrain = "Rainforest"
+			season = "FALL"
+			corruption = 100
+			tileMilModifiers
+			TileNeighbors
+			#buildnewGameBuildings
+			var tileCrop = crop.new()
+			tileCrop.cropType = "Wheat"
+			cropSlot = tileCrop
+			var tileOre = ore.new()
+			tileOre.oreType = "Copper"
+			oreSlot = tileOre
+			var Farm = building.new()
+			Farm.buildingType = "Farm"
+			Farm.buildingLevel = 3
+			Farm.tile = self
+			Farm.number = tileNumber
+			Farm.buildBuilding()
+			tileBuildingsList.append(Farm)
+			var Granary = building.new()
+			Granary.buildingType = "Granary"
+			Granary.buildingLevel = 1
+			Granary.tile = self
+			Granary.number = tileNumber
+			Granary.buildBuilding()
+			tileBuildingsList.append(Granary)
+		2:
+			tileName = "Eighth House"
+			tileOwner = "EIG"
+			countryCapital = true
+			tileContinent
+			tilePop
+			coastal
+			freshWater
+			terrain
+			season
+			tileEcoModifiers
+			tileMilModifiers
+			corruption = 75
+			TileNeighbors
+		3:
+			tileSpawnPath = "Pender Tal"
+			tileSpawnPathPoint = 1
+			tileName = "Pender Tal"
+			tileOwner = "PDT"
+			countryCapital = true
+			tileContinent
+			tilePop
+			coastal = false
+			freshWater = true
+			terrain = "Rainforest"
+			season
+			tileEcoModifiers
+			tileMilModifiers
+			corruption = 0
+			TileNeighbors
+			var tileCrop = crop.new()
+			tileCrop.cropType = "Cannabis"
+			cropSlot = tileCrop
+			var tileOre = ore.new()
+			tileOre.buildSelf("Copper")
+			oreSlot = tileOre
+			#addWizard("Druid")
+			addBuilding("Tower", 1)
+			addBuilding("Farm", 3)
+			addBuilding("Granary", 1)
+			addBuilding("Barracks", 2)
+			addBuilding("Library", 1)
+			addBuilding("Mine", 2)
+			addBuilding("Forge", 1)
+			addBuilding("Camp", 5)
 		#var actingSpell = spell.new()
 		#actingSpell.spellType = "Celebration"
 		#tileSpell = actingSpell
-	pass
-	if tileNumber == 4:
-		tileSpawnPath = "Pender Tal South"
-		tileSpawnPathPoint = 17
-		tileName = "Enthenar"
-		tileOwner = "PDT"
-		countryCapital = false
-		tileContinent = "Anlaxia"
-		tilePop
-		coastal = true
-		freshWater = false
-		terrain = "Grassland"
-		season
-		tileMilModifiers
-		corruption = 25
-		TileNeighbors
-		var tileCrop = crop.new()
-		tileCrop.cropType = "Razorberry"
-		cropSlot = tileCrop
-		var tileOre = ore.new()
-		tileOre.buildSelf("Marble")
-		oreSlot = tileOre
-		var Farm = building.new()
-		Farm.buildingType = "Farm"
-		Farm.buildingLevel = 3
-		Farm.tile = self
-		Farm.number = tileNumber
-		Farm.buildBuilding()
-		tileBuildingsList.append(Farm)
-		var Granary = building.new()
-		Granary.buildingType = "Granary"
-		Granary.buildingLevel = 1
-		Granary.tile = self
-		Granary.number = tileNumber
-		Granary.buildBuilding()
-		tileBuildingsList.append(Granary)
-		addBuilding("Temple", 10)
-		var Barracks = building.new()
-		Barracks.buildingType = "Barracks"
-		Barracks.buildingLevel = 1
-		Barracks.tile = self
-		Barracks.number = tileNumber
-		Barracks.buildBuilding()
-		tileBuildingsList.append(Barracks)
-		var Bath = building.new()
-		Bath.buildingType = "Bath"
-		Bath.buildingLevel = 2
-		Bath.tile = self
-		Bath.number = tileNumber
-		Bath.buildBuilding()
-		tileBuildingsList.append(Bath)
-		calculateCorruption()
-	pass
-	if tileNumber == 5:
-		tileName
-		tileOwner
-		tileContinent
-		tilePop
-		coastal
-		freshWater
-		terrain
-		season
-		tileEcoModifiers
-		tileMilModifiers
-		corruption
-		TileNeighbors
+		4:
+			tileSpawnPath = "Pender Tal South"
+			tileSpawnPathPoint = 17
+			tileName = "Enthenar"
+			tileOwner = "PDT"
+			countryCapital = false
+			tileContinent = "Anlaxia"
+			tilePop
+			coastal = true
+			freshWater = false
+			terrain = "Grassland"
+			season
+			tileMilModifiers
+			corruption = 25
+			TileNeighbors
+			var tileCrop = crop.new()
+			tileCrop.cropType = "Razorberry"
+			cropSlot = tileCrop
+			var tileOre = ore.new()
+			tileOre.buildSelf("Marble")
+			oreSlot = tileOre
+			addBuilding("Farm", 3)
+			addBuilding("Granary", 2)
+			addBuilding("Temple", 2)
+			addBuilding("Barracks", 1)
+			addBuilding("Bath", 2)
+		5:
+			tileName
+			tileOwner
+			tileContinent
+			tilePop
+			coastal
+			freshWater
+			terrain
+			season
+			tileEcoModifiers
+			tileMilModifiers
+			corruption
+			TileNeighbors
 	calculateCorruption()
+	emit_signal("tileLoaded", self)
 	pass
 
 

@@ -3,19 +3,14 @@
 [ext_resource type="Script" uid="uid://cgsub3tu82rgw" path="res://army_path_follow.gd" id="1_dkk2m"]
 [ext_resource type="Texture2D" uid="uid://cf41vsdq7n11f" path="res://art assets/Placeholder Art/UI Art/resources/clubsmall.png" id="2_yunp4"]
 
-[node name="ArmyPathFollow" type="PathFollow2D"]
+[node name="ArmyPathFollow" type="Control"]
 z_index = 15
-scale = Vector2(0.5, 0.5)
-rotates = false
-script = ExtResource("1_dkk2m")
-
-[node name="Control" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+scale = Vector2(0.5, 0.5)
+script = ExtResource("1_dkk2m")
 
-[node name="APFButton" type="Button" parent="Control"]
+[node name="APFButton" type="Button" parent="."]
 layout_mode = 0
 offset_left = -64.0
 offset_top = 7.0
@@ -24,11 +19,11 @@ offset_bottom = 99.0
 rotation = -0.843002
 icon = ExtResource("2_yunp4")
 
-[node name="Sprite2D" type="Sprite2D" parent="Control"]
+[node name="Sprite2D" type="Sprite2D" parent="."]
 visible = false
 z_index = 15
 rotation = -0.841249
 scale = Vector2(0.3, 0.3)
 texture = ExtResource("2_yunp4")
 
-[connection signal="pressed" from="Control/APFButton" to="." method="_on_apf_button_pressed"]
+[connection signal="pressed" from="APFButton" to="." method="_on_apf_button_pressed"]

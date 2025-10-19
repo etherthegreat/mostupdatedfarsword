@@ -245,10 +245,10 @@ expand_icon = true
 [node name="CommanderButton" type="Button" parent="."]
 visible = false
 layout_mode = 0
-offset_left = -523.0
-offset_top = 90.0
-offset_right = -408.0
-offset_bottom = 242.0
+offset_left = -72.0
+offset_top = 141.0
+offset_right = -1.0
+offset_bottom = 235.0
 icon = ExtResource("14_v4rpa")
 icon_alignment = 1
 expand_icon = true

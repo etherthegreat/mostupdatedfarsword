@@ -9,6 +9,9 @@ var unitLevel: int
 
 var unitDefensiveScore: int #per level
 var unitOffensiveScore: int #per level
+var unitRangedOffence: int
+var unitRangedDefence: int
+var unitMagicDefence: int
 
 #every single type of modifier as a bool
 #this is just a template, the unit will use this to build themselves
@@ -27,6 +30,8 @@ var unitImage: Texture2D
 var unitMaxManpower: int
 var unitCurrentManpower: int
 var unitStrength: int
+
+var unitShield: int
 
 var militaryModifierList: Array = []
 
@@ -112,11 +117,13 @@ func refillManpower(RR):
 func calculateWeaponAdditions():
 	match unitWeapon.weaponType:
 		"Atlatl":
-			unitOffensiveScore += 3
-			unitDefensiveScore += 1
+			unitRangedOffence += 3
+			unitRangedDefence += 1
 			var AtlatlPierce = milModScene.instantiate()
 			AtlatlPierce.buildSelf("AtlatlPierce")
 			addMilMod(AtlatlPierce)
+			ranged = true
+			melee = false
 		"Club":
 			unitOffensiveScore += 2
 			unitDefensiveScore += 2
@@ -126,14 +133,15 @@ func calculateWeaponAdditions():
 			#var Berserkers = milModScene.instantiate()
 			#Berserkers.buildSelf("Berserkers")
 			#addMilMod(Berserkers)
-			
+			ranged = false
+			melee = true
 	pass
 
 func removeWeaponAdditions():
 	match unitWeapon.weaponType:
 		"Atlatl":
-			unitOffensiveScore -= 3
-			unitDefensiveScore -= 1
+			unitRangedOffence -= 3
+			unitRangedDefence -= 1
 			removeMilMod("AtlatlPierce")
 		"Club":
 			unitOffensiveScore -=2
@@ -157,17 +165,32 @@ func removeOreMilMod(oreType):
 			#print("HOMOSEXUASL")
 			match MilMod.milModType:
 				"Copper":
-					unitOffensiveScore -= 2
+					if ranged == true:
+						unitRangedOffence -= 2
+					else:
+						unitOffensiveScore -= 2
 					#unitDefensiveScore -= 1
 				"Iron":
-					unitOffensiveScore -=3
+					if ranged == true:
+						unitRangedOffence -= 3
+					else:
+						unitOffensiveScore -=3
 					#unitDefensiveScore -=2
 				"Wood":
-					unitOffensiveScore -= 1
+					if ranged == true:
+						unitRangedOffence -= 1
+					else:
+						unitOffensiveScore -= 1
 				"Gold":
-					unitOffensiveScore -= 1
+					if ranged == true:
+						unitRangedOffence -= 1
+					else:
+						unitOffensiveScore -= 1
 				"Floodstone":
-					unitOffensiveScore -= 5
+					if ranged == true:
+						unitRangedOffence -= 5
+					else:
+						unitOffensiveScore -= 5
 			removeMilMod(MilMod.milModType)
 	unitMetal.queue_free()
 	pass
@@ -189,7 +212,7 @@ func calculateMilModChange(newMilMod):
 		"ClubBleed":
 			unitOffensiveScore += 4
 		"AtlatlePierce":
-			unitOffensiveScore += 3
+			unitRangedOffence += 3
 		"Copper":
 			unitOffensiveScore += 2
 		"Iron":

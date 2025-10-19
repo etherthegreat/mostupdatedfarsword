@@ -145,6 +145,7 @@ mouse_filter = 2
 columns = 2
 
 [node name="OresChoicePanel" type="Panel" parent="."]
+visible = false
 layout_mode = 0
 offset_left = 117.0
 offset_top = -29.0

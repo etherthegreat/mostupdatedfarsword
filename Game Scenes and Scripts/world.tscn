@@ -1,4 +1,4 @@
-[gd_scene load_steps=110 format=3 uid="uid://bfbouq3jfwkxl"]
+[gd_scene load_steps=124 format=3 uid="uid://bfbouq3jfwkxl"]
 
 [ext_resource type="Script" uid="uid://dthx176t72xxr" path="res://Game Scenes and Scripts/world.gd" id="1_6bnro"]
 [ext_resource type="Texture2D" uid="uid://ymy7tu133b71" path="res://art assets/Placeholder Art/map/map.png" id="2_160f8"]
@@ -102,6 +102,18 @@
 [ext_resource type="Texture2D" uid="uid://4qfb2kjr8m8o" path="res://art assets/Placeholder Art/UI Art/Bath.png" id="72_kiqh3"]
 [ext_resource type="Texture2D" uid="uid://05g78uxd1lnk" path="res://art assets/Placeholder Art/UI Art/Workshop.png" id="72_vi180"]
 [ext_resource type="Texture2D" uid="uid://h8vhnn8tit4b" path="res://art assets/Placeholder Art/UI Art/resources/gold.png" id="74_vi180"]
+[ext_resource type="Texture2D" uid="uid://bn08dldtj1y4j" path="res://art assets/Placeholder Art/UI Art/resources/atlatlsmall.png" id="95_4dsbk"]
+[ext_resource type="Texture2D" uid="uid://drk70tmpsvhji" path="res://art assets/Placeholder Art/atlatl.png" id="96_6q3wr"]
+[ext_resource type="Texture2D" uid="uid://c08tulqnba1p3" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/target.png" id="97_6q3wr"]
+[ext_resource type="Texture2D" uid="uid://dkc5utxkt0nna" path="res://art assets/Placeholder Art/character/F13 - Copy.png" id="98_8m5de"]
+[ext_resource type="Texture2D" uid="uid://brpagwluxnr5y" path="res://art assets/Placeholder Art/UI Art/resources/Yellow Circle.png" id="99_x234l"]
+[ext_resource type="Texture2D" uid="uid://cf41vsdq7n11f" path="res://art assets/Placeholder Art/UI Art/resources/clubsmall.png" id="100_krfpw"]
+[ext_resource type="Texture2D" uid="uid://dknp3bwk3bnvh" path="res://art assets/Placeholder Art/UI Art/resources/black circle.png" id="100_u105b"]
+[ext_resource type="Texture2D" uid="uid://dulvehn0f7o87" path="res://art assets/Placeholder Art/UI Art/resources/manpowerREALLYSMALL.png" id="101_bbwlk"]
+[ext_resource type="Texture2D" uid="uid://br6jrduv2emd1" path="res://art assets/Placeholder Art/UI Art/resources/Orange Circle.png" id="101_bg6fe"]
+[ext_resource type="Texture2D" uid="uid://84mhsmio3ep4" path="res://art assets/Placeholder Art/UI Art/resources/blue water.png" id="104_hd7p3"]
+[ext_resource type="Texture2D" uid="uid://c67p3ii0mkv54" path="res://art assets/Placeholder Art/UI Art/resources/Magic.png" id="105_vrxkf"]
+[ext_resource type="Texture2D" uid="uid://y7a4ey5kx0ch" path="res://art assets/Placeholder Art/UI Art/resources/red circle.png" id="106_bg6fe"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_y3tfg"]
 size = Vector2(365.324, 339.706)
@@ -115,17 +127,29 @@ size = Vector2(127, 132)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2v3gw"]
 size = Vector2(100, 102)
 
-[sub_resource type="Curve2D" id="Curve2D_tqcrl"]
+[sub_resource type="Curve2D" id="Curve2D_bg6fe"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, -942, 838, 0, 0, 0, 0, -878, 843, 0, 0, 0, 0, -862, 824, 0, 0, 0, 0, -852, 807, 0, 0, 0, 0, -807, 726, 0, 0, 0, 0, -823, 657, 0, 0, 0, 0, -891, 646, 0, 0, 0, 0, -959, 661, 0, 0, 0, 0, -1027, 756, 0, 0, 0, 0, -1033, 799, 0, 0, 0, 0, -941, 838)
-}
-point_count = 11
-
-[sub_resource type="Curve2D" id="Curve2D_78kig"]
-_data = {
-"points": PackedVector2Array(0, 0, 0, 0, -875, 839, 0, 0, 0, 0, -832, 855, 0, 0, 0, 0, -848, 889, 0, 0, 0, 0, -944, 910, 0, 0, 0, 0, -1026, 876, 0, 0, 0, 0, -1049, 847, 0, 0, 0, 0, -1032, 798)
+"points": PackedVector2Array(0, 0, 0, 0, -935, 833, 0, 0, 0, 0, -899, 841, 0, 0, 0, 0, -870, 838, 0, 0, 0, 0, -843, 840, 0, 0, 0, 0, -830, 851, 0, 0, 0, 0, -828, 865, 0, 0, 0, 0, -839, 874)
 }
 point_count = 7
+
+[sub_resource type="Curve2D" id="Curve2D_hd7p3"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -940, 831, 0, 0, 0, 0, -913, 835, 0, 0, 0, 0, -884, 833, 0, 0, 0, 0, -859, 817, 0, 0, 0, 0, -850, 807, 0, 0, 0, 0, -847, 796, 0, 0, 0, 0, -843, 782, 0, 0, 0, 0, -834, 772)
+}
+point_count = 8
+
+[sub_resource type="Curve2D" id="Curve2D_vrxkf"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -833, 770, 0, 0, 0, 0, -841, 782, 0, 0, 0, 0, -848, 799, 0, 0, 0, 0, -849, 820, 0, 0, 0, 0, -843, 831, 0, 0, 0, 0, -833, 847, 0, 0, 0, 0, -833, 868)
+}
+point_count = 7
+
+[sub_resource type="Curve2D" id="Curve2D_tls4k"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -834, 770, 0, 0, 0, 0, -819, 751, 0, 0, 0, 0, -801, 736, 0, 0, 0, 0, -794, 726, 0, 0, 0, 0, -800, 715, 0, 0, 0, 0, -809, 702, 0, 0, 0, 0, -811, 688, 0, 0, 0, 0, -813, 672, 0, 0, 0, 0, -831, 656, 0, 0, 0, 0, -852, 649, 0, 0, 0, 0, -867, 648, 0, 0, 0, 0, -887, 649)
+}
+point_count = 12
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qt86y"]
 size = Vector2(3775, 2210)
@@ -2306,132 +2330,370 @@ offset_bottom = 40.0
 mouse_filter = 2
 script = ExtResource("51_tqcrl")
 
-[node name="Pender Tal Path" type="Path2D" parent="PathControl"]
-curve = SubResource("Curve2D_tqcrl")
-
-[node name="Pender Tal South Path" type="Path2D" parent="PathControl"]
-curve = SubResource("Curve2D_78kig")
-
-[node name="PathFollow2D" type="PathFollow2D" parent="PathControl/Pender Tal South Path"]
+[node name="ArmyPanel" type="Control" parent="PathControl"]
 visible = false
-position = Vector2(-875, 839)
-rotation = 0.35622
-
-[node name="Sprite2D" type="Sprite2D" parent="PathControl/Pender Tal South Path/PathFollow2D"]
-rotation = -0.0779666
-scale = Vector2(0.3, 0.269)
-texture = ExtResource("52_78kig")
-
-[node name="ArmyPanel" type="Panel" parent="PathControl"]
-visible = false
-layout_mode = 0
+anchors_preset = 0
 offset_left = -1823.0
 offset_top = 703.0
 offset_right = -1181.0
 offset_bottom = 1054.0
 
+[node name="BackgroundSprite" type="Sprite2D" parent="PathControl/ArmyPanel"]
+position = Vector2(228.233, 191.03)
+rotation = 1.5708
+scale = Vector2(0.106567, 0.149421)
+texture = ExtResource("63_pqkb6")
+
 [node name="ArmyNameLabel" type="Label" parent="PathControl/ArmyPanel"]
 layout_mode = 0
-offset_left = 240.0
-offset_top = 18.0
-offset_right = 404.0
-offset_bottom = 41.0
+offset_left = 19.0
+offset_top = 107.0
+offset_right = 183.0
+offset_bottom = 130.0
 text = "ArmyNameGoesHere"
 
 [node name="AttackSprite" type="Sprite2D" parent="PathControl/ArmyPanel"]
-position = Vector2(532, 72)
+position = Vector2(231, 154)
 scale = Vector2(0.4, 0.4)
 texture = ExtResource("52_78kig")
 
 [node name="AttackLabel" type="Label" parent="PathControl/ArmyPanel"]
 layout_mode = 2
-offset_left = 518.0
-offset_top = 60.0
-offset_right = 613.0
-offset_bottom = 83.0
+offset_left = 217.0
+offset_top = 142.0
+offset_right = 312.0
+offset_bottom = 165.0
 text = "atk"
 horizontal_alignment = 2
 
 [node name="DefenseSprite" type="Sprite2D" parent="PathControl/ArmyPanel"]
-position = Vector2(532, 128)
+position = Vector2(353, 159)
 scale = Vector2(0.4, 0.4)
 texture = ExtResource("35_o3iuu")
 
 [node name="DefenseLabel" type="Label" parent="PathControl/ArmyPanel"]
 layout_mode = 2
-offset_left = 518.0
-offset_top = 116.0
-offset_right = 613.0
-offset_bottom = 139.0
+offset_left = 339.0
+offset_top = 147.0
+offset_right = 434.0
+offset_bottom = 170.0
 text = "def"
 horizontal_alignment = 2
+
+[node name="RangedAttackLabel" type="Label" parent="PathControl/ArmyPanel"]
+layout_mode = 2
+offset_left = 217.0
+offset_top = 202.0
+offset_right = 312.0
+offset_bottom = 225.0
+text = "atk"
+horizontal_alignment = 2
+
+[node name="RangedDefenseLabel" type="Label" parent="PathControl/ArmyPanel"]
+layout_mode = 2
+offset_left = 339.0
+offset_top = 207.0
+offset_right = 434.0
+offset_bottom = 230.0
+text = "def"
+horizontal_alignment = 2
+
+[node name="ManpowerLabel" type="Label" parent="PathControl/ArmyPanel"]
+layout_mode = 2
+offset_left = 102.0
+offset_top = 147.0
+offset_right = 197.0
+offset_bottom = 170.0
+text = "def"
+horizontal_alignment = 2
+
+[node name="ShieldLabel" type="Label" parent="PathControl/ArmyPanel"]
+layout_mode = 2
+offset_left = 102.0
+offset_top = 207.0
+offset_right = 197.0
+offset_bottom = 230.0
+text = "def"
+horizontal_alignment = 2
+
+[node name="RangedAttackSprite" type="Sprite2D" parent="PathControl/ArmyPanel"]
+position = Vector2(231, 216)
+scale = Vector2(0.511905, 0.511905)
+texture = ExtResource("95_4dsbk")
+
+[node name="RangedDefenceSprite" type="Sprite2D" parent="PathControl/ArmyPanel"]
+position = Vector2(354, 216)
+scale = Vector2(0.511905, 0.511905)
+texture = ExtResource("96_6q3wr")
+
+[node name="ManpowerSprite" type="Sprite2D" parent="PathControl/ArmyPanel"]
+position = Vector2(127.358, 155.75)
+scale = Vector2(0.395, 0.395)
+texture = ExtResource("29_lxun5")
+
+[node name="ShieldSprite" type="Sprite2D" parent="PathControl/ArmyPanel"]
+position = Vector2(126.796, 217)
+scale = Vector2(0.226236, 0.226236)
+texture = ExtResource("97_6q3wr")
+
+[node name="LeaderSprite" type="Sprite2D" parent="PathControl/ArmyPanel"]
+position = Vector2(55, 186)
+scale = Vector2(0.12919, 0.12919)
+texture = ExtResource("98_8m5de")
+
+[node name="LeaderName" type="Label" parent="PathControl/ArmyPanel"]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 234.0
+offset_right = 109.0
+offset_bottom = 280.0
+theme_override_font_sizes/font_size = 10
+text = "Commander"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="PathControl/ArmyPanel"]
+position = Vector2(228.5, 64.5)
+scale = Vector2(0.2205, 0.422222)
+texture = ExtResource("71_bgdvj")
+
+[node name="ActionInfoPanelControl" type="Control" parent="PathControl/ArmyPanel"]
+visible = false
+layout_mode = 2
+anchors_preset = 0
+offset_left = 11.0
+offset_top = -26.0
+offset_right = 11.0
+offset_bottom = -26.0
+
+[node name="SpriteBack" type="Sprite2D" parent="PathControl/ArmyPanel/ActionInfoPanelControl"]
+position = Vector2(83, 18.125)
+scale = Vector2(0.0855, 0.638889)
+texture = ExtResource("71_bgdvj")
+
+[node name="ActionNameLabel" type="Label" parent="PathControl/ArmyPanel/ActionInfoPanelControl"]
+layout_mode = 0
+offset_top = -22.0
+offset_right = 87.0
+offset_bottom = -5.0
+theme_override_font_sizes/font_size = 12
+text = "WAIT"
+
+[node name="ActionDescriptionLabel" type="Label" parent="PathControl/ArmyPanel/ActionInfoPanelControl"]
+layout_mode = 0
+offset_top = -4.0
+offset_right = 166.0
+offset_bottom = 59.0
+theme_override_font_sizes/font_size = 12
+text = "Holds the unit in place for one turn."
+autowrap_mode = 3
+
+[node name="ArmyButtonsContainer" type="GridContainer" parent="PathControl/ArmyPanel"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 38.0
+offset_right = 449.0
+offset_bottom = 93.0
+theme_override_constants/h_separation = 48
+theme_override_constants/v_separation = 24
+columns = 10
+
+[node name="MoveButtonControl" type="Control" parent="PathControl/ArmyPanel/ArmyButtonsContainer"]
+layout_mode = 2
+
+[node name="MoveButton" type="Button" parent="PathControl/ArmyPanel/ArmyButtonsContainer/MoveButtonControl"]
+layout_mode = 0
+offset_right = 46.0
+offset_bottom = 46.0
+icon = ExtResource("99_x234l")
+expand_icon = true
+
+[node name="WaitButtonControl" type="Control" parent="PathControl/ArmyPanel/ArmyButtonsContainer"]
+layout_mode = 2
+
+[node name="WaitButton" type="Button" parent="PathControl/ArmyPanel/ArmyButtonsContainer/WaitButtonControl"]
+layout_mode = 0
+offset_right = 46.0
+offset_bottom = 46.0
+icon = ExtResource("100_u105b")
+expand_icon = true
+
+[node name="HoldButtonControl" type="Control" parent="PathControl/ArmyPanel/ArmyButtonsContainer"]
+layout_mode = 2
+
+[node name="HoldButton" type="Button" parent="PathControl/ArmyPanel/ArmyButtonsContainer/HoldButtonControl"]
+layout_mode = 0
+offset_right = 46.0
+offset_bottom = 46.0
+icon = ExtResource("101_bg6fe")
+expand_icon = true
+
+[node name="MeleeAttackButtonControl" type="Control" parent="PathControl/ArmyPanel/ArmyButtonsContainer"]
+layout_mode = 2
+
+[node name="MeleeAttackButton" type="Button" parent="PathControl/ArmyPanel/ArmyButtonsContainer/MeleeAttackButtonControl"]
+layout_mode = 0
+offset_right = 46.0
+offset_bottom = 46.0
+icon = ExtResource("100_krfpw")
+expand_icon = true
+
+[node name="RangedAttackButtonControl" type="Control" parent="PathControl/ArmyPanel/ArmyButtonsContainer"]
+layout_mode = 2
+
+[node name="RangedAttackButton" type="Button" parent="PathControl/ArmyPanel/ArmyButtonsContainer/RangedAttackButtonControl"]
+layout_mode = 0
+offset_right = 47.0
+offset_bottom = 47.0
+icon = ExtResource("95_4dsbk")
+expand_icon = true
+
+[node name="ReinforceManpowerButtonControl" type="Control" parent="PathControl/ArmyPanel/ArmyButtonsContainer"]
+layout_mode = 2
+
+[node name="ReinforceManpowerButton" type="Button" parent="PathControl/ArmyPanel/ArmyButtonsContainer/ReinforceManpowerButtonControl"]
+layout_mode = 0
+offset_right = 47.0
+offset_bottom = 47.0
+icon = ExtResource("101_bbwlk")
+expand_icon = true
+
+[node name="ReinforceWeaponsButtonControl" type="Control" parent="PathControl/ArmyPanel/ArmyButtonsContainer"]
+layout_mode = 2
+
+[node name="ReinforceWeaponsButton" type="Button" parent="PathControl/ArmyPanel/ArmyButtonsContainer/ReinforceWeaponsButtonControl"]
+layout_mode = 0
+offset_right = 48.0
+offset_bottom = 48.0
+icon = ExtResource("20_gqt8h")
+expand_icon = true
+
+[node name="ReinforceShieldButtonControl" type="Control" parent="PathControl/ArmyPanel/ArmyButtonsContainer"]
+layout_mode = 2
+
+[node name="ReinforceShieldButton" type="Button" parent="PathControl/ArmyPanel/ArmyButtonsContainer/ReinforceShieldButtonControl"]
+layout_mode = 0
+offset_right = 49.0
+offset_bottom = 49.0
+icon = ExtResource("104_hd7p3")
+expand_icon = true
+
+[node name="SpellsAndPowersButtonControl" type="Control" parent="PathControl/ArmyPanel/ArmyButtonsContainer"]
+layout_mode = 2
+
+[node name="SpellsAndPowersButton" type="Button" parent="PathControl/ArmyPanel/ArmyButtonsContainer/SpellsAndPowersButtonControl"]
+layout_mode = 0
+offset_right = 49.0
+offset_bottom = 49.0
+icon = ExtResource("105_vrxkf")
+expand_icon = true
+
+[node name="DisbandButton" type="Button" parent="PathControl/ArmyPanel"]
+layout_mode = 0
+offset_left = 396.0
+offset_top = 97.0
+offset_right = 447.0
+offset_bottom = 119.0
+theme_override_colors/icon_normal_color = Color(0.665644, 0, 0, 1)
+theme_override_colors/font_color = Color(0.817757, 0.078505, 0.34195, 1)
+theme_override_font_sizes/font_size = 10
+text = "Disband"
+icon = ExtResource("106_bg6fe")
+expand_icon = true
 
 [node name="PathPointsControl" type="Control" parent="PathControl"]
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="PDT1" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("expPath") instance=ExtResource("53_78kig")]
-visible = false
+[node name="PDT1" parent="PathControl/PathPointsControl" instance=ExtResource("53_78kig")]
 z_index = 12
 offset_left = -961.0
 offset_top = 808.0
 offset_right = -921.0
 offset_bottom = 848.0
-expPath = NodePath("../../Pender Tal Path")
-expPathNumber = 1
+startNodePathsEXP = [NodePath("../../PathsControl/Path3-4"), NodePath("../../PathsControl/Path3-5")]
+neighborPathPointsEXP = [NodePath("../PDT2"), NodePath("../PDTS1")]
 
-[node name="PDT2" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("expPath") instance=ExtResource("53_78kig")]
-visible = false
+[node name="PDT2" parent="PathControl/PathPointsControl" instance=ExtResource("53_78kig")]
 z_index = 12
 offset_left = -847.0
 offset_top = 748.0
 offset_right = -807.0
 offset_bottom = 788.0
-expPath = NodePath("../../Pender Tal Path")
-expPathNumber = 22
+endNodePathsEXP = [NodePath("../../PathsControl/Path3-5")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path5-4"), NodePath("../../PathsControl/Path5-6")]
+neighborPathPointsEXP = [NodePath("../PDT1"), NodePath("../PDT3"), NodePath("../PDTS1")]
 
-[node name="PDT3" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("expPath") instance=ExtResource("53_78kig")]
-visible = false
+[node name="PDT3" parent="PathControl/PathPointsControl" instance=ExtResource("53_78kig")]
 z_index = 12
 offset_left = -905.0
 offset_top = 626.0
 offset_right = -865.0
 offset_bottom = 666.0
-expPath = NodePath("../../Pender Tal Path")
-expPathNumber = 50
+endNodePathsEXP = [NodePath("../../PathsControl/Path5-6")]
+neighborPathPointsEXP = [NodePath("../PDT2")]
 
-[node name="PDTS1" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("expPath") instance=ExtResource("53_78kig")]
-visible = false
+[node name="PDTS1" parent="PathControl/PathPointsControl" instance=ExtResource("53_78kig")]
 z_index = 12
 offset_left = -853.0
 offset_top = 847.0
 offset_right = -813.0
 offset_bottom = 887.0
-expPath = NodePath("../../Pender Tal South Path")
-expPathNumber = 17
+endNodePathsEXP = [NodePath("../../PathsControl/Path3-4"), NodePath("../../PathsControl/Path5-4")]
+neighborPathPointsEXP = [NodePath("../PDT1"), NodePath("../PDT2")]
 
-[node name="PDTS2" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("expPath") instance=ExtResource("53_78kig")]
+[node name="PDTS2" parent="PathControl/PathPointsControl" instance=ExtResource("53_78kig")]
 visible = false
 z_index = 12
 offset_left = -962.0
 offset_top = 888.0
 offset_right = -922.0
 offset_bottom = 928.0
-expPath = NodePath("../../Pender Tal South Path")
-expPathNumber = 51
 
-[node name="PDTS3" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("expPath") instance=ExtResource("53_78kig")]
+[node name="PDTS3" parent="PathControl/PathPointsControl" instance=ExtResource("53_78kig")]
 visible = false
 z_index = 12
 offset_left = -1059.0
 offset_top = 829.0
 offset_right = -1019.0
 offset_bottom = 869.0
-expPath = NodePath("../../Pender Tal South Path")
-expPathNumber = 82
+
+[node name="PathsControl" type="Control" parent="PathControl"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Path3-4" type="Path2D" parent="PathControl/PathsControl"]
+curve = SubResource("Curve2D_bg6fe")
+
+[node name="PathFollow3-4" type="PathFollow2D" parent="PathControl/PathsControl/Path3-4"]
+position = Vector2(-935, 833)
+rotation = 0.218669
+
+[node name="Path3-5" type="Path2D" parent="PathControl/PathsControl"]
+curve = SubResource("Curve2D_hd7p3")
+
+[node name="PathFollow3-5" type="PathFollow2D" parent="PathControl/PathsControl/Path3-5"]
+position = Vector2(-940, 831)
+rotation = 0.147078
+
+[node name="Path5-4" type="Path2D" parent="PathControl/PathsControl"]
+curve = SubResource("Curve2D_vrxkf")
+
+[node name="PathFollow5-4" type="PathFollow2D" parent="PathControl/PathsControl/Path5-4"]
+position = Vector2(-833, 770)
+rotation = 2.1588
+
+[node name="Path5-6" type="Path2D" parent="PathControl/PathsControl"]
+curve = SubResource("Curve2D_tls4k")
+
+[node name="PathFollow5-6" type="PathFollow2D" parent="PathControl/PathsControl/Path5-6"]
+position = Vector2(-834, 770)
+rotation = -0.902507
 
 [node name="ExperimentsController" type="Control" parent="."]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
@@ -2584,4 +2846,22 @@ shape = SubResource("RectangleShape2D_qt86y")
 [connection signal="mouse_entered" from="CanvasLayer/Resource Bar (TOP)/container/InfluenceControl/InfluenceArea" to="." method="_on_influence_area_mouse_entered"]
 [connection signal="mouse_exited" from="CanvasLayer/Resource Bar (TOP)/container/InfluenceControl/InfluenceArea" to="." method="_on_influence_area_mouse_exited"]
 [connection signal="pressed" from="CanvasLayer/Resource Bar (TOP)/Test ResourceButton" to="." method="_on_test_resource_button_pressed"]
+[connection signal="mouse_entered" from="PathControl/ArmyPanel/ArmyButtonsContainer/MoveButtonControl/MoveButton" to="PathControl" method="_on_move_button_mouse_entered"]
+[connection signal="mouse_exited" from="PathControl/ArmyPanel/ArmyButtonsContainer/MoveButtonControl/MoveButton" to="PathControl" method="_on_move_button_mouse_exited"]
+[connection signal="mouse_entered" from="PathControl/ArmyPanel/ArmyButtonsContainer/WaitButtonControl/WaitButton" to="PathControl" method="_on_wait_button_mouse_entered"]
+[connection signal="mouse_exited" from="PathControl/ArmyPanel/ArmyButtonsContainer/WaitButtonControl/WaitButton" to="PathControl" method="_on_wait_button_mouse_exited"]
+[connection signal="mouse_entered" from="PathControl/ArmyPanel/ArmyButtonsContainer/HoldButtonControl/HoldButton" to="PathControl" method="_on_hold_button_mouse_entered"]
+[connection signal="mouse_exited" from="PathControl/ArmyPanel/ArmyButtonsContainer/HoldButtonControl/HoldButton" to="PathControl" method="_on_hold_button_mouse_exited"]
+[connection signal="mouse_entered" from="PathControl/ArmyPanel/ArmyButtonsContainer/MeleeAttackButtonControl/MeleeAttackButton" to="PathControl" method="_on_melee_attack_button_mouse_entered"]
+[connection signal="mouse_exited" from="PathControl/ArmyPanel/ArmyButtonsContainer/MeleeAttackButtonControl/MeleeAttackButton" to="PathControl" method="_on_melee_attack_button_mouse_exited"]
+[connection signal="mouse_entered" from="PathControl/ArmyPanel/ArmyButtonsContainer/RangedAttackButtonControl/RangedAttackButton" to="PathControl" method="_on_ranged_attack_button_mouse_entered"]
+[connection signal="mouse_exited" from="PathControl/ArmyPanel/ArmyButtonsContainer/RangedAttackButtonControl/RangedAttackButton" to="PathControl" method="_on_ranged_attack_button_mouse_exited"]
+[connection signal="mouse_entered" from="PathControl/ArmyPanel/ArmyButtonsContainer/ReinforceManpowerButtonControl/ReinforceManpowerButton" to="PathControl" method="_on_reinforce_manpower_button_mouse_entered"]
+[connection signal="mouse_exited" from="PathControl/ArmyPanel/ArmyButtonsContainer/ReinforceManpowerButtonControl/ReinforceManpowerButton" to="PathControl" method="_on_reinforce_manpower_button_mouse_exited"]
+[connection signal="mouse_entered" from="PathControl/ArmyPanel/ArmyButtonsContainer/ReinforceWeaponsButtonControl/ReinforceWeaponsButton" to="PathControl" method="_on_reinforce_weapons_button_mouse_entered"]
+[connection signal="mouse_exited" from="PathControl/ArmyPanel/ArmyButtonsContainer/ReinforceWeaponsButtonControl/ReinforceWeaponsButton" to="PathControl" method="_on_reinforce_weapons_button_mouse_exited"]
+[connection signal="mouse_entered" from="PathControl/ArmyPanel/ArmyButtonsContainer/ReinforceShieldButtonControl/ReinforceShieldButton" to="PathControl" method="_on_reinforce_shield_button_mouse_entered"]
+[connection signal="mouse_exited" from="PathControl/ArmyPanel/ArmyButtonsContainer/ReinforceShieldButtonControl/ReinforceShieldButton" to="PathControl" method="_on_reinforce_shield_button_mouse_exited"]
+[connection signal="mouse_entered" from="PathControl/ArmyPanel/ArmyButtonsContainer/SpellsAndPowersButtonControl/SpellsAndPowersButton" to="PathControl" method="_on_spells_and_powers_button_mouse_entered"]
+[connection signal="mouse_exited" from="PathControl/ArmyPanel/ArmyButtonsContainer/SpellsAndPowersButtonControl/SpellsAndPowersButton" to="PathControl" method="_on_spells_and_powers_button_mouse_exited"]
 [connection signal="input_event" from="RightClickDetector" to="." method="_on_right_click_detector_input_event"]

@@ -277,6 +277,7 @@ func NewGameBuild():
 				addNewUnit(Army, "Infantry", 1, "Club", "Wood")
 				addNewUnit(Army, "Infantry", 3, "Club", "Iron")
 				addNewUnit(Army, "Infantry", 3, "Club", "Iron")
+				Army.setMaxArmyShield()
 	if Player == true:
 		pass
 	pass
@@ -343,7 +344,7 @@ func addNewUnit(Army, UnitType, Level, WeaponType, OreType):
 	newWeapon.weaponType = str(WeaponType)
 	newWeapon.buildSelf()
 	newUnit.unitWeapon = newWeapon
-	var newOre = oreScene.instantiate()
+	var newOre = ore.new()
 	newOre.buildSelf(OreType)
 	newUnit.unitMetal = newOre
 	newUnit.calculateOreMilMod()
@@ -403,6 +404,7 @@ func addArmy (Name, TileNumber):
 	armyInstance.updateSelf(Name, self, TileNumber)
 	armyInstance.raisingArmy.connect(raiseThisArmy)
 	armyInstance.commanderButtonPressed.connect(showCommander)
+	armyInstance.setMaxArmyShield()
 	#print("little things")
 	#print(OwnedTileList, "OwnedTiles")
 	for Tile in OwnedTileList:
