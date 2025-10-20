@@ -20,6 +20,7 @@ var worldCreation: bool
 
 var armyMode: bool
 
+var playerCapitalPathButton: pathPointButton 
 
 func _process(delta: float) -> void:
 	if worldCreation == true:
@@ -92,6 +93,7 @@ func spawnNewGameCountries():
 	aliveCountriesList.append(penderTal)
 	$CountryController.add_child(penderTal)
 	playerCountryNode = penderTal
+	playerCapitalPathButton = $PathControl/PathPointsControl/PDT1
 	#penderTal.surveyResources()
 	print("pender tal tile list:", penderTal.OwnedTileList)
 	pass
@@ -114,7 +116,7 @@ func updatePlayerUI():
 	$CanvasLayer/BeliefControl.buildSelf(playerCountryNode)
 	$CanvasLayer/BuildingInfoPanel/buildingPanelPanel.player = playerCountryNode
 	$PathControl.activateArmyControlMode.connect(activateArmyControl)
-	$PathControl.connectPathPoints()
+	$PathControl.connectPathPoints(playerCountryNode)
 	$CanvasLayer/MilitaryPanelControl.buildSelf(playerCountryNode)
 	$CanvasLayer/MilitaryPanelControl.newArmySignal.connect(buildNewPlayerArmy)
 	playerCountryNode.displayCommander.connect(UICommander)
@@ -125,6 +127,7 @@ func updatePlayerUI():
 	$CanvasLayer/SpellSchoolsControl.lvlUpSpell.connect(newSpellEvent)
 	$CanvasLayer/Spellbook.spellToUse.connect(activateSpellMapMode)
 	$TileController.spellAssignedToTile.connect(spellPurchased)
+	$PathControl.call_deferred("showPathPoints", playerCapitalPathButton)
 	#print("ALL I NEED")
 	pass
 
@@ -367,9 +370,10 @@ func UICommander(commander):
 	else:
 		$CanvasLayer/TileInfoPanel/GovernorSelection.visible = false
 	pass
+var pathPointButtonToSend: pathPointButton
 
 func raiseArmyFromWorld(Army, country, Tile):
-	var pathPointButtonToSend: pathPointButton
+	
 	#this is how the armies spawn into the world, will need a redo soon
 	match Tile.tileNumber:
 		3:

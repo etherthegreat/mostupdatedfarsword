@@ -206,11 +206,14 @@ var setForgeTaxAmount: int = 0
 var setWorkshopTaxAmount: int = 0
 var setBathTaxAmount: int = 0
 
+var capitalPathPointButton: pathPointButton
+
 func NewGameBuild():
 	#completely dynamically created by the World.  if its a new game, will use the new game stats, otherwise,
 	#will use the func LoadGameBuild():
 	$religionData.buildSelf()
 	if CID == "PDT":
+		capitalPathPointButton = $PathControl/PathPointsControl/PDT1
 		spellBaseCost = 15
 		spellCostModifier = 0
 		spellDiscountModifier = 0

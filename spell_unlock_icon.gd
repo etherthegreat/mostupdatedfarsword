@@ -54,7 +54,7 @@ func calculateUnlockTime():
 		#"ele":
 			#for building in player.countryBuildingList:
 				#if building.buildingType == Tower:
-					if building.magicOutput == elePoints:
+					#if building.magicOutput == elePoints:
 			#match spellUnlockType:
 				#"Plentify":
 					

@@ -662,3 +662,16 @@ func calculateSpellChanges():
 				corruptionChange += 2
 				buildingMagicOutput -= 4
 				print(buildingMagicOutput, "buildingMagicOutput2")
+
+func fogOfWar():
+	$TileGraphic.modulate = Color(0,0,0)
+	pass
+
+func reveal():
+	$TileGraphic.modulate = Color(1,1,1)
+	match tileOwner:
+		"PDT":
+			$TileGraphic.modulate = Color(0,1,0)
+		"ANL":
+			$TileGraphic.modulate = Color(0,0,1)
+	pass

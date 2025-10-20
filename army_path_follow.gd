@@ -13,15 +13,16 @@ var destinationPathPoint: pathPointButton
 var destinationNumber: int
 var destinationPath: Path2D
 
-var movingForward: bool
-var movingBackward: bool
+var movingForward: bool = false
+var movingBackward: bool = false
 
 signal movingArmy
 
 var progressRate: float
 
-func move(key, keyPath):
-	emit_signal("movingArmy")
+func move(key, keyPath, path):
+	currentPathPoint.occupied = false
+	currentPath = path
 	match key:
 		"start":
 			progressRate = .1
@@ -31,6 +32,7 @@ func move(key, keyPath):
 			progressRate = .9
 			movingBackward = true
 			destinationPathPoint = keyPath
+	emit_signal("movingArmy")
 	pass
 
 signal armyArrived
@@ -41,26 +43,33 @@ func _process(delta: float) -> void:
 		if progressRate <= 0:
 			movingBackward = false
 			currentPathPoint = destinationPathPoint
-			currentPathPoint.add_child(self)
+			currentPathPoint.occupied = true
+			#currentPathPoint.add_child(self)
+			var currentContainer = get_parent()
+			emit_signal("armyArrived", currentPath, destinationPathPoint, thisArmy, self, currentContainer)
 			destinationPathPoint = null
-			emit_signal("armyArrived", currentPath)
 		else:
-			emit_signal("armyTraveling", progressRate)
+			emit_signal("armyTraveling", progressRate, destinationPathPoint, thisArmy)
 	if movingForward == true:
 		progressRate += 0.02
 		if progressRate >= 1:
 			movingForward = false
 			currentPathPoint = destinationPathPoint
-			currentPathPoint.add_child(self)
+			currentPathPoint.occupied = true
+			#currentTile = currentPathPoint.ppbTile
+			#currentPathPoint.add_child(self)
+			var currentContainer = get_parent()
+			emit_signal("armyArrived", currentPath, destinationPathPoint, thisArmy, self, currentContainer)
 			destinationPathPoint = null
-			emit_signal("armyArrived", currentPath)
-		emit_signal("armyTraveling")
+		else:
+			emit_signal("armyTraveling", progressRate, destinationPathPoint, thisArmy)
 	pass
 
 func onRaise(Army, country, pathPoint):
 	thisArmy = Army
 	thisCountry = country
 	currentPathPoint = pathPoint
+	currentPathPoint.occupied = true
 	#currentTile = Tile
 #	match currentPathPoint.currentPathPoint
 	#currentPath = path
@@ -68,5 +77,5 @@ func onRaise(Army, country, pathPoint):
 
 signal apfSelected
 func _on_apf_button_pressed() -> void:
-	emit_signal("apfSelected", thisArmy, self, currentTile, thisCountry)
+	emit_signal("apfSelected", thisArmy, self, currentTile, thisCountry, currentPathPoint)
 	pass # Replace with function body.
