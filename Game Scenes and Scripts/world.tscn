@@ -2646,6 +2646,7 @@ offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="PDT1" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+visible = false
 z_index = 12
 offset_left = -961.0
 offset_top = 808.0

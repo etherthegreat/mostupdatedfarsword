@@ -375,6 +375,8 @@ var pathPointButtonToSend: pathPointButton
 func raiseArmyFromWorld(Army, country, Tile):
 	
 	#this is how the armies spawn into the world, will need a redo soon
+	#literally just add a system where tiles have a reference to their pathPointButton instead of this
+	#demon AI system will spawn units using raiseArmyFromWorld
 	match Tile.tileNumber:
 		3:
 			pathPointButtonToSend = $PathControl/PathPointsControl/PDT1
@@ -383,6 +385,7 @@ func raiseArmyFromWorld(Army, country, Tile):
 	if country == playerCountryNode:
 		$PathControl.raisePlayerArmy(Army, country, Tile, pathPointButtonToSend)
 	else:
+		#here is where we will raise either Demonic or nonPlayer Country AIs
 		print("woah we're at this stage, good work dude")
 	pass
 

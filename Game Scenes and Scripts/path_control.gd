@@ -49,11 +49,14 @@ func armyArrivedFunc(pathOfArmy, newPathPointButton, theArmy, apf, contain):
 
 signal activateArmyControlMode
 func displayapfInfo(thisArmy, apf, currentTile, thisCountry, currentPathPoint):
-	updateArmyPanel(thisArmy)
-	showPathPoints(currentPathPoint)
-	$ArmyPanel/LocationLabel.text = str(currentPathPoint.pathNumber)
-	selectedAPF = apf
-	emit_signal("activateArmyControlMode")
+	if thisCountry == playerCountry:
+		updateArmyPanel(thisArmy)
+		showPathPoints(currentPathPoint)
+		$ArmyPanel/LocationLabel.text = str(currentPathPoint.pathNumber)
+		selectedAPF = apf
+		emit_signal("activateArmyControlMode")
+	#else:
+		#display other country information in the army panel
 	if $ArmyPanel.visible == false:
 		$ArmyPanel.visible = true
 	else:
@@ -90,7 +93,7 @@ func showPathPoints(pathPoint):
 		pathPointButton.visible = false
 		if pathPointButton.occupied == true:
 			pathPointButton.visible = true
-			visibleTiles.append(pathPointButton.neighPathPoints)
+			#visibleTiles.append(pathPointButton.neighborPathPoints)
 		#if playerTiles.has(pathPointButton.ppbTile):
 			#pathPointButton.visible = true
 	for pathPointButton in visibleTiles:

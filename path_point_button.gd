@@ -33,7 +33,8 @@ func buildSelf():
 signal pathPointClicked
 func _on_button_pressed() -> void:
 	print("DEBUG CLICK")
-	emit_signal("pathPointClicked", self, endNodePaths, startNodePaths, neighborPathPoints, ppbTile)
+	if occupied != true:
+		emit_signal("pathPointClicked", self, endNodePaths, startNodePaths, neighborPathPoints, ppbTile)
 	pass # Replace with function body.
 
 func hideTile():
