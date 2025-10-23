@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://bycthucpesh36"]
+
+[ext_resource type="Script" uid="uid://cclq0ef7cut5m" path="res://tool.gd" id="1_f6vxs"]
+
+[node name="Tool" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_f6vxs")

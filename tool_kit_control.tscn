@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://d2gua2rltx35x"]
+
+[ext_resource type="Script" uid="uid://dxelnn00kfavr" path="res://tool_kit_control.gd" id="1_qyaqp"]
+[ext_resource type="Texture2D" uid="uid://ct6whogyqhymx" path="res://art assets/Placeholder Art/UI Art/resources/Farm.png" id="2_qyaqp"]
+
+[node name="ToolKitControl" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 29.0
+offset_bottom = 29.0
+script = ExtResource("1_qyaqp")
+
+[node name="ToolKitButton" type="Button" parent="."]
+layout_mode = 0
+offset_right = 68.0
+offset_bottom = 68.0
+icon = ExtResource("2_qyaqp")
+expand_icon = true
+
+[connection signal="pressed" from="ToolKitButton" to="." method="_on_tool_kit_button_pressed"]

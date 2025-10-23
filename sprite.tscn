@@ -1,0 +1,71 @@
+[gd_scene load_steps=4 format=3 uid="uid://mstb43bw86rd"]
+
+[ext_resource type="Texture2D" uid="uid://cta3ksrnubp7x" path="res://art assets/finishedAssets/Panels/tilePanel.PNG" id="1_85fgi"]
+[ext_resource type="Script" uid="uid://detjehxdu0p0c" path="res://Civilian.gd" id="1_go338"]
+[ext_resource type="Texture2D" uid="uid://ba5jt6t2e7fv1" path="res://art assets/Placeholder Art/character/F3 - Copy.png" id="2_go338"]
+
+[node name="Civilian" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_go338")
+
+[node name="CivilianPanel" type="Sprite2D" parent="."]
+position = Vector2(242.5, 103)
+scale = Vector2(0.261081, 0.068)
+texture = ExtResource("1_85fgi")
+
+[node name="CivilianTileName" type="Label" parent="."]
+layout_mode = 0
+offset_left = 13.0
+offset_top = 7.0
+offset_right = 189.0
+offset_bottom = 36.0
+
+[node name="CivilianUnitSpriteBack" type="Sprite2D" parent="."]
+position = Vector2(94.5, 115.5)
+scale = Vector2(0.0827027, 0.0503333)
+texture = ExtResource("1_85fgi")
+
+[node name="CivilianUnitSprite" type="Sprite2D" parent="."]
+position = Vector2(96, 119)
+scale = Vector2(0.13835, 0.13835)
+texture = ExtResource("2_go338")
+
+[node name="ToolButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 218.0
+offset_top = 43.0
+offset_right = 276.0
+offset_bottom = 100.0
+
+[node name="RaiseButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 415.0
+offset_top = 79.0
+offset_right = 473.0
+offset_bottom = 136.0
+text = "RAISE"
+
+[node name="KitButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 203.0
+offset_top = 119.0
+offset_right = 298.0
+offset_bottom = 176.0
+
+[node name="MilModsContainerSprite" type="Sprite2D" parent="."]
+position = Vector2(358, 149)
+scale = Vector2(0.0605405, 0.0186667)
+texture = ExtResource("1_85fgi")
+
+[node name="MilModsContainer" type="GridContainer" parent="."]
+layout_mode = 0
+offset_left = 313.0
+offset_top = 137.0
+offset_right = 410.0
+offset_bottom = 179.0
+theme_override_constants/h_separation = 18
+theme_override_constants/v_separation = 25
+columns = 6

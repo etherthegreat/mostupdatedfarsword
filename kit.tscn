@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://cjp57tnsmv0tk"]
+
+[ext_resource type="Script" uid="uid://u0mcdcdqmg14" path="res://kit.gd" id="1_ht0n3"]
+
+[node name="Kit" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_ht0n3")

@@ -184,6 +184,9 @@ const unitUIScene = preload("res://unit_ui.tscn")
 var availableOres: Array
 var religionControl = load("res://religion_data.gd")
 
+var availableTools: Array
+var availableKits: Array
+
 #this should literally be max but I'm stupid and don't wanna change it
 var minPosTaxationAmount: int  = 0#used to calculate 'all building' taxation figures
 var minFarmTaxAmount: int = 0
@@ -213,7 +216,7 @@ func NewGameBuild():
 	#will use the func LoadGameBuild():
 	$religionData.buildSelf()
 	if CID == "PDT":
-		capitalPathPointButton = $PathControl/PathPointsControl/PDT1
+		#capitalPathPointButton = $PathControl/PathPointsControl/PDT1
 		spellBaseCost = 15
 		spellCostModifier = 0
 		spellDiscountModifier = 0
@@ -263,6 +266,7 @@ func NewGameBuild():
 		addCulturalTradition("Guardian Cats")
 		addGovernmentLaw("Mercantilism")
 		#addGovernmentLaw("Citizen Militia")
+		#calculateToolsAndKits()
 		calculateTaxationAmounts()
 		addFaction("Vargo-Tal", 50) # Traditionalists
 		addFaction("Wixinx", 10) # Liberators
@@ -633,18 +637,23 @@ func updateUnlockableAttributes():
 						UnitTemplate.unitOffensiveScore += 3
 				addWeaponTemplate("Atlatl")
 				addWeaponTemplate("Club")
+				addKit("Adventurer")
+				addKit("Homesteader")
+				addTool("Wooden Tools")
 			if Technology.techName == "Agriculture":
 				for buildingLevel in buildingLevelList:
 					if buildingLevel.buildingType == "Farm":
 						buildingLevel.maxLevel += 5
 					if buildingLevel.buildingType == "Granary":
 						buildingLevel.maxLevel += 3
+				addKit("Harvester")
 			if Technology.techName == "Copper Working":
 				for buildingLevel in buildingLevelList:
 					if buildingLevel.buildingType == "Mine":
 						buildingLevel.maxLevel += 3
 					if buildingLevel.buildingType == "Camp":
 						buildingLevel.maxLevel += 3
+				addKit("Prospector")
 			if Technology.techName == "Artistry":
 				for buildingLevel in buildingLevelList:
 					if buildingLevel.buildingType == "Workshop":
@@ -676,6 +685,7 @@ func updateUnlockableAttributes():
 						buildingLevel.maxLevel += 3
 					if buildingLevel.buildingType == "Tower":
 						buildingLevel.maxLevel += 3
+				addKit("Scholar")
 			if Technology.techName == "Calendar":
 				for buildingLevel in buildingLevelList:
 					if buildingLevel.buildingType == "Farm":
@@ -684,18 +694,21 @@ func updateUnlockableAttributes():
 						buildingLevel.maxLevel += 3
 					if buildingLevel.buildingType == "Faire":
 						buildingLevel.maxLevel += 3
+				addTool("Seed Bag")
 			if Technology.techName == "Bronze Working":
 				for buildingLevel in buildingLevelList:
 					if buildingLevel.buildingType == "Camp":
 						buildingLevel.maxLevel += 3
 					if buildingLevel.buildingType == "Mine":
 						buildingLevel.maxLevel += 3
+				addTool("Metal Tools")
 			if Technology.techName == "Masonry":
 				for buildingLevel in buildingLevelList:
 					if buildingLevel.buildingType == "Workshop":
 						buildingLevel.maxLevel += 3
 					if buildingLevel.buildingType == "Temple":
 						buildingLevel.maxLevel += 3
+				addKit("Constructor")
 			if Technology.techName == "Statecraft":
 				for buildingLevel in buildingLevelList:
 					if buildingLevel.buildingType == "Governor's Mansion":
@@ -708,6 +721,7 @@ func updateUnlockableAttributes():
 						buildingLevel.maxLevel += 3
 					if buildingLevel.buildingType == "Harbor":
 						buildingLevel.maxLevel += 3
+				addKit("Entertainer")
 			if Technology.techName == "Logistics":
 				for buildingLevel in buildingLevelList:
 					if buildingLevel.buildingType == "Barracks":
@@ -738,6 +752,7 @@ func updateUnlockableAttributes():
 						buildingLevel.maxLevel += 3
 					if buildingLevel.buildingType == "Tower":
 						buildingLevel.maxLevel += 3
+				addTool("Dictionary")
 			if Technology.techName == "Irrigation":
 				for buildingLevel in buildingLevelList:
 					if buildingLevel.buildingType == "Farm":
@@ -746,6 +761,8 @@ func updateUnlockableAttributes():
 						buildingLevel.maxLevel += 3
 					if buildingLevel.buildingType == "Faire":
 						buildingLevel.maxLevel +=3
+			if Technology.techName == "Tempuring":
+				addTool("Steel Tools")
 	var thingForPrint: String
 	for buildingLevel in buildingLevelList:
 		thingForPrint = str("buildingType", buildingLevel.buildingType, "buildingLevel", buildingLevel.maxLevel)
@@ -936,4 +953,20 @@ func payBill(type, amount):
 		"faith":
 			TotalFaith -= amount
 			print("debug")
+	pass
+
+var newToolScene = load("res://tool.tscn")
+
+func addTool(type):
+	var newToolType = newToolScene.instantiate()
+	newToolType.buildSelf(type)
+	availableTools.append(newToolType)
+	pass
+
+var newKitScene = load("res://kit.tscn")
+
+func addKit(type):
+	var newKitType = newKitScene.instantiate()
+	newKitType.buildSelf(type)
+	availableKits.append(newKitType)
 	pass

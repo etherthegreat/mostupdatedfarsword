@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://b2f5tc04und2u"]
+
+[ext_resource type="Script" uid="uid://btb3cmae824dx" path="res://civilian_path_follow.gd" id="1_e80ch"]
+[ext_resource type="Texture2D" uid="uid://d35c3runx4oca" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/manpower 100 x 100.png" id="2_ou4c0"]
+
+[node name="civilianPathFollow" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 24.0
+offset_bottom = 24.0
+rotation = 0.801072
+script = ExtResource("1_e80ch")
+
+[node name="cpfButton" type="Button" parent="."]
+layout_mode = 0
+offset_right = 24.0
+offset_bottom = 24.0
+icon = ExtResource("2_ou4c0")
+expand_icon = true
+
+[connection signal="pressed" from="cpfButton" to="." method="_on_cpf_button_pressed"]

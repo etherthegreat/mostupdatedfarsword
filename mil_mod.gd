@@ -13,6 +13,7 @@ var milModTexture: Texture
 var infantryMod: bool
 var rangedMod: bool
 var siegeMod: bool
+var civilianMod: bool
 
 var commanderMod: bool
 
@@ -33,6 +34,7 @@ func buildSelf(Type):
 	siegeMod = false
 	resourceMod = false
 	commanderMod = false
+	civilianMod = false
 	#$Sprite2D/InfoPanel.visible = false
 	match milModType:
 		#COUNTRY MILMODS
@@ -94,6 +96,66 @@ func buildSelf(Type):
 			milModDescription = str("[i]This unit can heal super quick like da flash,[i]:[color= green] +10 reinforce rate,")
 			milModTexture = load("res://art assets/ModifierIcons/milMods/green cross.png")
 			milModResource = "None"
+		"Translator":
+			civilianMod = true
+			milModDescription = str("This unit has been equipped with ancient dictionaries enabling them to writings from the past.")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "Science"
+		"Seeder":
+			civilianMod = true
+			milModDescription = str("This unit has a bag of seeds, enabling it to change the agricultural output of the tile it is in.")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "Food"
+		"Wooden Tools":
+			civilianMod = true
+			milModDescription = str("This unit has tools made of wood.")
+			milModTexture = load("res://art assets/Placeholder Art/UI Art/resources/manpowerREALLYSMALL.png")
+			milModResource = "Wood"
+		"Metal Tools":
+			civilianMod = true
+			milModDescription = str("This unit has tools made of metal.")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/green cross.png")
+			milModResource = "Metal"
+		"Steel Tools":
+			civilianMod = true
+			milModDescription = str("This Unit's tools are forged from advanced steel.")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "Metal"
+		"Constructor":
+			civilianMod = true
+			milModDescription = str("This Unit's tools are forged from advanced steel.")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "Wood"
+		"Adventurer":
+			civilianMod = true
+			milModDescription = str("This Unit is trained in exploring ruins, spelunking caves, and adventuring across the map.")
+			milModTexture = load("res://art assets/Placeholder Art/UI Art/resources/bleed.png")
+			milModResource = "Food"
+		"Scholar":
+			civilianMod = true
+			milModDescription = str("This unit has been educated and spread literacy, build libraries, and improve science output.")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "Science"
+		"Entertainer":
+			civilianMod = true
+			milModDescription = str("This unit can entertain, soothe, sing, and bathe those in its care.")
+			milModTexture = load("res://art assets/Placeholder Art/UI Art/resources/atlatlreallysmall.png")
+			milModResource = "Influence"
+		"Harvester":
+			civilianMod = true
+			milModDescription = str("This unit can collect crops, chop wood, clear brush, and manage rural areas.")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/green cross.png")
+			milModResource = "Food"
+		"Prospector":
+			civilianMod = true
+			milModDescription = str("This unit is trained in the art of prospecting and can build mines or discovery tile metals.")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "Wood"
+		"Druid":
+			civilianMod = true
+			milModDescription = str("This unit has been trained in the Druidic arts and is capable at clearing corruption and can turn into animals.")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/green cross.png")
+			milModResource = "Magic"
 	#if milModType != null:
 		#print(milModType, "MILMODTYPE")
 	$Sprite2D/InfoPanel/MilModNameLabel.text = str(milModType)

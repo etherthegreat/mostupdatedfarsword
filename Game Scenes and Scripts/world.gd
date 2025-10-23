@@ -117,6 +117,12 @@ func updatePlayerUI():
 	$CanvasLayer/BuildingInfoPanel/buildingPanelPanel.player = playerCountryNode
 	$PathControl.activateArmyControlMode.connect(activateArmyControl)
 	$PathControl.connectPathPoints(playerCountryNode)
+	$PathControl.updateArmy.connect(updateArmyFunc)
+	$PathControl.updatePathPoints.connect(updatePathPointsFunc)
+	$PathControl.updateCivilian.connect(updateCivFunc)
+	$PathControl.tileDevelopment.connect(newTileDevelopment)
+	$CanvasLayer/CivilianControl.loadCivilians(playerCountryNode, playerCountryNode.OwnedTileList)
+	$CanvasLayer/CivilianControl.raiseThisUnit.connect(raiseCivilianUnit)
 	$CanvasLayer/MilitaryPanelControl.buildSelf(playerCountryNode)
 	$CanvasLayer/MilitaryPanelControl.newArmySignal.connect(buildNewPlayerArmy)
 	playerCountryNode.displayCommander.connect(UICommander)
@@ -271,6 +277,10 @@ func _on_test_resource_button_pressed() -> void:
 	playerCountryNode.surveyResources()
 	playerCountryNode.payUnitMaintenance()
 	playerCountryNode.collectTaxes()
+	for pathPointButton in $PathControl/PathPointsControl:
+		if pathPointButton.get_children() != null:
+			for civilianPathFollow in pathPointButton.get_children():
+				civilianPathFollow.emitTileChange()
 	$CanvasLayer/SpellSchoolsControl.updateMagicAmounts(playerCountryNode)
 	pass # Replace with function body.
 
@@ -387,6 +397,10 @@ func raiseArmyFromWorld(Army, country, Tile):
 	else:
 		#here is where we will raise either Demonic or nonPlayer Country AIs
 		print("woah we're at this stage, good work dude")
+	pass
+func raiseCivilianUnit(civ, country):
+	if country == playerCountryNode:
+		$PathControl.raisePlayerCiv(civ, country, Tile)
 	pass
 
 func activateArmyControl():
@@ -523,6 +537,34 @@ func resetUI():
 		$"CanvasLayer/Resource Bar (TOP)".visible = true
 	pass
 
+func updateArmyFunc(Army, pathPoint):
+	$CanvasLayer/ArmyPanel/ArmyNameLabel.text = Army.ArmyName
+	$CanvasLayer/ArmyPanel/AttackLabel.text = str(Army.armyAttackScore)
+	$CanvasLayer/ArmyPanel/DefenseLabel.text = str(Army.armyDefenseScore)
+	$CanvasLayer/ArmyPanel/RangedAttackLabel.text = str(Army.armyRangedAttack)
+	$CanvasLayer/ArmyPanel/RangedDefenseLabel.text = str(Army.armyRangedDefense)
+	$CanvasLayer/ArmyPanel/ManpowerLabel.text = str(Army.manpowerInArmy, " / ", Army.maxManpower)
+	$CanvasLayer/ArmyPanel/ShieldLabel.text = str(Army.armyShield, " / ", Army.armyMaxShield)
+	$CanvasLayer/ArmyPanel/LocationLabel.text = str(pathPoint.pathNumber)
+	if $CanvasLayer/ArmyPanel.visible == false:
+		$CanvasLayer/ArmyPanel.visible = true
+	else:
+		$CanvasLayer/ArmyPanel.visible = false
+	pass
+
+func updatePathPointsFunc(visibility):
+	if visibility == false:
+		$CanvasLayer/ArmyPanel/ArmyButtonsContainer.visible = false
+	else:
+		$CanvasLayer/ArmyPanel/ArmyButtonsContainer.visible = true
+	pass
+
+func newTileDevelopment(tileToDev, devType, devCivilian):
+	for Tile in $TileController.get_children():
+		if Tile.tileNumber == tileToDev.tileNumber:
+			Tile.devChange(devType, devCivilian)
+	pass
+
 
 func _on_belief_control_purchased_belief(beliefName, beliefCost) -> void:
 	playerCountryNode.addReligiousBelief(beliefName)
@@ -533,4 +575,42 @@ func _on_belief_control_purchased_belief(beliefName, beliefCost) -> void:
 
 func _on_government_control_slider_changed(amount, type) -> void:
 	playerCountryNode.setNewTaxAmount(amount, type)
+	pass # Replace with function body.
+
+func _on_civilian_button_pressed() -> void:
+	$CanvasLayer/CivilianControl.updateCivilians()
+	if $CanvasLayer/CivilianControl.visible == true:
+		$CanvasLayer/CivilianControl.visible = false
+	else:
+		$CanvasLayer/CivilianControl.visible = true
+	pass # Replace with function body.
+
+var milModScene = load("res://mil_mod.tscn")
+
+func updateCivFunc(civ, pathPoint):
+	$CanvasLayer/CivilianUnitControl/ToolIcon.texture = civ.civilianTool.toolImage
+	$CanvasLayer/CivilianUnitControl/KitIton.texture = civ.civilianKit.kitImage
+	if $CanvasLayer/CivilianUnitControl/MilModGridContainer.get_children != null:
+		for MilMod in $CanvasLayer/CivilianUnitControl/MilModGridContainer.get_children():
+			$CanvasLayer/CivilianUnitControl/MilModGridContainer.remove_child(MilMod)
+	for MilMod in civ.milMods:
+		var newMilMod = milModScene.instantiate()
+		newMilMod.buildSelf(MilMod.milModType)
+		$CanvasLayer/CivilianUnitControl/MilModGridContainer.add_child(newMilMod)
+	if $CanvasLayer/ArmyPanel.visible == true:
+		$CanvasLayer/ArmyPanel.visible = false
+	if $CanvasLayer/CivilianUnitControl.visible == false:
+		$CanvasLayer/CivilianUnitControl.visible = true
+	else:
+		$CanvasLayer/CivilianUnitControl.visible = false
+	pass
+
+func _on_colonize_button_pressed() -> void:
+	$CanvasLayer/CivilianUnitControl.visible = false
+	$PathControl.colonizeTile()
+	pass # Replace with function body.
+
+func _on_increase_agricultural_development_pressed() -> void:
+	$CanvasLayer/CivilianUnitControl.visible = false
+	$PathControl.fightCorruptionTile()
 	pass # Replace with function body.

@@ -6,8 +6,10 @@ var playerTiles: Array
 var updatingArmyPathFollow: PathFollow2D
 
 var selectedAPF: armyPathFollow
+var selectedCPF: civilianPathFollow
 
 var raisedPlayerAPFs: Array = []
+var raisedPlayerCPFs: Array = []
 
 func raisePlayerArmy(Army, country, Tile, pathPointToSend):
 	var newAPF = armyPathFollowScene.instantiate()
@@ -15,66 +17,88 @@ func raisePlayerArmy(Army, country, Tile, pathPointToSend):
 	raisedPlayerAPFs.append(newAPF)
 	pathPointToSend.occupied = true
 	newAPF.apfSelected.connect(displayapfInfo)
-	newAPF.movingArmy.connect(movingArmyFunc)
 	newAPF.armyArrived.connect(armyArrivedFunc)
 	newAPF.armyTraveling.connect(updateTravelingArmy)
 	newAPF.onRaise(Army, country, pathPointToSend)
 	showPathPoints(pathPointToSend)
 	pass
 
+var civilianPathFollowScene = load("res://civilian_path_follow.tscn")
+
+func raisePlayerCiv(civ, country, Tile):
+	var newCPF = civilianPathFollowScene.instantiate()
+	civ.stationNode.add_child(newCPF)
+	raisedPlayerCPFs.append(newCPF)
+	civ.stationNode.occupied = true
+	newCPF.cpfSelected.connect(displaycpfInfo)
+	newCPF.civilianArrived.connect(civilianArrivedFunc)
+	newCPF.tileChanging.connect(newTileDevelopment)
+	newCPF.onRaise(civ, country, civ.stationNode)
+	showPathPoints(civ.stationNode)
+	pass
+
 func updateTravelingArmy(progressRate, currentPath, Army):
 	pass
 
-func movingArmyFunc():
-	#use these to disable features while the army is traveling
-	$ArmyPanel/ArmyButtonsContainer.visible = false
-	
-	pass
 
 func armyArrivedFunc(pathOfArmy, newPathPointButton, theArmy, apf, contain):
 	#use this to resume 
 	print("ARMYARRIVEDDEBUG")
 	removeFromUpdateArmyPaths()
-	$ArmyPanel/ArmyButtonsContainer.visible = true
 	for pathPointButton in $PathPointsControl.get_children():
 		if pathPointButton == newPathPointButton:
 			contain.remove_child(apf)
 			pathPointButton.add_child(theArmy)
 			pathPointButton.add_child(apf)
 			newPathPointButton.occupied = true
-	updateArmyPanel(theArmy)
+			updateArmyPanel(theArmy, newPathPointButton)
 	showPathPoints(newPathPointButton)
 	pass
 
+func civilianArrivedFunc(pathOfCivilian, newPathPointButton, theCivilian, cpf, contain):
+	#use this to resume 
+	print("CIVILIANARRIVEDDEBUG")
+	removeFromUpdateArmyPaths()
+	for pathPointButton in $PathPointsControl.get_children():
+		if pathPointButton == newPathPointButton:
+			contain.remove_child(cpf)
+			#pathPointButton.add_child(theCivilian)
+			pathPointButton.add_child(cpf)
+			#newPathPointButton.occupied = true
+			#updateArmyPanel(theArmy, newPathPointButton)
+	showPathPoints(newPathPointButton)
+	pass
 
 signal activateArmyControlMode
 func displayapfInfo(thisArmy, apf, currentTile, thisCountry, currentPathPoint):
 	if thisCountry == playerCountry:
-		updateArmyPanel(thisArmy)
+		updateArmyPanel(thisArmy, currentPathPoint)
 		showPathPoints(currentPathPoint)
-		$ArmyPanel/LocationLabel.text = str(currentPathPoint.pathNumber)
 		selectedAPF = apf
+		selectedCPF = null
 		emit_signal("activateArmyControlMode")
 	#else:
 		#display other country information in the army panel
-	if $ArmyPanel.visible == false:
-		$ArmyPanel.visible = true
-	else:
-		$ArmyPanel.visible = false
 	pass
 
-func updateArmyPanel(Army):
-	$ArmyPanel/ArmyNameLabel.text = Army.ArmyName
-	$ArmyPanel/AttackLabel.text = str(Army.armyAttackScore)
-	$ArmyPanel/DefenseLabel.text = str(Army.armyDefenseScore)
-	$ArmyPanel/RangedAttackLabel.text = str(Army.armyRangedAttack)
-	$ArmyPanel/RangedDefenseLabel.text = str(Army.armyRangedDefense)
-	$ArmyPanel/ManpowerLabel.text = str(Army.manpowerInArmy, " / ", Army.maxManpower)
-	$ArmyPanel/ShieldLabel.text = str(Army.armyShield, " / ", Army.armyMaxShield)
+func displaycpfInfo(thisCiv, cpf, currentTile, thisCountry, currentPathPoint):
+	if thisCountry == playerCountry:
+		updateCivilianPanel(thisCiv, currentPathPoint)
+		showPathPoints(currentPathPoint)
+		selectedCPF = cpf
+		selectedAPF = null
+		emit_signal("activateArmyControlMode")
+	pass
+
+signal updateArmy
+func updateArmyPanel(Army, pathPoint):
+	emit_signal("updateArmy", Army, pathPoint)
 #	$ArmyPanel/LeaderSprite.texture = Army.commander.governorTexture
 #	$ArmyPanel/LeaderName.text = str(Army.commander.governorType)
 	pass
-
+signal updateCivilian
+func updateCivilianPanel(civ, pathPoint):
+	emit_signal("updateCivilian", civ, pathPoint)
 #"apfSelected", thisArmy, self, currentTile, thisCountry, currentPath, progress_ratio
 
 func connectPathPoints(playerCountryNode):
@@ -87,7 +111,11 @@ func connectPathPoints(playerCountryNode):
 		pathPointButton.buildSelf()
 	pass
 var visibleTiles: Array
+
+signal updatePathPoints
+
 func showPathPoints(pathPoint):
+	emit_signal("updatePathPoints", true)
 	visibleTiles.clear()
 	for pathPointButton in $PathPointsControl.get_children():
 		pathPointButton.visible = false
@@ -109,6 +137,7 @@ func showPathPoints(pathPoint):
 	pass
 
 func hidePathPoints():
+	emit_signal("updatePathPoints", false)
 	for pathPointButton in $PathPointsControl.get_children():
 		pathPointButton.visible = false
 	pass
@@ -119,8 +148,14 @@ func removeFromUpdateArmyPaths():
 
 func _process(delta: float) -> void:
 	if updatingArmyPathFollow != null :
-		if selectedAPF.progressRate != 1 && selectedAPF.progressRate !=0:
-			updatingArmyPathFollow.progress_ratio = selectedAPF.progressRate
+		if selectedAPF != null:
+			if selectedAPF.progressRate != 1 && selectedAPF.progressRate !=0:
+				updatingArmyPathFollow.progress_ratio = selectedAPF.progressRate
+			return
+		if selectedCPF !=null:
+			if selectedCPF.progressRate != 1 && selectedCPF.progressRate !=0:
+				updatingArmyPathFollow.progress_ratio = selectedCPF.progressRate
+			return
 	pass
 
 var startingPoint: pathPointButton#come back and fix this
@@ -128,7 +163,7 @@ var startingPoint: pathPointButton#come back and fix this
 #pathPointButton, we could compare them.
 func calculateArmyMovement(pathPointButton, endNodes, startNodes, neighborPathPoints, curTile):
 	print("DEBUG Calculate", endNodes)
-	startingPoint = selectedAPF.currentPathPoint
+	startingPoint = selectedCPF.currentPathPoint
 	if endNodes != null:
 		for Container in endNodes: 
 			print(Container, "DEUBUG NODEPATH")
@@ -160,24 +195,45 @@ func calculateArmyMovement(pathPointButton, endNodes, startNodes, neighborPathPo
 
 func moveArmy(newContainer, String, endPoint):
 	print("DEBUGMORONWITHAWRENCH")
-	match String:
-		"start":
-			print("ControlDEBUG", newContainer)
-			var apfParent = selectedAPF.get_parent()
-			updatingArmyPathFollow = newContainer.get_parent()
-			var path = updatingArmyPathFollow.get_parent()
-			apfParent.call_deferred("remove_child",selectedAPF)
-			newContainer.call_deferred("add_child", selectedAPF)
-			selectedAPF.move("start", endPoint, path)
-			updatingArmyPathFollow = newContainer.get_parent()
-		"end":
-			var apfParent = selectedAPF.get_parent()
-			updatingArmyPathFollow = newContainer.get_parent()
-			var path = updatingArmyPathFollow.get_parent()
-			apfParent.call_deferred("remove_child",selectedAPF)
-			newContainer.call_deferred("add_child", selectedAPF)
-			selectedAPF.move("end", endPoint, path)
-			updatingArmyPathFollow = newContainer.get_parent()
+	if selectedAPF!= null:
+		match String:
+			"start":
+				print("ControlDEBUG", newContainer)
+				var apfParent = selectedAPF.get_parent()
+				updatingArmyPathFollow = newContainer.get_parent()
+				var path = updatingArmyPathFollow.get_parent()
+				apfParent.call_deferred("remove_child",selectedAPF)
+				newContainer.call_deferred("add_child", selectedAPF)
+				selectedAPF.move("start", endPoint, path)
+				updatingArmyPathFollow = newContainer.get_parent()
+			"end":
+				var apfParent = selectedAPF.get_parent()
+				updatingArmyPathFollow = newContainer.get_parent()
+				var path = updatingArmyPathFollow.get_parent()
+				apfParent.call_deferred("remove_child",selectedAPF)
+				newContainer.call_deferred("add_child", selectedAPF)
+				selectedAPF.move("end", endPoint, path)
+				updatingArmyPathFollow = newContainer.get_parent()
+		return
+	else:
+		match String:
+			"start":
+				print("ControlDEBUG", newContainer)
+				var cpfParent = selectedCPF.get_parent()
+				updatingArmyPathFollow = newContainer.get_parent()
+				var path = updatingArmyPathFollow.get_parent()
+				cpfParent.call_deferred("remove_child",selectedCPF)
+				newContainer.call_deferred("add_child", selectedCPF)
+				selectedCPF.move("start", endPoint, path)
+				updatingArmyPathFollow = newContainer.get_parent()
+			"end":
+				var cpfParent = selectedCPF.get_parent()
+				updatingArmyPathFollow = newContainer.get_parent()
+				var path = updatingArmyPathFollow.get_parent()
+				cpfParent.call_deferred("remove_child",selectedCPF)
+				newContainer.call_deferred("add_child", selectedCPF)
+				selectedCPF.move("end", endPoint, path)
+				updatingArmyPathFollow = newContainer.get_parent()
 	pass
 
 func moveAndShowInfoPanel(key):
@@ -213,6 +269,24 @@ func moveAndShowInfoPanel(key):
 	$ArmyPanel/ActionInfoPanelControl.visible = true
 	
 	pass
+
+signal tileDevelopment
+func newTileDevelopment(tileToDev, devType, devCivilian):
+	emit_signal("tileDevelopment", tileToDev, devType, devCivilian)
+	pass
+
+func colonizeTile():
+	if selectedCPF != null:
+		selectedCPF.colonizeMode()
+		selectedCPF = null
+	pass
+
+func fightCorruptionTile():
+	if selectedCPF != null:
+		selectedCPF.corruptionMode()
+		selectedCPF = null
+	pass
+
 
 func _on_move_button_mouse_entered() -> void:
 	moveAndShowInfoPanel("Move")

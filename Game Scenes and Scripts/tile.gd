@@ -143,6 +143,8 @@ var tileGraphic
 var tileSpawnPath: String
 var tileSpawnPathPoint: int
 
+var tileSpawnPoint: pathPointButton
+
 signal tileLoaded
 signal tileEvent
 
@@ -238,6 +240,7 @@ func onNewGame():
 			addBuilding("Mine", 2)
 			addBuilding("Forge", 1)
 			addBuilding("Camp", 5)
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/PDT1"
 		#var actingSpell = spell.new()
 		#actingSpell.spellType = "Celebration"
 		#tileSpell = actingSpell
@@ -267,6 +270,7 @@ func onNewGame():
 			addBuilding("Temple", 2)
 			addBuilding("Barracks", 1)
 			addBuilding("Bath", 2)
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/PDTS1"
 		5:
 			tileName
 			tileOwner
@@ -674,4 +678,43 @@ func reveal():
 			$TileGraphic.modulate = Color(0,1,0)
 		"ANL":
 			$TileGraphic.modulate = Color(0,0,1)
+	pass
+
+
+var farmDevelopmentPoints: float
+var tileFarmDevCost: float
+var campDevelopmentPoints: float
+var tileCampDevCost: float
+var mineDevelopmentPoints: float
+var tileMineDevCost: float
+var libraryDevelopmentPoints: float
+var tileLibraryDevCost: float
+var towerDevelopmentPoints: float
+var tileTowerDevCost: float
+var templeDevelopmentPoints: float
+var tileTempleDevCost: float
+var faireDevelopmentPoints: float
+var tileFaireDevCost: float
+var workshopDevelopmentPoints: float
+var tileWorkshopDevCost: float
+var forgeDevelopmentPoints: float
+var tileForgeDevCost: float
+var bathDevelopmentPoints: float
+var tileBathDevCost: float
+var granaryDevelopmentPoints: float
+var tileGranaryDevCost: float
+var barracksDevelopmentPoints: float
+var tileBarracksDevCost: float
+var dockDevelopmentPoints: float
+var tileDockDevCost: float
+
+func devChange(devType, devCivilian):
+	match devType:
+		"Corruption":
+			corruptionChange += 1
+			#for MilMod in devCivilian.milMods:
+				#if milMod.milModType == "Colonizer":
+					#corruptionChange += 1
+		#"Colonization":
+			
 	pass
