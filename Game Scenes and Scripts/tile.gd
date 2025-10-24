@@ -76,7 +76,7 @@ var damagedBuildingsList: Array = [] #if buildings are damaged by weather or sie
 var tileOutput: float #used to calculate the output of all yields in the tile.
 
 #Resources produced by all this province's buildings
-var buildingGoldOutput
+var buildingGoldOutput: float
 var buildingFoodOutput 
 var buildingWoodOutput
 var buildingMetalOutput
@@ -86,12 +86,12 @@ var buildingFaithOutput
 var buildingWeaponsOutput
 var buildingScienceOutput
 var buildingMandateOutput
-var buildingHarmonyOutput
+var buildingHarmonyOutput: float
 var buildingManpowerOutput
 var buildingInfluenceOutput
 
 #Resources consumed by all this province's buildings
-var buildingGoldExpense
+var buildingGoldExpense: float
 var buildingFoodExpense
 var buildingWoodExpense
 var buildingMetalExpense
@@ -101,14 +101,14 @@ var buildingFaithExpense
 var buildingScienceExpense
 var buildingWeaponsExpense
 var buildingMandateExpense
-var buildingHarmonyExpense
+var buildingHarmonyExpense: float
 var buildingManpowerExpense
 var buildingInfluenceExpense
 
 #Yields this tile will produce this month
 var tileFoodYield
 var tileWoodYield
-var tileGoldYield
+var tileGoldYield: float
 var tileMetalYield
 var tileMagicYield
 var tileCultureYield
@@ -116,7 +116,7 @@ var tileFaithYield
 var tileWeaponsYield
 var tileScienceYield
 var tileMandateYield
-var tileHarmonyYield
+var tileHarmonyYield: float
 var tileManpowerYield
 var tileInfluenceYield
 
@@ -147,6 +147,8 @@ var tileSpawnPoint: pathPointButton
 
 signal tileLoaded
 signal tileEvent
+
+var buildingScene = load("res://Game Scenes and Scripts/building.tscn")
 
 signal onNewGameWorldBuild
 func onNewGame():
@@ -181,20 +183,7 @@ func onNewGame():
 			var tileOre = ore.new()
 			tileOre.oreType = "Copper"
 			oreSlot = tileOre
-			var Farm = building.new()
-			Farm.buildingType = "Farm"
-			Farm.buildingLevel = 3
-			Farm.tile = self
-			Farm.number = tileNumber
-			Farm.buildBuilding()
-			tileBuildingsList.append(Farm)
-			var Granary = building.new()
-			Granary.buildingType = "Granary"
-			Granary.buildingLevel = 1
-			Granary.tile = self
-			Granary.number = tileNumber
-			Granary.buildBuilding()
-			tileBuildingsList.append(Granary)
+			addBuilding("Farm", 1)
 		2:
 			tileName = "Eighth House"
 			tileOwner = "EIG"
@@ -232,14 +221,14 @@ func onNewGame():
 			tileOre.buildSelf("Copper")
 			oreSlot = tileOre
 			#addWizard("Druid")
-			addBuilding("Tower", 1)
-			addBuilding("Farm", 3)
-			addBuilding("Granary", 1)
+			#addBuilding("Tower", 1)
+			addBuilding("Farm", 1)
+			#addBuilding("Granary", 1)
 			addBuilding("Barracks", 2)
-			addBuilding("Library", 1)
-			addBuilding("Mine", 2)
-			addBuilding("Forge", 1)
-			addBuilding("Camp", 5)
+			#addBuilding("Library", 1)
+			#addBuilding("Mine", 2)
+			#addBuilding("Forge", 1)
+			#addBuilding("Camp", 5)
 			tileSpawnPoint = $"../../PathControl/PathPointsControl/PDT1"
 		#var actingSpell = spell.new()
 		#actingSpell.spellType = "Celebration"
@@ -248,7 +237,7 @@ func onNewGame():
 			tileSpawnPath = "Pender Tal South"
 			tileSpawnPathPoint = 17
 			tileName = "Enthenar"
-			tileOwner = "PDT"
+			#tileOwner = "PDT"
 			countryCapital = false
 			tileContinent = "Anlaxia"
 			tilePop
@@ -257,7 +246,7 @@ func onNewGame():
 			terrain = "Grassland"
 			season
 			tileMilModifiers
-			corruption = 25
+			corruption = 100
 			TileNeighbors
 			var tileCrop = crop.new()
 			tileCrop.cropType = "Razorberry"
@@ -500,6 +489,10 @@ func surveyTile(playerCountryNode):
 					farmGovernorReq = true
 				else:
 					farmGovernorReq = false
+				if building.buildingLevel > 1:
+					tileFarmDevCost * (building.buildingLevel * 1.3)
+				else:
+					tileFarmDevCost * building.buildingLevel
 			"Camp":
 				if building.buildingLevel >= 3:
 					campGovernorReq = true
@@ -582,7 +575,7 @@ func wizardCheck():
 
 
 func addBuilding(buildingType, level):
-	var newBuild = building.new()
+	var newBuild = buildingScene.instantiate()
 	newBuild.buildingType = buildingType
 	newBuild.buildingLevel = level
 	newBuild.tile = self
@@ -592,6 +585,35 @@ func addBuilding(buildingType, level):
 	if newBuild.buildingType == "Tower":
 		newBuild.towerBuilding.connect(wizardCheck)
 	newBuild.buildBuilding()
+	pass
+
+func levelUpBuilding(type):
+	for building in tileBuildingsList:
+		if building.buildingType == type:
+			building.upgradeBuilding()
+			match type:
+				"Farm":
+					tileFarmDevCost = 10 * (building.buildingLevel * 1.3)
+				"Camp":
+					tileCampDevCost = 10 * (building.buildingLevel * 1.3)
+				"Mine":
+					tileMineDevCost = 15 * (building.buildingLevel * 1.3)
+				"Library":
+					tileLibraryDevCost = 25 * (building.buildingLevel * 1.3)
+				"Tower":
+					tileTowerDevCost = 40 * (building.buildingLevel * 1.3)
+				"Temple":
+					tileTempleDevCost = 20 * (building.buildingLevel * 1.3)
+				"Faire":
+					tileFaireDevCost = 25 * (building.buildingLevel * 1.3)
+				"Bath":
+					tileBathDevCost = 25 * (building.buildingLevel * 1.3)
+				"Workshop":
+					tileWorkshopDevCost = 30 * (building.buildingLevel * 1.3)
+				"Forge":
+					tileForgeDevCost = 30 * (building.buildingLevel * 1.3)
+				"Barracks":
+					tileBarracksDevCost = 30 * (building.buildingLevel * 1.3)
 	pass
 
 func addStationedArmy(armyNode):
@@ -666,7 +688,7 @@ func calculateSpellChanges():
 				corruptionChange += 2
 				buildingMagicOutput -= 4
 				print(buildingMagicOutput, "buildingMagicOutput2")
-
+	pass
 func fogOfWar():
 	$TileGraphic.modulate = Color(0,0,0)
 	pass
@@ -680,41 +702,65 @@ func reveal():
 			$TileGraphic.modulate = Color(0,0,1)
 	pass
 
+signal tileColonized
+
+func colonizeTile(civilian):
+	tileOwner = civilian.player.CID
+	emit_signal("tileColonized", self)
+	pass
 
 var farmDevelopmentPoints: float
-var tileFarmDevCost: float
+var tileFarmDevCost:float = 10
 var campDevelopmentPoints: float
-var tileCampDevCost: float
+var tileCampDevCost:float = 10
 var mineDevelopmentPoints: float
-var tileMineDevCost: float
+var tileMineDevCost:float = 15
 var libraryDevelopmentPoints: float
-var tileLibraryDevCost: float
+var tileLibraryDevCost:float = 25
 var towerDevelopmentPoints: float
-var tileTowerDevCost: float
+var tileTowerDevCost:float = 40
 var templeDevelopmentPoints: float
-var tileTempleDevCost: float
+var tileTempleDevCost:float = 20
 var faireDevelopmentPoints: float
-var tileFaireDevCost: float
+var tileFaireDevCost:float = 25
 var workshopDevelopmentPoints: float
-var tileWorkshopDevCost: float
+var tileWorkshopDevCost:float = 30
 var forgeDevelopmentPoints: float
-var tileForgeDevCost: float
+var tileForgeDevCost:float = 30
 var bathDevelopmentPoints: float
-var tileBathDevCost: float
+var tileBathDevCost:float = 25
 var granaryDevelopmentPoints: float
-var tileGranaryDevCost: float
+var tileGranaryDevCost:float = 25
 var barracksDevelopmentPoints: float
-var tileBarracksDevCost: float
+var tileBarracksDevCost:float = 30
 var dockDevelopmentPoints: float
-var tileDockDevCost: float
+var tileDockDevCost: float =30
+
+var colonizationPoints: float
+var colonizationReq: float = 2
 
 func devChange(devType, devCivilian):
+	print("DEBUG DEV", devType, devCivilian)
 	match devType:
 		"Corruption":
-			corruptionChange += 1
-			#for MilMod in devCivilian.milMods:
-				#if milMod.milModType == "Colonizer":
-					#corruptionChange += 1
-		#"Colonization":
-			
+			corruption -= 1
+			match devCivilian.civilianKit.kitType:
+				"Homesteader":
+					#print("DEBUG HOMESTEADER CORRUPTION")
+					corruption -= 1
+		"Colonize":
+			colonizationPoints += .1
+			match devCivilian.civilianKit.kitType:
+				"Homesteader":
+					#print("DEBUG HOMESTEADER COLONIZATION")
+					colonizationPoints += .2
+			if colonizationPoints >= colonizationReq:
+				colonizeTile(devCivilian)
+		"Agriculture":
+			farmDevelopmentPoints += 1
+			granaryDevelopmentPoints += 1
+			if farmDevelopmentPoints >= tileFarmDevCost:
+				levelUpBuilding("Farm")
+			if granaryDevelopmentPoints >= tileGranaryDevCost:
+				levelUpBuilding("Granary")
 	pass

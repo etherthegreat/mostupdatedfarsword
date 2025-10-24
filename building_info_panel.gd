@@ -1,13 +1,20 @@
 extends Control
 
 var open
-
+var player = country
 
 var thisTile: Tile
 
 signal updateBuildingPanelUI
 
+func buildSelf(playerCountry):
+	player = playerCountry
+	pass
+
+var buildSpriteScene = load("res://building_sprite.tscn")
+
 func displayBuildingInfo(tile):
+	thisTile = tile
 	for Control in $Panel/BuildingGridContainer.get_children():
 		$Panel/BuildingGridContainer.remove_child(Control)
 		#Control.queue_free() #same performance issue here, we're not deleting them, but they are not in the way.  c
@@ -15,12 +22,15 @@ func displayBuildingInfo(tile):
 	for building in tile.tileBuildingsList:
 		#print( "building list for tile", thisTile.tileNumber, building, building.buildingType)
 		var buildControl = Control.new()
-		var buildSprite = buildingSprite.new()
+		var buildSprite = buildSpriteScene.instantiate()
 		#buildSprite.thisBuilding = building
 		buildSprite.updateInspector.connect(inspectBuilding)
 		buildSprite.buildBuildSprite(building)
 		buildControl.add_child(buildSprite)
 		$Panel/BuildingGridContainer.add_child(buildControl)
+		if buildControl.get_children() != null:
+			for buildingSprite in buildControl.get_children():
+				buildingSprite.updateUI(thisTile)
 	pass
 
 func inspectBuilding(building):
@@ -28,3 +38,43 @@ func inspectBuilding(building):
 	#print("get tricked")
 	$buildingPanelPanel.updateInspector(building)
 	pass
+
+var newBuildingButtonScene = load("res://new_building_button.tscn")
+
+func addNewBuildingButton(newBuilding):
+	var newBuildingButton = newBuildingButtonScene.instantiate()
+	newBuildingButton.buildSelf(newBuilding, player)
+	#if newBuildingButton.is_instance_valid() == true:
+	for building in thisTile.tileBuildingsList:
+		if building.buildingType == newBuildingButton.buildingType:
+			newBuildingButton.queue_free()
+		else:
+			$AddBuildingControl/ScrollContainer/GridContainer.add_child(newBuildingButton)
+			newBuildingButton.newBuilding.connect(newBuildingForTile)
+	pass
+
+signal newBuildingInTile
+func newBuildingForTile(buildingType, goldCalculatedCost, foodCalculatedCost, woodCalculatedCost, metalCalculatedCost):
+	emit_signal("newBuildingInTile", buildingType, goldCalculatedCost, foodCalculatedCost, woodCalculatedCost, metalCalculatedCost, thisTile, player)
+	pass
+
+
+func _process(delta: float) -> void:
+	if $AddBuildingControl.visible == true:
+		if $AddBuildingControl/ScrollContainer/GridContainer.get_children() != null:
+			for buildingButton in $AddBuildingControl/ScrollContainer/GridContainer.get_children():
+				buildingButton.updateUI()
+	pass
+
+signal fillWithUnlockedBuildings
+func _on_add_building_button_pressed() -> void:
+	if $AddBuildingControl/ScrollContainer/GridContainer.get_children() != null:
+		for buildingButton in $AddBuildingControl/ScrollContainer/GridContainer.get_children():
+			$AddBuildingControl/ScrollContainer/GridContainer.remove_child(buildingButton)
+			buildingButton.queue_free()
+	emit_signal("fillWithUnlockedBuildings")
+	if $AddBuildingControl.visible == true:
+		$AddBuildingControl.visible = false
+	else:
+		$AddBuildingControl.visible = true
+	pass # Replace with function body.

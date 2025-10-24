@@ -13,7 +13,7 @@ var civilianScene = load("res://Civilian.tscn")
 
 func buildNewCivilian(Tile):
 	var newCivilian = civilianScene.instantiate()
-	newCivilian.buildSelf("Wooden Tools", "Adventurer", Tile, Tile.tileSpawnPoint)
+	newCivilian.buildSelf("Wooden Tools", "Adventurer", Tile, Tile.tileSpawnPoint, playerCountry)
 	newCivilian.kitSignal.connect(loadKitsGrid)
 	newCivilian.toolSignal.connect(loadToolsGrid)
 	newCivilian.raiseSignal.connect(raiseCivilianUnit)

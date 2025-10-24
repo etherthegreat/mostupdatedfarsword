@@ -187,6 +187,8 @@ var religionControl = load("res://religion_data.gd")
 var availableTools: Array
 var availableKits: Array
 
+var countryConstructionCostMod: float = 1 # 1 = 100%, .9 would be 90 % of cost, etc.
+
 #this should literally be max but I'm stupid and don't wanna change it
 var minPosTaxationAmount: int  = 0#used to calculate 'all building' taxation figures
 var minFarmTaxAmount: int = 0
@@ -640,6 +642,7 @@ func updateUnlockableAttributes():
 				addKit("Adventurer")
 				addKit("Homesteader")
 				addTool("Wooden Tools")
+				addBuilding("Camp")
 			if Technology.techName == "Agriculture":
 				for buildingLevel in buildingLevelList:
 					if buildingLevel.buildingType == "Farm":
@@ -647,6 +650,8 @@ func updateUnlockableAttributes():
 					if buildingLevel.buildingType == "Granary":
 						buildingLevel.maxLevel += 3
 				addKit("Harvester")
+				addBuilding("Agriculture")
+				addBuilding("Granary")
 			if Technology.techName == "Copper Working":
 				for buildingLevel in buildingLevelList:
 					if buildingLevel.buildingType == "Mine":
@@ -654,12 +659,15 @@ func updateUnlockableAttributes():
 					if buildingLevel.buildingType == "Camp":
 						buildingLevel.maxLevel += 3
 				addKit("Prospector")
+				addBuilding("Mine")
 			if Technology.techName == "Artistry":
 				for buildingLevel in buildingLevelList:
 					if buildingLevel.buildingType == "Workshop":
 						buildingLevel.maxLevel += 3
 					if buildingLevel.buildingType == "Temple":
 						buildingLevel.maxLevel += 3
+				addBuilding("Temple")
+				addBuilding("Workshop")
 			if Technology.techName == "Sailing":
 				for buildingLevel in buildingLevelList:
 					if buildingLevel.buildingType == "Dock":
@@ -672,6 +680,7 @@ func updateUnlockableAttributes():
 						buildingLevel.maxLevel += 3
 					if buildingLevel.buildingType == "Forge":
 						buildingLevel.maxLevel += 3
+				addBuilding("Barracks")
 				for UnitTemplate in unitTemplateList:
 					if UnitTemplate.unitType == "Infantry":
 						UnitTemplate.unitDefensiveScore += 3
@@ -686,6 +695,8 @@ func updateUnlockableAttributes():
 					if buildingLevel.buildingType == "Tower":
 						buildingLevel.maxLevel += 3
 				addKit("Scholar")
+				addBuilding("Library")
+				addBuilding("Tower")
 			if Technology.techName == "Calendar":
 				for buildingLevel in buildingLevelList:
 					if buildingLevel.buildingType == "Farm":
@@ -702,6 +713,7 @@ func updateUnlockableAttributes():
 					if buildingLevel.buildingType == "Mine":
 						buildingLevel.maxLevel += 3
 				addTool("Metal Tools")
+				addBuilding("Forge")
 			if Technology.techName == "Masonry":
 				for buildingLevel in buildingLevelList:
 					if buildingLevel.buildingType == "Workshop":
@@ -709,6 +721,7 @@ func updateUnlockableAttributes():
 					if buildingLevel.buildingType == "Temple":
 						buildingLevel.maxLevel += 3
 				addKit("Constructor")
+				addBuilding("Bath")
 			if Technology.techName == "Statecraft":
 				for buildingLevel in buildingLevelList:
 					if buildingLevel.buildingType == "Governor's Mansion":
@@ -965,8 +978,20 @@ func addTool(type):
 
 var newKitScene = load("res://kit.tscn")
 
+var newBuildingScene = load("res://Game Scenes and Scripts/building.tscn")
+func addBuilding(type):
+	var newBuilding = newBuildingScene.instantiate()
+	newBuilding.buildingType = type
+	newBuilding.buildBuilding()
+	unlockedBuildings.append(newBuilding)
+	pass
+
 func addKit(type):
 	var newKitType = newKitScene.instantiate()
 	newKitType.buildSelf(type)
 	availableKits.append(newKitType)
+	pass
+
+func addTile(tileToAdd):
+	OwnedTileList.append(tileToAdd)
 	pass

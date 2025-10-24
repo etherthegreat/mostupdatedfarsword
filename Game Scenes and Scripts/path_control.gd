@@ -30,6 +30,7 @@ func raisePlayerCiv(civ, country, Tile):
 	civ.stationNode.add_child(newCPF)
 	raisedPlayerCPFs.append(newCPF)
 	civ.stationNode.occupied = true
+	#civ.stationNode.stationedCivilians.append(newCPF)
 	newCPF.cpfSelected.connect(displaycpfInfo)
 	newCPF.civilianArrived.connect(civilianArrivedFunc)
 	newCPF.tileChanging.connect(newTileDevelopment)
@@ -64,6 +65,7 @@ func civilianArrivedFunc(pathOfCivilian, newPathPointButton, theCivilian, cpf, c
 			contain.remove_child(cpf)
 			#pathPointButton.add_child(theCivilian)
 			pathPointButton.add_child(cpf)
+			#pathPointButton.stationedCivilians.append(cpf)
 			#newPathPointButton.occupied = true
 			#updateArmyPanel(theArmy, newPathPointButton)
 	showPathPoints(newPathPointButton)
@@ -231,6 +233,7 @@ func moveArmy(newContainer, String, endPoint):
 				updatingArmyPathFollow = newContainer.get_parent()
 				var path = updatingArmyPathFollow.get_parent()
 				cpfParent.call_deferred("remove_child",selectedCPF)
+				#cpfParent.stationedCivilians.remove_at(selectedCPF)
 				newContainer.call_deferred("add_child", selectedCPF)
 				selectedCPF.move("end", endPoint, path)
 				updatingArmyPathFollow = newContainer.get_parent()
@@ -273,6 +276,12 @@ func moveAndShowInfoPanel(key):
 signal tileDevelopment
 func newTileDevelopment(tileToDev, devType, devCivilian):
 	emit_signal("tileDevelopment", tileToDev, devType, devCivilian)
+	pass
+
+func agricultureTile():
+	if selectedCPF != null:
+		selectedCPF.agricultureMode()
+		selectedCPF = null
 	pass
 
 func colonizeTile():

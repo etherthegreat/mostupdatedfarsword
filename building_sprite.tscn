@@ -8,3 +8,12 @@ load_path = "res://.godot/imported/Farm.png-f12bec2ffeaa69a119dcc8587a7d4485.cte
 [node name="BuildingSprite" type="Sprite2D"]
 texture = SubResource("CompressedTexture2D_emhop")
 script = ExtResource("1_vdlt3")
+
+[node name="LevelUpPointsLabel" type="Label" parent="."]
+offset_left = -197.0
+offset_top = 175.0
+offset_right = 196.0
+offset_bottom = 220.0
+theme_override_font_sizes/font_size = 30
+text = "building type not finished"
+horizontal_alignment = 1

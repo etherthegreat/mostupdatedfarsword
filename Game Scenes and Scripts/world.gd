@@ -133,7 +133,10 @@ func updatePlayerUI():
 	$CanvasLayer/SpellSchoolsControl.lvlUpSpell.connect(newSpellEvent)
 	$CanvasLayer/Spellbook.spellToUse.connect(activateSpellMapMode)
 	$TileController.spellAssignedToTile.connect(spellPurchased)
+	$TileController.colonizeTile.connect(updateCountryTiles)
 	$PathControl.call_deferred("showPathPoints", playerCapitalPathButton)
+	$CanvasLayer/BuildingInfoPanel.buildSelf(playerCountryNode)
+	$CanvasLayer/BuildingInfoPanel.newBuildingInTile.connect(addNewBuildingToTile)
 	#print("ALL I NEED")
 	pass
 
@@ -277,10 +280,13 @@ func _on_test_resource_button_pressed() -> void:
 	playerCountryNode.surveyResources()
 	playerCountryNode.payUnitMaintenance()
 	playerCountryNode.collectTaxes()
-	for pathPointButton in $PathControl/PathPointsControl:
+	for pathPointButton in $PathControl/PathPointsControl.get_children():
 		if pathPointButton.get_children() != null:
+			print(pathPointButton.get_children(), "DEBUG PATHPOINTBUTTONCHILDREN")
 			for civilianPathFollow in pathPointButton.get_children():
-				civilianPathFollow.emitTileChange()
+				if civilianPathFollow.is_class("Button") != true:
+					print(civilianPathFollow, "DEBUG IS CLASS CONTROL")
+					civilianPathFollow.emitTileChange()
 	$CanvasLayer/SpellSchoolsControl.updateMagicAmounts(playerCountryNode)
 	pass # Replace with function body.
 
@@ -610,7 +616,36 @@ func _on_colonize_button_pressed() -> void:
 	$PathControl.colonizeTile()
 	pass # Replace with function body.
 
+func updateCountryTiles(colonizedTile):
+	if colonizedTile.tileOwner != null:
+		for country in aliveCountriesList:
+			if country.CID == colonizedTile.tileOwner:
+				country.addTile(colonizedTile)
+	pass
+
 func _on_increase_agricultural_development_pressed() -> void:
+	$CanvasLayer/CivilianUnitControl
+	$PathControl.agricultureTile()
+	pass # Replace with function body.
+
+
+func _on_clear_corruption_pressed() -> void:
 	$CanvasLayer/CivilianUnitControl.visible = false
 	$PathControl.fightCorruptionTile()
 	pass # Replace with function body.
+
+
+func _on_building_info_panel_fill_with_unlocked_buildings() -> void:
+	for building in playerCountryNode.unlockedBuildings:
+		$CanvasLayer/BuildingInfoPanel.addNewBuildingButton(building)
+	pass # Replace with function body.
+
+func addNewBuildingToTile(buildingType, goldCalculatedCost, foodCalculatedCost, woodCalculatedCost, metalCalculatedCost, thisTile,player):
+	thisTile.addBuilding(buildingType, 1)
+	playerCountryNode.TotalGold -= goldCalculatedCost
+	playerCountryNode.TotalFood -= foodCalculatedCost
+	playerCountryNode.TotalWood -= woodCalculatedCost
+	playerCountryNode.TotalMetal -= metalCalculatedCost
+	$CanvasLayer/BuildingInfoPanel/AddBuildingControl.visible = false
+	$CanvasLayer/BuildingInfoPanel.displayBuildingInfo(thisTile)
+	pass

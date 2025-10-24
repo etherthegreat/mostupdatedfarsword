@@ -19,7 +19,12 @@ func buildBuildSprite(building):
 	add_child(buildingPanelButton)
 	pass
 
-
+func updateUI(tile):
+	if thisBuilding != null:
+		match thisBuilding.buildingType:
+			"Farm":
+				$LevelUpPointsLabel.text = str(tile.farmDevelopmentPoints, " / " , tile.tileFarmDevCost)
+	pass
 
 func updateBuildingInspector():
 	print("heeeeeeeeee")

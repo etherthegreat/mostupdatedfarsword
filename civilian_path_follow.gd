@@ -51,6 +51,7 @@ func _process(delta: float) -> void:
 			var currentContainer = get_parent()
 			emit_signal("civilianArrived", currentPath, destinationPathPoint, thisCivilian, self, currentContainer)
 			destinationPathPoint = null
+			currentTile = currentPathPoint.ppbTile
 		else:
 			emit_signal("civilianTraveling", progressRate, destinationPathPoint, thisCivilian)
 	if movingForward == true:
@@ -59,7 +60,7 @@ func _process(delta: float) -> void:
 			movingForward = false
 			currentPathPoint = destinationPathPoint
 			currentPathPoint.occupied = true
-			#currentTile = currentPathPoint.ppbTile
+			currentTile = currentPathPoint.ppbTile
 			#currentPathPoint.add_child(self)
 			var currentContainer = get_parent()
 			emit_signal("civilianArrived", currentPath, destinationPathPoint, thisCivilian, self, currentContainer)
@@ -90,6 +91,10 @@ func colonizeMode():
 
 func corruptionMode():
 	civilianMode = "Corruption"
+	pass
+
+func agricultureMode():
+	civilianMode = "Agriculture"
 	pass
 
 

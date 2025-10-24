@@ -4,6 +4,7 @@ class_name Civilian
 
 var civilianTool: Tool
 var civilianKit: kit
+var player: country
 
 var stationTile: Tile
 var stationNode: pathPointButton
@@ -27,8 +28,9 @@ var milMods: Array
 var toolScene = load("res://tool.tscn")
 var kitScene = load("res://kit.tscn")
 
-func buildSelf(toolKey, kitKey, homeTile, spawnNode):
+func buildSelf(toolKey, kitKey, homeTile, spawnNode, playerCountry):
 	stationTile = homeTile
+	player = playerCountry
 	$CivilianTileName.text = str(homeTile.tileName)
 	stationNode = spawnNode
 	addTool(toolKey)

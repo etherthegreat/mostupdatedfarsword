@@ -1,7 +1,8 @@
-[gd_scene load_steps=18 format=3 uid="uid://cek2jmk2gpc2h"]
+[gd_scene load_steps=19 format=3 uid="uid://cek2jmk2gpc2h"]
 
 [ext_resource type="Script" uid="uid://qjjads4hn2fq" path="res://building_panel_panel.gd" id="1_ltv48"]
 [ext_resource type="Texture2D" uid="uid://ct6whogyqhymx" path="res://art assets/Placeholder Art/UI Art/resources/Farm.png" id="2_sa72o"]
+[ext_resource type="Texture2D" uid="uid://cta3ksrnubp7x" path="res://art assets/finishedAssets/Panels/tilePanel.PNG" id="2_sjr3l"]
 [ext_resource type="Texture2D" uid="uid://vu0teomjtckk" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/food.png" id="3_xlc2e"]
 [ext_resource type="Texture2D" uid="uid://dauok6wt717hv" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/Metal.png" id="4_yoll7"]
 [ext_resource type="Texture2D" uid="uid://drifybbnrpta7" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/wood.png" id="5_14kuu"]
@@ -27,6 +28,11 @@ script = ExtResource("1_ltv48")
 layout_mode = 0
 offset_right = 538.0
 offset_bottom = 551.0
+
+[node name="Sprite2D" type="Sprite2D" parent="Panel"]
+position = Vector2(269, 275.5)
+scale = Vector2(0.290811, 0.183667)
+texture = ExtResource("2_sjr3l")
 
 [node name="BuildingSprite" type="Sprite2D" parent="Panel"]
 position = Vector2(262, 86)

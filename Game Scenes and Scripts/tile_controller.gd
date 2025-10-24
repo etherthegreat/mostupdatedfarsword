@@ -10,6 +10,7 @@ func connectTileSignals():
 		print(Tile.tileName, "penis penis penis")
 		Tile.tileLoaded.connect(connectEventSignal)
 		Tile.spellAssigned.connect(spellTileAssigned)
+		Tile.tileColonized.connect(colonizeThisTile)
 	pass
 
 func connectEventSignal(tile):
@@ -34,6 +35,10 @@ func normalMode():
 		Tile.normalMode()
 	pass
 
+signal colonizeTile
+func colonizeThisTile(thisTile):
+	emit_signal("colonizeTile", thisTile)
+	pass
 
 signal spellAssignedToTile
 func spellTileAssigned(cost):

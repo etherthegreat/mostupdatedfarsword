@@ -1,0 +1,77 @@
+[gd_scene load_steps=7 format=3 uid="uid://5aam1hdmg5ut"]
+
+[ext_resource type="Script" uid="uid://8fcu800njqqm" path="res://new_building_button.gd" id="1_5ybhi"]
+[ext_resource type="Texture2D" uid="uid://ct6whogyqhymx" path="res://art assets/Placeholder Art/UI Art/resources/Farm.png" id="2_mqrw1"]
+[ext_resource type="Texture2D" uid="uid://h8vhnn8tit4b" path="res://art assets/Placeholder Art/UI Art/resources/gold.png" id="3_ksbpr"]
+[ext_resource type="Texture2D" uid="uid://dhto551am3o5h" path="res://art assets/Placeholder Art/UI Art/resources/food.png" id="4_6fpft"]
+[ext_resource type="Texture2D" uid="uid://b1davws52n0ja" path="res://art assets/Placeholder Art/UI Art/resources/wood.png" id="5_eh6yh"]
+[ext_resource type="Texture2D" uid="uid://bqtabfkctmxau" path="res://art assets/Placeholder Art/UI Art/resources/Metal.png" id="6_crnfl"]
+
+[node name="NewBuildingButton" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_5ybhi")
+
+[node name="Button" type="Button" parent="."]
+custom_minimum_size = Vector2(300, 160)
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+icon = ExtResource("2_mqrw1")
+expand_icon = true
+
+[node name="GoldCostLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 52.0
+offset_top = 134.0
+offset_right = 97.0
+offset_bottom = 161.0
+text = "125"
+
+[node name="FoodCostLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 121.25
+offset_top = 134.25
+offset_right = 166.25
+offset_bottom = 161.25
+text = "125"
+
+[node name="WoodCostLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 184.25
+offset_top = 134.25
+offset_right = 229.25
+offset_bottom = 161.25
+text = "125"
+
+[node name="MetalCostLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 246.0
+offset_top = 134.0
+offset_right = 291.0
+offset_bottom = 161.0
+text = "125"
+
+[node name="GoldCostSprite" type="Sprite2D" parent="."]
+position = Vector2(37, 141)
+scale = Vector2(0.245, 0.245)
+texture = ExtResource("3_ksbpr")
+
+[node name="FoodCostSprite" type="Sprite2D" parent="."]
+position = Vector2(108.25, 142.25)
+scale = Vector2(0.245, 0.245)
+texture = ExtResource("4_6fpft")
+
+[node name="WoodCostSprite" type="Sprite2D" parent="."]
+position = Vector2(171.25, 142.25)
+scale = Vector2(0.245, 0.245)
+texture = ExtResource("5_eh6yh")
+
+[node name="MetalCostSprite" type="Sprite2D" parent="."]
+position = Vector2(233, 142)
+scale = Vector2(0.245, 0.245)
+texture = ExtResource("6_crnfl")
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

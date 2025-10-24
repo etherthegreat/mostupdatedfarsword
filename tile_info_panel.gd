@@ -43,6 +43,18 @@ func displayTileInfo(tile):
 		firstTime = false
 	$Label.text = tile.tileName
 	matchTileNaturals()
+	if tile.tileOwner == "":
+		$colonizationPointsLabel.text = str(tile.colonizationPoints, " / ", tile.colonizationReq)
+	if tile.corruption <= 25:
+		$CorruptionSprite.texture = load("res://art assets/ModifierIcons/TileEcoModifiers/CorruptionNo.png")
+	elif tile.corruption > 20 && tile.corruption <= 40:
+		$CorruptionSprite.texture = load("res://art assets/ModifierIcons/TileEcoModifiers/CorruptionLight.png")
+	elif tile.corruption > 40 && tile.corruption <= 60:
+		$CorruptionSprite.texture = load("res://art assets/ModifierIcons/TileEcoModifiers/CorruptionModerate.png")
+	elif tile.corruption > 60 && tile.corruption < 80:
+		$CorruptionSprite.texture = load("res://art assets/ModifierIcons/TileEcoModifiers/CorruptionHeavy.png")
+	else:
+		$CorruptionSprite.texture = load("res://art assets/ModifierIcons/TileEcoModifiers/CorruptionTotal.png")
 	for tileEcoModifier in tile.tileEcoModifiers:
 		var modifierControl = Control.new()
 		var modiSprite = ModifierSprite.new()
@@ -187,4 +199,9 @@ func confirmGovernor(confirmedGovernor):
 
 
 func _on_factions_button_pressed() -> void:
+	pass # Replace with function body.
+
+
+func _on_building_info_panel_show_new_building_tab() -> void:
+	
 	pass # Replace with function body.
