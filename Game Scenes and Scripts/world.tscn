@@ -3299,4 +3299,8 @@ shape = SubResource("RectangleShape2D_qt86y")
 [connection signal="pressed" from="CanvasLayer/CivilianUnitControl/CivilianActionButtons/ClearCorruption" to="." method="_on_clear_corruption_pressed"]
 [connection signal="pressed" from="CanvasLayer/CivilianUnitControl/CivilianActionButtons/ColonizeButton" to="." method="_on_colonize_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/CivilianUnitControl/CivilianActionButtons/IncreaseAgriculturalDevelopment" to="." method="_on_increase_agricultural_development_pressed"]
+[connection signal="pressed" from="CanvasLayer/CivilianUnitControl/CivilianActionButtons/IncreaseResourceDevelopment" to="." method="_on_increase_resource_development_pressed"]
+[connection signal="pressed" from="CanvasLayer/CivilianUnitControl/CivilianActionButtons/IncreaseUrbanDevelopment" to="." method="_on_increase_urban_development_pressed"]
+[connection signal="pressed" from="CanvasLayer/CivilianUnitControl/CivilianActionButtons/IncreaseEliteDevelopment" to="." method="_on_increase_elite_development_pressed"]
+[connection signal="pressed" from="CanvasLayer/CivilianUnitControl/CivilianActionButtons/IncreaseMilitaryDevelopment" to="." method="_on_increase_military_development_pressed"]
 [connection signal="input_event" from="RightClickDetector" to="." method="_on_right_click_detector_input_event"]

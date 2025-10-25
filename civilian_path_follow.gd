@@ -97,6 +97,13 @@ func agricultureMode():
 	civilianMode = "Agriculture"
 	pass
 
+func resourceMode():
+	civilianMode = "Resource"
+	pass
+
+func urbanMode():
+	civilianMode = "Urban"
+	pass
 
 signal tileChanging
 func emitTileChange():

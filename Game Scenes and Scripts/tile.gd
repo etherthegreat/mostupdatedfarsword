@@ -222,7 +222,7 @@ func onNewGame():
 			oreSlot = tileOre
 			#addWizard("Druid")
 			#addBuilding("Tower", 1)
-			addBuilding("Farm", 1)
+			addBuilding("Farm", 3)
 			#addBuilding("Granary", 1)
 			addBuilding("Barracks", 2)
 			#addBuilding("Library", 1)
@@ -582,9 +582,75 @@ func addBuilding(buildingType, level):
 	newBuild.number = tileNumber
 	tileBuildingsList.append(newBuild)
 	self.add_child(newBuild)
-	if newBuild.buildingType == "Tower":
-		newBuild.towerBuilding.connect(wizardCheck)
-	newBuild.buildBuilding()
+	if newBuild.buildingLevel == 1:
+		match newBuild.buildingType:
+			"Farm":
+				farmDevelopmentPoints = 0
+			"Camp":
+				campDevelopmentPoints = 0
+			"Mine":
+				mineDevelopmentPoints = 0
+			"Library":
+				libraryDevelopmentPoints = 0
+			"Granary":
+				granaryDevelopmentPoints = 0
+			"Temple":
+				templeDevelopmentPoints = 0
+			"Tower":
+				towerDevelopmentPoints = 0
+				newBuild.towerBuilding.connect(wizardCheck)
+			"Workshop":
+				workshopDevelopmentPoints = 0
+			"Forge":
+				forgeDevelopmentPoints = 0
+			"Bath":
+				bathDevelopmentPoints = 0
+			"Faire":
+				faireDevelopmentPoints = 0
+			"Barracks":
+				barracksDevelopmentPoints = 0
+		newBuild.buildBuilding()
+	else:
+		match newBuild.buildingType:
+			"Farm":
+				farmDevelopmentPoints = 10 * ((newBuild.buildingLevel - 1) * 1.3)
+				tileFarmDevCost = 10 * (newBuild.buildingLevel * 1.3)
+			"Camp":
+				campDevelopmentPoints = 10 * ((newBuild.buildingLevel - 1) * 1.3)
+				tileCampDevCost = 10 * (newBuild.buildingLevel * 1.3)
+			"Mine":
+				mineDevelopmentPoints = 15 * ((newBuild.buildingLevel - 1) * 1.3)
+				tileMineDevCost = 15 * (newBuild.buildingLevel * 1.3)
+			"Library":
+				libraryDevelopmentPoints = 25 * ((newBuild.buildingLevel - 1) * 1.3)
+				tileLibraryDevCost = 25 * (newBuild.buildingLevel * 1.3)
+			"Granary":
+				granaryDevelopmentPoints = 25 * ((newBuild.buildingLevel - 1) * 1.3)
+				tileGranaryDevCost = 25 * (newBuild.buildingLevel * 1.3)
+			"Temple":
+				templeDevelopmentPoints = 20 * ((newBuild.buildingLevel - 1) * 1.3)
+				tileTempleDevCost = 20 * (newBuild.buildingLevel * 1.3)
+			"Tower":
+				towerDevelopmentPoints = 40 * ((newBuild.buildingLevel - 1) * 1.3)
+				newBuild.towerBuilding.connect(wizardCheck)
+				tileTowerDevCost = 40 * (newBuild.buildingLevel * 1.3)
+			"Workshop":
+				workshopDevelopmentPoints = 30 * ((newBuild.buildingLevel - 1) * 1.3)
+				tileWorkshopDevCost = 30 * (newBuild.buildingLevel * 1.3)
+			"Forge":
+				forgeDevelopmentPoints = 30 * ((newBuild.buildingLevel - 1) * 1.3)
+				tileForgeDevCost = 30 * (newBuild.buildingLevel * 1.3)
+			"Bath":
+				bathDevelopmentPoints = 25 * ((newBuild.buildingLevel - 1) * 1.3)
+				tileBathDevCost = 25 * (newBuild.buildingLevel * 1.3)
+			"Faire":
+				faireDevelopmentPoints = 25 * ((newBuild.buildingLevel - 1) * 1.3)
+				tileFaireDevCost = 25 * (newBuild.buildingLevel * 1.3)
+			"Barracks":
+				barracksDevelopmentPoints = 30 * ((newBuild.buildingLevel - 1) * 1.3)
+				tileBarracksDevCost = 30 * (newBuild.buildingLevel * 1.3)
+		newBuild.buildBuilding()
+		#levelUpBuilding(newBuild.buildingType)
 	pass
 
 func levelUpBuilding(type):
@@ -596,6 +662,8 @@ func levelUpBuilding(type):
 					tileFarmDevCost = 10 * (building.buildingLevel * 1.3)
 				"Camp":
 					tileCampDevCost = 10 * (building.buildingLevel * 1.3)
+				"Granary":
+					tileCampDevCost = 25 * (building.buildingLevel * 1.3)
 				"Mine":
 					tileMineDevCost = 15 * (building.buildingLevel * 1.3)
 				"Library":
@@ -757,10 +825,44 @@ func devChange(devType, devCivilian):
 			if colonizationPoints >= colonizationReq:
 				colonizeTile(devCivilian)
 		"Agriculture":
-			farmDevelopmentPoints += 1
-			granaryDevelopmentPoints += 1
+			farmDevelopmentPoints += 2
+			granaryDevelopmentPoints += 2
 			if farmDevelopmentPoints >= tileFarmDevCost:
 				levelUpBuilding("Farm")
 			if granaryDevelopmentPoints >= tileGranaryDevCost:
 				levelUpBuilding("Granary")
+		"Resource":
+			campDevelopmentPoints += 2
+			mineDevelopmentPoints += 2
+			if mineDevelopmentPoints >= tileMineDevCost:
+				levelUpBuilding("Mine")
+			if campDevelopmentPoints >= tileCampDevCost:
+				levelUpBuilding("Camp")
+		"Urban":
+			workshopDevelopmentPoints += 2
+			bathDevelopmentPoints += 2
+			faireDevelopmentPoints += 2
+			if workshopDevelopmentPoints >= tileWorkshopDevCost:
+				levelUpBuilding("Workshop")
+			if bathDevelopmentPoints >= tileBathDevCost:
+				levelUpBuilding("Bath")
+			if faireDevelopmentPoints >= tileFaireDevCost:
+				levelUpBuilding("Faire")
+		"Elite":
+			libraryDevelopmentPoints += 2
+			templeDevelopmentPoints += 2
+			towerDevelopmentPoints += 2
+			if libraryDevelopmentPoints >= tileLibraryDevCost:
+				levelUpBuilding("Library")
+			if templeDevelopmentPoints >= tileTempleDevCost:
+				levelUpBuilding("Temple")
+			if towerDevelopmentPoints >= tileTowerDevCost:
+				levelUpBuilding("Tower")
+		"Military":
+			barracksDevelopmentPoints += 2
+			forgeDevelopmentPoints += 2
+			if barracksDevelopmentPoints >= tileBarracksDevCost:
+				levelUpBuilding("Barracks")
+			if forgeDevelopmentPoints >= tileBarracksDevCost:
+				levelUpBuilding("Barracks")
 	pass

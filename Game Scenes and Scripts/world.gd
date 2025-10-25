@@ -624,10 +624,29 @@ func updateCountryTiles(colonizedTile):
 	pass
 
 func _on_increase_agricultural_development_pressed() -> void:
-	$CanvasLayer/CivilianUnitControl
+	$CanvasLayer/CivilianUnitControl.visible = false
 	$PathControl.agricultureTile()
 	pass # Replace with function body.
 
+func _on_increase_resource_development_pressed() -> void:
+	$CanvasLayer/CivilianUnitControl.visible = false
+	$PathControl.resourceTile()
+	pass # Replace with function body.
+
+func _on_increase_urban_development_pressed() -> void:
+	$CanvasLayer/CivilianUnitControl.visible = false
+	$PathControl.urbanTile()
+	pass # Replace with function body.
+
+func _on_increase_elite_development_pressed() -> void:
+	$CanvasLayer/CivilianUnitControl.visible = false
+	$PathControl.eliteTile()
+	pass # Replace with function body.
+
+func _on_increase_military_development_pressed() -> void:
+	$CanvasLayer/CivilianUnitControl.visible = false
+	$PathControl.militaryTile()
+	pass # Replace with function body.
 
 func _on_clear_corruption_pressed() -> void:
 	$CanvasLayer/CivilianUnitControl.visible = false

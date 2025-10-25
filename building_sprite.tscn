@@ -10,10 +10,10 @@ texture = SubResource("CompressedTexture2D_emhop")
 script = ExtResource("1_vdlt3")
 
 [node name="LevelUpPointsLabel" type="Label" parent="."]
-offset_left = -197.0
+offset_left = -376.0
 offset_top = 175.0
-offset_right = 196.0
-offset_bottom = 220.0
-theme_override_font_sizes/font_size = 30
+offset_right = 364.0
+offset_bottom = 258.0
+theme_override_font_sizes/font_size = 60
 text = "building type not finished"
 horizontal_alignment = 1

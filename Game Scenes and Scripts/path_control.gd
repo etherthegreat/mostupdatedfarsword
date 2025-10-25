@@ -165,7 +165,10 @@ var startingPoint: pathPointButton#come back and fix this
 #pathPointButton, we could compare them.
 func calculateArmyMovement(pathPointButton, endNodes, startNodes, neighborPathPoints, curTile):
 	print("DEBUG Calculate", endNodes)
-	startingPoint = selectedCPF.currentPathPoint
+	if selectedAPF != null:
+		startingPoint = selectedAPF.currentPathPoint
+	elif selectedCPF != null:
+		startingPoint = selectedCPF.currentPathPoint
 	if endNodes != null:
 		for Container in endNodes: 
 			print(Container, "DEUBUG NODEPATH")
@@ -281,6 +284,30 @@ func newTileDevelopment(tileToDev, devType, devCivilian):
 func agricultureTile():
 	if selectedCPF != null:
 		selectedCPF.agricultureMode()
+		selectedCPF = null
+	pass
+
+func resourceTile():
+	if selectedCPF != null:
+		selectedCPF.resourceMode()
+		selectedCPF = null
+	pass
+
+func urbanTile():
+	if selectedCPF != null:
+		selectedCPF.urbanMode()
+		selectedCPF = null
+	pass
+
+func eliteTile():
+	if selectedCPF != null:
+		selectedCPF.eliteMode()
+		selectedCPF = null
+	pass
+
+func militaryTile():
+	if selectedCPF != null:
+		selectedCPF.militaryMode()
 		selectedCPF = null
 	pass
 
