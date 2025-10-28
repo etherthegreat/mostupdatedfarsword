@@ -21,6 +21,8 @@ var occupied: bool = false #is this occupied by any of our units?
 
 var stationedCivilians: Array
 
+var discoveredByPlayer: bool
+
 func buildSelf():
 	pathNumber = pathNumberEXP
 	for NodePath in endNodePathsEXP:

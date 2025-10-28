@@ -1,22 +1,10 @@
-[gd_scene load_steps=18 format=3 uid="uid://o2yoabcupr6h"]
+[gd_scene load_steps=6 format=3 uid="uid://o2yoabcupr6h"]
 
 [ext_resource type="Script" uid="uid://cf7gc7pvlwas6" path="res://Game Scenes and Scripts/tech_tree.gd" id="1_6vy4o"]
 [ext_resource type="Texture2D" uid="uid://b87kh26a6dn0c" path="res://art assets/Placeholder Art/UI Art/resources/4-15-Eli-Prompt.png" id="2_hkv5x"]
-[ext_resource type="Texture2D" uid="uid://vu0teomjtckk" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/food.png" id="3_nhm5q"]
-[ext_resource type="Texture2D" uid="uid://lk2vylhlsw1l" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/influence 100 x 100.png" id="3_ybys5"]
-[ext_resource type="Texture2D" uid="uid://bmgon5mm6nkvc" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/weapons.png" id="4_dt8r8"]
-[ext_resource type="Script" uid="uid://l3e0hqmwyabe" path="res://tech_unlock_button.gd" id="4_iukis"]
-[ext_resource type="Texture2D" uid="uid://dmpi0sruv26np" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/god dimensions 215 x 180.png" id="5_21fc8"]
-[ext_resource type="Texture2D" uid="uid://cf40ble7dja83" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/culture 100 x 100.png" id="5_g1m17"]
-[ext_resource type="Texture2D" uid="uid://bcdyjy74pf6s8" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/Science.png" id="6_j76bv"]
+[ext_resource type="Texture2D" uid="uid://cta3ksrnubp7x" path="res://art assets/finishedAssets/Panels/tilePanel.PNG" id="4_irtp6"]
 [ext_resource type="Texture2D" uid="uid://cl6exy22t3ml" path="res://art assets/Placeholder Art/UI Art/resources/Science.png" id="6_rudwg"]
-[ext_resource type="Texture2D" uid="uid://dmf7id8k52mxp" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/mandate 100 x 100.png" id="7_fvjne"]
-[ext_resource type="Texture2D" uid="uid://dauok6wt717hv" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/Metal.png" id="8_88412"]
-[ext_resource type="Texture2D" uid="uid://dpa3jb3g0q5al" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/faith.png" id="10_gife4"]
-[ext_resource type="Texture2D" uid="uid://eelq4yxqnbt2" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/gold.png" id="11_nnycd"]
-[ext_resource type="Texture2D" uid="uid://drifybbnrpta7" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/wood.png" id="13_033go"]
-[ext_resource type="Texture2D" uid="uid://jrg01q8jnayd" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/Magic.png" id="14_ise61"]
-[ext_resource type="Texture2D" uid="uid://deaxhpkfk86qj" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/harmony 100 x 100.png" id="15_us28h"]
+[ext_resource type="PackedScene" uid="uid://c1ci78g38o3n7" path="res://tech_unlock_button.tscn" id="9_hw8rb"]
 
 [node name="TechTree" type="Control" groups=["ScreenPanels"]]
 layout_mode = 3
@@ -25,12 +13,14 @@ offset_left = -4.0
 offset_top = 5.0
 offset_right = 36.0
 offset_bottom = 45.0
+mouse_filter = 1
 script = ExtResource("1_6vy4o")
 
 [node name="TechPanel" type="Panel" parent="."]
 layout_mode = 0
 offset_right = 1917.0
 offset_bottom = 1065.0
+mouse_filter = 1
 
 [node name="ColorRect" type="ColorRect" parent="TechPanel"]
 layout_mode = 0
@@ -74,141 +64,70 @@ offset_bottom = 101.0
 
 [node name="InsititutionContainer" type="HBoxContainer" parent="TechPanel"]
 layout_mode = 0
-offset_left = 136.0
-offset_top = 156.0
-offset_right = 1709.0
-offset_bottom = 266.0
+offset_left = 44.0
+offset_top = 173.0
+offset_right = 1617.0
+offset_bottom = 283.0
 theme_override_constants/separation = 455
 
-[node name="LanguageControl" type="Control" parent="TechPanel/InsititutionContainer"]
+[node name="LanguageUnlockButton" parent="TechPanel/InsititutionContainer" instance=ExtResource("9_hw8rb")]
 layout_mode = 2
-
-[node name="LanguageButton" type="Button" parent="TechPanel/InsititutionContainer/LanguageControl"]
-layout_mode = 2
-offset_left = 58.0
-offset_top = -43.0
-offset_right = 166.0
-offset_bottom = 111.0
-text = "Language"
-icon = ExtResource("3_ybys5")
-icon_alignment = 1
-vertical_icon_alignment = 0
-script = ExtResource("4_iukis")
+techCost = 10
 techID = "Language"
+techDesc = "... ... ... oh hey I can speak"
 institutionTech = true
 
-[node name="WritingControl" type="Control" parent="TechPanel/InsititutionContainer"]
+[node name="WritingUnlockButton" parent="TechPanel/InsititutionContainer" node_paths=PackedStringArray("reqTechs") instance=ExtResource("9_hw8rb")]
 layout_mode = 2
-
-[node name="WritingButton" type="Button" parent="TechPanel/InsititutionContainer/WritingControl" node_paths=PackedStringArray("reqTechs")]
-layout_mode = 2
-offset_left = 58.0
-offset_top = -43.0
-offset_right = 166.0
-offset_bottom = 111.0
-text = "Writing"
-icon = ExtResource("5_g1m17")
-icon_alignment = 1
-vertical_icon_alignment = 0
-script = ExtResource("4_iukis")
+techCost = 80
 techID = "Writing"
+techDesc = "Let's write some shiz down"
 institutionTech = true
-reqTechs = [NodePath("../../../GridContainer/AgricultureControl/AgricultureUnlockButton"), NodePath("../../../GridContainer/CopperWorkingControl/CopperWorkingUnlockButton"), NodePath("../../../GridContainer/ArtistryControl/ArtristryUnlockButton"), NodePath("../../../GridContainer/SailingControl/SailingUnlockButton"), NodePath("../../../GridContainer/OrganizationControl/OrganizationUnlockButton")]
+reqTechs = [NodePath("../../GridContainer/AgricultureTechUnlockButton"), NodePath("../../GridContainer/CraftmanshipTechUnlockButton"), NodePath("../../GridContainer/ArtistryTechUnlockButton"), NodePath("../../GridContainer/SailingTechUnlockButton"), NodePath("../../GridContainer/OrganizationTechUnlockButton")]
 
-[node name="AlphabetControl" type="Control" parent="TechPanel/InsititutionContainer"]
+[node name="AlphabetUnlockButton" parent="TechPanel/InsititutionContainer" node_paths=PackedStringArray("reqTechs") instance=ExtResource("9_hw8rb")]
 layout_mode = 2
-
-[node name="AlphabetButton" type="Button" parent="TechPanel/InsititutionContainer/AlphabetControl" node_paths=PackedStringArray("reqTechs")]
-layout_mode = 2
-offset_left = 58.0
-offset_top = -43.0
-offset_right = 166.0
-offset_bottom = 111.0
-text = "Alphabet"
-icon = ExtResource("6_j76bv")
-icon_alignment = 1
-vertical_icon_alignment = 0
-script = ExtResource("4_iukis")
+techCost = 200
 techID = "Alphabet"
+techDesc = "By streamlining our written word, we can include more people in our literate population"
 institutionTech = true
-reqTechs = [NodePath("../../../GridContainer/CalendarControl/CalendarUnlockButton"), NodePath("../../../GridContainer/BronzeWorkingControl/BronzeWorkingUnlockButton"), NodePath("../../../GridContainer/MasonryControl/MasonryUnlockButton"), NodePath("../../../GridContainer/StatecraftControl/StatecraftUnlockButton"), NodePath("../../../GridContainer/LogisticsControl/LogisticsUnlockButton")]
+reqTechs = [NodePath("../../GridContainer/CalendarTechUnlockButton"), NodePath("../../GridContainer/MetalAlloysTechUnlockButton"), NodePath("../../GridContainer/MasonryTechUnlockButton"), NodePath("../../GridContainer/StatecraftTechUnlockButton"), NodePath("../../GridContainer/LogisticsTechUnlockButton")]
 
-[node name="MathematicsControl" type="Control" parent="TechPanel/InsititutionContainer"]
+[node name="MathematicsUnlockButton" parent="TechPanel/InsititutionContainer" node_paths=PackedStringArray("reqTechs") instance=ExtResource("9_hw8rb")]
 layout_mode = 2
-
-[node name="MathematicsButton" type="Button" parent="TechPanel/InsititutionContainer/MathematicsControl" node_paths=PackedStringArray("reqTechs")]
-layout_mode = 2
-offset_left = 58.0
-offset_top = -43.0
-offset_right = 166.0
-offset_bottom = 111.0
-text = "Mathematics"
-icon = ExtResource("7_fvjne")
-icon_alignment = 1
-vertical_icon_alignment = 0
-script = ExtResource("4_iukis")
+techCost = 200
 techID = "Mathematics"
+techDesc = "We can perform some insane calculations to prove our own existence"
 institutionTech = true
-reqTechs = [NodePath("../../../GridContainer/IrrigationControl/IrrigationUnlockButton"), NodePath("../../../GridContainer/IronWorkingControl/IronWorkingUnlockButton"), NodePath("../../../GridContainer/ArchitectureControl/ArchitectureUnlockButton"), NodePath("../../../GridContainer/ShipbuildingControl/ShipbuildingUnlockButton"), NodePath("../../../GridContainer/TacticsControl/TacticsUnlockButton")]
+reqTechs = [NodePath("../../GridContainer/IrrigationTechUnlockButton"), NodePath("../../GridContainer/TempuringTechUnlockButton"), NodePath("../../GridContainer/BankingTechUnlockButton"), NodePath("../../GridContainer/ShipbuildingTechUnlockButton"), NodePath("../../GridContainer/TacticsTechUnlockButton")]
 
 [node name="UnlockedContainer" type="HBoxContainer" parent="TechPanel"]
 layout_mode = 0
 offset_left = 361.0
-offset_top = 955.0
+offset_top = 908.0
 offset_right = 1934.0
-offset_bottom = 1065.0
+offset_bottom = 1018.0
 theme_override_constants/separation = 455
 
-[node name="AdministrationControl" type="Control" parent="TechPanel/UnlockedContainer"]
+[node name="AdministrationTechUnlockButton" parent="TechPanel/UnlockedContainer" node_paths=PackedStringArray("reqTechs") instance=ExtResource("9_hw8rb")]
 layout_mode = 2
+techCost = 250
+techID = "Administration"
+techDesc = "we can build a bureacracy to maintain order over our population"
+reqTechs = [NodePath("../../GridContainer/AgricultureTechUnlockButton"), NodePath("../../GridContainer/CalendarTechUnlockButton"), NodePath("../../GridContainer/CraftmanshipTechUnlockButton"), NodePath("../../GridContainer/MetalAlloysTechUnlockButton"), NodePath("../../GridContainer/ArtistryTechUnlockButton"), NodePath("../../GridContainer/MasonryTechUnlockButton"), NodePath("../../GridContainer/SailingTechUnlockButton"), NodePath("../../GridContainer/StatecraftTechUnlockButton"), NodePath("../../GridContainer/OrganizationTechUnlockButton"), NodePath("../../GridContainer/LogisticsTechUnlockButton")]
 
-[node name="AdministrationButton" type="Button" parent="TechPanel/UnlockedContainer/AdministrationControl" node_paths=PackedStringArray("reqTechs")]
+[node name="PrintingPressTechUnlockButton" parent="TechPanel/UnlockedContainer" node_paths=PackedStringArray("reqTechs") instance=ExtResource("9_hw8rb")]
 layout_mode = 2
-offset_left = 58.0
-offset_top = -43.0
-offset_right = 166.0
-offset_bottom = 111.0
-theme_override_font_sizes/font_size = 13
-text = "Administration"
-icon = ExtResource("3_ybys5")
-icon_alignment = 1
-vertical_icon_alignment = 0
-script = ExtResource("4_iukis")
-reqTechs = [NodePath("../../../GridContainer/AgricultureControl/AgricultureUnlockButton"), NodePath("../../../GridContainer/CalendarControl/CalendarUnlockButton"), NodePath("../../../GridContainer/CopperWorkingControl/CopperWorkingUnlockButton"), NodePath("../../../GridContainer/BronzeWorkingControl/BronzeWorkingUnlockButton"), NodePath("../../../GridContainer/ArtistryControl/ArtristryUnlockButton"), NodePath("../../../GridContainer/MasonryControl/MasonryUnlockButton"), NodePath("../../../GridContainer/SailingControl/SailingUnlockButton"), NodePath("../../../GridContainer/StatecraftControl/StatecraftUnlockButton"), NodePath("../../../GridContainer/OrganizationControl/OrganizationUnlockButton"), NodePath("../../../GridContainer/LogisticsControl/LogisticsUnlockButton")]
+techCost = 500
+techID = "Printing Press"
+reqTechs = [NodePath("../../GridContainer/CalendarTechUnlockButton"), NodePath("../../GridContainer/IrrigationTechUnlockButton"), NodePath("../../GridContainer/MetalAlloysTechUnlockButton"), NodePath("../../GridContainer/ForgingTechUnlockButton"), NodePath("../../GridContainer/MasonryTechUnlockButton"), NodePath("../../GridContainer/ArchitectureTechUnlockButton"), NodePath("../../GridContainer/StatecraftTechUnlockButton"), NodePath("../../GridContainer/ShipbuildingTechUnlockButton"), NodePath("../../GridContainer/LogisticsTechUnlockButton"), NodePath("../../GridContainer/TacticsTechUnlockButton")]
 
-[node name="PrintingPressControl" type="Control" parent="TechPanel/UnlockedContainer"]
+[node name="SteamPowerTechUnlockButton" parent="TechPanel/UnlockedContainer" node_paths=PackedStringArray("reqTechs") instance=ExtResource("9_hw8rb")]
 layout_mode = 2
-
-[node name="PrintingPressButton" type="Button" parent="TechPanel/UnlockedContainer/PrintingPressControl" node_paths=PackedStringArray("reqTechs")]
-layout_mode = 2
-offset_left = 58.0
-offset_top = -43.0
-offset_right = 166.0
-offset_bottom = 111.0
-text = "Printing Press"
-icon = ExtResource("5_g1m17")
-autowrap_mode = 3
-icon_alignment = 1
-vertical_icon_alignment = 0
-script = ExtResource("4_iukis")
-reqTechs = [NodePath("../../../GridContainer/CalendarControl/CalendarUnlockButton"), NodePath("../../../GridContainer/IrrigationControl/IrrigationUnlockButton"), NodePath("../../../GridContainer/BronzeWorkingControl/BronzeWorkingUnlockButton"), NodePath("../../../GridContainer/IronWorkingControl/IronWorkingUnlockButton"), NodePath("../../../GridContainer/MasonryControl/MasonryUnlockButton"), NodePath("../../../GridContainer/ArchitectureControl/ArchitectureUnlockButton"), NodePath("../../../GridContainer/StatecraftControl/StatecraftUnlockButton"), NodePath("../../../GridContainer/ShipbuildingControl/ShipbuildingUnlockButton"), NodePath("../../../GridContainer/LogisticsControl/LogisticsUnlockButton"), NodePath("../../../GridContainer/TacticsControl/TacticsUnlockButton")]
-
-[node name="SteamPowerControl" type="Control" parent="TechPanel/UnlockedContainer"]
-layout_mode = 2
-
-[node name="SteamPowerButton" type="Button" parent="TechPanel/UnlockedContainer/SteamPowerControl" node_paths=PackedStringArray("reqTechs")]
-layout_mode = 2
-offset_left = 58.0
-offset_top = -43.0
-offset_right = 166.0
-offset_bottom = 134.0
-text = "Steam Power"
-icon = ExtResource("8_88412")
-autowrap_mode = 3
-icon_alignment = 1
-vertical_icon_alignment = 0
-script = ExtResource("4_iukis")
-reqTechs = [NodePath("../../../GridContainer/IrrigationControl/IrrigationUnlockButton"), NodePath("../../../GridContainer/EngineeringControl/EngineeringUnlockButton"), NodePath("../../../GridContainer/IronWorkingControl/IronWorkingUnlockButton"), NodePath("../../../GridContainer/TempuringControl/TempuringUnlockButton"), NodePath("../../../GridContainer/ArchitectureControl/ArchitectureUnlockButton"), NodePath("../../../GridContainer/BankingControl/BankingUnlockButton"), NodePath("../../../GridContainer/ShipbuildingControl/ShipbuildingUnlockButton"), NodePath("../../../GridContainer/LenscraftControl/LenscraftUnlockButton"), NodePath("../../../GridContainer/TacticsControl/TacticsUnlockButton"), NodePath("../../../GridContainer/AuthorityControl/AuthorityUnlockButton")]
+techCost = 750
+techID = "Steam Power"
+techDesc = "We can utilize the power of the sun in the palm of our hands"
+reqTechs = [NodePath("../../GridContainer/IrrigationTechUnlockButton"), NodePath("../../GridContainer/EngineeringTechUnlockButton"), NodePath("../../GridContainer/ForgingTechUnlockButton"), NodePath("../../GridContainer/TempuringTechUnlockButton"), NodePath("../../GridContainer/ArchitectureTechUnlockButton"), NodePath("../../GridContainer/BankingTechUnlockButton"), NodePath("../../GridContainer/ShipbuildingTechUnlockButton"), NodePath("../../GridContainer/LenscraftTechUnlockButton"), NodePath("../../GridContainer/TacticsTechUnlockButton"), NodePath("../../GridContainer/AurhorityTechUnlockButton")]
 
 [node name="GridContainer" type="GridContainer" parent="TechPanel"]
 layout_mode = 0
@@ -220,453 +139,145 @@ theme_override_constants/h_separation = 450
 theme_override_constants/v_separation = 125
 columns = 4
 
-[node name="AgricultureControl" type="Control" parent="TechPanel/GridContainer"]
+[node name="AgricultureTechUnlockButton" parent="TechPanel/GridContainer" node_paths=PackedStringArray("reqTechs") instance=ExtResource("9_hw8rb")]
 layout_mode = 2
-
-[node name="AgricultureUnlockButton" type="Button" parent="TechPanel/GridContainer/AgricultureControl" node_paths=PackedStringArray("reqTechs")]
-layout_mode = 2
-offset_left = -9.0
-offset_top = -11.0
-offset_right = 307.0
-offset_bottom = 97.0
-theme_override_colors/font_disabled_color = Color(0.338686, 0.528249, 0.700882, 1)
-theme_override_colors/icon_disabled_color = Color(0.209152, 0.281094, 0.73112, 1)
-theme_override_colors/icon_pressed_color = Color(0.19621, 0.30811, 0.584453, 1)
-theme_override_colors/font_pressed_color = Color(0.145413, 0.205351, 0.5822, 1)
-theme_override_font_sizes/font_size = 28
-toggle_mode = true
-text = "Agriculture"
-icon = ExtResource("3_nhm5q")
-script = ExtResource("4_iukis")
-techCost = 25
+techCost = 40
 techID = "Agriculture"
-techDesc = "\"By mastering the seed, one can feed countless mouths.\" - Uda-Fed Scripture Text, 1st Era"
-reqTechs = [NodePath("../../../InsititutionContainer/LanguageControl/LanguageButton")]
+techDesc = "We can plant some seeds in the ground with this one boys"
+reqTechs = [NodePath("../../InsititutionContainer/LanguageUnlockButton")]
 
-[node name="CalendarControl" type="Control" parent="TechPanel/GridContainer"]
+[node name="CalendarTechUnlockButton" parent="TechPanel/GridContainer" node_paths=PackedStringArray("reqTechs") instance=ExtResource("9_hw8rb")]
 layout_mode = 2
-
-[node name="CalendarUnlockButton" type="Button" parent="TechPanel/GridContainer/CalendarControl" node_paths=PackedStringArray("reqTechs")]
-layout_mode = 2
-offset_left = -9.0
-offset_top = -11.0
-offset_right = 307.0
-offset_bottom = 97.0
-theme_override_colors/font_disabled_color = Color(0.338686, 0.528249, 0.700882, 1)
-theme_override_colors/icon_disabled_color = Color(0.209152, 0.281094, 0.73112, 1)
-theme_override_colors/icon_pressed_color = Color(0.19621, 0.30811, 0.584453, 1)
-theme_override_colors/font_pressed_color = Color(0.145413, 0.205351, 0.5822, 1)
-theme_override_font_sizes/font_size = 38
-toggle_mode = true
-text = "Calendar"
-icon = ExtResource("10_gife4")
-script = ExtResource("4_iukis")
-techCost = 25
+techCost = 100
 techID = "Calendar"
-reqTechs = [NodePath("../../../InsititutionContainer/WritingControl/WritingButton")]
+techDesc = "We can measure the start to predict the future"
+reqTechs = [NodePath("../../InsititutionContainer/WritingUnlockButton")]
 
-[node name="IrrigationControl" type="Control" parent="TechPanel/GridContainer"]
+[node name="IrrigationTechUnlockButton" parent="TechPanel/GridContainer" node_paths=PackedStringArray("reqTechs") instance=ExtResource("9_hw8rb")]
 layout_mode = 2
-
-[node name="IrrigationUnlockButton" type="Button" parent="TechPanel/GridContainer/IrrigationControl" node_paths=PackedStringArray("reqTechs")]
-layout_mode = 2
-offset_left = -9.0
-offset_top = -11.0
-offset_right = 307.0
-offset_bottom = 97.0
-theme_override_colors/font_disabled_color = Color(0.338686, 0.528249, 0.700882, 1)
-theme_override_colors/icon_disabled_color = Color(0.209152, 0.281094, 0.73112, 1)
-theme_override_colors/icon_pressed_color = Color(0.19621, 0.30811, 0.584453, 1)
-theme_override_colors/font_pressed_color = Color(0.145413, 0.205351, 0.5822, 1)
-theme_override_font_sizes/font_size = 38
-toggle_mode = true
-text = "Irrigation"
-icon = ExtResource("7_fvjne")
-script = ExtResource("4_iukis")
-techCost = 25
+techCost = 250
 techID = "Irrigation"
-reqTechs = [NodePath("../../../InsititutionContainer/AlphabetControl/AlphabetButton")]
+techDesc = "We can organize construction of levies, dams, and waterways"
+reqTechs = [NodePath("../../InsititutionContainer/AlphabetUnlockButton")]
 
-[node name="EngineeringControl" type="Control" parent="TechPanel/GridContainer"]
+[node name="EngineeringTechUnlockButton" parent="TechPanel/GridContainer" node_paths=PackedStringArray("reqTechs") instance=ExtResource("9_hw8rb")]
 layout_mode = 2
-
-[node name="EngineeringUnlockButton" type="Button" parent="TechPanel/GridContainer/EngineeringControl" node_paths=PackedStringArray("reqTechs")]
-layout_mode = 2
-offset_left = -9.0
-offset_top = -11.0
-offset_right = 307.0
-offset_bottom = 97.0
-theme_override_colors/font_disabled_color = Color(0.338686, 0.528249, 0.700882, 1)
-theme_override_colors/icon_disabled_color = Color(0.209152, 0.281094, 0.73112, 1)
-theme_override_colors/icon_pressed_color = Color(0.19621, 0.30811, 0.584453, 1)
-theme_override_colors/font_pressed_color = Color(0.145413, 0.205351, 0.5822, 1)
-theme_override_font_sizes/font_size = 30
-toggle_mode = true
-text = "Engineering"
-icon = ExtResource("8_88412")
-script = ExtResource("4_iukis")
-techCost = 25
+techCost = 500
 techID = "Engineering"
-reqTechs = [NodePath("../../../InsititutionContainer/MathematicsControl/MathematicsButton")]
+techDesc = "We can design innovative contraptions, devices, and societal projects"
+reqTechs = [NodePath("../../InsititutionContainer/MathematicsUnlockButton")]
 
-[node name="CopperWorkingControl" type="Control" parent="TechPanel/GridContainer"]
+[node name="CraftmanshipTechUnlockButton" parent="TechPanel/GridContainer" node_paths=PackedStringArray("reqTechs") instance=ExtResource("9_hw8rb")]
 layout_mode = 2
-
-[node name="CopperWorkingUnlockButton" type="Button" parent="TechPanel/GridContainer/CopperWorkingControl" node_paths=PackedStringArray("reqTechs")]
-layout_mode = 2
-offset_left = -9.0
-offset_top = -11.0
-offset_right = 307.0
-offset_bottom = 97.0
-theme_override_colors/font_disabled_color = Color(0.338686, 0.528249, 0.700882, 1)
-theme_override_colors/icon_disabled_color = Color(0.209152, 0.281094, 0.73112, 1)
-theme_override_colors/icon_pressed_color = Color(0.19621, 0.30811, 0.584453, 1)
-theme_override_colors/font_pressed_color = Color(0.145413, 0.205351, 0.5822, 1)
-theme_override_font_sizes/font_size = 28
-toggle_mode = true
-text = "Craftsmanship"
-icon = ExtResource("8_88412")
-autowrap_mode = 3
-script = ExtResource("4_iukis")
-techCost = 25
+techCost = 40
 techID = "Copper Working"
-reqTechs = [NodePath("../../../InsititutionContainer/LanguageControl/LanguageButton")]
+techDesc = "Molding copper, forming pots, and living the world through the eyes of tools"
+reqTechs = [NodePath("../../InsititutionContainer/LanguageUnlockButton")]
 
-[node name="BronzeWorkingControl" type="Control" parent="TechPanel/GridContainer"]
+[node name="MetalAlloysTechUnlockButton" parent="TechPanel/GridContainer" node_paths=PackedStringArray("reqTechs") instance=ExtResource("9_hw8rb")]
 layout_mode = 2
+techCost = 100
+techID = "Bronze Working"
+techDesc = "we can merge metals into new metals"
+reqTechs = [NodePath("../../InsititutionContainer/WritingUnlockButton")]
 
-[node name="BronzeWorkingUnlockButton" type="Button" parent="TechPanel/GridContainer/BronzeWorkingControl" node_paths=PackedStringArray("reqTechs")]
+[node name="ForgingTechUnlockButton" parent="TechPanel/GridContainer" node_paths=PackedStringArray("reqTechs") instance=ExtResource("9_hw8rb")]
 layout_mode = 2
-offset_left = -9.0
-offset_top = -11.0
-offset_right = 307.0
-offset_bottom = 97.0
-theme_override_colors/font_disabled_color = Color(0.338686, 0.528249, 0.700882, 1)
-theme_override_colors/icon_disabled_color = Color(0.209152, 0.281094, 0.73112, 1)
-theme_override_colors/icon_pressed_color = Color(0.19621, 0.30811, 0.584453, 1)
-theme_override_colors/font_pressed_color = Color(0.145413, 0.205351, 0.5822, 1)
-theme_override_font_sizes/font_size = 30
-toggle_mode = true
-text = "Metal Alloys"
-icon = ExtResource("11_nnycd")
-autowrap_mode = 3
-script = ExtResource("4_iukis")
-techCost = 25
-techID = "Agriculture"
-reqTechs = [NodePath("../../../InsititutionContainer/WritingControl/WritingButton")]
-
-[node name="IronWorkingControl" type="Control" parent="TechPanel/GridContainer"]
-layout_mode = 2
-
-[node name="IronWorkingUnlockButton" type="Button" parent="TechPanel/GridContainer/IronWorkingControl" node_paths=PackedStringArray("reqTechs")]
-layout_mode = 2
-offset_left = -9.0
-offset_top = -11.0
-offset_right = 307.0
-offset_bottom = 97.0
-theme_override_colors/font_disabled_color = Color(0.338686, 0.528249, 0.700882, 1)
-theme_override_colors/icon_disabled_color = Color(0.209152, 0.281094, 0.73112, 1)
-theme_override_colors/icon_pressed_color = Color(0.19621, 0.30811, 0.584453, 1)
-theme_override_colors/font_pressed_color = Color(0.145413, 0.205351, 0.5822, 1)
-theme_override_font_sizes/font_size = 30
-toggle_mode = true
-text = "Smithing"
-icon = ExtResource("8_88412")
-autowrap_mode = 3
-script = ExtResource("4_iukis")
-techCost = 25
+techCost = 250
 techID = "Iron Working"
-reqTechs = [NodePath("../../../InsititutionContainer/AlphabetControl/AlphabetButton")]
+techDesc = "We can mend and bend irons"
+reqTechs = [NodePath("../../InsititutionContainer/AlphabetUnlockButton")]
 
-[node name="TempuringControl" type="Control" parent="TechPanel/GridContainer"]
+[node name="TempuringTechUnlockButton" parent="TechPanel/GridContainer" node_paths=PackedStringArray("reqTechs") instance=ExtResource("9_hw8rb")]
 layout_mode = 2
-
-[node name="TempuringUnlockButton" type="Button" parent="TechPanel/GridContainer/TempuringControl" node_paths=PackedStringArray("reqTechs")]
-layout_mode = 2
-offset_left = -9.0
-offset_top = -11.0
-offset_right = 307.0
-offset_bottom = 97.0
-theme_override_colors/font_disabled_color = Color(0.338686, 0.528249, 0.700882, 1)
-theme_override_colors/icon_disabled_color = Color(0.209152, 0.281094, 0.73112, 1)
-theme_override_colors/icon_pressed_color = Color(0.19621, 0.30811, 0.584453, 1)
-theme_override_colors/font_pressed_color = Color(0.145413, 0.205351, 0.5822, 1)
-theme_override_font_sizes/font_size = 38
-toggle_mode = true
-text = "Tempuring
-"
-icon = ExtResource("4_dt8r8")
-script = ExtResource("4_iukis")
-techCost = 25
+techCost = 500
 techID = "Tempuring"
-reqTechs = [NodePath("../../../InsititutionContainer/MathematicsControl/MathematicsButton")]
+techDesc = "We can using carbon and improved heating techniques to hone our blades"
+reqTechs = [NodePath("../../InsititutionContainer/MathematicsUnlockButton")]
 
-[node name="ArtistryControl" type="Control" parent="TechPanel/GridContainer"]
+[node name="ArtistryTechUnlockButton" parent="TechPanel/GridContainer" node_paths=PackedStringArray("reqTechs") instance=ExtResource("9_hw8rb")]
 layout_mode = 2
-
-[node name="ArtristryUnlockButton" type="Button" parent="TechPanel/GridContainer/ArtistryControl" node_paths=PackedStringArray("reqTechs")]
-layout_mode = 2
-offset_left = -9.0
-offset_top = -11.0
-offset_right = 307.0
-offset_bottom = 97.0
-theme_override_colors/font_disabled_color = Color(0.338686, 0.528249, 0.700882, 1)
-theme_override_colors/icon_disabled_color = Color(0.209152, 0.281094, 0.73112, 1)
-theme_override_colors/icon_pressed_color = Color(0.19621, 0.30811, 0.584453, 1)
-theme_override_colors/font_pressed_color = Color(0.145413, 0.205351, 0.5822, 1)
-theme_override_font_sizes/font_size = 38
-toggle_mode = true
-text = "Artistry"
-icon = ExtResource("5_g1m17")
-script = ExtResource("4_iukis")
-techCost = 25
+techCost = 40
 techID = "Artistry"
-reqTechs = [NodePath("../../../InsititutionContainer/LanguageControl/LanguageButton")]
+techDesc = "We will express ourselves"
+reqTechs = [NodePath("../../InsititutionContainer/LanguageUnlockButton")]
 
-[node name="MasonryControl" type="Control" parent="TechPanel/GridContainer"]
+[node name="MasonryTechUnlockButton" parent="TechPanel/GridContainer" node_paths=PackedStringArray("reqTechs") instance=ExtResource("9_hw8rb")]
 layout_mode = 2
-
-[node name="MasonryUnlockButton" type="Button" parent="TechPanel/GridContainer/MasonryControl" node_paths=PackedStringArray("reqTechs")]
-layout_mode = 2
-offset_left = -9.0
-offset_top = -11.0
-offset_right = 307.0
-offset_bottom = 97.0
-theme_override_colors/font_disabled_color = Color(0.338686, 0.528249, 0.700882, 1)
-theme_override_colors/icon_disabled_color = Color(0.209152, 0.281094, 0.73112, 1)
-theme_override_colors/icon_pressed_color = Color(0.19621, 0.30811, 0.584453, 1)
-theme_override_colors/font_pressed_color = Color(0.145413, 0.205351, 0.5822, 1)
-theme_override_font_sizes/font_size = 38
-toggle_mode = true
-text = "Masonry
-"
-icon = ExtResource("13_033go")
-script = ExtResource("4_iukis")
-techCost = 25
+techCost = 100
 techID = "Masonry"
-reqTechs = [NodePath("../../../InsititutionContainer/WritingControl/WritingButton")]
+techDesc = "we can stack blocks on top of each other"
+reqTechs = [NodePath("../../InsititutionContainer/WritingUnlockButton")]
 
-[node name="ArchitectureControl" type="Control" parent="TechPanel/GridContainer"]
+[node name="ArchitectureTechUnlockButton" parent="TechPanel/GridContainer" node_paths=PackedStringArray("reqTechs") instance=ExtResource("9_hw8rb")]
 layout_mode = 2
-
-[node name="ArchitectureUnlockButton" type="Button" parent="TechPanel/GridContainer/ArchitectureControl" node_paths=PackedStringArray("reqTechs")]
-layout_mode = 2
-offset_left = -9.0
-offset_top = -11.0
-offset_right = 307.0
-offset_bottom = 97.0
-theme_override_colors/font_disabled_color = Color(0.338686, 0.528249, 0.700882, 1)
-theme_override_colors/icon_disabled_color = Color(0.209152, 0.281094, 0.73112, 1)
-theme_override_colors/icon_pressed_color = Color(0.19621, 0.30811, 0.584453, 1)
-theme_override_colors/font_pressed_color = Color(0.145413, 0.205351, 0.5822, 1)
-theme_override_font_sizes/font_size = 30
-toggle_mode = true
-text = "Architecture
-"
-icon = ExtResource("14_ise61")
-script = ExtResource("4_iukis")
-techCost = 25
+techCost = 250
 techID = "Architecture"
-reqTechs = [NodePath("../../../InsititutionContainer/AlphabetControl/AlphabetButton")]
+techDesc = "let's design some fuckin' buildings brother"
+reqTechs = [NodePath("../../InsititutionContainer/AlphabetUnlockButton")]
 
-[node name="BankingControl" type="Control" parent="TechPanel/GridContainer"]
+[node name="BankingTechUnlockButton" parent="TechPanel/GridContainer" node_paths=PackedStringArray("reqTechs") instance=ExtResource("9_hw8rb")]
 layout_mode = 2
-
-[node name="BankingUnlockButton" type="Button" parent="TechPanel/GridContainer/BankingControl" node_paths=PackedStringArray("reqTechs")]
-layout_mode = 2
-offset_left = -9.0
-offset_top = -11.0
-offset_right = 307.0
-offset_bottom = 97.0
-theme_override_colors/font_disabled_color = Color(0.338686, 0.528249, 0.700882, 1)
-theme_override_colors/icon_disabled_color = Color(0.209152, 0.281094, 0.73112, 1)
-theme_override_colors/icon_pressed_color = Color(0.19621, 0.30811, 0.584453, 1)
-theme_override_colors/font_pressed_color = Color(0.145413, 0.205351, 0.5822, 1)
-theme_override_font_sizes/font_size = 38
-toggle_mode = true
-text = "Banking"
-icon = ExtResource("11_nnycd")
-script = ExtResource("4_iukis")
-techCost = 25
+techCost = 500
 techID = "Banking"
-reqTechs = [NodePath("../../../InsititutionContainer/MathematicsControl/MathematicsButton")]
+techDesc = "utilizing advanced economic strategies, we can develop a system of finance for our nation"
+reqTechs = [NodePath("../../InsititutionContainer/MathematicsUnlockButton")]
 
-[node name="SailingControl" type="Control" parent="TechPanel/GridContainer"]
+[node name="SailingTechUnlockButton" parent="TechPanel/GridContainer" node_paths=PackedStringArray("reqTechs") instance=ExtResource("9_hw8rb")]
 layout_mode = 2
-
-[node name="SailingUnlockButton" type="Button" parent="TechPanel/GridContainer/SailingControl" node_paths=PackedStringArray("reqTechs")]
-layout_mode = 2
-offset_left = -9.0
-offset_top = -11.0
-offset_right = 307.0
-offset_bottom = 97.0
-theme_override_colors/font_disabled_color = Color(0.338686, 0.528249, 0.700882, 1)
-theme_override_colors/icon_disabled_color = Color(0.209152, 0.281094, 0.73112, 1)
-theme_override_colors/icon_pressed_color = Color(0.19621, 0.30811, 0.584453, 1)
-theme_override_colors/font_pressed_color = Color(0.145413, 0.205351, 0.5822, 1)
-theme_override_font_sizes/font_size = 38
-toggle_mode = true
-text = "Sailing
-"
-icon = ExtResource("15_us28h")
-script = ExtResource("4_iukis")
-techCost = 25
+techCost = 40
 techID = "Sailing"
-reqTechs = [NodePath("../../../InsititutionContainer/LanguageControl/LanguageButton")]
+techDesc = "Take to the oceans and ride the waves"
+reqTechs = [NodePath("../../InsititutionContainer/LanguageUnlockButton")]
 
-[node name="StatecraftControl" type="Control" parent="TechPanel/GridContainer"]
+[node name="StatecraftTechUnlockButton" parent="TechPanel/GridContainer" node_paths=PackedStringArray("reqTechs") instance=ExtResource("9_hw8rb")]
 layout_mode = 2
-
-[node name="StatecraftUnlockButton" type="Button" parent="TechPanel/GridContainer/StatecraftControl" node_paths=PackedStringArray("reqTechs")]
-layout_mode = 2
-offset_left = -9.0
-offset_top = -11.0
-offset_right = 307.0
-offset_bottom = 97.0
-theme_override_colors/font_disabled_color = Color(0.338686, 0.528249, 0.700882, 1)
-theme_override_colors/icon_disabled_color = Color(0.209152, 0.281094, 0.73112, 1)
-theme_override_colors/icon_pressed_color = Color(0.19621, 0.30811, 0.584453, 1)
-theme_override_colors/font_pressed_color = Color(0.145413, 0.205351, 0.5822, 1)
-theme_override_font_sizes/font_size = 38
-toggle_mode = true
-text = "Statecraft"
-icon = ExtResource("7_fvjne")
-script = ExtResource("4_iukis")
-techCost = 25
+techCost = 100
 techID = "Statecraft"
-reqTechs = [NodePath("../../../InsititutionContainer/WritingControl/WritingButton")]
+techDesc = "We can send messages to other diplomatic players"
+reqTechs = [NodePath("../../InsititutionContainer/WritingUnlockButton")]
 
-[node name="ShipbuildingControl" type="Control" parent="TechPanel/GridContainer"]
+[node name="ShipbuildingTechUnlockButton" parent="TechPanel/GridContainer" node_paths=PackedStringArray("reqTechs") instance=ExtResource("9_hw8rb")]
 layout_mode = 2
-
-[node name="ShipbuildingUnlockButton" type="Button" parent="TechPanel/GridContainer/ShipbuildingControl" node_paths=PackedStringArray("reqTechs")]
-layout_mode = 2
-offset_left = -9.0
-offset_top = -11.0
-offset_right = 307.0
-offset_bottom = 97.0
-theme_override_colors/font_disabled_color = Color(0.338686, 0.528249, 0.700882, 1)
-theme_override_colors/icon_disabled_color = Color(0.209152, 0.281094, 0.73112, 1)
-theme_override_colors/icon_pressed_color = Color(0.19621, 0.30811, 0.584453, 1)
-theme_override_colors/font_pressed_color = Color(0.145413, 0.205351, 0.5822, 1)
-theme_override_font_sizes/font_size = 30
-toggle_mode = true
-text = "Shipbuilding"
-icon = ExtResource("13_033go")
-script = ExtResource("4_iukis")
-techCost = 25
+techCost = 250
 techID = "Shipbuilding"
-reqTechs = [NodePath("../../../InsititutionContainer/AlphabetControl/AlphabetButton")]
+techDesc = "we can build mighty navies"
+reqTechs = [NodePath("../../InsititutionContainer/AlphabetUnlockButton")]
 
-[node name="LenscraftControl" type="Control" parent="TechPanel/GridContainer"]
+[node name="LenscraftTechUnlockButton" parent="TechPanel/GridContainer" node_paths=PackedStringArray("reqTechs") instance=ExtResource("9_hw8rb")]
 layout_mode = 2
-
-[node name="LenscraftUnlockButton" type="Button" parent="TechPanel/GridContainer/LenscraftControl" node_paths=PackedStringArray("reqTechs")]
-layout_mode = 2
-offset_left = -9.0
-offset_top = -11.0
-offset_right = 307.0
-offset_bottom = 97.0
-theme_override_colors/font_disabled_color = Color(0.338686, 0.528249, 0.700882, 1)
-theme_override_colors/icon_disabled_color = Color(0.209152, 0.281094, 0.73112, 1)
-theme_override_colors/icon_pressed_color = Color(0.19621, 0.30811, 0.584453, 1)
-theme_override_colors/font_pressed_color = Color(0.145413, 0.205351, 0.5822, 1)
-theme_override_font_sizes/font_size = 38
-toggle_mode = true
-text = "Lenscraft"
-icon = ExtResource("6_j76bv")
-script = ExtResource("4_iukis")
-techCost = 25
+techCost = 500
 techID = "Lenscraft"
-reqTechs = [NodePath("../../../InsititutionContainer/MathematicsControl/MathematicsButton")]
+techDesc = "we can build new devices to view the stars, aiding our wizards and explorers"
+reqTechs = [NodePath("../../InsititutionContainer/MathematicsUnlockButton")]
 
-[node name="OrganizationControl" type="Control" parent="TechPanel/GridContainer"]
+[node name="OrganizationTechUnlockButton" parent="TechPanel/GridContainer" node_paths=PackedStringArray("reqTechs") instance=ExtResource("9_hw8rb")]
 layout_mode = 2
-
-[node name="OrganizationUnlockButton" type="Button" parent="TechPanel/GridContainer/OrganizationControl" node_paths=PackedStringArray("reqTechs")]
-layout_mode = 2
-offset_left = -9.0
-offset_top = -11.0
-offset_right = 307.0
-offset_bottom = 97.0
-theme_override_colors/font_disabled_color = Color(0.338686, 0.528249, 0.700882, 1)
-theme_override_colors/icon_disabled_color = Color(0.209152, 0.281094, 0.73112, 1)
-theme_override_colors/icon_pressed_color = Color(0.19621, 0.30811, 0.584453, 1)
-theme_override_colors/font_pressed_color = Color(0.145413, 0.205351, 0.5822, 1)
-theme_override_font_sizes/font_size = 30
-toggle_mode = true
-text = "Organization"
-icon = ExtResource("4_dt8r8")
-script = ExtResource("4_iukis")
-techCost = 25
+techCost = 40
 techID = "Organization"
-reqTechs = [NodePath("../../../InsititutionContainer/LanguageControl/LanguageButton")]
+techDesc = "We will organize"
+reqTechs = [NodePath("../../InsititutionContainer/LanguageUnlockButton")]
 
-[node name="LogisticsControl" type="Control" parent="TechPanel/GridContainer"]
+[node name="LogisticsTechUnlockButton" parent="TechPanel/GridContainer" node_paths=PackedStringArray("reqTechs") instance=ExtResource("9_hw8rb")]
 layout_mode = 2
-
-[node name="LogisticsUnlockButton" type="Button" parent="TechPanel/GridContainer/LogisticsControl" node_paths=PackedStringArray("reqTechs")]
-layout_mode = 2
-offset_left = -9.0
-offset_top = -11.0
-offset_right = 307.0
-offset_bottom = 97.0
-theme_override_colors/font_disabled_color = Color(0.338686, 0.528249, 0.700882, 1)
-theme_override_colors/icon_disabled_color = Color(0.209152, 0.281094, 0.73112, 1)
-theme_override_colors/icon_pressed_color = Color(0.19621, 0.30811, 0.584453, 1)
-theme_override_colors/font_pressed_color = Color(0.145413, 0.205351, 0.5822, 1)
-theme_override_font_sizes/font_size = 38
-toggle_mode = true
-text = "Logistics"
-icon = ExtResource("10_gife4")
-script = ExtResource("4_iukis")
-techCost = 25
+techCost = 100
 techID = "Logistics"
-reqTechs = [NodePath("../../../InsititutionContainer/WritingControl/WritingButton")]
+techDesc = "We can plan long term strategies and take attrition into account"
+reqTechs = [NodePath("../../InsititutionContainer/WritingUnlockButton")]
 
-[node name="TacticsControl" type="Control" parent="TechPanel/GridContainer"]
+[node name="TacticsTechUnlockButton" parent="TechPanel/GridContainer" node_paths=PackedStringArray("reqTechs") instance=ExtResource("9_hw8rb")]
 layout_mode = 2
-
-[node name="TacticsUnlockButton" type="Button" parent="TechPanel/GridContainer/TacticsControl" node_paths=PackedStringArray("reqTechs")]
-layout_mode = 2
-offset_left = -16.0
-offset_top = -10.0
-offset_right = 321.0
-offset_bottom = 98.0
-theme_override_colors/font_disabled_color = Color(0.50137, 0.745997, 0.630387, 1)
-theme_override_colors/icon_disabled_color = Color(0.135098, 0.236313, 0.466502, 1)
-theme_override_colors/icon_pressed_color = Color(0.161489, 0.227259, 0.6127, 1)
-theme_override_colors/font_pressed_color = Color(0.187497, 0.46039, 0.566166, 1)
-theme_override_font_sizes/font_size = 46
-toggle_mode = true
-text = "Tactics"
-icon = ExtResource("15_us28h")
-script = ExtResource("4_iukis")
-techCost = 30
+techCost = 250
 techID = "Tactics"
-reqTechs = [NodePath("../../../InsititutionContainer/AlphabetControl/AlphabetButton")]
+techDesc = "We will develop the tactics necessary to win decisive victories"
+reqTechs = [NodePath("../../InsititutionContainer/AlphabetUnlockButton")]
 
-[node name="AuthorityControl" type="Control" parent="TechPanel/GridContainer"]
+[node name="AurhorityTechUnlockButton" parent="TechPanel/GridContainer" node_paths=PackedStringArray("reqTechs") instance=ExtResource("9_hw8rb")]
 layout_mode = 2
-
-[node name="AuthorityUnlockButton" type="Button" parent="TechPanel/GridContainer/AuthorityControl" node_paths=PackedStringArray("reqTechs")]
-layout_mode = 2
-offset_left = -16.0
-offset_top = -10.0
-offset_right = 321.0
-offset_bottom = 98.0
-theme_override_colors/font_disabled_color = Color(0.50137, 0.745997, 0.630387, 1)
-theme_override_colors/icon_disabled_color = Color(0.135098, 0.236313, 0.466502, 1)
-theme_override_colors/icon_pressed_color = Color(0.161489, 0.227259, 0.6127, 1)
-theme_override_colors/font_pressed_color = Color(0.187497, 0.46039, 0.566166, 1)
-theme_override_font_sizes/font_size = 40
-toggle_mode = true
-text = "Authority"
-icon = ExtResource("3_ybys5")
-script = ExtResource("4_iukis")
-techCost = 30
+techCost = 500
 techID = "Authority"
-reqTechs = [NodePath("../../../InsititutionContainer/MathematicsControl/MathematicsButton")]
+techDesc = "We are the state, the state is in control"
+reqTechs = [NodePath("../../InsititutionContainer/MathematicsUnlockButton")]
 
 [node name="TechInfoPanel" type="Control" parent="."]
 visible = false
@@ -677,91 +288,75 @@ offset_right = 1276.0
 offset_bottom = 957.0
 
 [node name="PanelBackground" type="Sprite2D" parent="TechInfoPanel"]
-position = Vector2(241.75, 309.5)
-scale = Vector2(2.18837, 3.38333)
-texture = ExtResource("5_21fc8")
+position = Vector2(158, 92)
+scale = Vector2(0.184865, 0.062)
+texture = ExtResource("4_irtp6")
 
 [node name="PurchaseTechButton" type="Button" parent="TechInfoPanel"]
 layout_mode = 0
-offset_left = 82.0
-offset_top = 522.0
-offset_right = 404.0
-offset_bottom = 593.0
+offset_left = 249.0
+offset_top = 120.0
+offset_right = 320.0
+offset_bottom = 167.0
+text = "Unlock"
 
 [node name="ClosePanelButton" type="Button" parent="TechInfoPanel"]
 layout_mode = 0
-offset_left = 369.0
-offset_top = 1.0
-offset_right = 475.0
-offset_bottom = 104.0
+offset_left = 310.0
+offset_top = -38.0
+offset_right = 363.0
+offset_bottom = 19.0
 theme_override_colors/font_color = Color(0.890196, 0, 0, 1)
 theme_override_font_sizes/font_size = 35
 text = "X"
 
 [node name="TechSprite" type="Sprite2D" parent="TechInfoPanel"]
-position = Vector2(237, 122)
-scale = Vector2(1.64, 1.64)
+position = Vector2(275, 56)
+scale = Vector2(0.78, 0.74)
 texture = ExtResource("6_rudwg")
 
 [node name="TechNameLabel" type="Label" parent="TechInfoPanel"]
 layout_mode = 0
-offset_left = -77.0
-offset_top = 213.0
-offset_right = 560.0
-offset_bottom = 270.0
-theme_override_font_sizes/font_size = 35
+offset_left = -51.0
+offset_top = 6.0
+offset_right = 297.0
+offset_bottom = 55.0
+theme_override_font_sizes/font_size = 20
 text = "Technology Name"
 horizontal_alignment = 1
 
 [node name="TechDescriptionLabel" type="Label" parent="TechInfoPanel"]
 layout_mode = 0
-offset_left = 22.0
-offset_top = 273.0
-offset_right = 449.0
-offset_bottom = 401.0
-theme_override_font_sizes/font_size = 18
+offset_left = 18.0
+offset_top = 100.0
+offset_right = 244.0
+offset_bottom = 182.0
+theme_override_font_sizes/font_size = 11
 text = "This technology has a short description that goes here.
 "
 autowrap_mode = 3
 
 [node name="TechUnlocksLabel" type="RichTextLabel" parent="TechInfoPanel"]
 layout_mode = 0
-offset_left = 7.0
-offset_top = 376.0
-offset_right = 464.0
-offset_bottom = 516.0
-theme_override_font_sizes/normal_font_size = 20
+offset_left = 15.0
+offset_top = 33.0
+offset_right = 235.0
+offset_bottom = 100.0
+theme_override_font_sizes/normal_font_size = 11
 text = "Granaries: +1 FPL
 Farms: +1 FPL
 Mines +1 MPL
 "
 
-[connection signal="pressed" from="TechPanel/InsititutionContainer/LanguageControl/LanguageButton" to="." method="_on_language_button_pressed"]
-[connection signal="pressed" from="TechPanel/InsititutionContainer/WritingControl/WritingButton" to="." method="_on_writing_button_pressed"]
-[connection signal="pressed" from="TechPanel/InsititutionContainer/AlphabetControl/AlphabetButton" to="." method="_on_alphabet_button_pressed"]
-[connection signal="pressed" from="TechPanel/InsititutionContainer/MathematicsControl/MathematicsButton" to="." method="_on_mathematics_button_pressed"]
-[connection signal="pressed" from="TechPanel/UnlockedContainer/AdministrationControl/AdministrationButton" to="." method="_on_administration_button_pressed"]
-[connection signal="pressed" from="TechPanel/UnlockedContainer/PrintingPressControl/PrintingPressButton" to="." method="_on_printing_press_button_pressed"]
-[connection signal="pressed" from="TechPanel/UnlockedContainer/SteamPowerControl/SteamPowerButton" to="." method="_on_steam_power_button_pressed"]
-[connection signal="pressed" from="TechPanel/GridContainer/AgricultureControl/AgricultureUnlockButton" to="." method="_on_agriculture_unlock_button_pressed"]
-[connection signal="pressed" from="TechPanel/GridContainer/CalendarControl/CalendarUnlockButton" to="." method="_on_calendar_unlock_button_pressed"]
-[connection signal="pressed" from="TechPanel/GridContainer/IrrigationControl/IrrigationUnlockButton" to="." method="_on_irrigation_unlock_button_pressed"]
-[connection signal="pressed" from="TechPanel/GridContainer/EngineeringControl/EngineeringUnlockButton" to="." method="_on_engineering_unlock_button_pressed"]
-[connection signal="pressed" from="TechPanel/GridContainer/CopperWorkingControl/CopperWorkingUnlockButton" to="." method="_on_copper_working_unlock_button_pressed"]
-[connection signal="pressed" from="TechPanel/GridContainer/BronzeWorkingControl/BronzeWorkingUnlockButton" to="." method="_on_bronze_working_unlock_button_pressed"]
-[connection signal="pressed" from="TechPanel/GridContainer/IronWorkingControl/IronWorkingUnlockButton" to="." method="_on_iron_working_unlock_button_pressed"]
-[connection signal="pressed" from="TechPanel/GridContainer/TempuringControl/TempuringUnlockButton" to="." method="_on_tempuring_unlock_button_pressed"]
-[connection signal="pressed" from="TechPanel/GridContainer/ArtistryControl/ArtristryUnlockButton" to="." method="_on_artristry_unlock_button_pressed"]
-[connection signal="pressed" from="TechPanel/GridContainer/MasonryControl/MasonryUnlockButton" to="." method="_on_masonry_unlock_button_pressed"]
-[connection signal="pressed" from="TechPanel/GridContainer/ArchitectureControl/ArchitectureUnlockButton" to="." method="_on_architecture_unlock_button_pressed"]
-[connection signal="pressed" from="TechPanel/GridContainer/BankingControl/BankingUnlockButton" to="." method="_on_banking_unlock_button_pressed"]
-[connection signal="pressed" from="TechPanel/GridContainer/SailingControl/SailingUnlockButton" to="." method="_on_sailing_unlock_button_pressed"]
-[connection signal="pressed" from="TechPanel/GridContainer/StatecraftControl/StatecraftUnlockButton" to="." method="_on_statecraft_unlock_button_pressed"]
-[connection signal="pressed" from="TechPanel/GridContainer/ShipbuildingControl/ShipbuildingUnlockButton" to="." method="_on_shipbuilding_unlock_button_pressed"]
-[connection signal="pressed" from="TechPanel/GridContainer/LenscraftControl/LenscraftUnlockButton" to="." method="_on_lenscraft_unlock_button_pressed"]
-[connection signal="pressed" from="TechPanel/GridContainer/OrganizationControl/OrganizationUnlockButton" to="." method="_on_organization_unlock_button_pressed"]
-[connection signal="pressed" from="TechPanel/GridContainer/LogisticsControl/LogisticsUnlockButton" to="." method="_on_logistics_unlock_button_pressed"]
-[connection signal="pressed" from="TechPanel/GridContainer/TacticsControl/TacticsUnlockButton" to="." method="_on_tactics_unlock_button_pressed"]
-[connection signal="pressed" from="TechPanel/GridContainer/AuthorityControl/AuthorityUnlockButton" to="." method="_on_authority_unlock_button_pressed"]
+[node name="Label" type="Label" parent="TechInfoPanel"]
+visible = false
+layout_mode = 0
+offset_left = 266.0
+offset_top = 96.0
+offset_right = 306.0
+offset_bottom = 119.0
+theme_override_colors/font_color = Color(0.239887, 0.462761, 1, 1)
+text = "100"
+
 [connection signal="pressed" from="TechInfoPanel/PurchaseTechButton" to="." method="_on_purchase_tech_button_pressed"]
 [connection signal="pressed" from="TechInfoPanel/ClosePanelButton" to="." method="_on_close_panel_button_pressed"]

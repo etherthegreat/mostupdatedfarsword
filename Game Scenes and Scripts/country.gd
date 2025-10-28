@@ -80,6 +80,7 @@ var manpowerEXPM: int
 
 #Tiles
 var OwnedTileList: Array = []
+var discoveredTilesList: Array = []
 
 #Unlockables
 var unlockedTechnologies: Array = []
@@ -278,7 +279,9 @@ func NewGameBuild():
 		addArmy("Palace Guards", 3)
 		addGovernorToGovernorPool("Wolverina Gundo", 1)
 		armyReinforceRate = 3 #add a function to determin reinforce rate
+		#for Tile in OwnedTileList:
 			
+		updateDiscoveredByPlayer()
 		for Army in countryArmyList:
 			if Army.ArmyName == "Palace Guards":
 				addNewUnit(Army, "Infantry", 1, "Club", "Copper")
@@ -291,6 +294,14 @@ func NewGameBuild():
 		pass
 	pass
 
+func discoverTile(pathPointButton):
+	discoveredTilesList.append(pathPointButton)
+	pass
+
+signal updateDiscoveredTiles
+func updateDiscoveredByPlayer():
+	emit_signal("updateBeliefsSignal", discoveredTilesList)
+	pass
 
 func setStartingMagic():
 	alcPoints = 0

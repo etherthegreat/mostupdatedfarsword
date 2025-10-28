@@ -35,7 +35,7 @@ func updateUI(tile):
 			"Tower":
 				$LevelUpPointsLabel.text = str(tile.towerDevelopmentPoints, " / " , tile.tileTowerDevCost)
 			"Temple":
-				$LevelUpPointsLabel.text = str(tile.templeDevelopmentPoints, " / " , tile.tileTemleDevCost)
+				$LevelUpPointsLabel.text = str(tile.templeDevelopmentPoints, " / " , tile.tileTempleDevCost)
 			"Bath":
 				$LevelUpPointsLabel.text = str(tile.bathDevelopmentPoints, " / " , tile.tileBathDevCost)
 			"Workshop":

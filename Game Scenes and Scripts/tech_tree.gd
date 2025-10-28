@@ -17,60 +17,58 @@ func buildSelf(player):
 	for Technology in unlockedTechs:
 		#print("Winner Winner Tech Tech," , Technology.techName)
 		if Technology.techName == "Language":
-			$TechPanel/InsititutionContainer/LanguageControl/LanguageButton.purchase()
+			$TechPanel/InsititutionContainer/LanguageUnlockButton.purchase()
 		if Technology.techName == "Writing":
-			$TechPanel/InsititutionContainer/WritingControl/WritingButton.purchase()
+			$TechPanel/InsititutionContainer/WritingUnlockButton.purchase()
 		if Technology.techName == "Alphabet":
-			$TechPanel/InsititutionContainer/AlphabetControl/AlphabetButton.purchase()
+			$TechPanel/InsititutionContainer/AlphabetUnlockButton.purchase()
 		if Technology.techName == "Mathematics":
-			$TechPanel/InsititutionContainer/MathematicsControl/MathematicsButton.purchase()
+			$TechPanel/InsititutionContainer/MathematicsUnlockButton.purchase()
 		if Technology.techName == "Agriculture":
-			$TechPanel/GridContainer/AgricultureControl/AgricultureUnlockButton.purchase()
+			$TechPanel/GridContainer/AgricultureTechUnlockButton.purchase()
 		if Technology.techName == "Calendar":
-			$TechPanel/GridContainer/CalendarControl/CalendarUnlockButton.purchase()
+			$TechPanel/GridContainer/CalendarTechUnlockButton.purchase()
 		if Technology.techName == "Irrigation":
-			$TechPanel/GridContainer/IrrigationControl/IrrigationUnlockButton.purchase()
+			$TechPanel/GridContainer/IrrigationTechUnlockButton.purchase()
 		if Technology.techName == "Engineering":
-			$TechPanel/GridContainer/EngineeringControl/EngineeringUnlockButton.purchase()
+			$TechPanel/GridContainer/EngineeringTechUnlockButton.purchase()
 		if Technology.techName == "Copper Working":
-			$TechPanel/GridContainer/CopperWorkingControl/CopperWorkingUnlockButton.purchase()
+			$TechPanel/GridContainer/CraftmanshipTechUnlockButton.purchase()
 		if Technology.techName == "Bronze Working":
-			$TechPanel/GridContainer/BronzeWorkingControl/BronzeWorkingUnlockButton.purchase()
+			$TechPanel/GridContainer/MetalAlloysTechUnlockButton.purchase()
 		if Technology.techName == "Iron Working":
-			$TechPanel/GridContainer/IronWorkingControl/IronWorkingUnlockButton.purchase()
+			$TechPanel/GridContainer/ForgingTechUnlockButton.purchase()
 		if Technology.techName == "Tempuring":
-			$TechPanel/GridContainer/TempuringControl/TempuringUnlockButton.purchase()
+			$TechPanel/GridContainer/TempuringTechUnlockButton.purchase()
 		if Technology.techName == "Artistry":
-			$TechPanel/GridContainer/ArtistryControl/ArtristryUnlockButton.purchase()
+			$TechPanel/GridContainer/ArtistryTechUnlockButton.purchase()
 		if Technology.techName == "Masonry":
-			$TechPanel/GridContainer/MasonryControl/MasonryUnlockButton.purchase()
+			$TechPanel/GridContainer/MasonryTechUnlockButton.purchase()
 		if Technology.techName == "Architecture":
-			$TechPanel/GridContainer/ArchitectureControl/ArchitectureUnlockButton.purchase()
+			$TechPanel/GridContainer/ArchitectureTechUnlockButton.purchase()
 		if Technology.techName == "Banking":
-			$TechPanel/GridContainer/BankingControl/BankingUnlockButton.purchase()
+			$TechPanel/GridContainer/BankingTechUnlockButton.purchase()
 		if Technology.techName == "Sailing":
-			$TechPanel/GridContainer/SailingControl/SailingUnlockButton.purchase()
+			$TechPanel/GridContainer/SailingTechUnlockButton.purchase()
 		if Technology.techName == "Statecraft":
-			$TechPanel/GridContainer/StatecraftControl/StatecraftUnlockButton.purchase()
+			$TechPanel/GridContainer/StatecraftTechUnlockButton.purchase()
 		if Technology.techName == "Shipbuilding":
-			$TechPanel/GridContainer/ShipbuildingControl/ShipbuildingUnlockButton.purchase()
+			$TechPanel/GridContainer/ShipbuildingTechUnlockButton.purchase()
 		if Technology.techName == "Lenscraft":
-			$TechPanel/GridContainer/LenscraftControl/LenscraftUnlockButton.purchase()
+			$TechPanel/GridContainer/LenscraftTechUnlockButton.purchase()
 		if Technology.techName == "Organization":
-			$TechPanel/GridContainer/OrganizationControl/OrganizationUnlockButton.purchase()
+			$TechPanel/GridContainer/OrganizationTechUnlockButton.purchase()
 		if Technology.techName == "Logistics":
-			$TechPanel/GridContainer/LogisticsControl/LogisticsUnlockButton.purchase()
+			$TechPanel/GridContainer/LogisticsTechUnlockButton.purchase()
 		if Technology.techName == "Tactics":
-			$TechPanel/GridContainer/TacticsControl/TacticsUnlockButton.purchase()
+			$TechPanel/GridContainer/TacticsTechUnlockButton.purchase()
 		if Technology.techName == "Authority":
-			$TechPanel/GridContainer/AuthorityControl/AuthorityUnlockButton.purchase()
+			$TechPanel/GridContainer/AurhorityTechUnlockButton.purchase()
+	connectTechButtons()
 	pass
 
 signal addTechToPlayer
 var TechButton: techButton
-
-
-
 
 var TechToDisplay: String
 func updateTechInfoPanel(TechButton):
@@ -85,17 +83,6 @@ func updateTechInfoPanel(TechButton):
 		$TechInfoPanel/TechDescriptionLabel.text = str("Error:  No Technology Description Found")
 	pass
 
-
-func _on_agriculture_unlock_button_pressed() -> void:
-	TechButton = $TechPanel/GridContainer/AgricultureControl/AgricultureUnlockButton
-	$TechInfoPanel.position = $TechPanel/GridContainer/AgricultureControl.position
-	#$TechInfoPanel/TechUnlocksLabel.text = str("[i]Italics[/i]")
-	$TechInfoPanel.position.y += 330
-	$TechInfoPanel.position.x += 200
-	updateTechInfoPanel(TechButton)
-	if $TechInfoPanel.visible == false:
-		$TechInfoPanel.visible = true
-	pass # Replace with function body.
 
 
 func _process(delta: float) -> void:
@@ -125,290 +112,24 @@ func _on_purchase_tech_button_pressed() -> void:
 		emit_signal("addTechToPlayer", TechButton.technologyName)
 		playerNode.TotalScience -= TechButton.technologyCost
 		updateTechInfoPanel(TechButton)
+		$TechInfoPanel.visible = false
 	pass # Replace with function body.
 
+func connectTechButtons():
+	for techButton in $TechPanel/GridContainer.get_children():
+		techButton.newTech.connect(techButtonPressed)
+	for techButton in $TechPanel/InsititutionContainer.get_children():
+		techButton.newTech.connect(techButtonPressed)
+	for techButton in $TechPanel/UnlockedContainer.get_children():
+		techButton.newTech.connect(techButtonPressed)
+	pass
 
-
-func _on_copper_working_unlock_button_pressed() -> void:
-	TechButton = $TechPanel/GridContainer/CopperWorkingControl/CopperWorkingUnlockButton
-	$TechInfoPanel.position = $TechPanel/GridContainer/CopperWorkingControl.position
+func techButtonPressed(type, button):
+	TechButton = button
+	$TechInfoPanel.position = button.position
 	$TechInfoPanel.position.y += 330
 	$TechInfoPanel.position.x += 200
 	updateTechInfoPanel(TechButton)
 	if $TechInfoPanel.visible == false:
 		$TechInfoPanel.visible = true
-	pass # Replace with function body.
-
-
-func _on_artristry_unlock_button_pressed() -> void:
-	TechButton = $TechPanel/GridContainer/ArtistryControl/ArtristryUnlockButton
-	$TechInfoPanel.position = $TechPanel/GridContainer/ArtistryControl.position
-	$TechInfoPanel.position.y += 50
-	$TechInfoPanel.position.x += 200
-	updateTechInfoPanel(TechButton)
-	if $TechInfoPanel.visible == false:
-		$TechInfoPanel.visible = true
-	pass # Replace with function body.
-
-
-func _on_sailing_unlock_button_pressed() -> void:
-	TechButton = $TechPanel/GridContainer/SailingControl/SailingUnlockButton
-	$TechInfoPanel.position = $TechPanel/GridContainer/SailingControl.position
-	$TechInfoPanel.position.y -= 330
-	$TechInfoPanel.position.x += 200
-	updateTechInfoPanel(TechButton)
-	if $TechInfoPanel.visible == false:
-		$TechInfoPanel.visible = true
-	pass # Replace with function body.
-
-
-func _on_organization_unlock_button_pressed() -> void:
-	TechButton = $TechPanel/GridContainer/OrganizationControl/OrganizationUnlockButton
-	$TechInfoPanel.position = $TechPanel/GridContainer/OrganizationControl.position
-	$TechInfoPanel.position.y -= 325
-	$TechInfoPanel.position.x += 200
-	updateTechInfoPanel(TechButton)
-	if $TechInfoPanel.visible == false:
-		$TechInfoPanel.visible = true
-	pass # Replace with function body.
-
-
-func _on_language_button_pressed() -> void:
-	TechButton = $TechPanel/InsititutionContainer/LanguageControl/LanguageButton
-	$TechPanel/InsititutionContainer/LanguageControl.position
-	$TechInfoPanel.position.y -= 325
-	$TechInfoPanel.position.x += 200
-	updateTechInfoPanel(TechButton)
-	if $TechInfoPanel.visible == false:
-		$TechInfoPanel.visible = true
-	pass # Replace with function body.
-
-
-func _on_writing_button_pressed() -> void:
-	TechButton = $TechPanel/InsititutionContainer/WritingControl/WritingButton
-	$TechInfoPanel.position = $TechPanel/InsititutionContainer/WritingControl.position
-	$TechInfoPanel.position.y -= 325
-	$TechInfoPanel.position.x += 200
-	updateTechInfoPanel(TechButton)
-	if $TechInfoPanel.visible == false:
-		$TechInfoPanel.visible = true
-	pass # Replace with function body.
-
-
-func _on_alphabet_button_pressed() -> void:
-	TechButton = $TechPanel/InsititutionContainer/AlphabetControl/AlphabetButton
-	$TechInfoPanel.position = $TechPanel/InsititutionContainer/AlphabetControl.position
-	$TechInfoPanel.position.y -= 325
-	$TechInfoPanel.position.x += 200
-	updateTechInfoPanel(TechButton)
-	if $TechInfoPanel.visible == false:
-		$TechInfoPanel.visible = true
-	pass # Replace with function body.
-
-func _on_mathematics_button_pressed() -> void:
-	TechButton = $TechPanel/InsititutionContainer/MathematicsControl/MathematicsButton
-	$TechInfoPanel.position = $TechPanel/InsititutionContainer/MathematicsControl.position
-	$TechInfoPanel.position.y -= 325
-	$TechInfoPanel.position.x += 200
-	updateTechInfoPanel(TechButton)
-	if $TechInfoPanel.visible == false:
-		$TechInfoPanel.visible = true
-	pass # Replace with function body.
-
-
-func _on_calendar_unlock_button_pressed() -> void:
-	TechButton = $TechPanel/GridContainer/CalendarControl/CalendarUnlockButton
-	$TechInfoPanel.position = $TechPanel/GridContainer/CalendarControl.position
-	$TechInfoPanel.position.y -= 325
-	$TechInfoPanel.position.x += 200
-	updateTechInfoPanel(TechButton)
-	if $TechInfoPanel.visible == false:
-		$TechInfoPanel.visible = true
-	pass # Replace with function body.
-
-
-func _on_bronze_working_unlock_button_pressed() -> void:
-	TechButton = $TechPanel/GridContainer/BronzeWorkingControl/BronzeWorkingUnlockButton
-	$TechInfoPanel.position = $TechPanel/GridContainer/BronzeWorkingControl.position
-	$TechInfoPanel.position.y -= 325
-	$TechInfoPanel.position.x += 200
-	updateTechInfoPanel(TechButton)
-	if $TechInfoPanel.visible == false:
-		$TechInfoPanel.visible = true
-	pass # Replace with function body.
-
-
-func _on_masonry_unlock_button_pressed() -> void:
-	TechButton = $TechPanel/GridContainer/MasonryControl/MasonryUnlockButton
-	$TechInfoPanel.position = $TechPanel/GridContainer/MasonryControl.position
-	$TechInfoPanel.position.y -= 325
-	$TechInfoPanel.position.x += 200
-	updateTechInfoPanel(TechButton)
-	if $TechInfoPanel.visible == false:
-		$TechInfoPanel.visible = true
-	pass # Replace with function body.
-
-
-
-func _on_statecraft_unlock_button_pressed() -> void:
-	TechButton = $TechPanel/GridContainer/StatecraftControl/StatecraftUnlockButton
-	$TechInfoPanel.position = $TechPanel/GridContainer/StatecraftControl.position
-	$TechInfoPanel.position.y -= 325
-	$TechInfoPanel.position.x += 200
-	updateTechInfoPanel(TechButton)
-	if $TechInfoPanel.visible == false:
-		$TechInfoPanel.visible = true
-	pass # Replace with function body.
-
-
-func _on_logistics_unlock_button_pressed() -> void:
-	TechButton = $TechPanel/GridContainer/LogisticsControl/LogisticsUnlockButton
-	$TechInfoPanel.position = $TechPanel/GridContainer/LogisticsControl.position
-	$TechInfoPanel.position.y -= 325
-	$TechInfoPanel.position.x += 200
-	updateTechInfoPanel(TechButton)
-	if $TechInfoPanel.visible == false:
-		$TechInfoPanel.visible = true
-	pass # Replace with function body.
-
-
-func _on_irrigation_unlock_button_pressed() -> void:
-	TechButton = $TechPanel/GridContainer/IrrigationControl/IrrigationUnlockButton
-	$TechInfoPanel.position = $TechPanel/GridContainer/IrrigationControl.position
-	$TechInfoPanel.position.y -= 325
-	$TechInfoPanel.position.x += 200
-	updateTechInfoPanel(TechButton)
-	if $TechInfoPanel.visible == false:
-		$TechInfoPanel.visible = true
-	pass # Replace with function body.
-
-
-
-func _on_iron_working_unlock_button_pressed() -> void:
-	TechButton = $TechPanel/GridContainer/IronWorkingControl/IronWorkingUnlockButton
-	$TechInfoPanel.position = $TechPanel/GridContainer/IronWorkingControl.position
-	$TechInfoPanel.position.y -= 325
-	$TechInfoPanel.position.x += 200
-	updateTechInfoPanel(TechButton)
-	if $TechInfoPanel.visible == false:
-		$TechInfoPanel.visible = true
-	pass # Replace with function body.
-
-
-func _on_architecture_unlock_button_pressed() -> void:
-	TechButton = $TechPanel/GridContainer/ArchitectureControl/ArchitectureUnlockButton
-	$TechInfoPanel.position = $TechPanel/GridContainer/ArchitectureControl.position
-	$TechInfoPanel.position.y -= 325
-	$TechInfoPanel.position.x += 200
-	updateTechInfoPanel(TechButton)
-	if $TechInfoPanel.visible == false:
-		$TechInfoPanel.visible = true
-	pass # Replace with function body.
-
-
-func _on_shipbuilding_unlock_button_pressed() -> void:
-	TechButton = $TechPanel/GridContainer/ShipbuildingControl/ShipbuildingUnlockButton
-	$TechInfoPanel.position = $TechPanel/GridContainer/ShipbuildingControl.position
-	$TechInfoPanel.position.y -= 325
-	$TechInfoPanel.position.x += 200
-	updateTechInfoPanel(TechButton)
-	if $TechInfoPanel.visible == false:
-		$TechInfoPanel.visible = true
-	pass # Replace with function body.
-
-func _on_tactics_unlock_button_pressed() -> void:
-	TechButton = $TechPanel/GridContainer/TacticsControl/TacticsUnlockButton
-	$TechInfoPanel.position = $TechPanel/GridContainer/TacticsControl.position
-	$TechInfoPanel.position.y -= 325
-	$TechInfoPanel.position.x += 200
-	updateTechInfoPanel(TechButton)
-	if $TechInfoPanel.visible == false:
-		$TechInfoPanel.visible = true
-	pass # Replace with function body.
-
-func _on_engineering_unlock_button_pressed() -> void:
-	TechButton = $TechPanel/GridContainer/EngineeringControl/EngineeringUnlockButton
-	$TechInfoPanel.position = $TechPanel/GridContainer/EngineeringControl.position
-	$TechInfoPanel.position.y -= 325
-	$TechInfoPanel.position.x += 200
-	updateTechInfoPanel(TechButton)
-	if $TechInfoPanel.visible == false:
-		$TechInfoPanel.visible = true
-	pass # Replace with function body.
-
-
-func _on_tempuring_unlock_button_pressed() -> void:
-	TechButton = $TechPanel/GridContainer/TempuringControl/TempuringUnlockButton
-	$TechInfoPanel.position = $TechPanel/GridContainer/TempuringControl.position
-	$TechInfoPanel.position.y -= 325
-	$TechInfoPanel.position.x += 200
-	updateTechInfoPanel(TechButton)
-	if $TechInfoPanel.visible == false:
-		$TechInfoPanel.visible = true
-	pass # Replace with function body.
-
-
-func _on_banking_unlock_button_pressed() -> void:
-	TechButton = $TechPanel/GridContainer/BankingControl/BankingUnlockButton
-	$TechInfoPanel.position = $TechPanel/GridContainer/BankingControl.position
-	$TechInfoPanel.position.y -= 325
-	$TechInfoPanel.position.x += 200
-	updateTechInfoPanel(TechButton)
-	if $TechInfoPanel.visible == false:
-		$TechInfoPanel.visible = true
-	pass # Replace with function body.
-
-
-func _on_lenscraft_unlock_button_pressed() -> void:
-	TechButton = $TechPanel/GridContainer/LenscraftControl/LenscraftUnlockButton
-	$TechInfoPanel.position = $TechPanel/GridContainer/LenscraftControl.position
-	$TechInfoPanel.position.y -= 325
-	$TechInfoPanel.position.x += 200
-	updateTechInfoPanel(TechButton)
-	if $TechInfoPanel.visible == false:
-		$TechInfoPanel.visible = true
-	pass # Replace with function body.
-
-
-func _on_authority_unlock_button_pressed() -> void:
-	TechButton = $TechPanel/GridContainer/AuthorityControl/AuthorityUnlockButton
-	$TechInfoPanel.position = $TechPanel/GridContainer/AuthorityControl.position
-	$TechInfoPanel.position.y -= 325
-	$TechInfoPanel.position.x += 200
-	updateTechInfoPanel(TechButton)
-	if $TechInfoPanel.visible == false:
-		$TechInfoPanel.visible = true
-	pass # Replace with function body.
-
-
-func _on_administration_button_pressed() -> void:
-	TechButton = $TechPanel/UnlockedContainer/AdministrationControl/AdministrationButton
-	$TechInfoPanel.position = $TechPanel/UnlockedContainer/AdministrationControl.position
-	$TechInfoPanel.position.y -= 400
-	$TechInfoPanel.position.x += 200
-	updateTechInfoPanel(TechButton)
-	if $TechInfoPanel.visible == false:
-		$TechInfoPanel.visible = true
-	pass # Replace with function body.
-
-
-func _on_printing_press_button_pressed() -> void:
-	TechButton = $TechPanel/UnlockedContainer/PrintingPressControl/PrintingPressButton
-	$TechInfoPanel.position = $TechPanel/UnlockedContainer/PrintingPressControl.position
-	$TechInfoPanel.position.y -= 400
-	$TechInfoPanel.position.x += 200
-	updateTechInfoPanel(TechButton)
-	if $TechInfoPanel.visible == false:
-		$TechInfoPanel.visible = true
-	pass # Replace with function body.
-
-
-func _on_steam_power_button_pressed() -> void:
-	TechButton = $TechPanel/UnlockedContainer/SteamPowerControl/SteamPowerButton
-	$TechInfoPanel.position = $TechPanel/UnlockedContainer/SteamPowerControl.position
-	$TechInfoPanel.position.y -= 400
-	$TechInfoPanel.position.x += 200
-	updateTechInfoPanel(TechButton)
-	if $TechInfoPanel.visible == false:
-		$TechInfoPanel.visible = true
-	pass # Replace with function body.
+	pass

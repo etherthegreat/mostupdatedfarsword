@@ -225,7 +225,7 @@ func onNewGame():
 			addBuilding("Farm", 3)
 			#addBuilding("Granary", 1)
 			addBuilding("Barracks", 2)
-			#addBuilding("Library", 1)
+			addBuilding("Library", 4)
 			#addBuilding("Mine", 2)
 			#addBuilding("Forge", 1)
 			#addBuilding("Camp", 5)
@@ -237,7 +237,7 @@ func onNewGame():
 			tileSpawnPath = "Pender Tal South"
 			tileSpawnPathPoint = 17
 			tileName = "Enthenar"
-			#tileOwner = "PDT"
+			tileOwner = "PDT"
 			countryCapital = false
 			tileContinent = "Anlaxia"
 			tilePop
@@ -249,7 +249,7 @@ func onNewGame():
 			corruption = 100
 			TileNeighbors
 			var tileCrop = crop.new()
-			tileCrop.cropType = "Razorberry"
+			tileCrop.cropType = "Papyrus"
 			cropSlot = tileCrop
 			var tileOre = ore.new()
 			tileOre.buildSelf("Marble")
@@ -259,6 +259,7 @@ func onNewGame():
 			addBuilding("Temple", 2)
 			addBuilding("Barracks", 1)
 			addBuilding("Bath", 2)
+			addBuilding("Library", 2)
 			tileSpawnPoint = $"../../PathControl/PathPointsControl/PDTS1"
 		5:
 			tileName

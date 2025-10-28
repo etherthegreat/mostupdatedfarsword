@@ -17,6 +17,8 @@ var metalCalculatedCost: float
 
 var player: country
 
+
+
 func buildSelf(building, playerCountry):
 	buildingType = building.buildingType
 	buildingTexture = building.buildingSprite
@@ -26,6 +28,7 @@ func buildSelf(building, playerCountry):
 	woodCost = building.woodPurchaseCost
 	metalCost = building.metalPurchaseCost
 	player = playerCountry
+	
 	pass
 
 signal newBuilding

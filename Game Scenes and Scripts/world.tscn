@@ -262,6 +262,10 @@ z_index = 5
 position = Vector2(-7, 28)
 texture = ExtResource("8_vmkhf")
 
+[node name="TileFOW" type="Sprite2D" parent="TileController/Tile3"]
+position = Vector2(-7, 28)
+texture = ExtResource("9_j2eth")
+
 [node name="TileGraphic" type="Sprite2D" parent="TileController/Tile3"]
 position = Vector2(-7, 28)
 texture = ExtResource("9_j2eth")
@@ -328,6 +332,10 @@ EXPTileNumber = 6
 z_index = 5
 position = Vector2(6, 27)
 texture = ExtResource("15_j6x3e")
+
+[node name="TileFOW" type="Sprite2D" parent="TileController/Tile6"]
+position = Vector2(6, 27)
+texture = ExtResource("14_fe1xh")
 
 [node name="TileGraphic" type="Sprite2D" parent="TileController/Tile6"]
 position = Vector2(6, 27)
@@ -3212,10 +3220,6 @@ shape = SubResource("RectangleShape2D_qt86y")
 [connection signal="pressed" from="CanvasLayer/TileInfoPanel/governorButton" to="CanvasLayer/TileInfoPanel" method="_on_governor_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/TileInfoPanel/OpenBuildingsButton" to="CanvasLayer" method="_on_open_buildings_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/TileInfoPanel/WizardButton" to="CanvasLayer" method="_on_wizard_button_pressed"]
-[connection signal="fillWithUnlockedBuildings" from="CanvasLayer/BuildingInfoPanel" to="." method="_on_building_info_panel_fill_with_unlocked_buildings"]
-[connection signal="downgradeBuilding" from="CanvasLayer/BuildingInfoPanel/buildingPanelPanel" to="." method="_on_building_panel_panel_downgrade_building"]
-[connection signal="upgradeBuilding" from="CanvasLayer/BuildingInfoPanel/buildingPanelPanel" to="." method="_on_building_panel_panel_upgrade_building"]
-[connection signal="purchasedBelief" from="CanvasLayer/BeliefControl" to="." method="_on_belief_control_purchased_belief"]
 [connection signal="pressed" from="CanvasLayer/BeliefControl/BeliefPanel/PurchasePanel/PurchaseButton" to="CanvasLayer/BeliefControl" method="_on_purchase_button_pressed"]
 [connection signal="mouse_entered" from="CanvasLayer/BeliefControl/FaithPoints/faith1area2d" to="CanvasLayer/BeliefControl" method="_on_faith_1_area_2d_mouse_entered"]
 [connection signal="mouse_exited" from="CanvasLayer/BeliefControl/FaithPoints/faith1area2d" to="CanvasLayer/BeliefControl" method="_on_faith_1_area_2d_mouse_exited"]
@@ -3233,7 +3237,6 @@ shape = SubResource("RectangleShape2D_qt86y")
 [connection signal="mouse_exited" from="CanvasLayer/BeliefControl/FaithPoints/balanceArea2D" to="CanvasLayer/BeliefControl" method="_on_balance_area_2d_mouse_exited"]
 [connection signal="addTechToPlayer" from="CanvasLayer/TechTree" to="." method="_on_tech_tree_add_tech_to_player"]
 [connection signal="pressed" from="CanvasLayer/Spellbook/CloseSpellbook" to="CanvasLayer" method="_on_close_spellbook_pressed"]
-[connection signal="sliderChanged" from="CanvasLayer/GovernmentControl" to="." method="_on_government_control_slider_changed"]
 [connection signal="value_changed" from="CanvasLayer/GovernmentControl/TaxationControl/FarmVSlider" to="CanvasLayer/GovernmentControl" method="_on_farm_v_slider_value_changed"]
 [connection signal="value_changed" from="CanvasLayer/GovernmentControl/TaxationControl/CampVSlider" to="CanvasLayer/GovernmentControl" method="_on_camp_v_slider_value_changed"]
 [connection signal="value_changed" from="CanvasLayer/GovernmentControl/TaxationControl/MineVSlider" to="CanvasLayer/GovernmentControl" method="_on_mine_v_slider_value_changed"]
