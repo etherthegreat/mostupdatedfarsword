@@ -191,6 +191,7 @@ func onNewGame():
 			tileOre.oreType = "Copper"
 			oreSlot = tileOre
 			addBuilding("Farm", 1)
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/3"
 		2:
 			tileName = "Eighth House"
 			tileOwner = "EIG"
@@ -205,6 +206,7 @@ func onNewGame():
 			tileMilModifiers
 			corruption = 75
 			TileNeighbors
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/3"
 		3:
 			tileSpawnPath = "Pender Tal"
 			tileSpawnPathPoint = 1
@@ -236,7 +238,7 @@ func onNewGame():
 			#addBuilding("Mine", 2)
 			#addBuilding("Forge", 1)
 			#addBuilding("Camp", 5)
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/PDT1"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/3"
 		#var actingSpell = spell.new()
 		#actingSpell.spellType = "Celebration"
 		#tileSpell = actingSpell
@@ -267,7 +269,7 @@ func onNewGame():
 			addBuilding("Barracks", 1)
 			addBuilding("Bath", 2)
 			addBuilding("Library", 2)
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/PDTS1"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/4"
 		5:
 			tileName
 			tileOwner
@@ -281,6 +283,17 @@ func onNewGame():
 			tileMilModifiers
 			corruption
 			TileNeighbors
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/5"
+		6:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/6"
+		7:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/7"
+		8:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/8"
+		9:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/9"
+		10:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/10"
 	calculateCorruption()
 	emit_signal("tileLoaded", self)
 	pass
@@ -795,17 +808,36 @@ func updateGraphics(mapMode, displayCorruption, playerCountry):
 				polisMode()
 			"Natural":
 				naturalMode()
-		if tileOwner == playerCountry.CID || tileOccupied == true:
+		if tileOwner == playerCountry.CID:
 			activeView = true
 			for Tile in TileNeighbors:
 				Tile.activeView = true
-		if activeView == true:
-			$TileFOW.visible = false
-		else:
-			$TileFOW.modulate = Color(0,1,0)
-			$TileFOW.visible = true
-			$TileFOW.self_modulate.a = .5
-			#print("TroubleShooting DEBUG discovered by not visible")
+				return
+		
+		if tileSpawnPoint.occupied == true:
+			activeView = true
+			for Tile in TileNeighbors:
+				Tile.activeView = true
+				return
+		if tileSpawnPoint.occupied != true:
+			for Tile in TileNeighbors:
+				if Tile.tileSpawnPoint.occupied == true:
+					activeView = true
+					Tile.activeView = true
+					return
+				if Tile.tileOwner == playerCountry.CID:
+					activeView = true
+					Tile.activeView = true
+					return
+		activeView = false
+func calculateActiveView():
+	if activeView == true:
+		$TileFOW.visible = false
+	if activeView == false && discovered == true:
+		$TileFOW.modulate = Color(0,0,0)
+		$TileFOW.visible = true
+		$TileFOW.self_modulate.a = .75
+		#print("TroubleShooting DEBUG discovered by not visible")
 	pass
 
 func polisMode():
@@ -828,6 +860,21 @@ func colonizeTile(civilian):
 	tileOwner = civilian.player.CID
 	emit_signal("tileColonized", self)
 	pass
+
+var discoveryPoints: int = 0
+
+func increasePlayerDiscoveryRate(rate):
+	if discovered != true:
+		discoveryPoints += rate
+		if discoveryPoints >= 100:
+			discoverTile()
+	pass
+
+func discoverTile():
+	undiscovered = false
+	discovered = true
+	pass
+
 
 var farmDevelopmentPoints: float
 var tileFarmDevCost:float = 10
@@ -917,4 +964,11 @@ func devChange(devType, devCivilian):
 				levelUpBuilding("Barracks")
 			if forgeDevelopmentPoints >= tileBarracksDevCost:
 				levelUpBuilding("Barracks")
+		"Discovery":
+			for Tile in TileNeighbors:
+				if Tile.discovered != true:
+					if devCivilian.civilianKit.kitType == "Exploration":
+						Tile.increasePlayerDiscoveryRate(50)
+					else:
+						Tile.increasePlayerDiscoveryRate(25)
 	pass

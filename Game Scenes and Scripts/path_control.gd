@@ -65,8 +65,9 @@ func civilianArrivedFunc(pathOfCivilian, newPathPointButton, theCivilian, cpf, c
 			contain.remove_child(cpf)
 			#pathPointButton.add_child(theCivilian)
 			pathPointButton.add_child(cpf)
+			updateCivilianPanel(theCivilian, newPathPointButton)
 			#pathPointButton.stationedCivilians.append(cpf)
-			#newPathPointButton.occupied = true
+			newPathPointButton.occupied = true
 			#updateArmyPanel(theArmy, newPathPointButton)
 	showPathPoints(newPathPointButton)
 	pass
@@ -174,12 +175,14 @@ func calculateArmyMovement(pathPointButton, endNodes, startNodes, neighborPathPo
 			print(Container, "DEUBUG NODEPATH")
 			if startingPoint.startNodePaths.has(Container):
 				moveArmy(Container, "start", pathPointButton)
-				pathPointButton.occupied = false
+				#pathPointButton.occupied = false
+				#print("DEBUG PathPointButton", pathPointButton.occupied)
 				return
 			elif startingPoint.endNodePaths.has(Container):
 				print("DEBUG startingPoint2, ")
 				moveArmy(Container, "end", pathPointButton)
-				pathPointButton.occupied = false
+				#pathPointButton.occupied = false
+				#print("DEBUG PathPointButton", pathPointButton.occupied)
 				return
 			else:
 				print("DEBUG ERROR1")
@@ -189,9 +192,11 @@ func calculateArmyMovement(pathPointButton, endNodes, startNodes, neighborPathPo
 			if startingPoint.startNodePaths.has(Container):
 				print("DEBUG startingPoint3, ")
 				moveArmy(Container, "start", pathPointButton)
+				#pathPointButton.occupied = false
 				return
 			elif startingPoint.endNodePaths.has(Container):
 				print("DEBUG startingPoint4, ")
+				#pathPointButton.occupied = false
 				moveArmy(Container, "end", pathPointButton)
 				return
 			else:
@@ -323,6 +328,11 @@ func fightCorruptionTile():
 		selectedCPF = null
 	pass
 
+func discoverNearby():
+	if selectedCPF != null:
+		selectedCPF.discoveryMode()
+		selectedCPF = null
+	pass
 
 func _on_move_button_mouse_entered() -> void:
 	moveAndShowInfoPanel("Move")

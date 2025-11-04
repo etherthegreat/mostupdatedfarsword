@@ -24,6 +24,7 @@ pass
 func updateTiles(mapMode, displayCorruption, playerCountry):
 	for Tile in get_children():
 		Tile.updateGraphics(mapMode, displayCorruption, playerCountry)
+		Tile.calculateActiveView()
 	pass
 
 func connectEventSignal(tile):

@@ -1,6 +1,8 @@
 extends Control
 
-func updateUI(toolName, kitType):
+var neighborTest: bool
+
+func updateUI(CID, civ, toolName, kitType, ppbTile):
 	$IncreaseAgriculturalDevelopment.visible = false
 	$IncreaseResourceDevelopment.visible = false
 	$IncreaseUrbanDevelopment.visible = false
@@ -26,4 +28,12 @@ func updateUI(toolName, kitType):
 			$IncreaseMilitaryDevelopment.visible = true
 		"Prospector":
 			$IncreaseResourceDevelopment.visible = true
+	neighborTest = false
+	for Tile in ppbTile.TileNeighbors:
+		if Tile.tileOwner == CID:
+			neighborTest = true
+	if neighborTest == true:
+		$ColonizeButton.visible = true
+	else:
+		$ColonizeButton.visible = false
 	pass

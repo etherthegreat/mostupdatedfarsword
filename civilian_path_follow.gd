@@ -45,6 +45,7 @@ func _process(delta: float) -> void:
 		progressRate -= 0.02
 		if progressRate <= 0:
 			movingBackward = false
+			currentPathPoint.occupied = false
 			currentPathPoint = destinationPathPoint
 			currentPathPoint.occupied = true
 			#currentPathPoint.add_child(self)
@@ -105,6 +106,9 @@ func urbanMode():
 	civilianMode = "Urban"
 	pass
 
+func discoveryMode():
+	civilianMode = "Discovery"
+	pass
 signal tileChanging
 func emitTileChange():
 	emit_signal("tileChanging", currentTile, civilianMode, thisCivilian)

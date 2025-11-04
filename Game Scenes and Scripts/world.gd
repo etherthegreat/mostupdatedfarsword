@@ -104,7 +104,7 @@ func spawnNewGameCountries():
 	aliveCountriesList.append(penderTal)
 	$CountryController.add_child(penderTal)
 	playerCountryNode = penderTal
-	playerCapitalPathButton = $PathControl/PathPointsControl/PDT1
+	playerCapitalPathButton = $"PathControl/PathPointsControl/3"
 	#penderTal.surveyResources()
 	print("pender tal tile list:", penderTal.OwnedTileList)
 	pass
@@ -614,7 +614,7 @@ func updateCivFunc(civ, pathPoint):
 		var newMilMod = milModScene.instantiate()
 		newMilMod.buildSelf(MilMod.milModType)
 		$CanvasLayer/CivilianUnitControl/MilModGridContainer.add_child(newMilMod)
-	calculateCivilianButtons(civ)
+	calculateCivilianButtons(civ, pathPoint.ppbTile)
 	if $CanvasLayer/ArmyPanel.visible == true:
 		$CanvasLayer/ArmyPanel.visible = false
 	if $CanvasLayer/CivilianUnitControl.visible == false:
@@ -623,8 +623,8 @@ func updateCivFunc(civ, pathPoint):
 		$CanvasLayer/CivilianUnitControl.visible = false
 	pass
 
-func calculateCivilianButtons(civ):
-	$CanvasLayer/CivilianUnitControl/CivilianActionButtons.updateUI(civ.civilianTool.toolName, civ.civilianKit.kitType)
+func calculateCivilianButtons(civ, ppbTile):
+	$CanvasLayer/CivilianUnitControl/CivilianActionButtons.updateUI(playerCountryNode.CID, civ, civ.civilianTool.toolName, civ.civilianKit.kitType, ppbTile)
 	pass
 
 func _on_colonize_button_pressed() -> void:
@@ -669,6 +669,10 @@ func _on_clear_corruption_pressed() -> void:
 	$PathControl.fightCorruptionTile()
 	pass # Replace with function body.
 
+func _on_discover_nearby_tiles_button_pressed() -> void:
+	$CanvasLayer/CivilianUnitControl.visible = false
+	$PathControl.discoverNearby()
+	pass # Replace with function body.
 
 func _on_building_info_panel_fill_with_unlocked_buildings() -> void:
 	for building in playerCountryNode.unlockedBuildings:
