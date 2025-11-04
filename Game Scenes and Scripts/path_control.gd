@@ -131,11 +131,11 @@ func showPathPoints(pathPoint):
 	for pathPointButton in pathPoint.neighborPathPoints:
 		pathPointButton.visible = true
 	pathPoint.visible = true
-	for pathPointButton in $PathPointsControl.get_children():
-		if pathPointButton.visible != true:
-			pathPointButton.hideTile()
-		else:
-			pathPointButton.revealTile()
+	#for pathPointButton in $PathPointsControl.get_children():
+		#if pathPointButton.visible != true:
+			#pathPointButton.hideTile()
+		#else:
+			#pathPointButton.revealTile()
 	pass
 
 func hidePathPoints():

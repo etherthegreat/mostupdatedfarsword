@@ -28,7 +28,12 @@ var milMods: Array
 var toolScene = load("res://tool.tscn")
 var kitScene = load("res://kit.tscn")
 
+var maxHealth: int
+var currentHealth: int
+
 func buildSelf(toolKey, kitKey, homeTile, spawnNode, playerCountry):
+	maxHealth = 100
+	currentHealth = maxHealth
 	stationTile = homeTile
 	player = playerCountry
 	$CivilianTileName.text = str(homeTile.tileName)

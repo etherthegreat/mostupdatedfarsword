@@ -53,6 +53,7 @@ var elePointsOutput: int #elementalism
 var divPointsOutput: int #divination
 
 #province neighbors, used for calculating movements, colonization, fog of war, etc.
+@export var TileNeighborsEXP: Array = []
 var TileNeighbors: Array = [] #only add other tiles to this list after all tiles have been spawned
 var TileCrossingNeighbors: Array = [] #used for strait crossing calculations
 
@@ -134,6 +135,10 @@ var corruption: int #scale of 0 to 100.  100 will make everything cost a ton of 
 var corruptionComparison: int
 var corruptionChange: int
 
+#visible levels
+var undiscovered: bool
+var discovered: bool
+var activeView: bool
 
 #Map Graphics
 var tileRing
@@ -162,6 +167,8 @@ func onNewGame():
 	tileRing = $Ring
 	tileGraphic = $TileGraphic
 	tileNumber = EXPTileNumber
+	for NodePath in TileNeighborsEXP:
+		TileNeighbors.append(get_node(NodePath))
 	match tileNumber:
 		1:
 			tileName = "Devil's Purlicue"
@@ -237,7 +244,7 @@ func onNewGame():
 			tileSpawnPath = "Pender Tal South"
 			tileSpawnPathPoint = 17
 			tileName = "Enthenar"
-			tileOwner = "PDT"
+			#tileOwner = "PDT"
 			countryCapital = false
 			tileContinent = "Anlaxia"
 			tilePop
@@ -373,6 +380,16 @@ func calculateDailyTileEcoChanges():
 		calculateCorruption()
 	pass
 
+
+func calculateDiscovered(playerCountry):
+	if tileOwner == playerCountry.CID:
+		discovered = true
+		undiscovered = false
+		print("DEBUG tile neighbors", TileNeighbors)
+		for Tile in TileNeighbors:
+			Tile.discovered = true
+			Tile.undiscovered = false
+	pass
 
 func calculateCorruption():
 	tileEcoModifiers.clear()
@@ -758,17 +775,51 @@ func calculateSpellChanges():
 				buildingMagicOutput -= 4
 				print(buildingMagicOutput, "buildingMagicOutput2")
 	pass
-func fogOfWar():
-	$TileGraphic.modulate = Color(0,0,0)
+
+
+func updateGraphics(mapMode, displayCorruption, playerCountry):
+	if undiscovered == true:
+		$TileFOW.modulate = Color(0,0,0)
+		$TileFOW.visible = true
+		$TileGraphic.visible = false
+		activeView = false
+		#print("TroubleShooting DEBUG undisocvered")
+		return
+		#for Tile in TileNeighbors:
+			#if Tile.discovered == true:
+				#$TileFOW.self_modulate.a
+	if discovered == true:
+		$TileGraphic.visible = true
+		match mapMode:
+			"Polis":
+				polisMode()
+			"Natural":
+				naturalMode()
+		if tileOwner == playerCountry.CID || tileOccupied == true:
+			activeView = true
+			for Tile in TileNeighbors:
+				Tile.activeView = true
+		if activeView == true:
+			$TileFOW.visible = false
+		else:
+			$TileFOW.modulate = Color(0,1,0)
+			$TileFOW.visible = true
+			$TileFOW.self_modulate.a = .5
+			#print("TroubleShooting DEBUG discovered by not visible")
 	pass
 
-func reveal():
+func polisMode():
 	$TileGraphic.modulate = Color(1,1,1)
 	match tileOwner:
 		"PDT":
 			$TileGraphic.modulate = Color(0,1,0)
 		"ANL":
 			$TileGraphic.modulate = Color(0,0,1)
+	pass
+
+func naturalMode():
+	$TileGraphic.modulate = Color(1,1,1)
+	$TileFOW.self_modulate.a = 0.0
 	pass
 
 signal tileColonized

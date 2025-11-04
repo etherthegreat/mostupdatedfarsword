@@ -22,6 +22,9 @@ var armyMode: bool
 
 var playerCapitalPathButton: pathPointButton 
 
+var mapMode: String
+var displayCorruption: bool
+
 func _process(delta: float) -> void:
 	if worldCreation == true:
 		return
@@ -39,6 +42,11 @@ func _process(delta: float) -> void:
 		$"CanvasLayer/Resource Bar (TOP)/container/HarmonyLabel/Label".text = str(playerCountryNode.TotalHarmony)
 		$"CanvasLayer/Resource Bar (TOP)/container/InfluenceLabel/Label".text = str(playerCountryNode.TotalInfluence)
 		$"CanvasLayer/Resource Bar (TOP)/container/ManpowerLabel/Label".text = str(playerCountryNode.TotalManpower)
+		updateMap()
+	pass
+
+func updateMap():
+	$TileController.updateTiles(mapMode, displayCorruption, playerCountryNode)
 	pass
 
 func _ready() -> void:
@@ -46,6 +54,8 @@ func _ready() -> void:
 	newGameBuild()
 	worldCreation = false
 	$RightClickDetector.visible = true
+	mapMode = "Polis"
+	displayCorruption = true
 	pass
 
 signal calculateSeason
@@ -75,6 +85,7 @@ func newGameBuild():
 	#$CanvasLayer/BuildingInfoPanel.displayBuildingInfo()
 	#$CanvasLayer/Spellbook.displaySpells(playerCountryNode)
 	updatePlayerUI()
+	$TileController.discoverTiles(playerCountryNode)
 	pass
 
 var countryNode = load("res://Game Scenes and Scripts/country.tscn")
@@ -603,12 +614,17 @@ func updateCivFunc(civ, pathPoint):
 		var newMilMod = milModScene.instantiate()
 		newMilMod.buildSelf(MilMod.milModType)
 		$CanvasLayer/CivilianUnitControl/MilModGridContainer.add_child(newMilMod)
+	calculateCivilianButtons(civ)
 	if $CanvasLayer/ArmyPanel.visible == true:
 		$CanvasLayer/ArmyPanel.visible = false
 	if $CanvasLayer/CivilianUnitControl.visible == false:
 		$CanvasLayer/CivilianUnitControl.visible = true
 	else:
 		$CanvasLayer/CivilianUnitControl.visible = false
+	pass
+
+func calculateCivilianButtons(civ):
+	$CanvasLayer/CivilianUnitControl/CivilianActionButtons.updateUI(civ.civilianTool.toolName, civ.civilianKit.kitType)
 	pass
 
 func _on_colonize_button_pressed() -> void:

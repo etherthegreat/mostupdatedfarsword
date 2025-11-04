@@ -5,12 +5,25 @@ var allTilesList: Array = []
 func connectTileSignals():
 	print("elevator", str(get_children()))
 	allTilesList.assign(get_children()) 
-	print(allTilesList, "horses can't run")
 	for Tile in get_children():
 		print(Tile.tileName, "penis penis penis")
 		Tile.tileLoaded.connect(connectEventSignal)
 		Tile.spellAssigned.connect(spellTileAssigned)
 		Tile.tileColonized.connect(colonizeThisTile)
+	pass
+
+func discoverTiles(playerCountry):
+	for Tile in get_children():
+		Tile.activeView = false
+		Tile.undiscovered = true
+		Tile.discovered = false
+	for Tile in get_children():
+		Tile.calculateDiscovered(playerCountry)
+pass
+
+func updateTiles(mapMode, displayCorruption, playerCountry):
+	for Tile in get_children():
+		Tile.updateGraphics(mapMode, displayCorruption, playerCountry)
 	pass
 
 func connectEventSignal(tile):

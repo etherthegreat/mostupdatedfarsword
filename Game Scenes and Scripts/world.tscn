@@ -1,4 +1,4 @@
-[gd_scene load_steps=138 format=3 uid="uid://bfbouq3jfwkxl"]
+[gd_scene load_steps=141 format=3 uid="uid://bfbouq3jfwkxl"]
 
 [ext_resource type="Script" uid="uid://dthx176t72xxr" path="res://Game Scenes and Scripts/world.gd" id="1_6bnro"]
 [ext_resource type="Texture2D" uid="uid://ymy7tu133b71" path="res://art assets/Placeholder Art/map/map.png" id="2_160f8"]
@@ -118,9 +118,12 @@
 [ext_resource type="Script" uid="uid://doikroxl883y7" path="res://Game Scenes and Scripts/camera_movement_controller.gd" id="108_hd7p3"]
 [ext_resource type="Script" uid="uid://bwgv6s2nvi545" path="res://Game Scenes and Scripts/civilian_control.gd" id="109_tls4k"]
 [ext_resource type="Texture2D" uid="uid://ba5jt6t2e7fv1" path="res://art assets/Placeholder Art/character/F3 - Copy.png" id="110_dqanl"]
+[ext_resource type="Texture2D" uid="uid://bdrh8kgonbtdu" path="res://art assets/finishedAssets/ores/copper60.png" id="110_t8ic4"]
 [ext_resource type="Texture2D" uid="uid://b1davws52n0ja" path="res://art assets/Placeholder Art/UI Art/resources/wood.png" id="111_8id6v"]
+[ext_resource type="Texture2D" uid="uid://cif08evn3glho" path="res://art assets/finishedAssets/ores/Bananas.PNG" id="111_hs44g"]
 [ext_resource type="Texture2D" uid="uid://direkrud67qna" path="res://art assets/ModifierIcons/TileEcoModifiers/CorruptionHeavy.png" id="112_xujp0"]
 [ext_resource type="Texture2D" uid="uid://05nyo4pxtvk3" path="res://art assets/ModifierIcons/TileEcoModifiers/CorruptionModerate.png" id="113_pe2dp"]
+[ext_resource type="Script" uid="uid://c34cpjxdi1u7u" path="res://Game Scenes and Scripts/civilian_action_buttons.gd" id="114_hs44g"]
 [ext_resource type="Texture2D" uid="uid://drfio28ic2jox" path="res://art assets/ModifierIcons/TileEcoModifiers/CorruptionLight.png" id="114_t8ic4"]
 [ext_resource type="Texture2D" uid="uid://dnn88jxqsoqlj" path="res://art assets/ModifierIcons/TileEcoModifiers/CorruptionTotal.png" id="115_hs44g"]
 
@@ -212,14 +215,18 @@ offset_right = -1272.0
 offset_bottom = -57.0
 EXPTileNumber = 1
 
-[node name="TileGraphic" type="Sprite2D" parent="TileController/Tile1"]
-position = Vector2(0, 2)
-texture = ExtResource("4_2o1by")
-
 [node name="Ring" type="Sprite2D" parent="TileController/Tile1"]
 z_index = 5
 position = Vector2(0, 2)
 texture = ExtResource("5_yk20q")
+
+[node name="TileFOW" type="Sprite2D" parent="TileController/Tile1"]
+position = Vector2(0, 2)
+texture = ExtResource("4_2o1by")
+
+[node name="TileGraphic" type="Sprite2D" parent="TileController/Tile1"]
+position = Vector2(0, 2)
+texture = ExtResource("4_2o1by")
 
 [node name="Area2D" type="Area2D" parent="TileController/Tile1"]
 position = Vector2(2, 7)
@@ -240,6 +247,10 @@ z_index = 5
 position = Vector2(36, 7)
 texture = ExtResource("6_i4k7e")
 
+[node name="TileFOW" type="Sprite2D" parent="TileController/Tile2"]
+position = Vector2(36, 7)
+texture = ExtResource("7_o8lmt")
+
 [node name="TileGraphic" type="Sprite2D" parent="TileController/Tile2"]
 position = Vector2(36, 7)
 texture = ExtResource("7_o8lmt")
@@ -256,6 +267,7 @@ offset_top = 801.0
 offset_right = -937.0
 offset_bottom = 801.0
 EXPTileNumber = 3
+TileNeighborsEXP = [NodePath("../Tile4"), NodePath("../Tile5"), NodePath("../Tile10")]
 
 [node name="Ring" type="Sprite2D" parent="TileController/Tile3"]
 z_index = 5
@@ -283,11 +295,16 @@ offset_top = 874.0
 offset_right = -801.0
 offset_bottom = 874.0
 EXPTileNumber = 4
+TileNeighborsEXP = [NodePath("../Tile3"), NodePath("../Tile5"), NodePath("../Tile7")]
 
 [node name="Ring" type="Sprite2D" parent="TileController/Tile4"]
 z_index = 5
 position = Vector2(2, 6)
 texture = ExtResource("10_pip0v")
+
+[node name="TileFOW" type="Sprite2D" parent="TileController/Tile4"]
+position = Vector2(2, 6)
+texture = ExtResource("11_okfap")
 
 [node name="TileGraphic" type="Sprite2D" parent="TileController/Tile4"]
 position = Vector2(2, 6)
@@ -305,11 +322,16 @@ offset_top = 760.0
 offset_right = -833.0
 offset_bottom = 760.0
 EXPTileNumber = 5
+TileNeighborsEXP = [NodePath("../Tile3"), NodePath("../Tile4"), NodePath("../Tile6")]
 
 [node name="Ring" type="Sprite2D" parent="TileController/Tile5"]
 z_index = 5
 position = Vector2(24, 26)
 texture = ExtResource("12_7p31k")
+
+[node name="TileFOW" type="Sprite2D" parent="TileController/Tile5"]
+position = Vector2(24, 26)
+texture = ExtResource("13_r0s6e")
 
 [node name="TileGraphic" type="Sprite2D" parent="TileController/Tile5"]
 position = Vector2(24, 26)
@@ -327,6 +349,7 @@ offset_top = 645.0
 offset_right = -887.0
 offset_bottom = 645.0
 EXPTileNumber = 6
+TileNeighborsEXP = [NodePath("../Tile5"), NodePath("../Tile9")]
 
 [node name="Ring" type="Sprite2D" parent="TileController/Tile6"]
 z_index = 5
@@ -353,11 +376,16 @@ offset_top = 902.0
 offset_right = -939.0
 offset_bottom = 902.0
 EXPTileNumber = 7
+TileNeighborsEXP = [NodePath("../Tile8"), NodePath("../Tile10"), NodePath("../Tile4")]
 
 [node name="Ring" type="Sprite2D" parent="TileController/Tile7"]
 z_index = 5
 position = Vector2(-26, 7)
 texture = ExtResource("17_f7ca6")
+
+[node name="TileFOW" type="Sprite2D" parent="TileController/Tile7"]
+position = Vector2(-26, 7)
+texture = ExtResource("16_dlxus")
 
 [node name="TileGraphic" type="Sprite2D" parent="TileController/Tile7"]
 position = Vector2(-26, 7)
@@ -375,11 +403,16 @@ offset_top = 981.0
 offset_right = -953.0
 offset_bottom = 981.0
 EXPTileNumber = 8
+TileNeighborsEXP = [NodePath("../Tile7")]
 
 [node name="Ring" type="Sprite2D" parent="TileController/Tile8"]
 z_index = 5
 position = Vector2(1, 23)
 texture = ExtResource("19_73u0w")
+
+[node name="TileFOW" type="Sprite2D" parent="TileController/Tile8"]
+position = Vector2(1, 23)
+texture = ExtResource("18_7c8hp")
 
 [node name="TileGraphic" type="Sprite2D" parent="TileController/Tile8"]
 position = Vector2(1, 23)
@@ -397,11 +430,16 @@ offset_top = 730.0
 offset_right = -1028.0
 offset_bottom = 730.0
 EXPTileNumber = 9
+TileNeighborsEXP = [NodePath("../Tile10"), NodePath("../Tile6")]
 
 [node name="Ring" type="Sprite2D" parent="TileController/Tile9"]
 z_index = 5
 position = Vector2(11, -4)
 texture = ExtResource("21_y0g7h")
+
+[node name="TileFOW" type="Sprite2D" parent="TileController/Tile9"]
+position = Vector2(11, -4)
+texture = ExtResource("20_jqmbm")
 
 [node name="TileGraphic" type="Sprite2D" parent="TileController/Tile9"]
 position = Vector2(11, -4)
@@ -419,11 +457,16 @@ offset_top = 836.0
 offset_right = -1047.0
 offset_bottom = 836.0
 EXPTileNumber = 10
+TileNeighborsEXP = [NodePath("../Tile3"), NodePath("../Tile9"), NodePath("../Tile7")]
 
 [node name="Ring" type="Sprite2D" parent="TileController/Tile10"]
 z_index = 5
 position = Vector2(36, 16)
 texture = ExtResource("23_sv2u8")
+
+[node name="TileFOW" type="Sprite2D" parent="TileController/Tile10"]
+position = Vector2(36, 16)
+texture = ExtResource("22_aq1ft")
 
 [node name="TileGraphic" type="Sprite2D" parent="TileController/Tile10"]
 position = Vector2(36, 16)
@@ -2954,8 +2997,33 @@ offset_right = 603.0
 offset_bottom = 1163.0
 theme_override_constants/separation = 210
 
+[node name="ExpeditionsContainer" type="VBoxContainer" parent="CanvasLayer/CivilianControl"]
+layout_mode = 0
+offset_left = 34.0
+offset_top = 197.0
+offset_right = 603.0
+offset_bottom = 1163.0
+mouse_filter = 2
+theme_override_constants/separation = 210
+
+[node name="WorkerButton" type="Button" parent="CanvasLayer/CivilianControl"]
+layout_mode = 0
+offset_left = 173.0
+offset_top = 81.0
+offset_right = 254.0
+offset_bottom = 160.0
+icon = ExtResource("110_t8ic4")
+
+[node name="ExplorerButton" type="Button" parent="CanvasLayer/CivilianControl"]
+layout_mode = 0
+offset_left = 317.0
+offset_top = 81.0
+offset_right = 398.0
+offset_bottom = 160.0
+icon = ExtResource("111_hs44g")
+expand_icon = true
+
 [node name="CivilianUnitControl" type="Control" parent="CanvasLayer"]
-visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
@@ -3011,6 +3079,7 @@ texture = ExtResource("72_kiqh3")
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+script = ExtResource("114_hs44g")
 
 [node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/CivilianUnitControl/CivilianActionButtons"]
 position = Vector2(291.5, 767.5)
@@ -3089,7 +3158,7 @@ offset_bottom = 792.0
 icon = ExtResource("112_xujp0")
 expand_icon = true
 
-[node name="OpenSpecialAbilities" type="Button" parent="CanvasLayer/CivilianUnitControl/CivilianActionButtons"]
+[node name="PlanExpeditionButton" type="Button" parent="CanvasLayer/CivilianUnitControl/CivilianActionButtons"]
 layout_mode = 0
 offset_left = 506.0
 offset_top = 738.0
@@ -3299,6 +3368,8 @@ shape = SubResource("RectangleShape2D_qt86y")
 [connection signal="mouse_exited" from="CanvasLayer/ArmyPanel/ArmyButtonsContainer/ReinforceShieldButtonControl/ReinforceShieldButton" to="PathControl" method="_on_reinforce_shield_button_mouse_exited"]
 [connection signal="mouse_entered" from="CanvasLayer/ArmyPanel/ArmyButtonsContainer/SpellsAndPowersButtonControl/SpellsAndPowersButton" to="PathControl" method="_on_spells_and_powers_button_mouse_entered"]
 [connection signal="mouse_exited" from="CanvasLayer/ArmyPanel/ArmyButtonsContainer/SpellsAndPowersButtonControl/SpellsAndPowersButton" to="PathControl" method="_on_spells_and_powers_button_mouse_exited"]
+[connection signal="pressed" from="CanvasLayer/CivilianControl/WorkerButton" to="CanvasLayer/CivilianControl" method="_on_worker_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/CivilianControl/ExplorerButton" to="CanvasLayer/CivilianControl" method="_on_explorer_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/CivilianUnitControl/CivilianActionButtons/ClearCorruption" to="." method="_on_clear_corruption_pressed"]
 [connection signal="pressed" from="CanvasLayer/CivilianUnitControl/CivilianActionButtons/ColonizeButton" to="." method="_on_colonize_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/CivilianUnitControl/CivilianActionButtons/IncreaseAgriculturalDevelopment" to="." method="_on_increase_agricultural_development_pressed"]

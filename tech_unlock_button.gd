@@ -77,6 +77,7 @@ func buildSelf():
 		"Logistics":
 			addReward("Barracks Upgrade")
 			addReward("Dock Upgrade")
+			$Sprite2D.texture = load("res://art assets/finishedAssets/technology images/logistics.png")
 		"Alphabet":
 			addReward("Library Upgrade")
 			$Sprite2D.texture = load("res://art assets/finishedAssets/technology images/alphabet.png")
@@ -124,7 +125,7 @@ func addReward(type):
 	$HBoxContainer.add_child(newReward)
 	pass
 
-var blue = Color.BLUE
+var blue = Color.LIGHT_BLUE
 var white = Color.WHITE
 var yellow = Color.YELLOW_GREEN
 var grey = Color.DARK_GRAY
