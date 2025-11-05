@@ -1072,7 +1072,7 @@ func calculateOutputs(playerCountryNode):
 	influenceCostPerLevel = 0
 	manpowerCostPerLevel = 0
 	corruptionGainPerLevel = 0
-	#buildBuilding()
+	buildBuilding()
 	matchPlayerUnlockables(playerCountryNode)
 	totalBuildingGold = 0
 	totalBuildingFood = 0

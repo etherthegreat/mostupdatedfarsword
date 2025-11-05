@@ -174,6 +174,7 @@ func calculateArmyMovement(pathPointButton, endNodes, startNodes, neighborPathPo
 		for Container in endNodes: 
 			print(Container, "DEUBUG NODEPATH")
 			if startingPoint.startNodePaths.has(Container):
+				print("DEBUG startingPoint2, ")
 				moveArmy(Container, "start", pathPointButton)
 				#pathPointButton.occupied = false
 				#print("DEBUG PathPointButton", pathPointButton.occupied)
@@ -246,39 +247,9 @@ func moveArmy(newContainer, String, endPoint):
 				selectedCPF.move("end", endPoint, path)
 				updatingArmyPathFollow = newContainer.get_parent()
 	pass
-
+signal showArmyInfo
 func moveAndShowInfoPanel(key):
-	match key:
-		"Move":
-			$ArmyPanel/ActionInfoPanelControl.position.x = 11
-			$ArmyPanel/ActionInfoPanelControl/ActionDescriptionLabel.text = "Move the unit to one of the surrounding tiles.  Cannot move into tiles occupied by other units."
-		"Wait":
-			$ArmyPanel/ActionInfoPanelControl.position.x = 60
-			$ArmyPanel/ActionInfoPanelControl/ActionDescriptionLabel.text = "Holds the unit in place for one turn. +10% Army Defence and Ranged Defence this turn."
-		"Hold":
-			$ArmyPanel/ActionInfoPanelControl.position.x = 107
-			$ArmyPanel/ActionInfoPanelControl/ActionDescriptionLabel.text = "Hold this unit in place indefinitely. +10% Army Defence and Ranged Defence."
-		"Melee":
-			$ArmyPanel/ActionInfoPanelControl.position.x = 154
-			$ArmyPanel/ActionInfoPanelControl/ActionDescriptionLabel.text = "Attack an enemy using this army's melee strength.  Lose manpower depending on Enemy defence and shield stats."
-		"Ranged":
-			$ArmyPanel/ActionInfoPanelControl.position.x = 205
-			$ArmyPanel/ActionInfoPanelControl/ActionDescriptionLabel.text = "Attack an enemy using this army's ranged strength.  Lose weapons depending on your Ore, weapon type, and level."
-		"Reinforce":
-			$ArmyPanel/ActionInfoPanelControl.position.x = 252
-			$ArmyPanel/ActionInfoPanelControl/ActionDescriptionLabel.text = "Reinforce your army's manpower reserves.  Costs gold, food, and manpower."
-		"Weapons":
-			$ArmyPanel/ActionInfoPanelControl.position.x = 300
-			$ArmyPanel/ActionInfoPanelControl/ActionDescriptionLabel.text = "Reinforce your army's weapons reserves.  Costs gold and weapons."
-		"Shield":
-			$ArmyPanel/ActionInfoPanelControl.position.x = 300
-			$ArmyPanel/ActionInfoPanelControl/ActionDescriptionLabel.text = "Restore your shield score at the cost of gold, wood, and metal."
-		"Powers":
-			$ArmyPanel/ActionInfoPanelControl.position.x = 300
-			$ArmyPanel/ActionInfoPanelControl/ActionDescriptionLabel.text = "Open a list of all your unlocked spells, powers, and abilities available for this unit."
-	$ArmyPanel/ActionInfoPanelControl/ActionNameLabel.text = key
-	$ArmyPanel/ActionInfoPanelControl.visible = true
-	
+	emit_signal("showArmyInfo", key)
 	pass
 
 signal tileDevelopment

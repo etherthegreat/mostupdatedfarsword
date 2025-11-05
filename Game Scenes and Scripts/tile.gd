@@ -208,8 +208,6 @@ func onNewGame():
 			TileNeighbors
 			tileSpawnPoint = $"../../PathControl/PathPointsControl/3"
 		3:
-			tileSpawnPath = "Pender Tal"
-			tileSpawnPathPoint = 1
 			tileName = "Pender Tal"
 			tileOwner = "PDT"
 			countryCapital = true
@@ -243,8 +241,6 @@ func onNewGame():
 		#actingSpell.spellType = "Celebration"
 		#tileSpell = actingSpell
 		4:
-			tileSpawnPath = "Pender Tal South"
-			tileSpawnPathPoint = 17
 			tileName = "Enthenar"
 			#tileOwner = "PDT"
 			countryCapital = false
@@ -258,7 +254,7 @@ func onNewGame():
 			corruption = 100
 			TileNeighbors
 			var tileCrop = crop.new()
-			tileCrop.cropType = "Papyrus"
+			tileCrop.cropType = "Wheat"
 			cropSlot = tileCrop
 			var tileOre = ore.new()
 			tileOre.buildSelf("Marble")
@@ -268,7 +264,7 @@ func onNewGame():
 			addBuilding("Temple", 2)
 			addBuilding("Barracks", 1)
 			addBuilding("Bath", 2)
-			addBuilding("Library", 2)
+			addBuilding("Library", 4)
 			tileSpawnPoint = $"../../PathControl/PathPointsControl/4"
 		5:
 			tileName
@@ -294,6 +290,10 @@ func onNewGame():
 			tileSpawnPoint = $"../../PathControl/PathPointsControl/9"
 		10:
 			tileSpawnPoint = $"../../PathControl/PathPointsControl/10"
+		11:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/11"
+		12:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/12"
 	calculateCorruption()
 	emit_signal("tileLoaded", self)
 	pass

@@ -2,8 +2,7 @@ extends Control
 
 class_name pathPointButton
 
-@export var pathNumberEXP: int
-var pathNumber: int
+
 
 @export var endNodePathsEXP: Array
 var endNodePaths: Array
@@ -24,7 +23,6 @@ var stationedCivilians: Array
 var discoveredByPlayer: bool
 
 func buildSelf():
-	pathNumber = pathNumberEXP
 	for NodePath in endNodePathsEXP:
 		endNodePaths.append(get_node(NodePath))
 	for NodePath in startNodePathsEXP:

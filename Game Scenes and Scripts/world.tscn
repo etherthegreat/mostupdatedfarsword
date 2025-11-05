@@ -1,4 +1,4 @@
-[gd_scene load_steps=150 format=3 uid="uid://bfbouq3jfwkxl"]
+[gd_scene load_steps=159 format=3 uid="uid://bfbouq3jfwkxl"]
 
 [ext_resource type="Script" uid="uid://dthx176t72xxr" path="res://Game Scenes and Scripts/world.gd" id="1_6bnro"]
 [ext_resource type="Texture2D" uid="uid://ymy7tu133b71" path="res://art assets/Placeholder Art/map/map.png" id="2_160f8"]
@@ -63,17 +63,23 @@
 [ext_resource type="Texture2D" uid="uid://ccsbyu0sr00e8" path="res://art assets/finishedAssets/ores/Cannabis.PNG" id="32_symo7"]
 [ext_resource type="Texture2D" uid="uid://cudj2gvqfnm0v" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/test 1.png" id="32_vnwtn"]
 [ext_resource type="Texture2D" uid="uid://btv4v7kqt5xdc" path="res://art assets/finishedAssets/ores/Floodstone.PNG" id="33_bgdvj"]
+[ext_resource type="Texture2D" uid="uid://ccfpjpqr2hrkt" path="res://art assets/Map Art/11 Ring.png" id="33_hvqeb"]
 [ext_resource type="PackedScene" uid="uid://c6ywed71drmm1" path="res://religion_data.tscn" id="33_mhn20"]
 [ext_resource type="Texture2D" uid="uid://dkwttunvoemck" path="res://art assets/finishedAssets/religiousIcons/IMG_1145.JPG" id="33_xbjiy"]
+[ext_resource type="Texture2D" uid="uid://slcehf75h4h2" path="res://art assets/Map Art/11FOG.png" id="34_4dfoy"]
 [ext_resource type="Texture2D" uid="uid://n53t5t0b32p3" path="res://art assets/ModifierIcons/TileEcoModifiers/FreshWater.png" id="34_ofkyc"]
 [ext_resource type="Texture2D" uid="uid://cocrc1hdqliru" path="res://art assets/finishedAssets/religiousIcons/IMG_1146.PNG" id="34_pqr4i"]
 [ext_resource type="Texture2D" uid="uid://cb08osdpathpa" path="res://art assets/Placeholder Art/UI Art/resources/faith.png" id="35_o3iuu"]
+[ext_resource type="Texture2D" uid="uid://dg82rxmnqymsb" path="res://art assets/Map Art/11Tile2.png" id="35_poy4c"]
 [ext_resource type="PackedScene" uid="uid://b3odh5q7qlkoj" path="res://magic_amount_control.tscn" id="36_mhn20"]
 [ext_resource type="Script" uid="uid://bpfawxk0gtyii" path="res://Game Scenes and Scripts/spell_schools_control.gd" id="36_qt86y"]
+[ext_resource type="Texture2D" uid="uid://c83wcaijvimki" path="res://art assets/Map Art/12 Ring.png" id="36_u5hcn"]
+[ext_resource type="Texture2D" uid="uid://b6pqbu2hepmc5" path="res://art assets/Map Art/12FOG.png" id="37_7y2p4"]
 [ext_resource type="Texture2D" uid="uid://dnfjo3klxnenq" path="res://art assets/ModifierIcons/TileEcoModifiers/CorruptionNo.png" id="37_vrxkf"]
 [ext_resource type="Texture2D" uid="uid://k1rvpr0qxcw1" path="res://art assets/finishedAssets/religiousIcons/IMG_1170.PNG" id="37_y3tfg"]
 [ext_resource type="Script" uid="uid://b1e4cr0ob85l3" path="res://Game Scenes and Scripts/military_panel_control.gd" id="38_0kf4p"]
 [ext_resource type="Texture2D" uid="uid://c2iyt2rf5ger4" path="res://art assets/finishedAssets/Panels/IMG_1205.PNG" id="38_8aja3"]
+[ext_resource type="Texture2D" uid="uid://d1q85q36b0q1i" path="res://art assets/Map Art/12 Tile.png" id="38_mamdl"]
 [ext_resource type="Texture2D" uid="uid://dbg7fk5qjv7bf" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/test 3.png" id="38_sleii"]
 [ext_resource type="Texture2D" uid="uid://bms0cferfujkf" path="res://art assets/finishedAssets/religiousIcons/IMG_1170 - Copy.PNG" id="38_xyhgj"]
 [ext_resource type="Texture2D" uid="uid://beeamy6jaliiu" path="res://art assets/finishedAssets/religiousIcons/IMG_1170 - Copy (3).PNG" id="39_3ll13"]
@@ -194,6 +200,24 @@ _data = {
 "points": PackedVector2Array(0, 0, 0, 0, -945, 912, 0, 0, 0, 0, -957, 930, 0, 0, 0, 0, -957, 941, 0, 0, 0, 0, -956, 954, 0, 0, 0, 0, -948, 961, 0, 0, 0, 0, -938, 977, 0, 0, 0, 0, -940, 995, 0, 0, 0, 0, -952, 1004)
 }
 point_count = 8
+
+[sub_resource type="Curve2D" id="Curve2D_u5hcn"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -833, 771, 0, 0, 0, 0, -823, 767, 0, 0, 0, 0, -812, 762, 0, 0, 0, 0, -801, 752, 0, 0, 0, 0, -795, 737, 0, 0, 0, 0, -786, 728, 0, 0, 0, 0, -771, 722, 0, 0, 0, 0, -760, 720, 0, 0, 0, 0, -750, 722, 0, 0, 0, 0, -742, 734)
+}
+point_count = 10
+
+[sub_resource type="Curve2D" id="Curve2D_7y2p4"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -738, 744, 0, 0, 0, 0, -743, 736, 0, 0, 0, 0, -753, 726, 0, 0, 0, 0, -754, 712, 0, 0, 0, 0, -746, 700, 0, 0, 0, 0, -726, 695, 0, 0, 0, 0, -715, 686, 0, 0, 0, 0, -714, 659, 0, 0, 0, 0, -720, 643, 0, 0, 0, 0, -727, 635)
+}
+point_count = 10
+
+[sub_resource type="Curve2D" id="Curve2D_mamdl"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -725, 636, 0, 0, 0, 0, -737, 635, 0, 0, 0, 0, -757, 637, 0, 0, 0, 0, -773, 632, 0, 0, 0, 0, -792, 636, 0, 0, 0, 0, -805, 639, 0, 0, 0, 0, -822, 648, 0, 0, 0, 0, -841, 654, 0, 0, 0, 0, -858, 650, 0, 0, 0, 0, -870, 650, 0, 0, 0, 0, -887, 648)
+}
+point_count = 11
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_y3tfg"]
 size = Vector2(365.324, 339.706)
@@ -336,7 +360,7 @@ offset_top = 760.0
 offset_right = -833.0
 offset_bottom = 760.0
 EXPTileNumber = 5
-TileNeighborsEXP = [NodePath("../Tile3"), NodePath("../Tile4"), NodePath("../Tile6")]
+TileNeighborsEXP = [NodePath("../Tile3"), NodePath("../Tile4"), NodePath("../Tile6"), NodePath("../Tile11")]
 
 [node name="Ring" type="Sprite2D" parent="TileController/Tile5"]
 z_index = 5
@@ -363,7 +387,7 @@ offset_top = 645.0
 offset_right = -887.0
 offset_bottom = 645.0
 EXPTileNumber = 6
-TileNeighborsEXP = [NodePath("../Tile5"), NodePath("../Tile9")]
+TileNeighborsEXP = [NodePath("../Tile5"), NodePath("../Tile9"), NodePath("../Tile12")]
 
 [node name="Ring" type="Sprite2D" parent="TileController/Tile6"]
 z_index = 5
@@ -492,6 +516,58 @@ position = Vector2(36, 16)
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TileController/Tile10/Area2D"]
 polygon = PackedVector2Array(10, -29, 10, -7, 12, -3, 12, 2, 6, 5, 0, 18, -3, 35, -5, 50, -7, 66, -14, 66, -36, 60, -45, 55, -47, 48, -58, 41, -73, 35, -76, 30, -76, 25, -73, 22, -73, 18, -86, 10, -90, 5, -90, -1, -86, -8, -75, -11, -65, -16, -62, -23, -63, -33, -67, -39, -72, -42, -78, -48, -77, -53, -73, -57, -65, -57, -62, -60, -63, -63, -67, -66, -75, -70, -84, -77, -94, -82, -97, -90, -94, -93, -82, -93, -70, -90, -40, -89, -24, -85, -8, -81, 3, -77, 9, -76, 9, -69, 3, -67, -1, -61, -3, -52, -7, -38, -8, -34, -8, -30, -4, -28, 2, -28, 7, -31)
 
+[node name="Tile11" parent="TileController" instance=ExtResource("4_xmfu7")]
+offset_left = -727.0
+offset_top = 784.0
+offset_right = -727.0
+offset_bottom = 784.0
+EXPTileNumber = 11
+TileNeighborsEXP = [NodePath("../Tile5"), NodePath("../Tile12")]
+
+[node name="Ring" type="Sprite2D" parent="TileController/Tile11"]
+z_index = 5
+position = Vector2(1, 1)
+texture = ExtResource("33_hvqeb")
+
+[node name="TileFOW" type="Sprite2D" parent="TileController/Tile11"]
+position = Vector2(1, 1)
+texture = ExtResource("34_4dfoy")
+
+[node name="TileGraphic" type="Sprite2D" parent="TileController/Tile11"]
+position = Vector2(1, 1)
+texture = ExtResource("35_poy4c")
+
+[node name="Area2D" type="Area2D" parent="TileController/Tile11"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TileController/Tile11/Area2D"]
+polygon = PackedVector2Array(-2, 23, 11, 23, 19, 20, 26, 12, 26, 5, 21, -4, 22, -8, 28, -16, 28, -21, 24, -29, 24, -37, 28, -43, 33, -44, 41, -43, 49, -43, 56, -50, 56, -54, 48, -62, 37, -68, 23, -71, 18, -73, 17, -78, 17, -81, 20, -85, 26, -84, 39, -83, 50, -87, 52, -96, 47, -104, 33, -109, 25, -116, 15, -114, -6, -110, -19, -108, -31, -102, -42, -100, -47, -97, -49, -92, -48, -85, -48, -64, -45, -47, -45, -24, -43, -8, -36, -7, -26, -4, -20, 3, -15, 13, -12, 16)
+
+[node name="Tile12" parent="TileController" instance=ExtResource("4_xmfu7")]
+offset_left = -718.0
+offset_top = 666.0
+offset_right = -718.0
+offset_bottom = 666.0
+EXPTileNumber = 12
+TileNeighborsEXP = [NodePath("../Tile6"), NodePath("../Tile11")]
+
+[node name="Ring" type="Sprite2D" parent="TileController/Tile12"]
+z_index = 5
+position = Vector2(1, 1)
+texture = ExtResource("36_u5hcn")
+
+[node name="TileFOW" type="Sprite2D" parent="TileController/Tile12"]
+position = Vector2(1, 1)
+texture = ExtResource("37_7y2p4")
+
+[node name="TileGraphic" type="Sprite2D" parent="TileController/Tile12"]
+position = Vector2(1, 1)
+texture = ExtResource("38_mamdl")
+
+[node name="Area2D" type="Area2D" parent="TileController/Tile12"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TileController/Tile12/Area2D"]
+polygon = PackedVector2Array(-27, 6, -17, 7, 7, 2, 32, -7, 42, -11, 43, -18, 39, -23, 39, -33, 51, -41, 56, -43, 73, -31, 86, -31, 91, -38, 90, -46, 81, -59, 74, -66, 74, -71, 57, -83, 44, -92, 38, -93, 31, -87, 26, -80, 17, -76, 8, -75, -2, -66, -12, -66, -25, -82, -28, -87, -34, -91, -43, -91, -52, -86, -53, -79, -51, -74, -45, -67, -44, -61, -47, -55, -52, -52, -60, -49, -68, -46, -72, -44, -69, -35, -68, -25, -66, -11, -65, -1, -65, 2, -53, 1, -40, 3)
+
 [node name="PathControl" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
@@ -512,7 +588,6 @@ offset_left = -961.0
 offset_top = 808.0
 offset_right = -921.0
 offset_bottom = 848.0
-pathNumberEXP = 1
 endNodePathsEXP = [NodePath("../../PathsControl/Path10-3/PathFollow10-3/Container")]
 startNodePathsEXP = [NodePath("../../PathsControl/Path3-4/PathFollow3-4/Control 3-4"), NodePath("../../PathsControl/Path3-5/PathFollow3-5/Control 3-5")]
 neighborPathPointsEXP = [NodePath("../5"), NodePath("../4"), NodePath("../10")]
@@ -525,7 +600,6 @@ offset_left = -853.0
 offset_top = 847.0
 offset_right = -813.0
 offset_bottom = 887.0
-pathNumberEXP = 5
 endNodePathsEXP = [NodePath("../../PathsControl/Path3-4/PathFollow3-4/Control 3-4"), NodePath("../../PathsControl/Path5-4/PathFollow5-4/Control5-4"), NodePath("../../PathsControl/Path7-4/PathFollow7-4/Container")]
 neighborPathPointsEXP = [NodePath("../3"), NodePath("../5"), NodePath("../7")]
 ppbTileEXP = NodePath("../../../TileController/Tile4")
@@ -537,10 +611,9 @@ offset_left = -847.0
 offset_top = 748.0
 offset_right = -807.0
 offset_bottom = 788.0
-pathNumberEXP = 2
 endNodePathsEXP = [NodePath("../../PathsControl/Path3-5/PathFollow3-5/Control 3-5")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path5-4/PathFollow5-4/Control5-4"), NodePath("../../PathsControl/Path5-6/PathFollow5-6/Control5-6")]
-neighborPathPointsEXP = [NodePath("../3"), NodePath("../6"), NodePath("../4")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path5-4/PathFollow5-4/Control5-4"), NodePath("../../PathsControl/Path5-6/PathFollow5-6/Control5-6"), NodePath("../../PathsControl/Path5-11/PathFollow5-11/Container")]
+neighborPathPointsEXP = [NodePath("../3"), NodePath("../6"), NodePath("../4"), NodePath("../11")]
 ppbTileEXP = NodePath("../../../TileController/Tile5")
 
 [node name="6" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
@@ -550,10 +623,9 @@ offset_left = -905.0
 offset_top = 626.0
 offset_right = -865.0
 offset_bottom = 666.0
-pathNumberEXP = 3
-endNodePathsEXP = [NodePath("../../PathsControl/Path5-6/PathFollow5-6/Control5-6")]
+endNodePathsEXP = [NodePath("../../PathsControl/Path5-6/PathFollow5-6/Control5-6"), NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container")]
 startNodePathsEXP = [NodePath("../../PathsControl/Path6-9/PathFollow6-9/Container9-6")]
-neighborPathPointsEXP = [NodePath("../5"), NodePath("../9")]
+neighborPathPointsEXP = [NodePath("../5"), NodePath("../9"), NodePath("../12")]
 ppbTileEXP = NodePath("../../../TileController/Tile6")
 
 [node name="7" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
@@ -563,7 +635,6 @@ offset_left = -962.0
 offset_top = 888.0
 offset_right = -922.0
 offset_bottom = 928.0
-pathNumberEXP = 6
 endNodePathsEXP = [NodePath("../../PathsControl/Path10-7/PathFollow10-7/Container")]
 startNodePathsEXP = [NodePath("../../PathsControl/Path7-4/PathFollow7-4/Container"), NodePath("../../PathsControl/Path7-8/PathFollow7-8/Container")]
 neighborPathPointsEXP = [NodePath("../4"), NodePath("../10"), NodePath("../8")]
@@ -576,7 +647,6 @@ offset_left = -963.0
 offset_top = 977.0
 offset_right = -923.0
 offset_bottom = 1017.0
-pathNumberEXP = 6
 endNodePathsEXP = [NodePath("../../PathsControl/Path7-8/PathFollow7-8/Container")]
 neighborPathPointsEXP = [NodePath("../7")]
 ppbTileEXP = NodePath("../../../TileController/Tile8")
@@ -588,7 +658,6 @@ offset_left = -1020.0
 offset_top = 711.0
 offset_right = -980.0
 offset_bottom = 751.0
-pathNumberEXP = 4
 endNodePathsEXP = [NodePath("../../PathsControl/Path6-9/PathFollow6-9/Container9-6")]
 startNodePathsEXP = [NodePath("../../PathsControl/Path9-10/PathFollow9-10/Container9-10")]
 neighborPathPointsEXP = [NodePath("../6"), NodePath("../10")]
@@ -601,11 +670,34 @@ offset_left = -1059.0
 offset_top = 829.0
 offset_right = -1019.0
 offset_bottom = 869.0
-pathNumberEXP = 7
 endNodePathsEXP = [NodePath("../../PathsControl/Path9-10/PathFollow9-10/Container9-10")]
 startNodePathsEXP = [NodePath("../../PathsControl/Path10-7/PathFollow10-7/Container"), NodePath("../../PathsControl/Path10-3/PathFollow10-3/Container")]
 neighborPathPointsEXP = [NodePath("../3"), NodePath("../7"), NodePath("../9")]
 ppbTileEXP = NodePath("../../../TileController/Tile10")
+
+[node name="11" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+visible = false
+z_index = 12
+offset_left = -756.0
+offset_top = 716.0
+offset_right = -716.0
+offset_bottom = 756.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path5-11/PathFollow5-11/Container")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container")]
+neighborPathPointsEXP = [NodePath("../5"), NodePath("../12")]
+ppbTileEXP = NodePath("../../../TileController/Tile11")
+
+[node name="12" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+visible = false
+z_index = 12
+offset_left = -740.0
+offset_top = 613.0
+offset_right = -700.0
+offset_bottom = 653.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container")]
+neighborPathPointsEXP = [NodePath("../6"), NodePath("../11")]
+ppbTileEXP = NodePath("../../../TileController/Tile12")
 
 [node name="PathsControl" type="Control" parent="PathControl"]
 anchors_preset = 0
@@ -719,6 +811,44 @@ position = Vector2(-945, 912)
 rotation = 2.1588
 
 [node name="Container" type="Container" parent="PathControl/PathsControl/Path7-8/PathFollow7-8"]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Path5-11" type="Path2D" parent="PathControl/PathsControl"]
+curve = SubResource("Curve2D_u5hcn")
+
+[node name="PathFollow5-11" type="PathFollow2D" parent="PathControl/PathsControl/Path5-11"]
+position = Vector2(-833, 771)
+rotation = -0.380506
+
+[node name="Container" type="Container" parent="PathControl/PathsControl/Path5-11/PathFollow5-11"]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Path11-12" type="Path2D" parent="PathControl/PathsControl"]
+z_index = 4
+curve = SubResource("Curve2D_7y2p4")
+
+[node name="PathFollow11-12" type="PathFollow2D" parent="PathControl/PathsControl/Path11-12"]
+position = Vector2(-738, 744)
+rotation = -2.1294
+
+[node name="Container" type="Container" parent="PathControl/PathsControl/Path11-12/PathFollow11-12"]
+z_index = 12
+offset_left = 4.55801
+offset_top = -5.40605
+offset_right = 44.558
+offset_bottom = 34.5939
+
+[node name="Path12-6" type="Path2D" parent="PathControl/PathsControl"]
+curve = SubResource("Curve2D_mamdl")
+
+[node name="PathFollow12-6" type="PathFollow2D" parent="PathControl/PathsControl/Path12-6"]
+position = Vector2(-725, 636)
+rotation = -3.05845
+
+[node name="Container" type="Container" parent="PathControl/PathsControl/Path12-6/PathFollow12-6"]
+z_index = 12
 offset_right = 40.0
 offset_bottom = 40.0
 
@@ -2733,7 +2863,6 @@ offset_right = 205.0
 text = "test"
 
 [node name="ArmyPanel" type="Control" parent="CanvasLayer"]
-visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_left = -4.0
@@ -2861,12 +2990,11 @@ scale = Vector2(0.2205, 0.422222)
 texture = ExtResource("71_bgdvj")
 
 [node name="ActionInfoPanelControl" type="Control" parent="CanvasLayer/ArmyPanel"]
-visible = false
 layout_mode = 2
 anchors_preset = 0
-offset_left = 11.0
+offset_left = 60.0
 offset_top = -26.0
-offset_right = 11.0
+offset_right = 60.0
 offset_bottom = -26.0
 
 [node name="SpriteBack" type="Sprite2D" parent="CanvasLayer/ArmyPanel/ActionInfoPanelControl"]
@@ -3223,6 +3351,12 @@ offset_bottom = 731.0
 icon = ExtResource("112_xujp0")
 expand_icon = true
 
+[node name="MapModeControl" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
 [node name="CameraMovementController" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
@@ -3324,6 +3458,13 @@ shape = SubResource("RectangleShape2D_qt86y")
 [connection signal="input_event" from="TileController/Tile10/Area2D" to="TileController/Tile10" method="_on_area_2d_input_event"]
 [connection signal="mouse_entered" from="TileController/Tile10/Area2D" to="TileController/Tile10" method="_on_area_2d_mouse_entered"]
 [connection signal="mouse_exited" from="TileController/Tile10/Area2D" to="TileController/Tile10" method="_on_area_2d_mouse_exited"]
+[connection signal="input_event" from="TileController/Tile11/Area2D" to="TileController/Tile11" method="_on_area_2d_input_event"]
+[connection signal="mouse_entered" from="TileController/Tile11/Area2D" to="TileController/Tile11" method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="TileController/Tile11/Area2D" to="TileController/Tile11" method="_on_area_2d_mouse_exited"]
+[connection signal="input_event" from="TileController/Tile12/Area2D" to="TileController/Tile12" method="_on_area_2d_input_event"]
+[connection signal="mouse_entered" from="TileController/Tile12/Area2D" to="TileController/Tile12" method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="TileController/Tile12/Area2D" to="TileController/Tile12" method="_on_area_2d_mouse_exited"]
+[connection signal="showArmyInfo" from="PathControl" to="." method="_on_path_control_show_army_info"]
 [connection signal="pressed" from="CanvasLayer/TileInfoPanel/governorButton" to="CanvasLayer/TileInfoPanel" method="_on_governor_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/TileInfoPanel/OpenBuildingsButton" to="CanvasLayer" method="_on_open_buildings_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/TileInfoPanel/WizardButton" to="CanvasLayer" method="_on_wizard_button_pressed"]

@@ -406,9 +406,9 @@ func raiseArmyFromWorld(Army, country, Tile):
 	#demon AI system will spawn units using raiseArmyFromWorld
 	match Tile.tileNumber:
 		3:
-			pathPointButtonToSend = $PathControl/PathPointsControl/PDT1
+			pathPointButtonToSend = $"PathControl/PathPointsControl/3"
 		4:
-			pathPointButtonToSend = $PathControl/PathPointsControl/PDTS1
+			pathPointButtonToSend = $"PathControl/PathPointsControl/4"
 	if country == playerCountryNode:
 		$PathControl.raisePlayerArmy(Army, country, Tile, pathPointButtonToSend)
 	else:
@@ -562,12 +562,51 @@ func updateArmyFunc(Army, pathPoint):
 	$CanvasLayer/ArmyPanel/RangedDefenseLabel.text = str(Army.armyRangedDefense)
 	$CanvasLayer/ArmyPanel/ManpowerLabel.text = str(Army.manpowerInArmy, " / ", Army.maxManpower)
 	$CanvasLayer/ArmyPanel/ShieldLabel.text = str(Army.armyShield, " / ", Army.armyMaxShield)
-	$CanvasLayer/ArmyPanel/LocationLabel.text = str(pathPoint.pathNumber)
+	#$CanvasLayer/ArmyPanel/LocationLabel.text = str(pathPoint.pathNumber)
 	if $CanvasLayer/ArmyPanel.visible == false:
 		$CanvasLayer/ArmyPanel.visible = true
 	else:
 		$CanvasLayer/ArmyPanel.visible = false
 	pass
+
+func _on_path_control_show_army_info(key) -> void:
+	match key:
+		"Wait":
+			$CanvasLayer/ArmyPanel/ActionInfoPanelControl.visible = true
+			$CanvasLayer/ArmyPanel/ActionInfoPanelControl.position.x = 60
+			$CanvasLayer/ArmyPanel/ActionInfoPanelControl/ActionNameLabel.text = "Wait"
+			$CanvasLayer/ArmyPanel/ActionInfoPanelControl/ActionDescriptionLabel.text = "Pause this unit for the turn."
+		"Hold":
+			$CanvasLayer/ArmyPanel/ActionInfoPanelControl.visible = true
+			$CanvasLayer/ArmyPanel/ActionInfoPanelControl.position.x = 110
+			$CanvasLayer/ArmyPanel/ActionInfoPanelControl/ActionNameLabel.text = "Hold"
+			$CanvasLayer/ArmyPanel/ActionInfoPanelControl/ActionDescriptionLabel.text = "Hold this unit indefinitely."
+		"Melee":
+			$CanvasLayer/ArmyPanel/ActionInfoPanelControl.visible = true
+			$CanvasLayer/ArmyPanel/ActionInfoPanelControl.position.x = 160
+			$CanvasLayer/ArmyPanel/ActionInfoPanelControl/ActionNameLabel.text = "Melee Attack"
+			$CanvasLayer/ArmyPanel/ActionInfoPanelControl/ActionDescriptionLabel.text = "Attack using this unit's melee strength - unit will sustain manpower casualties!"
+		"Ranged":
+			$CanvasLayer/ArmyPanel/ActionInfoPanelControl.visible = true
+			$CanvasLayer/ArmyPanel/ActionInfoPanelControl.position.x = 210
+			$CanvasLayer/ArmyPanel/ActionInfoPanelControl/ActionNameLabel.text = "Ranged Attack"
+			$CanvasLayer/ArmyPanel/ActionInfoPanelControl/ActionDescriptionLabel.text = "Attack using this unit's ranged strength - unit will lose weapons!"
+		"Reinforce":
+			$CanvasLayer/ArmyPanel/ActionInfoPanelControl.visible = true
+			$CanvasLayer/ArmyPanel/ActionInfoPanelControl.position.x = 260
+			$CanvasLayer/ArmyPanel/ActionInfoPanelControl/ActionNameLabel.text = "Reinforce"
+			$CanvasLayer/ArmyPanel/ActionInfoPanelControl/ActionDescriptionLabel.text = "Rebuild the manpower reserves of this unit."
+		"Weapons":
+			$CanvasLayer/ArmyPanel/ActionInfoPanelControl.visible = true
+			$CanvasLayer/ArmyPanel/ActionInfoPanelControl.position.x = 310
+			$CanvasLayer/ArmyPanel/ActionInfoPanelControl/ActionNameLabel.text = "Resupply"
+			$CanvasLayer/ArmyPanel/ActionInfoPanelControl/ActionDescriptionLabel.text = "Build up the supplies and weapons of this unit."
+		"Shield":
+			$CanvasLayer/ArmyPanel/ActionInfoPanelControl.visible = true
+			$CanvasLayer/ArmyPanel/ActionInfoPanelControl.position.x = 360
+			$CanvasLayer/ArmyPanel/ActionInfoPanelControl/ActionNameLabel.text = "Shield"
+			$CanvasLayer/ArmyPanel/ActionInfoPanelControl/ActionDescriptionLabel.text = "Grant half of this unit's defense to a nearby unit for this turn."
+	pass # Replace with function body.
 
 func updatePathPointsFunc(visibility):
 	if visibility == false:
