@@ -310,7 +310,7 @@ func _on_move_button_mouse_entered() -> void:
 	pass # Replace with function body.
 
 func _on_move_button_mouse_exited() -> void:
-	$ArmyPanel/ActionInfoPanelControl.visible = false
+	moveAndShowInfoPanel("Close")
 	pass # Replace with function body.
 
 func _on_wait_button_mouse_entered() -> void:
@@ -318,7 +318,7 @@ func _on_wait_button_mouse_entered() -> void:
 	pass # Replace with function body.
 
 func _on_wait_button_mouse_exited() -> void:
-	$ArmyPanel/ActionInfoPanelControl.visible = false
+	moveAndShowInfoPanel("Close")
 	pass # Replace with function body.
 
 func _on_hold_button_mouse_entered() -> void:
@@ -326,7 +326,7 @@ func _on_hold_button_mouse_entered() -> void:
 	pass # Replace with function body.
 
 func _on_hold_button_mouse_exited() -> void:
-	$ArmyPanel/ActionInfoPanelControl.visible = false
+	moveAndShowInfoPanel("Close")
 	pass # Replace with function body.
 
 func _on_melee_attack_button_mouse_entered() -> void:
@@ -334,7 +334,7 @@ func _on_melee_attack_button_mouse_entered() -> void:
 	pass # Replace with function body.
 
 func _on_melee_attack_button_mouse_exited() -> void:
-	$ArmyPanel/ActionInfoPanelControl.visible = false
+	moveAndShowInfoPanel("Close")
 	pass # Replace with function body.
 
 func _on_ranged_attack_button_mouse_entered() -> void:
@@ -342,7 +342,7 @@ func _on_ranged_attack_button_mouse_entered() -> void:
 	pass # Replace with function body.
 
 func _on_ranged_attack_button_mouse_exited() -> void:
-	$ArmyPanel/ActionInfoPanelControl.visible = false
+	moveAndShowInfoPanel("Close")
 	pass # Replace with function body.
 
 func _on_reinforce_manpower_button_mouse_entered() -> void:
@@ -350,7 +350,7 @@ func _on_reinforce_manpower_button_mouse_entered() -> void:
 	pass # Replace with function body.
 
 func _on_reinforce_manpower_button_mouse_exited() -> void:
-	$ArmyPanel/ActionInfoPanelControl.visible = false
+	moveAndShowInfoPanel("Close")
 	pass # Replace with function body.
 
 func _on_reinforce_weapons_button_mouse_entered() -> void:
@@ -358,7 +358,7 @@ func _on_reinforce_weapons_button_mouse_entered() -> void:
 	pass # Replace with function body.
 
 func _on_reinforce_weapons_button_mouse_exited() -> void:
-	$ArmyPanel/ActionInfoPanelControl.visible = false
+	moveAndShowInfoPanel("Close")
 	pass # Replace with function body.
 
 func _on_reinforce_shield_button_mouse_entered() -> void:
@@ -366,7 +366,7 @@ func _on_reinforce_shield_button_mouse_entered() -> void:
 	pass # Replace with function body.
 
 func _on_reinforce_shield_button_mouse_exited() -> void:
-	$ArmyPanel/ActionInfoPanelControl.visible = false
+	moveAndShowInfoPanel("Close")
 	pass # Replace with function body.
 
 func _on_spells_and_powers_button_mouse_entered() -> void:
@@ -374,5 +374,11 @@ func _on_spells_and_powers_button_mouse_entered() -> void:
 	pass # Replace with function body.
 
 func _on_spells_and_powers_button_mouse_exited() -> void:
-	$ArmyPanel/ActionInfoPanelControl.visible = false
+	moveAndShowInfoPanel("Close")
+	pass # Replace with function body.
+
+signal meleeButtonPressed
+func _on_melee_attack_button_pressed() -> void:
+	if selectedAPF != null:
+		emit_signal("meleeButtonPressed", selectedAPF, selectedAPF.thisArmy)
 	pass # Replace with function body.

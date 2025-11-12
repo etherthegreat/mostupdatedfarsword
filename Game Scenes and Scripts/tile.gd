@@ -2,6 +2,8 @@ extends Control
 
 class_name Tile
 
+@export var oceanEXP: bool
+
 #Base Variables
 @export var EXPTileNumber: int
 var tileNumber: int
@@ -9,6 +11,7 @@ var tileName: String
 var tileOwner: String
 var tileContinent: String
 var tilePop #every number represents 5000 people in this tile.
+var ocean: bool
 var coastal: bool #determines if this tile is coastal or not
 var freshWater: bool #determines if this province has access to fresh water
 var terrain #determines the terrain of this province
@@ -167,8 +170,19 @@ func onNewGame():
 	tileRing = $Ring
 	tileGraphic = $TileGraphic
 	tileNumber = EXPTileNumber
+	ocean = oceanEXP
 	for NodePath in TileNeighborsEXP:
 		TileNeighbors.append(get_node(NodePath))
+	if ocean == true:
+		calculateOceanAttributes(tileNumber)
+	else:
+		calculateAttributes(tileNumber)
+	calculateCorruption()
+	emit_signal("tileLoaded", self)
+	pass
+
+
+func calculateAttributes(tileNumber):
 	match tileNumber:
 		1:
 			tileName = "Devil's Purlicue"
@@ -296,6 +310,26 @@ func onNewGame():
 			tileSpawnPoint = $"../../PathControl/PathPointsControl/12"
 	calculateCorruption()
 	emit_signal("tileLoaded", self)
+	pass
+
+func calculateOceanAttributes(tileNumber):
+	match tileNumber:
+		1:
+			tileName = "Cape of One Spear"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C1"
+		2:
+			tileName = "Cape of Two Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C2"
+		3:
+			tileName = "Cape of Three Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C3"
+		4:
+			tileName = "Cape of Four Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C4"
+		5:
+			tileName = "Cape of Five Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C5"
+		
 	pass
 
 

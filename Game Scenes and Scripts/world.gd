@@ -606,6 +606,12 @@ func _on_path_control_show_army_info(key) -> void:
 			$CanvasLayer/ArmyPanel/ActionInfoPanelControl.position.x = 360
 			$CanvasLayer/ArmyPanel/ActionInfoPanelControl/ActionNameLabel.text = "Shield"
 			$CanvasLayer/ArmyPanel/ActionInfoPanelControl/ActionDescriptionLabel.text = "Grant half of this unit's defense to a nearby unit for this turn."
+		"Close":
+			$CanvasLayer/ArmyPanel/ActionInfoPanelControl.visible = false
+	pass # Replace with function body.
+
+func _on_path_control_melee_button_pressed(armyPath, thisArmy) -> void:
+	
 	pass # Replace with function body.
 
 func updatePathPointsFunc(visibility):
