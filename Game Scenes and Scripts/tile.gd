@@ -256,7 +256,7 @@ func calculateAttributes(tileNumber):
 		#tileSpell = actingSpell
 		4:
 			tileName = "Enthenar"
-			#tileOwner = "PDT"
+			tileOwner = "PDT"
 			countryCapital = false
 			tileContinent = "Anlaxia"
 			tilePop
@@ -329,7 +329,39 @@ func calculateOceanAttributes(tileNumber):
 		5:
 			tileName = "Cape of Five Spears"
 			tileSpawnPoint = $"../../PathControl/PathPointsControl/C5"
-		
+		6:
+			tileName = "Cape of Six Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C6"
+		7:
+			tileName = "Cape of Seven Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C7"
+		8:
+			tileName = "Cape of Eight Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C8"
+		9:
+			tileName = "Cape of Nine Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C9"
+		10:
+			tileName = "Cape of Ten Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C10"
+		11:
+			tileName = "Cape of Eleven Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C11"
+		12:
+			tileName = "Cape of Twelve Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C12"
+		13:
+			tileName = "Cape of Thirteen Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C13"
+		14:
+			tileName = "Cape of Fourteen Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C14"
+		15:
+			tileName = "Cape of Fifteen Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C15"
+		16:
+			tileName = "Cape of Sixteen Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C16"
 	pass
 
 
@@ -836,7 +868,7 @@ func updateGraphics(mapMode, displayCorruption, playerCountry):
 			#if Tile.discovered == true:
 				#$TileFOW.self_modulate.a
 	if discovered == true:
-		$TileGraphic.visible = true
+		#$TileGraphic.visible = true
 		match mapMode:
 			"Polis":
 				polisMode()
@@ -875,12 +907,15 @@ func calculateActiveView():
 	pass
 
 func polisMode():
+	$TileGraphic.visible = false
 	$TileGraphic.modulate = Color(1,1,1)
 	match tileOwner:
 		"PDT":
 			$TileGraphic.modulate = Color(0,1,0)
+			$TileGraphic.visible = true
 		"ANL":
 			$TileGraphic.modulate = Color(0,0,1)
+			$TileGraphic.visible = true
 	pass
 
 func naturalMode():
