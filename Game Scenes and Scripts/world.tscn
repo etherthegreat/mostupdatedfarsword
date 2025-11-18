@@ -714,15 +714,15 @@ point_count = 7
 
 [sub_resource type="Curve2D" id="Curve2D_afljb"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, -573, 621, 0, 0, 0, 0, -542, 627, 0, 0, 0, 0, -511, 646, 0, 0, 0, 0, -491, 672, 0, 0, 0, 0, -462, 712, 0, 0, 0, 0, -467, 741, 0, 0, 0, 0, -474, 752, 0, 0, 0, 0, -484, 757, 0, 0, 0, 0, -495, 749)
+"points": PackedVector2Array(0, 0, 0, 0, -573, 621, 0, 0, 0, 0, -542, 627, 0, 0, 0, 0, -511, 646, 0, 0, 0, 0, -491, 672, 0, 0, 0, 0, -462, 712, 0, 0, 0, 0, -460, 720)
 }
-point_count = 9
+point_count = 6
 
 [sub_resource type="Curve2D" id="Curve2D_3rajf"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, -495, 752, 0, 0, 0, 0, -518, 752, 0, 0, 0, 0, -553, 754, 0, 0, 0, 0, -587, 749, 0, 0, 0, 0, -623, 731, 0, 0, 0, 0, -647, 704)
+"points": PackedVector2Array(15.5365, -1.31666, -15.5365, 1.31666, -646, 707, 0, 0, 0, 0, -615, 739, 0, 0, 0, 0, -558, 748, 0, 0, 0, 0, -504, 730, 0, 0, 0, 0, -459, 720)
 }
-point_count = 6
+point_count = 5
 
 [sub_resource type="Curve2D" id="Curve2D_xn1sk"]
 _data = {
@@ -756,7 +756,7 @@ point_count = 8
 
 [sub_resource type="Curve2D" id="Curve2D_6cnhr"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, -576, 699, 0, 0, 0, 0, -561, 701, 0, 0, 0, 0, -535, 699, 0, 0, 0, 0, -521, 699, 0, 0, 0, 0, -503, 711, 0, 0, 0, 0, -496, 729, 0, 0, 0, 0, -496, 747)
+"points": PackedVector2Array(0, 0, 0, 0, -576, 699, 0, 0, 0, 0, -561, 701, 0, 0, 0, 0, -535, 699, 0, 0, 0, 0, -521, 699, 0, 0, 0, 0, -503, 711, 0, 0, 0, 0, -487, 719, 0, 0, 0, 0, -462, 721)
 }
 point_count = 7
 
@@ -4823,8 +4823,29 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
+[node name="1" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -1282.0
+offset_top = -83.0
+offset_right = -1242.0
+offset_bottom = -43.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path10-3/PathFollow10-3/Container")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path3-4/PathFollow3-4/Control 3-4"), NodePath("../../PathsControl/Path3-5/PathFollow3-5/Control 3-5")]
+neighborPathPointsEXP = [NodePath("../5"), NodePath("../4"), NodePath("../10")]
+ppbTileEXP = NodePath("../../../TileController/Tile1")
+
+[node name="2" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -729.0
+offset_top = -120.0
+offset_right = -689.0
+offset_bottom = -80.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path10-3/PathFollow10-3/Container")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path3-4/PathFollow3-4/Control 3-4"), NodePath("../../PathsControl/Path3-5/PathFollow3-5/Control 3-5")]
+neighborPathPointsEXP = [NodePath("../5"), NodePath("../4"), NodePath("../10")]
+ppbTileEXP = NodePath("../../../TileController/Tile2")
+
 [node name="3" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
-visible = false
 z_index = 12
 offset_left = -961.0
 offset_top = 808.0
@@ -4836,7 +4857,6 @@ neighborPathPointsEXP = [NodePath("../5"), NodePath("../4"), NodePath("../10")]
 ppbTileEXP = NodePath("../../../TileController/Tile3")
 
 [node name="4" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
-visible = false
 z_index = 12
 offset_left = -853.0
 offset_top = 847.0
@@ -4847,7 +4867,6 @@ neighborPathPointsEXP = [NodePath("../3"), NodePath("../5"), NodePath("../7"), N
 ppbTileEXP = NodePath("../../../TileController/Tile4")
 
 [node name="5" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
-visible = false
 z_index = 12
 offset_left = -847.0
 offset_top = 748.0
@@ -4859,7 +4878,6 @@ neighborPathPointsEXP = [NodePath("../3"), NodePath("../6"), NodePath("../4"), N
 ppbTileEXP = NodePath("../../../TileController/Tile5")
 
 [node name="6" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
-visible = false
 z_index = 12
 offset_left = -905.0
 offset_top = 626.0
@@ -4867,11 +4885,10 @@ offset_right = -865.0
 offset_bottom = 666.0
 endNodePathsEXP = [NodePath("../../PathsControl/Path5-6/PathFollow5-6/Control5-6"), NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path15C-6/PathFollow2D/Container15C-6")]
 startNodePathsEXP = [NodePath("../../PathsControl/Path6-9/PathFollow6-9/Container9-6"), NodePath("../../PathsControl/Path6-14C/PathFollow2D/Container6-14C")]
-neighborPathPointsEXP = [NodePath("../5"), NodePath("../9"), NodePath("../12"), NodePath("../C14"), NodePath("../C15")]
+neighborPathPointsEXP = [NodePath("../5"), NodePath("../9"), NodePath("../12"), NodePath("../C14"), NodePath("../C15"), NodePath("../58")]
 ppbTileEXP = NodePath("../../../TileController/Tile6")
 
 [node name="7" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
-visible = false
 z_index = 12
 offset_left = -962.0
 offset_top = 888.0
@@ -4883,7 +4900,6 @@ neighborPathPointsEXP = [NodePath("../4"), NodePath("../10"), NodePath("../8"), 
 ppbTileEXP = NodePath("../../../TileController/Tile7")
 
 [node name="8" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
-visible = false
 z_index = 12
 offset_left = -963.0
 offset_top = 977.0
@@ -4895,7 +4911,6 @@ neighborPathPointsEXP = [NodePath("../7"), NodePath("../C1"), NodePath("../C2"),
 ppbTileEXP = NodePath("../../../TileController/Tile8")
 
 [node name="9" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
-visible = false
 z_index = 12
 offset_left = -1020.0
 offset_top = 711.0
@@ -4907,7 +4922,6 @@ neighborPathPointsEXP = [NodePath("../6"), NodePath("../10"), NodePath("../C12")
 ppbTileEXP = NodePath("../../../TileController/Tile9")
 
 [node name="10" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
-visible = false
 z_index = 12
 offset_left = -1059.0
 offset_top = 829.0
@@ -4919,7 +4933,6 @@ neighborPathPointsEXP = [NodePath("../3"), NodePath("../7"), NodePath("../9"), N
 ppbTileEXP = NodePath("../../../TileController/Tile10")
 
 [node name="11" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
-visible = false
 z_index = 12
 offset_left = -756.0
 offset_top = 716.0
@@ -4931,7 +4944,6 @@ neighborPathPointsEXP = [NodePath("../5"), NodePath("../12"), NodePath("../C4"),
 ppbTileEXP = NodePath("../../../TileController/Tile11")
 
 [node name="12" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
-visible = false
 z_index = 12
 offset_left = -740.0
 offset_top = 613.0
@@ -4939,11 +4951,659 @@ offset_right = -700.0
 offset_bottom = 653.0
 endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
 startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
-neighborPathPointsEXP = [NodePath("../6"), NodePath("../11"), NodePath("../C6"), NodePath("../C7"), NodePath("../C15"), NodePath("../C16")]
+neighborPathPointsEXP = [NodePath("../6"), NodePath("../11"), NodePath("../C6"), NodePath("../C7"), NodePath("../C15"), NodePath("../C16"), NodePath("../13"), NodePath("../14")]
 ppbTileEXP = NodePath("../../../TileController/Tile12")
 
+[node name="13" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -726.0
+offset_top = 493.0
+offset_right = -686.0
+offset_bottom = 533.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../12"), NodePath("../14"), NodePath("../15"), NodePath("../55"), NodePath("../C16"), NodePath("../C66")]
+ppbTileEXP = NodePath("../../../TileController/Tile13")
+
+[node name="14" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -548.0
+offset_top = 514.0
+offset_right = -508.0
+offset_bottom = 554.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../12"), NodePath("../13"), NodePath("../15"), NodePath("../C7"), NodePath("../C45"), NodePath("../C48"), NodePath("../C60")]
+ppbTileEXP = NodePath("../../../TileController/Tile14")
+
+[node name="15" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -660.0
+offset_top = 425.0
+offset_right = -620.0
+offset_bottom = 465.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../13"), NodePath("../14"), NodePath("../17"), NodePath("../C45")]
+ppbTileEXP = NodePath("../../../TileController/Tile15")
+
+[node name="16" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -655.0
+offset_top = 103.0
+offset_right = -615.0
+offset_bottom = 143.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../18"), NodePath("../C30"), NodePath("../C31"), NodePath("../52"), NodePath("../C38"), NodePath("../C76")]
+ppbTileEXP = NodePath("../../../TileController/Tile16")
+
+[node name="17" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -651.0
+offset_top = 294.0
+offset_right = -611.0
+offset_bottom = 334.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../15"), NodePath("../18"), NodePath("../52"), NodePath("../53"), NodePath("../C40"), NodePath("../C44"), NodePath("../C45")]
+ppbTileEXP = NodePath("../../../TileController/Tile17")
+
+[node name="18" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -619.0
+offset_top = 188.0
+offset_right = -579.0
+offset_bottom = 228.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../16"), NodePath("../17"), NodePath("../52"), NodePath("../C40"), NodePath("../C76")]
+ppbTileEXP = NodePath("../../../TileController/Tile18")
+
+[node name="19" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -693.0
+offset_top = 14.0
+offset_right = -653.0
+offset_bottom = 54.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../21"), NodePath("../44"), NodePath("../C31"), NodePath("../C32"), NodePath("../C33"), NodePath("../C35"), NodePath("../C36")]
+ppbTileEXP = NodePath("../../../TileController/Tile19")
+
+[node name="21" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -646.0
+offset_top = -120.0
+offset_right = -606.0
+offset_bottom = -80.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../2"), NodePath("../19"), NodePath("../22"), NodePath("../C34"), NodePath("../C35")]
+ppbTileEXP = NodePath("../../../TileController/Tile21")
+
+[node name="22" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -832.0
+offset_top = -131.0
+offset_right = -792.0
+offset_bottom = -91.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../2"), NodePath("../21"), NodePath("../32"), NodePath("../33"), NodePath("../C33")]
+ppbTileEXP = NodePath("../../../TileController/Tile22")
+
+[node name="23" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -491.0
+offset_top = 204.0
+offset_right = -451.0
+offset_bottom = 244.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../C76"), NodePath("../C40"), NodePath("../C41"), NodePath("../C43"), NodePath("../C44")]
+ppbTileEXP = NodePath("../../../TileController/Tile23")
+
+[node name="24" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -399.0
+offset_top = 621.0
+offset_right = -359.0
+offset_bottom = 661.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../C60")]
+ppbTileEXP = NodePath("../../../TileController/Tile24")
+
+[node name="25" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -40.0
+offset_top = 557.0
+offset_right = 0.0
+offset_bottom = 597.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../26"), NodePath("../31"), NodePath("../C53"), NodePath("../C54")]
+ppbTileEXP = NodePath("../../../TileController/Tile25")
+
+[node name="26" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -165.0
+offset_top = 601.0
+offset_right = -125.0
+offset_bottom = 641.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../25"), NodePath("../27"), NodePath("../C52"), NodePath("../C53")]
+ppbTileEXP = NodePath("../../../TileController/Tile26")
+
+[node name="27" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -279.0
+offset_top = 622.0
+offset_right = -239.0
+offset_bottom = 662.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../26"), NodePath("../28"), NodePath("../C48"), NodePath("../C52"), NodePath("../C60")]
+ppbTileEXP = NodePath("../../../TileController/Tile27")
+
+[node name="28" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -273.0
+offset_top = 738.0
+offset_right = -233.0
+offset_bottom = 778.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../27"), NodePath("../29"), NodePath("../C59"), NodePath("../C60"), NodePath("../C61")]
+ppbTileEXP = NodePath("../../../TileController/Tile28")
+
+[node name="29" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -157.0
+offset_top = 743.0
+offset_right = -117.0
+offset_bottom = 783.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../28"), NodePath("../30"), NodePath("../C59")]
+ppbTileEXP = NodePath("../../../TileController/Tile29")
+
+[node name="30" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -44.0
+offset_top = 698.0
+offset_right = -4.0
+offset_bottom = 738.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../29"), NodePath("../31"), NodePath("../C58"), NodePath("../C59")]
+ppbTileEXP = NodePath("../../../TileController/Tile30")
+
+[node name="31" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = 53.0
+offset_top = 610.0
+offset_right = 93.0
+offset_bottom = 650.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../25"), NodePath("../30"), NodePath("../C54"), NodePath("../C56")]
+ppbTileEXP = NodePath("../../../TileController/Tile31")
+
+[node name="32" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -840.0
+offset_top = 29.0
+offset_right = -800.0
+offset_bottom = 69.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../22"), NodePath("../33"), NodePath("../34"), NodePath("../C29"), NodePath("../C31"), NodePath("../C32"), NodePath("../C33")]
+ppbTileEXP = NodePath("../../../TileController/Tile32")
+
+[node name="33" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -922.0
+offset_top = -79.0
+offset_right = -882.0
+offset_bottom = -39.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../22"), NodePath("../32"), NodePath("../34"), NodePath("../35")]
+ppbTileEXP = NodePath("../../../TileController/Tile33")
+
+[node name="34" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -957.0
+offset_top = 36.0
+offset_right = -917.0
+offset_bottom = 76.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../33"), NodePath("../32"), NodePath("../35"), NodePath("../36"), NodePath("../C28")]
+ppbTileEXP = NodePath("../../../TileController/Tile34")
+
+[node name="35" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -1053.0
+offset_top = -37.0
+offset_right = -1013.0
+offset_bottom = 3.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../34"), NodePath("../33"), NodePath("../36"), NodePath("../38")]
+ppbTileEXP = NodePath("../../../TileController/Tile35")
+
+[node name="36" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -1132.0
+offset_top = 98.0
+offset_right = -1092.0
+offset_bottom = 138.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../34"), NodePath("../35"), NodePath("../38"), NodePath("../39"), NodePath("../41"), NodePath("../C22")]
+ppbTileEXP = NodePath("../../../TileController/Tile36")
+
+[node name="37" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -1364.0
+offset_top = 2.0
+offset_right = -1324.0
+offset_bottom = 42.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../1"), NodePath("../38"), NodePath("../39"), NodePath("../40")]
+ppbTileEXP = NodePath("../../../TileController/Tile37")
+
+[node name="38" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -1191.0
+offset_top = 12.0
+offset_right = -1151.0
+offset_bottom = 52.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../35"), NodePath("../36"), NodePath("../37"), NodePath("../39")]
+ppbTileEXP = NodePath("../../../TileController/Tile38")
+
+[node name="39" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -1324.0
+offset_top = 76.0
+offset_right = -1284.0
+offset_bottom = 116.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../37"), NodePath("../38"), NodePath("../36"), NodePath("../41"), NodePath("../40")]
+ppbTileEXP = NodePath("../../../TileController/Tile39")
+
+[node name="40" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -1492.0
+offset_top = 86.0
+offset_right = -1452.0
+offset_bottom = 126.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../37"), NodePath("../39"), NodePath("../41"), NodePath("../43"), NodePath("../C67"), NodePath("../C68")]
+ppbTileEXP = NodePath("../../../TileController/Tile40")
+
+[node name="41" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -1356.0
+offset_top = 180.0
+offset_right = -1316.0
+offset_bottom = 220.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../36"), NodePath("../39"), NodePath("../40"), NodePath("../C21"), NodePath("../C22"), NodePath("../C67")]
+ppbTileEXP = NodePath("../../../TileController/Tile41")
+
+[node name="42" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -1581.0
+offset_top = -6.0
+offset_right = -1541.0
+offset_bottom = 34.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../40"), NodePath("../C68"), NodePath("../C69"), NodePath("../43")]
+ppbTileEXP = NodePath("../../../TileController/Tile42")
+
+[node name="43" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -1581.0
+offset_top = -97.0
+offset_right = -1541.0
+offset_bottom = -57.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../42"), NodePath("../C69")]
+ppbTileEXP = NodePath("../../../TileController/Tile43")
+
+[node name="44" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -522.0
+offset_top = -19.0
+offset_right = -482.0
+offset_bottom = 21.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../19"), NodePath("../21"), NodePath("../46"), NodePath("../C36"), NodePath("../C38"), NodePath("../C76")]
+ppbTileEXP = NodePath("../../../TileController/Tile44")
+
+[node name="45" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -303.0
+offset_top = 8.0
+offset_right = -263.0
+offset_bottom = 48.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../6"), NodePath("../11"), NodePath("../C6"), NodePath("../C7"), NodePath("../C15"), NodePath("../C16")]
+ppbTileEXP = NodePath("../../../TileController/Tile45")
+
+[node name="46" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -447.0
+offset_top = 41.0
+offset_right = -407.0
+offset_bottom = 81.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../44"), NodePath("../45"), NodePath("../48"), NodePath("../C76"), NodePath("../C41")]
+ppbTileEXP = NodePath("../../../TileController/Tile46")
+
+[node name="47" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -329.0
+offset_top = 284.0
+offset_right = -289.0
+offset_bottom = 324.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../48"), NodePath("../49"), NodePath("../C41"), NodePath("../C42"), NodePath("../C43"), NodePath("../C47"), NodePath("../C49")]
+ppbTileEXP = NodePath("../../../TileController/Tile47")
+
+[node name="48" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -310.0
+offset_top = 129.0
+offset_right = -270.0
+offset_bottom = 169.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../45"), NodePath("../46"), NodePath("../47"), NodePath("../49"), NodePath("../C42")]
+ppbTileEXP = NodePath("../../../TileController/Tile48")
+
+[node name="49" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -134.0
+offset_top = 132.0
+offset_right = -94.0
+offset_bottom = 172.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../45"), NodePath("../47"), NodePath("../48"), NodePath("../50"), NodePath("../C49"), NodePath("../C50")]
+ppbTileEXP = NodePath("../../../TileController/Tile49")
+
+[node name="50" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = 23.0
+offset_top = 147.0
+offset_right = 63.0
+offset_bottom = 187.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../49"), NodePath("../51"), NodePath("../C50")]
+ppbTileEXP = NodePath("../../../TileController/Tile50")
+
+[node name="51" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = 32.0
+offset_top = 292.0
+offset_right = 72.0
+offset_bottom = 332.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../50"), NodePath("../C49"), NodePath("../C50"), NodePath("../C51")]
+ppbTileEXP = NodePath("../../../TileController/Tile51")
+
+[node name="52" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -719.0
+offset_top = 162.0
+offset_right = -679.0
+offset_bottom = 202.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../16"), NodePath("../17"), NodePath("../18"), NodePath("../53"), NodePath("../C27"), NodePath("../C30")]
+ppbTileEXP = NodePath("../../../TileController/Tile52")
+
+[node name="53" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -776.0
+offset_top = 259.0
+offset_right = -736.0
+offset_bottom = 299.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../17"), NodePath("../52"), NodePath("../54"), NodePath("../55"), NodePath("../C26"), NodePath("../C27")]
+ppbTileEXP = NodePath("../../../TileController/Tile53")
+
+[node name="54" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -865.0
+offset_top = 306.0
+offset_right = -825.0
+offset_bottom = 346.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../53"), NodePath("../55"), NodePath("../56"), NodePath("../C25"), NodePath("../C26")]
+ppbTileEXP = NodePath("../../../TileController/Tile54")
+
+[node name="55" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -809.0
+offset_top = 397.0
+offset_right = -769.0
+offset_bottom = 437.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../13"), NodePath("../53"), NodePath("../54"), NodePath("../56"), NodePath("../C65"), NodePath("../C66")]
+ppbTileEXP = NodePath("../../../TileController/Tile55")
+
+[node name="56" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -917.0
+offset_top = 401.0
+offset_right = -877.0
+offset_bottom = 441.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../54"), NodePath("../55"), NodePath("../57"), NodePath("../C65")]
+ppbTileEXP = NodePath("../../../TileController/Tile56")
+
+[node name="57" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -1002.0
+offset_top = 425.0
+offset_right = -962.0
+offset_bottom = 465.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../56"), NodePath("../58"), NodePath("../59"), NodePath("../60"), NodePath("../61")]
+ppbTileEXP = NodePath("../../../TileController/Tile57")
+
+[node name="58" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -973.0
+offset_top = 517.0
+offset_right = -933.0
+offset_bottom = 557.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../57"), NodePath("../60"), NodePath("../6"), NodePath("../C65"), NodePath("../C14")]
+ppbTileEXP = NodePath("../../../TileController/Tile58")
+
+[node name="59" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -1091.0
+offset_top = 420.0
+offset_right = -1051.0
+offset_bottom = 460.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../57"), NodePath("../60"), NodePath("../63"), NodePath("../61"), NodePath("../65")]
+ppbTileEXP = NodePath("../../../TileController/Tile59")
+
+[node name="60" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -1089.0
+offset_top = 515.0
+offset_right = -1049.0
+offset_bottom = 555.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../57"), NodePath("../11"), NodePath("../C6"), NodePath("../C7"), NodePath("../C15"), NodePath("../C16")]
+ppbTileEXP = NodePath("../../../TileController/Tile60")
+
+[node name="61" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -1056.0
+offset_top = 339.0
+offset_right = -1016.0
+offset_bottom = 379.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../57"), NodePath("../59"), NodePath("../65"), NodePath("../66"), NodePath("../C24"), NodePath("../C20")]
+ppbTileEXP = NodePath("../../../TileController/Tile61")
+
+[node name="62" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -1198.0
+offset_top = 519.0
+offset_right = -1158.0
+offset_bottom = 559.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../60"), NodePath("../63"), NodePath("../64"), NodePath("../C17"), NodePath("../C19"), NodePath("../C18")]
+ppbTileEXP = NodePath("../../../TileController/Tile62")
+
+[node name="63" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -1192.0
+offset_top = 441.0
+offset_right = -1152.0
+offset_bottom = 481.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../59"), NodePath("../62"), NodePath("../64")]
+ppbTileEXP = NodePath("../../../TileController/Tile63")
+
+[node name="64" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -1318.0
+offset_top = 453.0
+offset_right = -1278.0
+offset_bottom = 493.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../63"), NodePath("../62"), NodePath("../65"), NodePath("../C7"), NodePath("../C15")]
+ppbTileEXP = NodePath("../../../TileController/Tile64")
+
+[node name="65" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -1313.0
+offset_top = 389.0
+offset_right = -1273.0
+offset_bottom = 429.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../61"), NodePath("../59"), NodePath("../64"), NodePath("../C20"), NodePath("../C75")]
+ppbTileEXP = NodePath("../../../TileController/Tile65")
+
+[node name="66" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -1150.0
+offset_top = 262.0
+offset_right = -1110.0
+offset_bottom = 302.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../61"), NodePath("../C20"), NodePath("../C21"), NodePath("../C22"), NodePath("../C23"), NodePath("../C24")]
+ppbTileEXP = NodePath("../../../TileController/Tile66")
+
+[node name="67" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -943.0
+offset_top = 169.0
+offset_right = -903.0
+offset_bottom = 209.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../C23"), NodePath("../C24"), NodePath("../C25"), NodePath("../C26"), NodePath("../C27"), NodePath("../C28"), NodePath("../C29")]
+ppbTileEXP = NodePath("../../../TileController/Tile67")
+
+[node name="68" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -449.0
+offset_top = 809.0
+offset_right = -409.0
+offset_bottom = 849.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../69"), NodePath("../C61"), NodePath("../C62"), NodePath("../C63")]
+ppbTileEXP = NodePath("../../../TileController/Tile68")
+
+[node name="69" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -309.0
+offset_top = 893.0
+offset_right = -269.0
+offset_bottom = 933.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../68"), NodePath("../C61"), NodePath("../C62")]
+ppbTileEXP = NodePath("../../../TileController/Tile69")
+
+[node name="70" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -515.0
+offset_top = 741.0
+offset_right = -475.0
+offset_bottom = 781.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../C8")]
+ppbTileEXP = NodePath("../../../TileController/Tile70")
+
+[node name="71" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -606.0
+offset_top = 817.0
+offset_right = -566.0
+offset_bottom = 857.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../C4"), NodePath("../C6"), NodePath("../C8"), NodePath("../C63"), NodePath("../72")]
+ppbTileEXP = NodePath("../../../TileController/Tile71")
+
+[node name="72" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -569.0
+offset_top = 906.0
+offset_right = -529.0
+offset_bottom = 946.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+neighborPathPointsEXP = [NodePath("../C3"), NodePath("../C63"), NodePath("../C64"), NodePath("../24"), NodePath("../71")]
+ppbTileEXP = NodePath("../../../TileController/Tile72")
+
 [node name="C1" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
-visible = false
 z_index = 12
 offset_left = -1010.0
 offset_top = 1077.0
@@ -4951,11 +5611,10 @@ offset_right = -970.0
 offset_bottom = 1117.0
 endNodePathsEXP = [NodePath("../../PathsControl/Path8-1C/PathFollow2D/Container8-1C"), NodePath("../../PathsControl/Path10C-1C/PathFollow2D/Container10C-1C")]
 startNodePathsEXP = [NodePath("../../PathsControl/Path1C-2C/PathFollow2D/Container1C-2C")]
-neighborPathPointsEXP = [NodePath("../8"), NodePath("../C2"), NodePath("../C10")]
+neighborPathPointsEXP = [NodePath("../8"), NodePath("../C2"), NodePath("../C10"), NodePath("../C70"), NodePath("../C71")]
 ppbTileEXP = NodePath("../../../TileController/TileC1")
 
 [node name="C2" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
-visible = false
 z_index = 12
 offset_left = -856.0
 offset_top = 966.0
@@ -4963,11 +5622,10 @@ offset_right = -816.0
 offset_bottom = 1006.0
 endNodePathsEXP = [NodePath("../../PathsControl/Path8-2C/PathFollow2D/Container8-2C"), NodePath("../../PathsControl/Path1C-2C/PathFollow2D/Container1C-2C")]
 startNodePathsEXP = [NodePath("../../PathsControl/Path2C-7/PathFollow2D/Container2C-7"), NodePath("../../PathsControl/Path2C-4/PathFollow2D/Container2C-4"), NodePath("../../PathsControl/Path2C-3C/PathFollow2D/Container2C-3C"), NodePath("../../PathsControl/Path3C-4C/PathFollow2D/Container3C-4C")]
-neighborPathPointsEXP = [NodePath("../8"), NodePath("../C1"), NodePath("../7"), NodePath("../4"), NodePath("../C3")]
+neighborPathPointsEXP = [NodePath("../8"), NodePath("../C1"), NodePath("../7"), NodePath("../4"), NodePath("../C3"), NodePath("../C71")]
 ppbTileEXP = NodePath("../../../TileController/TileC2")
 
 [node name="C3" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
-visible = false
 z_index = 12
 offset_left = -667.0
 offset_top = 947.0
@@ -4975,11 +5633,10 @@ offset_right = -627.0
 offset_bottom = 987.0
 endNodePathsEXP = [NodePath("../../PathsControl/Path2C-3C/PathFollow2D/Container2C-3C")]
 startNodePathsEXP = [NodePath("../../PathsControl/Path3C-4C/PathFollow2D/Container3C-4C"), NodePath("../../PathsControl/Path3C-4/PathFollow2D/Container3C-4")]
-neighborPathPointsEXP = [NodePath("../4"), NodePath("../C2"), NodePath("../C4")]
+neighborPathPointsEXP = [NodePath("../4"), NodePath("../C2"), NodePath("../C4"), NodePath("../C71"), NodePath("../C73"), NodePath("../C64"), NodePath("../72")]
 ppbTileEXP = NodePath("../../../TileController/TileC3")
 
 [node name="C4" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
-visible = false
 z_index = 12
 offset_left = -691.0
 offset_top = 808.0
@@ -4987,11 +5644,10 @@ offset_right = -651.0
 offset_bottom = 848.0
 endNodePathsEXP = [NodePath("../../PathsControl/Path3C-4C/PathFollow2D/Container3C-4C")]
 startNodePathsEXP = [NodePath("../../PathsControl/Path4C-5C/PathFollow2D/Container4C-5C"), NodePath("../../PathsControl/Path4C-4/PathFollow2D/Container4C-4"), NodePath("../../PathsControl/Path4C-6C")]
-neighborPathPointsEXP = [NodePath("../C5"), NodePath("../C3"), NodePath("../11"), NodePath("../4"), NodePath("../C6")]
+neighborPathPointsEXP = [NodePath("../C5"), NodePath("../C3"), NodePath("../11"), NodePath("../4"), NodePath("../C6"), NodePath("../71"), NodePath("../72")]
 ppbTileEXP = NodePath("../../../TileController/TileC4")
 
 [node name="C5" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
-visible = false
 z_index = 12
 offset_left = -787.0
 offset_top = 792.0
@@ -5003,7 +5659,6 @@ neighborPathPointsEXP = [NodePath("../C4"), NodePath("../11"), NodePath("../5"),
 ppbTileEXP = NodePath("../../../TileController/TileC5")
 
 [node name="C6" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
-visible = false
 z_index = 12
 offset_left = -661.0
 offset_top = 684.0
@@ -5011,11 +5666,10 @@ offset_right = -621.0
 offset_bottom = 724.0
 endNodePathsEXP = [NodePath("../../PathsControl/Path4C-6C/PathFollow2D/Container4C-6C"), NodePath("../../PathsControl/Path8C-6C/PathFollow2D/Container8C-6C"), NodePath("../../PathsControl/Path9C-6C/PathFollow2D/Container9C-6C")]
 startNodePathsEXP = [NodePath("../../PathsControl/Path6C-11/PathFollow2D/Container6C-11"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path6C-7C/PathFollow2D/Container6C-7C")]
-neighborPathPointsEXP = [NodePath("../C4"), NodePath("../C7"), NodePath("../C8"), NodePath("../C9"), NodePath("../11"), NodePath("../12")]
+neighborPathPointsEXP = [NodePath("../C4"), NodePath("../C7"), NodePath("../C8"), NodePath("../C9"), NodePath("../11"), NodePath("../12"), NodePath("../71")]
 ppbTileEXP = NodePath("../../../TileController/TileC6")
 
 [node name="C7" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
-visible = false
 z_index = 12
 offset_left = -585.0
 offset_top = 599.0
@@ -5023,23 +5677,21 @@ offset_right = -545.0
 offset_bottom = 639.0
 endNodePathsEXP = [NodePath("../../PathsControl/Path6C-7C/PathFollow2D/Container6C-7C"), NodePath("../../PathsControl/Path9C-7C/PathFollow2D/Container9C-7C")]
 startNodePathsEXP = [NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12"), NodePath("../../PathsControl/Path7C-8C/PathFollow2D/Container7C-8C")]
-neighborPathPointsEXP = [NodePath("../C6"), NodePath("../C8"), NodePath("../C9"), NodePath("../12")]
+neighborPathPointsEXP = [NodePath("../C6"), NodePath("../C8"), NodePath("../C9"), NodePath("../12"), NodePath("../C60"), NodePath("../14")]
 ppbTileEXP = NodePath("../../../TileController/TileC7")
 
 [node name="C8" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
-visible = false
 z_index = 12
-offset_left = -509.0
-offset_top = 728.0
-offset_right = -469.0
-offset_bottom = 768.0
+offset_left = -475.0
+offset_top = 699.0
+offset_right = -435.0
+offset_bottom = 739.0
 endNodePathsEXP = [NodePath("../../PathsControl/Path7C-8C/PathFollow2D/Container7C-8C"), NodePath("../../PathsControl/Path9C-8C/PathFollow2D/Container9C-8C")]
 startNodePathsEXP = [NodePath("../../PathsControl/Path8C-6C/PathFollow2D/Container8C-6C")]
-neighborPathPointsEXP = [NodePath("../C6"), NodePath("../C7"), NodePath("../C9")]
+neighborPathPointsEXP = [NodePath("../C6"), NodePath("../C7"), NodePath("../C9"), NodePath("../71"), NodePath("../70"), NodePath("../C61"), NodePath("../C63"), NodePath("../C60")]
 ppbTileEXP = NodePath("../../../TileController/TileC8")
 
 [node name="C9" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
-visible = false
 z_index = 12
 offset_left = -594.0
 offset_top = 673.0
@@ -5050,7 +5702,6 @@ neighborPathPointsEXP = [NodePath("../C6"), NodePath("../C7"), NodePath("../C8")
 ppbTileEXP = NodePath("../../../TileController/TileC9")
 
 [node name="C10" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
-visible = false
 z_index = 12
 offset_left = -1055.0
 offset_top = 940.0
@@ -5058,11 +5709,10 @@ offset_right = -1015.0
 offset_bottom = 980.0
 endNodePathsEXP = [NodePath("../../PathsControl/Path11C-10C/PathFollow2D/Container11C-10C")]
 startNodePathsEXP = [NodePath("../../PathsControl/Path10C-7/PathFollow2D/Container10C-7"), NodePath("../../PathsControl/Path10C-8/PathFollow2D/Container10C-8"), NodePath("../../PathsControl/Path10C-1C/PathFollow2D/Container10C-1C"), NodePath("../../PathsControl/Path10C-10/PathFollow2D/Container10C-10")]
-neighborPathPointsEXP = [NodePath("../C1"), NodePath("../7"), NodePath("../8"), NodePath("../11")]
+neighborPathPointsEXP = [NodePath("../C1"), NodePath("../7"), NodePath("../8"), NodePath("../11"), NodePath("../C70")]
 ppbTileEXP = NodePath("../../../TileController/TileC10")
 
 [node name="C11" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
-visible = false
 z_index = 12
 offset_left = -1124.0
 offset_top = 795.0
@@ -5070,11 +5720,10 @@ offset_right = -1084.0
 offset_bottom = 835.0
 endNodePathsEXP = [NodePath("../../PathsControl/Path12C-11C/PathFollow2D/Container12C-11C")]
 startNodePathsEXP = [NodePath("../../PathsControl/Path11C-10/PathFollow2D/Container11C-10"), NodePath("../../PathsControl/Path11C-10C/PathFollow2D/Container11C-10C")]
-neighborPathPointsEXP = [NodePath("../C10"), NodePath("../C12"), NodePath("../10")]
+neighborPathPointsEXP = [NodePath("../C10"), NodePath("../C12"), NodePath("../10"), NodePath("../C70")]
 ppbTileEXP = NodePath("../../../TileController/TileC11")
 
 [node name="C12" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
-visible = false
 z_index = 12
 offset_left = -1108.0
 offset_top = 647.0
@@ -5082,11 +5731,10 @@ offset_right = -1068.0
 offset_bottom = 687.0
 endNodePathsEXP = [NodePath("../../PathsControl/Path13C-12C/PathFollow2D/Container13C-12C")]
 startNodePathsEXP = [NodePath("../../PathsControl/Path12C-9/PathFollow2D/Container12C-9"), NodePath("../../PathsControl/Path12C-11C/PathFollow2D/Container12C-11C")]
-neighborPathPointsEXP = [NodePath("../C11"), NodePath("../C13"), NodePath("../9")]
+neighborPathPointsEXP = [NodePath("../C11"), NodePath("../C13"), NodePath("../9"), NodePath("../60"), NodePath("../C17"), NodePath("../C72"), NodePath("../C70")]
 ppbTileEXP = NodePath("../../../TileController/TileC12")
 
 [node name="C13" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
-visible = false
 z_index = 12
 offset_left = -1030.0
 offset_top = 621.0
@@ -5094,11 +5742,10 @@ offset_right = -990.0
 offset_bottom = 661.0
 endNodePathsEXP = [NodePath("../../PathsControl/Path14C-13C/PathFollow2D/Container14C-13C")]
 startNodePathsEXP = [NodePath("../../PathsControl/Path13C-9/PathFollow2D/Container14C-9"), NodePath("../../PathsControl/Path13C-12C/PathFollow2D/Container13C-12C")]
-neighborPathPointsEXP = [NodePath("../C14"), NodePath("../C12"), NodePath("../9")]
+neighborPathPointsEXP = [NodePath("../C14"), NodePath("../C12"), NodePath("../9"), NodePath("../60")]
 ppbTileEXP = NodePath("../../../TileController/TileC13")
 
 [node name="C14" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
-visible = false
 z_index = 12
 offset_left = -977.0
 offset_top = 587.0
@@ -5106,11 +5753,10 @@ offset_right = -937.0
 offset_bottom = 627.0
 endNodePathsEXP = [NodePath("../../PathsControl/Path6-14C/PathFollow2D/Container6-14C")]
 startNodePathsEXP = [NodePath("../../PathsControl/Path14C-13C/PathFollow2D/Container14C-13C")]
-neighborPathPointsEXP = [NodePath("../C13"), NodePath("../6")]
+neighborPathPointsEXP = [NodePath("../C13"), NodePath("../6"), NodePath("../58")]
 ppbTileEXP = NodePath("../../../TileController/TileC14")
 
 [node name="C15" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
-visible = false
 z_index = 12
 offset_left = -843.0
 offset_top = 570.0
@@ -5118,11 +5764,10 @@ offset_right = -803.0
 offset_bottom = 610.0
 endNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
 startNodePathsEXP = [NodePath("../../PathsControl/Path15C-6/PathFollow2D/Container15C-6")]
-neighborPathPointsEXP = [NodePath("../C16"), NodePath("../6"), NodePath("../12")]
+neighborPathPointsEXP = [NodePath("../C16"), NodePath("../6"), NodePath("../12"), NodePath("../C65"), NodePath("../C66"), NodePath("../58")]
 ppbTileEXP = NodePath("../../../TileController/TileC15")
 
 [node name="C16" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
-visible = false
 z_index = 12
 offset_left = -734.0
 offset_top = 552.0
@@ -5130,8 +5775,635 @@ offset_right = -694.0
 offset_bottom = 592.0
 endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
 startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
-neighborPathPointsEXP = [NodePath("../C15"), NodePath("../12")]
+neighborPathPointsEXP = [NodePath("../C15"), NodePath("../12"), NodePath("../C66"), NodePath("../13")]
 ppbTileEXP = NodePath("../../../TileController/TileC16")
+
+[node name="C17" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -1182.0
+offset_top = 599.0
+offset_right = -1142.0
+offset_bottom = 639.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../C12"), NodePath("../C13"), NodePath("../C19"), NodePath("../C72"), NodePath("../60"), NodePath("../62")]
+ppbTileEXP = NodePath("../../../TileController/TileC17")
+
+[node name="C18" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -1367.0
+offset_top = 503.0
+offset_right = -1327.0
+offset_bottom = 543.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../C19"), NodePath("../62"), NodePath("../64"), NodePath("../72"), NodePath("../C75")]
+ppbTileEXP = NodePath("../../../TileController/TileC18")
+
+[node name="C19" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -1331.0
+offset_top = 572.0
+offset_right = -1291.0
+offset_bottom = 612.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../C17"), NodePath("../62"), NodePath("../C18"), NodePath("../C72")]
+ppbTileEXP = NodePath("../../../TileController/TileC19")
+
+[node name="C20" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -1228.0
+offset_top = 321.0
+offset_right = -1188.0
+offset_bottom = 361.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../C21"), NodePath("../C75"), NodePath("../65"), NodePath("../66"), NodePath("../61")]
+ppbTileEXP = NodePath("../../../TileController/TileC20")
+
+[node name="C21" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -1345.0
+offset_top = 291.0
+offset_right = -1305.0
+offset_bottom = 331.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../41"), NodePath("../C67"), NodePath("../C72"), NodePath("../C75"), NodePath("../C20"), NodePath("../66"), NodePath("../C22")]
+ppbTileEXP = NodePath("../../../TileController/TileC21")
+
+[node name="C22" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -1146.0
+offset_top = 193.0
+offset_right = -1106.0
+offset_bottom = 233.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../66"), NodePath("../C23"), NodePath("../36"), NodePath("../41"), NodePath("../C21")]
+ppbTileEXP = NodePath("../../../TileController/TileC22")
+
+[node name="C23" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -1045.0
+offset_top = 198.0
+offset_right = -1005.0
+offset_bottom = 238.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../C22"), NodePath("../66"), NodePath("../C24"), NodePath("../67"), NodePath("../C28"), NodePath("../34"), NodePath("../36")]
+ppbTileEXP = NodePath("../../../TileController/TileC23")
+
+[node name="C24" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -1012.0
+offset_top = 272.0
+offset_right = -972.0
+offset_bottom = 312.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../C25"), NodePath("../67"), NodePath("../C23"), NodePath("../66"), NodePath("../61")]
+ppbTileEXP = NodePath("../../../TileController/TileC24")
+
+[node name="C25" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -945.0
+offset_top = 274.0
+offset_right = -905.0
+offset_bottom = 314.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../C15"), NodePath("../12")]
+ppbTileEXP = NodePath("../../../TileController/TileC25")
+
+[node name="C26" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -883.0
+offset_top = 215.0
+offset_right = -843.0
+offset_bottom = 255.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../C25"), NodePath("../C27"), NodePath("../54"), NodePath("../53"), NodePath("../67")]
+ppbTileEXP = NodePath("../../../TileController/TileC26")
+
+[node name="C27" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -819.0
+offset_top = 170.0
+offset_right = -779.0
+offset_bottom = 210.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../C26"), NodePath("../C30"), NodePath("../C29"), NodePath("../67"), NodePath("../53"), NodePath("../52")]
+ppbTileEXP = NodePath("../../../TileController/TileC27")
+
+[node name="C28" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -950.0
+offset_top = 115.0
+offset_right = -910.0
+offset_bottom = 155.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../C23"), NodePath("../C29"), NodePath("../67"), NodePath("../34")]
+ppbTileEXP = NodePath("../../../TileController/TileC28")
+
+[node name="C29" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -843.0
+offset_top = 108.0
+offset_right = -803.0
+offset_bottom = 148.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../C27"), NodePath("../C30"), NodePath("../C31"), NodePath("../C28"), NodePath("../32"), NodePath("../67")]
+ppbTileEXP = NodePath("../../../TileController/TileC29")
+
+[node name="C30" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -746.0
+offset_top = 105.0
+offset_right = -706.0
+offset_bottom = 145.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../C15"), NodePath("../12")]
+ppbTileEXP = NodePath("../../../TileController/TileC30")
+
+[node name="C31" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -731.0
+offset_top = 68.0
+offset_right = -691.0
+offset_bottom = 108.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../C29"), NodePath("../C30"), NodePath("../C32"), NodePath("../C36"), NodePath("../C38"), NodePath("../16"), NodePath("../19"), NodePath("../32")]
+ppbTileEXP = NodePath("../../../TileController/TileC31")
+
+[node name="C32" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -757.0
+offset_top = 23.0
+offset_right = -717.0
+offset_bottom = 63.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../C31"), NodePath("../C33"), NodePath("../19"), NodePath("../32")]
+ppbTileEXP = NodePath("../../../TileController/TileC32")
+
+[node name="C33" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -775.0
+offset_top = -37.0
+offset_right = -735.0
+offset_bottom = 3.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../C32"), NodePath("../C34"), NodePath("../C35"), NodePath("../19"), NodePath("../22"), NodePath("../32")]
+ppbTileEXP = NodePath("../../../TileController/TileC33")
+
+[node name="C34" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -721.0
+offset_top = -65.0
+offset_right = -681.0
+offset_bottom = -25.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../C15"), NodePath("../12")]
+ppbTileEXP = NodePath("../../../TileController/TileC34")
+
+[node name="C35" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -677.0
+offset_top = -39.0
+offset_right = -637.0
+offset_bottom = 1.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../19"), NodePath("../21"), NodePath("../C33"), NodePath("../C34")]
+ppbTileEXP = NodePath("../../../TileController/TileC35")
+
+[node name="C36" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -626.0
+offset_top = 16.0
+offset_right = -586.0
+offset_bottom = 56.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../19"), NodePath("../44"), NodePath("../C31"), NodePath("../C38")]
+ppbTileEXP = NodePath("../../../TileController/TileC36")
+
+[node name="C38" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -605.0
+offset_top = 67.0
+offset_right = -565.0
+offset_bottom = 107.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../16"), NodePath("../44"), NodePath("../C31"), NodePath("../C36"), NodePath("../C76")]
+ppbTileEXP = NodePath("../../../TileController/TileC38")
+
+[node name="C40" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -532.0
+offset_top = 204.0
+offset_right = -492.0
+offset_bottom = 244.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../17"), NodePath("../18"), NodePath("../23"), NodePath("../C44"), NodePath("../C76")]
+ppbTileEXP = NodePath("../../../TileController/TileC40")
+
+[node name="C41" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -440.0
+offset_top = 168.0
+offset_right = -400.0
+offset_bottom = 208.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../C42"), NodePath("../C43"), NodePath("../C76"), NodePath("../23"), NodePath("../46"), NodePath("../47")]
+ppbTileEXP = NodePath("../../../TileController/TileC41")
+
+[node name="C42" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -366.0
+offset_top = 195.0
+offset_right = -326.0
+offset_bottom = 235.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../C41"), NodePath("../47"), NodePath("../48")]
+ppbTileEXP = NodePath("../../../TileController/TileC42")
+
+[node name="C43" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -467.0
+offset_top = 250.0
+offset_right = -427.0
+offset_bottom = 290.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../C41"), NodePath("../C44"), NodePath("../C46"), NodePath("../C47"), NodePath("../23"), NodePath("../47")]
+ppbTileEXP = NodePath("../../../TileController/TileC43")
+
+[node name="C44" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -538.0
+offset_top = 314.0
+offset_right = -498.0
+offset_bottom = 354.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../C45"), NodePath("../C46"), NodePath("../C43"), NodePath("../23"), NodePath("../17"), NodePath("../C40")]
+ppbTileEXP = NodePath("../../../TileController/TileC44")
+
+[node name="C45" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -540.0
+offset_top = 427.0
+offset_right = -500.0
+offset_bottom = 467.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../14"), NodePath("../15"), NodePath("../17"), NodePath("../C44"), NodePath("../C46"), NodePath("../C48")]
+ppbTileEXP = NodePath("../../../TileController/TileC45")
+
+[node name="C46" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -457.0
+offset_top = 394.0
+offset_right = -417.0
+offset_bottom = 434.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../C43"), NodePath("../C44"), NodePath("../C45"), NodePath("../C47"), NodePath("../C48"), NodePath("../C56")]
+ppbTileEXP = NodePath("../../../TileController/TileC46")
+
+[node name="C47" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -304.0
+offset_top = 370.0
+offset_right = -264.0
+offset_bottom = 410.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../C43"), NodePath("../C46"), NodePath("../C56"), NodePath("../C55"), NodePath("../C49"), NodePath("../C51"), NodePath("../47")]
+ppbTileEXP = NodePath("../../../TileController/TileC47")
+
+[node name="C48" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -406.0
+offset_top = 498.0
+offset_right = -366.0
+offset_bottom = 538.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../C45"), NodePath("../C46"), NodePath("../C52"), NodePath("../C56"), NodePath("../C60"), NodePath("../14"), NodePath("../27")]
+ppbTileEXP = NodePath("../../../TileController/TileC48")
+
+[node name="C49" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -124.0
+offset_top = 246.0
+offset_right = -84.0
+offset_bottom = 286.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../47"), NodePath("../49"), NodePath("../51"), NodePath("../C47"), NodePath("../C50"), NodePath("../C51")]
+ppbTileEXP = NodePath("../../../TileController/TileC49")
+
+[node name="C50" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -32.0
+offset_top = 216.0
+offset_right = 8.0
+offset_bottom = 256.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../C49"), NodePath("../49"), NodePath("../50"), NodePath("../51")]
+ppbTileEXP = NodePath("../../../TileController/TileC50")
+
+[node name="C51" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -23.0
+offset_top = 334.0
+offset_right = 17.0
+offset_bottom = 374.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../C47"), NodePath("../C49"), NodePath("../C55"), NodePath("../51")]
+ppbTileEXP = NodePath("../../../TileController/TileC51")
+
+[node name="C52" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -188.0
+offset_top = 525.0
+offset_right = -148.0
+offset_bottom = 565.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../26"), NodePath("../27"), NodePath("../C48"), NodePath("../C55"), NodePath("../C56"), NodePath("../C53")]
+ppbTileEXP = NodePath("../../../TileController/TileC52")
+
+[node name="C53" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -64.0
+offset_top = 481.0
+offset_right = -24.0
+offset_bottom = 521.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../25"), NodePath("../26"), NodePath("../C52"), NodePath("../C54"), NodePath("../C55")]
+ppbTileEXP = NodePath("../../../TileController/TileC53")
+
+[node name="C54" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = 62.0
+offset_top = 521.0
+offset_right = 102.0
+offset_bottom = 561.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../C53"), NodePath("../C58"), NodePath("../31")]
+ppbTileEXP = NodePath("../../../TileController/TileC54")
+
+[node name="C55" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -112.0
+offset_top = 405.0
+offset_right = -72.0
+offset_bottom = 445.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../C47"), NodePath("../C51"), NodePath("../C56"), NodePath("../C52"), NodePath("../C53")]
+ppbTileEXP = NodePath("../../../TileController/TileC55")
+
+[node name="C56" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -281.0
+offset_top = 440.0
+offset_right = -241.0
+offset_bottom = 480.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../C46"), NodePath("../C47"), NodePath("../C48"), NodePath("../C52"), NodePath("../C55")]
+ppbTileEXP = NodePath("../../../TileController/TileC56")
+
+[node name="C58" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = 37.0
+offset_top = 763.0
+offset_right = 77.0
+offset_bottom = 803.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../30"), NodePath("../C59"), NodePath("../C54"), NodePath("../31")]
+ppbTileEXP = NodePath("../../../TileController/TileC58")
+
+[node name="C59" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -163.0
+offset_top = 827.0
+offset_right = -123.0
+offset_bottom = 867.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../C58"), NodePath("../C61"), NodePath("../C62"), NodePath("../C73"), NodePath("../30"), NodePath("../29"), NodePath("../28")]
+ppbTileEXP = NodePath("../../../TileController/TileC59")
+
+[node name="C60" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -389.0
+offset_top = 678.0
+offset_right = -349.0
+offset_bottom = 718.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../14"), NodePath("../24"), NodePath("../27"), NodePath("../28"), NodePath("../C8"), NodePath("../C7"), NodePath("../C48"), NodePath("../C61")]
+ppbTileEXP = NodePath("../../../TileController/TileC60")
+
+[node name="C61" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -381.0
+offset_top = 777.0
+offset_right = -341.0
+offset_bottom = 817.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../28"), NodePath("../69"), NodePath("../C8"), NodePath("../C62"), NodePath("../C63"), NodePath("../C59"), NodePath("../C60")]
+ppbTileEXP = NodePath("../../../TileController/TileC61")
+
+[node name="C62" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -331.0
+offset_top = 858.0
+offset_right = -291.0
+offset_bottom = 898.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../68"), NodePath("../69"), NodePath("../C59"), NodePath("../C61"), NodePath("../C63"), NodePath("../C64"), NodePath("../C73")]
+ppbTileEXP = NodePath("../../../TileController/TileC62")
+
+[node name="C63" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -496.0
+offset_top = 859.0
+offset_right = -456.0
+offset_bottom = 899.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../C61"), NodePath("../C62"), NodePath("../C64"), NodePath("../C8"), NodePath("../68"), NodePath("../71"), NodePath("../72")]
+ppbTileEXP = NodePath("../../../TileController/TileC63")
+
+[node name="C64" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -469.0
+offset_top = 965.0
+offset_right = -429.0
+offset_bottom = 1005.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../C63"), NodePath("../C73"), NodePath("../C62"), NodePath("../C3"), NodePath("../72")]
+ppbTileEXP = NodePath("../../../TileController/TileC64")
+
+[node name="C65" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -882.0
+offset_top = 506.0
+offset_right = -842.0
+offset_bottom = 546.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../C15"), NodePath("../C66"), NodePath("../55"), NodePath("../56"), NodePath("../58")]
+ppbTileEXP = NodePath("../../../TileController/TileC65")
+
+[node name="C66" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -810.0
+offset_top = 509.0
+offset_right = -770.0
+offset_bottom = 549.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../C15"), NodePath("../C16"), NodePath("../C65"), NodePath("../13"), NodePath("../55"), NodePath("../56")]
+ppbTileEXP = NodePath("../../../TileController/TileC66")
+
+[node name="C67" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -1520.0
+offset_top = 217.0
+offset_right = -1480.0
+offset_bottom = 257.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../40"), NodePath("../41"), NodePath("../C21"), NodePath("../C68"), NodePath("../C74"), NodePath("../C72")]
+ppbTileEXP = NodePath("../../../TileController/TileC67")
+
+[node name="C68" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -1620.0
+offset_top = 108.0
+offset_right = -1580.0
+offset_bottom = 148.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../40"), NodePath("../42"), NodePath("../C67"), NodePath("../C69"), NodePath("../C74")]
+ppbTileEXP = NodePath("../../../TileController/TileC68")
+
+[node name="C69" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -1714.0
+offset_top = -90.0
+offset_right = -1674.0
+offset_bottom = -50.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../C68"), NodePath("../C74"), NodePath("../42"), NodePath("../43")]
+ppbTileEXP = NodePath("../../../TileController/TileC69")
+
+[node name="C70" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -1360.0
+offset_top = 1020.0
+offset_right = -1320.0
+offset_bottom = 1060.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../C1"), NodePath("../C72"), NodePath("../C10"), NodePath("../C11"), NodePath("../C12"), NodePath("../C71")]
+ppbTileEXP = NodePath("../../../TileController/TileC70")
+
+[node name="C71" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -864.0
+offset_top = 1231.0
+offset_right = -824.0
+offset_bottom = 1271.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../C1"), NodePath("../C2"), NodePath("../C3"), NodePath("../C70"), NodePath("../C73")]
+ppbTileEXP = NodePath("../../../TileController/TileC71")
+
+[node name="C72" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -1563.0
+offset_top = 546.0
+offset_right = -1523.0
+offset_bottom = 586.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../C12"), NodePath("../C17"), NodePath("../C19"), NodePath("../C18"), NodePath("../C75"), NodePath("../C21"), NodePath("../C67"), NodePath("../C74"), NodePath("../C70")]
+ppbTileEXP = NodePath("../../../TileController/TileC72")
+
+[node name="C73" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -390.0
+offset_top = 1108.0
+offset_right = -350.0
+offset_bottom = 1148.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../C59"), NodePath("../C62"), NodePath("../C64"), NodePath("../C71"), NodePath("../C3")]
+ppbTileEXP = NodePath("../../../TileController/TileC73")
+
+[node name="C74" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -1754.0
+offset_top = 92.0
+offset_right = -1714.0
+offset_bottom = 132.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../C67"), NodePath("../C68"), NodePath("../C69"), NodePath("../C72")]
+ppbTileEXP = NodePath("../../../TileController/TileC74")
+
+[node name="C75" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -1393.0
+offset_top = 363.0
+offset_right = -1353.0
+offset_bottom = 403.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../C18"), NodePath("../C20"), NodePath("../C21"), NodePath("../C72"), NodePath("../64"), NodePath("../65")]
+ppbTileEXP = NodePath("../../../TileController/TileC75")
+
+[node name="C76" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
+z_index = 12
+offset_left = -512.0
+offset_top = 129.0
+offset_right = -472.0
+offset_bottom = 169.0
+endNodePathsEXP = [NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16C-15C/PathFollow2D/Container16C-15C")]
+neighborPathPointsEXP = [NodePath("../C38"), NodePath("../C40"), NodePath("../C41"), NodePath("../16"), NodePath("../18"), NodePath("../23"), NodePath("../44"), NodePath("../46")]
+ppbTileEXP = NodePath("../../../TileController/TileC76")
 
 [node name="PathsControl" type="Control" parent="PathControl"]
 anchors_preset = 0
@@ -5477,8 +6749,8 @@ offset_bottom = 40.0
 curve = SubResource("Curve2D_3rajf")
 
 [node name="PathFollow2D" type="PathFollow2D" parent="PathControl/PathsControl/Path8C-6C"]
-position = Vector2(-495, 752)
-rotation = 3.14159
+position = Vector2(-646, 707)
+rotation = 3.05705
 
 [node name="Container8C-6C" type="Container" parent="PathControl/PathsControl/Path8C-6C/PathFollow2D"]
 offset_right = 40.0
