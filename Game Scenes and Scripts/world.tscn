@@ -1,4 +1,4 @@
-[gd_scene load_steps=911 format=3 uid="uid://bfbouq3jfwkxl"]
+[gd_scene load_steps=913 format=3 uid="uid://bfbouq3jfwkxl"]
 
 [ext_resource type="Script" uid="uid://dthx176t72xxr" path="res://Game Scenes and Scripts/world.gd" id="1_6bnro"]
 [ext_resource type="Texture2D" uid="uid://dwkhd2uwctnn4" path="res://art assets/Map Art/Coastal Tiles/map 2.png" id="2_l3hg6"]
@@ -2737,6 +2737,18 @@ point_count = 6
 [sub_resource type="Curve2D" id="Curve2D_48in2"]
 _data = {
 "points": PackedVector2Array(0, 0, 0, 0, 66, 636, 0, 0, 0, 0, 64, 672, 0, 0, 0, 0, 69, 691, 0, 0, 0, 0, 67, 748, 0, 0, 0, 0, 52, 779)
+}
+point_count = 5
+
+[sub_resource type="Curve2D" id="Curve2D_dhsv7"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -311, 306, 0, 0, 0, 0, -271, 310, 0, 0, 0, 0, -225, 271, 0, 0, 0, 0, -186, 244, 0, 0, 0, 0, -158, 213, 0, 0, 0, 0, -122, 151)
+}
+point_count = 6
+
+[sub_resource type="Curve2D" id="Curve2D_2w2t8"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -366, 803, 0, 0, 0, 0, -367, 829, 0, 0, 0, 0, -368, 845, 0, 0, 0, 0, -354, 878, 0, 0, 0, 0, -297, 915)
 }
 point_count = 5
 
@@ -6715,9 +6727,8 @@ offset_left = -1282.0
 offset_top = -83.0
 offset_right = -1242.0
 offset_bottom = -43.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path10-3/PathFollow10-3/Container")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path3-4/PathFollow3-4/Control 3-4"), NodePath("../../PathsControl/Path3-5/PathFollow3-5/Control 3-5")]
-neighborPathPointsEXP = [NodePath("../5"), NodePath("../4"), NodePath("../10")]
+endNodePathsEXP = [NodePath("../../PathsControl/Path37-1/PathFollow2D/Container37-1")]
+neighborPathPointsEXP = [NodePath("../37")]
 ppbTileEXP = NodePath("../../../TileController/Tile1")
 
 [node name="2" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
@@ -6726,9 +6737,9 @@ offset_left = -729.0
 offset_top = -120.0
 offset_right = -689.0
 offset_bottom = -80.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path10-3/PathFollow10-3/Container")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path3-4/PathFollow3-4/Control 3-4"), NodePath("../../PathsControl/Path3-5/PathFollow3-5/Control 3-5")]
-neighborPathPointsEXP = [NodePath("../5"), NodePath("../4"), NodePath("../10")]
+endNodePathsEXP = [NodePath("../../PathsControl/Path22-2/PathFollow2D/Container22-2"), NodePath("../../PathsControl/Path21-2/PathFollow2D/Container21-2")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path2-C34/PathFollow2D/Container2-C34")]
+neighborPathPointsEXP = [NodePath("../21"), NodePath("../22"), NodePath("../C34")]
 ppbTileEXP = NodePath("../../../TileController/Tile2")
 
 [node name="3" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
@@ -6879,8 +6890,8 @@ offset_left = -655.0
 offset_top = 103.0
 offset_right = -615.0
 offset_bottom = 143.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+endNodePathsEXP = [NodePath("../../PathsControl/Path18-16/PathFollow2D/Container18-16")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path16-52/PathFollow2D/Container16-52"), NodePath("../../PathsControl/Path16-C76/PathFollow2D/Container16-C76"), NodePath("../../PathsControl/Path16-30/PathFollow2D/Container16-30"), NodePath("../../PathsControl/Path16-31/PathFollow2D/Container16-31"), NodePath("../../PathsControl/Path16-C38/PathFollow2D/Container16-C38")]
 neighborPathPointsEXP = [NodePath("../18"), NodePath("../C30"), NodePath("../C31"), NodePath("../52"), NodePath("../C38"), NodePath("../C76")]
 ppbTileEXP = NodePath("../../../TileController/Tile16")
 
@@ -6890,8 +6901,8 @@ offset_left = -651.0
 offset_top = 294.0
 offset_right = -611.0
 offset_bottom = 334.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path15-17/PathFollow2D/Container15-17")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path17-18/PathFollow2D/Container17-18"), NodePath("../../PathsControl/Path17-C45/PathFollow2D/Container18-C45"), NodePath("../../PathsControl/Path17-52/PathFollow2D/Container17-52"), NodePath("../../PathsControl/Path17-53/PathFollow2D/Container17-53"), NodePath("../../PathsControl/Path17-C40/PathFollow2D/Container17-C40"), NodePath("../../PathsControl/Path17-C44/PathFollow2D/Container18-C44")]
+endNodePathsEXP = [NodePath("../../PathsControl/Path15-17/PathFollow2D/Container15-17"), NodePath("")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path17-18/PathFollow2D/Container17-18"), NodePath("../../PathsControl/Path17-52/PathFollow2D/Container17-52"), NodePath("../../PathsControl/Path17-53/PathFollow2D/Container17-53"), NodePath("../../PathsControl/Path17-C45/PathFollow2D/Container17-C45"), NodePath("../../PathsControl/Path17-C44/PathFollow2D/Container17-C44"), NodePath("../../PathsControl/Path17-C40/PathFollow2D/Container17-C40")]
 neighborPathPointsEXP = [NodePath("../15"), NodePath("../18"), NodePath("../52"), NodePath("../53"), NodePath("../C40"), NodePath("../C44"), NodePath("../C45")]
 ppbTileEXP = NodePath("../../../TileController/Tile17")
 
@@ -6912,8 +6923,8 @@ offset_left = -693.0
 offset_top = 14.0
 offset_right = -653.0
 offset_bottom = 54.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+endNodePathsEXP = [NodePath("../../PathsControl/Path21-19/PathFollow2D/Container21-19"), NodePath("../../PathsControl/Path44-19/PathFollow2D/Container44-19")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path19-C33/PathFollow2D/Container19-C33"), NodePath("../../PathsControl/Path19-C35/PathFollow2D/Container19-C35"), NodePath("../../PathsControl/Path19-C32/PathFollow2D/Container19-C32"), NodePath("../../PathsControl/Path19-C31/PathFollow2D/Container19-C31"), NodePath("../../PathsControl/Path19-C36/PathFollow2D/Container19-C36")]
 neighborPathPointsEXP = [NodePath("../21"), NodePath("../44"), NodePath("../C31"), NodePath("../C32"), NodePath("../C33"), NodePath("../C35"), NodePath("../C36")]
 ppbTileEXP = NodePath("../../../TileController/Tile19")
 
@@ -6923,8 +6934,8 @@ offset_left = -646.0
 offset_top = -120.0
 offset_right = -606.0
 offset_bottom = -80.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+endNodePathsEXP = [NodePath("../../PathsControl/Path22-21/PathFollow2D/Container22-21")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path21-2/PathFollow2D/Container21-2"), NodePath("../../PathsControl/Path21-C34/PathFollow2D/Container21-C34"), NodePath("../../PathsControl/Path21-C35/PathFollow2D/Container21-C35"), NodePath("../../PathsControl/Path21-19/PathFollow2D/Container21-19"), NodePath("../../PathsControl/Path21-44/PathFollow2D/Container21-44")]
 neighborPathPointsEXP = [NodePath("../2"), NodePath("../19"), NodePath("../22"), NodePath("../C34"), NodePath("../C35")]
 ppbTileEXP = NodePath("../../../TileController/Tile21")
 
@@ -6934,8 +6945,8 @@ offset_left = -832.0
 offset_top = -131.0
 offset_right = -792.0
 offset_bottom = -91.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+endNodePathsEXP = [NodePath("../../PathsControl/Path32-22/PathFollow2D/Container32-22"), NodePath("../../PathsControl/Path33-22/PathFollow2D/Container33-22")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path22-21/PathFollow2D/Container22-21"), NodePath("../../PathsControl/Path22-2/PathFollow2D/Container22-2"), NodePath("../../PathsControl/Path22-C33/PathFollow2D/Container22-C33")]
 neighborPathPointsEXP = [NodePath("../2"), NodePath("../21"), NodePath("../32"), NodePath("../33"), NodePath("../C33")]
 ppbTileEXP = NodePath("../../../TileController/Tile22")
 
@@ -6945,8 +6956,7 @@ offset_left = -491.0
 offset_top = 204.0
 offset_right = -451.0
 offset_bottom = 244.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path23-C40/PathFollow2D/Container23-C40"), NodePath("../../PathsControl/Path23-C76/PathFollow2D/Container23-C76"), NodePath("../../PathsControl/Path23-C41/PathFollow2D/Container23-C41"), NodePath("../../PathsControl/Path23-C43/PathFollow2D/Container23-C43"), NodePath("../../PathsControl/Path23-C44/PathFollow2D/ContainerC23-C44")]
 neighborPathPointsEXP = [NodePath("../C76"), NodePath("../C40"), NodePath("../C41"), NodePath("../C43"), NodePath("../C44")]
 ppbTileEXP = NodePath("../../../TileController/Tile23")
 
@@ -6956,8 +6966,7 @@ offset_left = -399.0
 offset_top = 621.0
 offset_right = -359.0
 offset_bottom = 661.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+endNodePathsEXP = [NodePath("../../PathsControl/PathC60-24/PathFollow2D/ContainerC60-24")]
 neighborPathPointsEXP = [NodePath("../C60")]
 ppbTileEXP = NodePath("../../../TileController/Tile24")
 
@@ -6967,8 +6976,8 @@ offset_left = -40.0
 offset_top = 557.0
 offset_right = 0.0
 offset_bottom = 597.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+endNodePathsEXP = [NodePath("../../PathsControl/PathC53-25/PathFollow2D/ContainerC53-25"), NodePath("../../PathsControl/Path26-25/PathFollow2D/Container26-25")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path25-31/PathFollow2D/Container25-31")]
 neighborPathPointsEXP = [NodePath("../26"), NodePath("../31"), NodePath("../C53"), NodePath("../C54")]
 ppbTileEXP = NodePath("../../../TileController/Tile25")
 
@@ -6978,8 +6987,8 @@ offset_left = -165.0
 offset_top = 601.0
 offset_right = -125.0
 offset_bottom = 641.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+endNodePathsEXP = [NodePath("../../PathsControl/PathC52-26/PathFollow2D/ContainerC52-26"), NodePath("../../PathsControl/PathC53-26/PathFollow2D/ContainerC53-26")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path26-25/PathFollow2D/Container26-25"), NodePath("../../PathsControl/Path26-27/PathFollow2D/Container26-27")]
 neighborPathPointsEXP = [NodePath("../25"), NodePath("../27"), NodePath("../C52"), NodePath("../C53")]
 ppbTileEXP = NodePath("../../../TileController/Tile26")
 
@@ -6989,8 +6998,8 @@ offset_left = -279.0
 offset_top = 622.0
 offset_right = -239.0
 offset_bottom = 662.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+endNodePathsEXP = [NodePath("../../PathsControl/Path26-27/PathFollow2D/Container26-27"), NodePath("../../PathsControl/PathC60-27/PathFollow2D/ContainerC60-27")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path27-28/PathFollow2D/Container27-28"), NodePath("../../PathsControl/Path27-C48/PathFollow2D/Container27-C48")]
 neighborPathPointsEXP = [NodePath("../26"), NodePath("../28"), NodePath("../C48"), NodePath("../C52"), NodePath("../C60")]
 ppbTileEXP = NodePath("../../../TileController/Tile27")
 
@@ -7000,8 +7009,8 @@ offset_left = -273.0
 offset_top = 738.0
 offset_right = -233.0
 offset_bottom = 778.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+endNodePathsEXP = [NodePath("../../PathsControl/Path28-29/PathFollow2D/Container28-29")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path28-29/PathFollow2D/Container28-29"), NodePath("../../PathsControl/Path28-C61/PathFollow2D/Container28-C61"), NodePath("../../PathsControl/Path28-C60/PathFollow2D/Container28-C60"), NodePath("../../PathsControl/Path28-C59/PathFollow2D/Container28-C59")]
 neighborPathPointsEXP = [NodePath("../27"), NodePath("../29"), NodePath("../C59"), NodePath("../C60"), NodePath("../C61")]
 ppbTileEXP = NodePath("../../../TileController/Tile28")
 
@@ -7011,8 +7020,8 @@ offset_left = -157.0
 offset_top = 743.0
 offset_right = -117.0
 offset_bottom = 783.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+endNodePathsEXP = [NodePath("../../PathsControl/Path30-29/PathFollow2D/Container30-29"), NodePath("../../PathsControl/Path28-29/PathFollow2D/Container28-29")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path29-C59/PathFollow2D/Container29-C59")]
 neighborPathPointsEXP = [NodePath("../28"), NodePath("../30"), NodePath("../C59")]
 ppbTileEXP = NodePath("../../../TileController/Tile29")
 
@@ -7022,8 +7031,8 @@ offset_left = -44.0
 offset_top = 698.0
 offset_right = -4.0
 offset_bottom = 738.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+endNodePathsEXP = [NodePath("../../PathsControl/Path16-30/PathFollow2D/Container16-30")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path30-C58/PathFollow2D/Container30-C58"), NodePath("../../PathsControl/Path30-29/PathFollow2D/Container30-29"), NodePath("../../PathsControl/Path30-C59/PathFollow2D/Container30-C59")]
 neighborPathPointsEXP = [NodePath("../29"), NodePath("../31"), NodePath("../C58"), NodePath("../C59")]
 ppbTileEXP = NodePath("../../../TileController/Tile30")
 
@@ -7033,8 +7042,8 @@ offset_left = 53.0
 offset_top = 610.0
 offset_right = 93.0
 offset_bottom = 650.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+endNodePathsEXP = [NodePath("../../PathsControl/Path16-31/PathFollow2D/Container16-31"), NodePath("../../PathsControl/PathC54-31/PathFollow2D/ContainerC54-31"), NodePath("../../PathsControl/Path25-31/PathFollow2D/Container25-31")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path31-30/PathFollow2D/Container31-30"), NodePath("../../PathsControl/Path31-C58/PathFollow2D/Container31-C58")]
 neighborPathPointsEXP = [NodePath("../25"), NodePath("../30"), NodePath("../C54"), NodePath("../C56")]
 ppbTileEXP = NodePath("../../../TileController/Tile31")
 
@@ -7044,8 +7053,8 @@ offset_left = -840.0
 offset_top = 29.0
 offset_right = -800.0
 offset_bottom = 69.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+endNodePathsEXP = [NodePath("../../PathsControl/Path34-32/PathFollow2D/Container34-32"), NodePath("../../PathsControl/Path33-32/PathFollow2D/Container33-32")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path32-C29/PathFollow2D/Container32-C29"), NodePath("../../PathsControl/Path32-C31/PathFollow2D/Container32-C31"), NodePath("../../PathsControl/Path32-C33/PathFollow2D/Container32-C33"), NodePath("../../PathsControl/Path32-22/PathFollow2D/Container32-22"), NodePath("../../PathsControl/Path32-C32/PathFollow2D/Container32-C32")]
 neighborPathPointsEXP = [NodePath("../22"), NodePath("../33"), NodePath("../34"), NodePath("../C29"), NodePath("../C31"), NodePath("../C32"), NodePath("../C33")]
 ppbTileEXP = NodePath("../../../TileController/Tile32")
 
@@ -7055,8 +7064,8 @@ offset_left = -922.0
 offset_top = -79.0
 offset_right = -882.0
 offset_bottom = -39.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+endNodePathsEXP = [NodePath("../../PathsControl/Path34-33/PathFollow2D/Container34-33"), NodePath("../../PathsControl/Path35-33/PathFollow2D/Container35-33")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path33-32/PathFollow2D/Container33-32"), NodePath("../../PathsControl/Path33-22/PathFollow2D/Container33-22")]
 neighborPathPointsEXP = [NodePath("../22"), NodePath("../32"), NodePath("../34"), NodePath("../35")]
 ppbTileEXP = NodePath("../../../TileController/Tile33")
 
@@ -7066,8 +7075,8 @@ offset_left = -957.0
 offset_top = 36.0
 offset_right = -917.0
 offset_bottom = 76.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+endNodePathsEXP = [NodePath("../../PathsControl/Path35-34/PathFollow2D/Container35-34")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path34-36/PathFollow2D/Container34-36"), NodePath("../../PathsControl/Path34-C28/PathFollow2D/Container34-C28"), NodePath("../../PathsControl/Path34-32/PathFollow2D/Container34-32"), NodePath("../../PathsControl/Path34-33/PathFollow2D/Container34-33")]
 neighborPathPointsEXP = [NodePath("../33"), NodePath("../32"), NodePath("../35"), NodePath("../36"), NodePath("../C28")]
 ppbTileEXP = NodePath("../../../TileController/Tile34")
 
@@ -7077,8 +7086,8 @@ offset_left = -1053.0
 offset_top = -37.0
 offset_right = -1013.0
 offset_bottom = 3.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+endNodePathsEXP = [NodePath("../../PathsControl/Path36-35/PathFollow2D/Container36-35"), NodePath("../../PathsControl/Path38-35/PathFollow2D/Container38-35")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path35-34/PathFollow2D/Container35-34"), NodePath("../../PathsControl/Path35-33/PathFollow2D/Container35-33")]
 neighborPathPointsEXP = [NodePath("../34"), NodePath("../33"), NodePath("../36"), NodePath("../38")]
 ppbTileEXP = NodePath("../../../TileController/Tile35")
 
@@ -7088,8 +7097,8 @@ offset_left = -1132.0
 offset_top = 98.0
 offset_right = -1092.0
 offset_bottom = 138.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+endNodePathsEXP = [NodePath("../../PathsControl/Path41-36/PathFollow2D/Container41-36"), NodePath("../../PathsControl/PathC22-36/PathFollow2D/ContainerC22-36"), NodePath("../../PathsControl/Path39-36/PathFollow2D/Container39-36"), NodePath("../../PathsControl/PathC23-36/PathFollow2D/ContainerC23-36"), NodePath("../../PathsControl/Path34-36/PathFollow2D/Container34-36")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path36-38/PathFollow2D/Container36-38"), NodePath("../../PathsControl/Path36-35/PathFollow2D/Container36-35")]
 neighborPathPointsEXP = [NodePath("../34"), NodePath("../35"), NodePath("../38"), NodePath("../39"), NodePath("../41"), NodePath("../C22")]
 ppbTileEXP = NodePath("../../../TileController/Tile36")
 
@@ -7099,8 +7108,8 @@ offset_left = -1364.0
 offset_top = 2.0
 offset_right = -1324.0
 offset_bottom = 42.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+endNodePathsEXP = [NodePath("../../PathsControl/Path39-37/PathFollow2D/Container39-37")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path37-40/PathFollow2D/Container37-40"), NodePath("../../PathsControl/Path37-1/PathFollow2D/Container37-1"), NodePath("../../PathsControl/Path37-38/PathFollow2D/Container37-38")]
 neighborPathPointsEXP = [NodePath("../1"), NodePath("../38"), NodePath("../39"), NodePath("../40")]
 ppbTileEXP = NodePath("../../../TileController/Tile37")
 
@@ -7110,8 +7119,8 @@ offset_left = -1191.0
 offset_top = 12.0
 offset_right = -1151.0
 offset_bottom = 52.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+endNodePathsEXP = [NodePath("../../PathsControl/Path37-38/PathFollow2D/Container37-38"), NodePath("../../PathsControl/Path39-38/PathFollow2D/Container39-38"), NodePath("../../PathsControl/Path36-38/PathFollow2D/Container36-38")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path38-35/PathFollow2D/Container38-35")]
 neighborPathPointsEXP = [NodePath("../35"), NodePath("../36"), NodePath("../37"), NodePath("../39")]
 ppbTileEXP = NodePath("../../../TileController/Tile38")
 
@@ -7121,8 +7130,8 @@ offset_left = -1324.0
 offset_top = 76.0
 offset_right = -1284.0
 offset_bottom = 116.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+endNodePathsEXP = [NodePath("../../PathsControl/Path40-39/PathFollow2D/Container40-39"), NodePath("../../PathsControl/Path41-39/PathFollow2D/Container41-39")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path39-37/PathFollow2D/Container39-37"), NodePath("../../PathsControl/Path39-38/PathFollow2D/Container39-38"), NodePath("../../PathsControl/Path39-36/PathFollow2D/Container39-36")]
 neighborPathPointsEXP = [NodePath("../37"), NodePath("../38"), NodePath("../36"), NodePath("../41"), NodePath("../40")]
 ppbTileEXP = NodePath("../../../TileController/Tile39")
 
@@ -7132,8 +7141,8 @@ offset_left = -1492.0
 offset_top = 86.0
 offset_right = -1452.0
 offset_bottom = 126.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+endNodePathsEXP = [NodePath("../../PathsControl/Path42-40/PathFollow2D/Container42-40"), NodePath("../../PathsControl/PathC68-40/PathFollow2D/ContainerC68-40"), NodePath("../../PathsControl/PathC67-40/PathFollow2D/ContainerC67-40"), NodePath("../../PathsControl/Path37-40/PathFollow2D/Container37-40")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path40-39/PathFollow2D/Container40-39"), NodePath("../../PathsControl/Path40-41/PathFollow2D/Container40-41")]
 neighborPathPointsEXP = [NodePath("../37"), NodePath("../39"), NodePath("../41"), NodePath("../43"), NodePath("../C67"), NodePath("../C68")]
 ppbTileEXP = NodePath("../../../TileController/Tile40")
 
@@ -7143,8 +7152,8 @@ offset_left = -1356.0
 offset_top = 180.0
 offset_right = -1316.0
 offset_bottom = 220.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+endNodePathsEXP = [NodePath("../../PathsControl/Path40-41/PathFollow2D/Container40-41")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path41-C67/PathFollow2D/Container41-C67"), NodePath("../../PathsControl/Path41-C21/PathFollow2D/Container41-C21"), NodePath("../../PathsControl/Path41-C22/PathFollow2D/Container41-C22"), NodePath("../../PathsControl/Path41-39/PathFollow2D/Container41-39"), NodePath("../../PathsControl/Path41-36/PathFollow2D/Container41-36")]
 neighborPathPointsEXP = [NodePath("../36"), NodePath("../39"), NodePath("../40"), NodePath("../C21"), NodePath("../C22"), NodePath("../C67")]
 ppbTileEXP = NodePath("../../../TileController/Tile41")
 
@@ -7154,8 +7163,8 @@ offset_left = -1581.0
 offset_top = -6.0
 offset_right = -1541.0
 offset_bottom = 34.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+endNodePathsEXP = [NodePath("../../PathsControl/Path43-42/PathFollow2D/Container43-42")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path42-C68/PathFollow2D/Container42-C68"), NodePath("../../PathsControl/Path42-C69/PathFollow2D/Container42-C69"), NodePath("../../PathsControl/Path42-40/PathFollow2D/Container42-40")]
 neighborPathPointsEXP = [NodePath("../40"), NodePath("../C68"), NodePath("../C69"), NodePath("../43")]
 ppbTileEXP = NodePath("../../../TileController/Tile42")
 
@@ -7165,8 +7174,8 @@ offset_left = -1581.0
 offset_top = -97.0
 offset_right = -1541.0
 offset_bottom = -57.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+endNodePathsEXP = [NodePath("../../PathsControl/PathC69-43/PathFollow2D/ContainerC69-43")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path43-42/PathFollow2D/Container43-42")]
 neighborPathPointsEXP = [NodePath("../42"), NodePath("../C69")]
 ppbTileEXP = NodePath("../../../TileController/Tile43")
 
@@ -7176,8 +7185,8 @@ offset_left = -522.0
 offset_top = -19.0
 offset_right = -482.0
 offset_bottom = 21.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+endNodePathsEXP = [NodePath("../../PathsControl/Path21-44/PathFollow2D/Container21-44")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path44-19/PathFollow2D/Container44-19"), NodePath("../../PathsControl/Path44-C36/PathFollow2D/Container44-C36"), NodePath("../../PathsControl/Path44-C38/PathFollow2D/Container44-C38"), NodePath("../../PathsControl/Path44-C76/PathFollow2D/Container44-C76"), NodePath("../../PathsControl/Path44-46/PathFollow2D/Container44-46")]
 neighborPathPointsEXP = [NodePath("../19"), NodePath("../21"), NodePath("../46"), NodePath("../C36"), NodePath("../C38"), NodePath("../C76")]
 ppbTileEXP = NodePath("../../../TileController/Tile44")
 
@@ -7187,8 +7196,8 @@ offset_left = -303.0
 offset_top = 8.0
 offset_right = -263.0
 offset_bottom = 48.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+endNodePathsEXP = [NodePath("../../PathsControl/Path46-45/PathFollow2D/Container46-45")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path45-48/PathFollow2D/Container45-48"), NodePath("../../PathsControl/Path45-49/PathFollow2D/Container45-49")]
 neighborPathPointsEXP = [NodePath("../6"), NodePath("../11"), NodePath("../C6"), NodePath("../C7"), NodePath("../C15"), NodePath("../C16")]
 ppbTileEXP = NodePath("../../../TileController/Tile45")
 
@@ -7198,8 +7207,8 @@ offset_left = -447.0
 offset_top = 41.0
 offset_right = -407.0
 offset_bottom = 81.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+endNodePathsEXP = [NodePath("../../PathsControl/Path44-46/PathFollow2D/Container44-46")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path46-C76/PathFollow2D/Container46-C76"), NodePath("../../PathsControl/Path46-C41/PathFollow2D/Container46-C41"), NodePath("../../PathsControl/Path46-48/PathFollow2D/Container46-48"), NodePath("../../PathsControl/Path46-45/PathFollow2D/Container46-45")]
 neighborPathPointsEXP = [NodePath("../44"), NodePath("../45"), NodePath("../48"), NodePath("../C76"), NodePath("../C41")]
 ppbTileEXP = NodePath("../../../TileController/Tile46")
 
@@ -7209,8 +7218,8 @@ offset_left = -329.0
 offset_top = 284.0
 offset_right = -289.0
 offset_bottom = 324.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+endNodePathsEXP = [NodePath("../../PathsControl/Path48-47/PathFollow2D/Container48-47")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path47-C42/PathFollow2D/Container47-C42"), NodePath("../../PathsControl/Path47-C41/PathFollow2D/Container47-C41"), NodePath("../../PathsControl/Path47-C43/PathFollow2D/Container47-C43"), NodePath("../../PathsControl/Path47-C47/PathFollow2D/Container47-C47"), NodePath("../../PathsControl/Path47-C49/PathFollow2D/Container47-C49"), NodePath("../../PathsControl/Path47-49/PathFollow2D/Container47-49")]
 neighborPathPointsEXP = [NodePath("../48"), NodePath("../49"), NodePath("../C41"), NodePath("../C42"), NodePath("../C43"), NodePath("../C47"), NodePath("../C49")]
 ppbTileEXP = NodePath("../../../TileController/Tile47")
 
@@ -7220,8 +7229,8 @@ offset_left = -310.0
 offset_top = 129.0
 offset_right = -270.0
 offset_bottom = 169.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+endNodePathsEXP = [NodePath("../../PathsControl/Path46-48/PathFollow2D/Container46-48"), NodePath("../../PathsControl/Path45-48/PathFollow2D/Container45-48")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path48-49/PathFollow2D/Container48-49"), NodePath("../../PathsControl/Path48-C42/PathFollow2D/Container48-C42"), NodePath("../../PathsControl/Path48-47/PathFollow2D/Container48-47")]
 neighborPathPointsEXP = [NodePath("../45"), NodePath("../46"), NodePath("../47"), NodePath("../49"), NodePath("../C42")]
 ppbTileEXP = NodePath("../../../TileController/Tile48")
 
@@ -7231,8 +7240,8 @@ offset_left = -134.0
 offset_top = 132.0
 offset_right = -94.0
 offset_bottom = 172.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+endNodePathsEXP = [NodePath("../../PathsControl/Path50-49/PathFollow2D/Container50-49"), NodePath("../../PathsControl/Path45-49/PathFollow2D/Container45-49"), NodePath("../../PathsControl/Path48-49/PathFollow2D/Container48-49"), NodePath("../../PathsControl/Path47-49/PathFollow2D/Container47-49")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path49-C49/PathFollow2D/Container49-C49"), NodePath("../../PathsControl/Path47-49/PathFollow2D/Container47-49")]
 neighborPathPointsEXP = [NodePath("../45"), NodePath("../47"), NodePath("../48"), NodePath("../50"), NodePath("../C49"), NodePath("../C50")]
 ppbTileEXP = NodePath("../../../TileController/Tile49")
 
@@ -7242,8 +7251,8 @@ offset_left = 23.0
 offset_top = 147.0
 offset_right = 63.0
 offset_bottom = 187.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+endNodePathsEXP = [NodePath("../../PathsControl/Path51-50/PathFollow2D/Container51-50"), NodePath("../../PathsControl/PathC50-50/PathFollow2D/ContainerC50-50")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path50-49/PathFollow2D/Container50-49")]
 neighborPathPointsEXP = [NodePath("../49"), NodePath("../51"), NodePath("../C50")]
 ppbTileEXP = NodePath("../../../TileController/Tile50")
 
@@ -7253,8 +7262,8 @@ offset_left = 32.0
 offset_top = 292.0
 offset_right = 72.0
 offset_bottom = 332.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+endNodePathsEXP = [NodePath("../../PathsControl/PathC51-51/PathFollow2D/ContainerC51-51")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path51-C50/PathFollow2D/Container51-C50"), NodePath("../../PathsControl/Path51-50/PathFollow2D/Container51-50"), NodePath("../../PathsControl/Path51-C49/PathFollow2D/Container51-C49")]
 neighborPathPointsEXP = [NodePath("../50"), NodePath("../C49"), NodePath("../C50"), NodePath("../C51")]
 ppbTileEXP = NodePath("../../../TileController/Tile51")
 
@@ -7264,8 +7273,8 @@ offset_left = -719.0
 offset_top = 162.0
 offset_right = -679.0
 offset_bottom = 202.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+endNodePathsEXP = [NodePath("../../PathsControl/Path17-52/PathFollow2D/Container17-52"), NodePath("../../PathsControl/Path18-52/PathFollow2D/Container18-52"), NodePath("../../PathsControl/Path16-52/PathFollow2D/Container16-52")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path52-53/PathFollow2D/Container52-53"), NodePath("../../PathsControl/Path52-30/PathFollow2D/Container52-30"), NodePath("../../PathsControl/Path52-C27/PathFollow2D/Container52-C27")]
 neighborPathPointsEXP = [NodePath("../16"), NodePath("../17"), NodePath("../18"), NodePath("../53"), NodePath("../C27"), NodePath("../C30")]
 ppbTileEXP = NodePath("../../../TileController/Tile52")
 
@@ -7275,8 +7284,8 @@ offset_left = -776.0
 offset_top = 259.0
 offset_right = -736.0
 offset_bottom = 299.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+endNodePathsEXP = [NodePath("../../PathsControl/Path17-53/PathFollow2D/Container17-53"), NodePath("../../PathsControl/Path52-53/PathFollow2D/Container52-53")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path53-54/PathFollow2D/Container53-54"), NodePath("../../PathsControl/Path53-55/PathFollow2D/Container53-55"), NodePath("../../PathsControl/Path53-C27/PathFollow2D/Container53-C27"), NodePath("../../PathsControl/Path54-C26/PathFollow2D/Container54-C26")]
 neighborPathPointsEXP = [NodePath("../17"), NodePath("../52"), NodePath("../54"), NodePath("../55"), NodePath("../C26"), NodePath("../C27")]
 ppbTileEXP = NodePath("../../../TileController/Tile53")
 
@@ -7286,8 +7295,8 @@ offset_left = -865.0
 offset_top = 306.0
 offset_right = -825.0
 offset_bottom = 346.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+endNodePathsEXP = [NodePath("../../PathsControl/Path53-54/PathFollow2D/Container53-54"), NodePath("../../PathsControl/Path55-54/PathFollow2D/Container55-54"), NodePath("../../PathsControl/Path56-54/PathFollow2D/Container56-54")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path54-C26/PathFollow2D/Container54-C26"), NodePath("../../PathsControl/Path54-C25/PathFollow2D/Container54-C25")]
 neighborPathPointsEXP = [NodePath("../53"), NodePath("../55"), NodePath("../56"), NodePath("../C25"), NodePath("../C26")]
 ppbTileEXP = NodePath("../../../TileController/Tile54")
 
@@ -7297,9 +7306,9 @@ offset_left = -809.0
 offset_top = 397.0
 offset_right = -769.0
 offset_bottom = 437.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path13-55/PathFollow2D/Container13-55")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path55-C66/PathFollow2D/Container55-C66"), NodePath("../../PathsControl/Path55-C65/PathFollow2D/Container55-C65")]
-neighborPathPointsEXP = [NodePath("../13"), NodePath("../53"), NodePath("../54"), NodePath("../56"), NodePath("../C65"), NodePath("../C66")]
+endNodePathsEXP = [NodePath("../../PathsControl/Path13-55/PathFollow2D/Container13-55"), NodePath("../../PathsControl/Path53-55/PathFollow2D/Container53-55")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path55-C66/PathFollow2D/Container55-C66"), NodePath("../../PathsControl/Path55-C65/PathFollow2D/Container55-C65"), NodePath("../../PathsControl/Path55-17/PathFollow2D/Container55-17"), NodePath("../../PathsControl/Path55-54/PathFollow2D/Container55-54"), NodePath("../../PathsControl/Path55-56/PathFollow2D/Container55-56")]
+neighborPathPointsEXP = [NodePath("../13"), NodePath("../53"), NodePath("../54"), NodePath("../56"), NodePath("../C65"), NodePath("../C66"), NodePath("../17")]
 ppbTileEXP = NodePath("../../../TileController/Tile55")
 
 [node name="56" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
@@ -7308,8 +7317,8 @@ offset_left = -917.0
 offset_top = 401.0
 offset_right = -877.0
 offset_bottom = 441.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+endNodePathsEXP = [NodePath("../../PathsControl/Path55-56/PathFollow2D/Container55-56")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path56-54/PathFollow2D/Container56-54"), NodePath("../../PathsControl/Path56-57/PathFollow2D/Container56-57"), NodePath("../../PathsControl/Path56-C65/PathFollow2D/Container56-C65")]
 neighborPathPointsEXP = [NodePath("../54"), NodePath("../55"), NodePath("../57"), NodePath("../C65")]
 ppbTileEXP = NodePath("../../../TileController/Tile56")
 
@@ -7319,8 +7328,8 @@ offset_left = -1002.0
 offset_top = 425.0
 offset_right = -962.0
 offset_bottom = 465.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+endNodePathsEXP = [NodePath("../../PathsControl/Path56-57/PathFollow2D/Container56-57")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path57-58/PathFollow2D/Container57-58"), NodePath("../../PathsControl/Path57-61/PathFollow2D/Container57-61"), NodePath("../../PathsControl/Path57-59/PathFollow2D/Container57-59"), NodePath("../../PathsControl/Path57-60/PathFollow2D/Container57-60")]
 neighborPathPointsEXP = [NodePath("../56"), NodePath("../58"), NodePath("../59"), NodePath("../60"), NodePath("../61")]
 ppbTileEXP = NodePath("../../../TileController/Tile57")
 
@@ -7330,9 +7339,9 @@ offset_left = -973.0
 offset_top = 517.0
 offset_right = -933.0
 offset_bottom = 557.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
-neighborPathPointsEXP = [NodePath("../57"), NodePath("../60"), NodePath("../6"), NodePath("../C65"), NodePath("../C14")]
+endNodePathsEXP = [NodePath("../../PathsControl/Path57-58/PathFollow2D/Container57-58"), NodePath("../../PathsControl/Path60-58/PathFollow2D/Container60-58")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path58-C65/PathFollow2D/Container58-C65"), NodePath("../../PathsControl/Path58-6/PathFollow2D/Container58-6"), NodePath("../../PathsControl/Path58-C15/PathFollow2D/Container58-C15"), NodePath("../../PathsControl/Path58-C14/PathFollow2D/Container58-C14")]
+neighborPathPointsEXP = [NodePath("../57"), NodePath("../60"), NodePath("../6"), NodePath("../C65"), NodePath("../C14"), NodePath("../C15")]
 ppbTileEXP = NodePath("../../../TileController/Tile58")
 
 [node name="59" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
@@ -7341,8 +7350,8 @@ offset_left = -1091.0
 offset_top = 420.0
 offset_right = -1051.0
 offset_bottom = 460.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+endNodePathsEXP = [NodePath("../../PathsControl/Path57-59/PathFollow2D/Container57-59")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path59-61/PathFollow2D/Container59-61"), NodePath("../../PathsControl/Path59-60/PathFollow2D/Container59-60"), NodePath("../../PathsControl/Path59-63/PathFollow2D/Container59-63"), NodePath("../../PathsControl/Path59-65/PathFollow2D/Container59-65")]
 neighborPathPointsEXP = [NodePath("../57"), NodePath("../60"), NodePath("../63"), NodePath("../61"), NodePath("../65")]
 ppbTileEXP = NodePath("../../../TileController/Tile59")
 
@@ -7352,9 +7361,9 @@ offset_left = -1089.0
 offset_top = 515.0
 offset_right = -1049.0
 offset_bottom = 555.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
-neighborPathPointsEXP = [NodePath("../57"), NodePath("../11"), NodePath("../C6"), NodePath("../C7"), NodePath("../C15"), NodePath("../C16")]
+endNodePathsEXP = [NodePath("../../PathsControl/Path57-60/PathFollow2D/Container57-60"), NodePath("../../PathsControl/Path59-60/PathFollow2D/Container59-60")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path60-58/PathFollow2D/Container60-58"), NodePath("../../PathsControl/Path60-62/PathFollow2D/Container60-62"), NodePath("../../PathsControl/Path60-C17/PathFollow2D/Container60-C17"), NodePath("../../PathsControl/Path60-C12/PathFollow2D/Container60-C12"), NodePath("../../PathsControl/Path60-C13/PathFollow2D/Container60-C13")]
+neighborPathPointsEXP = [NodePath("../57"), NodePath("../11"), NodePath("../C6"), NodePath("../C7"), NodePath("../C15"), NodePath("../C16"), NodePath("../59")]
 ppbTileEXP = NodePath("../../../TileController/Tile60")
 
 [node name="61" parent="PathControl/PathPointsControl" node_paths=PackedStringArray("ppbTileEXP") instance=ExtResource("53_78kig")]
@@ -7363,8 +7372,8 @@ offset_left = -1056.0
 offset_top = 339.0
 offset_right = -1016.0
 offset_bottom = 379.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+endNodePathsEXP = [NodePath("../../PathsControl/Path57-61/PathFollow2D/Container57-61"), NodePath("../../PathsControl/Path59-61/PathFollow2D/Container59-61")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path61-65/PathFollow2D/Container61-65"), NodePath("../../PathsControl/Path61-66/PathFollow2D/Container61-66"), NodePath("../../PathsControl/Path61-C20/PathFollow2D/Container61-C20"), NodePath("../../PathsControl/Path61-C24/PathFollow2D/Container61-C24")]
 neighborPathPointsEXP = [NodePath("../57"), NodePath("../59"), NodePath("../65"), NodePath("../66"), NodePath("../C24"), NodePath("../C20")]
 ppbTileEXP = NodePath("../../../TileController/Tile61")
 
@@ -7374,8 +7383,8 @@ offset_left = -1198.0
 offset_top = 519.0
 offset_right = -1158.0
 offset_bottom = 559.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+endNodePathsEXP = [NodePath("../../PathsControl/Path60-62/PathFollow2D/Container60-62"), NodePath("../../PathsControl/Path63-62/PathFollow2D/Container63-62")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path62-64/PathFollow2D/Container62-64"), NodePath("../../PathsControl/Path62-C19/PathFollow2D/Container62-C19"), NodePath("../../PathsControl/Path62-C18/PathFollow2D/Container62-C18"), NodePath("../../PathsControl/Path62-C17/PathFollow2D/Container62-C17")]
 neighborPathPointsEXP = [NodePath("../60"), NodePath("../63"), NodePath("../64"), NodePath("../C17"), NodePath("../C19"), NodePath("../C18")]
 ppbTileEXP = NodePath("../../../TileController/Tile62")
 
@@ -7385,8 +7394,8 @@ offset_left = -1192.0
 offset_top = 441.0
 offset_right = -1152.0
 offset_bottom = 481.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+endNodePathsEXP = [NodePath("../../PathsControl/Path59-63/PathFollow2D/Container59-63")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path63-64/PathFollow2D/Container63-64"), NodePath("../../PathsControl/Path63-62/PathFollow2D/Container63-62")]
 neighborPathPointsEXP = [NodePath("../59"), NodePath("../62"), NodePath("../64")]
 ppbTileEXP = NodePath("../../../TileController/Tile63")
 
@@ -7396,8 +7405,8 @@ offset_left = -1318.0
 offset_top = 453.0
 offset_right = -1278.0
 offset_bottom = 493.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+endNodePathsEXP = [NodePath("../../PathsControl/Path62-64/PathFollow2D/Container62-64"), NodePath("../../PathsControl/Path63-64/PathFollow2D/Container63-64")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path64-65/PathFollow2D/Container64-65"), NodePath("../../PathsControl/Path64-C75/PathFollow2D/Container64-C75"), NodePath("../../PathsControl/Path64-C18/PathFollow2D/Container64-C18")]
 neighborPathPointsEXP = [NodePath("../63"), NodePath("../62"), NodePath("../65"), NodePath("../C7"), NodePath("../C15")]
 ppbTileEXP = NodePath("../../../TileController/Tile64")
 
@@ -7407,8 +7416,8 @@ offset_left = -1313.0
 offset_top = 389.0
 offset_right = -1273.0
 offset_bottom = 429.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+endNodePathsEXP = [NodePath("../../PathsControl/Path59-65/PathFollow2D/Container59-65"), NodePath("../../PathsControl/Path61-65/PathFollow2D/Container61-65"), NodePath("../../PathsControl/Path64-65/PathFollow2D/Container64-65")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path65-C20/PathFollow2D/Container65-C20"), NodePath("../../PathsControl/Path65-C75/PathFollow2D/Container65-C75")]
 neighborPathPointsEXP = [NodePath("../61"), NodePath("../59"), NodePath("../64"), NodePath("../C20"), NodePath("../C75")]
 ppbTileEXP = NodePath("../../../TileController/Tile65")
 
@@ -7418,8 +7427,8 @@ offset_left = -1150.0
 offset_top = 262.0
 offset_right = -1110.0
 offset_bottom = 302.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+endNodePathsEXP = [NodePath("../../PathsControl/Path61-66/PathFollow2D/Container61-66")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path66-C23/PathFollow2D/Container66-C23"), NodePath("../../PathsControl/Path66-C22/PathFollow2D/Container66-C22"), NodePath("../../PathsControl/Path66-C21/PathFollow2D/Container66-C21"), NodePath("../../PathsControl/Path66-C20/PathFollow2D/Container66-C20"), NodePath("../../PathsControl/Path66-C24/PathFollow2D/Container66-C24")]
 neighborPathPointsEXP = [NodePath("../61"), NodePath("../C20"), NodePath("../C21"), NodePath("../C22"), NodePath("../C23"), NodePath("../C24")]
 ppbTileEXP = NodePath("../../../TileController/Tile66")
 
@@ -7429,8 +7438,7 @@ offset_left = -943.0
 offset_top = 169.0
 offset_right = -903.0
 offset_bottom = 209.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+endNodePathsEXP = [NodePath("../../PathsControl/PathC24-67/PathFollow2D/ContainerC24-67"), NodePath("../../PathsControl/PathC23-67/PathFollow2D/ContainerC23-67"), NodePath("../../PathsControl/PathC27-67/PathFollow2D/ContainerC27-67"), NodePath("../../PathsControl/PathC28-67/PathFollow2D/ContainerC28-67"), NodePath("../../PathsControl/PathC29-67/PathFollow2D/ContainerC29-67"), NodePath("../../PathsControl/PathC26-67/PathFollow2D/ContainerC26-67"), NodePath("../../PathsControl/PathC25-67/PathFollow2D/ContainerC25-67")]
 neighborPathPointsEXP = [NodePath("../C23"), NodePath("../C24"), NodePath("../C25"), NodePath("../C26"), NodePath("../C27"), NodePath("../C28"), NodePath("../C29")]
 ppbTileEXP = NodePath("../../../TileController/Tile67")
 
@@ -7440,8 +7448,8 @@ offset_left = -449.0
 offset_top = 809.0
 offset_right = -409.0
 offset_bottom = 849.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+endNodePathsEXP = [NodePath("../../PathsControl/PathC61-68/PathFollow2D/ContainerC61-68"), NodePath("../../PathsControl/PathC63-68/PathFollow2D/ContainerC63-68")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path68-69/PathFollow2D/Container68-69"), NodePath("../../PathsControl/Path68-C62/PathFollow2D/Container68-C62")]
 neighborPathPointsEXP = [NodePath("../69"), NodePath("../C61"), NodePath("../C62"), NodePath("../C63")]
 ppbTileEXP = NodePath("../../../TileController/Tile68")
 
@@ -7451,8 +7459,7 @@ offset_left = -309.0
 offset_top = 893.0
 offset_right = -269.0
 offset_bottom = 933.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+endNodePathsEXP = [NodePath("../../PathsControl/Path68-69/PathFollow2D/Container68-69"), NodePath("../../PathsControl/PathC62-69/PathFollow2D/ContainerC62-69"), NodePath("../../PathsControl/PathC61-69/PathFollow2D/ContainerC61-69")]
 neighborPathPointsEXP = [NodePath("../68"), NodePath("../C61"), NodePath("../C62")]
 ppbTileEXP = NodePath("../../../TileController/Tile69")
 
@@ -7462,8 +7469,7 @@ offset_left = -515.0
 offset_top = 741.0
 offset_right = -475.0
 offset_bottom = 781.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+endNodePathsEXP = [NodePath("../../PathsControl/PathC8-70/PathFollow2D/ContainerC8-70")]
 neighborPathPointsEXP = [NodePath("../C8")]
 ppbTileEXP = NodePath("../../../TileController/Tile70")
 
@@ -7473,8 +7479,8 @@ offset_left = -606.0
 offset_top = 817.0
 offset_right = -566.0
 offset_bottom = 857.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+endNodePathsEXP = [NodePath("../../PathsControl/PathC4-71/PathFollow2D/ContainerC4-71"), NodePath("../../PathsControl/PathC6-71/PathFollow2D/ContainerC6-71"), NodePath("../../PathsControl/PathC8-71/PathFollow2D/ContainerC8-71"), NodePath("../../PathsControl/PathC63-71/PathFollow2D/ContainerC63-71")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path71-72/PathFollow2D/Container71-72")]
 neighborPathPointsEXP = [NodePath("../C4"), NodePath("../C6"), NodePath("../C8"), NodePath("../C63"), NodePath("../72")]
 ppbTileEXP = NodePath("../../../TileController/Tile71")
 
@@ -7484,8 +7490,8 @@ offset_left = -569.0
 offset_top = 906.0
 offset_right = -529.0
 offset_bottom = 946.0
-endNodePathsEXP = [NodePath("../../PathsControl/Path11-12/PathFollow11-12/Container"), NodePath("../../PathsControl/Path6C-12/PathFollow2D/Container6C-12"), NodePath("../../PathsControl/Path7C-12/PathFollow2D/Container7C-12")]
-startNodePathsEXP = [NodePath("../../PathsControl/Path12-6/PathFollow12-6/Container"), NodePath("../../PathsControl/Path12-16C/PathFollow2D/Container12-16C"), NodePath("../../PathsControl/Path12-15C/PathFollow2D/Container12-15C")]
+endNodePathsEXP = [NodePath("../../PathsControl/PathC3-72/PathFollow2D/ContainerC3-72"), NodePath("../../PathsControl/PathC4-72/PathFollow2D/ContainerC4-72"), NodePath("../../PathsControl/Path71-72/PathFollow2D/Container71-72")]
+startNodePathsEXP = [NodePath("../../PathsControl/Path72-C64/PathFollow2D/Container72-C64"), NodePath("../../PathsControl/Path72-C63/PathFollow2D/Container72-C63")]
 neighborPathPointsEXP = [NodePath("../C3"), NodePath("../C63"), NodePath("../C64"), NodePath("../24"), NodePath("../71")]
 ppbTileEXP = NodePath("../../../TileController/Tile72")
 
@@ -9144,7 +9150,7 @@ curve = SubResource("Curve2D_aaql1")
 position = Vector2(-634, 314)
 rotation = 1.02401
 
-[node name="Container18-C45" type="Container" parent="PathControl/PathsControl/Path17-C45/PathFollow2D"]
+[node name="Container17-C45" type="Container" parent="PathControl/PathsControl/Path17-C45/PathFollow2D"]
 offset_right = 40.0
 offset_bottom = 40.0
 
@@ -9155,7 +9161,7 @@ curve = SubResource("Curve2D_xqtlu")
 position = Vector2(-633, 316)
 rotation = 0.444419
 
-[node name="Container18-C44" type="Container" parent="PathControl/PathsControl/Path17-C44/PathFollow2D"]
+[node name="Container17-C44" type="Container" parent="PathControl/PathsControl/Path17-C44/PathFollow2D"]
 offset_right = 40.0
 offset_bottom = 40.0
 
@@ -9269,16 +9275,17 @@ rotation = -2.56522
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="Path16-38" type="Path2D" parent="PathControl/PathsControl"]
+[node name="Path16-C38" type="Path2D" parent="PathControl/PathsControl"]
 curve = SubResource("Curve2D_sa2mg")
 
-[node name="PathFollow2D" type="PathFollow2D" parent="PathControl/PathsControl/Path16-38"]
+[node name="PathFollow2D" type="PathFollow2D" parent="PathControl/PathsControl/Path16-C38"]
 position = Vector2(-639, 125)
 rotation = -1.24905
 
-[node name="Container16-38" type="Container" parent="PathControl/PathsControl/Path16-38/PathFollow2D"]
+[node name="Container16-C38" type="Container" parent="PathControl/PathsControl/Path16-C38/PathFollow2D"]
 offset_right = 40.0
 offset_bottom = 40.0
+metadata/_edit_use_anchors_ = true
 
 [node name="Path53-54" type="Path2D" parent="PathControl/PathsControl"]
 curve = SubResource("Curve2D_0my1a")
@@ -9312,7 +9319,6 @@ rotation = -1.03038
 [node name="Container55-17" type="Container" parent="PathControl/PathsControl/Path55-17/PathFollow2D"]
 offset_right = 40.0
 offset_bottom = 40.0
-metadata/_edit_use_anchors_ = true
 
 [node name="Path55-54" type="Path2D" parent="PathControl/PathsControl"]
 curve = SubResource("Curve2D_4vohr")
@@ -9402,14 +9408,14 @@ rotation = -2.1487
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="Path59-57" type="Path2D" parent="PathControl/PathsControl"]
+[node name="Path57-59" type="Path2D" parent="PathControl/PathsControl"]
 curve = SubResource("Curve2D_qb7lf")
 
-[node name="PathFollow2D" type="PathFollow2D" parent="PathControl/PathsControl/Path59-57"]
+[node name="PathFollow2D" type="PathFollow2D" parent="PathControl/PathsControl/Path57-59"]
 position = Vector2(-990, 445)
 rotation = 3.09163
 
-[node name="Container59-57" type="Container" parent="PathControl/PathsControl/Path59-57/PathFollow2D"]
+[node name="Container57-59" type="Container" parent="PathControl/PathsControl/Path57-59/PathFollow2D"]
 offset_right = 40.0
 offset_bottom = 40.0
 
@@ -9424,14 +9430,14 @@ rotation = 2.08203
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="Path58-60" type="Path2D" parent="PathControl/PathsControl"]
+[node name="Path60-58" type="Path2D" parent="PathControl/PathsControl"]
 curve = SubResource("Curve2D_vvml1")
 
-[node name="PathFollow2D" type="PathFollow2D" parent="PathControl/PathsControl/Path58-60"]
+[node name="PathFollow2D" type="PathFollow2D" parent="PathControl/PathsControl/Path60-58"]
 position = Vector2(-1077, 534)
 rotation = 0.390607
 
-[node name="Container58-60" type="Container" parent="PathControl/PathsControl/Path58-60/PathFollow2D"]
+[node name="Container60-58" type="Container" parent="PathControl/PathsControl/Path60-58/PathFollow2D"]
 offset_right = 40.0
 offset_bottom = 40.0
 
@@ -9453,7 +9459,7 @@ curve = SubResource("Curve2D_03lah")
 position = Vector2(-957, 539)
 rotation = 0.666908
 
-[node name="Container" type="Container" parent="PathControl/PathsControl/Path58-C15/PathFollow2D"]
+[node name="Container58-C15" type="Container" parent="PathControl/PathsControl/Path58-C15/PathFollow2D"]
 offset_right = 40.0
 offset_bottom = 40.0
 
@@ -9486,7 +9492,7 @@ curve = SubResource("Curve2D_uahr3")
 position = Vector2(-1078, 442)
 rotation = 2.09887
 
-[node name="Container69-63" type="Container" parent="PathControl/PathsControl/Path59-63/PathFollow2D"]
+[node name="Container59-63" type="Container" parent="PathControl/PathsControl/Path59-63/PathFollow2D"]
 offset_right = 40.0
 offset_bottom = 40.0
 
@@ -9497,7 +9503,7 @@ curve = SubResource("Curve2D_dnomo")
 position = Vector2(-1076, 442)
 rotation = 2.77761
 
-[node name="Container69-65" type="Container" parent="PathControl/PathsControl/Path59-65/PathFollow2D"]
+[node name="Container59-65" type="Container" parent="PathControl/PathsControl/Path59-65/PathFollow2D"]
 offset_right = 40.0
 offset_bottom = 40.0
 
@@ -9534,14 +9540,14 @@ rotation = 2.86668
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="Path61-64" type="Path2D" parent="PathControl/PathsControl"]
+[node name="Path62-64" type="Path2D" parent="PathControl/PathsControl"]
 curve = SubResource("Curve2D_vxk2n")
 
-[node name="PathFollow2D" type="PathFollow2D" parent="PathControl/PathsControl/Path61-64"]
+[node name="PathFollow2D" type="PathFollow2D" parent="PathControl/PathsControl/Path62-64"]
 position = Vector2(-1185, 537)
 rotation = -2.11122
 
-[node name="Container61-64" type="Container" parent="PathControl/PathsControl/Path61-64/PathFollow2D"]
+[node name="Container62-64" type="Container" parent="PathControl/PathsControl/Path62-64/PathFollow2D"]
 offset_right = 40.0
 offset_bottom = 40.0
 
@@ -9629,7 +9635,7 @@ curve = SubResource("Curve2D_rn5jk")
 position = Vector2(-850, 330)
 rotation = -1.7976
 
-[node name="Container53-C26" type="Container" parent="PathControl/PathsControl/Path54-C26/PathFollow2D"]
+[node name="Container54-C26" type="Container" parent="PathControl/PathsControl/Path54-C26/PathFollow2D"]
 offset_right = 40.0
 offset_bottom = 40.0
 
@@ -10633,14 +10639,14 @@ rotation = 3.02148
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="PathC59-28" type="Path2D" parent="PathControl/PathsControl"]
+[node name="Path28-C59" type="Path2D" parent="PathControl/PathsControl"]
 curve = SubResource("Curve2D_ltxhm")
 
-[node name="PathFollow2D" type="PathFollow2D" parent="PathControl/PathsControl/PathC59-28"]
+[node name="PathFollow2D" type="PathFollow2D" parent="PathControl/PathsControl/Path28-C59"]
 position = Vector2(-257, 766)
 rotation = 1.51026
 
-[node name="ContainerC59-28" type="Container" parent="PathControl/PathsControl/PathC59-28/PathFollow2D"]
+[node name="Container28-C59" type="Container" parent="PathControl/PathsControl/Path28-C59/PathFollow2D"]
 offset_right = 40.0
 offset_bottom = 40.0
 
@@ -11746,14 +11752,14 @@ rotation = 1.78735
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="Path2D6" type="Path2D" parent="PathControl/PathsControl"]
+[node name="Path32-C32" type="Path2D" parent="PathControl/PathsControl"]
 curve = SubResource("Curve2D_pq5c2")
 
-[node name="PathFollow2D" type="PathFollow2D" parent="PathControl/PathsControl/Path2D6"]
+[node name="PathFollow2D" type="PathFollow2D" parent="PathControl/PathsControl/Path32-C32"]
 position = Vector2(-828, 50)
 rotation = 0.463648
 
-[node name="Container" type="Container" parent="PathControl/PathsControl/Path2D6/PathFollow2D"]
+[node name="Container32-C32" type="Container" parent="PathControl/PathsControl/Path32-C32/PathFollow2D"]
 offset_right = 40.0
 offset_bottom = 40.0
 
@@ -11786,7 +11792,7 @@ curve = SubResource("Curve2D_w7b3n")
 position = Vector2(-827, 44)
 rotation = -1.28474
 
-[node name="Container33-32" type="Container" parent="PathControl/PathsControl/Path32-22/PathFollow2D"]
+[node name="Container32-22" type="Container" parent="PathControl/PathsControl/Path32-22/PathFollow2D"]
 offset_right = 40.0
 offset_bottom = 40.0
 
@@ -11867,25 +11873,25 @@ rotation = -0.93577
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="Path2D7" type="Path2D" parent="PathControl/PathsControl"]
+[node name="PathC34-C35" type="Path2D" parent="PathControl/PathsControl"]
 curve = SubResource("Curve2D_6ggyw")
 
-[node name="PathFollow2D" type="PathFollow2D" parent="PathControl/PathsControl/Path2D7"]
+[node name="PathFollow2D" type="PathFollow2D" parent="PathControl/PathsControl/PathC34-C35"]
 position = Vector2(-704, -42)
 rotation = 0.54042
 
-[node name="Container" type="Container" parent="PathControl/PathsControl/Path2D7/PathFollow2D"]
+[node name="ContainerC34-C35" type="Container" parent="PathControl/PathsControl/PathC34-C35/PathFollow2D"]
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="PathC34-C35" type="Path2D" parent="PathControl/PathsControl"]
+[node name="PathC35-C33" type="Path2D" parent="PathControl/PathsControl"]
 curve = SubResource("Curve2D_0748f")
 
-[node name="PathFollow2D" type="PathFollow2D" parent="PathControl/PathsControl/PathC34-C35"]
+[node name="PathFollow2D" type="PathFollow2D" parent="PathControl/PathsControl/PathC35-C33"]
 position = Vector2(-664, -19)
 rotation = 2.66324
 
-[node name="ContainerC34-C35" type="Container" parent="PathControl/PathsControl/PathC34-C35/PathFollow2D"]
+[node name="ContainerC35-C33" type="Container" parent="PathControl/PathsControl/PathC35-C33/PathFollow2D"]
 offset_right = 40.0
 offset_bottom = 40.0
 
@@ -12347,6 +12353,29 @@ position = Vector2(66, 636)
 rotation = 1.62629
 
 [node name="Container31-C58" type="Container" parent="PathControl/PathsControl/Path31-C58/PathFollow2D"]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Path47-49" type="Path2D" parent="PathControl/PathsControl"]
+curve = SubResource("Curve2D_dhsv7")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="PathControl/PathsControl/Path47-49"]
+position = Vector2(-311, 306)
+rotation = 0.0996687
+
+[node name="Container47-49" type="Container" parent="PathControl/PathsControl/Path47-49/PathFollow2D"]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="PathC61-69" type="Path2D" parent="PathControl/PathsControl"]
+z_index = 15
+curve = SubResource("Curve2D_2w2t8")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="PathControl/PathsControl/PathC61-69"]
+position = Vector2(-366, 803)
+rotation = 1.60924
+
+[node name="ContainerC61-69" type="Container" parent="PathControl/PathsControl/PathC61-69/PathFollow2D"]
 offset_right = 40.0
 offset_bottom = 40.0
 
