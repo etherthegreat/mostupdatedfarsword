@@ -148,6 +148,7 @@ func updatePlayerUI():
 	$PathControl.call_deferred("showPathPoints", playerCapitalPathButton)
 	$CanvasLayer/BuildingInfoPanel.buildSelf(playerCountryNode)
 	$CanvasLayer/BuildingInfoPanel.newBuildingInTile.connect(addNewBuildingToTile)
+	#$PathControl.makeAllContainersPassable()
 	#print("ALL I NEED")
 	pass
 

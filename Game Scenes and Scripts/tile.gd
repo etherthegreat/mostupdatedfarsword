@@ -308,6 +308,146 @@ func calculateAttributes(tileNumber):
 			tileSpawnPoint = $"../../PathControl/PathPointsControl/11"
 		12:
 			tileSpawnPoint = $"../../PathControl/PathPointsControl/12"
+		13:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/13"
+		14:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/14"
+			tileOwner="ANL"
+		15:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/15"
+			tileOwner="ANL"
+		16:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/16"
+			tileOwner="EIG"
+		17:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/17"
+			tileOwner="ANL"
+		18:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/18"
+			tileOwner="ANL"
+		19:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/19"
+			tileOwner="EIG"
+		20:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/20"
+		21:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/21"
+			tileOwner="EIG"
+		22:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/22"
+			tileOwner="EIG"
+		23:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/23"
+			tileOwner="EIG"
+		24:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/24"
+			tileOwner="EIG"
+		25:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/25"
+			tileOwner="VTO"
+		26:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/26"
+			tileOwner="VTO"
+		27:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/27"
+			tileOwner="VTO"
+		28:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/28"
+			tileOwner="VTO"
+		29:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/29"
+			tileOwner="VTO"
+		30:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/30"
+			tileOwner="VTO"
+		31:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/31"
+			tileOwner="VTO"
+		32:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/32"
+		33:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/33"
+		34:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/34"
+		35:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/35"
+		36:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/36"
+		37:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/37"
+		38:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/38"
+		39:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/39"
+		40:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/40"
+		41:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/41"
+		42:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/42"
+		43:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/43"
+		44:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/44"
+		45:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/45"
+		46:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/46"
+		47:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/47"
+		48:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/48"
+		49:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/49"
+		50:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/50"
+		51:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/51"
+		52:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/52"
+		53:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/53"
+		54:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/54"
+		55:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/55"
+		56:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/56"
+		57:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/57"
+		58:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/58"
+		59:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/59"
+		60:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/60"
+		61:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/61"
+		62:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/62"
+		63:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/63"
+		64:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/64"
+		65:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/65"
+		66:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/66"
+		67:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/67"
+			tileOwner="EIG"
+		68:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/68"
+			tileOwner="VTO"
+		69:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/69"
+			tileOwner="VTO"
+		70:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/70"
+		71:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/71"
+		72:
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/72"
 	calculateCorruption()
 	emit_signal("tileLoaded", self)
 	pass
@@ -362,6 +502,186 @@ func calculateOceanAttributes(tileNumber):
 		16:
 			tileName = "Cape of Sixteen Spears"
 			tileSpawnPoint = $"../../PathControl/PathPointsControl/C16"
+		17:
+			tileName = "Cape of Seventeen Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C17"
+		18:
+			tileName = "Cape of Eighteen Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C18"
+		19:
+			tileName = "Cape of Nineteen Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C19"
+		20:
+			tileName = "Cape of Twenty Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C20"
+		21:
+			tileName = "Cape of Twenty-One Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C21"
+		22:
+			tileName = "Cape of Twenty-Two Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C22"
+		23:
+			tileName = "Cape of Twenty-Three Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C23"
+		24:
+			tileName = "Cape of Twenty-Four Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C24"
+		25:
+			tileName = "Cape of Twenty-Five Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C25"
+		26:
+			tileName = "Cape of Twenty-Six Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C26"
+		27:
+			tileName = "Cape of Twenty-Seven Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C27"
+		28:
+			tileName = "Cape of Twenty-Eight Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C28"
+		29:
+			tileName = "Cape of Twenty-Nine Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C29"
+		30:
+			tileName = "Cape of Thirty Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C30"
+		31:
+			tileName = "Cape of Thirty-One Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C31"
+		32:
+			tileName = "Cape of Thirty-Two Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C32"
+		33:
+			tileName = "Cape of Thirty-Three Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C33"
+		34:
+			tileName = "Cape of Thirty-Four Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C34"
+		35:
+			tileName = "Cape of Thirty-Five Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C35"
+		36:
+			tileName = "Cape of Thirty-Six Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C36"
+		37:
+			tileName = "Cape of Thirty-Seven Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C37"
+		38:
+			tileName = "Cape of Thirty-Eight Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C38"
+		39:
+			tileName = "Cape of Thirty-Nine Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C39"
+		40:
+			tileName = "Cape of Forty Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C40"
+		41:
+			tileName = "Cape of Forty-One Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C41"
+		42:
+			tileName = "Cape of Forty-Two Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C42"
+		43:
+			tileName = "Cape of Forty-Three Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C43"
+		44:
+			tileName = "Cape of Forty-Four Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C44"
+		45:
+			tileName = "Cape of Forty-Five Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C45"
+		46:
+			tileName = "Cape of Forty-Six Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C46"
+		47:
+			tileName = "Cape of Forty-Seven Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C47"
+		48:
+			tileName = "Cape of Forty-Eight Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C48"
+		49:
+			tileName = "Cape of Forty-Nine Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C49"
+		50:
+			tileName = "Cape of Fifty Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C50"
+		51:
+			tileName = "Cape of Fifty-One Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C51"
+		52:
+			tileName = "Cape of Fifty-Two Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C52"
+		53:
+			tileName = "Cape of Fifty-Three Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C53"
+		54:
+			tileName = "Cape of Fifty-Four Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C54"
+		55:
+			tileName = "Cape of Fifty-Five Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C55"
+		56:
+			tileName = "Cape of Fifty-Six Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C56"
+		57:
+			tileName = "Cape of Fifty-Seven Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C57"
+		58:
+			tileName = "Cape of Fifty-Eight Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C58"
+		59:
+			tileName = "Cape of Fifty-Nine Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C59"
+		60:
+			tileName = "Cape of Sixty Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C60"
+		61:
+			tileName = "Cape of Sixty-One Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C61"
+		62:
+			tileName = "Cape of Sixty-Two Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C62"
+		63:
+			tileName = "Cape of Sixty-Three Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C63"
+		64:
+			tileName = "Cape of Sixty-Four Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C64"
+		65:
+			tileName = "Cape of Sixty-Five Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C65"
+		66:
+			tileName = "Cape of Sixty-Six Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C66"
+		67:
+			tileName = "Cape of Sixty-Seven Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C67"
+		68:
+			tileName = "Cape of Sixty-Eight Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C68"
+		69:
+			tileName = "Cape of Sixty-Nine Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C69"
+		70:
+			tileName = "Cape of Seventy Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C70"
+		71:
+			tileName = "Cape of Seventy-One Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C71"
+		72:
+			tileName = "Cape of Seventy-Two Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C72"
+		73:
+			tileName = "Cape of Seventy-Three Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C73"
+		74:
+			tileName = "Cape of Seventy-Four Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C74"
+		75:
+			tileName = "Cape of Seventy-Five Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C75"
+		76:
+			tileName = "Cape of Seventy-Six Spears"
+			tileSpawnPoint = $"../../PathControl/PathPointsControl/C76"
 	pass
 
 
@@ -916,6 +1236,12 @@ func polisMode():
 		"ANL":
 			$TileGraphic.modulate = Color(0,0,1)
 			$TileGraphic.visible = true
+		"EIG":
+			$TileGraphic.modulate = Color(1, 0.078431375, 0.5764706)
+			$TileGraphic.visible = true
+		"VTO":
+			$TileGraphic.modulate = Color(1, 0.54901963, 0)
+			$TileGraphic.visible = true
 	pass
 
 func naturalMode():
@@ -1035,7 +1361,7 @@ func devChange(devType, devCivilian):
 				levelUpBuilding("Barracks")
 		"Discovery":
 			for Tile in TileNeighbors:
-				if Tile.discovered != true:
+				if Tile.discovered == false:
 					if devCivilian.civilianKit.kitType == "Exploration":
 						Tile.increasePlayerDiscoveryRate(50)
 					else:

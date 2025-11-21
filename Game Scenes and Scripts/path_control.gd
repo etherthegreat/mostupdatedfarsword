@@ -305,6 +305,14 @@ func discoverNearby():
 		selectedCPF = null
 	pass
 
+func makeAllContainersPassable():
+	for Path2D in $PathsControl.get_children():
+		for PathFollow2D in Path2D.get_children():
+			for Container in PathFollow2D.get_children():
+				Container.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	pass
+
+
 func _on_move_button_mouse_entered() -> void:
 	moveAndShowInfoPanel("Move")
 	pass # Replace with function body.
