@@ -7,15 +7,19 @@
 [ext_resource type="Texture2D" uid="uid://dhr3u11scg6jq" path="res://art assets/Placeholder Art/character/F12 - Copy.png" id="5_rpjul"]
 [ext_resource type="Texture2D" uid="uid://dkc5utxkt0nna" path="res://art assets/Placeholder Art/character/F13 - Copy.png" id="6_swy51"]
 
-[node name="NewGameSelection" type="Node2D"]
+[node name="NewGameSelection" type="Control"]
+layout_mode = 3
+anchors_preset = 0
 scale = Vector2(1.68, 1.68)
 script = ExtResource("1_l7tiv")
 
 [node name="ScenePanel" type="Panel" parent="."]
+layout_mode = 0
 offset_right = 1152.0
 offset_bottom = 651.0
 
 [node name="ReturnButton" type="Button" parent="."]
+layout_mode = 0
 offset_left = 9.0
 offset_top = 572.0
 offset_right = 235.0
@@ -23,6 +27,7 @@ offset_bottom = 635.0
 text = "Back to Main Menu"
 
 [node name="PlayButton" type="Button" parent="."]
+layout_mode = 0
 offset_left = 977.0
 offset_top = 567.0
 offset_right = 1132.0
@@ -31,6 +36,7 @@ disabled = true
 text = "PLAY!"
 
 [node name="SelectionPanel" type="Panel" parent="."]
+layout_mode = 0
 offset_right = 646.0
 offset_bottom = 556.0
 
@@ -95,6 +101,7 @@ scale = Vector2(0.153631, 0.153631)
 texture = ExtResource("6_swy51")
 
 [node name="CountryInfoPanel" type="Panel" parent="."]
+layout_mode = 0
 offset_left = 653.0
 offset_right = 1148.0
 offset_bottom = 556.0
@@ -136,6 +143,7 @@ offset_bottom = 446.0
 autowrap_mode = 3
 
 [connection signal="pressed" from="ReturnButton" to="." method="_on_return_button_pressed"]
+[connection signal="pressed" from="PlayButton" to="." method="_on_play_button_pressed"]
 [connection signal="pressed" from="SelectionPanel/AnlaxiaButton" to="." method="_on_anlaxia_button_pressed"]
 [connection signal="pressed" from="SelectionPanel/PenderTalButton" to="." method="_on_pender_tal_button_pressed"]
 [connection signal="pressed" from="SelectionPanel/EighthHouseButton" to="." method="_on_eighth_house_button_pressed"]

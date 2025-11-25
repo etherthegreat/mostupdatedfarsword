@@ -49,17 +49,11 @@ func updateMap():
 	$TileController.updateTiles(mapMode, displayCorruption, playerCountryNode)
 	pass
 
-func _ready() -> void:
-	worldCreation = true
-	newGameBuild()
-	worldCreation = false
-	$RightClickDetector.visible = true
-	mapMode = "Polis"
-	displayCorruption = true
-	pass
+
 
 signal calculateSeason
-func newGameBuild():
+func newGameBuild(CID):
+	worldCreation = true
 	gameLanguage = "eng"
 	month = 6
 	year = 673
@@ -73,7 +67,7 @@ func newGameBuild():
 		Tile.onNewGame()
 		Tile.calculateSeason(month)
 		Tile.clicked.connect(tileClicked)
-	spawnNewGameCountries()
+	spawnNewGameCountries(CID)
 	connectCountrySignals()
 	$CanvasLayer/BuildingInfoPanel/buildingPanelPanel.player = playerCountryNode
 	matchCountryBuildings()
@@ -86,14 +80,20 @@ func newGameBuild():
 	#$CanvasLayer/Spellbook.displaySpells(playerCountryNode)
 	updatePlayerUI()
 	$TileController.discoverTiles(playerCountryNode)
+	worldCreation = false
+	$RightClickDetector.visible = true
+	mapMode = "Polis"
+	displayCorruption = true
 	pass
 
 var countryNode = load("res://Game Scenes and Scripts/country.tscn")
 
-func spawnNewGameCountries():
+func spawnNewGameCountries(CID):
+	playerCountry = CID
 	var penderTal = countryNode.instantiate()
 	if playerCountry == "PDT":
 		penderTal.Player = true
+		playerCountryNode = penderTal
 	else:
 		penderTal.Player = false
 	penderTal.CID = "PDT"
@@ -103,10 +103,74 @@ func spawnNewGameCountries():
 	penderTal.NewGameBuild()
 	aliveCountriesList.append(penderTal)
 	$CountryController.add_child(penderTal)
-	playerCountryNode = penderTal
 	playerCapitalPathButton = $"PathControl/PathPointsControl/3"
 	#penderTal.surveyResources()
-	print("pender tal tile list:", penderTal.OwnedTileList)
+	
+	var anlaxia = countryNode.instantiate()
+	if playerCountry == "ANL":
+		anlaxia.Player = true
+		playerCountryNode = anlaxia
+	else:
+		anlaxia.Player = false
+	anlaxia.CID = "ANL"
+	for Tile in $TileController.get_children():
+		if Tile.tileOwner == "ANL":
+			anlaxia.OwnedTileList.append(Tile)
+	anlaxia.NewGameBuild()
+	aliveCountriesList.append(anlaxia)
+	$CountryController.add_child(anlaxia)
+	playerCapitalPathButton = $"PathControl/PathPointsControl/17"
+	#anlaxia.surveyResources()
+	
+	var vitherianOrder = countryNode.instantiate()
+	if playerCountry == "VTO":
+		vitherianOrder.Player = true
+		playerCountryNode = vitherianOrder
+	else:
+		vitherianOrder.Player = false
+	vitherianOrder.CID = "VTO"
+	for Tile in $TileController.get_children():
+		if Tile.tileOwner == "VTO":
+			vitherianOrder.OwnedTileList.append(Tile)
+	vitherianOrder.NewGameBuild()
+	aliveCountriesList.append(vitherianOrder)
+	$CountryController.add_child(vitherianOrder)
+	playerCapitalPathButton = $"PathControl/PathPointsControl/29"
+	#vitherianOrder.surveyResources()
+	
+	var demonEmpire = countryNode.instantiate()
+	if playerCountry == "DEM":
+		demonEmpire.Player = true
+		playerCountryNode = demonEmpire
+	else:
+		demonEmpire.Player = false
+	demonEmpire.CID = "DEM"
+	for Tile in $TileController.get_children():
+		if Tile.tileOwner == "DEM":
+			demonEmpire.OwnedTileList.append(Tile)
+	demonEmpire.NewGameBuild()
+	aliveCountriesList.append(demonEmpire)
+	$CountryController.add_child(demonEmpire)
+	playerCapitalPathButton = $"PathControl/PathPointsControl/30"
+	#demonEmpire.surveyResources()
+	
+	var eighthHouse = countryNode.instantiate()
+	if playerCountry == "EIG":
+		eighthHouse.Player = true
+		playerCountryNode = eighthHouse
+	else:
+		eighthHouse.Player = false
+	eighthHouse.CID = "EIG"
+	for Tile in $TileController.get_children():
+		if Tile.tileOwner == "EIG":
+			eighthHouse.OwnedTileList.append(Tile)
+	eighthHouse.NewGameBuild()
+	aliveCountriesList.append(eighthHouse)
+	$CountryController.add_child(eighthHouse)
+	playerCapitalPathButton = $"PathControl/PathPointsControl/30"
+	#eighthHouse.surveyResources()
+	$CameraMovementController/Camera2D.position = playerCapitalPathButton.position
+	
 	pass
 
 func connectCountrySignals():
@@ -176,13 +240,10 @@ func tileClicked(tile):
 func matchCountryBuildings():
 	for country in aliveCountriesList:
 		for Tile in $TileController.get_children():
-			if Tile.tileOwner == playerCountryNode.CID:
+			if Tile.tileOwner == playerCountry:
 				for building in Tile.tileBuildingsList:
 					playerCountryNode.connectBuilding(building)
 					#building.towerBuilding.connect(signalTowerInTile)
-	if playerCountryNode.CID == "PDT":
-		#print("country building List for PDT:", playerCountryNode.countryBuildingList)
-		pass
 	pass
 
 func _on_food_area_2d_mouse_entered():

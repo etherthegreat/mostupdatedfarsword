@@ -3367,7 +3367,7 @@ offset_left = -493.0
 offset_top = 235.0
 offset_right = -493.0
 offset_bottom = 235.0
-EXPTileNumber = 22
+EXPTileNumber = 23
 TileNeighborsEXP = [NodePath("../TileC40"), NodePath("../TileC41"), NodePath("../TileC43"), NodePath("../TileC44"), NodePath("../TileC76")]
 
 [node name="Ring" type="Sprite2D" parent="TileController/Tile23"]
