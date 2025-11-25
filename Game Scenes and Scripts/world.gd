@@ -27,6 +27,7 @@ var displayCorruption: bool
 
 func _process(delta: float) -> void:
 	if worldCreation == true:
+		$CanvasLayer/LoadingSprite.rotation += 1
 		return
 	else:
 		$"CanvasLayer/Resource Bar (TOP)/container/FoodLabel/Label".text = str(playerCountryNode.TotalFood)
@@ -54,6 +55,7 @@ func updateMap():
 signal calculateSeason
 func newGameBuild(CID):
 	worldCreation = true
+	$CanvasLayer/LoadingLabel.text = "Building World"
 	gameLanguage = "eng"
 	month = 6
 	year = 673
@@ -67,9 +69,13 @@ func newGameBuild(CID):
 		Tile.onNewGame()
 		Tile.calculateSeason(month)
 		Tile.clicked.connect(tileClicked)
+	$CanvasLayer/LoadingLabel.text = "Spawning Countries"
+	$CanvasLayer/LoadingProgressBar.value = 25
 	spawnNewGameCountries(CID)
 	connectCountrySignals()
 	$CanvasLayer/BuildingInfoPanel/buildingPanelPanel.player = playerCountryNode
+	$CanvasLayer/LoadingLabel.text = "Prospecting for Ores"
+	$CanvasLayer/LoadingProgressBar.value = 50
 	matchCountryBuildings()
 	for country in aliveCountriesList:
 		country.prospectForOres()
@@ -78,12 +84,19 @@ func newGameBuild(CID):
 	#$CanvasLayer/TileInfoPanel.displayTileInfo()
 	#$CanvasLayer/BuildingInfoPanel.displayBuildingInfo()
 	#$CanvasLayer/Spellbook.displaySpells(playerCountryNode)
+	$CanvasLayer/LoadingLabel.text = "Loading UI (Magic)"
+	$CanvasLayer/LoadingProgressBar.value = 75
 	updatePlayerUI()
 	$TileController.discoverTiles(playerCountryNode)
 	worldCreation = false
 	$RightClickDetector.visible = true
 	mapMode = "Polis"
 	displayCorruption = true
+	$CanvasLayer/LoadingProgressBar.value = 100
+	$CanvasLayer/LoadingBackground.visible = false
+	$CanvasLayer/LoadingSprite.visible = false
+	$CanvasLayer/LoadingProgressBar.visible = false
+	$CanvasLayer/LoadingLabel.visible = false
 	pass
 
 var countryNode = load("res://Game Scenes and Scripts/country.tscn")
@@ -94,6 +107,7 @@ func spawnNewGameCountries(CID):
 	if playerCountry == "PDT":
 		penderTal.Player = true
 		playerCountryNode = penderTal
+		playerCapitalPathButton = $"PathControl/PathPointsControl/3"
 	else:
 		penderTal.Player = false
 	penderTal.CID = "PDT"
@@ -103,13 +117,14 @@ func spawnNewGameCountries(CID):
 	penderTal.NewGameBuild()
 	aliveCountriesList.append(penderTal)
 	$CountryController.add_child(penderTal)
-	playerCapitalPathButton = $"PathControl/PathPointsControl/3"
+	
 	#penderTal.surveyResources()
 	
 	var anlaxia = countryNode.instantiate()
 	if playerCountry == "ANL":
 		anlaxia.Player = true
 		playerCountryNode = anlaxia
+		playerCapitalPathButton = $"PathControl/PathPointsControl/17"
 	else:
 		anlaxia.Player = false
 	anlaxia.CID = "ANL"
@@ -119,13 +134,13 @@ func spawnNewGameCountries(CID):
 	anlaxia.NewGameBuild()
 	aliveCountriesList.append(anlaxia)
 	$CountryController.add_child(anlaxia)
-	playerCapitalPathButton = $"PathControl/PathPointsControl/17"
 	#anlaxia.surveyResources()
 	
 	var vitherianOrder = countryNode.instantiate()
 	if playerCountry == "VTO":
 		vitherianOrder.Player = true
 		playerCountryNode = vitherianOrder
+		playerCapitalPathButton = $"PathControl/PathPointsControl/29"
 	else:
 		vitherianOrder.Player = false
 	vitherianOrder.CID = "VTO"
@@ -135,13 +150,13 @@ func spawnNewGameCountries(CID):
 	vitherianOrder.NewGameBuild()
 	aliveCountriesList.append(vitherianOrder)
 	$CountryController.add_child(vitherianOrder)
-	playerCapitalPathButton = $"PathControl/PathPointsControl/29"
 	#vitherianOrder.surveyResources()
 	
 	var demonEmpire = countryNode.instantiate()
 	if playerCountry == "DEM":
 		demonEmpire.Player = true
 		playerCountryNode = demonEmpire
+		playerCapitalPathButton = $"PathControl/PathPointsControl/30"
 	else:
 		demonEmpire.Player = false
 	demonEmpire.CID = "DEM"
@@ -151,13 +166,13 @@ func spawnNewGameCountries(CID):
 	demonEmpire.NewGameBuild()
 	aliveCountriesList.append(demonEmpire)
 	$CountryController.add_child(demonEmpire)
-	playerCapitalPathButton = $"PathControl/PathPointsControl/30"
 	#demonEmpire.surveyResources()
 	
 	var eighthHouse = countryNode.instantiate()
 	if playerCountry == "EIG":
 		eighthHouse.Player = true
 		playerCountryNode = eighthHouse
+		playerCapitalPathButton = $"PathControl/PathPointsControl/30"
 	else:
 		eighthHouse.Player = false
 	eighthHouse.CID = "EIG"
@@ -167,9 +182,8 @@ func spawnNewGameCountries(CID):
 	eighthHouse.NewGameBuild()
 	aliveCountriesList.append(eighthHouse)
 	$CountryController.add_child(eighthHouse)
-	playerCapitalPathButton = $"PathControl/PathPointsControl/30"
 	#eighthHouse.surveyResources()
-	$CameraMovementController/Camera2D.position = playerCapitalPathButton.position
+	$CameraMovementController/Camera2D.global_position = playerCapitalPathButton.global_position
 	
 	pass
 

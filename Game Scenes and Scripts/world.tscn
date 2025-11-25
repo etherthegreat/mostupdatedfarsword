@@ -1,4 +1,4 @@
-[gd_scene load_steps=916 format=3 uid="uid://bfbouq3jfwkxl"]
+[gd_scene load_steps=920 format=3 uid="uid://bfbouq3jfwkxl"]
 
 [ext_resource type="Script" uid="uid://dthx176t72xxr" path="res://Game Scenes and Scripts/world.gd" id="1_6bnro"]
 [ext_resource type="Texture2D" uid="uid://dwkhd2uwctnn4" path="res://art assets/Map Art/Coastal Tiles/map 2.png" id="2_l3hg6"]
@@ -30,14 +30,12 @@
 [ext_resource type="Texture2D" uid="uid://6uv4xqji3aqu" path="res://art assets/Map Art/7 Tile.png" id="16_dlxus"]
 [ext_resource type="Texture2D" uid="uid://vu0teomjtckk" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/food.png" id="16_ekld7"]
 [ext_resource type="PackedScene" uid="uid://o2yoabcupr6h" path="res://tech_tree.tscn" id="16_f3t73"]
-[ext_resource type="Texture2D" uid="uid://eelq4yxqnbt2" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/gold.png" id="16_ks6ev"]
 [ext_resource type="Texture2D" uid="uid://cncldc4pnof4m" path="res://art assets/Map Art/7 Ring.png" id="17_f7ca6"]
 [ext_resource type="Script" uid="uid://0pcc14rujh18" path="res://Game Scenes and Scripts/resource_info_panel.gd" id="17_wu4x8"]
 [ext_resource type="Texture2D" uid="uid://drifybbnrpta7" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/wood.png" id="18_5sv2k"]
 [ext_resource type="Texture2D" uid="uid://djuqhdfk272fc" path="res://art assets/Map Art/8 Tile.png" id="18_7c8hp"]
 [ext_resource type="Texture2D" uid="uid://b108yikrhaxgo" path="res://art assets/Map Art/8 Ring.png" id="19_73u0w"]
 [ext_resource type="Texture2D" uid="uid://cpcr1ise13q8i" path="res://art assets/Map Art/6FOG.png" id="19_b6sju"]
-[ext_resource type="Texture2D" uid="uid://dauok6wt717hv" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/Metal.png" id="19_hesf6"]
 [ext_resource type="Texture2D" uid="uid://bmgon5mm6nkvc" path="res://art assets/Placeholder Art/UI Art/resources/Older Icons/weapons.png" id="20_gqt8h"]
 [ext_resource type="Texture2D" uid="uid://d2tkh6yx57ieb" path="res://art assets/Map Art/9 Tile.png" id="20_jqmbm"]
 [ext_resource type="Script" uid="uid://b7k6g7rwc62bj" path="res://Game Scenes and Scripts/belief_control.gd" id="20_lkwti"]
@@ -537,6 +535,12 @@
 [ext_resource type="Texture2D" uid="uid://bwaqd6nniji2e" path="res://art assets/Map Art/Coastal Tiles/C 76 Ring.png" id="433_sq0d6"]
 [ext_resource type="Texture2D" uid="uid://bdcce2aoab48u" path="res://art assets/Map Art/Coastal Tiles/C 76 FOG.png" id="434_ed344"]
 [ext_resource type="Texture2D" uid="uid://kj26ogp0ertb" path="res://art assets/Map Art/Coastal Tiles/C 76 Tile.png" id="435_428lr"]
+[ext_resource type="Texture2D" uid="uid://d1nb8f7x0lc6k" path="res://art assets/finishedAssets/ores/Gold.PNG" id="501_ed344"]
+[ext_resource type="Texture2D" uid="uid://rkxk6oer86gu" path="res://art assets/finishedAssets/ores/Wheat.PNG" id="502_428lr"]
+[ext_resource type="Texture2D" uid="uid://dgcf317okxtn4" path="res://art assets/finishedAssets/ores/Wood.PNG" id="503_168he"]
+[ext_resource type="Texture2D" uid="uid://c5read1dudq7q" path="res://art assets/finishedAssets/ores/Iron.PNG" id="504_tdfku"]
+[ext_resource type="Texture2D" uid="uid://bfynmy685y3k" path="res://art assets/finishedAssets/ores/Zylfire.PNG" id="505_11xh4"]
+[ext_resource type="Texture2D" uid="uid://c7hyc65jbh6rj" path="res://art assets/finishedAssets/ores/Razorberry.PNG" id="530_7ybmk"]
 
 [sub_resource type="Curve2D" id="Curve2D_bg6fe"]
 _data = {
@@ -12814,6 +12818,7 @@ scale = Vector2(0.122893, 0.122893)
 texture = ExtResource("34_ofkyc")
 
 [node name="colonizationPointsLabel" type="Label" parent="CanvasLayer/TileInfoPanel"]
+visible = false
 layout_mode = 0
 offset_left = 9.0
 offset_top = 25.0
@@ -12829,8 +12834,10 @@ offset_bottom = 34.0
 
 [node name="buildingPanelPanel" parent="CanvasLayer/BuildingInfoPanel" instance=ExtResource("15_fxlo2")]
 visible = false
-offset_top = 74.0
-offset_bottom = 74.0
+offset_left = 1250.0
+offset_top = 48.0
+offset_right = 1250.0
+offset_bottom = 48.0
 
 [node name="AddBuildingControl" type="Control" parent="CanvasLayer/BuildingInfoPanel"]
 visible = false
@@ -14278,8 +14285,9 @@ layout_mode = 2
 mouse_filter = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/Resource Bar (TOP)/container/GoldControl"]
-position = Vector2(54, 54)
-texture = ExtResource("16_ks6ev")
+position = Vector2(53.106, 53.1059)
+scale = Vector2(0.217942, 0.217941)
+texture = ExtResource("501_ed344")
 
 [node name="GoldArea2D" type="Area2D" parent="CanvasLayer/Resource Bar (TOP)/container/GoldControl"]
 collision_layer = 3
@@ -14294,8 +14302,9 @@ layout_mode = 2
 mouse_filter = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/Resource Bar (TOP)/container/FoodControl"]
-position = Vector2(54, 54)
-texture = ExtResource("16_ekld7")
+position = Vector2(61.7273, 51.3928)
+scale = Vector2(0.295966, 0.295966)
+texture = ExtResource("502_428lr")
 
 [node name="FoodArea2D" type="Area2D" parent="CanvasLayer/Resource Bar (TOP)/container/FoodControl"]
 collision_layer = 3
@@ -14310,8 +14319,9 @@ layout_mode = 2
 mouse_filter = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/Resource Bar (TOP)/container/WoodControl"]
-position = Vector2(54, 54)
-texture = ExtResource("18_5sv2k")
+position = Vector2(53.2177, 53.1059)
+scale = Vector2(0.222442, 0.222442)
+texture = ExtResource("503_168he")
 
 [node name="WoodArea2D" type="Area2D" parent="CanvasLayer/Resource Bar (TOP)/container/WoodControl"]
 collision_layer = 3
@@ -14326,8 +14336,9 @@ layout_mode = 2
 mouse_filter = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/Resource Bar (TOP)/container/MetalControl"]
-position = Vector2(54, 54)
-texture = ExtResource("19_hesf6")
+position = Vector2(50.9384, 57.1321)
+scale = Vector2(0.215997, 0.215997)
+texture = ExtResource("504_tdfku")
 
 [node name="MetalArea2D" type="Area2D" parent="CanvasLayer/Resource Bar (TOP)/container/MetalControl"]
 collision_layer = 3
@@ -14627,10 +14638,15 @@ text = "10000"
 
 [node name="Test ResourceButton" type="Button" parent="CanvasLayer/Resource Bar (TOP)"]
 layout_mode = 0
-offset_top = 144.0
-offset_right = 274.0
-offset_bottom = 232.0
-text = "Collect Taxes"
+offset_left = 1853.57
+offset_top = 1591.46
+offset_right = 2228.57
+offset_bottom = 1757.46
+theme_override_colors/font_disabled_color = Color(0.731385, 0.428597, 0.13852, 1)
+theme_override_font_sizes/font_size = 35
+text = "Next Turn"
+icon = ExtResource("505_11xh4")
+expand_icon = true
 
 [node name="ResourceInfoControl" type="Control" parent="CanvasLayer" groups=["ScreenPanels"]]
 visible = false
@@ -15191,6 +15207,36 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+
+[node name="LoadingBackground" type="Sprite2D" parent="CanvasLayer"]
+visible = false
+position = Vector2(915, 527.125)
+scale = Vector2(4.62202, 2.32926)
+texture = ExtResource("100_u105b")
+
+[node name="LoadingSprite" type="Sprite2D" parent="CanvasLayer"]
+visible = false
+position = Vector2(1027, 369)
+texture = ExtResource("530_7ybmk")
+
+[node name="LoadingProgressBar" type="ProgressBar" parent="CanvasLayer"]
+visible = false
+offset_left = 666.0
+offset_top = 575.0
+offset_right = 1402.0
+offset_bottom = 648.0
+theme_override_font_sizes/font_size = 50
+
+[node name="LoadingLabel" type="Label" parent="CanvasLayer"]
+visible = false
+offset_left = 559.0
+offset_top = 732.0
+offset_right = 1508.0
+offset_bottom = 884.0
+theme_override_font_sizes/font_size = 50
+text = "Loading World"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="CameraMovementController" type="Control" parent="."]
 layout_mode = 3

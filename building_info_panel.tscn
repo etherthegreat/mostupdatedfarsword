@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://ch23xv2ch3jl6"]
+[gd_scene load_steps=4 format=3 uid="uid://ch23xv2ch3jl6"]
 
 [ext_resource type="Script" uid="uid://csm4kgu7yacmp" path="res://building_info_panel.gd" id="1_tqqjq"]
 [ext_resource type="Texture2D" uid="uid://cta3ksrnubp7x" path="res://art assets/finishedAssets/Panels/tilePanel.PNG" id="2_krwnw"]
+[ext_resource type="PackedScene" uid="uid://dg33rfptvllq6" path="res://building_sprite.tscn" id="3_a2wi8"]
 
 [node name="BuildingInfoPanel" type="Control"]
 layout_mode = 3
@@ -23,12 +24,39 @@ texture = ExtResource("2_krwnw")
 [node name="BuildingGridContainer" type="GridContainer" parent="Panel"]
 layout_mode = 0
 offset_left = 131.0
-offset_top = 64.0
-offset_right = 531.0
+offset_top = 107.0
+offset_right = 541.0
 offset_bottom = 509.0
-theme_override_constants/h_separation = 175
-theme_override_constants/v_separation = 100
-columns = 4
+theme_override_constants/h_separation = 205
+theme_override_constants/v_separation = 160
+columns = 3
+
+[node name="BuildingSprite" parent="Panel/BuildingGridContainer" instance=ExtResource("3_a2wi8")]
+layout_mode = 2
+
+[node name="BuildingSprite2" parent="Panel/BuildingGridContainer" instance=ExtResource("3_a2wi8")]
+layout_mode = 2
+
+[node name="BuildingSprite3" parent="Panel/BuildingGridContainer" instance=ExtResource("3_a2wi8")]
+layout_mode = 2
+
+[node name="BuildingSprite4" parent="Panel/BuildingGridContainer" instance=ExtResource("3_a2wi8")]
+layout_mode = 2
+
+[node name="BuildingSprite5" parent="Panel/BuildingGridContainer" instance=ExtResource("3_a2wi8")]
+layout_mode = 2
+
+[node name="BuildingSprite6" parent="Panel/BuildingGridContainer" instance=ExtResource("3_a2wi8")]
+layout_mode = 2
+
+[node name="BuildingSprite7" parent="Panel/BuildingGridContainer" instance=ExtResource("3_a2wi8")]
+layout_mode = 2
+
+[node name="BuildingSprite8" parent="Panel/BuildingGridContainer" instance=ExtResource("3_a2wi8")]
+layout_mode = 2
+
+[node name="BuildingSprite9" parent="Panel/BuildingGridContainer" instance=ExtResource("3_a2wi8")]
+layout_mode = 2
 
 [node name="WonderVBoxContainer" type="VBoxContainer" parent="Panel"]
 layout_mode = 0

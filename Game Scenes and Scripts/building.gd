@@ -97,14 +97,14 @@ signal towerBuilding
 func buildBuilding():
 	match buildingType:
 		"Farm":
-			buildingSprite = load("res://art assets/Placeholder Art/UI Art/resources/Farm.png")
+			buildingSprite = load("res://art assets/finishedAssets/buildingsketches/farm.png")
 			foodPerLevel = 1
 			foodPurchaseCost = 0
 			goldPurchaseCost = 25
 			woodPurchaseCost = 50
 			metalPurchaseCost = 0
 		"Granary":
-			buildingSprite = load("res://art assets/Placeholder Art/UI Art/resources/Granary.png") 
+			buildingSprite = load("res://art assets/finishedAssets/buildingsketches/granary.png") 
 			#foodStorageIncrease += 1 #every 1 increase will be calculated as +100 storage on the national level.
 			goldCostPerLevel += 1
 			foodPerLevel = 1
@@ -113,7 +113,7 @@ func buildBuilding():
 			woodPurchaseCost = 50
 			metalPurchaseCost = 0
 		"Temple":
-			buildingSprite = load("res://art assets/Placeholder Art/UI Art/temple.png")
+			buildingSprite = load("res://art assets/finishedAssets/buildingsketches/temple.png")
 			foodCostPerLevel +=2
 			woodCostPerLevel +=1
 			foodPerLevel = 1
@@ -122,7 +122,7 @@ func buildBuilding():
 			woodPurchaseCost = 50
 			metalPurchaseCost = 0
 		"Mine":
-			buildingSprite = load("res://art assets/Placeholder Art/UI Art/mine.png")
+			buildingSprite = load("res://art assets/finishedAssets/buildingsketches/mine.png")
 			foodCostPerLevel +=1
 			woodCostPerLevel +=1
 			metalPerLevel += 1
@@ -132,7 +132,7 @@ func buildBuilding():
 			woodPurchaseCost = 75
 			metalPurchaseCost = 0
 		"Camp":
-			buildingSprite = load("res://art assets/Placeholder Art/UI Art/camp.png")
+			buildingSprite = load("res://art assets/finishedAssets/buildingsketches/camp.png")
 			foodCostPerLevel +=1
 			woodPerLevel +=1
 			foodPerLevel = 1
@@ -141,7 +141,7 @@ func buildBuilding():
 			woodPurchaseCost = 50
 			metalPurchaseCost = 0
 		"Tower":
-			buildingSprite = load("res://art assets/Placeholder Art/UI Art/tower.png")
+			buildingSprite = load("res://art assets/finishedAssets/buildingsketches/tower.png")
 			magicPerLevel += 4
 			foodCostPerLevel += 2
 			metalCostPerLevel += 2
@@ -155,7 +155,7 @@ func buildBuilding():
 			emit_signal("towerBuilding")
 			print("building type in", tile.tileName)
 		"Library":
-			buildingSprite = load("res://art assets/Placeholder Art/UI Art/library.png")
+			buildingSprite = load("res://art assets/finishedAssets/buildingsketches/library.png")
 			goldCostPerLevel += 1
 			woodCostPerLevel += 1
 			foodCostPerLevel += 1
@@ -166,7 +166,7 @@ func buildBuilding():
 			woodPurchaseCost = 100
 			metalPurchaseCost = 0
 		"Workshop":
-			buildingSprite = load("res://art assets/Placeholder Art/UI Art/Workshop.png")
+			buildingSprite = load("res://art assets/finishedAssets/buildingsketches/workshop.png")
 			goldPerLevel += 1
 			metalCostPerLevel += 1
 			foodCostPerLevel += 1
@@ -177,7 +177,7 @@ func buildBuilding():
 			woodPurchaseCost = 50
 			metalPurchaseCost = 100
 		"Bath":
-			buildingSprite = load("res://art assets/Placeholder Art/UI Art/Bath.png")
+			buildingSprite = load("res://art assets/finishedAssets/buildingsketches/bath.png")
 			corruptionLossPerLevel -= 1
 			foodCostPerLevel += 3
 			goldCostPerLevel += 1
@@ -187,7 +187,7 @@ func buildBuilding():
 			woodPurchaseCost = 50
 			metalPurchaseCost = 20
 		"Faire":
-			buildingSprite = load("res://art assets/Placeholder Art/UI Art/Faire.png")
+			buildingSprite = load("res://art assets/finishedAssets/buildingsketches/faire.png")
 			culturePerLevel +=1
 			foodCostPerLevel +=1
 			woodCostPerLevel +=1
@@ -198,7 +198,7 @@ func buildBuilding():
 			woodPurchaseCost = 50
 			metalPurchaseCost = 20
 		"Forge":
-			buildingSprite = load("res://art assets/Placeholder Art/UI Art/forge.png")
+			buildingSprite = load("res://art assets/finishedAssets/buildingsketches/forge.png")
 			weaponsPerLevel += 1
 			metalPerLevel += 1
 			woodPerLevel += 1
@@ -210,7 +210,7 @@ func buildBuilding():
 			woodPurchaseCost = 50
 			metalPurchaseCost = 100
 		"Barracks":
-			buildingSprite = load("res://art assets/Placeholder Art/UI Art/resources/Farm.png")
+			buildingSprite = load("res://art assets/finishedAssets/buildingsketches/barracks.png")
 			manpowerPerLevel += 15
 			goldCostPerLevel += 2
 			foodPurchaseCost = 30

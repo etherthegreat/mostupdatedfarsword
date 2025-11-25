@@ -15,22 +15,18 @@ var buildSpriteScene = load("res://building_sprite.tscn")
 
 func displayBuildingInfo(tile):
 	thisTile = tile
-	for Control in $Panel/BuildingGridContainer.get_children():
-		$Panel/BuildingGridContainer.remove_child(Control)
+	for buildingSprite in $Panel/BuildingGridContainer.get_children():
+		$Panel/BuildingGridContainer.remove_child(buildingSprite)
 		#Control.queue_free() #same performance issue here, we're not deleting them, but they are not in the way.  c
 		#could cause clutter and performance issues further along a game.
 	for building in tile.tileBuildingsList:
 		#print( "building list for tile", thisTile.tileNumber, building, building.buildingType)
-		var buildControl = Control.new()
 		var buildSprite = buildSpriteScene.instantiate()
-		#buildSprite.thisBuilding = building
+		buildSprite.thisBuilding = building
 		buildSprite.updateInspector.connect(inspectBuilding)
 		buildSprite.buildBuildSprite(building)
-		buildControl.add_child(buildSprite)
-		$Panel/BuildingGridContainer.add_child(buildControl)
-		if buildControl.get_children() != null:
-			for buildingSprite in buildControl.get_children():
-				buildingSprite.updateUI(thisTile)
+		buildSprite.updateUI(thisTile)
+		$Panel/BuildingGridContainer.add_child(buildSprite)
 	pass
 
 func inspectBuilding(building):
