@@ -263,13 +263,13 @@ func NewGameBuild():
 			loadBeliefsList("GenericDoc2")
 			loadBeliefsList("GenericGods1")
 			loadBeliefsList("GenericGods2")
-			#loadBeliefsList("PDTDoc1")
-			addReligiousBelief("Tower Control")
-			#addReligiousBelief("TYLA DYN")
-			#addCulturalTradition("Humble Folk")
+			loadBeliefsList("PDTDoc1")
+			#addReligiousBelief("Tower Control")
+			addReligiousBelief("Tyla-Dyn")
+			addCulturalTradition("Humble Folk")
 			addCulturalTradition("Guardian Cats")
 			addGovernmentLaw("Mercantilism")
-			#addGovernmentLaw("Citizen Militia")
+			addGovernmentLaw("Citizen Militia")
 			#calculateToolsAndKits()
 			calculateTaxationAmounts()
 			addFaction("Vargo-Tal", 50) # Traditionalists
@@ -583,13 +583,13 @@ func NewGameBuild():
 			loadBeliefsList("GenericDoc2")
 			loadBeliefsList("GenericGods1")
 			loadBeliefsList("GenericGods2")
-			#loadBeliefsList("PDTDoc1")
+			loadBeliefsList("PDTDoc1")
 			addReligiousBelief("Tower Control")
-			#addReligiousBelief("TYLA DYN")
-			#addCulturalTradition("Humble Folk")
+			addReligiousBelief("TYLA DYN")
+			addCulturalTradition("Humble Folk")
 			addCulturalTradition("Guardian Cats")
 			addGovernmentLaw("Mercantilism")
-			#addGovernmentLaw("Citizen Militia")
+			addGovernmentLaw("Citizen Militia")
 			#calculateToolsAndKits()
 			calculateTaxationAmounts()
 			addFaction("Vargo-Tal", 50) # Traditionalists
@@ -1257,6 +1257,10 @@ func calculateTaxationAmounts():
 	minForgeTaxAmount += minPosTaxationAmount
 	minWorkshopTaxAmount += minPosTaxationAmount
 	minBathTaxAmount += minPosTaxationAmount
+	pass
+
+func calculateTurn():
+	
 	pass
 
 func setNewTaxAmount(amount, type):

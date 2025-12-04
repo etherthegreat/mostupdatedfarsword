@@ -2,6 +2,7 @@ extends Control
 
 class_name MagicAmountControl
 
+
 @export var schoolTypeEXP: String
 var schoolType: String
 
@@ -26,41 +27,48 @@ func update(playerCountryNode):
 	discountModifier = playerCountryNode.spellDiscountModifier
 	match schoolType:
 		"druid":
+			$SchoolTreeSprite.texture = load("res://art assets/finishedAssets/spellschools/IMG_1255.PNG")
 			$spellSchool.text = "Druidism"
 			$MagicSprite2D.texture = load("res://art assets/Placeholder Art/UI Art/resources/Older Icons/druid big.png")
 			amount = playerCountryNode.druPoints
 			druLevel = playerCountryNode.druLevel
 			calculateLevelUp(druLevel)
 		"elementalist":
+			$SchoolTreeSprite.texture = load("res://art assets/finishedAssets/spellschools/IMG_1257.PNG")
 			$spellSchool.text = "Elementalism"
 			$MagicSprite2D.texture = load("res://art assets/Placeholder Art/UI Art/resources/Older Icons/elementalistbig.png")
 			amount = playerCountryNode.elePoints
 			eleLevel = playerCountryNode.eleLevel
 			calculateLevelUp(eleLevel)
 		"diviner":
+			$SchoolTreeSprite.texture = load("res://art assets/finishedAssets/spellschools/IMG_1260.PNG")
 			$spellSchool.text = "Divination"
 			$MagicSprite2D.texture = load("res://art assets/Placeholder Art/UI Art/resources/Older Icons/divinity big.png")
 			amount = playerCountryNode.divPoints
 			druLevel = playerCountryNode.divLevel
 			calculateLevelUp(divLevel)
 		"alchemist":
+			$SchoolTreeSprite.texture = load("res://art assets/finishedAssets/spellschools/IMG_1256.PNG")
 			$spellSchool.text = "Alchemy"
 			$MagicSprite2D.texture = load("res://art assets/Placeholder Art/UI Art/resources/Older Icons/alchemy big.png")
 			amount = playerCountryNode.alcPoints
 			druLevel = playerCountryNode.alcLevel
 			calculateLevelUp(alcLevel)
 		"summoner":
+			$SchoolTreeSprite.texture = load("res://art assets/finishedAssets/spellschools/IMG_1259.PNG")
 			$spellSchool.text = "Summoning"
 			$MagicSprite2D.texture = load("res://art assets/Placeholder Art/UI Art/resources/Older Icons/summoner big.png")
 			amount = playerCountryNode.sumPoints
 			druLevel = playerCountryNode.sumLevel
 			calculateLevelUp(sumLevel)
 		"illusionist":
+			$SchoolTreeSprite.texture = load("res://art assets/finishedAssets/spellschools/IMG_1258.PNG")
 			$spellSchool.text = "Illusion"
 			$MagicSprite2D.texture = load("res://art assets/Placeholder Art/UI Art/resources/Older Icons/illusion big.png")
 			amount = playerCountryNode.illPoints
 			druLevel = playerCountryNode.illLevel
 			calculateLevelUp(illLevel)
+	$ProgressBar.value = amount
 	$AmountLabel.text = str(amount)
 	pass
 

@@ -88,6 +88,14 @@ func newGameBuild(CID):
 	$CanvasLayer/LoadingProgressBar.value = 75
 	updatePlayerUI()
 	$TileController.discoverTiles(playerCountryNode)
+	#for country in aliveCountriesList:
+		#country.discoverTile($"PathControl/PathPointsControl/4")
+		#country.discoverTile($"PathControl/PathPointsControl/5")
+		#country.discoverTile($"PathControl/PathPointsControl/6")
+		#country.discoverTile($"PathControl/PathPointsControl/7")
+		#country.discoverTile($"PathControl/PathPointsControl/8")
+		#country.discoverTile($"PathControl/PathPointsControl/9")
+		#country.discoverTile($"PathControl/PathPointsControl/10")
 	worldCreation = false
 	$RightClickDetector.visible = true
 	mapMode = "Polis"
@@ -363,6 +371,7 @@ func _on_manpower_area_mouse_exited() -> void:
 	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
 	pass # Replace with function body.
 
+#next turn function
 func _on_test_resource_button_pressed() -> void:
 	playerCountryNode.surveyResources()
 	playerCountryNode.payUnitMaintenance()
@@ -372,9 +381,12 @@ func _on_test_resource_button_pressed() -> void:
 			print(pathPointButton.get_children(), "DEBUG PATHPOINTBUTTONCHILDREN")
 			for civilianPathFollow in pathPointButton.get_children():
 				if civilianPathFollow.is_class("Button") != true:
-					print(civilianPathFollow, "DEBUG IS CLASS CONTROL")
+					#print(civilianPathFollow, "DEBUG IS CLASS CONTROL")
 					civilianPathFollow.emitTileChange()
 	$CanvasLayer/SpellSchoolsControl.updateMagicAmounts(playerCountryNode)
+	for country in aliveCountriesList:
+		if country != playerCountryNode:
+			country.calculateTurn()
 	pass # Replace with function body.
 
 func _on_tech_tree_add_tech_to_player(techName) -> void:
@@ -705,6 +717,7 @@ func newTileDevelopment(tileToDev, devType, devCivilian):
 
 
 func _on_belief_control_purchased_belief(beliefName, beliefCost) -> void:
+	#print(beliefName, beliefCost, "WORLD SIGNALRECEIVED")
 	playerCountryNode.addReligiousBelief(beliefName)
 	playerCountryNode.payBill("faith", beliefCost)
 	$CanvasLayer/BeliefControl.updateSelf()

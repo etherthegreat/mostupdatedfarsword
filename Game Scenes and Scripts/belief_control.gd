@@ -217,6 +217,7 @@ func _process(delta: float) -> void:
 
 signal purchasedBelief
 func _on_purchase_button_pressed() -> void:
+	#print("purchasedBelief", pendingBelief, pendingCost)
 	emit_signal("purchasedBelief", pendingBelief, pendingCost)
 	pendingBelief = ""
 	pendingCost = 0

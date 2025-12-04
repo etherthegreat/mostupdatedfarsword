@@ -242,7 +242,7 @@ func calculateAttributes(tileNumber):
 			tileOre.buildSelf("Copper")
 			oreSlot = tileOre
 			#addWizard("Druid")
-			#addBuilding("Tower", 1)
+			addBuilding("Tower", 1)
 			addBuilding("Farm", 3)
 			#addBuilding("Granary", 1)
 			addBuilding("Barracks", 2)
@@ -256,7 +256,7 @@ func calculateAttributes(tileNumber):
 		#tileSpell = actingSpell
 		4:
 			tileName = "Enthenar"
-			tileOwner = "PDT"
+			#tileOwner = "PDT"
 			countryCapital = false
 			tileContinent = "Anlaxia"
 			tilePop

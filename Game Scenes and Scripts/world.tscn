@@ -13307,11 +13307,11 @@ offset_bottom = 1087.0
 
 [node name="SpellsVBox" type="VBoxContainer" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts"]
 layout_mode = 0
-offset_left = 104.0
-offset_top = 101.0
-offset_right = 238.0
-offset_bottom = 940.0
-theme_override_constants/separation = 175
+offset_left = 152.0
+offset_top = 178.0
+offset_right = 286.0
+offset_bottom = 1017.0
+theme_override_constants/separation = 150
 
 [node name="MagicAmountControl" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox" instance=ExtResource("36_mhn20")]
 layout_mode = 2
@@ -13388,7 +13388,6 @@ mouse_filter = 2
 theme_override_constants/separation = 245
 
 [node name="EventControl" type="Control" parent="CanvasLayer"]
-visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_left = 669.0
@@ -13398,7 +13397,6 @@ offset_bottom = 449.0
 mouse_filter = 2
 
 [node name="EventContainer" type="VBoxContainer" parent="CanvasLayer/EventControl"]
-visible = false
 layout_mode = 0
 offset_left = -556.0
 offset_top = -276.0
@@ -15746,6 +15744,8 @@ shape = SubResource("RectangleShape2D_qt86y")
 [connection signal="pressed" from="CanvasLayer/TileInfoPanel/governorButton" to="CanvasLayer/TileInfoPanel" method="_on_governor_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/TileInfoPanel/OpenBuildingsButton" to="CanvasLayer" method="_on_open_buildings_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/TileInfoPanel/WizardButton" to="CanvasLayer" method="_on_wizard_button_pressed"]
+[connection signal="fillWithUnlockedBuildings" from="CanvasLayer/BuildingInfoPanel" to="." method="_on_building_info_panel_fill_with_unlocked_buildings"]
+[connection signal="purchasedBelief" from="CanvasLayer/BeliefControl" to="." method="_on_belief_control_purchased_belief"]
 [connection signal="pressed" from="CanvasLayer/BeliefControl/BeliefPanel/PurchasePanel/PurchaseButton" to="CanvasLayer/BeliefControl" method="_on_purchase_button_pressed"]
 [connection signal="mouse_entered" from="CanvasLayer/BeliefControl/FaithPoints/faith1area2d" to="CanvasLayer/BeliefControl" method="_on_faith_1_area_2d_mouse_entered"]
 [connection signal="mouse_exited" from="CanvasLayer/BeliefControl/FaithPoints/faith1area2d" to="CanvasLayer/BeliefControl" method="_on_faith_1_area_2d_mouse_exited"]

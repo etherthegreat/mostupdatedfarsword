@@ -1,12 +1,26 @@
-[gd_scene load_steps=3 format=3 uid="uid://dep7mbivwnnvj"]
+[gd_scene load_steps=14 format=3 uid="uid://dep7mbivwnnvj"]
 
 [ext_resource type="Texture2D" uid="uid://cshr00lp8jc7v" path="res://art assets/Placeholder Art/map/placeholder menu art.png" id="1_o0gaq"]
 [ext_resource type="Script" uid="uid://b81ynt4qwcsri" path="res://Menu Scenes and Scripts/main_menu.gd" id="1_rf07e"]
+[ext_resource type="Texture2D" uid="uid://dknp3bwk3bnvh" path="res://art assets/Placeholder Art/UI Art/resources/black circle.png" id="3_s0tsv"]
+[ext_resource type="Texture2D" uid="uid://cifirfy3eyi30" path="res://art assets/Placeholder Art/UI Art/resources/chinese.png" id="4_oq647"]
+[ext_resource type="Texture2D" uid="uid://c7txommtrxrk3" path="res://art assets/Placeholder Art/UI Art/resources/english.png" id="5_so4gr"]
+[ext_resource type="Texture2D" uid="uid://dlugqagwlxm6w" path="res://art assets/Placeholder Art/UI Art/resources/french.png" id="6_wvvfk"]
+[ext_resource type="Texture2D" uid="uid://bm767bqfd0ifn" path="res://art assets/Placeholder Art/UI Art/resources/german.png" id="7_wktqo"]
+[ext_resource type="Texture2D" uid="uid://scvxad1jblcg" path="res://art assets/Placeholder Art/UI Art/resources/Irish.png" id="8_8x8sx"]
+[ext_resource type="Texture2D" uid="uid://ditf6mc62oumm" path="res://art assets/Placeholder Art/UI Art/resources/italian.png" id="9_w5v35"]
+[ext_resource type="Texture2D" uid="uid://dv0iti3sybob7" path="res://art assets/Placeholder Art/UI Art/resources/japanese.png" id="10_a1pys"]
+[ext_resource type="Texture2D" uid="uid://bye4mrxf5cetf" path="res://art assets/Placeholder Art/UI Art/resources/portuguese.png" id="11_ee3of"]
+[ext_resource type="Texture2D" uid="uid://d385jgaploop4" path="res://art assets/Placeholder Art/UI Art/resources/russian.png" id="12_qlmj1"]
+[ext_resource type="Texture2D" uid="uid://coqvlvmr2swk4" path="res://art assets/Placeholder Art/UI Art/resources/spanish.png" id="13_s4pyd"]
 
-[node name="MainMenu" type="Node2D"]
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 0
 script = ExtResource("1_rf07e")
 
 [node name="Panel" type="Panel" parent="."]
+layout_mode = 0
 offset_right = 1925.0
 offset_bottom = 1084.0
 
@@ -61,4 +75,63 @@ theme_override_colors/font_color = Color(0.882353, 0.886275, 1, 1)
 theme_override_font_sizes/font_size = 120
 text = "Exit"
 
+[node name="LanguageSelection" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(960, 525.125)
+scale = Vector2(3.38095, 1.83667)
+texture = ExtResource("3_s0tsv")
+
+[node name="GridContainer" type="GridContainer" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 87.0
+offset_top = 226.0
+offset_right = 1785.0
+offset_bottom = 992.0
+theme_override_constants/h_separation = 45
+theme_override_constants/v_separation = 130
+columns = 5
+
+[node name="ChineseButton" type="Button" parent="GridContainer"]
+layout_mode = 2
+icon = ExtResource("4_oq647")
+
+[node name="EnglishButton" type="Button" parent="GridContainer"]
+layout_mode = 2
+icon = ExtResource("5_so4gr")
+
+[node name="FrenchButton" type="Button" parent="GridContainer"]
+layout_mode = 2
+icon = ExtResource("6_wvvfk")
+
+[node name="GermanButton" type="Button" parent="GridContainer"]
+layout_mode = 2
+icon = ExtResource("7_wktqo")
+
+[node name="IrishButton" type="Button" parent="GridContainer"]
+layout_mode = 2
+icon = ExtResource("8_8x8sx")
+
+[node name="ItalianButton" type="Button" parent="GridContainer"]
+layout_mode = 2
+icon = ExtResource("9_w5v35")
+
+[node name="JapaneseButton" type="Button" parent="GridContainer"]
+layout_mode = 2
+icon = ExtResource("10_a1pys")
+
+[node name="PortugueseButton" type="Button" parent="GridContainer"]
+layout_mode = 2
+icon = ExtResource("11_ee3of")
+
+[node name="RussianButton" type="Button" parent="GridContainer"]
+layout_mode = 2
+icon = ExtResource("12_qlmj1")
+
+[node name="SpanishButton" type="Button" parent="GridContainer"]
+layout_mode = 2
+icon = ExtResource("13_s4pyd")
+expand_icon = true
+
 [connection signal="pressed" from="Panel/Sprite2D/NewGameButton" to="." method="_on_new_game_button_pressed"]
+[connection signal="pressed" from="GridContainer/EnglishButton" to="." method="_on_english_button_pressed"]
