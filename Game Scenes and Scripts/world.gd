@@ -1,6 +1,8 @@
 extends Node2D
 
+var locBallUIScene = load("res://loc_ball_ui.tscn")
 var gameLanguage: String
+var LocBallUI
 
 var playerCountry: String
 var playerCountryNode: country
@@ -53,10 +55,14 @@ func updateMap():
 
 
 signal calculateSeason
-func newGameBuild(CID):
+func newGameBuild(CID, gameLang):
 	worldCreation = true
+	gameLanguage = gameLang
+	var locBallUIWorld = locBallUIScene.instantiate()
+	locBallUIWorld.buildSelf("Game", gameLanguage)
+	LocBallUI = locBallUIWorld
+	add_child(locBallUIWorld)
 	$CanvasLayer/LoadingLabel.text = "Building World"
-	gameLanguage = "eng"
 	month = 6
 	year = 673
 	day = 126
@@ -228,6 +234,7 @@ func updatePlayerUI():
 	$CanvasLayer/FactionControl.newRewardSend.connect(addNewRewards)
 	$CanvasLayer/SpellSchoolsControl.connectSchools()
 	$CanvasLayer/SpellSchoolsControl.lvlUpSpell.connect(newSpellEvent)
+	#$CanvasLayer/SpellSchoolsControl.askForInfo.connect(giveSpellInfo)
 	$CanvasLayer/Spellbook.spellToUse.connect(activateSpellMapMode)
 	$TileController.spellAssignedToTile.connect(spellPurchased)
 	$TileController.colonizeTile.connect(updateCountryTiles)
@@ -716,6 +723,67 @@ func newTileDevelopment(tileToDev, devType, devCivilian):
 	pass
 
 
+func giveSpellInfo(type, spellBranch):
+	print("RETURN GIVE SPELL")
+	var schoolPoints: String = LocBallUI.magicDic.schoolPoints
+	var turnsUntil: String = LocBallUI.magicDic.turnsUntil
+	var unlocked: String = LocBallUI.magicDic.spellUnlocked
+	print("RETURN GIVE SPELL")
+	var spellString: String
+	var spellDesc: String
+	var schoolType: String
+	match type:
+		"healingPotion":
+			spellString = LocBallUI.magicDic.healingPotion
+			spellDesc = LocBallUI.magicDic.healingPotionDesc
+			schoolType = LocBallUI.magicDic.alchemy
+		"draughtOfKnowledge":
+			spellString = LocBallUI.magicDic.draughtOfKnowledge
+			spellDesc = LocBallUI.magicDic.draughtOfKnowledgeDesc
+			schoolType = LocBallUI.magicDic.alchemy
+		"fireworks":
+			spellString = LocBallUI.magicDic.fireworks
+			spellDesc = LocBallUI.magicDic.fireworksDesc
+			schoolType = LocBallUI.magicDic.alchemy
+		"fleetingFoot":
+			spellString = LocBallUI.magicDic.fleetingFoot
+			spellDesc = LocBallUI.magicDic.fleetingFootDesc
+			schoolType = LocBallUI.magicDic.alchemy
+		"focusingDust":
+			spellString = LocBallUI.magicDic.focusDust
+			spellDesc = LocBallUI.magicDic.focusDustDesc
+			schoolType = LocBallUI.magicDic.alchemy
+		"goldenTouch":
+			spellString = LocBallUI.magicDic.goldenTouch
+			spellDesc = LocBallUI.magicDic.goldenTouchDesc
+			schoolType = LocBallUI.magicDic.alchemy
+		"paralysis":
+			spellString = LocBallUI.magicDic.paralysis
+			spellDesc = LocBallUI.magicDic.paralysisDesc
+			schoolType = LocBallUI.magicDic.alchemy
+		"poison":
+			spellString = LocBallUI.magicDic.poison
+			spellDesc = LocBallUI.magicDic.poisonDesc
+			schoolType = LocBallUI.magicDic.alchemy
+		"slimeSoldier":
+			spellString = LocBallUI.magicDic.slimeSoldier
+			spellDesc = LocBallUI.magicDic.slimeSoldierDesc
+			schoolType = LocBallUI.magicDic.alchemy
+		"slimeSpitter":
+			spellString = LocBallUI.magicDic.slimeSpitter
+			spellDesc = LocBallUI.magicDic.slimeSpitterDesc
+			schoolType = LocBallUI.magicDic.alchemy
+		"slimeWeapons":
+			spellString = LocBallUI.magicDic.slimeWeapons
+			spellDesc = LocBallUI.magicDic.slimeWeaponsDesc
+			schoolType = LocBallUI.magicDic.alchemy
+		"waterbreathing":
+			spellString = LocBallUI.magicDic.waterbreathing
+			spellDesc = LocBallUI.magicDic.waterbreathingDesc
+			schoolType = LocBallUI.magicDic.alchemy
+	spellBranch.giveSpellInfo(schoolPoints, turnsUntil, unlocked, spellString, spellDesc, schoolType)
+	pass
+
 func _on_belief_control_purchased_belief(beliefName, beliefCost) -> void:
 	#print(beliefName, beliefCost, "WORLD SIGNALRECEIVED")
 	playerCountryNode.addReligiousBelief(beliefName)
@@ -822,3 +890,8 @@ func addNewBuildingToTile(buildingType, goldCalculatedCost, foodCalculatedCost, 
 	$CanvasLayer/BuildingInfoPanel/AddBuildingControl.visible = false
 	$CanvasLayer/BuildingInfoPanel.displayBuildingInfo(thisTile)
 	pass
+
+
+func _on_spell_schools_control_ask_for_info(type, SpellUnlock) -> void:
+	giveSpellInfo(type, SpellUnlock)
+	pass # Replace with function body.

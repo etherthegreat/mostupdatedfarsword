@@ -32,4 +32,44 @@ func buildSelf(domain, gameLanguage):
 						"Settings" : "Settings",
 						"Exit" : "Exit"
 					}
+		"Game":
+			match gameLanguage:
+				"eng":
+					magicDic = {
+						"alchemy": "Alchemy",
+						"divinination": "Divination",
+						"druidism" : "Druidism",
+						"elementalism": "Elementalism",
+						"illusion": "Illusion",
+						"summoning":  "Summoning",
+						#Spells
+						"schoolPoints": "School Points",
+						"turnsUntil": "Turns Until Spell Unlock",
+						"spellUnlocked": "This Spell Has Been Unlocked!",
+						#AlchemySpells
+						"draughtOfKnowledge": "Draught of Knowledge",
+						"draughtOfKnowledgeDesc": "By consumming strange concoctions brewed up by our most intelligent brewers, we can see deeper and delve further than ever before. [color=purple]Cast on Country[/color] - +[color=purple]1[/color] to all Spellschools - Cost: [color=purple]50",
+						"fireworks": "Fireworks",
+						"fireworksDesc": "Fireworks Desc Goes Here, [color=purple]Cast on Country[/color]",
+						"fleetingFoot": "Fleeting Foot",
+						"fleetingFootDesc": "fleeting Foot Desc goes here",
+						"focusDust": "Focus Dust",
+						"focusDustDesc": "FocusDust Description Goes Here, [color=purple]Cast on Country[/color]",
+						"goldenTouch": "Golden Touch",
+						"goldenTouchDesc": "GoldenTouch Desc Goes Here, [color=purple]Cast on Country[/color]",
+						"healingPotion": "Healing Potion",
+						"healingPotionDesc": "We can heal our sick, wounded, and dying with the right combination of herbs, spices, and magicical supplements.[color=purple] Cast on Army[/color] - Restore [color=green]25%[/color] Manpower to owned or allied Army - Cost: [color=purple]40",
+						"paralysis": "Paralysis",
+						"paralysisDesc": "Paralysis Desc Goes Here, [color=purple]Cast on Country[/color]",
+						"poison": "Poison",
+						"poisonDesc": "Poison Desc Goes Here, [color=purple]Cast on Country[/color]",
+						"slimeSoldier": "Slime Soldier",
+						"slimeSoldierDesc": "Slime Soldier Description Goes Here, [color=purple]Cast on Country[/color]",
+						"slimeSpitter": "Slime Spitter",
+						"slimeSpitterDesc": "Slime Spitter Desc Goes Here, [color=purple]Cast on Country[/color]",
+						"slimeWeapons": "Slime Weapons",
+						"slimeWeaponsDesc": "By incorporation slime into our weapons crafting techniques, we can drastically cut down on war materials and costs.[color=purple] Cast on Tile [/color]- Forges in this tile produce +[color=silver]1[/color] Weapons and require [color=brown]1[color] less Wood and [color=grey]1[/color] less Metal - Cost: [color=purple] 40 ",
+						"waterbreathing": "Concoction of Waterbreathing",
+						"waterbreathingDesc": "Waterbreathing Desc Goes Here, [color=purple]Cast on Country[/color]"
+					}
 	pass

@@ -12,6 +12,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 25.0
 offset_bottom = 38.0
+mouse_filter = 2
 script = ExtResource("1_qdpjc")
 
 [node name="MagicSprite2D" type="Sprite2D" parent="."]
@@ -42,15 +43,17 @@ position = Vector2(1.5, 0)
 shape = SubResource("RectangleShape2D_351nf")
 
 [node name="SchoolTreeSprite" type="Sprite2D" parent="."]
-position = Vector2(482, -8.00002)
-scale = Vector2(0.194125, 0.130105)
+position = Vector2(909.716, -8.00002)
+scale = Vector2(0.402971, 0.130105)
 texture = ExtResource("3_wi5e4")
 
 [node name="ProgressBar" type="ProgressBar" parent="."]
 layout_mode = 0
 offset_left = 84.0
 offset_top = -11.0
-offset_right = 835.0
+offset_right = 1601.0
 offset_bottom = 27.0
+mouse_filter = 2
 theme_override_colors/font_color = Color(0.194455, 0.279783, 0.0865808, 1)
+max_value = 120.0
 show_percentage = false

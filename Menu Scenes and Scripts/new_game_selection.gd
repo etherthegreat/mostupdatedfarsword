@@ -1,7 +1,15 @@
 extends Control
 
-var selectedCountry: String
+const settingsPath = "user://settings.txt"
 
+var selectedCountry: String
+var settings: Dictionary = {}
+
+func _ready() -> void:
+	if FileAccess.file_exists(settingsPath):
+		var file = FileAccess.open(settingsPath, FileAccess.READ)
+		settings = file.get_var()
+	pass
 
 func _on_return_button_pressed() -> void:
 	get_tree().change_scene_to_file("res://Menu Scenes and Scripts/main_menu.tscn")
@@ -75,7 +83,8 @@ func _on_play_button_pressed() -> void:
 	$PlayButton.queue_free()
 	$SelectionPanel.queue_free()
 	$CountryInfoPanel.queue_free()
+	var language = settings.gameLanguage
 	var newGame = newGameScene.instantiate()
 	add_child(newGame)
-	newGame.newGameBuild(selectedCountry)
+	newGame.newGameBuild(selectedCountry, language)
 	pass # Replace with function body.

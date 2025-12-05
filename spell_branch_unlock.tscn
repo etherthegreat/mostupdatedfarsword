@@ -1,0 +1,129 @@
+[gd_scene load_steps=8 format=3 uid="uid://dxgbupy7n6qju"]
+
+[ext_resource type="Texture2D" uid="uid://dtlurepbpgtkl" path="res://art assets/Placeholder Art/Spells/Green 1.PNG" id="1_4o383"]
+[ext_resource type="Script" uid="uid://df5d6yypo28h7" path="res://spell_branch_unlock.gd" id="1_45dy0"]
+[ext_resource type="Texture2D" uid="uid://vlm7gshvwkwk" path="res://art assets/Placeholder Art/Spells/Green 2.PNG" id="2_45dy0"]
+[ext_resource type="Texture2D" uid="uid://b4woq5hehgm8g" path="res://art assets/Placeholder Art/Spells/Health Potion.PNG" id="3_mxeau"]
+[ext_resource type="Texture2D" uid="uid://c7fnrjt84m25a" path="res://art assets/Placeholder Art/Spells/Green 3.PNG" id="4_4rwku"]
+[ext_resource type="Texture2D" uid="uid://cta3ksrnubp7x" path="res://art assets/finishedAssets/Panels/tilePanel.PNG" id="5_g4j15"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_q4urq"]
+radius = 45.0
+
+[node name="SpellBranchUnlock" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_45dy0")
+
+[node name="Tex1" type="Sprite2D" parent="."]
+scale = Vector2(0.04, 0.04)
+texture = ExtResource("1_4o383")
+
+[node name="Tex2" type="Sprite2D" parent="."]
+scale = Vector2(0.04, 0.04)
+texture = ExtResource("2_45dy0")
+
+[node name="Tex3" type="Sprite2D" parent="."]
+scale = Vector2(0.04, 0.04)
+texture = ExtResource("4_4rwku")
+
+[node name="spelliconsprite" type="Sprite2D" parent="."]
+scale = Vector2(0.04, 0.04)
+texture = ExtResource("3_mxeau")
+
+[node name="PanelSprite" type="Sprite2D" parent="."]
+visible = false
+z_index = 15
+position = Vector2(145.5, 88.33)
+scale = Vector2(0.125946, 0.0441667)
+texture = ExtResource("5_g4j15")
+
+[node name="SpellDescription" type="RichTextLabel" parent="."]
+visible = false
+z_index = 15
+layout_mode = 0
+offset_left = 39.0
+offset_top = 57.36
+offset_right = 249.0
+offset_bottom = 115.36
+theme_override_font_sizes/normal_font_size = 9
+bbcode_enabled = true
+
+[node name="SpellNameLabel" type="Label" parent="."]
+visible = false
+z_index = 15
+layout_mode = 0
+offset_left = 69.0
+offset_top = 25.36
+offset_right = 253.0
+offset_bottom = 53.36
+text = "SpellName"
+horizontal_alignment = 1
+
+[node name="SpellIconSpritepanel" type="Sprite2D" parent="."]
+visible = false
+z_index = 15
+position = Vector2(57, 42.36)
+scale = Vector2(0.0179283, 0.0198828)
+texture = ExtResource("3_mxeau")
+
+[node name="SchoolPointsRichTextLabel" type="RichTextLabel" parent="."]
+visible = false
+z_index = 15
+layout_mode = 0
+offset_left = 31.0
+offset_top = 113.36
+offset_right = 110.0
+offset_bottom = 132.36
+theme_override_font_sizes/normal_font_size = 13
+bbcode_enabled = true
+horizontal_alignment = 1
+
+[node name="unlocksRichTextLabel2" type="RichTextLabel" parent="."]
+visible = false
+z_index = 15
+layout_mode = 0
+offset_left = 35.0
+offset_top = 130.36
+offset_right = 97.0
+offset_bottom = 149.36
+theme_override_font_sizes/normal_font_size = 13
+bbcode_enabled = true
+horizontal_alignment = 1
+
+[node name="schoolpointslabel" type="Label" parent="."]
+visible = false
+z_index = 15
+layout_mode = 0
+offset_left = 95.0
+offset_top = 114.36
+offset_right = 264.0
+offset_bottom = 135.36
+theme_override_font_sizes/font_size = 13
+text = "Alchemy School Points"
+horizontal_alignment = 1
+
+[node name="turnsuntillabel" type="Label" parent="."]
+visible = false
+z_index = 15
+layout_mode = 0
+offset_left = 107.0
+offset_top = 132.36
+offset_right = 342.0
+offset_bottom = 153.36
+theme_override_font_sizes/font_size = 11
+text = "Turns until spell unlocks"
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+z_index = 20
+shape = SubResource("CircleShape2D_q4urq")
+
+[connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]
