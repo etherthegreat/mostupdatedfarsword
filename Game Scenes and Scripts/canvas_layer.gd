@@ -82,8 +82,7 @@ func _on_wizard_button_pressed() -> void:
 	pass # Replace with function body.
 
 func _on_magic_button_pressed() -> void:
-	for MagicAmountControl in $SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox.get_children():
-		MagicAmountControl.update(playerNode)
+	$SpellSchoolsControl.updateMagicAmounts(playerNode)
 	if $SpellSchoolsControl.visible == false:
 		$SpellSchoolsControl.visible = true
 	else:

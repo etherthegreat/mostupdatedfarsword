@@ -68,7 +68,7 @@ func giveTranslatedInfo(type, spellBranch):
 	#print("RETURN DEBUG")
 	pass
 
-func update(playerCountryNode):
+func update(playerCountryNode, magicDic):
 	schoolType = schoolTypeEXP
 	#amountPerTurn = playerCountryNode.
 	cost = playerCountryNode.spellBaseCost
@@ -79,30 +79,36 @@ func update(playerCountryNode):
 			amount = playerCountryNode.druPoints
 			druLevel = playerCountryNode.druLevel
 			calculateLevelUp(druLevel)
+			amountPerTurn = magicDic.DRU
 		"elementalist":
 			amount = playerCountryNode.elePoints
 			eleLevel = playerCountryNode.eleLevel
 			calculateLevelUp(eleLevel)
+			amountPerTurn = magicDic.ELE
 		"diviner":
 			amount = playerCountryNode.divPoints
 			druLevel = playerCountryNode.divLevel
 			calculateLevelUp(divLevel)
+			amountPerTurn = magicDic.DIV
 		"alchemist":
 			amount = playerCountryNode.alcPoints
 			druLevel = playerCountryNode.alcLevel
 			calculateLevelUp(alcLevel)
+			amountPerTurn = magicDic.ALC
 		"summoner":
 			amount = playerCountryNode.sumPoints
 			druLevel = playerCountryNode.sumLevel
 			calculateLevelUp(sumLevel)
+			amountPerTurn = magicDic.SUM
 		"illusionist":
 			amount = playerCountryNode.illPoints
 			druLevel = playerCountryNode.illLevel
 			calculateLevelUp(illLevel)
+			amountPerTurn = magicDic.ILL
 	$ProgressBar.value = amount
 	$AmountLabel.text = str(amount)
 	for spellBranchUnlock in spellUnlocks:
-		spellBranchUnlock.update(amount)
+		spellBranchUnlock.update(amount, amountPerTurn)
 		pass
 	pass
 

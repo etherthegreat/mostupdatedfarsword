@@ -6,6 +6,7 @@ var LocBallUI
 
 var playerCountry: String
 var playerCountryNode: country
+var playerOutputDict: Dictionary
 var paused: bool #determines if game is paused or not
 var date: int #date of the in-game world
 var newGame: bool #whether or not this is a saved game or not
@@ -201,6 +202,17 @@ func spawnNewGameCountries(CID):
 	
 	pass
 
+var playerOutput: Dictionary = {}
+func calculatePlayerOutputs(caller):
+	playerOutput.clear()
+	playerCountryNode.outputCheck(caller)
+	pass
+
+func returnOutput(outputsDict, caller):
+	playerOutput = outputsDict
+	caller.returnedOutput(playerOutput)
+	pass
+
 func connectCountrySignals():
 	for country in aliveCountriesList:
 		country.raiseThisArmySignal.connect(raiseArmyFromWorld)
@@ -229,6 +241,7 @@ func updatePlayerUI():
 	$CanvasLayer/MilitaryPanelControl.buildSelf(playerCountryNode)
 	$CanvasLayer/MilitaryPanelControl.newArmySignal.connect(buildNewPlayerArmy)
 	playerCountryNode.displayCommander.connect(UICommander)
+	playerCountryNode.checkingOutput.connect(returnOutput)
 	$CanvasLayer/GovernmentControl.buildSelf(playerCountryNode)
 	$CanvasLayer/GovernmentControl.addToConstitution.connect(addLawToCountry)
 	$CanvasLayer/FactionControl.newRewardSend.connect(addNewRewards)
@@ -894,4 +907,9 @@ func addNewBuildingToTile(buildingType, goldCalculatedCost, foodCalculatedCost, 
 
 func _on_spell_schools_control_ask_for_info(type, SpellUnlock) -> void:
 	giveSpellInfo(type, SpellUnlock)
+	pass # Replace with function body.
+
+
+func _on_spell_schools_control_calculate_player_outputs(spellSchools) -> void:
+	calculatePlayerOutputs(spellSchools)
 	pass # Replace with function body.

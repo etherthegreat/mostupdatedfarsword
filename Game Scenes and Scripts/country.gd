@@ -1103,9 +1103,11 @@ func updateUnlockableAttributes():
 		print(thingForPrint)
 	pass
 
+var outputsDict: Dictionary = {}
+
+
 func surveyResources():
 	calculateUniqueBuildingAttributes()
-	#this function starts the process of getting all the information of the resources in your lands
 	FPM = 0
 	WPM = 0
 	GPM = 0
@@ -1141,7 +1143,98 @@ func surveyResources():
 		illPoints += Tile.illPointsOutput
 		divPoints += Tile.divPointsOutput
 		druPoints += Tile.druPointsOutput
+	
+	pass
+
+signal checkingOutput
+var tempFPM = 0
+var tempWPM = 0
+var tempGPM = 0
+var tempPPM = 0
+var tempAPM = 0
+var tempIPM = 0
+var tempSPM = 0
+var tempMPM = 0
+var tempCPM = 0
+var tempHPM = 0
+var tempNDT = 0
+var tempNPM = 0
+var tempMAN =0
+var tempAlcPoints = 0
+var tempSumPoints = 0
+var tempElePoints = 0
+var tempIllPoints = 0
+var tempDivPoints = 0
+var tempDruPoints = 0
+
+func outputCheck(caller):
+	calculateUniqueBuildingAttributes()
+	#this function starts the process of getting all the information of the resources in your lands
+	outputsDict.clear()
+	tempFPM = 0
+	tempWPM = 0
+	tempGPM = 0
+	tempPPM = 0	
+	tempAPM = 0
+	tempIPM = 0
+	tempSPM = 0
+	tempMPM = 0
+	tempCPM = 0
+	tempHPM = 0
+	tempNDT = 0
+	tempNPM = 0
+	tempMAN =0
+	tempAlcPoints = 0
+	tempSumPoints = 0
+	tempElePoints = 0
+	tempIllPoints = 0
+	tempDivPoints = 0
+	tempDruPoints = 0
+	for Tile in OwnedTileList:
+		Tile.surveyTile(self)
+		Tile.calculateSpellChanges()
+		tempFPM += Tile.buildingFoodOutput
+		tempWPM += Tile.buildingWoodOutput
+		tempMPM += Tile.buildingMetalOutput
+		tempGPM += Tile.buildingGoldOutput
+		tempIPM += Tile.buildingFaithOutput
+		tempPPM += Tile.buildingWeaponsOutput
+		tempAPM += Tile.buildingMagicOutput
+		tempSPM += Tile.buildingScienceOutput
+		tempCPM += Tile.buildingCultureOutput
+		tempHPM += Tile.buildingHarmonyOutput
+		tempNDT += Tile.buildingMandateOutput
+		tempNPM += Tile.buildingInfluenceOutput
+		tempMAN += Tile.buildingManpowerOutput
+		tempAlcPoints += Tile.alcPointsOutput
+		tempSumPoints += Tile.sumPointsOutput
+		tempElePoints += Tile.elePointsOutput
+		tempIllPoints += Tile.illPointsOutput
+		tempDivPoints += Tile.divPointsOutput
+		tempDruPoints += Tile.druPointsOutput
 		print("points", alcPoints, sumPoints, elePoints, illPoints, divPoints, druPoints)
+	outputsDict = {
+		"FPM" : tempFPM,
+		"WPM" : tempWPM,
+		"GPM" : tempGPM,
+		"PPM" : tempPPM,
+		"APM" : tempAPM,
+		"IPM" :tempIPM,
+		"SPM" :tempSPM,
+		"MPM" :tempMPM,
+		"CPM" :tempCPM,
+		"HPM" :tempHPM,
+		"NDT" :tempNDT,
+		"NPM" :tempNPM,
+		"MAN" :tempMAN,
+		"ALC" :tempAlcPoints,
+		"SUM" :tempSumPoints,
+		"ELE" :tempElePoints,
+		"ILL" :tempIllPoints,
+		"DIV" :tempDivPoints,
+		"DRU" :tempDruPoints,
+	}
+	emit_signal("checkingOutput", outputsDict, caller)
 	pass
 
 func payUnitMaintenance():

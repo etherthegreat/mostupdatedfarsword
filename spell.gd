@@ -24,14 +24,14 @@ func newGameSpellAssignment():
 	match spellType:
 		"Plentify":
 			militarySpell = false
-			spellSprite = load("res://art assets/Placeholder Art/UI Art/resources/Plentify.png")
+			spellSprite = load("res://art assets/Placeholder Art/Spells/Fireworks.PNG")
 			spellCastCost = 15
 		"Healing Winds":
 			militarySpell = false
-			spellSprite = load("res://art assets/Placeholder Art/UI Art/resources/Older Icons/Magic.png")
+			spellSprite = load("res://art assets/Placeholder Art/Spells/Draught of Knowledge.PNG")
 			spellCastCost = 20
 		"Raise Spring":
 			militarySpell = false
-			spellSprite = load("res://art assets/ModifierIcons/TileEcoModifiers/FreshWater.png")
+			spellSprite = load("res://art assets/Placeholder Art/Spells/Health Potion.PNG")
 			spellCastCost = 100
 	pass

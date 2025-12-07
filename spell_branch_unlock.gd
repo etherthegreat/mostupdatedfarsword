@@ -19,6 +19,9 @@ var spellImage: Texture
 var infoDic: Dictionary = {
 }
 
+var magicDic: Dictionary = {
+}
+
 signal returnTranslatedInfo
 func buildSelf():
 	spellCost = costEXP
@@ -110,6 +113,7 @@ func buildSelf():
 	$Tex2.texture = layer2tex
 	$Tex3.texture = layer3tex
 	$spelliconsprite.texture = spellImage
+	$SpellIconSpritepanel.texture = spellImage
 	emit_signal("returnTranslatedInfo", spellType, self)
 	pass
 
@@ -133,14 +137,28 @@ func giveSpellInfo(schoolPoints, turnsUntil, unlocked, spellStr, spellDesc, scho
 	print("RETURNTTRANSLATED INFO DEBUG")
 	pass
 
-func update(amount):
-	#$SchoolPointsRichTextLabel.add_text("[color=purple]", amount, "/", spellCost)
-	#$unlocksRichTextLabel2.add_text()
+
+func update(amount, amountPerTurn):
+	$SchoolPointsRichTextLabel.clear()
+	$unlocksRichTextLabel2.clear()
+	print("DEBUG RETURN UPDATE")
+	$SchoolPointsRichTextLabel.append_text(str(amount, "/", spellCost))
+	if amount >= spellCost:
+		$unlocksRichTextLabel2.append_text("unlocked")
+		$Tex1.modulate = Color(1, 1, 1)
+		$Tex2.modulate = Color(1, 1, 1)
+		$Tex3.modulate = Color(1, 1, 1)
+	else:
+		$Tex1.modulate = Color(0, 0, 0)
+		$Tex2.modulate = Color(0, 0, 0)
+		$Tex3.modulate = Color(0, 0, 0)
+		if amount > 0:
+			var turnsUntilVar: int = (spellCost - amount) / amountPerTurn
+			$unlocksRichTextLabel2.append_text(str(turnsUntilVar))
 	pass
 
 
 func _on_area_2d_mouse_entered() -> void:
-	
 	$PanelSprite.visible = true
 	$SpellDescription.visible = true
 	$SpellNameLabel.visible = true

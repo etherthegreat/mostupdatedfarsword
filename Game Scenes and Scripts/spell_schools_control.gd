@@ -31,9 +31,25 @@ func spellLevelUp(lvl, type):
 	emit_signal("lvlUpSpell", lvl, type)
 	pass
 
+var player: country
+
+signal calculatePlayerOutputs
 func updateMagicAmounts(playerCountryNode):
+	player = playerCountryNode
+	emit_signal("calculatePlayerOutputs", self)
+	pass
+
+func returnedOutput(playerOutput):
+	magicDic= {
+		"ALC" : playerOutput.ALC,
+		"DIV" : playerOutput.DIV,
+		"DRU" : playerOutput.DRU,
+		"ELE" : playerOutput.ELE,
+		"ILL" : playerOutput.ILL,
+		"SUM" : playerOutput.SUM
+	}
 	for MagicAmountControl in $SpellSchoolsPanel/SchoolsAmounts/SpellsVBox.get_children():
-		MagicAmountControl.update(playerCountryNode)
+		MagicAmountControl.update(player, magicDic)
 	pass
 
 signal askForInfo
