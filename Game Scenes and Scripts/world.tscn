@@ -131,7 +131,7 @@
 [ext_resource type="Texture2D" uid="uid://b6fudp24jq6xa" path="res://art assets/Map Art/Coastal Tiles/C 5 Tile.png" id="53_s0iph"]
 [ext_resource type="Texture2D" uid="uid://gca4kfqi3w14" path="res://art assets/Map Art/18Ring.png" id="54_apa2n"]
 [ext_resource type="Texture2D" uid="uid://cwj6iytunnw7v" path="res://art assets/Map Art/Coastal Tiles/C 6 Ring.png" id="54_njcev"]
-[ext_resource type="Script" uid="uid://bqoa1uaifkk6g" path="res://Game Scenes and Scripts/faction_control.gd" id="54_sv2u8"]
+[ext_resource type="Script" path="res://Game Scenes and Scripts/faction_control.gd" id="54_sv2u8"]
 [ext_resource type="Texture2D" uid="uid://bvi4hpeut63c3" path="res://art assets/Map Art/18FOG.png" id="55_702vd"]
 [ext_resource type="Texture2D" uid="uid://5xm7wsujdw13" path="res://art assets/Map Art/Coastal Tiles/C 6 Fog.png" id="55_nsmt3"]
 [ext_resource type="Script" uid="uid://idfuyp443x0" path="res://Game Scenes and Scripts/government_control.gd" id="55_w7ifc"]
@@ -13289,7 +13289,6 @@ visible = false
 mouse_filter = 2
 
 [node name="SpellSchoolsControl" type="Control" parent="CanvasLayer"]
-visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
@@ -13474,22 +13473,699 @@ costEXP = 120
 [node name="Divination" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox" instance=ExtResource("36_mhn20")]
 layout_mode = 2
 schoolTypeEXP = "diviner"
+spellUnlocksEXP = [NodePath("zodiacReadings"), NodePath("visitOracle"), NodePath("foretellCareer"), NodePath("diviningRods"), NodePath("interpretCitizensDreams"), NodePath("longTermPlanning"), NodePath("revealPotentialFuture"), NodePath("palantirExpedition"), NodePath("revealDemonicPlans"), NodePath("proclaimProphecy"), NodePath("grantClairvoyance"), NodePath("ominscientGaze")]
+
+[node name="zodiacReadings" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Divination" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 178.0
+offset_top = -8.0
+offset_right = 178.0
+offset_bottom = 32.0
+typeEXP = "zodiacReadings"
+costEXP = 10
+
+[node name="visitOracle" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Divination" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 308.0
+offset_top = -8.0
+offset_right = 308.0
+offset_bottom = 32.0
+typeEXP = "visitOracle"
+costEXP = 20
+
+[node name="foretellCareer" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Divination" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 438.0
+offset_top = -8.0
+offset_right = 438.0
+offset_bottom = 32.0
+typeEXP = "foretellCareer"
+costEXP = 30
+
+[node name="diviningRods" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Divination" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 568.0
+offset_top = -8.0
+offset_right = 568.0
+offset_bottom = 32.0
+typeEXP = "diviningRods"
+costEXP = 40
+
+[node name="interpretCitizensDreams" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Divination" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 698.0
+offset_top = -8.0
+offset_right = 698.0
+offset_bottom = 32.0
+typeEXP = "interpretCitizensDreams"
+costEXP = 50
+
+[node name="longTermPlanning" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Divination" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 828.0
+offset_top = -8.0
+offset_right = 828.0
+offset_bottom = 32.0
+typeEXP = "longTermPlanning"
+costEXP = 60
+
+[node name="revealPotentialFuture" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Divination" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 958.0
+offset_top = -8.0
+offset_right = 958.0
+offset_bottom = 32.0
+typeEXP = "revealPotentialFuture"
+costEXP = 70
+
+[node name="palantirExpedition" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Divination" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 1088.0
+offset_top = -8.0
+offset_right = 1088.0
+offset_bottom = 32.0
+typeEXP = "palantirExpedition"
+costEXP = 80
+
+[node name="revealDemonicPlans" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Divination" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 1218.0
+offset_top = -8.0
+offset_right = 1218.0
+offset_bottom = 32.0
+typeEXP = "revealDemonicPlans"
+costEXP = 90
+
+[node name="proclaimProphecy" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Divination" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 1348.0
+offset_top = -8.0
+offset_right = 1348.0
+offset_bottom = 32.0
+typeEXP = "proclaimProphecy"
+costEXP = 100
+
+[node name="grantClairvoyance" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Divination" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 1478.0
+offset_top = -8.0
+offset_right = 1478.0
+offset_bottom = 32.0
+typeEXP = "grantClairvoyance"
+costEXP = 110
+
+[node name="ominscientGaze" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Divination" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 1608.0
+offset_top = -8.0
+offset_right = 1608.0
+offset_bottom = 32.0
+typeEXP = "ominscientGaze"
+costEXP = 120
 
 [node name="Druidism" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox" instance=ExtResource("36_mhn20")]
 layout_mode = 2
 schoolTypeEXP = "druid"
+spellUnlocksEXP = [NodePath("birdfeeders"), NodePath("newMoonFast"), NodePath("consecrateLand"), NodePath("vineTangle"), NodePath("beehives"), NodePath("fullMoonBath"), NodePath("spiritQuest"), NodePath("sharkWhistle"), NodePath("lanternbugs"), NodePath("packLeader"), NodePath("creatureCall"), NodePath("freedomFire")]
+
+[node name="birdfeeders" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Druidism" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 178.0
+offset_top = -9.0
+offset_right = 178.0
+offset_bottom = 31.0
+typeEXP = "birdfeeders"
+
+[node name="newMoonFast" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Druidism" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 308.0
+offset_top = -9.0
+offset_right = 308.0
+offset_bottom = 31.0
+typeEXP = "newMoonFast"
+
+[node name="consecrateLand" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Druidism" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 438.0
+offset_top = -9.0
+offset_right = 438.0
+offset_bottom = 31.0
+typeEXP = "consecrateLand"
+
+[node name="vineTangle" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Druidism" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 568.0
+offset_top = -9.0
+offset_right = 568.0
+offset_bottom = 31.0
+typeEXP = "vineTangle"
+
+[node name="beehives" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Druidism" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 698.0
+offset_top = -9.0
+offset_right = 698.0
+offset_bottom = 31.0
+typeEXP = "beehives"
+
+[node name="fullMoonBath" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Druidism" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 828.0
+offset_top = -9.0
+offset_right = 828.0
+offset_bottom = 31.0
+typeEXP = "fullMoonBath"
+
+[node name="spiritQuest" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Druidism" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 958.0
+offset_top = -9.0
+offset_right = 958.0
+offset_bottom = 31.0
+typeEXP = "spiritQuest"
+
+[node name="sharkWhistle" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Druidism" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 1088.0
+offset_top = -9.0
+offset_right = 1088.0
+offset_bottom = 31.0
+typeEXP = "sharkWhistle"
+
+[node name="lanternbugs" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Druidism" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 1218.0
+offset_top = -9.0
+offset_right = 1218.0
+offset_bottom = 31.0
+typeEXP = "lanternbugs"
+
+[node name="packLeader" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Druidism" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 1348.0
+offset_top = -9.0
+offset_right = 1348.0
+offset_bottom = 31.0
+typeEXP = "packLeader"
+
+[node name="creatureCall" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Druidism" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 1478.0
+offset_top = -9.0
+offset_right = 1478.0
+offset_bottom = 31.0
+typeEXP = "creatureCall"
+
+[node name="freedomFire" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Druidism" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 1608.0
+offset_top = -9.0
+offset_right = 1608.0
+offset_bottom = 31.0
+typeEXP = "freedomFire"
 
 [node name="Elementalism" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox" instance=ExtResource("36_mhn20")]
 layout_mode = 2
 schoolTypeEXP = "elementalist"
+spellUnlocksEXP = [NodePath("magmaWall"), NodePath("dislodgingWinds"), NodePath("avalanche"), NodePath("lightningRain"), NodePath("heatwave"), NodePath("lightningBolt"), NodePath("fireGeysers"), NodePath("manaSteal"), NodePath("manaShield"), NodePath("frostFall"), NodePath("frontSlip"), NodePath("tidalShift")]
+
+[node name="magmaWall" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Elementalism" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 178.0
+offset_top = -1.0
+offset_right = 178.0
+offset_bottom = 39.0
+typeEXP = "magmaWall"
+
+[node name="dislodgingWinds" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Elementalism" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 308.0
+offset_top = -1.0
+offset_right = 308.0
+offset_bottom = 39.0
+typeEXP = "dislodgingWinds"
+
+[node name="avalanche" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Elementalism" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 438.0
+offset_top = -1.0
+offset_right = 438.0
+offset_bottom = 39.0
+typeEXP = "avalanche"
+
+[node name="lightningRain" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Elementalism" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 568.0
+offset_top = -1.0
+offset_right = 568.0
+offset_bottom = 39.0
+typeEXP = "lightningRain"
+
+[node name="heatwave" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Elementalism" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 698.0
+offset_top = -1.0
+offset_right = 698.0
+offset_bottom = 39.0
+typeEXP = "heatwave"
+
+[node name="lightningBolt" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Elementalism" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 828.0
+offset_top = -1.0
+offset_right = 828.0
+offset_bottom = 39.0
+typeEXP = "lightningBolt"
+
+[node name="fireGeysers" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Elementalism" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 958.0
+offset_top = -1.0
+offset_right = 958.0
+offset_bottom = 39.0
+typeEXP = "fireGeysers"
+
+[node name="manaSteal" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Elementalism" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 1088.0
+offset_top = -1.0
+offset_right = 1088.0
+offset_bottom = 39.0
+typeEXP = "manaSteal"
+
+[node name="manaShield" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Elementalism" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 1218.0
+offset_top = -1.0
+offset_right = 1218.0
+offset_bottom = 39.0
+typeEXP = "manaShield"
+
+[node name="frostFall" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Elementalism" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 1348.0
+offset_top = -1.0
+offset_right = 1348.0
+offset_bottom = 39.0
+typeEXP = "frostFall"
+
+[node name="frontSlip" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Elementalism" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 1478.0
+offset_top = -1.0
+offset_right = 1478.0
+offset_bottom = 39.0
+typeEXP = "frontSlip"
+
+[node name="tidalShift" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Elementalism" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 1608.0
+offset_top = -1.0
+offset_right = 1608.0
+offset_bottom = 39.0
+typeEXP = "tidalShift"
 
 [node name="Illusion" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox" instance=ExtResource("36_mhn20")]
 layout_mode = 2
 schoolTypeEXP = "illusionist"
+spellUnlocksEXP = [NodePath("celebration"), NodePath("bravery"), NodePath("attract"), NodePath("uncontrollableLaughter"), NodePath("nightmare"), NodePath("galvanize"), NodePath("darkVision"), NodePath("solidarity"), NodePath("depression"), NodePath("fakeArmy"), NodePath("perspectiveShift"), NodePath("hypnoticControl")]
+
+[node name="celebration" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Illusion" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 178.0
+offset_top = 5.0
+offset_right = 178.0
+offset_bottom = 45.0
+typeEXP = "celebration"
+
+[node name="bravery" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Illusion" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 308.0
+offset_top = 5.0
+offset_right = 308.0
+offset_bottom = 45.0
+typeEXP = "bravery"
+
+[node name="attract" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Illusion" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 438.0
+offset_top = 5.0
+offset_right = 438.0
+offset_bottom = 45.0
+typeEXP = "attract"
+
+[node name="uncontrollableLaughter" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Illusion" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 568.0
+offset_top = 5.0
+offset_right = 568.0
+offset_bottom = 45.0
+typeEXP = "uncontrollableLaughter"
+
+[node name="nightmare" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Illusion" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 698.0
+offset_top = 5.0
+offset_right = 698.0
+offset_bottom = 45.0
+typeEXP = "nightmare"
+
+[node name="galvanize" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Illusion" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 828.0
+offset_top = 5.0
+offset_right = 828.0
+offset_bottom = 45.0
+typeEXP = "galvanize"
+
+[node name="darkVision" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Illusion" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 958.0
+offset_top = 5.0
+offset_right = 958.0
+offset_bottom = 45.0
+typeEXP = "darkVision"
+
+[node name="solidarity" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Illusion" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 1088.0
+offset_top = 5.0
+offset_right = 1088.0
+offset_bottom = 45.0
+typeEXP = "solidarity"
+
+[node name="depression" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Illusion" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 1218.0
+offset_top = 5.0
+offset_right = 1218.0
+offset_bottom = 45.0
+typeEXP = "depression"
+
+[node name="fakeArmy" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Illusion" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 1348.0
+offset_top = 5.0
+offset_right = 1348.0
+offset_bottom = 45.0
+typeEXP = "fakeArmy"
+
+[node name="perspectiveShift" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Illusion" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 1478.0
+offset_top = 5.0
+offset_right = 1478.0
+offset_bottom = 45.0
+typeEXP = "perspectiveShift"
+
+[node name="hypnoticControl" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Illusion" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 1608.0
+offset_top = 5.0
+offset_right = 1608.0
+offset_bottom = 45.0
+typeEXP = "hypnoticControl"
 
 [node name="Summoning" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox" instance=ExtResource("36_mhn20")]
 layout_mode = 2
 schoolTypeEXP = "summoner"
+spellUnlocksEXP = [NodePath("summonMegaCactus"), NodePath("summonHypoZebra"), NodePath("summonPets"), NodePath("summonMounts"), NodePath("summonLawCode"), NodePath("summonMotherload"), NodePath("summonMercenaryArmy"), NodePath("summonVoidWeapons"), NodePath("summonKraken"), NodePath("summonVessel"), NodePath("summonMuses"), NodePath("summonMeteor")]
+
+[node name="summonMegaCactus" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Summoning" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 178.0
+offset_top = -11.0
+offset_right = 178.0
+offset_bottom = 29.0
+typeEXP = "summonMegaCactus"
+
+[node name="summonHypoZebra" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Summoning" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 308.0
+offset_top = -11.0
+offset_right = 308.0
+offset_bottom = 29.0
+typeEXP = "summonHypoZebra"
+
+[node name="summonPets" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Summoning" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 438.0
+offset_top = -11.0
+offset_right = 438.0
+offset_bottom = 29.0
+typeEXP = "summonPets"
+
+[node name="summonMounts" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Summoning" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 568.0
+offset_top = -11.0
+offset_right = 568.0
+offset_bottom = 29.0
+typeEXP = "summonMounts"
+
+[node name="summonLawCode" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Summoning" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 698.0
+offset_top = -11.0
+offset_right = 698.0
+offset_bottom = 29.0
+typeEXP = "summonLawCode"
+
+[node name="summonMotherload" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Summoning" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 828.0
+offset_top = -11.0
+offset_right = 828.0
+offset_bottom = 29.0
+typeEXP = "summonMotherload"
+
+[node name="summonMercenaryArmy" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Summoning" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 958.0
+offset_top = -11.0
+offset_right = 958.0
+offset_bottom = 29.0
+typeEXP = "summonMercenaryArmy"
+
+[node name="summonVoidWeapons" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Summoning" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 1088.0
+offset_top = -11.0
+offset_right = 1088.0
+offset_bottom = 29.0
+typeEXP = "summonVoidWeapons"
+
+[node name="summonKraken" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Summoning" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 1218.0
+offset_top = -11.0
+offset_right = 1218.0
+offset_bottom = 29.0
+typeEXP = "summonKraken"
+
+[node name="summonVessel" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Summoning" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 1348.0
+offset_top = -11.0
+offset_right = 1348.0
+offset_bottom = 29.0
+typeEXP = "summonVessel"
+
+[node name="summonMuses" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Summoning" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 1478.0
+offset_top = -11.0
+offset_right = 1478.0
+offset_bottom = 29.0
+typeEXP = "summonMuses"
+
+[node name="summonMeteor" parent="CanvasLayer/SpellSchoolsControl/SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Summoning" instance=ExtResource("474_428lr")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 1608.0
+offset_top = -11.0
+offset_right = 1608.0
+offset_bottom = 29.0
+typeEXP = "summonMeteor"
 
 [node name="Spellbook" parent="CanvasLayer" groups=["ScreenPanels"] instance=ExtResource("14_6mpca")]
 visible = false
@@ -14789,6 +15465,7 @@ offset_bottom = 61.0
 text = "10000"
 
 [node name="Test ResourceButton" type="Button" parent="CanvasLayer/Resource Bar (TOP)"]
+visible = false
 layout_mode = 0
 offset_left = 1853.57
 offset_top = 1591.46
