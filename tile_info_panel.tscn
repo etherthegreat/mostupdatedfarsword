@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://cyiii8hcpiwbm"]
+[gd_scene load_steps=4 format=3 uid="uid://cyiii8hcpiwbm"]
 
 [ext_resource type="Script" uid="uid://d3ugki6qoul1x" path="res://tile_info_panel.gd" id="1_437f7"]
 [ext_resource type="Texture2D" uid="uid://cta3ksrnubp7x" path="res://art assets/finishedAssets/Panels/tilePanel.PNG" id="2_ow4sj"]
+[ext_resource type="Texture2D" uid="uid://cgbjh80k13cvj" path="res://art assets/Placeholder Art/UI Art/terrain/IMG_1422.PNG" id="3_0hvms"]
 
 [node name="TileInfoPanel" type="Control"]
 layout_mode = 3
@@ -14,15 +15,16 @@ scale = Vector2(0.274054, 0.274054)
 texture = ExtResource("2_ow4sj")
 
 [node name="TerrainModifiersGridContainer" type="GridContainer" parent="."]
+visible = false
 layout_direction = 2
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 0.839
 anchor_bottom = 0.344
-offset_left = 71.0
-offset_top = 442.0
-offset_right = 221.0
-offset_bottom = 592.0
+offset_left = 193.0
+offset_top = 458.0
+offset_right = 343.0
+offset_bottom = 608.0
 theme_override_constants/h_separation = 110
 theme_override_constants/v_separation = 110
 columns = 2
@@ -36,3 +38,8 @@ offset_bottom = 62.0
 text = "Tile Name Here!"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="TerrainSprite" type="Sprite2D" parent="."]
+position = Vector2(102, 133)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("3_0hvms")

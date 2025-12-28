@@ -461,7 +461,7 @@ func buildSelf():
 			layer1tex = load("res://art assets/Placeholder Art/spellbacks/Blue 1.PNG")
 			layer2tex = load("res://art assets/Placeholder Art/spellbacks/Blue 2.PNG")
 			layer3tex = load("res://art assets/Placeholder Art/spellbacks/Blue 3.PNG")
-			spellImage = load("res://art assets/Placeholder Art/Spells/IMG_1384.PNG")
+			spellImage = load("res://art assets/Placeholder Art/Spells/IMG_1385.PNG")
 		"summonMeteor":
 			spellSchool = "Summoning"
 			layer1tex = load("res://art assets/Placeholder Art/Spells/Green 1.PNG")

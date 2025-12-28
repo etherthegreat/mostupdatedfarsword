@@ -128,6 +128,36 @@ func matchTileNaturals():
 	else:
 		$OrePanelSprite.texture = load("res://art assets/finishedAssets/religiousIcons/oreIconDisabled.PNG")
 		$OreSprite.texture = null
+	if selectedTile.terrain != null:
+		match selectedTile.terrain:
+			"jungle":
+				$TerrainSprite.texture = load("res://art assets/Placeholder Art/UI Art/terrain/IMG_1440.PNG")
+			"steppe":
+				$TerrainSprite.texture = load("res://art assets/Placeholder Art/UI Art/terrain/IMG_1422.PNG")
+			"bog":
+				$TerrainSprite.texture = load("res://art assets/Placeholder Art/UI Art/terrain/IMG_1424.PNG")
+			"cold_coast":
+				$TerrainSprite.texture = load("res://art assets/Placeholder Art/UI Art/terrain/IMG_1426.PNG")
+			"drylands":
+				$TerrainSprite.texture = load("res://art assets/Placeholder Art/UI Art/terrain/IMG_1425.PNG")
+			"warm_coast":
+				$TerrainSprite.texture = load("res://art assets/Placeholder Art/UI Art/terrain/IMG_1428.PNG")
+			"floodplanes":
+				$TerrainSprite.texture = load("res://art assets/Placeholder Art/UI Art/terrain/IMG_1427.PNG")
+			"desert":
+				$TerrainSprite.texture = load("res://art assets/Placeholder Art/UI Art/terrain/IMG_1434.PNG")
+			"meadow":
+				$TerrainSprite.texture = load("res://art assets/Placeholder Art/UI Art/terrain/IMG_1436.PNG")
+			"mountaintop":
+				$TerrainSprite.texture = load("res://art assets/Placeholder Art/UI Art/terrain/IMG_1437.PNG")
+			"mountaintop_cold":
+				$TerrainSprite.texture = load("res://art assets/Placeholder Art/UI Art/terrain/IMG_1439.PNG")
+			"hills":
+				$TerrainSprite.texture = load("res://art assets/Placeholder Art/UI Art/terrain/IMG_1438.PNG")
+			"forest":
+				$TerrainSprite.texture = load("res://art assets/Placeholder Art/UI Art/terrain/IMG_1441.PNG")
+			"taiga":
+				$TerrainSprite.texture = load("res://art assets/Placeholder Art/UI Art/terrain/IMG_1442.PNG")
 	pass
 func calculateAvailableGovernor(playerNode, tile):
 	var tileReplica: Tile

@@ -14,7 +14,7 @@ var tilePop #every number represents 5000 people in this tile.
 var ocean: bool
 var coastal: bool #determines if this tile is coastal or not
 var freshWater: bool #determines if this province has access to fresh water
-var terrain #determines the terrain of this province
+var terrain: String #determines the terrain of this province
 var season #determines the season, based on terrain type as well as current month
 var tileEcoModifiers: Array = [] #all resource modifiers for this tile
 var tileMilModifiers: Array = [] #all military modifiers for this tile
@@ -192,7 +192,7 @@ func calculateAttributes(tileNumber):
 			tilePop = 10
 			coastal = false
 			freshWater = false
-			terrain = "Rainforest"
+			terrain = "hills"
 			season = "FALL"
 			corruption = 100
 			tileMilModifiers
@@ -214,7 +214,7 @@ func calculateAttributes(tileNumber):
 			tilePop
 			coastal
 			freshWater
-			terrain
+			terrain = "meadow"
 			season
 			tileEcoModifiers
 			tileMilModifiers
@@ -229,7 +229,7 @@ func calculateAttributes(tileNumber):
 			tilePop
 			coastal = false
 			freshWater = true
-			terrain = "Rainforest"
+			terrain = "mountaintop"
 			season
 			tileEcoModifiers
 			tileMilModifiers
@@ -262,7 +262,7 @@ func calculateAttributes(tileNumber):
 			tilePop
 			coastal = true
 			freshWater = false
-			terrain = "Grassland"
+			terrain = "warm_coast"
 			season
 			tileMilModifiers
 			corruption = 100

@@ -12694,7 +12694,6 @@ layer = 2
 script = ExtResource("12_lbt1a")
 
 [node name="TileInfoPanel" parent="CanvasLayer" groups=["ScreenPanels"] instance=ExtResource("10_7wljm")]
-visible = false
 offset_left = 2.0
 offset_top = 259.0
 offset_right = 2.0
@@ -12814,7 +12813,7 @@ position = Vector2(243.999, 272.723)
 scale = Vector2(0.122893, 0.122893)
 texture = ExtResource("37_vrxkf")
 
-[node name="TerrainSprite" type="Sprite2D" parent="CanvasLayer/TileInfoPanel"]
+[node name="TerrainSprite2" type="Sprite2D" parent="CanvasLayer/TileInfoPanel"]
 position = Vector2(308, 273)
 scale = Vector2(0.122893, 0.122893)
 texture = ExtResource("34_ofkyc")
@@ -13289,6 +13288,7 @@ visible = false
 mouse_filter = 2
 
 [node name="SpellSchoolsControl" type="Control" parent="CanvasLayer"]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
