@@ -131,7 +131,7 @@
 [ext_resource type="Texture2D" uid="uid://b6fudp24jq6xa" path="res://art assets/Map Art/Coastal Tiles/C 5 Tile.png" id="53_s0iph"]
 [ext_resource type="Texture2D" uid="uid://gca4kfqi3w14" path="res://art assets/Map Art/18Ring.png" id="54_apa2n"]
 [ext_resource type="Texture2D" uid="uid://cwj6iytunnw7v" path="res://art assets/Map Art/Coastal Tiles/C 6 Ring.png" id="54_njcev"]
-[ext_resource type="Script" path="res://Game Scenes and Scripts/faction_control.gd" id="54_sv2u8"]
+[ext_resource type="Script" uid="uid://bqoa1uaifkk6g" path="res://Game Scenes and Scripts/faction_control.gd" id="54_sv2u8"]
 [ext_resource type="Texture2D" uid="uid://bvi4hpeut63c3" path="res://art assets/Map Art/18FOG.png" id="55_702vd"]
 [ext_resource type="Texture2D" uid="uid://5xm7wsujdw13" path="res://art assets/Map Art/Coastal Tiles/C 6 Fog.png" id="55_nsmt3"]
 [ext_resource type="Script" uid="uid://idfuyp443x0" path="res://Game Scenes and Scripts/government_control.gd" id="55_w7ifc"]
@@ -12694,6 +12694,7 @@ layer = 2
 script = ExtResource("12_lbt1a")
 
 [node name="TileInfoPanel" parent="CanvasLayer" groups=["ScreenPanels"] instance=ExtResource("10_7wljm")]
+visible = false
 offset_left = 2.0
 offset_top = 259.0
 offset_right = 2.0
@@ -12701,10 +12702,10 @@ offset_bottom = 259.0
 
 [node name="GovernorSelection" parent="CanvasLayer/TileInfoPanel" instance=ExtResource("26_aq1ft")]
 visible = false
-offset_left = 512.0
-offset_top = 63.0
-offset_right = 552.0
-offset_bottom = 103.0
+offset_left = 361.0
+offset_top = -20.0
+offset_right = 401.0
+offset_bottom = 20.0
 
 [node name="governorButton" type="Button" parent="CanvasLayer/TileInfoPanel"]
 layout_mode = 0
@@ -12727,10 +12728,10 @@ horizontal_alignment = 1
 [node name="governorTileControlPanel" type="Panel" parent="CanvasLayer/TileInfoPanel"]
 visible = false
 layout_mode = 0
-offset_left = 364.0
-offset_top = -371.0
-offset_right = 961.0
-offset_bottom = 465.0
+offset_left = 505.0
+offset_top = -69.0
+offset_right = 1102.0
+offset_bottom = 767.0
 
 [node name="governorVBox" type="VBoxContainer" parent="CanvasLayer/TileInfoPanel/governorTileControlPanel"]
 layout_mode = 0
@@ -15844,7 +15845,7 @@ offset_right = 603.0
 offset_bottom = 1163.0
 theme_override_constants/separation = 210
 
-[node name="ExpeditionsContainer" type="VBoxContainer" parent="CanvasLayer/CivilianControl"]
+[node name="ResourcesContainer" type="VBoxContainer" parent="CanvasLayer/CivilianControl"]
 layout_mode = 0
 offset_left = 34.0
 offset_top = 197.0
@@ -15861,7 +15862,7 @@ offset_right = 254.0
 offset_bottom = 160.0
 icon = ExtResource("110_t8ic4")
 
-[node name="ExplorerButton" type="Button" parent="CanvasLayer/CivilianControl"]
+[node name="ResourcesButton" type="Button" parent="CanvasLayer/CivilianControl"]
 layout_mode = 0
 offset_left = 317.0
 offset_top = 81.0
@@ -16662,7 +16663,6 @@ shape = SubResource("RectangleShape2D_qt86y")
 [connection signal="mouse_entered" from="CanvasLayer/ArmyPanel/ArmyButtonsContainer/SpellsAndPowersButtonControl/SpellsAndPowersButton" to="PathControl" method="_on_spells_and_powers_button_mouse_entered"]
 [connection signal="mouse_exited" from="CanvasLayer/ArmyPanel/ArmyButtonsContainer/SpellsAndPowersButtonControl/SpellsAndPowersButton" to="PathControl" method="_on_spells_and_powers_button_mouse_exited"]
 [connection signal="pressed" from="CanvasLayer/CivilianControl/WorkerButton" to="CanvasLayer/CivilianControl" method="_on_worker_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/CivilianControl/ExplorerButton" to="CanvasLayer/CivilianControl" method="_on_explorer_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/CivilianUnitControl/CivilianActionButtons/ClearCorruption" to="." method="_on_clear_corruption_pressed"]
 [connection signal="pressed" from="CanvasLayer/CivilianUnitControl/CivilianActionButtons/ColonizeButton" to="." method="_on_colonize_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/CivilianUnitControl/CivilianActionButtons/IncreaseAgriculturalDevelopment" to="." method="_on_increase_agricultural_development_pressed"]

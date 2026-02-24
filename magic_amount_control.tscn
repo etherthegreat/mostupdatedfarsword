@@ -16,23 +16,24 @@ mouse_filter = 2
 script = ExtResource("1_qdpjc")
 
 [node name="MagicSprite2D" type="Sprite2D" parent="."]
+visible = false
 texture = ExtResource("2_wi5e4")
 
 [node name="spellSchool" type="Label" parent="."]
 layout_mode = 0
 offset_left = -58.0
-offset_top = -61.0
+offset_top = -14.0
 offset_right = 59.0
-offset_bottom = -38.0
+offset_bottom = 9.0
 text = "alchemy"
 horizontal_alignment = 1
 
 [node name="AmountLabel" type="Label" parent="."]
 layout_mode = 0
 offset_left = -36.0
-offset_top = 37.0
+offset_top = 9.0
 offset_right = 40.0
-offset_bottom = 60.0
+offset_bottom = 32.0
 text = "270"
 horizontal_alignment = 1
 

@@ -84,7 +84,7 @@ func displayTileInfo(tile):
 
 signal governorButtonPressed
 func _on_governor_button_pressed() -> void:
-	$GovernorSelection.position = Vector2(356, -369)
+	#$GovernorSelection.position = Vector2(356, -369)
 	$GovernorSelection.changePanel("governor")
 	if selectedTile.tileGovernor == null:
 		if $governorTileControlPanel.visible == false:

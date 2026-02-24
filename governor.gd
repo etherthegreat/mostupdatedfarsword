@@ -29,7 +29,7 @@ func buildSelf(gT, gL):
 	hired = false
 	match governorType:
 		"Wolverina Gundo":
-			governorTexture = load("res://art assets/Placeholder Art/character/F3 - Copy.png")
+			governorTexture = load("res://art assets/Placeholder Art/character/4-22-Ikra-Colors - Copy.png")
 			governorDescription = "Escaped slave, returning to her homeland to free her hypnotized brethren."
 			governorBiography = "born in 1845, pittsburg ohio, sloberina gundo is the son of john f kennedy, also known as professor sex of the sex men.  will wolverina live up to her father's expectations or cum before the lord unashamed and loved dearly."
 			coastal = false
@@ -39,7 +39,7 @@ func buildSelf(gT, gL):
 			addMilMod("Champion of the Sun", 23)
 			addMilMod("Healer", 3)
 		"Wello Jenni-Tur":
-			governorTexture = load("res://art assets/Placeholder Art/character/F4 - Copy.png")
+			governorTexture = load("res://art assets/Placeholder Art/character/4-22-Samurai-Jack-Colors - Copy.png")
 			governorDescription = "Robo Cyborg visionary of the science demon wizard goblins."
 			governorBiography = "born in 1845, pittsburg ohio, sloberina gundo is the son of john f kennedy, also known as professor sex of the sex men.  will wolverina live up to her father's expectations or cum before the lord unashamed and loved dearly."
 			coastal = false

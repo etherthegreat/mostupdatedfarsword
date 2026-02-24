@@ -255,7 +255,7 @@ func matchPlayerUnlockables(playerCountryNode):
 					"FARMER":
 						match tile.tileGovernor.governorLevel:
 							1:
-								foodPerLevel += 1000
+								foodPerLevel += 1
 							2:
 								foodPerLevel += 2
 								woodPerLevel += 1

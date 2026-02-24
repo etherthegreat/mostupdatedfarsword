@@ -43,12 +43,9 @@ func updateCivilians():
 	pass
 
 
-func _on_explorer_button_pressed() -> void:
-	$ExpeditionsContainer.visible = true
-	$"Civilian Container".visible = false
-	pass # Replace with function body.
+
 
 func _on_worker_button_pressed() -> void:
-	$ExpeditionsContainer.visible = false
+	$ResourcesContainer.visible = false
 	$"Civilian Container".visible = true
 	pass # Replace with function body.

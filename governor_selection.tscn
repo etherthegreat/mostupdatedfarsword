@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://d0v0xfksecnno"]
+[gd_scene load_steps=4 format=3 uid="uid://d0v0xfksecnno"]
 
 [ext_resource type="Script" uid="uid://dtw37fho4s163" path="res://governor_selection.gd" id="1_c4d0j"]
-[ext_resource type="Texture2D" uid="uid://bb1db6rh066fo" path="res://art assets/Placeholder Art/character/F4 - Copy.png" id="2_c4d0j"]
+[ext_resource type="Texture2D" uid="uid://cta3ksrnubp7x" path="res://art assets/finishedAssets/Panels/tilePanel.PNG" id="2_jgxgi"]
+[ext_resource type="Texture2D" uid="uid://dpp4uvu74ta2r" path="res://art assets/Placeholder Art/character/4-22-Samurai-Jack-Colors - Copy.png" id="3_jgxgi"]
 
 [node name="GovernorSelection" type="Control"]
 layout_mode = 3
@@ -15,19 +16,26 @@ layout_mode = 0
 offset_right = 552.0
 offset_bottom = 227.0
 
+[node name="Sprite2D" type="Sprite2D" parent="MasterPanel"]
+position = Vector2(275.5, 114)
+scale = Vector2(0.298919, 0.0766667)
+texture = ExtResource("2_jgxgi")
+
 [node name="GovernorNameLabel" type="Label" parent="MasterPanel"]
 layout_mode = 0
-offset_right = 168.0
+offset_left = 18.0
+offset_right = 186.0
 offset_bottom = 23.0
+theme_override_font_sizes/font_size = 13
 text = "governornamehere"
 horizontal_alignment = 1
 
 [node name="levelLabel" type="Label" parent="MasterPanel"]
 layout_mode = 0
-offset_left = 2.0
-offset_top = 31.0
-offset_right = 42.0
-offset_bottom = 54.0
+offset_left = -7.0
+offset_top = -2.0
+offset_right = 33.0
+offset_bottom = 21.0
 text = "lvl"
 horizontal_alignment = 1
 
@@ -38,13 +46,18 @@ offset_top = 34.0
 offset_right = 543.0
 offset_bottom = 218.0
 
+[node name="Sprite2D" type="Sprite2D" parent="MasterPanel/selectGovernorPanel"]
+position = Vector2(193, 91)
+scale = Vector2(0.20973, 0.0613333)
+texture = ExtResource("2_jgxgi")
+
 [node name="selectGovernorButton" type="Button" parent="MasterPanel/selectGovernorPanel"]
 layout_mode = 0
-offset_left = -144.0
+offset_left = -137.0
 offset_top = 20.0
 offset_right = -14.0
 offset_bottom = 184.0
-icon = ExtResource("2_c4d0j")
+icon = ExtResource("3_jgxgi")
 icon_alignment = 1
 expand_icon = true
 
@@ -108,12 +121,22 @@ offset_right = 386.0
 offset_bottom = 43.0
 text = "governor"
 
+[node name="Sprite2D" type="Sprite2D" parent="MasterPanel/governorPanel"]
+position = Vector2(193, 91)
+scale = Vector2(0.20973, 0.0613333)
+texture = ExtResource("2_jgxgi")
+
 [node name="commanderPanel" type="Panel" parent="MasterPanel"]
 layout_mode = 0
 offset_left = 157.0
 offset_top = 34.0
 offset_right = 543.0
 offset_bottom = 218.0
+
+[node name="Sprite2D" type="Sprite2D" parent="MasterPanel/commanderPanel"]
+position = Vector2(193, 91)
+scale = Vector2(0.20973, 0.0613333)
+texture = ExtResource("2_jgxgi")
 
 [node name="commanderInfoButton" type="Button" parent="MasterPanel/commanderPanel"]
 layout_mode = 0
@@ -184,6 +207,11 @@ offset_left = 157.0
 offset_top = 34.0
 offset_right = 543.0
 offset_bottom = 218.0
+
+[node name="Sprite2D" type="Sprite2D" parent="MasterPanel/characterInfoPanel"]
+position = Vector2(193, 91)
+scale = Vector2(0.20973, 0.0613333)
+texture = ExtResource("2_jgxgi")
 
 [node name="characterInfoButton" type="Button" parent="MasterPanel/characterInfoPanel"]
 layout_mode = 0
