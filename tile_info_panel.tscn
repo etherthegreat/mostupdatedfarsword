@@ -10,8 +10,8 @@ anchors_preset = 0
 script = ExtResource("1_437f7")
 
 [node name="PanelSprite" type="Sprite2D" parent="."]
-position = Vector2(252.5, 410.081)
-scale = Vector2(0.274054, 0.274054)
+position = Vector2(252.5, 521.081)
+scale = Vector2(0.274054, 0.200054)
 texture = ExtResource("2_ow4sj")
 
 [node name="TerrainModifiersGridContainer" type="GridContainer" parent="."]
@@ -32,14 +32,14 @@ columns = 2
 [node name="Label" type="Label" parent="."]
 layout_mode = 0
 offset_left = 16.0
-offset_top = 15.0
+offset_top = 237.0
 offset_right = 492.0
-offset_bottom = 62.0
+offset_bottom = 284.0
 text = "Tile Name Here!"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="TerrainSprite" type="Sprite2D" parent="."]
-position = Vector2(102, 133)
+position = Vector2(102, 357)
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("3_0hvms")

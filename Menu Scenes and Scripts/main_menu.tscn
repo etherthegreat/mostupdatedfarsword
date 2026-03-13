@@ -30,6 +30,7 @@ scale = Vector2(1.50625, 1.53056)
 texture = ExtResource("2_s0tsv")
 
 [node name="NewGameButton" type="Button" parent="Panel"]
+layout_mode = 0
 offset_left = 1032.0
 offset_top = 20.0
 offset_right = 2044.0
@@ -40,6 +41,7 @@ theme_override_font_sizes/font_size = 120
 text = "New Game"
 
 [node name="LoadGameButton" type="Button" parent="Panel"]
+layout_mode = 0
 offset_left = 1032.0
 offset_top = 237.0
 offset_right = 2044.0
@@ -50,6 +52,7 @@ theme_override_font_sizes/font_size = 120
 text = "Load Game"
 
 [node name="GalleryButton" type="Button" parent="Panel"]
+layout_mode = 0
 offset_left = 1032.0
 offset_top = 457.0
 offset_right = 2044.0
@@ -60,6 +63,7 @@ theme_override_font_sizes/font_size = 120
 text = "Gallery"
 
 [node name="SettingsButton" type="Button" parent="Panel"]
+layout_mode = 0
 offset_left = 1032.0
 offset_top = 679.0
 offset_right = 2044.0
@@ -71,6 +75,7 @@ text = "Settings
 "
 
 [node name="ExitButton" type="Button" parent="Panel"]
+layout_mode = 0
 offset_left = 1032.0
 offset_top = 891.0
 offset_right = 2044.0

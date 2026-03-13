@@ -8,7 +8,6 @@ var armyWoodCost: int = 0
 var armyMetalCost: int = 0
 var armyGoldCost: int = 0
 var armyFaithCost: int = 0
-var armyWeaponsCost: int = 0
 var armyMagicCost: int = 0
 var armyScienceCost: int = 0
 var armyCultureCost: int = 0
@@ -16,6 +15,7 @@ var armyHarmonyCost: int = 0
 var armyMandateCost: int = 0
 var armyInfluenceCost: int = 0
 
+var armyWeaponsCost: int = 0
 var armyManpowerCost: int = 0
 
 var ArmyName: String
@@ -98,6 +98,7 @@ func updateSelf(Name, countryNode, TileNumber):
 	
 	for unitUIScene in $ScrollContainer/UnitUIContainer.get_children():
 		if is_instance_valid(unitUIScene):
+			$ScrollContainer/UnitUIContainer.remove_child(unitUIScene)
 			unitUIScene.queue_free()
 	#print("UnitUiContainer Children", $RadicalCoolTestPanel/UnitUIContainer.get_children())
 	if unitsList != null:

@@ -25,18 +25,12 @@ func TilesCalculated():
 
 var selectedTile
 signal selectThisTile
+signal retrieveTileOutputs
 func displayTileInfo(tile):
 	emit_signal("selectThisTile", tile)
 	selectedTile = tile
 	if firstTime == false:
-		for Control in $TerrainModifiersGridContainer.get_children():
-			print(Control)
-			#Control.queue_free() #this is really important to come back to.  I'm not removing the nodes, I'm just
-			#removing them from being children of the container.  theoretically this could be a huge performance issue 
-			$TerrainModifiersGridContainer.remove_child(Control)
 		for ModifierSprite in $TerrainModifiersGridContainer.get_children():
-			print(ModifierSprite)
-			#ModifierSprite.queue_free() #same with this guy
 			$TerrainModifiersGridContainer.remove_child(ModifierSprite)
 			ModifierSprite.queue_free()
 	else:
@@ -44,7 +38,10 @@ func displayTileInfo(tile):
 	$Label.text = tile.tileName
 	matchTileNaturals()
 	if tile.tileOwner == "":
+		$colonizationPointsLabel.visible = true
 		$colonizationPointsLabel.text = str(tile.colonizationPoints, " / ", tile.colonizationReq)
+	else:
+		$colonizationPointsLabel.visible = false
 	if tile.corruption <= 25:
 		$CorruptionSprite.texture = load("res://art assets/ModifierIcons/TileEcoModifiers/CorruptionNo.png")
 	elif tile.corruption > 20 && tile.corruption <= 40:
@@ -77,9 +74,33 @@ func displayTileInfo(tile):
 			$governorButton.icon = load("res://art assets/Placeholder Art/character/8 11 experimental.png")
 			$governorButton/govnameLabel.text = "No Assigned Governor"
 		if selectedTile.tileWizard != null:
-			$wizardTypeLabel.text = selectedTile.tileWizard.wizardType
+			$WizardButton.text = selectedTile.tileWizard.wizardType
 		else:
-			$wizardTypeLabel.text = str("no wizard :(")
+			$WizardButton.text = str("no wizard :(")
+	if $ManaPanelContainer.get_child_count() > 0:
+		for manaPanel in $ManaPanelContainer.get_children():
+			$ManaPanelContainer.remove_child(manaPanel)
+			manaPanel.queue_free()
+	emit_signal("retrieveTileOutputs")
+	pass
+
+var manaPanelScene = preload("res://mana_panel.tscn")
+
+func buildTileOutput(type, amount, dictionary):
+	var newManaPanel = manaPanelScene.instantiate()
+	newManaPanel.buildSelf(type, amount, dictionary)
+	newManaPanel.manaLook.connect(showTileOutput)
+	newManaPanel.closeManaLook.connect(closeTileOutput)
+	$ManaPanelContainer.add_child(newManaPanel)
+	pass
+
+func showTileOutput(fText):
+	$Outputs.clear()
+	$Outputs.append_text(fText)
+	pass
+
+func closeTileOutput():
+	$Outputs.clear()
 	pass
 
 signal governorButtonPressed

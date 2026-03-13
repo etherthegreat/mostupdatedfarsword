@@ -1,4 +1,4 @@
-[gd_scene load_steps=922 format=3 uid="uid://bfbouq3jfwkxl"]
+[gd_scene load_steps=941 format=3 uid="uid://bfbouq3jfwkxl"]
 
 [ext_resource type="Script" uid="uid://dthx176t72xxr" path="res://Game Scenes and Scripts/world.gd" id="1_6bnro"]
 [ext_resource type="Texture2D" uid="uid://dwkhd2uwctnn4" path="res://art assets/Map Art/Coastal Tiles/map 2.png" id="2_l3hg6"]
@@ -537,11 +537,27 @@
 [ext_resource type="Texture2D" uid="uid://kj26ogp0ertb" path="res://art assets/Map Art/Coastal Tiles/C 76 Tile.png" id="435_428lr"]
 [ext_resource type="Texture2D" uid="uid://byaqywypes15d" path="res://art assets/Placeholder Art/UI Art/resources/black.png" id="473_168he"]
 [ext_resource type="PackedScene" uid="uid://dxgbupy7n6qju" path="res://spell_branch_unlock.tscn" id="474_428lr"]
-[ext_resource type="Texture2D" uid="uid://d1nb8f7x0lc6k" path="res://art assets/finishedAssets/ores/Gold.PNG" id="501_ed344"]
-[ext_resource type="Texture2D" uid="uid://rkxk6oer86gu" path="res://art assets/finishedAssets/ores/Wheat.PNG" id="502_428lr"]
-[ext_resource type="Texture2D" uid="uid://dgcf317okxtn4" path="res://art assets/finishedAssets/ores/Wood.PNG" id="503_168he"]
-[ext_resource type="Texture2D" uid="uid://c5read1dudq7q" path="res://art assets/finishedAssets/ores/Iron.PNG" id="504_tdfku"]
-[ext_resource type="Texture2D" uid="uid://bfynmy685y3k" path="res://art assets/finishedAssets/ores/Zylfire.PNG" id="505_11xh4"]
+[ext_resource type="Texture2D" uid="uid://db2hyfrnulqu8" path="res://art assets/finishedAssets/Panels/armypanelfinishedui/IMG_1548.PNG" id="478_8oo0e"]
+[ext_resource type="Texture2D" uid="uid://b1bjec7tinrwh" path="res://art assets/finishedAssets/manaicons/currency.png" id="503_4x85c"]
+[ext_resource type="Texture2D" uid="uid://poghp383wtjv" path="res://art assets/finishedAssets/Panels/topbarresources/IMG_1530.PNG" id="503_34mra"]
+[ext_resource type="Texture2D" uid="uid://brmypyo0a6u7n" path="res://art assets/finishedAssets/Panels/topbarresources/IMG_1521.PNG" id="504_fwltf"]
+[ext_resource type="Texture2D" uid="uid://dpcl0pgmbwgcv" path="res://art assets/finishedAssets/manaicons/fooda.png" id="504_xr50o"]
+[ext_resource type="Texture2D" uid="uid://2jgmth1wc0sw" path="res://art assets/finishedAssets/Panels/topbarresources/IMG_1528.PNG" id="505_mfggh"]
+[ext_resource type="Texture2D" uid="uid://dte1t5xve8h3e" path="res://art assets/finishedAssets/manaicons/wood.png" id="505_xr50o"]
+[ext_resource type="Texture2D" uid="uid://wkj1gc2d3i5j" path="res://art assets/finishedAssets/Panels/topbarresources/IMG_1535.PNG" id="506_8oo0e"]
+[ext_resource type="Texture2D" uid="uid://dv2dfqvpoa70t" path="res://art assets/finishedAssets/manaicons/metal.png" id="506_xr50o"]
+[ext_resource type="Texture2D" uid="uid://2hyymtaje3ct" path="res://art assets/finishedAssets/manaicons/Weapons.png" id="507_ldxd8"]
+[ext_resource type="Texture2D" uid="uid://buwli7g6cmpkp" path="res://art assets/finishedAssets/manaicons/manpower.png" id="508_f44n6"]
+[ext_resource type="Texture2D" uid="uid://c5ma611qu2alb" path="res://art assets/finishedAssets/manaicons/science2.png" id="509_xr50o"]
+[ext_resource type="Texture2D" uid="uid://df1ds1iriphjs" path="res://art assets/finishedAssets/manaicons/faith.png" id="510_xr50o"]
+[ext_resource type="Texture2D" uid="uid://dws8vpwidlctw" path="res://art assets/finishedAssets/manaicons/Magic.png" id="510_yewkv"]
+[ext_resource type="Texture2D" uid="uid://d087h7ehc0kra" path="res://art assets/finishedAssets/manaicons/Mandate.png" id="511_34mra"]
+[ext_resource type="Texture2D" uid="uid://dur2fboendk0a" path="res://art assets/finishedAssets/manaicons/Harmony.png" id="512_fwltf"]
+[ext_resource type="Texture2D" uid="uid://bs6o3iev6cs7b" path="res://art assets/finishedAssets/manaicons/Culture.png" id="512_ldxd8"]
+[ext_resource type="Texture2D" uid="uid://be8m1m8igewog" path="res://art assets/finishedAssets/manaicons/Influence 1.png" id="515_ldxd8"]
+[ext_resource type="Texture2D" uid="uid://crap2pe6yc584" path="res://art assets/finishedAssets/Panels/topbarresources/IMG_1538.PNG" id="520_fwltf"]
+[ext_resource type="Texture2D" uid="uid://ba8w0kcfk7fl6" path="res://art assets/finishedAssets/Panels/topbarresources/IMG_1539.PNG" id="521_mfggh"]
+[ext_resource type="Texture2D" uid="uid://bosevb7m63nwm" path="res://art assets/finishedAssets/Panels/topbarresources/IMG_1542.PNG" id="522_mfggh"]
 [ext_resource type="Texture2D" uid="uid://c7hyc65jbh6rj" path="res://art assets/finishedAssets/ores/Razorberry.PNG" id="530_7ybmk"]
 
 [sub_resource type="Curve2D" id="Curve2D_bg6fe"]
@@ -2793,6 +2809,12 @@ size = Vector2(127, 132)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2v3gw"]
 size = Vector2(100, 102)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fwltf"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8oo0e"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_aaql1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qt86y"]
 size = Vector2(3775, 2210)
@@ -5813,9 +5835,9 @@ polygon = PackedVector2Array(-37, -10, -24, 12, -11, 26, -1, 32, 8, 33, 18, 35, 
 
 [node name="TileC43" parent="TileController" instance=ExtResource("4_xmfu7")]
 offset_left = -495.0
-offset_top = 302.0
+offset_top = 300.0
 offset_right = -495.0
-offset_bottom = 302.0
+offset_bottom = 300.0
 oceanEXP = true
 EXPTileNumber = 43
 TileNeighborsEXP = [NodePath("../Tile23"), NodePath("../Tile47"), NodePath("../TileC41"), NodePath("../TileC44"), NodePath("../TileC46"), NodePath("../TileC47")]
@@ -6710,9 +6732,9 @@ polygon = PackedVector2Array(-128, 95, -99, 92, -85, 82, -95, 62, -101, 57, -100
 
 [node name="TileC76" parent="TileController" instance=ExtResource("4_xmfu7")]
 offset_left = -546.0
-offset_top = 176.0
+offset_top = 177.0
 offset_right = -546.0
-offset_bottom = 176.0
+offset_bottom = 177.0
 oceanEXP = true
 EXPTileNumber = 76
 TileNeighborsEXP = [NodePath("../Tile16"), NodePath("../Tile18"), NodePath("../Tile23"), NodePath("../Tile44"), NodePath("../Tile46"), NodePath("../TileC38"), NodePath("../TileC40"), NodePath("../TileC41")]
@@ -12702,26 +12724,26 @@ offset_bottom = 259.0
 
 [node name="GovernorSelection" parent="CanvasLayer/TileInfoPanel" instance=ExtResource("26_aq1ft")]
 visible = false
-offset_left = 361.0
-offset_top = -20.0
-offset_right = 401.0
-offset_bottom = 20.0
+offset_left = 502.0
+offset_top = -8.0
+offset_right = 542.0
+offset_bottom = 32.0
 
 [node name="governorButton" type="Button" parent="CanvasLayer/TileInfoPanel"]
 layout_mode = 0
-offset_left = 375.0
-offset_top = 8.0
-offset_right = 497.0
-offset_bottom = 206.0
+offset_left = 373.0
+offset_top = 245.0
+offset_right = 495.0
+offset_bottom = 408.0
 icon = ExtResource("26_y0g7h")
 expand_icon = true
 
 [node name="govnameLabel" type="Label" parent="CanvasLayer/TileInfoPanel/governorButton"]
 layout_mode = 0
-offset_left = 1.0
-offset_top = 199.0
-offset_right = 123.0
-offset_bottom = 222.0
+offset_left = 2.0
+offset_top = 166.0
+offset_right = 124.0
+offset_bottom = 189.0
 text = "govnamehere"
 horizontal_alignment = 1
 
@@ -12729,32 +12751,33 @@ horizontal_alignment = 1
 visible = false
 layout_mode = 0
 offset_left = 505.0
-offset_top = -69.0
-offset_right = 1102.0
+offset_top = 221.0
+offset_right = 975.0
 offset_bottom = 767.0
 
 [node name="governorVBox" type="VBoxContainer" parent="CanvasLayer/TileInfoPanel/governorTileControlPanel"]
 layout_mode = 0
 offset_left = 40.0
 offset_top = 41.0
-offset_right = 379.0
+offset_right = 416.0
 offset_bottom = 516.0
 theme_override_constants/separation = 235
 
 [node name="OpenBuildingsButton" type="Button" parent="CanvasLayer/TileInfoPanel"]
 layout_mode = 0
-offset_left = 351.0
-offset_top = 328.0
-offset_right = 498.0
-offset_bottom = 446.0
+offset_left = 354.0
+offset_top = 452.0
+offset_right = 494.0
+offset_bottom = 512.0
 text = "buildigns"
 
 [node name="WizardButton" type="Button" parent="CanvasLayer/TileInfoPanel"]
 layout_mode = 0
-offset_left = 411.0
-offset_top = 458.0
-offset_right = 489.0
-offset_bottom = 562.0
+offset_left = 297.0
+offset_top = 279.0
+offset_right = 362.0
+offset_bottom = 404.0
+text = "Wizard"
 
 [node name="WizardTileControl" type="Control" parent="CanvasLayer/TileInfoPanel"]
 layout_mode = 3
@@ -12770,52 +12793,43 @@ layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="wizardTypeLabel" type="Label" parent="CanvasLayer/TileInfoPanel"]
-layout_mode = 0
-offset_left = 361.0
-offset_top = 563.0
-offset_right = 489.0
-offset_bottom = 586.0
-text = "no wizard :("
-horizontal_alignment = 2
-
 [node name="Natural FeaturesSprite" type="Sprite2D" parent="CanvasLayer/TileInfoPanel"]
-position = Vector2(177.25, 273)
+position = Vector2(177.251, 479)
 scale = Vector2(0.120179, 0.066)
 texture = ExtResource("29_dpueh")
 
 [node name="CropPanelSprite" type="Sprite2D" parent="CanvasLayer/TileInfoPanel"]
-position = Vector2(46.5, 272.973)
+position = Vector2(46.5006, 478.973)
 scale = Vector2(0.0871428, 0.0871428)
 texture = ExtResource("30_8aja3")
 
 [node name="OrePanelSprite" type="Sprite2D" parent="CanvasLayer/TileInfoPanel"]
-position = Vector2(112.5, 272.973)
+position = Vector2(112.501, 478.973)
 scale = Vector2(0.0871428, 0.0871428)
 texture = ExtResource("31_8mvj1")
 
 [node name="CropSprite" type="Sprite2D" parent="CanvasLayer/TileInfoPanel"]
-position = Vector2(46.5, 270.973)
+position = Vector2(46.5006, 476.973)
 scale = Vector2(0.140976, 0.123627)
 texture = ExtResource("32_symo7")
 
 [node name="OreSprite" type="Sprite2D" parent="CanvasLayer/TileInfoPanel"]
-position = Vector2(112.5, 274.973)
+position = Vector2(112.501, 480.973)
 scale = Vector2(0.108662, 0.0952904)
 texture = ExtResource("33_bgdvj")
 
 [node name="WaterSprite" type="Sprite2D" parent="CanvasLayer/TileInfoPanel"]
-position = Vector2(180.5, 272.973)
+position = Vector2(180.501, 478.973)
 scale = Vector2(0.122893, 0.122893)
 texture = ExtResource("34_ofkyc")
 
 [node name="CorruptionSprite" type="Sprite2D" parent="CanvasLayer/TileInfoPanel"]
-position = Vector2(243.999, 272.723)
+position = Vector2(244, 478.723)
 scale = Vector2(0.122893, 0.122893)
 texture = ExtResource("37_vrxkf")
 
 [node name="TerrainSprite2" type="Sprite2D" parent="CanvasLayer/TileInfoPanel"]
-position = Vector2(308, 273)
+position = Vector2(308.001, 479)
 scale = Vector2(0.122893, 0.122893)
 texture = ExtResource("34_ofkyc")
 
@@ -12826,6 +12840,48 @@ offset_left = 9.0
 offset_top = 25.0
 offset_right = 167.0
 offset_bottom = 51.0
+
+[node name="ManaPanelContainer" type="GridContainer" parent="CanvasLayer/TileInfoPanel"]
+layout_mode = 0
+offset_left = 7.0
+offset_top = 516.0
+offset_right = 235.0
+offset_bottom = 591.0
+mouse_filter = 2
+theme_override_constants/h_separation = 114
+theme_override_constants/v_separation = 71
+columns = 3
+
+[node name="Outputs" type="RichTextLabel" parent="CanvasLayer/TileInfoPanel"]
+layout_mode = 0
+offset_left = 352.0
+offset_top = 521.0
+offset_right = 489.0
+offset_bottom = 757.0
+mouse_filter = 2
+bbcode_enabled = true
+
+[node name="Tile Spell Button" type="Button" parent="CanvasLayer/TileInfoPanel"]
+layout_mode = 0
+offset_left = 191.0
+offset_top = 281.0
+offset_right = 271.0
+offset_bottom = 361.0
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="CanvasLayer/TileInfoPanel"]
+layout_mode = 0
+offset_left = 186.0
+offset_top = 363.0
+offset_right = 278.0
+offset_bottom = 433.0
+theme_override_font_sizes/bold_italics_font_size = 8
+theme_override_font_sizes/italics_font_size = 8
+theme_override_font_sizes/mono_font_size = 8
+theme_override_font_sizes/normal_font_size = 8
+theme_override_font_sizes/bold_font_size = 8
+bbcode_enabled = true
+text = "[u]Spell Name Here[/u] [p][p][color=red]-9 Magic[/color][p][p][color=green]+3 Food "
+horizontal_alignment = 1
 
 [node name="BuildingInfoPanel" parent="CanvasLayer" groups=["ScreenPanels"] instance=ExtResource("13_yj2eu")]
 visible = false
@@ -14198,13 +14254,10 @@ offset_bottom = 78.0
 mouse_filter = 2
 script = ExtResource("38_0kf4p")
 
-[node name="Panel" type="Panel" parent="CanvasLayer/MilitaryPanelControl"]
-layout_mode = 0
-offset_left = 1421.0
-offset_top = 53.0
-offset_right = 2743.0
-offset_bottom = 1001.0
-mouse_filter = 2
+[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/MilitaryPanelControl"]
+position = Vector2(1992, 523)
+scale = Vector2(0.632222, 0.522222)
+texture = ExtResource("478_8oo0e")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/MilitaryPanelControl"]
 layout_mode = 1
@@ -15072,41 +15125,41 @@ texture = ExtResource("71_bgdvj")
 layout_mode = 3
 anchors_preset = 0
 offset_left = 516.0
+offset_top = 5.0
 offset_right = 556.0
-offset_bottom = 40.0
+offset_bottom = 45.0
 scale = Vector2(0.583739, 0.583739)
 mouse_filter = 2
 script = ExtResource("15_b2ctf")
 
-[node name="Panel" type="Panel" parent="CanvasLayer/Resource Bar (TOP)"]
-layout_mode = 0
-offset_right = 489.0
-offset_bottom = 138.0
+[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/Resource Bar (TOP)"]
+position = Vector2(237.897, 53.9066)
+scale = Vector2(0.124944, 0.124944)
+texture = ExtResource("503_34mra")
 
-[node name="Panel2" type="Panel" parent="CanvasLayer/Resource Bar (TOP)"]
-layout_mode = 0
-offset_left = 495.0
-offset_right = 739.0
-offset_bottom = 138.0
+[node name="Sprite2D2" type="Sprite2D" parent="CanvasLayer/Resource Bar (TOP)"]
+position = Vector2(609.638, 53.9066)
+scale = Vector2(0.124944, 0.124944)
+texture = ExtResource("504_fwltf")
 
-[node name="Panel3" type="Panel" parent="CanvasLayer/Resource Bar (TOP)"]
-layout_mode = 0
-offset_left = 746.0
-offset_right = 1239.0
-offset_bottom = 138.0
+[node name="Sprite2D3" type="Sprite2D" parent="CanvasLayer/Resource Bar (TOP)"]
+position = Vector2(981.38, 53.9066)
+scale = Vector2(0.124944, 0.124944)
+texture = ExtResource("505_mfggh")
 
-[node name="Panel4" type="Panel" parent="CanvasLayer/Resource Bar (TOP)"]
-layout_mode = 0
-offset_left = 1248.0
-offset_right = 1616.0
-offset_bottom = 138.0
+[node name="Sprite2D4" type="Sprite2D" parent="CanvasLayer/Resource Bar (TOP)"]
+position = Vector2(1416.51, 53.9066)
+scale = Vector2(0.124944, 0.124944)
+texture = ExtResource("506_8oo0e")
 
 [node name="container" type="GridContainer" parent="CanvasLayer/Resource Bar (TOP)"]
 layout_mode = 0
-offset_right = 1595.0
-offset_bottom = 137.0
+offset_left = -7.07603
+offset_top = -0.912438
+offset_right = 1587.92
+offset_bottom = 136.088
 theme_override_constants/h_separation = 125
-theme_override_constants/v_separation = 70
+theme_override_constants/v_separation = 53
 columns = 13
 
 [node name="GoldControl" type="Control" parent="CanvasLayer/Resource Bar (TOP)/container"]
@@ -15114,9 +15167,9 @@ layout_mode = 2
 mouse_filter = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/Resource Bar (TOP)/container/GoldControl"]
-position = Vector2(53.106, 53.1059)
-scale = Vector2(0.217942, 0.217941)
-texture = ExtResource("501_ed344")
+position = Vector2(53.1059, 51.3928)
+scale = Vector2(0.827996, 0.856547)
+texture = ExtResource("503_4x85c")
 
 [node name="GoldArea2D" type="Area2D" parent="CanvasLayer/Resource Bar (TOP)/container/GoldControl"]
 collision_layer = 3
@@ -15131,9 +15184,9 @@ layout_mode = 2
 mouse_filter = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/Resource Bar (TOP)/container/FoodControl"]
-position = Vector2(61.7273, 51.3928)
-scale = Vector2(0.295966, 0.295966)
-texture = ExtResource("502_428lr")
+position = Vector2(53.1619, 51.3928)
+scale = Vector2(0.827995, 0.856547)
+texture = ExtResource("504_xr50o")
 
 [node name="FoodArea2D" type="Area2D" parent="CanvasLayer/Resource Bar (TOP)/container/FoodControl"]
 collision_layer = 3
@@ -15148,9 +15201,9 @@ layout_mode = 2
 mouse_filter = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/Resource Bar (TOP)/container/WoodControl"]
-position = Vector2(53.2177, 53.1059)
-scale = Vector2(0.222442, 0.222442)
-texture = ExtResource("503_168he")
+position = Vector2(53.2177, 51.3928)
+scale = Vector2(0.827995, 0.856547)
+texture = ExtResource("505_xr50o")
 
 [node name="WoodArea2D" type="Area2D" parent="CanvasLayer/Resource Bar (TOP)/container/WoodControl"]
 collision_layer = 3
@@ -15165,9 +15218,9 @@ layout_mode = 2
 mouse_filter = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/Resource Bar (TOP)/container/MetalControl"]
-position = Vector2(50.9384, 57.1321)
-scale = Vector2(0.215997, 0.215997)
-texture = ExtResource("504_tdfku")
+position = Vector2(53.2736, 62.5279)
+scale = Vector2(0.942201, 1.09924)
+texture = ExtResource("506_xr50o")
 
 [node name="MetalArea2D" type="Area2D" parent="CanvasLayer/Resource Bar (TOP)/container/MetalControl"]
 collision_layer = 3
@@ -15177,29 +15230,14 @@ collision_mask = 3
 position = Vector2(53, 52)
 shape = SubResource("RectangleShape2D_2v3gw")
 
-[node name="WeaponsControl" type="Control" parent="CanvasLayer/Resource Bar (TOP)/container"]
-layout_mode = 2
-mouse_filter = 2
-
-[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/Resource Bar (TOP)/container/WeaponsControl"]
-position = Vector2(54, 54)
-texture = ExtResource("20_gqt8h")
-
-[node name="WeaponsArea" type="Area2D" parent="CanvasLayer/Resource Bar (TOP)/container/WeaponsControl"]
-collision_layer = 3
-collision_mask = 3
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/Resource Bar (TOP)/container/WeaponsControl/WeaponsArea"]
-position = Vector2(53, 52)
-shape = SubResource("RectangleShape2D_2v3gw")
-
 [node name="ManpowerControl" type="Control" parent="CanvasLayer/Resource Bar (TOP)/container"]
 layout_mode = 2
 mouse_filter = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/Resource Bar (TOP)/container/ManpowerControl"]
-position = Vector2(54, 54)
-texture = ExtResource("29_lxun5")
+position = Vector2(53.3854, 52.2494)
+scale = Vector2(0.827994, 0.842271)
+texture = ExtResource("508_f44n6")
 
 [node name="ManpowerArea" type="Area2D" parent="CanvasLayer/Resource Bar (TOP)/container/ManpowerControl"]
 collision_layer = 3
@@ -15209,13 +15247,31 @@ collision_mask = 3
 position = Vector2(53, 52)
 shape = SubResource("RectangleShape2D_2v3gw")
 
+[node name="WeaponsControl" type="Control" parent="CanvasLayer/Resource Bar (TOP)/container"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/Resource Bar (TOP)/container/WeaponsControl"]
+position = Vector2(53.3295, 52.2494)
+scale = Vector2(0.827995, 0.842271)
+texture = ExtResource("507_ldxd8")
+
+[node name="WeaponsArea" type="Area2D" parent="CanvasLayer/Resource Bar (TOP)/container/WeaponsControl"]
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/Resource Bar (TOP)/container/WeaponsControl/WeaponsArea"]
+position = Vector2(53, 52)
+shape = SubResource("RectangleShape2D_2v3gw")
+
 [node name="ScienceControl" type="Control" parent="CanvasLayer/Resource Bar (TOP)/container"]
 layout_mode = 2
 mouse_filter = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/Resource Bar (TOP)/container/ScienceControl"]
-position = Vector2(54, 54)
-texture = ExtResource("21_gpwvd")
+position = Vector2(53.4414, 52.2494)
+scale = Vector2(0.827995, 0.842271)
+texture = ExtResource("509_xr50o")
 
 [node name="ScienceArea" type="Area2D" parent="CanvasLayer/Resource Bar (TOP)/container/ScienceControl"]
 collision_layer = 3
@@ -15231,7 +15287,7 @@ mouse_filter = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/Resource Bar (TOP)/container/FaithControl"]
 position = Vector2(54, 54)
-texture = ExtResource("15_gxwbr")
+texture = ExtResource("510_xr50o")
 
 [node name="FaithControl" type="Area2D" parent="CanvasLayer/Resource Bar (TOP)/container/FaithControl"]
 collision_layer = 3
@@ -15246,8 +15302,9 @@ layout_mode = 2
 mouse_filter = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/Resource Bar (TOP)/container/MagicControl"]
-position = Vector2(54, 54)
-texture = ExtResource("23_hjg8m")
+position = Vector2(52.6965, 51.3928)
+scale = Vector2(0.842271, 0.856547)
+texture = ExtResource("510_yewkv")
 
 [node name="MagicArea" type="Area2D" parent="CanvasLayer/Resource Bar (TOP)/container/MagicControl"]
 collision_layer = 3
@@ -15262,9 +15319,9 @@ layout_mode = 2
 mouse_filter = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/Resource Bar (TOP)/container/CultureControl"]
-position = Vector2(54, 53)
-scale = Vector2(1.02, 1.02)
-texture = ExtResource("25_uabur")
+position = Vector2(53.609, 53.1059)
+scale = Vector2(0.870823, 0.885836)
+texture = ExtResource("512_ldxd8")
 
 [node name="CultureArea" type="Area2D" parent="CanvasLayer/Resource Bar (TOP)/container/CultureControl"]
 collision_layer = 3
@@ -15279,8 +15336,9 @@ layout_mode = 2
 mouse_filter = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/Resource Bar (TOP)/container/MandateControl"]
-position = Vector2(54, 54)
-texture = ExtResource("26_trpjx")
+position = Vector2(52.8084, 51.3928)
+scale = Vector2(0.842272, 0.856547)
+texture = ExtResource("511_34mra")
 
 [node name="MandateArea" type="Area2D" parent="CanvasLayer/Resource Bar (TOP)/container/MandateControl"]
 collision_layer = 3
@@ -15295,8 +15353,9 @@ layout_mode = 2
 mouse_filter = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/Resource Bar (TOP)/container/HarmonyControl"]
-position = Vector2(54, 54)
-texture = ExtResource("27_8ftsx")
+position = Vector2(53.7207, 52.2494)
+scale = Vector2(0.827994, 0.842271)
+texture = ExtResource("512_fwltf")
 
 [node name="HarmonyArea" type="Area2D" parent="CanvasLayer/Resource Bar (TOP)/container/HarmonyControl"]
 collision_layer = 3
@@ -15311,8 +15370,9 @@ layout_mode = 2
 mouse_filter = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/Resource Bar (TOP)/container/InfluenceControl"]
-position = Vector2(54, 54)
-texture = ExtResource("28_2yctp")
+position = Vector2(53.7769, 52.2494)
+scale = Vector2(0.827998, 0.842272)
+texture = ExtResource("515_ldxd8")
 
 [node name="InfluenceArea" type="Area2D" parent="CanvasLayer/Resource Bar (TOP)/container/InfluenceControl"]
 collision_layer = 3
@@ -15366,10 +15426,10 @@ offset_right = 73.0
 offset_bottom = 61.0
 text = "10000"
 
-[node name="WeaponsLabel" type="Control" parent="CanvasLayer/Resource Bar (TOP)/container"]
+[node name="ManpowerLabel" type="Control" parent="CanvasLayer/Resource Bar (TOP)/container"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="CanvasLayer/Resource Bar (TOP)/container/WeaponsLabel"]
+[node name="Label" type="Label" parent="CanvasLayer/Resource Bar (TOP)/container/ManpowerLabel"]
 layout_mode = 2
 offset_left = 27.0
 offset_top = 38.0
@@ -15377,10 +15437,10 @@ offset_right = 73.0
 offset_bottom = 61.0
 text = "10000"
 
-[node name="ManpowerLabel" type="Control" parent="CanvasLayer/Resource Bar (TOP)/container"]
+[node name="WeaponsLabel" type="Control" parent="CanvasLayer/Resource Bar (TOP)/container"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="CanvasLayer/Resource Bar (TOP)/container/ManpowerLabel"]
+[node name="Label" type="Label" parent="CanvasLayer/Resource Bar (TOP)/container/WeaponsLabel"]
 layout_mode = 2
 offset_left = 27.0
 offset_top = 38.0
@@ -15465,17 +15525,39 @@ offset_right = 73.0
 offset_bottom = 61.0
 text = "10000"
 
+[node name="Sprite2D5" type="Sprite2D" parent="CanvasLayer/Resource Bar (TOP)"]
+position = Vector2(2042.86, 1672.84)
+scale = Vector2(0.125056, 0.162744)
+texture = ExtResource("520_fwltf")
+
 [node name="Test ResourceButton" type="Button" parent="CanvasLayer/Resource Bar (TOP)"]
-visible = false
 layout_mode = 0
 offset_left = 1853.57
 offset_top = 1591.46
 offset_right = 2228.57
 offset_bottom = 1757.46
 theme_override_colors/font_disabled_color = Color(0.731385, 0.428597, 0.13852, 1)
+theme_override_colors/font_hover_color = Color(0.749831, 3.85046e-07, 0.386302, 1)
+theme_override_colors/icon_hover_color = Color(0.76998, 0.592736, 0, 1)
+theme_override_colors/icon_pressed_color = Color(0.414039, 0.313543, 0, 1)
 theme_override_font_sizes/font_size = 35
+theme_override_styles/focus = SubResource("StyleBoxEmpty_fwltf")
 text = "Next Turn"
-icon = ExtResource("505_11xh4")
+icon = ExtResource("521_mfggh")
+flat = true
+expand_icon = true
+
+[node name="Button" type="Button" parent="CanvasLayer/Resource Bar (TOP)"]
+layout_mode = 0
+offset_left = 2247.58
+offset_top = 15.4179
+offset_right = 2390.58
+offset_bottom = 90.4178
+theme_override_colors/icon_hover_color = Color(0.286244, 0.425631, 0.505151, 1)
+theme_override_colors/icon_pressed_color = Color(0.0669525, 0.166605, 0.417161, 1)
+theme_override_styles/focus = SubResource("StyleBoxEmpty_8oo0e")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_aaql1")
+icon = ExtResource("522_mfggh")
 expand_icon = true
 
 [node name="ResourceInfoControl" type="Control" parent="CanvasLayer" groups=["ScreenPanels"]]
@@ -16624,10 +16706,10 @@ shape = SubResource("RectangleShape2D_qt86y")
 [connection signal="mouse_exited" from="CanvasLayer/Resource Bar (TOP)/container/WoodControl/WoodArea2D" to="." method="_on_wood_area_2d_mouse_exited"]
 [connection signal="mouse_entered" from="CanvasLayer/Resource Bar (TOP)/container/MetalControl/MetalArea2D" to="." method="_on_metal_area_2d_mouse_entered"]
 [connection signal="mouse_exited" from="CanvasLayer/Resource Bar (TOP)/container/MetalControl/MetalArea2D" to="." method="_on_metal_area_2d_mouse_exited"]
-[connection signal="mouse_entered" from="CanvasLayer/Resource Bar (TOP)/container/WeaponsControl/WeaponsArea" to="." method="_on_weapons_area_mouse_entered"]
-[connection signal="mouse_exited" from="CanvasLayer/Resource Bar (TOP)/container/WeaponsControl/WeaponsArea" to="." method="_on_weapons_area_mouse_exited"]
 [connection signal="mouse_entered" from="CanvasLayer/Resource Bar (TOP)/container/ManpowerControl/ManpowerArea" to="." method="_on_manpower_area_mouse_entered"]
 [connection signal="mouse_exited" from="CanvasLayer/Resource Bar (TOP)/container/ManpowerControl/ManpowerArea" to="." method="_on_manpower_area_mouse_exited"]
+[connection signal="mouse_entered" from="CanvasLayer/Resource Bar (TOP)/container/WeaponsControl/WeaponsArea" to="." method="_on_weapons_area_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/Resource Bar (TOP)/container/WeaponsControl/WeaponsArea" to="." method="_on_weapons_area_mouse_exited"]
 [connection signal="mouse_entered" from="CanvasLayer/Resource Bar (TOP)/container/ScienceControl/ScienceArea" to="." method="_on_science_area_mouse_entered"]
 [connection signal="mouse_exited" from="CanvasLayer/Resource Bar (TOP)/container/ScienceControl/ScienceArea" to="." method="_on_science_area_mouse_exited"]
 [connection signal="mouse_entered" from="CanvasLayer/Resource Bar (TOP)/container/FaithControl/FaithControl" to="." method="_on_faith_control_mouse_entered"]

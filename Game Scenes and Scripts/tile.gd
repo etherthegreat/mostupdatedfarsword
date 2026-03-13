@@ -864,6 +864,58 @@ func calculateSeason(month):
 var tileGoldTax: float
 var tileHarmonyTax: float
 
+var tileFoodDic: Dictionary = {}
+
+signal censusComplete
+
+func censusTile(playerCountryNode):
+	calculateDailyTileEcoChanges()
+	buildingFoodOutput = 0
+	buildingWoodOutput = 0
+	buildingGoldOutput = 0
+	buildingMetalOutput = 0
+	buildingWeaponsOutput = 0
+	buildingScienceOutput = 0
+	buildingFaithOutput = 0
+	buildingMagicOutput = 0
+	buildingMandateOutput = 0
+	buildingInfluenceOutput = 0
+	buildingManpowerOutput = 0
+	buildingHarmonyOutput = 0 
+	buildingCultureOutput = 0
+	corruptionChange = 0
+	tileGoldTax = 0
+	tileHarmonyTax = 0
+	for building in tileBuildingsList:
+		building.calculateOutputs(playerCountryNode)
+		buildingFoodOutput += building.totalBuildingFood
+		buildingWoodOutput += building.totalBuildingWood
+		buildingGoldOutput += building.totalBuildingGold
+		buildingMetalOutput += building.totalBuildingMetal
+		buildingWeaponsOutput += building.totalBuildingWeapons
+		buildingScienceOutput += building.totalBuildingScience
+		buildingFaithOutput += building.totalBuildingFaith
+		buildingMagicOutput += building.totalBuildingMagic
+		buildingCultureOutput += building.totalBuildingCulture
+		buildingMandateOutput += building.totalBuildingMandate
+		buildingHarmonyOutput += building.totalBuildingHarmony
+		buildingManpowerOutput += building.totalBuildingManpower
+		buildingInfluenceOutput += building.totalBuildingInfluence
+		corruptionChange += building.corruptionChange
+		tileGoldTax += building.goldTax
+		tileHarmonyTax += building.harmonyTax
+	for building in tileBuildingsList:
+		if building.foodDic.is_empty() == false:
+			tileFoodDic[building.buildingType] = building.foodDic
+			
+	if tileFoodDic.is_empty() == false:
+		emit_signal("censusComplete", "Food", buildingFoodOutput, tileFoodDic)
+	pass
+
+
+
+
+
 func surveyTile(playerCountryNode):
 	calculateDailyTileEcoChanges()
 	buildingFoodOutput = 0

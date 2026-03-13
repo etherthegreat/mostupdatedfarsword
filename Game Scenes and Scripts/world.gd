@@ -76,6 +76,7 @@ func newGameBuild(CID, gameLang):
 		Tile.onNewGame()
 		Tile.calculateSeason(month)
 		Tile.clicked.connect(tileClicked)
+		Tile.censusComplete.connect(manaUpdate)
 	$CanvasLayer/LoadingLabel.text = "Spawning Countries"
 	$CanvasLayer/LoadingProgressBar.value = 25
 	spawnNewGameCountries(CID)
@@ -254,6 +255,7 @@ func updatePlayerUI():
 	$PathControl.call_deferred("showPathPoints", playerCapitalPathButton)
 	$CanvasLayer/BuildingInfoPanel.buildSelf(playerCountryNode)
 	$CanvasLayer/BuildingInfoPanel.newBuildingInTile.connect(addNewBuildingToTile)
+	$CanvasLayer/TileInfoPanel.retrieveTileOutputs.connect(retrieveOutputs)
 	#$PathControl.makeAllContainersPassable()
 	#print("ALL I NEED")
 	pass
@@ -261,10 +263,16 @@ func updatePlayerUI():
 var thisTileNumber: int
 var selectedTile: Tile
 
+
+func manaUpdate(type, amount, dictionary):
+	$CanvasLayer/TileInfoPanel.buildTileOutput(type, amount, dictionary)
+	pass
+
 func tileClicked(tile):
-	print("Tile", tile.tileNumber, "Clicked")
+	#print("Tile", tile.tileNumber, "Clicked")
 	selectedTile = tile
 	#$CanvasLayer/TileInfoPanel.thisTile = tile
+	
 	$CanvasLayer/TileInfoPanel.displayTileInfo(tile)
 	if $CanvasLayer/TileInfoPanel.visible == false:
 		$CanvasLayer/TileInfoPanel.visible = true
@@ -278,6 +286,9 @@ func tileClicked(tile):
 	$CanvasLayer/BuildingInfoPanel.displayBuildingInfo(tile)
 	pass
 
+func retrieveOutputs():
+	selectedTile.censusTile(playerCountryNode)
+	pass
 
 func matchCountryBuildings():
 	for country in aliveCountriesList:

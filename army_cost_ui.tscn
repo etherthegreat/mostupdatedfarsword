@@ -1,0 +1,30 @@
+[gd_scene load_steps=3 format=3 uid="uid://2yus0h0my4xo"]
+
+[ext_resource type="Texture2D" uid="uid://cd4tk74v57rhw" path="res://art assets/finishedAssets/Panels/armypanelfinishedui/IMG_1561.PNG" id="1_tykp0"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rol0w"]
+size = Vector2(27, 28)
+
+[node name="armyCostUI" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+position = Vector2(18, 16)
+scale = Vector2(0.041, 0.041)
+texture = ExtResource("1_tykp0")
+
+[node name="amountlabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 34.0
+offset_top = 5.0
+offset_right = 84.0
+offset_bottom = 28.0
+text = "11,101"
+horizontal_alignment = 2
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(18.5, 16)
+shape = SubResource("RectangleShape2D_rol0w")

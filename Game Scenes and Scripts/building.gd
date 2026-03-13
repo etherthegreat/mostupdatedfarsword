@@ -92,13 +92,30 @@ var goldPurchaseCost: float
 var woodPurchaseCost: float
 var metalPurchaseCost: float
 
+var goldDic: Dictionary
+var foodDic: Dictionary
+var woodDic: Dictionary
+var metalDic: Dictionary
+
+var manpowerDic: Dictionary
+var weaponsDic: Dictionary
+
+var scienceDic: Dictionary
+var faithDic: Dictionary
+var magicDic: Dictionary
+var cultureDic: Dictionary
+
+var mandateDic: Dictionary
+var harmonyDic: Dictionary
+var influenceDic: Dictionary
+
+var corruptionDic: Dictionary
 
 signal towerBuilding
 func buildBuilding():
 	match buildingType:
 		"Farm":
 			buildingSprite = load("res://art assets/finishedAssets/buildingsketches/farm.png")
-			foodPerLevel = 1
 			foodPurchaseCost = 0
 			goldPurchaseCost = 25
 			woodPurchaseCost = 50
@@ -106,8 +123,6 @@ func buildBuilding():
 		"Granary":
 			buildingSprite = load("res://art assets/finishedAssets/buildingsketches/granary.png") 
 			#foodStorageIncrease += 1 #every 1 increase will be calculated as +100 storage on the national level.
-			goldCostPerLevel += 1
-			foodPerLevel = 1
 			foodPurchaseCost = 100
 			goldPurchaseCost = 50
 			woodPurchaseCost = 50
@@ -116,11 +131,14 @@ func buildBuilding():
 			buildingSprite = load("res://art assets/finishedAssets/buildingsketches/temple.png")
 			foodCostPerLevel +=2
 			woodCostPerLevel +=1
-			foodPerLevel = 1
+			faithPerLevel = 1
 			foodPurchaseCost = 75
 			goldPurchaseCost = 100
 			woodPurchaseCost = 50
 			metalPurchaseCost = 0
+			goldDic["Base Temple Food Cost"] = (-2 * buildingLevel)
+			woodDic["Base Temple Wood Cost"] = (-1 * buildingLevel)
+			faithDic["Base Temple Faith Output"] = (1 * buildingLevel)
 		"Mine":
 			buildingSprite = load("res://art assets/finishedAssets/buildingsketches/mine.png")
 			foodCostPerLevel +=1
@@ -131,23 +149,19 @@ func buildBuilding():
 			goldPurchaseCost = 75
 			woodPurchaseCost = 75
 			metalPurchaseCost = 0
+			foodDic["Base Mine Food Cost"] = (-1 * buildingLevel)
+			woodDic["Base Mine Wood Cost"] = (-1 * buildingLevel)
+			metalDic["Base Mine Metal Output"] = (1 * buildingLevel)
 		"Camp":
 			buildingSprite = load("res://art assets/finishedAssets/buildingsketches/camp.png")
-			foodCostPerLevel +=1
 			woodPerLevel +=1
-			foodPerLevel = 1
 			foodPurchaseCost = 25
 			goldPurchaseCost = 25
 			woodPurchaseCost = 50
 			metalPurchaseCost = 0
+			woodDic["Base Camp Wood Output"] = (1 * buildingLevel)
 		"Tower":
 			buildingSprite = load("res://art assets/finishedAssets/buildingsketches/tower.png")
-			magicPerLevel += 4
-			foodCostPerLevel += 2
-			metalCostPerLevel += 2
-			woodCostPerLevel += 2
-			goldCostPerLevel += 2
-			foodPerLevel = 1
 			foodPurchaseCost = 50
 			goldPurchaseCost = 125
 			woodPurchaseCost = 125
@@ -158,87 +172,124 @@ func buildBuilding():
 			buildingSprite = load("res://art assets/finishedAssets/buildingsketches/library.png")
 			goldCostPerLevel += 1
 			woodCostPerLevel += 1
-			foodCostPerLevel += 1
 			sciencePerLevel += 2
-			foodPerLevel = 1
 			foodPurchaseCost = 0
 			goldPurchaseCost = 100
 			woodPurchaseCost = 100
 			metalPurchaseCost = 0
+			scienceDic["Base Library Science Output"] = (2 * buildingLevel)
+			woodDic["Base Library Wood Cost"] = (-2 * buildingLevel)
+			goldDic["Base Library Gold Cost"] = (-1 * buildingLevel)
 		"Workshop":
 			buildingSprite = load("res://art assets/finishedAssets/buildingsketches/workshop.png")
 			goldPerLevel += 1
 			metalCostPerLevel += 1
-			foodCostPerLevel += 1
 			woodCostPerLevel += 1
-			foodPerLevel = 1
 			foodPurchaseCost = 25
 			goldPurchaseCost = 25
 			woodPurchaseCost = 50
 			metalPurchaseCost = 100
+			goldDic["Base Workshop Gold Output"] = (1 * buildingLevel)
+			woodDic["Base Workshop Wood Cost"] = (-1 * buildingLevel)
+			metalDic["Base Workshop Metal Cost"] = (-1 * buildingLevel)
 		"Bath":
 			buildingSprite = load("res://art assets/finishedAssets/buildingsketches/bath.png")
 			corruptionLossPerLevel -= 1
 			foodCostPerLevel += 3
 			goldCostPerLevel += 1
-			foodPerLevel = 1
+			harmonyPerLevel +=1
 			foodPurchaseCost = 100
 			goldPurchaseCost = 100
 			woodPurchaseCost = 50
 			metalPurchaseCost = 20
+			harmonyDic["Base Bath Harmony Output"] = (1 * buildingLevel)
+			goldDic["Base Bath Gold Cost"] = (-1 * buildingLevel)
+			foodDic["Base Bath Food Cost"] = (-1 * buildingLevel)
+			corruptionDic["Base Corruption Loss From Baths"] = (-1 * buildingLevel)
 		"Faire":
 			buildingSprite = load("res://art assets/finishedAssets/buildingsketches/faire.png")
 			culturePerLevel +=1
-			foodCostPerLevel +=1
+			foodCostPerLevel +=2
 			woodCostPerLevel +=1
-			goldCostPerLevel += 1
-			foodPerLevel = 1
+			goldCostPerLevel += 2
 			foodPurchaseCost = 100
 			goldPurchaseCost = 100
 			woodPurchaseCost = 50
 			metalPurchaseCost = 20
+			cultureDic["Base Faire Culture Output"] = (1 * buildingLevel)
+			goldDic["Base Faire Gold Cost"] = (-2 * buildingLevel)
+			foodDic["Base Faire Food Cost"] = (-2 * buildingLevel)
+			woodDic["Base Faire Wood Cost"] = (-1 * buildingLevel)
 		"Forge":
 			buildingSprite = load("res://art assets/finishedAssets/buildingsketches/forge.png")
 			weaponsPerLevel += 1
 			metalPerLevel += 1
 			woodPerLevel += 1
 			goldPerLevel += 1
-			foodPerLevel += 1
-			foodPerLevel = 1
 			foodPurchaseCost = 25
 			goldPurchaseCost = 25
 			woodPurchaseCost = 50
 			metalPurchaseCost = 100
+			weaponsDic["Base Forge Weapons Output"] = (1 * buildingLevel)
+			goldDic["Base Forge Gold Cost"] = (-1 * buildingLevel)
+			woodDic["Base Forge Wood Cost"] = (-1 * buildingLevel)
+			metalDic["Base Forge Metal Cost"] = (-1 * buildingLevel)
 		"Barracks":
 			buildingSprite = load("res://art assets/finishedAssets/buildingsketches/barracks.png")
 			manpowerPerLevel += 15
 			goldCostPerLevel += 2
+			woodCostPerLevel +=1
+			foodCostPerLevel += 1
 			foodPurchaseCost = 30
 			goldPurchaseCost = 30
 			woodPurchaseCost = 30
 			metalPurchaseCost = 90
+			manpowerDic["Base Barracks Manpower Output"] = (50 * buildingLevel)
+			goldDic["Base Forge Gold Cost"] = (-2 * buildingLevel)
+			woodDic["Base Forge Wood Cost"] = (-1 * buildingLevel)
+			foodDic["Base Forge Metal Cost"] = (-1 * buildingLevel)
 	pass
 
 func matchPlayerUnlockables(playerCountryNode):
+	foodDic.clear()
+	goldDic.clear()
+	woodDic.clear()
+	metalDic.clear()
+	harmonyDic.clear()
+	influenceDic.clear()
+	mandateDic.clear()
+	weaponsDic.clear()
+	manpowerDic.clear()
+	scienceDic.clear()
+	faithDic.clear()
+	magicDic.clear()
+	cultureDic.clear()
 	playerCountry = playerCountryNode
 	match buildingType:
 		"Farm":
+			foodPerLevel = 1
+			foodDic["Base Farm Output"] = (1 * buildingLevel)
 			cropSlot = tile.cropSlot
+			var farmTech: int = 0
 			for Technology in playerCountry.unlockedTechnologies:
-				if Technology.techName == "Agriculture":
-					foodPerLevel += 1
 				if Technology.techName == "Irrigation":
 					foodPerLevel += 1
+					farmTech += 1
 				if Technology.techName == "Calendar":
 					foodPerLevel += 1
+					farmTech += 1
 				if Technology.techName == "Engineering":
 					foodPerLevel += 1
+					farmTech += 1
+			if farmTech != 0:
+				foodDic["Farm Technology Food Bonus"] = farmTech
 			for law in playerCountry.lawsInConstitution:
 				if law.lawType == "Rural Education Initiative":
 					sciencePerLevel += 1
 					goldCostPerLevel +=1
 				if law.lawType == "Mercantilism":
 					goldPerLevel += 1
+					goldDic["Enacted Law: Mercantilism"] = (1 * buildingLevel)
 			if tile.tileGovernor != null:
 				match tile.tileGovernor.governorPosition:
 					"BREWER":
@@ -282,6 +333,9 @@ func matchPlayerUnlockables(playerCountryNode):
 						foodPerLevel +=1
 						woodPerLevel +=1
 						magicCostPerLevel += 4
+						foodDic["Spell: Plentify"] = (1 * buildingLevel)
+						woodDic["Spell: Plentify"] = (1 * buildingLevel)
+						magicDic["Spell: Plentify"] = (-4 * buildingLevel)
 					"Gentle Rains":
 						foodPerLevel += 2
 						magicCostPerLevel += 5
@@ -295,54 +349,84 @@ func matchPlayerUnlockables(playerCountryNode):
 					"Bananas":
 						foodPerLevel += 1
 						magicPerLevel += 1
+						foodDic["Farm Crop: Bananas"] = (1 * buildingLevel)
+						magicDic["Farm Crop: Bananas"] = (1 * buildingLevel)
 					"Razorberry":
 						goldPerLevel += 5
-						faithCostPerLevel +=2
+						faithCostPerLevel +=1
 						foodCostPerLevel +=1
+						goldDic["Farm Crop: Razorberries"] = (4 * buildingLevel)
+						foodDic["Farm Crop: Razorberries"] = (-1 * buildingLevel)
+						faithDic["Farm Crop: Razorberries"] = (-1 * buildingLevel)
 					"Mushrooms":
 						magicPerLevel +=1
 						sciencePerLevel +=1
+						scienceDic["Farm Crop: Mushrooms"] = (1 * buildingLevel)
+						scienceDic["Farm Crop: Mushrooms"] = (1 * buildingLevel)
 					"Spices":
 						goldPerLevel += 1
 						culturePerLevel += 1
+						goldDic["Farm Crop: Spices"] = (1 * buildingLevel)
+						cultureDic["Farm Crop: Spices"] = (1 * buildingLevel)
 					"Wheat":
 						foodPerLevel += 2
+						foodDic["Farm Crop: Wheat"] = (2 * buildingLevel)
 					"Seaweed":
 						foodPerLevel += 1
 						culturePerLevel += 1
+						foodDic["Farm Crop: Seaweed"] = (1 * buildingLevel)
+						cultureDic["Farm Crop: Seaweed"] = (1 * buildingLevel)
 					"Copperflower":
 						metalPerLevel +=1
-						sciencePerLevel +=1 
+						sciencePerLevel +=1
+						metalDic["Farm Crop: Copperflower"] = (1 * buildingLevel)
+						scienceDic["Farm Crop: Copperflower"] = (1 * buildingLevel)
 					"Incense":
 						faithPerLevel +=2
+						faithDic["Farm Crop: Incense"] = (2 * buildingLevel)
 					"Cannabis":
 						culturePerLevel +=2
+						cultureDic["Farm Crop: Cannabis"] = (2 * buildingLevel)
 					"Wereroot":
 						woodPerLevel +=1
 						faithPerLevel +=1
+						woodDic["Farm Crop: Wereroot"] = (1 * buildingLevel)
+						faithDic["Farm Crop: Wereroot"] = (1 * buildingLevel)
 					"Bamboo":
 						woodPerLevel +=2
+						woodDic["Farm Crop: Bamboo"] = (2 * buildingLevel)
 					"Cloudbean":
 						magicPerLevel +=2
+						magicDic["Farm Crop: Cloudbean"] = (2 * buildingLevel)
 					"Papyrus":
 						sciencePerLevel +=2
+						scienceDic["Farm Crop: Papyrus"] = (2 * buildingLevel)
 					"Cotton":
 						goldPerLevel +=2
+						goldDic["Farm Crop: Cotton"] = (2 * buildingLevel)
 			else:
 				print("error, no crop in", tile.tileNumber)
 		"Granary":
+			goldCostPerLevel += 1
+			foodPerLevel = 1
+			goldDic["Base Granary Gold Cost"] = (-1 * buildingLevel)
+			foodDic["Base Granary Food Output"] = (1 * buildingLevel)
+			var granaryTech: int = 0
 			for Technology in playerCountry.unlockedTechnologies:
 				if Technology.techName == "Calendar":
 					foodPerLevel += 1
-					goldCostPerLevel += 1
+					granaryTech += 1
 				if Technology.techName == "Engineering":
 					foodPerLevel += 1
-					goldCostPerLevel += 1
+					granaryTech += 1
+			if granaryTech != 0:
+				foodDic["Granary Technology Food Bonus"] = granaryTech
 			if playerCountry.mandateFromGranaries == true:
 				mandatePerLevel += 1
 				for Technology in playerCountry.unlockedTechnologies:
 					if Technology.techName == "Statecraft":
 						mandatePerLevel += 1
+						mandateDic["Granary Technology Mandate Bonus"] = (1 * buildingLevel)
 				for tradition in playerCountry.unlockedTraditions:
 					if tradition.traditionType == "Meticulous Organizers":
 						mandatePerLevel += 1
@@ -601,6 +685,16 @@ func matchPlayerUnlockables(playerCountryNode):
 						foodPerLevel += 1
 						magicCostPerLevel += 2
 		"Tower":
+			magicPerLevel += 4
+			foodCostPerLevel += 2
+			metalCostPerLevel += 1
+			woodCostPerLevel += 2
+			goldCostPerLevel += 1
+			magicDic["Base Tower Magic Output"] = (4 * buildingLevel)
+			foodDic["Base Tower Food Cost"] = (-2 * buildingLevel)
+			woodDic["Base Tower Wood Cost"] = (-2 * buildingLevel)
+			metalDic["Base Tower Metal Cost"] = (-1 * buildingLevel)
+			goldDic["Base Tower Gold Cost"] = (-1 * buildingLevel)
 			if tile.tileWizard != null:
 				match tile.tileWizard.wizardType:
 					"DRUID":
