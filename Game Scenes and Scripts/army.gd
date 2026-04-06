@@ -19,7 +19,7 @@ var armyWeaponsCost: int = 0
 var armyManpowerCost: int = 0
 
 var ArmyName: String
-var Icon
+#var Icon
 
 var homeTile #each army must be built in a barracks, barracks gives +2 maxUnits to army per level
 #army gets destroyed if homeTile changes hands

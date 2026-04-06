@@ -98,8 +98,8 @@ var weaponsList: Array = []
 func _on_weapon_type_button_pressed() -> void:
 	#print("weapons list before", weaponsList)
 	if weaponsList != null:
-		for weaponButton in weaponsList:
-			weaponButton.queue_free()
+		for WeaponButton in weaponsList:
+			WeaponButton.queue_free()
 		weaponsList.clear()
 	for WeaponTemplate in thisUnit.playerCountry.weaponTemplateList:
 		var weaponButton = WeaponButton.new()

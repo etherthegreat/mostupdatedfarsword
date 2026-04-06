@@ -131,7 +131,7 @@
 [ext_resource type="Texture2D" uid="uid://b6fudp24jq6xa" path="res://art assets/Map Art/Coastal Tiles/C 5 Tile.png" id="53_s0iph"]
 [ext_resource type="Texture2D" uid="uid://gca4kfqi3w14" path="res://art assets/Map Art/18Ring.png" id="54_apa2n"]
 [ext_resource type="Texture2D" uid="uid://cwj6iytunnw7v" path="res://art assets/Map Art/Coastal Tiles/C 6 Ring.png" id="54_njcev"]
-[ext_resource type="Script" uid="uid://bqoa1uaifkk6g" path="res://Game Scenes and Scripts/faction_control.gd" id="54_sv2u8"]
+[ext_resource type="Script" path="res://Game Scenes and Scripts/faction_control.gd" id="54_sv2u8"]
 [ext_resource type="Texture2D" uid="uid://bvi4hpeut63c3" path="res://art assets/Map Art/18FOG.png" id="55_702vd"]
 [ext_resource type="Texture2D" uid="uid://5xm7wsujdw13" path="res://art assets/Map Art/Coastal Tiles/C 6 Fog.png" id="55_nsmt3"]
 [ext_resource type="Script" uid="uid://idfuyp443x0" path="res://Game Scenes and Scripts/government_control.gd" id="55_w7ifc"]

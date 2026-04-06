@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://cxmy8mdrrj0yl"]
+[gd_scene load_steps=19 format=3 uid="uid://cxmy8mdrrj0yl"]
 
 [ext_resource type="Script" uid="uid://cdkg2sl6mii80" path="res://Game Scenes and Scripts/army.gd" id="1_clqeb"]
 [ext_resource type="Texture2D" uid="uid://d2ka05yjukq25" path="res://art assets/finishedAssets/Panels/armypanelfinishedui/IMG_1551.PNG" id="2_fbxbp"]
@@ -7,9 +7,24 @@
 [ext_resource type="Texture2D" uid="uid://buwli7g6cmpkp" path="res://art assets/finishedAssets/manaicons/manpower.png" id="5_n1h0o"]
 [ext_resource type="Texture2D" uid="uid://2hyymtaje3ct" path="res://art assets/finishedAssets/manaicons/Weapons.png" id="6_qyt7h"]
 [ext_resource type="PackedScene" uid="uid://2yus0h0my4xo" path="res://army_cost_ui.tscn" id="7_t67s2"]
+[ext_resource type="Texture2D" uid="uid://d0ci8gsbww1wy" path="res://art assets/finishedAssets/Panels/armypanelfinishedui/IMG_1555.PNG" id="9_blg07"]
+[ext_resource type="Texture2D" uid="uid://cc8uccirtqr6p" path="res://art assets/finishedAssets/Panels/armypanelfinishedui/IMG_1549.PNG" id="9_kd2xh"]
+[ext_resource type="Texture2D" uid="uid://cqeg42epxn2vu" path="res://art assets/finishedAssets/Panels/armypanelfinishedui/IMG_1556.PNG" id="9_qyt7h"]
+[ext_resource type="Texture2D" uid="uid://ddotujvsq51tr" path="res://art assets/finishedAssets/Panels/armypanelfinishedui/IMG_1553.PNG" id="10_kd2xh"]
+[ext_resource type="Texture2D" uid="uid://dtlurepbpgtkl" path="res://art assets/Placeholder Art/Spells/Green 1.PNG" id="11_gr5rn"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_blg07"]
 radius = 62.6087
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_v4rpa"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5sx4d"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d8xcn"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_y6fmp"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_s2rdv"]
 
 [node name="Army" type="Control"]
 layout_mode = 3
@@ -105,6 +120,7 @@ text = "120/120"
 metadata/_edit_use_anchors_ = true
 
 [node name="ProgressBar2" type="ProgressBar" parent="manpowerweaponscontainer/manpowercontrol"]
+layout_mode = 0
 offset_left = 22.0
 offset_top = 57.0
 offset_right = 70.0
@@ -143,6 +159,7 @@ scale = Vector2(0.420833, 0.420833)
 shape = SubResource("CircleShape2D_blg07")
 
 [node name="ProgressBar2" type="ProgressBar" parent="manpowerweaponscontainer/weaponscontrol"]
+layout_mode = 0
 offset_left = 22.0
 offset_top = 57.0
 offset_right = 70.0
@@ -159,21 +176,97 @@ theme_override_constants/separation = 40
 
 [node name="armyCostUI" parent="resourcescontainer" instance=ExtResource("7_t67s2")]
 layout_mode = 2
+tempType = "Punch"
 
 [node name="armyCostUI2" parent="resourcescontainer" instance=ExtResource("7_t67s2")]
 layout_mode = 2
+tempType = "Launch"
 
 [node name="armyCostUI3" parent="resourcescontainer" instance=ExtResource("7_t67s2")]
 layout_mode = 2
+tempType = "Shield"
 
 [node name="armyCostUI4" parent="resourcescontainer" instance=ExtResource("7_t67s2")]
 layout_mode = 2
+tempType = "Guard"
 
 [node name="armyCostUI5" parent="resourcescontainer" instance=ExtResource("7_t67s2")]
 layout_mode = 2
+tempType = "Catch"
 
 [node name="armyCostUI6" parent="resourcescontainer" instance=ExtResource("7_t67s2")]
 layout_mode = 2
+tempType = "Spell"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 266.0
+offset_top = 64.0
+offset_right = 306.0
+offset_bottom = 224.0
+theme_override_constants/separation = 80
+
+[node name="BannerControl" type="Control" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="BannerButton" type="Button" parent="VBoxContainer/BannerControl"]
+layout_mode = 0
+offset_left = -37.0
+offset_top = -23.0
+offset_right = 28.0
+offset_bottom = 42.0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_v4rpa")
+icon = ExtResource("9_qyt7h")
+icon_alignment = 1
+expand_icon = true
+
+[node name="Sprite2D" type="Sprite2D" parent="VBoxContainer/BannerControl"]
+position = Vector2(-3.7085, -31.2916)
+scale = Vector2(0.0554167, 0.0554167)
+texture = ExtResource("9_kd2xh")
+
+[node name="SpellControl" type="Control" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="SpellButton" type="Button" parent="VBoxContainer/SpellControl"]
+layout_mode = 0
+offset_left = -37.0
+offset_top = -23.0
+offset_right = 28.0
+offset_bottom = 42.0
+theme_override_styles/focus = SubResource("StyleBoxEmpty_5sx4d")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_d8xcn")
+icon = ExtResource("9_blg07")
+expand_icon = true
+
+[node name="Sprite2D2" type="Sprite2D" parent="VBoxContainer/SpellControl"]
+position = Vector2(-2, -29)
+scale = Vector2(0.0283814, 0.0283814)
+texture = ExtResource("11_gr5rn")
+
+[node name="FindControl" type="Control" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="FindButton" type="Button" parent="VBoxContainer/FindControl"]
+layout_mode = 0
+offset_left = -36.0
+offset_top = -33.0
+offset_right = 29.0
+offset_bottom = 32.0
+theme_override_styles/focus = SubResource("StyleBoxEmpty_y6fmp")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_s2rdv")
+icon = ExtResource("10_kd2xh")
+expand_icon = true
+
+[node name="Label" type="Label" parent="VBoxContainer/FindControl"]
+layout_mode = 0
+offset_left = -38.0
+offset_top = -31.0
+offset_right = 79.0
+offset_bottom = -8.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 9
+text = "Locate On Map"
 
 [connection signal="pressed" from="RaiseArmy" to="." method="_on_raise_army_pressed"]
 [connection signal="pressed" from="CommanderButton" to="." method="_on_commander_button_pressed"]

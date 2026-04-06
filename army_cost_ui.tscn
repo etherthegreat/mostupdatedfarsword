@@ -1,5 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://2yus0h0my4xo"]
+[gd_scene load_steps=4 format=3 uid="uid://2yus0h0my4xo"]
 
+[ext_resource type="Script" uid="uid://cxg38a1uks3xb" path="res://army_cost_ui.gd" id="1_rol0w"]
 [ext_resource type="Texture2D" uid="uid://cd4tk74v57rhw" path="res://art assets/finishedAssets/Panels/armypanelfinishedui/IMG_1561.PNG" id="1_tykp0"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rol0w"]
@@ -8,6 +9,7 @@ size = Vector2(27, 28)
 [node name="armyCostUI" type="Control"]
 layout_mode = 3
 anchors_preset = 0
+script = ExtResource("1_rol0w")
 
 [node name="Sprite2D2" type="Sprite2D" parent="."]
 position = Vector2(18, 16)
