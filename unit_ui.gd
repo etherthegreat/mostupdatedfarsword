@@ -8,34 +8,15 @@ var updateControl: bool = false
 var milModList: Array = []
 var modListCompare: Array = []
 
+var alwaysFree: bool
+var debugMode: bool
+
 const milModScene = preload("res://mil_mod.tscn")
 
-func startUpdating():
-	updateControl = true
-	pass
-
-func stopUpdating():
-	updateControl= false
-	pass
-
-func _process(delta: float) -> void:
-	if updateControl == false:
-		return
-	else:
-		if is_instance_valid(thisUnit):
-			$Panel/UnitNameLabel.text = thisUnit.unitType
-			if thisUnit.unitWeapon != null:
-				$Panel/WeaponTypeButton.icon = thisUnit.unitWeapon.weaponImage
-			else:
-				$Panel/WeaponTypeButton.icon = null
-			if thisUnit.unitMetal != null:
-				$Panel/OreTypeButton.icon = thisUnit.unitMetal.oreImage
-			$Panel/LevelLabel.text = str(thisUnit.unitLevel)
-			$Panel/UnitStrengthContainer/UnitAttackLabel.text = str("Attack: ", thisUnit.unitOffensiveScore)
-			$Panel/UnitStrengthContainer/UnitDefenceLabel.text = str("Defence: ", thisUnit.unitDefensiveScore)
-			$Panel/ManpowerLabel.text = str("Strength: ", thisUnit.unitCurrentManpower, "/", thisUnit.unitMaxManpower)
-			#print("UPdating UI UNit HAHAHAA!")
-			#print(self, "I am here, ya ya ya", thisUnit.unitType)
+func buildSelf():
+	debugMode = false
+	alwaysFree = false
+	
 	pass
 
 func assignUnit(unitforTransfer):
@@ -52,10 +33,6 @@ func upgradeButtonCalculation(maxUnitLevel):
 			$UpgradeButton.disabled = true
 	pass
 
-
-func _on_button_pressed() -> void:
-	thisUnit.unitCurrentManpower -= 100
-	pass # Replace with function body.
 
 var milModCompare :Array = []
 
@@ -153,6 +130,31 @@ func addWeapon(weaponType):
 	pass
 
 
+#debug menu operations
+
+func _on_debug_menu_button_pressed() -> void:
+	if $Button.visible == false:
+		$Button.visible = true
+		$Button2.visible = true
+		$UpgradeButton.visible = true
+	else:
+		$Button.visible = false
+		$Button2.visible = false
+		$UpgradeButton.visible = false
+	pass # Replace with function body.
+
 func _on_upgrade_button_pressed():
 	thisUnit.unitLevel +=1
+	pass # Replace with function body.
+
+func _on_button_pressed() -> void:
+	thisUnit.unitCurrentManpower -= 100
+	pass # Replace with function body.
+
+func _on_button_2_pressed() -> void:
+	thisUnit.unitCurrentManpower += 100
+	pass # Replace with function body.
+
+func _on_always_freebutton_pressed() -> void:
+	alwaysFree = true
 	pass # Replace with function body.

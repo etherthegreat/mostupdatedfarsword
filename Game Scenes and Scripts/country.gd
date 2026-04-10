@@ -285,11 +285,11 @@ func NewGameBuild():
 			updateDiscoveredByPlayer()
 			for Army in countryArmyList:
 				if Army.ArmyName == "Palace Guards":
-					addNewUnit(Army, "Infantry", 1, "Club", "Copper")
-					addNewUnit(Army, "Ranged", 2, "Atlatl", "Wood")
-					addNewUnit(Army, "Infantry", 1, "Club", "Wood")
-					addNewUnit(Army, "Infantry", 3, "Club", "Iron")
-					addNewUnit(Army, "Infantry", 3, "Club", "Iron")
+					addNewUnit(Army, "Infantry", 1, "Club", "Copper", "Scale")
+					addNewUnit(Army, "Ranged", 2, "Atlatl", "Wood", "Chain")
+					addNewUnit(Army, "Infantry", 1, "Club", "Wood", "Scout")
+					addNewUnit(Army, "Infantry", 3, "Club", "Iron", "Cast")
+					addNewUnit(Army, "Infantry", 3, "Club", "Iron", "Point")
 					Army.setMaxArmyShield()
 		"ANL":
 			#capitalPathPointButton = $PathControl/PathPointsControl/PDT1
@@ -662,36 +662,15 @@ func showCommander(commander):
 	emit_signal("displayCommander", commander)
 	pass
 
-var weaponScene = load("res://weapon.tscn")
-var oreScene = load("res://ore.tscn")
-
-func addNewUnit(Army, UnitType, Level, WeaponType, OreType):
+func addNewUnit(Army, UnitType, Level, WeaponType, OreType, ArmorType):
 	var newUnit = unitScene.instantiate()
-	newUnit.playerCountry = self
-	newUnit.unitType = str(UnitType)
-	newUnit.unitLevel = Level
-	var newWeapon = weaponScene.instantiate()
-	newWeapon.weaponType = str(WeaponType)
-	newWeapon.buildSelf()
-	newUnit.unitWeapon = newWeapon
-	var newOre = ore.new()
-	newOre.buildSelf(OreType)
-	newUnit.unitMetal = newOre
-	newUnit.calculateOreMilMod()
+	newUnit.buildSelf(self, UnitType, Level, WeaponType, OreType, ArmorType)
 	newUnit.getUnitInfo.connect(updateUnit)
-	newUnit.buildSelf()
 	Army.addUnitToArmy(newUnit)
 	Army.updateSelf(Army.ArmyName, self, 0)
 	pass
 
 func updateUnit(type, unitNode):
-	#for MilMod in countryMilModList:
-		#var thingToPrint = str("country mil mods", MilMod.milModType, "infantry?", MilMod.infantryMod)
-		#print(thingToPrint)
-	for UnitTemplate in unitTemplateList:
-		if UnitTemplate.unitType == type:
-			unitNode.unitOffensiveScore = UnitTemplate.unitOffensiveScore
-			unitNode.unitDefensiveScore = UnitTemplate.unitDefensiveScore
 	for MilMod in countryMilModList:
 		if MilMod.infantryMod == true && type == "Infantry":
 			unitNode.addMilMod(MilMod)

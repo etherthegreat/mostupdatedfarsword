@@ -51,10 +51,10 @@ var armyAbility: int #recruit = 100, regulars = 105, expert = 110, veteran = 115
 #armyAbility can also be improved/debuffed by other modifiers through tech, leader, modifiers, etc.
 var armyStrength: int #basically how much health this unit has.  once  0, this army will be expelled from combat.  
 
-var armyAttackScore: int
-var armyDefenseScore: int
-var armyRangedAttack: int
-var armyRangedDefense: int
+var armyPunch: int
+var armyBlock: int
+var armyLaunch: int
+var armyDefence: int
 var armyMagicDefense: int
 var armyShield: int
 var armyMaxShield: int
@@ -65,10 +65,10 @@ var inTile: Tile #the tile this unit is currently in
 var inTileTerrain #terrain type, used to determine unit stats and modifiers
 var targetTile: Tile #the tile this unit would like to move to.  builds a path from this inTile to targetTile to determining
 #pathfinding.
-var pathLine #a line created for army pathfinding through the worldspace, if the army isn't going anywhere, = null
+var pathLine #a tilequeue created for army pathfinding through the worldspace, if the army isn't going anywhere, = null
 
 #combat
-var inCombat: bool #if army is in active combat, this variable is true.  if else, is false
+var combatModifiers: Array #if army is in active combat, this variable is true.  if else, is false
 #when a unit detects another unit in the same tile, it will check if the enemy is in the unit is owned by 
 #a country in parentWarEnemies.  if it is, the defender will create a Battle class node.  this temporarily consumes
 #the unit and will spit it back out with changed stats after the battle finishes.  
@@ -79,13 +79,8 @@ const unitUIScene = preload("res://unit_ui.tscn")
 
 var raised: bool
 
-#functions this code will do:
-#display the units as UI objects in two places, in the army control panel, and on the bottom screen if the 
-#army is selected on the map.  Will also display a UI icon/symbol above the province the army is stationed in (although
-#maybe the actual organization of the armies will be done in the Tile script)
-#can retire an army back to its homeTile, where it will make awake = false
 
-func updateSelf(Name, countryNode, TileNumber):
+func buildSelf(Name, countryNode, TileNumber):
 	#print("wowo so cool")
 	raised = false
 	ArmyName = Name
@@ -94,13 +89,33 @@ func updateSelf(Name, countryNode, TileNumber):
 		for Tile in parentCountry.OwnedTileList:
 			if Tile.tileNumber == TileNumber:
 				inTile = Tile
+			else:
+				print("error 1 - no matching tile in owned tile list, army, line 93")
 	#print("UnitUIContainer 1 Children", $RadicalCoolTestPanel/UnitUIContainer.get_children())
 	
+	
+	surveySelf()
+	pass
+
+func updateArmyUI():
+	updateUnitUIs()
+	#updateCommanderUI()
+	#updateFinalTotals
+	pass
+
+func addUnitToArmy(unitToAdd):
+	unitsList.append(unitToAdd)
+	unitToAdd.updateArmy.connect(surveySelf)
+	$UnitContainer.add_child(unitToAdd)
+	
+	pass
+
+
+func updateUnitUIs(): #call after battle, new unit, changed unit, any change to any thing in the army
 	for unitUIScene in $ScrollContainer/UnitUIContainer.get_children():
 		if is_instance_valid(unitUIScene):
 			$ScrollContainer/UnitUIContainer.remove_child(unitUIScene)
 			unitUIScene.queue_free()
-	#print("UnitUiContainer Children", $RadicalCoolTestPanel/UnitUIContainer.get_children())
 	if unitsList != null:
 		for Unit in unitsList:
 			var newUnitUI = unitUIScene.instantiate()
@@ -108,65 +123,19 @@ func updateSelf(Name, countryNode, TileNumber):
 			newUnitUI.findMilMods(Unit)
 			$ScrollContainer/UnitUIContainer.add_child(newUnitUI)
 			#print("Unit", Unit.unitType, "Level", Unit.unitLevel)
-	surveySelf()
-	pass
-
-var UnitConfirmationList: Array = []
-func _process(delta: float) -> void:
-	#print("unitslist", unitsList)
-	#if UnitConfirmationList != null:
-		#for Unit in UnitConfirmationList:
-		#	UnitConfirmationList.erase(Unit)
-	#if $RadicalCoolTestPanel/UnitContainer.get_children() != null:
-		#for Unit in $RadicalCoolTestPanel/UnitContainer.get_children():
-			#UnitConfirmationList.append(Unit)
-		#if UnitConfirmationList == unitsList:
-			#print("booyah confirmed same")
-			#return
-		#else:
-			#unitsList = UnitConfirmationList
-			#print("yucky had to change")
-			#pass
-	if maxUnitLevel != null:
-		for unitUIScene in $ScrollContainer/UnitUIContainer.get_children():
-			unitUIScene.upgradeButtonCalculation(maxUnitLevel)
-	pass
-
-func addUnitToArmy(unitToAdd):
-	unitsList.append(unitToAdd)
-	unitToAdd.updateArmy.connect(surveySelf)
-	$UnitContainer.add_child(unitToAdd)
-	#print("units listfrom addUnit", unitsList)
-	#print("unitsConfirmation List", UnitConfirmationList)
-	
-	pass
-
-func stopUpdatingUI():
-	for unitUIScene in $ScrollContainer/UnitUIContainer.get_children():
-		unitUIScene.stopUpdating()
-	pass
-
-func startUpdatingUI():
-	
-	for unitUIScene in $ScrollContainer/UnitUIContainer.get_children():
-		unitUIScene.startUpdating()
-	pass
-
-func buildUnitUIs():
-	
 	pass
 
 func surveySelf():
 	maxUnitLevel = 0
 	calculateMaxUnitLevel()
-	armyAttackScore= 0
-	armyDefenseScore = 0
+	armyPunch= 0
+	armyBlock = 0
 	maxManpower = 0
 	manpowerInArmy = 0
-	armyRangedAttack = 0
-	armyRangedDefense = 0
+	armyLaunch = 0
+	armyDefence = 0
 	armyMaxShield = 0
-	
+	armyMagicDefense = 0
 	maxManpower = 0
 	armyFoodCost = 0
 	armyWoodCost = 0
@@ -180,59 +149,25 @@ func surveySelf():
 	armyInfluenceCost = 0
 	armyHarmonyCost = 0
 	armyFaithCost = 0
-	print("Surveyingg Self")
+	print("Surveying Self")
 	var unitCount: int
 	unitCount = 0
 	for Unit in unitsList:
 		unitCount += 1
 	var minSize: int = (unitCount * 210)
 	$ScrollContainer/UnitUIContainer.set_custom_minimum_size(Vector2(minSize, 0))
-			#print("Unit", Unit.unitType, "Level", Unit.unitLevel)
+	commanderCheck()
 	if raised == true || raised != true:
-		#for Unit in unitsList:
-			#var unitManpower: int = Unit.unitCurrentManpower
-			#maxManpower += (Unit.unitLevel * Unit.unitMaxManpower)
 		for Unit in unitsList:
-			#print("unit level", Unit.unitLevel)
 			Unit.enableMilModType("All")
-			#manpower
 			if Unit.unitCurrentManpower < Unit.unitMaxManpower:
 				armyManpowerCost += (Unit.unitLevel * (-1 * parentCountry.armyReinforceRate)) #replace -3 with - var reinforceRaisedRate
 			if Unit.unitCurrentManpower == 0:
 				Unit.disableMilModType("All") #disable all milmods which are 
-				#reliant on manpower.  most mil mods are reliant on manpow
+				#reliant on manpower.  all mil mods are reliant on manpow
 			if parentCountry.TotalManpower > 0:
 				Unit.refillManpower(parentCountry.armyReinforceRate)
-			match Unit.unitMetal.oreType: 
-				"Wood":
-					armyWoodCost += (Unit.unitLevel * -1)
-					armyMaxShield += (Unit.unitLevel * 1)
-				"Copper":
-					armyMetalCost += (Unit.unitLevel * -1)
-					armyMaxShield += (Unit.unitLevel * 2)
-				"Iron":
-					armyMetalCost += (Unit.unitLevel * -3)
-					armyMaxShield += (Unit.unitLevel * 3)
-				"Gold":
-					armyMetalCost += (Unit.unitLevel * -1)
-					armyGoldCost += (Unit.unitLevel * -3)
-					armyMaxShield += (Unit.unitLevel * 2)
-				"Floodstone":
-					armyMetalCost += (Unit.unitLevel * -1)
-					armyMagicCost += (Unit.unitLevel * -3)
-					armyMaxShield += (Unit.unitLevel * 5)
-			print("Army Max Shield DEBUG", armyMaxShield, Unit.unitMetal.oreType)
-				#fill out the rest of the metals and ores.  also add "refined wood?" for a druid unlock?
-			match Unit.unitWeapon.weaponType:
-				"Atlatl":
-					armyWeaponsCost += (Unit.unitLevel * -1)
-				"Club":
-					armyWeaponsCost += (Unit.unitLevel * -2)
-				#fill out the rest of the weapons for match
-			for MilMod in Unit.militaryModifierList:
-				match MilMod.milModType:
-					"Berserkers":
-						armyHarmonyCost += (Unit.unitLevel * -1)
+				#Unit.hurt() #hurt takes the level of the unit down, and deletes the unit if reaches level 0.
 			if parentCountry.TotalWeapons > 0:
 				Unit.disableMilModType("Weapons")
 			if parentCountry.TotalWood > 0:
@@ -255,28 +190,13 @@ func surveySelf():
 				Unit.disableMilModType("Food")
 			if parentCountry.TotalMetal > 0:
 				Unit.disableMilModType("Metal")
-			armyAttackScore += Unit.unitOffensiveScore
-			armyDefenseScore += Unit.unitDefensiveScore
+			armyPunch += Unit.unitOffensiveScore
+			armyBlock += Unit.unitDefensiveScore
 			maxManpower += Unit.unitMaxManpower
 			manpowerInArmy += Unit.unitCurrentManpower
-			armyRangedAttack += Unit.unitRangedOffence
-			armyRangedDefense += Unit.unitRangedDefence
-			#print("army metal maintenance cost", armyMetalCost)
-			#print("army weapons maintenance cost", armyWeaponsCost)
-		$MetalCost.text = str(armyMetalCost)
-		$WeaponsCost.text = str(armyWeaponsCost)
-		$HarmonyCost.text = str(armyHarmonyCost)
-		$FoodCost.text = str(armyFoodCost)
-		$MandateCost.text = str(armyMandateCost)
-		$MagicCost.text = str(armyMagicCost)
-		$FaithCost.text = str(armyFaithCost)
-		$WoodCost.text = str(armyWoodCost)
-		$HarmonyCost.text = str(armyHarmonyCost)
-		$InfluenceCost.text = str(armyInfluenceCost)
-		$GoldCost.text = str(armyGoldCost)
-		$AttackDefencePanel/Attack.text = str(armyAttackScore)
-		$AttackDefencePanel/Defense.text = str(armyDefenseScore)
-		$AttackDefencePanel/Manpower.text = str(manpowerInArmy, "/", maxManpower)
+			armyLaunch += Unit.unitRangedOffence
+			armyDefence += Unit.unitRangedDefence
+			armyMagicDefense# += Unit.unitMagicDefense
 	else:
 		for Unit in unitsList:
 		#manpower
@@ -308,7 +228,6 @@ func addUnitCommander(newCommander):
 	for MilMod in commander.govMilModsLvl3:
 		commanderModifiers3.append(MilMod)
 	print("MILMODS IN 1", commanderModifiers1)
-	commanderCheck()
 	surveySelf()
 	pass
 

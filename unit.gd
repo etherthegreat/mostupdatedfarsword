@@ -7,104 +7,167 @@ var playerCountry: country
 var unitType: String
 var unitLevel: int
 
-var unitDefensiveScore: int #per level
-var unitOffensiveScore: int #per level
-var unitRangedOffence: int
-var unitRangedDefence: int
-var unitMagicDefence: int
+var unitDefensiveScore: float #per level
+var unitOffensiveScore: float #per level
+var unitRangedOffence: float
+var unitRangedDefence: float
+var unitMagicDefence: float
 
-#every single type of modifier as a bool
-#this is just a template, the unit will use this to build themselves
-var piercing: bool = false
-var bleed: bool = false
-var crushing: bool = false
-var ranged: bool = false
-var melee: bool = false
-var monster: bool = false
+var weaponOffence: int
+var weaponDefence: int
+var weaponRangedOffence: int
+var weaponRangedDefence: int
+var weaponSpellDefence: int
+var weaponMaxShield: int
 
-var unitMetal: ore
+var oreMaxShield: int
+
+var armorMeleeBlock: int
+var armorRangedBlock: int
+var armorSpellBlock: int
+
+var unitOre: ore
 var unitWeapon: Weapon
+var unitArmor: Armor
 
 var unitImage: Texture2D
 
 var unitMaxManpower: int
 var unitCurrentManpower: int
-var unitStrength: int
+
+var unitMaxWeapons: int
+var unitCurrentWeapons: int
 
 var unitShield: int
+var unitMaxShield: int
 
 var militaryModifierList: Array = []
 
 const milModScene = preload("res://mil_mod.tscn")
 
+const weaponScene = preload("res://weapon.tscn")
+const oreScene = preload("res://ore.tscn")
+const armorScene = preload("res://armor.tscn")
+
 signal getUnitInfo
 signal updateArmy
-func buildSelf():
+
+func buildSelf(parentCountry, Type, Level, WeaponType, OreType, ArmorType):
 	#calculateManpower()
+	unitType = Type
+	unitLevel = Level
+	var newWeapon = weaponScene.instantiate()
+	newWeapon.updateSelf(WeaponType)
+	unitWeapon = newWeapon
+	var newOre = oreScene.instantiate()
+	newOre.updateSelf(OreType)
+	unitOre = newOre
+	var newArmor = armorScene.instantiate()
+	newArmor.updateSelf(ArmorType)
+	unitArmor = newArmor
 	unitCurrentManpower = (90 * unitLevel)
 	unitMaxManpower = ( 100 * unitLevel)
-	calculateWeaponAdditions
 	getUnitAttributes()
 	pass
 
-func getUnitAttributes():
-	calculateWeaponAdditions()
-	emit_signal("getUnitInfo", unitType, self)
-	print("unit militaryModifiersList", militaryModifierList)
-	print("unit offensive score", unitOffensiveScore)
-	print("mil mod list in unit", militaryModifierList)
-	#print("Getting Attributes Success")
+func getUnitAttributes(): # call whenever anything changes the unit, signal to the ui to update
+	unitOffensiveScore = 0
+	unitDefensiveScore = 0
+	unitRangedOffence = 0
+	unitRangedDefence = 0
+	unitMagicDefence = 0
+	unitMaxShield = 0
+	for MilMod in militaryModifierList:
+		removeMilMod(MilMod)
+	emit_signal("getUnitInfo", unitType, self) #retrieves national modifiers, 
+	#attempts to sort by type but not currently functioning
+	calculateWeaponsOresArmor()
+	calculateGrossValues()
+	calculateMilMods()
+	#signal to the unitUI to update itself here.  this will keep the player's information always up to date
+	pass
+
+func calculateWeaponsOresArmor():
+	weaponOffence = unitWeapon.weaponOffensiveIncrease
+	weaponDefence = unitWeapon.weaponDefensiveIncrease
+	weaponRangedOffence = unitWeapon.rangedOffensiveIncrease
+	weaponRangedDefence = unitWeapon.rangedDefensiveIncrease
+	for MilMod in unitWeapon.weaponMilMods:
+		addMilMod(MilMod)
+	oreMaxShield = unitOre.oreMaxShield
+	for MilMod in unitOre.oreMilMods:
+		addMilMod(MilMod)
+	armorMeleeBlock = unitArmor.armorMeleeBlock
+	armorRangedBlock = unitArmor.armorRangedBlock
+	armorSpellBlock = unitArmor.armorSpellBlock
+	for MilMod in unitArmor.armorMilMods:
+		addMilMod(MilMod)
+	pass
+
+func calculateGrossValues():
+	var manPowerEffect = (unitCurrentManpower/unitMaxManpower)
+	var weaponsPowerEffect = (unitCurrentWeapons/unitMaxWeapons)
+	var grossUnitOffence = (weaponOffence)
+	#these numbers are all guesses btw, don't forget that
+	var grossUnitDefence = (unitLevel * weaponDefence)
+	var grossRangedOffence = (unitLevel * weaponRangedOffence)
+	unitOffensiveScore = ((unitLevel * grossUnitOffence) * ((manPowerEffect+weaponsPowerEffect)/2))
+	unitRangedOffence = ((unitLevel * grossUnitOffence) * ((manPowerEffect+weaponsPowerEffect)/2))
+	unitMaxShield = ((unitLevel * oreMaxShield))
+	unitDefensiveScore = (armorMeleeBlock * .1)
+	unitRangedDefence = (armorRangedBlock * .1)
+	unitMagicDefence = (armorSpellBlock * .1)# to make percentages
+	pass
+#add special super weapons gained from ruins and exploration, balance going heavy exploration with the other playthroughs
+#exploration should be as valid a strategy as building super tall or expanding wide.
+func calculateMilMods():
+	if militaryModifierList != null:
+		for MilMod in militaryModifierList:
+			if MilMod.disabled != false:
+				match MilMod.milModType:
+					"AtatlPierce":
+						unitRangedOffence * (1.05)
+					"ClubBleed":
+						unitOffensiveScore * (1.05)
+					"Copper":
+						unitMagicDefence += (0.02 * unitLevel)
+					"Gold":
+						unitMagicDefence += (0.04 * unitLevel)
+					"Scale":
+						unitMaxShield += (unitLevel * 7)
+					"Chain":
+						unitRangedOffence += unitLevel
+					"Cast":
+						unitOffensiveScore += unitLevel
 	pass
 
 func addMilMod(mM):
 	var newMilMod = milModScene.instantiate()
 	newMilMod.buildSelf(mM.milModType)
 	militaryModifierList.append(newMilMod)
-	emit_signal("updateArmy")
 	pass
 
-func calculateOreMilMod():
-	var newMilMod = milModScene.instantiate()
-	#var oreString: String = unitMetal.oreType
-	newMilMod.buildSelf(str(unitMetal.oreType))
-	militaryModifierList.append(newMilMod)
-	calculateMilModChange(newMilMod)
-	pass
-
-func addOreMilMod(milModType):
-	var newUnitMetal = ore.new()
-	var oreImage: Texture
-	newUnitMetal.buildSelf(milModType)
-	unitMetal = newUnitMetal
-	var newMilMod = milModScene.instantiate()
-	newMilMod.buildSelf(milModType)
-	militaryModifierList.append(newMilMod)
-	calculateMilModChange(newMilMod)
-	emit_signal("updateArmy")
-	pass
-
-func removeMilMod(Type):
+func removeMilMod(milMod):
 	for MilMod in militaryModifierList:
-		if MilMod != null:
-			if MilMod.milModType == Type:
-				MilMod.queue_free()
-				militaryModifierList.erase(MilMod)
+		if MilMod == milMod:
+			MilMod.queue_free()
+			militaryModifierList.erase(MilMod)
 		else:
 			militaryModifierList.erase(MilMod)
 	pass
 
-func addWeapon(Type):
-	var newWeapon = Weapon.new()
-	newWeapon.weaponType = Type
-	newWeapon.buildSelf()
-	if newWeapon.melee == true:
-		unitType = "Infantry"
-	elif newWeapon.ranged == true:
-		unitType = "Ranged"
-	elif newWeapon.siege == true:
-		unitType = "Siege"
-	unitWeapon = newWeapon
-	print("Successful addition of new weapon")
+func changeWeapon(Type):
+	unitWeapon.updateSelf(Type)
+	getUnitAttributes()
+	pass
+
+func changeArmor(Type):
+	unitArmor.updateSelf(Type)
+	getUnitAttributes()
+	pass
+
+func changeOre(Type):
+	unitOre.updateSelf(Type)
 	getUnitAttributes()
 	pass
 
@@ -112,87 +175,6 @@ func refillManpower(RR):
 	unitCurrentManpower += RR
 	if unitCurrentManpower > unitMaxManpower:
 		unitCurrentManpower = unitMaxManpower
-	pass
-
-func calculateWeaponAdditions():
-	match unitWeapon.weaponType:
-		"Atlatl":
-			unitRangedOffence += 3
-			unitRangedDefence += 1
-			var AtlatlPierce = milModScene.instantiate()
-			AtlatlPierce.buildSelf("AtlatlPierce")
-			addMilMod(AtlatlPierce)
-			ranged = true
-			melee = false
-		"Club":
-			unitOffensiveScore += 2
-			unitDefensiveScore += 2
-			var ClubBleed = milModScene.instantiate()
-			ClubBleed.buildSelf("ClubBleed")
-			addMilMod(ClubBleed)
-			#var Berserkers = milModScene.instantiate()
-			#Berserkers.buildSelf("Berserkers")
-			#addMilMod(Berserkers)
-			ranged = false
-			melee = true
-	pass
-
-func removeWeaponAdditions():
-	match unitWeapon.weaponType:
-		"Atlatl":
-			unitRangedOffence -= 3
-			unitRangedDefence -= 1
-			removeMilMod("AtlatlPierce")
-		"Club":
-			unitOffensiveScore -=2
-			unitDefensiveScore -=2
-			removeMilMod("ClubBleed")
-			for MilMod in militaryModifierList:
-				if MilMod.milModType == "Berserkers":
-					militaryModifierList.erase(MilMod)
-					removeMilMod("Berserkers")
-				elif MilMod.milModType == "ClubBleed":
-					militaryModifierList.erase(MilMod)
-					removeMilMod("ClubBleed")
-	unitWeapon.queue_free()
-	unitWeapon = null
-	print("Succesful purge of unitWeapon")
-	pass
-
-func removeOreMilMod(oreType):
-	for MilMod in militaryModifierList:
-		if MilMod.milModType == unitMetal.oreType:
-			#print("HOMOSEXUASL")
-			match MilMod.milModType:
-				"Copper":
-					if ranged == true:
-						unitRangedOffence -= 2
-					else:
-						unitOffensiveScore -= 2
-					#unitDefensiveScore -= 1
-				"Iron":
-					if ranged == true:
-						unitRangedOffence -= 3
-					else:
-						unitOffensiveScore -=3
-					#unitDefensiveScore -=2
-				"Wood":
-					if ranged == true:
-						unitRangedOffence -= 1
-					else:
-						unitOffensiveScore -= 1
-				"Gold":
-					if ranged == true:
-						unitRangedOffence -= 1
-					else:
-						unitOffensiveScore -= 1
-				"Floodstone":
-					if ranged == true:
-						unitRangedOffence -= 5
-					else:
-						unitOffensiveScore -= 5
-			removeMilMod(MilMod.milModType)
-	unitMetal.queue_free()
 	pass
 
 func disableMilModType(Type):
@@ -203,28 +185,4 @@ func disableMilModType(Type):
 func enableMilModType(Type):
 	for MilMod in militaryModifierList:
 		MilMod.enableMilModType(Type)
-	pass
-
-func calculateMilModChange(newMilMod):
-	match newMilMod.milModType:
-		"Berserkers":
-			unitOffensiveScore += 3
-		"ClubBleed":
-			unitOffensiveScore += 4
-		"AtlatlePierce":
-			unitRangedOffence += 3
-		"Copper":
-			unitOffensiveScore += 2
-		"Iron":
-			unitOffensiveScore += 3
-		"Wood":
-			unitOffensiveScore += 1
-		"Gold":
-			unitOffensiveScore += 1
-		"Floodstone":
-			unitOffensiveScore += 5
-		"Visionary:":
-			unitOffensiveScore += 5
-func matchPlayerTemplateScores():
-	
 	pass

@@ -6,6 +6,7 @@ class_name armyCostUI
 var newType: String
 
 var amount: int
+var maxAmount: int
 
 var image: Texture2D
 
@@ -33,9 +34,12 @@ func buildSelf():
 	$Sprite2D2.texture = image
 	pass
 
-func updateSelf(numb):
-	amount = numb
-	$amountlabel.text = str(amount)
+func updateSelf(numb, maxNumb):
+	if newType == "Shield" or "Punch" or "Launch":
+		amount = numb
+		maxAmount = maxNumb
+		$amountlabel.text = str(amount, " / ", maxAmount)
+	else:
+		amount = numb
+		$amountlabel.text = str(amount, "%")
 	pass
-	
-	

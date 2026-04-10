@@ -156,8 +156,16 @@ func buildSelf(Type):
 			milModDescription = str("This unit has been trained in the Druidic arts and is capable at clearing corruption and can turn into animals.")
 			milModTexture = load("res://art assets/ModifierIcons/milMods/green cross.png")
 			milModResource = "Magic"
-	#if milModType != null:
-		#print(milModType, "MILMODTYPE")
+		"Chain":
+			commanderMod = true
+			milModDescription = str("[i]This Unit wears long chains, block [i]:[color= green] +5% Melee, +40% Ranged, + 5% Spell[/color], damage")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "Weapons"
+		"Shell":
+			commanderMod = true
+			milModDescription = str("[i]This Unit wears a fully-enclose shell, block [i]:[color= green] + 50% Spell[/color], damage")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/green cross.png")
+			milModResource = "Weapons"
 	$Sprite2D/InfoPanel/MilModNameLabel.text = str(milModType)
 	$Sprite2D/InfoPanel/MilModDescriptionLabel.text = str(milModDescription)
 	$Sprite2D.texture = milModTexture

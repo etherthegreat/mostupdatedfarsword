@@ -1,9 +1,10 @@
-[gd_scene load_steps=19 format=3 uid="uid://cxmy8mdrrj0yl"]
+[gd_scene load_steps=20 format=3 uid="uid://cxmy8mdrrj0yl"]
 
 [ext_resource type="Script" uid="uid://cdkg2sl6mii80" path="res://Game Scenes and Scripts/army.gd" id="1_clqeb"]
 [ext_resource type="Texture2D" uid="uid://d2ka05yjukq25" path="res://art assets/finishedAssets/Panels/armypanelfinishedui/IMG_1551.PNG" id="2_fbxbp"]
 [ext_resource type="Texture2D" uid="uid://cs3ob1ahbw4mm" path="res://art assets/finishedAssets/Panels/armypanelfinishedui/IMG_1552.PNG" id="3_t67s2"]
 [ext_resource type="Texture2D" uid="uid://3w7ugphctbl" path="res://art assets/finishedAssets/Panels/armypanelfinishedui/IMG_1564.PNG" id="4_qkomd"]
+[ext_resource type="PackedScene" uid="uid://2asjxq2s8ns0" path="res://unit_ui.tscn" id="5_gr5rn"]
 [ext_resource type="Texture2D" uid="uid://buwli7g6cmpkp" path="res://art assets/finishedAssets/manaicons/manpower.png" id="5_n1h0o"]
 [ext_resource type="Texture2D" uid="uid://2hyymtaje3ct" path="res://art assets/finishedAssets/manaicons/Weapons.png" id="6_qyt7h"]
 [ext_resource type="PackedScene" uid="uid://2yus0h0my4xo" path="res://army_cost_ui.tscn" id="7_t67s2"]
@@ -74,25 +75,36 @@ expand_icon = true
 
 [node name="UnitContainer" type="HBoxContainer" parent="."]
 layout_mode = 0
-offset_left = 348.0
+offset_left = 429.0
 offset_top = 4.0
-offset_right = 1645.0
+offset_right = 1726.0
 offset_bottom = 44.0
 mouse_filter = 2
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 layout_mode = 0
-offset_left = 428.0
-offset_top = 12.0
-offset_right = 995.0
-offset_bottom = 233.0
+offset_left = 430.0
+offset_top = -4.0
+offset_right = 997.0
+offset_bottom = 262.0
 vertical_scroll_mode = 0
 
-[node name="UnitUIContainer" type="HBoxContainer" parent="ScrollContainer"]
+[node name="UnitUIContainer" type="GridContainer" parent="ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
-theme_override_constants/separation = 200
+theme_override_constants/h_separation = 95
+theme_override_constants/v_separation = 135
+columns = 6
+
+[node name="UnitUI" parent="ScrollContainer/UnitUIContainer" instance=ExtResource("5_gr5rn")]
+layout_mode = 2
+
+[node name="UnitUI2" parent="ScrollContainer/UnitUIContainer" instance=ExtResource("5_gr5rn")]
+layout_mode = 2
+
+[node name="UnitUI3" parent="ScrollContainer/UnitUIContainer" instance=ExtResource("5_gr5rn")]
+layout_mode = 2
 
 [node name="manpowerweaponscontainer" type="VBoxContainer" parent="."]
 layout_mode = 0
