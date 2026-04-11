@@ -13,7 +13,7 @@ var oreMilMods: Array = []
 
 const milModScene = preload("res://mil_mod.tscn")
 
-func buildSelf(newOreType):
+func updateSelf(newOreType):
 	if oreMilMods != null:
 		for MilMod in oreMilMods:
 			MilMod.queue_free()

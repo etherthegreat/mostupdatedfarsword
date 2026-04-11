@@ -5,7 +5,10 @@ class_name manaPanel
 var manaType: String
 var formatted_text = ""
 
+var sortingInt: int
+
 func buildSelf(type, amount, dictionary):
+	sortingInt = amount
 	$DictionaryLabel.visible = false
 	$DictionaryPanelSprite.visible = false
 	if amount >-1: 

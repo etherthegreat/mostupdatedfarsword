@@ -1,12 +1,16 @@
-[gd_scene load_steps=12 format=3 uid="uid://2asjxq2s8ns0"]
+[gd_scene load_steps=16 format=3 uid="uid://2asjxq2s8ns0"]
 
 [ext_resource type="Script" uid="uid://w51gsk23fphv" path="res://unit_ui.gd" id="1_xgapy"]
 [ext_resource type="Texture2D" uid="uid://bltkgm8khpe3w" path="res://art assets/finishedAssets/Panels/UnitPanelUI/IMG_1581.PNG" id="2_04vi3"]
 [ext_resource type="Texture2D" uid="uid://dqcby161gijgv" path="res://art assets/finishedAssets/Panels/UnitPanelUI/IMG_1578.PNG" id="3_ednxx"]
 [ext_resource type="Texture2D" uid="uid://btg14lckh6mi" path="res://art assets/finishedAssets/Weapons/Macuahuitl.png" id="4_l10q8"]
+[ext_resource type="Texture2D" uid="uid://bth76jkkdoikk" path="res://art assets/finishedAssets/ores/Copper.PNG" id="5_4igmu"]
 [ext_resource type="PackedScene" uid="uid://dr216ju681y5o" path="res://mil_mod.tscn" id="5_xmosk"]
 [ext_resource type="Texture2D" uid="uid://buwli7g6cmpkp" path="res://art assets/finishedAssets/manaicons/manpower.png" id="6_4igmu"]
+[ext_resource type="PackedScene" uid="uid://brciqffod2cje" path="res://ore_button.tscn" id="6_l10q8"]
+[ext_resource type="Texture2D" uid="uid://j5g3n7ntcq5j" path="res://art assets/finishedAssets/Weapons/atlatl.png" id="6_rxcmb"]
 [ext_resource type="Texture2D" uid="uid://2hyymtaje3ct" path="res://art assets/finishedAssets/manaicons/Weapons.png" id="7_rxcmb"]
+[ext_resource type="PackedScene" uid="uid://ceaa50bsb0hpd" path="res://weapon_button.tscn" id="7_xmosk"]
 [ext_resource type="Texture2D" uid="uid://cd4tk74v57rhw" path="res://art assets/finishedAssets/Panels/armypanelfinishedui/IMG_1561.PNG" id="8_kilm6"]
 [ext_resource type="Texture2D" uid="uid://d2ms2xnnpnj2h" path="res://art assets/finishedAssets/Panels/armypanelfinishedui/IMG_1559.PNG" id="9_rdqe7"]
 [ext_resource type="Texture2D" uid="uid://1w1mtdc7n264" path="res://art assets/finishedAssets/Panels/armypanelfinishedui/IMG_1558.PNG" id="10_a2xqr"]
@@ -60,18 +64,20 @@ expand_icon = true
 
 [node name="OreTypeButton" type="Button" parent="."]
 layout_mode = 0
-offset_left = 58.0
-offset_top = 64.0
-offset_right = 79.0
-offset_bottom = 86.0
-expand_icon = true
-
-[node name="OreTypeButton2" type="Button" parent="."]
-layout_mode = 0
 offset_left = 13.0
 offset_top = 64.0
 offset_right = 34.0
 offset_bottom = 86.0
+icon = ExtResource("5_4igmu")
+expand_icon = true
+
+[node name="ArmorTypeButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 58.0
+offset_top = 64.0
+offset_right = 79.0
+offset_bottom = 86.0
+icon = ExtResource("6_rxcmb")
 expand_icon = true
 
 [node name="ManpowerLabel" type="RichTextLabel" parent="."]
@@ -117,14 +123,14 @@ theme_override_font_sizes/font_size = 10
 text = "250"
 horizontal_alignment = 1
 
-[node name="UnitDefenceLabel" type="Label" parent="UnitStrengthContainer"]
+[node name="UnitRangedAttack" type="Label" parent="UnitStrengthContainer"]
 layout_mode = 2
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 10
 text = "250"
 horizontal_alignment = 1
 
-[node name="UnitDefenceLabel2" type="Label" parent="UnitStrengthContainer"]
+[node name="UnitShield" type="Label" parent="UnitStrengthContainer"]
 layout_mode = 2
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 10
@@ -155,9 +161,9 @@ offset_top = 117.0
 offset_right = 92.0
 offset_bottom = 129.0
 mouse_filter = 2
-theme_override_constants/h_separation = 28
-theme_override_constants/v_separation = 32
-columns = 8
+theme_override_constants/h_separation = 19
+theme_override_constants/v_separation = 25
+columns = 4
 
 [node name="MilMod" parent="GridContainer" instance=ExtResource("5_xmosk")]
 layout_mode = 2
@@ -166,6 +172,9 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="MilMod3" parent="GridContainer" instance=ExtResource("5_xmosk")]
+layout_mode = 2
+
+[node name="MilMod4" parent="GridContainer" instance=ExtResource("5_xmosk")]
 layout_mode = 2
 
 [node name="Button" type="Button" parent="."]
@@ -224,32 +233,51 @@ offset_top = -6.0
 offset_right = 95.0
 offset_bottom = 2.0
 
-[node name="GridContainer2" type="GridContainer" parent="."]
+[node name="OreScrollContainer" type="ScrollContainer" parent="."]
+visible = false
 layout_mode = 0
-offset_left = 1.0
-offset_top = -81.0
-offset_right = 231.0
-offset_bottom = 267.0
-mouse_filter = 2
-columns = 2
+offset_left = -58.0
+offset_top = 3.0
+offset_right = -1.0
+offset_bottom = 128.0
+horizontal_scroll_mode = 0
 
-[node name="GridContainer3" type="GridContainer" parent="."]
+[node name="OreContainer" type="GridContainer" parent="OreScrollContainer"]
+layout_direction = 2
 layout_mode = 2
-offset_left = 127.0
-offset_top = -20.0
-offset_right = 127.0
-offset_bottom = -20.0
 mouse_filter = 2
-theme_override_constants/h_separation = 56
-theme_override_constants/v_separation = 60
+theme_override_constants/h_separation = 30
+theme_override_constants/v_separation = 29
 columns = 2
 
-[node name="ScrollContainer" type="ScrollContainer" parent="."]
+[node name="OreButton" parent="OreScrollContainer/OreContainer" instance=ExtResource("6_l10q8")]
+layout_mode = 2
+
+[node name="OreButton2" parent="OreScrollContainer/OreContainer" instance=ExtResource("6_l10q8")]
+layout_mode = 2
+
+[node name="WeaponScrollContainer" type="ScrollContainer" parent="."]
+visible = false
 layout_mode = 0
-offset_left = 127.0
-offset_top = -20.0
-offset_right = 243.0
-offset_bottom = 106.0
+offset_left = -58.0
+offset_top = 3.0
+offset_right = -1.0
+offset_bottom = 128.0
+horizontal_scroll_mode = 0
+
+[node name="WeaponContainer" type="GridContainer" parent="WeaponScrollContainer"]
+layout_direction = 2
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/h_separation = 30
+theme_override_constants/v_separation = 29
+columns = 2
+
+[node name="WeaponButton" parent="WeaponScrollContainer/WeaponContainer" instance=ExtResource("7_xmosk")]
+layout_mode = 2
+
+[node name="WeaponButton2" parent="WeaponScrollContainer/WeaponContainer" instance=ExtResource("7_xmosk")]
+layout_mode = 2
 
 [node name="ManpowerSprite" type="Sprite2D" parent="."]
 position = Vector2(56, 96)
@@ -286,7 +314,6 @@ texture = ExtResource("10_a2xqr")
 
 [connection signal="pressed" from="WeaponTypeButton" to="." method="_on_weapon_type_button_pressed"]
 [connection signal="pressed" from="OreTypeButton" to="." method="_on_ore_type_button_pressed"]
-[connection signal="pressed" from="OreTypeButton2" to="." method="_on_ore_type_button_pressed"]
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="Button2" to="." method="_on_button_2_pressed"]
 [connection signal="pressed" from="UpgradeButton" to="." method="_on_upgrade_button_pressed"]

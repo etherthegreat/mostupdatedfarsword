@@ -1,9 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://c71ol0x3x4bmy"]
+[gd_scene load_steps=4 format=3 uid="uid://c71ol0x3x4bmy"]
 
 [ext_resource type="Script" uid="uid://cqgqsfbrvj3vm" path="res://barracks_button.gd" id="1_je2jb"]
 [ext_resource type="Texture2D" uid="uid://ct6whogyqhymx" path="res://art assets/Placeholder Art/UI Art/resources/Farm.png" id="2_4mabx"]
 [ext_resource type="Texture2D" uid="uid://bjbx6e8ns8a0a" path="res://art assets/Placeholder Art/sword.png" id="3_yxbhs"]
-[ext_resource type="PackedScene" uid="uid://cxmy8mdrrj0yl" path="res://Game Scenes and Scripts/army.tscn" id="4_4mabx"]
 
 [node name="BarracksButton" type="Control"]
 layout_mode = 3
@@ -14,31 +13,31 @@ script = ExtResource("1_je2jb")
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 0
-offset_left = 44.0
-offset_top = 1.0
-offset_right = 155.0
-offset_bottom = 235.0
+offset_left = 2.0
+offset_top = 19.0
+offset_right = 113.0
+offset_bottom = 311.0
 
 [node name="BarracksSprite" type="Sprite2D" parent="Panel"]
-position = Vector2(57.2094, 53.45)
+position = Vector2(57, 60)
 scale = Vector2(0.138123, 0.138123)
 texture = ExtResource("2_4mabx")
 
 [node name="tileName" type="Label" parent="Panel"]
 layout_mode = 0
 offset_left = -17.0
-offset_top = 5.0
+offset_top = 20.0
 offset_right = 136.0
-offset_bottom = 28.0
+offset_bottom = 43.0
 theme_override_font_sizes/font_size = 12
 text = "tilename"
 horizontal_alignment = 1
 
 [node name="barrackslvl" type="Label" parent="Panel"]
 layout_mode = 0
-offset_top = 80.0
+offset_top = 83.0
 offset_right = 120.0
-offset_bottom = 113.0
+offset_bottom = 116.0
 theme_override_font_sizes/font_size = 10
 text = "barracks lvl"
 horizontal_alignment = 1
@@ -62,10 +61,10 @@ horizontal_alignment = 1
 
 [node name="AddNewArmyButton" type="Button" parent="."]
 layout_mode = 0
-offset_left = 76.0
-offset_top = 102.0
-offset_right = 132.0
-offset_bottom = 158.0
+offset_left = 34.0
+offset_top = 137.0
+offset_right = 90.0
+offset_bottom = 193.0
 icon = ExtResource("3_yxbhs")
 expand_icon = true
 
@@ -81,13 +80,10 @@ horizontal_alignment = 1
 
 [node name="ArmyContainer" type="VBoxContainer" parent="."]
 layout_mode = 0
-offset_left = 154.0
-offset_top = -2.0
-offset_right = 1120.0
-offset_bottom = 231.0
-
-[node name="Army" parent="ArmyContainer" instance=ExtResource("4_4mabx")]
-layout_mode = 2
+offset_left = 112.0
+offset_top = 33.0
+offset_right = 1078.0
+offset_bottom = 266.0
 
 [node name="NameAndConfirmPanel" type="Panel" parent="."]
 visible = false

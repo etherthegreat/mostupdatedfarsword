@@ -1,10 +1,20 @@
 [gd_scene load_steps=3 format=3 uid="uid://ceaa50bsb0hpd"]
 
-[ext_resource type="Texture2D" uid="uid://cf41vsdq7n11f" path="res://art assets/Placeholder Art/UI Art/resources/clubsmall.png" id="1_gken3"]
 [ext_resource type="Script" uid="uid://cjsanmt2tnmkc" path="res://weapon_button.gd" id="2_m4o6c"]
+[ext_resource type="Texture2D" uid="uid://btg14lckh6mi" path="res://art assets/finishedAssets/Weapons/Macuahuitl.png" id="2_t1y8r"]
 
-[node name="WeaponButton" type="Button"]
-offset_right = 8.0
-offset_bottom = 8.0
-icon = ExtResource("1_gken3")
+[node name="WeaponButton" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 50.0
+offset_bottom = 45.0
 script = ExtResource("2_m4o6c")
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 0
+offset_right = 27.0
+offset_bottom = 27.0
+icon = ExtResource("2_t1y8r")
+expand_icon = true
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

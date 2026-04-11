@@ -43,14 +43,3 @@ signal newArmySignal
 func buildNewArmy(barracksBuilding, barracksTile, bbButton, newArmyName):
 	emit_signal("newArmySignal", barracksBuilding, barracksTile, bbButton, playerNode, newArmyName)
 	pass
-
-
-func _process(delta: float) -> void:
-	if playerNode != null:
-		if visible == false:
-			for Army in playerNode.countryArmyList:
-				Army.stopUpdatingUI()
-		else:
-			for Army in playerNode.countryArmyList:
-				Army.startUpdatingUI()
-	pass

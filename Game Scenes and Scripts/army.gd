@@ -44,6 +44,9 @@ var maxManpower:int #used to determine the maximum manpower of all units, used f
 var manpowerInArmy:int #actual manpower in armies, will be lower if units are damaged
 #it costs costly resources but you can instantly refill your army's manpower, also takes from manpower pool
 
+var maxWeapons: int
+var weaponsInArmy: int
+
 #Combat Modifiers
 var averageExperience: int #used to calculate the level of this army's level
 var armyLevel: int #1 = recruit, 2 = regulars, 3 = expert, 4 = veteran, gives buffs per level
@@ -79,6 +82,9 @@ const unitUIScene = preload("res://unit_ui.tscn")
 
 var raised: bool
 
+const manaPanelScene = preload("res://mana_panel.tscn")
+
+var tempResourcesDict: Dictionary = {}
 
 func buildSelf(Name, countryNode, TileNumber):
 	#print("wowo so cool")
@@ -92,37 +98,91 @@ func buildSelf(Name, countryNode, TileNumber):
 			else:
 				print("error 1 - no matching tile in owned tile list, army, line 93")
 	#print("UnitUIContainer 1 Children", $RadicalCoolTestPanel/UnitUIContainer.get_children())
-	
-	
-	surveySelf()
 	pass
 
-func updateArmyUI():
+func updateArmyUI(): #call whenever attacked, or just whenever the player opens the screen
+	commanderCheck()
+	surveySelf()
 	updateUnitUIs()
-	#updateCommanderUI()
-	#updateFinalTotals
+	updateCommanderUI()
+	updateFinalTotals()
 	pass
 
 func addUnitToArmy(unitToAdd):
 	unitsList.append(unitToAdd)
 	unitToAdd.updateArmy.connect(surveySelf)
 	$UnitContainer.add_child(unitToAdd)
-	
+	var newUnitUI = unitUIScene.instantiate()
+	newUnitUI.buildSelf(unitToAdd)
+	$ScrollContainer/UnitUIContainer.add_child(newUnitUI)
+	updateArmyUI()
 	pass
 
 
 func updateUnitUIs(): #call after battle, new unit, changed unit, any change to any thing in the army
 	for unitUIScene in $ScrollContainer/UnitUIContainer.get_children():
-		if is_instance_valid(unitUIScene):
-			$ScrollContainer/UnitUIContainer.remove_child(unitUIScene)
-			unitUIScene.queue_free()
-	if unitsList != null:
-		for Unit in unitsList:
-			var newUnitUI = unitUIScene.instantiate()
-			newUnitUI.assignUnit(Unit)
-			newUnitUI.findMilMods(Unit)
-			$ScrollContainer/UnitUIContainer.add_child(newUnitUI)
-			#print("Unit", Unit.unitType, "Level", Unit.unitLevel)
+		unitUIScene.updateUI()
+	pass
+
+func updateCommanderUI():
+	if commander != null:
+		$CommanderButton.icon = commander.governorTexture
+		$CommanderLabel.text = str(commander.governorType)
+	else:
+		$CommanderButton.icon = load("res://art assets/finishedAssets/Panels/armypanelfinishedui/IMG_1564.PNG")
+		$CommanderLabel.text = "No Commander"
+	pass
+
+func updateFinalTotals():
+	$resourcescontainer/armyCostUI.updateSelf(armyPunch,armyPunch)
+	$resourcescontainer/armyCostUI2.updateSelf(armyLaunch, armyLaunch)
+	$resourcescontainer/armyCostUI3.updateSelf(armyShield, armyMaxShield)
+	$resourcescontainer/armyCostUI4.updateSelf(armyBlock, armyBlock)
+	$resourcescontainer/armyCostUI5.updateSelf(armyDefence, armyDefence)
+	$resourcescontainer/armyCostUI6.updateSelf(armyMagicDefense, armyMagicDefense)
+	
+	$manpowerweaponscontainer/manpowercontrol/Manpower/manpowerlabel.text = str(manpowerInArmy, maxManpower)
+	$manpowerweaponscontainer/weaponscontrol/Weapons/weaponslabel. text = str(weaponsInArmy, maxWeapons)
+	
+	if $ScrollContainer2/VBoxContainer.get_children() != null:
+		for manaPanel in $ScrollContainer2/VBoxContainer.get_children():
+			manaPanel.queue_free()
+	if armyFoodCost != 0:
+		var newMP = manaPanelScene.instantiate()
+		newMP.buildSelf("Food", armyFoodCost, tempResourcesDict)
+	if armyWoodCost != 0:
+		var newMP = manaPanelScene.instantiate()
+		newMP.buildSelf("Wood", armyWoodCost, tempResourcesDict)
+	if armyGoldCost != 0:
+		var newMP = manaPanelScene.instantiate()
+		newMP.buildSelf("Gold", armyGoldCost, tempResourcesDict)
+	if armyMetalCost != 0:
+		var newMP = manaPanelScene.instantiate()
+		newMP.buildSelf("Metal", armyMetalCost, tempResourcesDict)
+	if armyManpowerCost != 0:
+		var newMP = manaPanelScene.instantiate()
+		newMP.buildSelf("Manpower", armyManpowerCost, tempResourcesDict)
+	if armyWeaponsCost != 0:
+		var newMP = manaPanelScene.instantiate()
+		newMP.buildSelf("Weapons", armyWeaponsCost, tempResourcesDict)
+	if armyMagicCost != 0:
+		var newMP = manaPanelScene.instantiate()
+		newMP.buildSelf("Magic", armyMagicCost, tempResourcesDict)
+	if armyScienceCost != 0:
+		var newMP = manaPanelScene.instantiate()
+		newMP.buildSelf("Science", armyScienceCost, tempResourcesDict)
+	if armyCultureCost != 0:
+		var newMP = manaPanelScene.instantiate()
+		newMP.buildSelf("Culture", armyCultureCost, tempResourcesDict)
+	if armyInfluenceCost != 0:
+		var newMP = manaPanelScene.instantiate()
+		newMP.buildSelf("Influence", armyInfluenceCost, tempResourcesDict)
+	if armyHarmonyCost != 0:
+		var newMP = manaPanelScene.instantiate()
+		newMP.buildSelf("Harmony", armyHarmonyCost, tempResourcesDict)
+	if armyFaithCost != 0:
+		var newMP = manaPanelScene.instantiate()
+		newMP.buildSelf("Faith", armyFaithCost, tempResourcesDict)
 	pass
 
 func surveySelf():
@@ -130,13 +190,14 @@ func surveySelf():
 	calculateMaxUnitLevel()
 	armyPunch= 0
 	armyBlock = 0
-	maxManpower = 0
-	manpowerInArmy = 0
 	armyLaunch = 0
 	armyDefence = 0
 	armyMaxShield = 0
 	armyMagicDefense = 0
 	maxManpower = 0
+	manpowerInArmy = 0
+	maxWeapons = 0
+	weaponsInArmy = 0
 	armyFoodCost = 0
 	armyWoodCost = 0
 	armyGoldCost = 0
@@ -156,53 +217,84 @@ func surveySelf():
 		unitCount += 1
 	var minSize: int = (unitCount * 210)
 	$ScrollContainer/UnitUIContainer.set_custom_minimum_size(Vector2(minSize, 0))
-	commanderCheck()
-	if raised == true || raised != true:
-		for Unit in unitsList:
-			Unit.enableMilModType("All")
-			if Unit.unitCurrentManpower < Unit.unitMaxManpower:
-				armyManpowerCost += (Unit.unitLevel * (-1 * parentCountry.armyReinforceRate)) #replace -3 with - var reinforceRaisedRate
-			if Unit.unitCurrentManpower == 0:
-				Unit.disableMilModType("All") #disable all milmods which are 
+	for Unit in unitsList:
+		Unit.enableMilModType("All")
+		if Unit.unitCurrentManpower < Unit.unitMaxManpower:
+			armyManpowerCost += (Unit.unitLevel * (-1 * parentCountry.armyReinforceRate)) #replace -3 with - var reinforceRaisedRate
+		if Unit.unitCurrentManpower == 0:
+			Unit.disableMilModType("All") #disable all milmods which are 
 				#reliant on manpower.  all mil mods are reliant on manpow
-			if parentCountry.TotalManpower > 0:
-				Unit.refillManpower(parentCountry.armyReinforceRate)
+		if parentCountry.TotalManpower > 0:
+			Unit.refillManpower(parentCountry.armyReinforceRate)
 				#Unit.hurt() #hurt takes the level of the unit down, and deletes the unit if reaches level 0.
-			if parentCountry.TotalWeapons > 0:
-				Unit.disableMilModType("Weapons")
-			if parentCountry.TotalWood > 0:
-				Unit.disableMilModType("Wood")
-			if parentCountry.TotalHarmony > 0:
-				Unit.disableMilModType("Harmony")
-			if parentCountry.TotalCulture > 0:
-				Unit.disableMilModType("Culture")
-			if parentCountry.TotalFaith > 0:
-				Unit.disableMilModType("Faith")
-			if parentCountry.TotalInfluence > 0:
-				Unit.disableMilModType("Influence")
-			if parentCountry.TotalGold > 0:
-				Unit.disableMilModType("Gold")
-			if parentCountry.TotalScience > 0:
-				Unit.disableMilModType("Science")
-			if parentCountry.TotalMagic > 0:
-				Unit.disableMilModType("Magic")
-			if parentCountry.TotalFood > 0:
-				Unit.disableMilModType("Food")
-			if parentCountry.TotalMetal > 0:
-				Unit.disableMilModType("Metal")
-			armyPunch += Unit.unitOffensiveScore
-			armyBlock += Unit.unitDefensiveScore
-			maxManpower += Unit.unitMaxManpower
-			manpowerInArmy += Unit.unitCurrentManpower
-			armyLaunch += Unit.unitRangedOffence
-			armyDefence += Unit.unitRangedDefence
-			armyMagicDefense# += Unit.unitMagicDefense
-	else:
-		for Unit in unitsList:
-		#manpower
-			if is_instance_valid(Unit):
-				if Unit.unitCurrentManpower < Unit.unitMaxManpower:
-					armyManpowerCost += (Unit.unitLevel * (-1 * parentCountry.armyReinforceRate)) #replace -3 with - var reinforceUnraisedRate
+		if parentCountry.TotalWeapons > 0:
+			Unit.disableMilModType("Weapons")
+			#disable replenish weapons button when encamped
+		if parentCountry.TotalWood > 0:
+			Unit.disableMilModType("Wood")
+			#disable build camp
+		if parentCountry.TotalHarmony > 0:
+			Unit.disableMilModType("Harmony")
+			#unitsWillBecomeMutinous
+		if parentCountry.TotalCulture > 0:
+			Unit.disableMilModType("Culture")
+		if parentCountry.TotalFaith > 0:
+			Unit.disableMilModType("Faith")
+		if parentCountry.TotalInfluence > 0:
+			Unit.disableMilModType("Influence")
+		if parentCountry.TotalGold > 0:
+			Unit.disableMilModType("Gold")
+			#unitsWon'tListen To Orders
+		if parentCountry.TotalScience > 0:
+			Unit.disableMilModType("Science")
+		if parentCountry.TotalMagic > 0:
+			Unit.disableMilModType("Magic")
+			#brings down spell defence by -100%
+		if parentCountry.TotalFood > 0:
+			Unit.disableMilModType("Food")
+			#slowly kills units
+		if parentCountry.TotalMetal > 0:
+			Unit.disableMilModType("Metal")
+			#prevents units from replenishing armor
+		armyPunch += Unit.unitOffensiveScore
+		armyBlock += Unit.unitDefensiveScore
+		maxManpower += Unit.unitMaxManpower
+		manpowerInArmy += Unit.unitCurrentManpower
+		maxWeapons += Unit.unitMaxWeapons
+		weaponsInArmy += Unit.unitCurrentWeapons
+		armyLaunch += Unit.unitRangedOffence
+		armyDefence += Unit.unitRangedDefence
+		armyMagicDefense += Unit.unitMagicDefence
+		armyShield += Unit.unitShield
+		armyMaxShield += Unit.unitMaxShield
+		var uLV = Unit.unitLevel
+		match Unit.unitOre.oreType:
+			"Copper":
+				armyMetalCost += uLV
+				armyGoldCost += uLV
+			"Gold":
+				armyGoldCost += (2*uLV)
+			"Wood":
+				armyWoodCost += uLV
+			"Iron":
+				armyMetalCost += (3*uLV)
+				armyGoldCost += uLV
+			"Ivoroid":
+				armyWoodCost += uLV
+				armyMetalCost += (2*uLV)
+		match Unit.unitWeapon.weaponType:
+			"Spear" , "Club" , "Dagger", "Atlatl":
+				armyWeaponsCost += uLV
+			"Machete", "Macuahitl", "Single Axe", "Mace":
+				armyWeaponsCost += (2*uLV)
+			"Flail", "Shortsword", "Pike":
+				armyWeaponsCost += (3*uLV)
+			"War Hammer", "War Axe", "War Sword":
+				armyWeaponsCost += (4*uLV)
+		if parentCountry != null: #find costs and savings from country specific modifiers here
+			for law in parentCountry.lawsInConstitution:
+				if law.lawType == "Mercantilism":
+					armyHarmonyCost += (2*uLV)
 	pass
 
 func calculateMaxUnitLevel():
@@ -210,7 +302,6 @@ func calculateMaxUnitLevel():
 		for building in inTile.tileBuildingsList:
 			if building.buildingType == "Barracks":
 				maxUnitLevel = building.buildingLevel
-				print("DRINKING", maxUnitLevel)
 	pass
 
 signal raisingArmy
@@ -228,7 +319,7 @@ func addUnitCommander(newCommander):
 	for MilMod in commander.govMilModsLvl3:
 		commanderModifiers3.append(MilMod)
 	print("MILMODS IN 1", commanderModifiers1)
-	surveySelf()
+	updateArmyUI()
 	pass
 
 func commanderCheck():
@@ -263,15 +354,11 @@ func commanderCheck():
 						#Unit.getUnitAttributes()
 						for unitUIScene in $ScrollContainer/UnitUIContainer.get_children():
 							unitUIScene.armyUpdateMilMods()
+	else:
+		print("no commander")
 	pass
 
 signal commanderButtonPressed
 func _on_commander_button_pressed() -> void:
 	emit_signal("commanderButtonPressed", commander)
 	pass # Replace with function body.
-
-#can do this when calculating shields of new armies
-func setMaxArmyShield():
-	surveySelf()
-	armyShield = armyMaxShield
-	pass

@@ -30,67 +30,55 @@ func updateSelf(newType):
 		"Atlatl":
 			rangedOffensiveIncrease += 2
 			rangedDefensiveIncrease += 2
-			weaponsPerLevel = 25
 			weaponImage = load("res://art assets/finishedAssets/Weapons/atlatl.png")
 			addWeaponMod("AtlatlPierce")
 		"Club":
 			weaponOffensiveIncrease += 2
 			weaponDefensiveIncrease += 2
-			weaponsPerLevel = 30
 			weaponImage= load("res://art assets/finishedAssets/Weapons/Club.png")
 			addWeaponMod("ClubBleed")
 		"Double Axe":
 			weaponOffensiveIncrease += 4
-			weaponsPerLevel = 252
 			weaponImage = load("res://art assets/finishedAssets/Weapons/Double_Axe.png")
 		"Flail":
 			weaponOffensiveIncrease += 1
 			weaponDefensiveIncrease += 2
 			rangedDefensiveIncrease += 1
-			weaponsPerLevel = 2570
 			weaponImage = load("res://art assets/finishedAssets/Weapons/Flail.png")
 		"Longsword":
 			weaponOffensiveIncrease += 3
 			rangedDefensiveIncrease += 1
-			weaponsPerLevel = 2
 			weaponImage = load("res://art assets/finishedAssets/Weapons/Longsword.png")
 		"Mace":
 			weaponOffensiveIncrease += 2
 			weaponDefensiveIncrease += 1
 			rangedDefensiveIncrease += 1
-			weaponsPerLevel = 25555
 			weaponImage = load("res://art assets/finishedAssets/Weapons/Mace.png")
 		"Machete":
 			weaponOffensiveIncrease += 2
 			rangedDefensiveIncrease += 2
-			weaponsPerLevel = 251
 			weaponImage = load("res://art assets/finishedAssets/Weapons/Machete.png")
 		"Macuahuitl":
 			weaponOffensiveIncrease += 3
 			weaponDefensiveIncrease += 1
-			weaponsPerLevel = 25
 			weaponImage = load("res://art assets/finishedAssets/Weapons/Macuahuitl.png")
 		"Pike":
 			weaponOffensiveIncrease += 1
 			weaponDefensiveIncrease += 3
-			weaponsPerLevel = 25
 			weaponImage = load("res://art assets/finishedAssets/Weapons/Pike.png")
 		"Shortsword":
 			weaponDefensiveIncrease += 2
 			rangedDefensiveIncrease += 2
-			weaponsPerLevel = 25
 			weaponImage = load("res://art assets/finishedAssets/Weapons/Shortsword.png")
 		"Tomahawk":
 			weaponOffensiveIncrease += 1
 			rangedOffensiveIncrease += 3
-			weaponsPerLevel = 25
 			weaponImage = load("res://art assets/finishedAssets/Weapons/Single_Axe.png")
 		"Spear":
 			weaponOffensiveIncrease += 1
 			weaponDefensiveIncrease += 1
 			rangedOffensiveIncrease += 1
 			rangedDefensiveIncrease += 1
-			weaponsPerLevel = 25
 			weaponImage = load("res://art assets/finishedAssets/Weapons/Spear.png")
 	pass
 

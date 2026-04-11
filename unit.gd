@@ -52,21 +52,23 @@ const armorScene = preload("res://armor.tscn")
 signal getUnitInfo
 signal updateArmy
 
-func buildSelf(parentCountry, Type, Level, WeaponType, OreType, ArmorType):
+func buildSelf(parentCountry, Type, Level, WeaponType, OreType, ArmorType, CurMan, CurWeapons): #add current manpower, maxmanpower, currentwepaons, maxweaposn
 	#calculateManpower()
 	unitType = Type
 	unitLevel = Level
 	var newWeapon = weaponScene.instantiate()
-	newWeapon.updateSelf(WeaponType)
 	unitWeapon = newWeapon
+	changeWeapon(WeaponType)
 	var newOre = oreScene.instantiate()
 	newOre.updateSelf(OreType)
 	unitOre = newOre
+	changeOre(OreType)
 	var newArmor = armorScene.instantiate()
 	newArmor.updateSelf(ArmorType)
 	unitArmor = newArmor
-	unitCurrentManpower = (90 * unitLevel)
-	unitMaxManpower = ( 100 * unitLevel)
+	changeArmor(ArmorType)
+	unitCurrentManpower = CurMan
+	unitCurrentWeapons = CurWeapons
 	getUnitAttributes()
 	pass
 
@@ -77,6 +79,8 @@ func getUnitAttributes(): # call whenever anything changes the unit, signal to t
 	unitRangedDefence = 0
 	unitMagicDefence = 0
 	unitMaxShield = 0
+	unitMaxManpower = (100 * unitLevel)
+	unitMaxWeapons = (100 * unitLevel)
 	for MilMod in militaryModifierList:
 		removeMilMod(MilMod)
 	emit_signal("getUnitInfo", unitType, self) #retrieves national modifiers, 
@@ -158,17 +162,14 @@ func removeMilMod(milMod):
 
 func changeWeapon(Type):
 	unitWeapon.updateSelf(Type)
-	getUnitAttributes()
 	pass
 
 func changeArmor(Type):
 	unitArmor.updateSelf(Type)
-	getUnitAttributes()
 	pass
 
 func changeOre(Type):
 	unitOre.updateSelf(Type)
-	getUnitAttributes()
 	pass
 
 func refillManpower(RR):

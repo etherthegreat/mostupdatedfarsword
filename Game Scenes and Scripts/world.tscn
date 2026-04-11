@@ -14255,21 +14255,21 @@ mouse_filter = 2
 script = ExtResource("38_0kf4p")
 
 [node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/MilitaryPanelControl"]
-position = Vector2(1992, 523)
-scale = Vector2(0.632222, 0.522222)
+position = Vector2(2015.5, 523)
+scale = Vector2(0.606111, 0.522222)
 texture = ExtResource("478_8oo0e")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/MilitaryPanelControl"]
 layout_mode = 1
-offset_left = 1440.0
-offset_top = 71.0
-offset_right = 2742.0
-offset_bottom = 983.0
+offset_left = 1479.0
+offset_top = 59.0
+offset_right = 2781.0
+offset_bottom = 971.0
 
 [node name="GridContainer" type="VBoxContainer" parent="CanvasLayer/MilitaryPanelControl/ScrollContainer"]
 layout_mode = 2
 mouse_filter = 2
-theme_override_constants/separation = 245
+theme_override_constants/separation = 295
 
 [node name="EventControl" type="Control" parent="CanvasLayer"]
 layout_mode = 3

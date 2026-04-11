@@ -35,7 +35,7 @@ func buildSelf():
 	pass
 
 func updateSelf(numb, maxNumb):
-	if newType == "Shield" or "Punch" or "Launch":
+	if newType == "Shield":
 		amount = numb
 		maxAmount = maxNumb
 		$amountlabel.text = str(amount, " / ", maxAmount)

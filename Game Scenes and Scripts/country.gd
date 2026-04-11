@@ -245,15 +245,15 @@ func NewGameBuild():
 			#OVER.  SHOULD BE A DYNAMICALLY SIZED PANEL.
 			var newOre = ore.new()
 			newOre.oreType = "Wood"
-			newOre.buildSelf("Wood")
+			newOre.updateSelf("Wood")
 			availableOres.append(newOre)
 			var goldOre = ore.new()
 			goldOre.oreType = "Gold"
-			goldOre.buildSelf("Gold")
+			goldOre.updateSelf("Gold")
 			availableOres.append(goldOre)
 			var floodstoneOre = ore.new()
 			floodstoneOre.oreType = "Floodstone"
-			floodstoneOre.buildSelf("Floodstone")
+			floodstoneOre.updateSelf("Floodstone")
 			availableOres.append(floodstoneOre)
 			addTechnologicalDiscovery("Language")
 			addTechnologicalDiscovery("Agriculture")
@@ -285,12 +285,11 @@ func NewGameBuild():
 			updateDiscoveredByPlayer()
 			for Army in countryArmyList:
 				if Army.ArmyName == "Palace Guards":
-					addNewUnit(Army, "Infantry", 1, "Club", "Copper", "Scale")
-					addNewUnit(Army, "Ranged", 2, "Atlatl", "Wood", "Chain")
-					addNewUnit(Army, "Infantry", 1, "Club", "Wood", "Scout")
-					addNewUnit(Army, "Infantry", 3, "Club", "Iron", "Cast")
-					addNewUnit(Army, "Infantry", 3, "Club", "Iron", "Point")
-					Army.setMaxArmyShield()
+					addNewUnit(Army, "Infantry", 1, "Macuahuitl", "Copper", "Scale", 99, 22)
+					addNewUnit(Army, "Ranged", 2, "Atlatl", "Ivoroid", "Chain", 25, 44)
+					addNewUnit(Army, "Infantry", 1, "Club", "Wood", "Scout", 10, 20)
+					addNewUnit(Army, "Infantry", 3, "Pike", "Iron", "Cast", 90, 78)
+					addNewUnit(Army, "Infantry", 3, "Club", "Iron", "Point", 120, 5)
 		"ANL":
 			#capitalPathPointButton = $PathControl/PathPointsControl/PDT1
 			spellBaseCost = 15
@@ -317,15 +316,15 @@ func NewGameBuild():
 			#OVER.  SHOULD BE A DYNAMICALLY SIZED PANEL.
 			var newOre = ore.new()
 			newOre.oreType = "Wood"
-			newOre.buildSelf("Wood")
+			newOre.updateSelf("Wood")
 			availableOres.append(newOre)
 			var goldOre = ore.new()
 			goldOre.oreType = "Gold"
-			goldOre.buildSelf("Gold")
+			goldOre.updateSelf("Gold")
 			availableOres.append(goldOre)
 			var floodstoneOre = ore.new()
 			floodstoneOre.oreType = "Floodstone"
-			floodstoneOre.buildSelf("Floodstone")
+			floodstoneOre.updateSelf("Floodstone")
 			availableOres.append(floodstoneOre)
 			addTechnologicalDiscovery("Language")
 			addTechnologicalDiscovery("Agriculture")
@@ -379,15 +378,15 @@ func NewGameBuild():
 			#OVER.  SHOULD BE A DYNAMICALLY SIZED PANEL.
 			var newOre = ore.new()
 			newOre.oreType = "Wood"
-			newOre.buildSelf("Wood")
+			newOre.updateSelf("Wood")
 			availableOres.append(newOre)
 			var goldOre = ore.new()
 			goldOre.oreType = "Gold"
-			goldOre.buildSelf("Gold")
+			goldOre.updateSelf("Gold")
 			availableOres.append(goldOre)
 			var floodstoneOre = ore.new()
 			floodstoneOre.oreType = "Floodstone"
-			floodstoneOre.buildSelf("Floodstone")
+			floodstoneOre.updateSelf("Floodstone")
 			availableOres.append(floodstoneOre)
 			addTechnologicalDiscovery("Language")
 			addTechnologicalDiscovery("Agriculture")
@@ -441,15 +440,15 @@ func NewGameBuild():
 			#OVER.  SHOULD BE A DYNAMICALLY SIZED PANEL.
 			var newOre = ore.new()
 			newOre.oreType = "Wood"
-			newOre.buildSelf("Wood")
+			newOre.updateSelf("Wood")
 			availableOres.append(newOre)
 			var goldOre = ore.new()
 			goldOre.oreType = "Gold"
-			goldOre.buildSelf("Gold")
+			goldOre.updateSelf("Gold")
 			availableOres.append(goldOre)
 			var floodstoneOre = ore.new()
 			floodstoneOre.oreType = "Floodstone"
-			floodstoneOre.buildSelf("Floodstone")
+			floodstoneOre.updateSelf("Floodstone")
 			availableOres.append(floodstoneOre)
 			addTechnologicalDiscovery("Language")
 			addTechnologicalDiscovery("Agriculture")
@@ -503,15 +502,15 @@ func NewGameBuild():
 			#OVER.  SHOULD BE A DYNAMICALLY SIZED PANEL.
 			var newOre = ore.new()
 			newOre.oreType = "Wood"
-			newOre.buildSelf("Wood")
+			newOre.updateSelf("Wood")
 			availableOres.append(newOre)
 			var goldOre = ore.new()
 			goldOre.oreType = "Gold"
-			goldOre.buildSelf("Gold")
+			goldOre.updateSelf("Gold")
 			availableOres.append(goldOre)
 			var floodstoneOre = ore.new()
 			floodstoneOre.oreType = "Floodstone"
-			floodstoneOre.buildSelf("Floodstone")
+			floodstoneOre.updateSelf("Floodstone")
 			availableOres.append(floodstoneOre)
 			addTechnologicalDiscovery("Language")
 			addTechnologicalDiscovery("Agriculture")
@@ -565,15 +564,15 @@ func NewGameBuild():
 			#OVER.  SHOULD BE A DYNAMICALLY SIZED PANEL.
 			var newOre = ore.new()
 			newOre.oreType = "Wood"
-			newOre.buildSelf("Wood")
+			newOre.updateSelf("Wood")
 			availableOres.append(newOre)
 			var goldOre = ore.new()
 			goldOre.oreType = "Gold"
-			goldOre.buildSelf("Gold")
+			goldOre.updateSelf("Gold")
 			availableOres.append(goldOre)
 			var floodstoneOre = ore.new()
 			floodstoneOre.oreType = "Floodstone"
-			floodstoneOre.buildSelf("Floodstone")
+			floodstoneOre.updateSelf("Floodstone")
 			availableOres.append(floodstoneOre)
 			addTechnologicalDiscovery("Language")
 			addTechnologicalDiscovery("Agriculture")
@@ -662,12 +661,12 @@ func showCommander(commander):
 	emit_signal("displayCommander", commander)
 	pass
 
-func addNewUnit(Army, UnitType, Level, WeaponType, OreType, ArmorType):
-	var newUnit = unitScene.instantiate()
-	newUnit.buildSelf(self, UnitType, Level, WeaponType, OreType, ArmorType)
+func addNewUnit(Army, UnitType, Level, WeaponType, OreType, ArmorType, curMen, curWeapons):
+	var newUnit = Unit.new()
 	newUnit.getUnitInfo.connect(updateUnit)
+	newUnit.buildSelf(self, UnitType, Level, WeaponType, OreType, ArmorType, curMen, curWeapons)
 	Army.addUnitToArmy(newUnit)
-	Army.updateSelf(Army.ArmyName, self, 0)
+	Army.updateArmyUI()
 	pass
 
 func updateUnit(type, unitNode):
@@ -684,7 +683,7 @@ func prospectForOres():
 	for Tile in OwnedTileList:
 		if Tile.oreSlot != null:
 			var newOre = ore.new()
-			newOre.buildSelf(Tile.oreSlot.oreType)
+			newOre.updateSelf(Tile.oreSlot.oreType)
 			var oreCheck: bool =  false
 			if availableOres != null:
 				for ore in availableOres:
@@ -710,10 +709,9 @@ func raiseThisArmy(Army, country, Tile):
 
 func addArmy (Name, TileNumber):
 	var armyInstance = load("res://Game Scenes and Scripts/army.tscn").instantiate()
-	armyInstance.updateSelf(Name, self, TileNumber)
+	armyInstance.buildSelf(Name, self, TileNumber)
 	armyInstance.raisingArmy.connect(raiseThisArmy)
 	armyInstance.commanderButtonPressed.connect(showCommander)
-	armyInstance.setMaxArmyShield()
 	#print("little things")
 	#print(OwnedTileList, "OwnedTiles")
 	for Tile in OwnedTileList:

@@ -16,6 +16,6 @@ var ranged: bool = false
 var melee: bool = false
 var monster: bool = false
 
-var unitMetal: ore
+var unitOre: ore
 
 var unitImage: Texture2D

@@ -1,6 +1,6 @@
 extends Control
 
-#@class_name UIUnitScene
+class_name UIUnitScene
 
 var thisUnit: Unit
 var updateControl: bool = false
@@ -11,17 +11,35 @@ var modListCompare: Array = []
 var alwaysFree: bool
 var debugMode: bool
 
+var delete: bool #flag used by the army to determine if it will be deleted during the army update
+
 const milModScene = preload("res://mil_mod.tscn")
 
-func buildSelf():
+func buildSelf(unit):
 	debugMode = false
 	alwaysFree = false
-	
+	thisUnit = unit
 	pass
 
-func assignUnit(unitforTransfer):
-	thisUnit = unitforTransfer
-	print(thisUnit, thisUnit.unitType, "DEBUG thisUnit")
+func updateUI():
+	$WeaponTypeButton.icon = thisUnit.unitWeapon.weaponImage
+	$OreTypeButton.icon = thisUnit.unitOre.oreImage
+	$ArmorTypeButton.icon = thisUnit.unitArmor.armorImage
+	$UnitStrengthContainer/UnitAttackLabel.text = str(thisUnit.unitOffensiveScore)
+	$UnitStrengthContainer/UnitRangedAttack.text = str(thisUnit.unitDefensiveScore)
+	$UnitStrengthContainer/UnitShield.text = str(thisUnit.unitShield)
+	$LevelLabel.text = str(thisUnit.unitLevel)
+	$WeaponsLabel.clear()
+	$ManpowerLabel.clear()
+	var newWeaponText : String
+	newWeaponText = str(thisUnit.unitCurrentWeapons, "/",
+	thisUnit.unitMaxWeapons)
+	var newManpowerText: String
+	newManpowerText = str(thisUnit.unitCurrentManpower, "/", 
+	thisUnit.unitMaxManpower)
+	$WeaponsLabel.add_text(newWeaponText)
+	$ManpowerLabel.add_text(newManpowerText)
+	findMilMods()
 	pass
 
 func upgradeButtonCalculation(maxUnitLevel):
@@ -36,27 +54,24 @@ func upgradeButtonCalculation(maxUnitLevel):
 
 var milModCompare :Array = []
 
-func armyUpdateMilMods():
-	findMilMods(thisUnit)
-	pass
 
-func findMilMods(thisUnit):
+func findMilMods():
 	milModCompare.clear()
 	print("military modifiers list", thisUnit.militaryModifierList)
 	if thisUnit.militaryModifierList != null:
-		for MilMod in $Panel/GridContainer.get_children():
+		for MilMod in $GridContainer.get_children():
 			milModCompare.append(MilMod)
 		if milModCompare == thisUnit.militaryModifierList:
 			print("It's a god damn miracle")
 			return
 		else:
-			for MilMod in $Panel/GridContainer.get_children():
+			for MilMod in $GridContainer.get_children():
 				if is_instance_valid(MilMod):
 					#$Panel/GridContainer.remove_child(MilMod)
 					MilMod.queue_free()
 					thisUnit.militaryModifierList.erase(MilMod)
 				else:
-					$Panel/GridContainer.remove_child(MilMod)
+					$GridContainer.remove_child(MilMod)
 					thisUnit.militaryModifierList.erase(MilMod)
 					MilMod.queue_free()
 			for MilMod in thisUnit.militaryModifierList:
@@ -65,7 +80,7 @@ func findMilMods(thisUnit):
 					var tempType : String = str(MilMod.milModType)
 					newMilMod.buildSelf(tempType)
 					milModCompare.append(newMilMod)
-					$Panel/GridContainer.add_child(newMilMod)
+					$GridContainer.add_child(newMilMod)
 				#else:
 					#print("NoMilModTypeFound", MilMod.milModType)
 	#print("milModCOmpare", milModCompare, "militarymodifierlist", thisUnit.militaryModifierList)
@@ -84,11 +99,11 @@ func _on_weapon_type_button_pressed() -> void:
 		weaponButton.weaponName = WeaponTemplate.weaponType
 		weaponButton.giveWeaponName.connect(addWeapon)
 		weaponsList.append(weaponButton)
-		$WeaponsChoicePanel/GridContainer.add_child(weaponButton)
-	if $WeaponsChoicePanel.visible == false:
-		$WeaponsChoicePanel.visible = true
+		$WeaponScrollContainer/WeaponContainer.add_child(weaponButton)
+	if $WeaponScrollContainer.visible == false:
+		$WeaponScrollContainer.visible = true
 	else:
-		$WeaponsChoicePanel.visible = false
+		$WeaponScrollContainer.visible = false
 	pass # Replace with function body.
 
 var oresList: Array = []
@@ -104,31 +119,25 @@ func _on_ore_type_button_pressed() -> void:
 		newOreButton.buildSelf(ore.oreType, ore.oreImage)
 		newOreButton.giveOreName.connect(addOre)
 		oresList.append(newOreButton)
-		$OresChoicePanel/ScrollContainer/GridContainer.add_child(newOreButton)
-	if $OresChoicePanel.visible == false:
-		$OresChoicePanel.visible = true
+		$OreScrollContainer/OreContainer.add_child(newOreButton)
+	if $OreScrollContainer.visible == false:
+		$OreScrollContainer.visible = true
 	else:
-		$OresChoicePanel.visible = false
+		$OreScrollContainer.visible = false
 	pass # Replace with function body.
 
 func addOre(oreType):
-	if thisUnit.unitMetal != null:
-		thisUnit.removeOreMilMod(oreType)
-	
-	thisUnit.addOreMilMod(oreType)
+	if thisUnit.unitOre != null:
+		thisUnit.changeOre(oreType)
 	$OresChoicePanel.visible = false
-	findMilMods(thisUnit)
 	pass
 
 func addWeapon(weaponType):
 	#print("Weapon Type", weaponType)
 	if thisUnit.unitWeapon != null:
-		thisUnit.removeWeaponAdditions()
-	thisUnit.addWeapon(weaponType)
+		thisUnit.changeWeapon(weaponType)
 	$WeaponsChoicePanel.visible = false
-	findMilMods(thisUnit)
 	pass
-
 
 #debug menu operations
 

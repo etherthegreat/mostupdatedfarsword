@@ -239,7 +239,7 @@ func calculateAttributes(tileNumber):
 			tileCrop.cropType = "Cannabis"
 			cropSlot = tileCrop
 			var tileOre = ore.new()
-			tileOre.buildSelf("Copper")
+			tileOre.updateSelf("Copper")
 			oreSlot = tileOre
 			#addWizard("Druid")
 			addBuilding("Tower", 1)
@@ -271,7 +271,7 @@ func calculateAttributes(tileNumber):
 			tileCrop.cropType = "Wheat"
 			cropSlot = tileCrop
 			var tileOre = ore.new()
-			tileOre.buildSelf("Marble")
+			tileOre.updateSelf("Marble")
 			oreSlot = tileOre
 			addBuilding("Farm", 3)
 			addBuilding("Granary", 2)

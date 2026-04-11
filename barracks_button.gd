@@ -5,6 +5,8 @@ class_name BarracksButton
 var barracksBuilding: building
 var barracksTile: Tile
 
+var barracksArmy: Army
+
 var newArmyName: String
 
 signal addNewArmy
@@ -22,6 +24,7 @@ func addPrebuiltArmy(Army):
 	$Panel/builtArmyInfoPanel.visible = true
 	$Panel/builtArmyInfoPanel/armyName.text = str(Army.ArmyName)
 	$ArmyContainer.add_child(Army)
+	barracksArmy = Army
 	pass
 
 func buildSelf():
@@ -29,6 +32,11 @@ func buildSelf():
 	$Panel/barrackslvl.text = str("Barracks Level: ", barracksBuilding.buildingLevel)
 	pass
 
+func updateSelf():
+	$Panel/barrackslvl.text = str("Barracks Level: ", barracksBuilding.buildingLevel)
+	if barracksArmy != null:
+		barracksArmy.updateArmyUI()
+	pass
 
 func _on_text_edit_text_changed():
 	newArmyName = $NameAndConfirmPanel/TextEdit.text
