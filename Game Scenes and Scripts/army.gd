@@ -98,6 +98,8 @@ func buildSelf(Name, countryNode, TileNumber):
 			else:
 				print("error 1 - no matching tile in owned tile list, army, line 93")
 	#print("UnitUIContainer 1 Children", $RadicalCoolTestPanel/UnitUIContainer.get_children())
+	for armyCostUI in $resourcescontainer.get_children():
+		armyCostUI.buildSelf()
 	pass
 
 func updateArmyUI(): #call whenever attacked, or just whenever the player opens the screen
@@ -117,7 +119,6 @@ func addUnitToArmy(unitToAdd):
 	$ScrollContainer/UnitUIContainer.add_child(newUnitUI)
 	updateArmyUI()
 	pass
-
 
 func updateUnitUIs(): #call after battle, new unit, changed unit, any change to any thing in the army
 	for unitUIScene in $ScrollContainer/UnitUIContainer.get_children():
@@ -143,7 +144,6 @@ func updateFinalTotals():
 	
 	$manpowerweaponscontainer/manpowercontrol/Manpower/manpowerlabel.text = str(manpowerInArmy, maxManpower)
 	$manpowerweaponscontainer/weaponscontrol/Weapons/weaponslabel. text = str(weaponsInArmy, maxWeapons)
-	
 	if $ScrollContainer2/VBoxContainer.get_children() != null:
 		for manaPanel in $ScrollContainer2/VBoxContainer.get_children():
 			manaPanel.queue_free()
@@ -337,23 +337,17 @@ func commanderCheck():
 				for MilMod in commanderModifiers1:
 					for Unit in unitsList:
 						Unit.addMilMod(MilMod)
-						#Unit.getUnitAttributes()
-						for unitUIScene in $ScrollContainer/UnitUIContainer.get_children():
-							unitUIScene.armyUpdateMilMods()
+						#Unit.getUnitAttributes()\
 			2:
 				for MilMod in commanderModifiers2:
 					for Unit in unitsList:
 						Unit.addMilMod(MilMod)
 						#Unit.getUnitAttributes()
-						for unitUIScene in $ScrollContainer/UnitUIContainer.get_children():
-							unitUIScene.armyUpdateMilMods()
 			3:
 				for MilMod in commanderModifiers3:
 					for Unit in unitsList:
 						Unit.addMilMod(MilMod)
 						#Unit.getUnitAttributes()
-						for unitUIScene in $ScrollContainer/UnitUIContainer.get_children():
-							unitUIScene.armyUpdateMilMods()
 	else:
 		print("no commander")
 	pass

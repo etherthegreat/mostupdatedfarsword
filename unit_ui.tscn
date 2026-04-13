@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://w51gsk23fphv" path="res://unit_ui.gd" id="1_xgapy"]
 [ext_resource type="Texture2D" uid="uid://bltkgm8khpe3w" path="res://art assets/finishedAssets/Panels/UnitPanelUI/IMG_1581.PNG" id="2_04vi3"]
 [ext_resource type="Texture2D" uid="uid://dqcby161gijgv" path="res://art assets/finishedAssets/Panels/UnitPanelUI/IMG_1578.PNG" id="3_ednxx"]
-[ext_resource type="Texture2D" uid="uid://btg14lckh6mi" path="res://art assets/finishedAssets/Weapons/Macuahuitl.png" id="4_l10q8"]
+[ext_resource type="Texture2D" uid="uid://dksff3iktyhf4" path="res://art assets/finishedAssets/Weapons/Spear.png" id="4_4igmu"]
 [ext_resource type="Texture2D" uid="uid://bth76jkkdoikk" path="res://art assets/finishedAssets/ores/Copper.PNG" id="5_4igmu"]
 [ext_resource type="PackedScene" uid="uid://dr216ju681y5o" path="res://mil_mod.tscn" id="5_xmosk"]
 [ext_resource type="Texture2D" uid="uid://buwli7g6cmpkp" path="res://art assets/finishedAssets/manaicons/manpower.png" id="6_4igmu"]
@@ -59,7 +59,8 @@ offset_left = 5.0
 offset_top = 17.0
 offset_right = 50.0
 offset_bottom = 62.0
-icon = ExtResource("4_l10q8")
+icon = ExtResource("4_4igmu")
+icon_alignment = 1
 expand_icon = true
 
 [node name="OreTypeButton" type="Button" parent="."]
