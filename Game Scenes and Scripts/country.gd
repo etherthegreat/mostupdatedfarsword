@@ -3,7 +3,7 @@ extends Node2D
 class_name country
 
 #MetaData
-var CID #CountryID, three letter identification
+var CID: String #CountryID, three letter identification
 var NatColor #Country border colors
 var NatName #name used by the game to determine name placed over the country
 var NatAdj #Adjective used by the game to describe country units, buildings, events, etc.
@@ -285,11 +285,53 @@ func NewGameBuild():
 			updateDiscoveredByPlayer()
 			for Army in countryArmyList:
 				if Army.ArmyName == "Palace Guards":
-					addNewUnit(Army, "Infantry", 1, "Macuahuitl", "Copper", "Scale", 99, 22)
-					addNewUnit(Army, "Ranged", 2, "Atlatl", "Ivoroid", "Chain", 25, 44)
-					addNewUnit(Army, "Infantry", 1, "Club", "Wood", "Scout", 10, 20)
-					addNewUnit(Army, "Infantry", 3, "Pike", "Iron", "Cast", 90, 78)
-					addNewUnit(Army, "Infantry", 3, "Club", "Iron", "Point", 120, 5)
+					addNewUnit(Army, "Infantry", 4, "Macuahuitl", "Copper", "Scale", 1000, 1000)
+					addNewUnit(Army, "Ranged", 2, "Atlatl", "Copper", "Cast", 200, 200)
+					addNewUnit(Army, "Infantry", 5, "Club", "Wood", "Scout", 1000, 1000)
+					addNewUnit(Army, "Infantry", 3, "Pike", "Iron", "Cast", 300, 300)
+					addNewUnit(Army, "Infantry", 3, "Club", "Iron", "Point", 300, 300)
+		"DUM": #dummytest
+			spellBaseCost = 15
+			spellCostModifier = 0
+			spellDiscountModifier = 0
+			#starting resources
+			TotalGold += 50
+			TotalFood += 75
+			TotalWood += 60
+			TotalFaith += 80
+			TotalScience += 20
+			TotalMagic += 30
+			TotalWeapons += 20
+			TotalMetal += 30
+			TotalCulture += 10
+			TotalHarmony += 5
+			TotalMandate += 15
+			TotalInfluence += 0
+			TotalManpower += 1000
+			setStartingMagic()
+			mandateThreshold = 50
+			foodStorageMax = 1000
+			#DON"T TRY AND ADD NEW TYPES OF UNLOCKABLES UNTIL YOU FIGURE OUT HOW TO GET AN INFO PANEL TO APPEAR WITH MOUSE
+			#OVER.  SHOULD BE A DYNAMICALLY SIZED PANEL.
+			addTechnologicalDiscovery("Language")
+			addTechnologicalDiscovery("Agriculture")
+			addTechnologicalDiscovery("Copper Working")
+			addTechnologicalDiscovery("Artistry")
+			loadBeliefsList("GenericDoc1")
+			loadBeliefsList("GenericGods1")
+			#calculateToolsAndKits()
+			calculateTaxationAmounts()
+			updateUnlockableAttributes()
+			addArmy("Dummy Guards", 10)
+			addGovernorToGovernorPool("Wolverina Gundo", 1)
+			armyReinforceRate = 3 #add a function to determin reinforce rate
+			#for Tile in OwnedTileList:
+			updateDiscoveredByPlayer()
+			for Army in countryArmyList:
+				if Army.ArmyName == "Dummy Guards":
+					addNewUnit(Army, "Infantry", 4, "Macuahuitl", "Copper", "Scale", 400, 400)
+					addNewUnit(Army, "Ranged", 2, "Atlatl", "Copper", "Cast", 200, 200)
+					addNewUnit(Army, "Infantry", 3, "Pike", "Iron", "Cast", 300, 300)
 		"ANL":
 			#capitalPathPointButton = $PathControl/PathPointsControl/PDT1
 			spellBaseCost = 15

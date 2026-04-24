@@ -304,6 +304,26 @@ func calculateAttributes(tileNumber):
 			tileSpawnPoint = $"../../PathControl/PathPointsControl/9"
 		10:
 			tileSpawnPoint = $"../../PathControl/PathPointsControl/10"
+			tileName = "DUMLANDIA"
+			tileOwner = "DUM"
+			countryCapital = true
+			tileContinent
+			tilePop
+			coastal = false
+			freshWater = true
+			terrain = "mountaintop"
+			season
+			tileEcoModifiers
+			tileMilModifiers
+			corruption = 50
+			TileNeighbors
+			var tileCrop = crop.new()
+			tileCrop.cropType = "Cannabis"
+			cropSlot = tileCrop
+			var tileOre = ore.new()
+			tileOre.updateSelf("Copper")
+			oreSlot = tileOre
+			addBuilding("Barracks", 10)
 		11:
 			tileSpawnPoint = $"../../PathControl/PathPointsControl/11"
 		12:
@@ -1293,6 +1313,9 @@ func polisMode():
 			$TileGraphic.visible = true
 		"VTO":
 			$TileGraphic.modulate = Color(1, 0.54901963, 0)
+			$TileGraphic.visible = true
+		"DUM":
+			$TileGraphic.modulate = Color(0.9,1,0.5)
 			$TileGraphic.visible = true
 	pass
 

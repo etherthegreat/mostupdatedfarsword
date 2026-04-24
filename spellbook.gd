@@ -18,10 +18,10 @@ func displaySpells(playerCountry):
 			$Panel/TileSpellsGridContainer.add_child(thisSpellArt)
 		elif spell.militarySpell == true:
 			var spellControl = Control.new()
-			var thisSpellArt = spellArt.new()
-			thisSpellArt.texture = spell.spellSprite
-			spellControl.add_child(thisSpellArt)
-			$Panel/ArmySpellsGridContainer.add_child(spellControl)
+			var thisSpellArt = spellArtScene.instantiate()
+			thisSpellArt.buildSpell(spell.spellType, spell.spellCastCost, playerCountry, spell)
+			thisSpellArt.spellButtonPressed.connect(useThisSpell)
+			$Panel/ArmySpellsGridContainer.add_child(thisSpellArt)
 	pass
 
 signal spellToUse

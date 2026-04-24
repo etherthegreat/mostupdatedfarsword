@@ -23,7 +23,7 @@ func newGameSpellAssignment():
 	#discount = countryID.spellCostDiscount
 	match spellType:
 		"Plentify":
-			militarySpell = false
+			militarySpell = true
 			spellSprite = load("res://art assets/Placeholder Art/Spells/Fireworks.PNG")
 			spellCastCost = 15
 		"Healing Winds":

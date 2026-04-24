@@ -16,12 +16,29 @@ func raisePlayerArmy(Army, country, Tile, pathPointToSend):
 	pathPointToSend.add_child(newAPF)
 	raisedPlayerAPFs.append(newAPF)
 	pathPointToSend.occupied = true
+	pathPointToSend.stationedArmy = Army
 	newAPF.apfSelected.connect(displayapfInfo)
 	newAPF.armyArrived.connect(armyArrivedFunc)
 	newAPF.armyTraveling.connect(updateTravelingArmy)
 	newAPF.onRaise(Army, country, pathPointToSend)
 	showPathPoints(pathPointToSend)
+	pathPointToSend.stationedAPF = newAPF
 	pass
+
+func raiseComputerArmy(Army, country, Tile, pathPointToSend):
+	var newAPF = armyPathFollowScene.instantiate()
+	pathPointToSend.add_child(newAPF)
+	raisedPlayerAPFs.append(newAPF)
+	pathPointToSend.occupied = true
+	pathPointToSend.stationedArmy = Army
+	newAPF.apfSelected.connect(displayapfInfo)
+	newAPF.armyArrived.connect(armyArrivedFunc)
+	newAPF.armyTraveling.connect(updateTravelingArmy)
+	newAPF.onRaise(Army, country, pathPointToSend)
+	showPathPoints(pathPointToSend)
+	pathPointToSend.stationedAPF = newAPF
+	pass
+
 
 var civilianPathFollowScene = load("res://civilian_path_follow.tscn")
 
@@ -50,10 +67,12 @@ func armyArrivedFunc(pathOfArmy, newPathPointButton, theArmy, apf, contain):
 		if pathPointButton == newPathPointButton:
 			contain.remove_child(apf)
 			pathPointButton.add_child(theArmy)
+			pathPointButton.stationedArmy = theArmy
 			pathPointButton.add_child(apf)
 			newPathPointButton.occupied = true
 			updateArmyPanel(theArmy, newPathPointButton)
 	showPathPoints(newPathPointButton)
+	newPathPointButton.stationedAPF = apf
 	pass
 
 func civilianArrivedFunc(pathOfCivilian, newPathPointButton, theCivilian, cpf, contain):
@@ -82,6 +101,7 @@ func displayapfInfo(thisArmy, apf, currentTile, thisCountry, currentPathPoint):
 		emit_signal("activateArmyControlMode")
 	#else:
 		#display other country information in the army panel
+		#maybe we show less army info depending on some espionage level things
 	pass
 
 func displaycpfInfo(thisCiv, cpf, currentTile, thisCountry, currentPathPoint):
@@ -131,6 +151,7 @@ func showPathPoints(pathPoint):
 		pathPointButton.visible = true
 	for pathPointButton in pathPoint.neighborPathPoints:
 		pathPointButton.visible = true
+#		pathPointButton.enemyCheck()
 	pathPoint.visible = true
 	#for pathPointButton in $PathPointsControl.get_children():
 		#if pathPointButton.visible != true:
@@ -205,7 +226,6 @@ func calculateArmyMovement(pathPointButton, endNodes, startNodes, neighborPathPo
 	pass
 
 func moveArmy(newContainer, String, endPoint):
-	print("DEBUGMORONWITHAWRENCH")
 	if selectedAPF!= null:
 		match String:
 			"start":
@@ -214,6 +234,7 @@ func moveArmy(newContainer, String, endPoint):
 				updatingArmyPathFollow = newContainer.get_parent()
 				var path = updatingArmyPathFollow.get_parent()
 				apfParent.call_deferred("remove_child",selectedAPF)
+				apfParent.stationedArmy = null
 				newContainer.call_deferred("add_child", selectedAPF)
 				selectedAPF.move("start", endPoint, path)
 				updatingArmyPathFollow = newContainer.get_parent()
@@ -390,3 +411,9 @@ func _on_melee_attack_button_pressed() -> void:
 	if selectedAPF != null:
 		emit_signal("meleeButtonPressed", selectedAPF, selectedAPF.thisArmy)
 	pass # Replace with function body.
+
+func spellSelectionMode(spell, cost, player):
+	for pathPointButton in $PathPointsControl.get_children():
+		if pathPointButton.occupied == true:
+			pathPointButton.stationedAPF.prepareMilSpell(spell)
+	pass

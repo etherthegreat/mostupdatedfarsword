@@ -13,21 +13,22 @@ var unitRangedOffence: float
 var unitRangedDefence: float
 var unitMagicDefence: float
 
-var weaponOffence: int
-var weaponDefence: int
-var weaponRangedOffence: int
-var weaponRangedDefence: int
-var weaponSpellDefence: int
-var weaponMaxShield: int
+var weaponOffence: float
+var weaponDefence: float
+var weaponRangedOffence: float
+var weaponRangedDefence: float
+var weaponSpellDefence: float
+var weaponMaxShield: float
 
-var oreMaxShield: int
+var oreMaxShield: float
 
-var armorMeleeBlock: int
-var armorRangedBlock: int
-var armorSpellBlock: int
+var armorMeleeBlock: float
+var armorRangedBlock: float
+var armorSpellBlock: float
 
 var unitOre: ore
 var unitWeapon: Weapon
+var weaponString: String
 var unitArmor: Armor
 
 var unitImage: Texture2D
@@ -54,17 +55,19 @@ signal updateArmy
 
 func buildSelf(parentCountry, Type, Level, WeaponType, OreType, ArmorType, CurMan, CurWeapons): #add current manpower, maxmanpower, currentwepaons, maxweaposn
 	#calculateManpower()
+	playerCountry = parentCountry
 	unitType = Type
 	unitLevel = Level
 	var newWeapon = weaponScene.instantiate()
+	#newWeapon.updateSelf(WeaponType)
 	unitWeapon = newWeapon
 	changeWeapon(WeaponType)
 	var newOre = oreScene.instantiate()
-	newOre.updateSelf(OreType)
+	#newOre.updateSelf(OreType)
 	unitOre = newOre
 	changeOre(OreType)
 	var newArmor = armorScene.instantiate()
-	newArmor.updateSelf(ArmorType)
+	#newArmor.updateSelf(ArmorType)
 	unitArmor = newArmor
 	changeArmor(ArmorType)
 	unitCurrentManpower = CurMan
@@ -87,7 +90,6 @@ func getUnitAttributes(): # call whenever anything changes the unit, signal to t
 	#attempts to sort by type but not currently functioning
 	calculateWeaponsOresArmor()
 	calculateGrossValues()
-	calculateMilMods()
 	#signal to the unitUI to update itself here.  this will keep the player's information always up to date
 	pass
 
@@ -95,7 +97,9 @@ func calculateWeaponsOresArmor():
 	weaponOffence = unitWeapon.weaponOffensiveIncrease
 	weaponDefence = unitWeapon.weaponDefensiveIncrease
 	weaponRangedOffence = unitWeapon.rangedOffensiveIncrease
+	print(weaponRangedOffence, "PIE")
 	weaponRangedDefence = unitWeapon.rangedDefensiveIncrease
+	print("unit weapon offensive", unitWeapon.weaponType, unitWeapon.weaponOffensiveIncrease)
 	for MilMod in unitWeapon.weaponMilMods:
 		addMilMod(MilMod)
 	oreMaxShield = unitOre.oreMaxShield
@@ -109,30 +113,33 @@ func calculateWeaponsOresArmor():
 	pass
 
 func calculateGrossValues():
-	var manPowerEffect = (unitCurrentManpower/unitMaxManpower)
-	var weaponsPowerEffect = (unitCurrentWeapons/unitMaxWeapons)
-	var grossUnitOffence = (weaponOffence)
+	var manPowerEffect: float = (unitCurrentManpower/unitMaxManpower)
+	var weaponsPowerEffect: float = (unitCurrentWeapons/unitMaxWeapons)
+	var grossUnitOffence: float = (unitLevel * weaponOffence)
 	#these numbers are all guesses btw, don't forget that
-	var grossUnitDefence = (unitLevel * weaponDefence)
-	var grossRangedOffence = (unitLevel * weaponRangedOffence)
-	unitOffensiveScore = ((unitLevel * grossUnitOffence) * ((manPowerEffect+weaponsPowerEffect)/2))
-	unitRangedOffence = ((unitLevel * grossUnitOffence) * ((manPowerEffect+weaponsPowerEffect)/2))
-	unitMaxShield = ((unitLevel * oreMaxShield))
-	unitDefensiveScore = (armorMeleeBlock * .1)
-	unitRangedDefence = (armorRangedBlock * .1)
-	unitMagicDefence = (armorSpellBlock * .1)# to make percentages
+	var grossUnitDefence : float = (unitLevel * weaponDefence)
+	var grossRangedOffence: float = (unitLevel * weaponRangedOffence)
+	var grossRangedDefence: float = (unitLevel * weaponRangedDefence)
+	unitOffensiveScore += ((unitLevel * grossUnitOffence) * ((manPowerEffect+weaponsPowerEffect)/2))
+	unitRangedOffence += ((unitLevel * grossRangedOffence) * ((manPowerEffect+weaponsPowerEffect)/2))
+	unitMaxShield += ((unitLevel * oreMaxShield))
+	unitDefensiveScore += (armorMeleeBlock * .1)
+	unitRangedDefence += (armorRangedBlock * .1)
+	unitMagicDefence += (armorSpellBlock * .1)# to make percentages
+	print("caLCULATE gross values", unitRangedOffence, unitOffensiveScore)
 	pass
 #add special super weapons gained from ruins and exploration, balance going heavy exploration with the other playthroughs
 #exploration should be as valid a strategy as building super tall or expanding wide.
 func calculateMilMods():
 	if militaryModifierList != null:
 		for MilMod in militaryModifierList:
+			print(MilMod.milModType, "MODTYPE")
 			if MilMod.disabled != false:
 				match MilMod.milModType:
-					"AtatlPierce":
-						unitRangedOffence * (1.05)
+					"AtlatlPierce":
+						unitRangedOffence *= (1.05)
 					"ClubBleed":
-						unitOffensiveScore * (1.05)
+						unitOffensiveScore *= (1.05)
 					"Copper":
 						unitMagicDefence += (0.02 * unitLevel)
 					"Gold":
@@ -162,6 +169,7 @@ func removeMilMod(milMod):
 
 func changeWeapon(Type):
 	unitWeapon.updateSelf(Type)
+	weaponString = Type
 	pass
 
 func changeArmor(Type):

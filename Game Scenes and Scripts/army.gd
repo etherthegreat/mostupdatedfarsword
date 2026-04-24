@@ -32,9 +32,8 @@ var commanderModifiers1: Array = []
 var commanderModifiers2: Array = []
 var commanderModifiers3: Array = []
 
-var armyWizard: wizard #if null = true, can assign a wizard from your pool to this army.  each wizard has at least three spells
-var wizardTraitModifiers: Array = []
-var wizardSpells: Array = []
+var armyCurse: spell #harmful spell from anybody
+var armyCharm: spell #beneficial spell from player or ally
 
 var maxUnits #number that determines how many units this army can hold, determined by technology, policies, leader
 var unitsList: Array = []
@@ -86,11 +85,17 @@ const manaPanelScene = preload("res://mana_panel.tscn")
 
 var tempResourcesDict: Dictionary = {}
 
+var enemy: bool #for any non-playable country
+
 func buildSelf(Name, countryNode, TileNumber):
 	#print("wowo so cool")
+	enemy = false
 	raised = false
 	ArmyName = Name
 	parentCountry = countryNode
+	match parentCountry.CID:
+		"DEM", "EIG", "DUM":
+			enemy = true
 	if TileNumber != 0:
 		for Tile in parentCountry.OwnedTileList:
 			if Tile.tileNumber == TileNumber:
@@ -103,6 +108,8 @@ func buildSelf(Name, countryNode, TileNumber):
 	pass
 
 func updateArmyUI(): #call whenever attacked, or just whenever the player opens the screen
+	for Unit in unitsList:
+		Unit.getUnitAttributes()
 	commanderCheck()
 	surveySelf()
 	updateUnitUIs()
@@ -112,12 +119,12 @@ func updateArmyUI(): #call whenever attacked, or just whenever the player opens 
 
 func addUnitToArmy(unitToAdd):
 	unitsList.append(unitToAdd)
-	unitToAdd.updateArmy.connect(surveySelf)
+	#unitToAdd.updateArmy.connect(surveySelf)
 	$UnitContainer.add_child(unitToAdd)
 	var newUnitUI = unitUIScene.instantiate()
 	newUnitUI.buildSelf(unitToAdd)
 	$ScrollContainer/UnitUIContainer.add_child(newUnitUI)
-	updateArmyUI()
+	#updateArmyUI()
 	pass
 
 func updateUnitUIs(): #call after battle, new unit, changed unit, any change to any thing in the army
@@ -150,39 +157,51 @@ func updateFinalTotals():
 	if armyFoodCost != 0:
 		var newMP = manaPanelScene.instantiate()
 		newMP.buildSelf("Food", armyFoodCost, tempResourcesDict)
+		$ScrollContainer2/VBoxContainer.add_child(newMP)
 	if armyWoodCost != 0:
 		var newMP = manaPanelScene.instantiate()
 		newMP.buildSelf("Wood", armyWoodCost, tempResourcesDict)
+		$ScrollContainer2/VBoxContainer.add_child(newMP)
 	if armyGoldCost != 0:
 		var newMP = manaPanelScene.instantiate()
 		newMP.buildSelf("Gold", armyGoldCost, tempResourcesDict)
+		$ScrollContainer2/VBoxContainer.add_child(newMP)
 	if armyMetalCost != 0:
 		var newMP = manaPanelScene.instantiate()
 		newMP.buildSelf("Metal", armyMetalCost, tempResourcesDict)
+		$ScrollContainer2/VBoxContainer.add_child(newMP)
 	if armyManpowerCost != 0:
 		var newMP = manaPanelScene.instantiate()
 		newMP.buildSelf("Manpower", armyManpowerCost, tempResourcesDict)
+		$ScrollContainer2/VBoxContainer.add_child(newMP)
 	if armyWeaponsCost != 0:
 		var newMP = manaPanelScene.instantiate()
 		newMP.buildSelf("Weapons", armyWeaponsCost, tempResourcesDict)
+		$ScrollContainer2/VBoxContainer.add_child(newMP)
 	if armyMagicCost != 0:
 		var newMP = manaPanelScene.instantiate()
 		newMP.buildSelf("Magic", armyMagicCost, tempResourcesDict)
+		$ScrollContainer2/VBoxContainer.add_child(newMP)
 	if armyScienceCost != 0:
 		var newMP = manaPanelScene.instantiate()
 		newMP.buildSelf("Science", armyScienceCost, tempResourcesDict)
+		$ScrollContainer2/VBoxContainer.add_child(newMP)
 	if armyCultureCost != 0:
 		var newMP = manaPanelScene.instantiate()
 		newMP.buildSelf("Culture", armyCultureCost, tempResourcesDict)
+		$ScrollContainer2/VBoxContainer.add_child(newMP)
 	if armyInfluenceCost != 0:
 		var newMP = manaPanelScene.instantiate()
 		newMP.buildSelf("Influence", armyInfluenceCost, tempResourcesDict)
+		$ScrollContainer2/VBoxContainer.add_child(newMP)
 	if armyHarmonyCost != 0:
 		var newMP = manaPanelScene.instantiate()
 		newMP.buildSelf("Harmony", armyHarmonyCost, tempResourcesDict)
+		$ScrollContainer2/VBoxContainer.add_child(newMP)
 	if armyFaithCost != 0:
 		var newMP = manaPanelScene.instantiate()
 		newMP.buildSelf("Faith", armyFaithCost, tempResourcesDict)
+		$ScrollContainer2/VBoxContainer.add_child(newMP)
 	pass
 
 func surveySelf():
@@ -256,6 +275,7 @@ func surveySelf():
 		if parentCountry.TotalMetal > 0:
 			Unit.disableMilModType("Metal")
 			#prevents units from replenishing armor
+		Unit.calculateMilMods()
 		armyPunch += Unit.unitOffensiveScore
 		armyBlock += Unit.unitDefensiveScore
 		maxManpower += Unit.unitMaxManpower
@@ -305,6 +325,12 @@ func calculateMaxUnitLevel():
 	pass
 
 signal raisingArmy
+
+func raiseSelf():
+	raised = true
+	emit_signal("raisingArmy", self, parentCountry, inTile)
+	pass
+
 func _on_raise_army_pressed() -> void:
 	raised = true
 	emit_signal("raisingArmy", self, parentCountry, inTile)
@@ -319,15 +345,10 @@ func addUnitCommander(newCommander):
 	for MilMod in commander.govMilModsLvl3:
 		commanderModifiers3.append(MilMod)
 	print("MILMODS IN 1", commanderModifiers1)
-	updateArmyUI()
+	#updateArmyUI()
 	pass
 
 func commanderCheck():
-	for Unit in $UnitContainer.get_children():
-		if Unit.militaryModifierList != null:
-			for MilMod in Unit.militaryModifierList:
-				if MilMod.commanderMod == true:
-					MilMod.queue_free()
 	if commander != null:
 		$CommanderButton.visible = true
 		#print("The commander is in", commander, commander.governorLevel)
@@ -337,17 +358,14 @@ func commanderCheck():
 				for MilMod in commanderModifiers1:
 					for Unit in unitsList:
 						Unit.addMilMod(MilMod)
-						#Unit.getUnitAttributes()\
 			2:
 				for MilMod in commanderModifiers2:
 					for Unit in unitsList:
 						Unit.addMilMod(MilMod)
-						#Unit.getUnitAttributes()
 			3:
 				for MilMod in commanderModifiers3:
 					for Unit in unitsList:
 						Unit.addMilMod(MilMod)
-						#Unit.getUnitAttributes()
 	else:
 		print("no commander")
 	pass
@@ -356,3 +374,19 @@ signal commanderButtonPressed
 func _on_commander_button_pressed() -> void:
 	emit_signal("commanderButtonPressed", commander)
 	pass # Replace with function body.
+
+signal battleBuilt
+
+var battleScene = preload("res://Game Scenes and Scripts/battle.tscn")
+func calculateBattle(armyPath, type, attacker, defenderAPF):
+	var newBattle = battleScene.instantiate()
+	newBattle.buildSelf(type, attacker, self)
+	defenderAPF.showBattle(newBattle)
+	newBattle.sendDefenderResults.connect(calculateDefenderResults)
+	pass
+
+func calculateDefenderResults(manpowerLossAmount):
+	print("manpowerInArmy", manpowerInArmy, manpowerLossAmount)
+	manpowerInArmy += manpowerLossAmount
+	print("manpowerInArmy", manpowerInArmy, manpowerLossAmount)
+	pass

@@ -15,6 +15,7 @@ var armorImage: Texture2D
 var armorMilMods: Array = []
 
 func updateSelf(newType):
+	armorType = newType
 	if armorMilMods != null:
 		for MilMod in armorMilMods:
 			MilMod.queue_free()
@@ -95,6 +96,6 @@ func updateSelf(newType):
 var milModScene = load("res://mil_mod.tscn")
 
 func addWeaponMod(modType):
-	milModScene.instantiate()
-	milModScene.buildSelf(modType)
-	armorMilMods.append(milModScene)
+	var newMilMod = milModScene.instantiate()
+	newMilMod.buildSelf(modType)
+	armorMilMods.append(newMilMod)

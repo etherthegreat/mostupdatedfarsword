@@ -26,7 +26,7 @@ func updateUI():
 	$OreTypeButton.icon = thisUnit.unitOre.oreImage
 	$ArmorTypeButton.icon = thisUnit.unitArmor.armorImage
 	$UnitStrengthContainer/UnitAttackLabel.text = str(thisUnit.unitOffensiveScore)
-	$UnitStrengthContainer/UnitRangedAttack.text = str(thisUnit.unitDefensiveScore)
+	$UnitStrengthContainer/UnitRangedAttack.text = str(thisUnit.unitRangedOffence)
 	$UnitStrengthContainer/UnitShield.text = str(thisUnit.unitShield)
 	$LevelLabel.text = str(thisUnit.unitLevel)
 	$WeaponsLabel.clear()
@@ -85,7 +85,7 @@ func findMilMods():
 					#print("NoMilModTypeFound", MilMod.milModType)
 	#print("milModCOmpare", milModCompare, "militarymodifierlist", thisUnit.militaryModifierList)
 	pass
-
+var weaponButtScene = preload("res://weapon_button.tscn")
 var weaponsList: Array = []
 func _on_weapon_type_button_pressed() -> void:
 	#print("weapons list before", weaponsList)
@@ -93,10 +93,11 @@ func _on_weapon_type_button_pressed() -> void:
 		for WeaponButton in weaponsList:
 			WeaponButton.queue_free()
 		weaponsList.clear()
+	print(thisUnit.playerCountry.CID, "CID")
+	print(thisUnit.playerCountry.weaponTemplateList, "WTL")
 	for WeaponTemplate in thisUnit.playerCountry.weaponTemplateList:
-		var weaponButton = WeaponButton.new()
-		weaponButton.icon = WeaponTemplate.weaponImage
-		weaponButton.weaponName = WeaponTemplate.weaponType
+		var weaponButton = weaponButtScene.instantiate()
+		weaponButton.buildSelf(WeaponTemplate.weaponType, WeaponTemplate.weaponImage)
 		weaponButton.giveWeaponName.connect(addWeapon)
 		weaponsList.append(weaponButton)
 		$WeaponScrollContainer/WeaponContainer.add_child(weaponButton)
@@ -129,14 +130,14 @@ func _on_ore_type_button_pressed() -> void:
 func addOre(oreType):
 	if thisUnit.unitOre != null:
 		thisUnit.changeOre(oreType)
-	$OresChoicePanel.visible = false
+	$OreScrollContainer.visible = false
 	pass
 
 func addWeapon(weaponType):
 	#print("Weapon Type", weaponType)
 	if thisUnit.unitWeapon != null:
 		thisUnit.changeWeapon(weaponType)
-	$WeaponsChoicePanel.visible = false
+	$WeaponScrollContainer.visible = false
 	pass
 
 #debug menu operations

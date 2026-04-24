@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://2asjxq2s8ns0"]
+[gd_scene load_steps=14 format=3 uid="uid://2asjxq2s8ns0"]
 
 [ext_resource type="Script" uid="uid://w51gsk23fphv" path="res://unit_ui.gd" id="1_xgapy"]
 [ext_resource type="Texture2D" uid="uid://bltkgm8khpe3w" path="res://art assets/finishedAssets/Panels/UnitPanelUI/IMG_1581.PNG" id="2_04vi3"]
@@ -7,10 +7,8 @@
 [ext_resource type="Texture2D" uid="uid://bth76jkkdoikk" path="res://art assets/finishedAssets/ores/Copper.PNG" id="5_4igmu"]
 [ext_resource type="PackedScene" uid="uid://dr216ju681y5o" path="res://mil_mod.tscn" id="5_xmosk"]
 [ext_resource type="Texture2D" uid="uid://buwli7g6cmpkp" path="res://art assets/finishedAssets/manaicons/manpower.png" id="6_4igmu"]
-[ext_resource type="PackedScene" uid="uid://brciqffod2cje" path="res://ore_button.tscn" id="6_l10q8"]
 [ext_resource type="Texture2D" uid="uid://j5g3n7ntcq5j" path="res://art assets/finishedAssets/Weapons/atlatl.png" id="6_rxcmb"]
 [ext_resource type="Texture2D" uid="uid://2hyymtaje3ct" path="res://art assets/finishedAssets/manaicons/Weapons.png" id="7_rxcmb"]
-[ext_resource type="PackedScene" uid="uid://ceaa50bsb0hpd" path="res://weapon_button.tscn" id="7_xmosk"]
 [ext_resource type="Texture2D" uid="uid://cd4tk74v57rhw" path="res://art assets/finishedAssets/Panels/armypanelfinishedui/IMG_1561.PNG" id="8_kilm6"]
 [ext_resource type="Texture2D" uid="uid://d2ms2xnnpnj2h" path="res://art assets/finishedAssets/Panels/armypanelfinishedui/IMG_1559.PNG" id="9_rdqe7"]
 [ext_resource type="Texture2D" uid="uid://1w1mtdc7n264" path="res://art assets/finishedAssets/Panels/armypanelfinishedui/IMG_1558.PNG" id="10_a2xqr"]
@@ -33,20 +31,21 @@ mouse_filter = 2
 script = ExtResource("1_xgapy")
 
 [node name="Img1564" type="Sprite2D" parent="."]
-position = Vector2(44.5, 65.5)
-scale = Vector2(0.178, 0.145556)
+position = Vector2(85.5, 125.848)
+scale = Vector2(0.342, 0.279664)
 texture = ExtResource("2_04vi3")
 
 [node name="Img1565" type="Sprite2D" parent="."]
-position = Vector2(44.5, 65.5)
-scale = Vector2(0.178, 0.145556)
+position = Vector2(87, 128.056)
+scale = Vector2(0.348, 0.28457)
 texture = ExtResource("3_ednxx")
 
 [node name="UnitNameLabel" type="Label" parent="."]
 layout_mode = 0
-offset_top = 2.0
-offset_right = 89.0
-offset_bottom = 15.0
+offset_left = 14.0
+offset_top = 3.0
+offset_right = 160.0
+offset_bottom = 16.0
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 8
 text = "Huge Penis Warriors"
@@ -55,55 +54,56 @@ autowrap_mode = 3
 
 [node name="WeaponTypeButton" type="Button" parent="."]
 layout_mode = 0
-offset_left = 5.0
+offset_left = 8.0
 offset_top = 17.0
-offset_right = 50.0
-offset_bottom = 62.0
+offset_right = 88.0
+offset_bottom = 97.0
 icon = ExtResource("4_4igmu")
 icon_alignment = 1
 expand_icon = true
 
 [node name="OreTypeButton" type="Button" parent="."]
 layout_mode = 0
-offset_left = 13.0
-offset_top = 64.0
-offset_right = 34.0
-offset_bottom = 86.0
+offset_left = 19.0
+offset_top = 105.0
+offset_right = 69.0
+offset_bottom = 157.0
 icon = ExtResource("5_4igmu")
 expand_icon = true
 
 [node name="ArmorTypeButton" type="Button" parent="."]
 layout_mode = 0
-offset_left = 58.0
-offset_top = 64.0
-offset_right = 79.0
-offset_bottom = 86.0
+offset_left = 98.0
+offset_top = 105.0
+offset_right = 148.0
+offset_bottom = 157.0
 icon = ExtResource("6_rxcmb")
 expand_icon = true
 
 [node name="ManpowerLabel" type="RichTextLabel" parent="."]
 layout_mode = 2
-offset_left = 65.0
-offset_top = 85.0
-offset_right = 144.0
-offset_bottom = 116.0
+offset_left = 84.0
+offset_top = 172.0
+offset_right = 121.0
+offset_bottom = 204.0
 mouse_filter = 2
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/normal_font_size = 7
+theme_override_font_sizes/normal_font_size = 11
 bbcode_enabled = true
 text = "[hint=Manpower]1000/[/hint]
 [hint=Maximum Manpower]1000 [/hint]"
 autowrap_mode = 0
+horizontal_alignment = 2
 
 [node name="WeaponsLabel" type="RichTextLabel" parent="."]
 layout_mode = 2
-offset_left = 27.0
-offset_top = 85.0
-offset_right = 63.0
-offset_bottom = 112.0
+offset_left = 55.0
+offset_top = 172.0
+offset_right = 101.0
+offset_bottom = 206.0
 mouse_filter = 2
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/normal_font_size = 7
+theme_override_font_sizes/normal_font_size = 11
 bbcode_enabled = true
 text = "[hint=Weapons]1000/[/hint]
 [hint=Maximum Weapons]1000 [/hint]"
@@ -111,56 +111,57 @@ autowrap_mode = 0
 
 [node name="UnitStrengthContainer" type="VBoxContainer" parent="."]
 layout_mode = 0
-offset_left = 42.0
-offset_top = 14.0
-offset_right = 109.0
-offset_bottom = 64.0
+offset_left = 112.0
+offset_top = 18.0
+offset_right = 179.0
+offset_bottom = 68.0
 mouse_filter = 2
 
 [node name="UnitAttackLabel" type="Label" parent="UnitStrengthContainer"]
 layout_mode = 2
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 10
+theme_override_font_sizes/font_size = 16
 text = "250"
 horizontal_alignment = 1
 
 [node name="UnitRangedAttack" type="Label" parent="UnitStrengthContainer"]
 layout_mode = 2
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 10
+theme_override_font_sizes/font_size = 16
 text = "250"
 horizontal_alignment = 1
 
 [node name="UnitShield" type="Label" parent="UnitStrengthContainer"]
 layout_mode = 2
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 10
+theme_override_font_sizes/font_size = 16
 text = "250"
 horizontal_alignment = 1
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 0
-offset_left = 5.0
-offset_top = 201.0
-offset_right = 132.0
-offset_bottom = 224.0
+offset_left = 234.75
+offset_top = 198.25
+offset_right = 361.75
+offset_bottom = 221.25
 
 [node name="LevelLabel" type="Label" parent="."]
 layout_mode = 0
-offset_left = 27.0
-offset_top = 63.0
-offset_right = 68.0
-offset_bottom = 87.0
+offset_left = 64.0
+offset_top = 107.0
+offset_right = 105.0
+offset_bottom = 151.0
+theme_override_font_sizes/font_size = 31
 text = "3"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="GridContainer" type="GridContainer" parent="."]
 layout_mode = 0
-offset_left = 16.0
-offset_top = 117.0
-offset_right = 92.0
-offset_bottom = 129.0
+offset_left = 53.0
+offset_top = 222.0
+offset_right = 129.0
+offset_bottom = 234.0
 mouse_filter = 2
 theme_override_constants/h_separation = 19
 theme_override_constants/v_separation = 25
@@ -229,65 +230,53 @@ expand_icon = true
 
 [node name="DebugMenuButton" type="Button" parent="."]
 layout_mode = 0
-offset_left = 87.0
+offset_left = 179.0
 offset_top = -6.0
-offset_right = 95.0
+offset_right = 187.0
 offset_bottom = 2.0
 
 [node name="OreScrollContainer" type="ScrollContainer" parent="."]
 visible = false
 layout_mode = 0
-offset_left = -58.0
+offset_left = -142.0
 offset_top = 3.0
-offset_right = -1.0
-offset_bottom = 128.0
+offset_right = 2.0
+offset_bottom = 250.0
 horizontal_scroll_mode = 0
 
 [node name="OreContainer" type="GridContainer" parent="OreScrollContainer"]
 layout_direction = 2
 layout_mode = 2
 mouse_filter = 2
-theme_override_constants/h_separation = 30
-theme_override_constants/v_separation = 29
+theme_override_constants/h_separation = 72
+theme_override_constants/v_separation = 70
 columns = 2
-
-[node name="OreButton" parent="OreScrollContainer/OreContainer" instance=ExtResource("6_l10q8")]
-layout_mode = 2
-
-[node name="OreButton2" parent="OreScrollContainer/OreContainer" instance=ExtResource("6_l10q8")]
-layout_mode = 2
 
 [node name="WeaponScrollContainer" type="ScrollContainer" parent="."]
 visible = false
 layout_mode = 0
-offset_left = -58.0
+offset_left = -142.0
 offset_top = 3.0
 offset_right = -1.0
-offset_bottom = 128.0
+offset_bottom = 249.0
 horizontal_scroll_mode = 0
 
 [node name="WeaponContainer" type="GridContainer" parent="WeaponScrollContainer"]
 layout_direction = 2
 layout_mode = 2
 mouse_filter = 2
-theme_override_constants/h_separation = 30
-theme_override_constants/v_separation = 29
+theme_override_constants/h_separation = 72
+theme_override_constants/v_separation = 70
 columns = 2
 
-[node name="WeaponButton" parent="WeaponScrollContainer/WeaponContainer" instance=ExtResource("7_xmosk")]
-layout_mode = 2
-
-[node name="WeaponButton2" parent="WeaponScrollContainer/WeaponContainer" instance=ExtResource("7_xmosk")]
-layout_mode = 2
-
 [node name="ManpowerSprite" type="Sprite2D" parent="."]
-position = Vector2(56, 96)
-scale = Vector2(0.179167, 0.179167)
+position = Vector2(143, 183)
+scale = Vector2(0.4, 0.4)
 texture = ExtResource("6_4igmu")
 
 [node name="WeaponsSprite" type="Sprite2D" parent="."]
-position = Vector2(15, 96)
-scale = Vector2(0.179167, 0.179167)
+position = Vector2(33, 184)
+scale = Vector2(0.4, 0.4)
 texture = ExtResource("7_rxcmb")
 
 [node name="Area2D" type="Area2D" parent="."]
@@ -299,18 +288,18 @@ position = Vector2(-57.5, -48)
 shape = SubResource("RectangleShape2D_rmpbi")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(58, 21)
-scale = Vector2(0.0184999, 0.0184999)
+position = Vector2(105, 30)
+scale = Vector2(0.038, 0.038)
 texture = ExtResource("8_kilm6")
 
 [node name="Sprite2D2" type="Sprite2D" parent="."]
-position = Vector2(58, 39)
-scale = Vector2(0.0184999, 0.0184999)
+position = Vector2(105, 59)
+scale = Vector2(0.038, 0.038)
 texture = ExtResource("9_rdqe7")
 
 [node name="Sprite2D3" type="Sprite2D" parent="."]
-position = Vector2(58, 57)
-scale = Vector2(0.0184999, 0.0184999)
+position = Vector2(105, 88)
+scale = Vector2(0.038, 0.038)
 texture = ExtResource("10_a2xqr")
 
 [connection signal="pressed" from="WeaponTypeButton" to="." method="_on_weapon_type_button_pressed"]

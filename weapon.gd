@@ -15,9 +15,10 @@ var weaponsPerLevel: int #how many weapons are used per level
 
 var weaponMilMods: Array
 
-var milModScene = load("res://mil_mod.tscn")
+var milModScene = preload("res://mil_mod.tscn")
 
 func updateSelf(newType):
+	weaponType = newType
 	if weaponMilMods != null:
 		for MilMod in weaponMilMods:
 			MilMod.queue_free()
@@ -83,6 +84,6 @@ func updateSelf(newType):
 	pass
 
 func addWeaponMod(modType):
-	milModScene.instantiate()
-	milModScene.buildSelf(modType)
-	weaponMilMods.append(milModScene)
+	var newMilMod = milModScene.instantiate()
+	newMilMod.buildSelf(modType)
+	weaponMilMods.append(newMilMod)

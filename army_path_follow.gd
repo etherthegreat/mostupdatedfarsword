@@ -20,8 +20,12 @@ signal movingArmy
 
 var progressRate: float
 
+var spellToCast: spell
+var spellCost: int
+
 func move(key, keyPath, path):
 	currentPathPoint.occupied = false
+	currentPathPoint.stationedAPF = null
 	currentPath = path
 	match key:
 		"start":
@@ -37,7 +41,17 @@ func move(key, keyPath, path):
 
 signal armyArrived
 signal armyTraveling
+var fuckyou : float
+var tempmanpowerinarmy: float
+var tempMaxManpower: float
 func _process(delta: float) -> void:
+	tempmanpowerinarmy = thisArmy.manpowerInArmy
+	tempMaxManpower = thisArmy.maxManpower
+	fuckyou = ((tempmanpowerinarmy/tempMaxManpower)*100)
+	if thisArmy.armyCharm != null:
+		$Label.text = "win"
+	print(str(fuckyou, "fuckyou", thisArmy.manpowerInArmy, thisArmy.maxManpower))
+	$ProgressBar.value = fuckyou
 	if movingBackward == true:
 		progressRate -= 0.02
 		if progressRate <= 0:
@@ -77,5 +91,17 @@ func onRaise(Army, country, pathPoint):
 
 signal apfSelected
 func _on_apf_button_pressed() -> void:
-	emit_signal("apfSelected", thisArmy, self, currentTile, thisCountry, currentPathPoint)
+	if spellToCast == null:
+		emit_signal("apfSelected", thisArmy, self, currentTile, thisCountry, currentPathPoint)
+	else:
+		thisArmy.armyCharm = spellToCast
+		spellToCast = null
 	pass # Replace with function body.
+
+func showBattle(battle):
+	$battlecontrol.add_child(battle)
+	pass
+
+func prepareMilSpell(spellForCast):
+	spellToCast = spellForCast
+	pass

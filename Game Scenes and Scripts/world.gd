@@ -96,14 +96,14 @@ func newGameBuild(CID, gameLang):
 	$CanvasLayer/LoadingProgressBar.value = 75
 	updatePlayerUI()
 	$TileController.discoverTiles(playerCountryNode)
-	#for country in aliveCountriesList:
-		#country.discoverTile($"PathControl/PathPointsControl/4")
-		#country.discoverTile($"PathControl/PathPointsControl/5")
-		#country.discoverTile($"PathControl/PathPointsControl/6")
-		#country.discoverTile($"PathControl/PathPointsControl/7")
-		#country.discoverTile($"PathControl/PathPointsControl/8")
-		#country.discoverTile($"PathControl/PathPointsControl/9")
-		#country.discoverTile($"PathControl/PathPointsControl/10")
+	for country in aliveCountriesList:
+		country.discoverTile($"PathControl/PathPointsControl/4")
+		country.discoverTile($"PathControl/PathPointsControl/5")
+		country.discoverTile($"PathControl/PathPointsControl/6")
+		country.discoverTile($"PathControl/PathPointsControl/7")
+		country.discoverTile($"PathControl/PathPointsControl/8")
+		country.discoverTile($"PathControl/PathPointsControl/9")
+		country.discoverTile($"PathControl/PathPointsControl/10")
 	worldCreation = false
 	$RightClickDetector.visible = true
 	mapMode = "Polis"
@@ -113,6 +113,9 @@ func newGameBuild(CID, gameLang):
 	$CanvasLayer/LoadingSprite.visible = false
 	$CanvasLayer/LoadingProgressBar.visible = false
 	$CanvasLayer/LoadingLabel.visible = false
+	for country in aliveCountriesList:
+		for Army in country.countryArmyList:
+			Army.raiseSelf()
 	pass
 
 var countryNode = load("res://Game Scenes and Scripts/country.tscn")
@@ -201,6 +204,21 @@ func spawnNewGameCountries(CID):
 	#eighthHouse.surveyResources()
 	$CameraMovementController/Camera2D.global_position = playerCapitalPathButton.global_position
 	
+	var dummyCountry = countryNode.instantiate()
+	if playerCountry == "DUM":
+		dummyCountry.Player = true
+		playerCountryNode = dummyCountry
+		playerCapitalPathButton = $"PathControl/PathPointsControl/10"
+	else:
+		dummyCountry.Player = false
+	dummyCountry.CID = "DUM"
+	for Tile in $TileController.get_children():
+		if Tile.tileOwner == "DUM":
+			dummyCountry.OwnedTileList.append(Tile)
+	dummyCountry.NewGameBuild()
+	aliveCountriesList.append(dummyCountry)
+	$CountryController.add_child(dummyCountry)
+	
 	pass
 
 var playerOutput: Dictionary = {}
@@ -237,6 +255,7 @@ func updatePlayerUI():
 	$PathControl.updatePathPoints.connect(updatePathPointsFunc)
 	$PathControl.updateCivilian.connect(updateCivFunc)
 	$PathControl.tileDevelopment.connect(newTileDevelopment)
+	$PathControl.meleeButtonPressed.connect(meleePressed)
 	$CanvasLayer/CivilianControl.loadCivilians(playerCountryNode, playerCountryNode.OwnedTileList)
 	$CanvasLayer/CivilianControl.raiseThisUnit.connect(raiseCivilianUnit)
 	$CanvasLayer/MilitaryPanelControl.buildSelf(playerCountryNode)
@@ -413,7 +432,8 @@ func _on_test_resource_button_pressed() -> void:
 			for civilianPathFollow in pathPointButton.get_children():
 				if civilianPathFollow.is_class("Button") != true:
 					#print(civilianPathFollow, "DEBUG IS CLASS CONTROL")
-					civilianPathFollow.emitTileChange()
+					#civilianPathFollow.emitTileChange()
+					pass
 	$CanvasLayer/SpellSchoolsControl.updateMagicAmounts(playerCountryNode)
 	for country in aliveCountriesList:
 		if country != playerCountryNode:
@@ -529,11 +549,13 @@ func raiseArmyFromWorld(Army, country, Tile):
 			pathPointButtonToSend = $"PathControl/PathPointsControl/3"
 		4:
 			pathPointButtonToSend = $"PathControl/PathPointsControl/4"
+		10:
+			pathPointButtonToSend = $"PathControl/PathPointsControl/10"
 	if country == playerCountryNode:
 		$PathControl.raisePlayerArmy(Army, country, Tile, pathPointButtonToSend)
 	else:
 		#here is where we will raise either Demonic or nonPlayer Country AIs
-		print("woah we're at this stage, good work dude")
+		$PathControl.raiseComputerArmy(Army, country, Tile, pathPointButtonToSend)
 	pass
 func raiseCivilianUnit(civ, country):
 	if country == playerCountryNode:
@@ -549,7 +571,10 @@ var eventScene = load("res://eventScene.tscn")
 var temporaryTile: Tile
 #MAP INTERACTION
 func activateSpellMapMode(spell, cost):
-	$TileController.spellSelectionMode(spell, cost, playerCountryNode)
+	if spell.militarySpell == false:
+		$TileController.spellSelectionMode(spell, cost, playerCountryNode)
+	else:
+		$PathControl.spellSelectionMode(spell, cost, playerCountryNode)
 	pass
 
 func spellPurchased(cost):
@@ -674,19 +699,22 @@ func resetUI():
 		$"CanvasLayer/Resource Bar (TOP)".visible = true
 	pass
 
+var lastSelectedPathPoint: pathPointButton
 func updateArmyFunc(Army, pathPoint):
 	$CanvasLayer/ArmyPanel/ArmyNameLabel.text = Army.ArmyName
-	$CanvasLayer/ArmyPanel/AttackLabel.text = str(Army.armyAttackScore)
-	$CanvasLayer/ArmyPanel/DefenseLabel.text = str(Army.armyDefenseScore)
-	$CanvasLayer/ArmyPanel/RangedAttackLabel.text = str(Army.armyRangedAttack)
-	$CanvasLayer/ArmyPanel/RangedDefenseLabel.text = str(Army.armyRangedDefense)
+	$CanvasLayer/ArmyPanel/AttackLabel.text = str(Army.armyPunch)
+	$CanvasLayer/ArmyPanel/DefenseLabel.text = str(Army.armyBlock)
+	$CanvasLayer/ArmyPanel/RangedAttackLabel.text = str(Army.armyLaunch)
+	$CanvasLayer/ArmyPanel/RangedDefenseLabel.text = str(Army.armyDefence)
 	$CanvasLayer/ArmyPanel/ManpowerLabel.text = str(Army.manpowerInArmy, " / ", Army.maxManpower)
 	$CanvasLayer/ArmyPanel/ShieldLabel.text = str(Army.armyShield, " / ", Army.armyMaxShield)
 	#$CanvasLayer/ArmyPanel/LocationLabel.text = str(pathPoint.pathNumber)
 	if $CanvasLayer/ArmyPanel.visible == false:
 		$CanvasLayer/ArmyPanel.visible = true
+		lastSelectedPathPoint = pathPoint
 	else:
 		$CanvasLayer/ArmyPanel.visible = false
+		lastSelectedPathPoint = null
 	pass
 
 func _on_path_control_show_army_info(key) -> void:
@@ -730,7 +758,20 @@ func _on_path_control_show_army_info(key) -> void:
 			$CanvasLayer/ArmyPanel/ActionInfoPanelControl.visible = false
 	pass # Replace with function body.
 
-func _on_path_control_melee_button_pressed(armyPath, thisArmy) -> void:
+#this is where the battles for melee are calculated
+var attackingPlayerMelee: Army
+var calculateMelee: bool
+func meleePressed(armyPath, thisArmy) -> void:
+	#things to do:
+	#set the world's player attacking melee slot with this army
+	attackingPlayerMelee = thisArmy
+	if lastSelectedPathPoint != null:
+		for pathPointButton in lastSelectedPathPoint.neighborPathPoints:
+			pathPointButton.calculateBattle(armyPath, "melee", thisArmy)
+	#set all apfs that are not neighbors to 'disabled' which makes them unclickable
+	#set the world to 'melee attack calc' bool
+	#if an apf is hovered over while in melee attack calc, build a battle and display results
+	#if an apf is clicked while in melee attack calc, enact the battle and add damage/results
 	
 	pass # Replace with function body.
 

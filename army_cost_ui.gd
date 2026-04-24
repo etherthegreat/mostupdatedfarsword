@@ -39,6 +39,9 @@ func updateSelf(numb, maxNumb):
 		amount = numb
 		maxAmount = maxNumb
 		$amountlabel.text = str(amount, " / ", maxAmount)
+	elif newType == "Punch" || newType == "Launch":
+		amount = numb
+		$amountlabel.text = str(amount)
 	else:
 		amount = numb
 		$amountlabel.text = str(amount, "%")

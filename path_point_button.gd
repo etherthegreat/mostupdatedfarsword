@@ -2,7 +2,8 @@ extends Control
 
 class_name pathPointButton
 
-
+var stationedArmy: Army
+var stationedAPF: armyPathFollow
 
 @export var endNodePathsEXP: Array
 var endNodePaths: Array
@@ -45,4 +46,10 @@ func hideTile():
 
 func revealTile():
 	ppbTile.reveal()
+	pass
+
+func calculateBattle(armyPath, type, attackingArmy):
+	if stationedArmy != null:
+		if stationedArmy.enemy == true:
+			stationedArmy.calculateBattle(armyPath, type, attackingArmy, stationedAPF)
 	pass

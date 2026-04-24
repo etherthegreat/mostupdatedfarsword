@@ -12,8 +12,8 @@ script = ExtResource("2_m4o6c")
 
 [node name="Button" type="Button" parent="."]
 layout_mode = 0
-offset_right = 27.0
-offset_bottom = 27.0
+offset_right = 68.0
+offset_bottom = 68.0
 icon = ExtResource("2_t1y8r")
 expand_icon = true
 

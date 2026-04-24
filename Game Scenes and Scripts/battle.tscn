@@ -1,6 +1,188 @@
-[gd_scene load_steps=2 format=3 uid="uid://gutkdbjpilqr"]
+[gd_scene load_steps=8 format=3 uid="uid://gutkdbjpilqr"]
 
 [ext_resource type="Script" uid="uid://chole0yyt8ufy" path="res://Game Scenes and Scripts/battle.gd" id="1_5qdnp"]
+[ext_resource type="Texture2D" uid="uid://cta3ksrnubp7x" path="res://art assets/finishedAssets/Panels/tilePanel.PNG" id="2_dnen0"]
+[ext_resource type="Texture2D" uid="uid://cd4tk74v57rhw" path="res://art assets/finishedAssets/Panels/armypanelfinishedui/IMG_1561.PNG" id="3_03px5"]
+[ext_resource type="Texture2D" uid="uid://1w1mtdc7n264" path="res://art assets/finishedAssets/Panels/armypanelfinishedui/IMG_1558.PNG" id="4_rv5eb"]
+[ext_resource type="Texture2D" uid="uid://uyn0f55qhc4c" path="res://art assets/finishedAssets/Panels/armypanelfinishedui/IMG_1563.PNG" id="5_1exo8"]
+[ext_resource type="Texture2D" uid="uid://buwli7g6cmpkp" path="res://art assets/finishedAssets/manaicons/manpower.png" id="6_q8x1h"]
+[ext_resource type="Texture2D" uid="uid://2hyymtaje3ct" path="res://art assets/finishedAssets/manaicons/Weapons.png" id="7_csxdc"]
 
-[node name="Battle" type="Node2D"]
+[node name="Battle" type="Control"]
+layout_mode = 3
+anchors_preset = 0
 script = ExtResource("1_5qdnp")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(4.0712e-07, 90.6862)
+rotation = 1.5708
+scale = Vector2(0.0967237, 0.106793)
+texture = ExtResource("2_dnen0")
+
+[node name="1" type="Sprite2D" parent="."]
+position = Vector2(-132, 61)
+scale = Vector2(0.032, 0.032)
+texture = ExtResource("3_03px5")
+
+[node name="2" type="Sprite2D" parent="."]
+position = Vector2(-82, 61)
+scale = Vector2(0.032, 0.032)
+texture = ExtResource("4_rv5eb")
+
+[node name="3" type="Sprite2D" parent="."]
+position = Vector2(-32, 61)
+scale = Vector2(0.032, 0.032)
+texture = ExtResource("5_1exo8")
+
+[node name="4" type="Sprite2D" parent="."]
+position = Vector2(30, 61)
+scale = Vector2(0.032, 0.032)
+texture = ExtResource("5_1exo8")
+
+[node name="5" type="Sprite2D" parent="."]
+position = Vector2(80, 61)
+scale = Vector2(0.032, 0.032)
+texture = ExtResource("4_rv5eb")
+
+[node name="6" type="Sprite2D" parent="."]
+position = Vector2(130, 61)
+scale = Vector2(0.032, 0.032)
+texture = ExtResource("3_03px5")
+
+[node name="AttackerLossesEstimate" type="Label" parent="."]
+layout_mode = 0
+offset_left = -104.0
+offset_top = 4.0
+offset_right = 111.0
+offset_bottom = 27.0
+text = "Estimated Attack Outcomes"
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = -141.0
+offset_top = 73.0
+offset_right = -14.0
+offset_bottom = 96.0
+theme_override_colors/font_color = Color(0.599057, 1.43189e-06, 4.33177e-07, 1)
+text = "Allied Casualties"
+
+[node name="Label2" type="Label" parent="."]
+layout_mode = 0
+offset_left = 15.0
+offset_top = 73.0
+offset_right = 151.0
+offset_bottom = 96.0
+theme_override_colors/font_color = Color(0.685991, 0.431013, 0, 1)
+text = "Enemy Casualties"
+
+[node name="Label3" type="Label" parent="."]
+layout_mode = 0
+offset_top = -1.0
+offset_right = 40.0
+offset_bottom = 22.0
+
+[node name="AlliedManLosses" type="ProgressBar" parent="."]
+layout_mode = 0
+offset_left = -153.0
+offset_top = 98.0
+offset_bottom = 125.0
+
+[node name="AlliedWeapLosses" type="ProgressBar" parent="."]
+layout_mode = 0
+offset_left = -153.0
+offset_top = 142.0
+offset_bottom = 169.0
+
+[node name="EnemyManLosses" type="ProgressBar" parent="."]
+layout_mode = 0
+offset_top = 98.0
+offset_right = 153.0
+offset_bottom = 125.0
+show_percentage = false
+
+[node name="EnemyManLosses2" type="ProgressBar" parent="."]
+layout_mode = 0
+offset_top = 98.0
+offset_right = 153.0
+offset_bottom = 125.0
+show_percentage = false
+
+[node name="EnemyWeapLosses" type="ProgressBar" parent="."]
+layout_mode = 0
+offset_top = 142.0
+offset_right = 153.0
+offset_bottom = 169.0
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+position = Vector2(-7.62939e-06, 107)
+scale = Vector2(0.283333, 0.283333)
+texture = ExtResource("6_q8x1h")
+
+[node name="Sprite2D3" type="Sprite2D" parent="."]
+position = Vector2(7.62939e-06, 155)
+scale = Vector2(0.283333, 0.283333)
+texture = ExtResource("7_csxdc")
+
+[node name="Label4" type="Label" parent="."]
+layout_mode = 0
+offset_left = -101.0
+offset_top = 30.0
+offset_right = -61.0
+offset_bottom = 53.0
+text = "1000"
+horizontal_alignment = 1
+
+[node name="Label5" type="Label" parent="."]
+layout_mode = 0
+offset_left = -151.0
+offset_top = 30.0
+offset_right = -111.0
+offset_bottom = 53.0
+text = "125"
+horizontal_alignment = 1
+
+[node name="Label6" type="Label" parent="."]
+layout_mode = 0
+offset_left = -51.0
+offset_top = 30.0
+offset_right = -11.0
+offset_bottom = 53.0
+text = "10%"
+horizontal_alignment = 1
+
+[node name="Label7" type="Label" parent="."]
+layout_mode = 0
+offset_left = 61.0
+offset_top = 30.0
+offset_right = 101.0
+offset_bottom = 53.0
+text = "700"
+horizontal_alignment = 1
+
+[node name="Label8" type="Label" parent="."]
+layout_mode = 0
+offset_left = 11.0
+offset_top = 30.0
+offset_right = 51.0
+offset_bottom = 53.0
+text = "25%"
+horizontal_alignment = 1
+
+[node name="Label9" type="Label" parent="."]
+layout_mode = 0
+offset_left = 111.0
+offset_top = 30.0
+offset_right = 151.0
+offset_bottom = 53.0
+text = "84"
+horizontal_alignment = 1
+
+[node name="AttackButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = -26.0
+offset_top = -51.0
+offset_right = 25.0
+icon = ExtResource("7_csxdc")
+expand_icon = true
+
+[connection signal="pressed" from="AttackButton" to="." method="_on_attack_button_pressed"]
