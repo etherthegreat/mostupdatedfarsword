@@ -87,10 +87,13 @@ var tempResourcesDict: Dictionary = {}
 
 var enemy: bool #for any non-playable country
 
+var deleteMode: bool
+
 func buildSelf(Name, countryNode, TileNumber):
 	#print("wowo so cool")
 	enemy = false
 	raised = false
+	deleteMode = false
 	ArmyName = Name
 	parentCountry = countryNode
 	match parentCountry.CID:
@@ -115,6 +118,14 @@ func updateArmyUI(): #call whenever attacked, or just whenever the player opens 
 	updateUnitUIs()
 	updateCommanderUI()
 	updateFinalTotals()
+	pass
+
+func onTurnEnd():
+	if parentCountry.TotalManpower > 0:
+		for Unit in unitsList:
+			Unit.refillManpower(parentCountry.armyReinforceRate)
+			print("unitREFILL", Unit.unitCurrentManpower, parentCountry.armyReinforceRate)
+	updateArmyUI()
 	pass
 
 func addUnitToArmy(unitToAdd):
@@ -204,6 +215,8 @@ func updateFinalTotals():
 		$ScrollContainer2/VBoxContainer.add_child(newMP)
 	pass
 
+var unitCount: int
+
 func surveySelf():
 	maxUnitLevel = 0
 	calculateMaxUnitLevel()
@@ -230,10 +243,9 @@ func surveySelf():
 	armyHarmonyCost = 0
 	armyFaithCost = 0
 	print("Surveying Self")
-	var unitCount: int
 	unitCount = 0
 	for Unit in unitsList:
-		unitCount += 1
+		unitCount += Unit.unitLevel
 	var minSize: int = (unitCount * 210)
 	$ScrollContainer/UnitUIContainer.set_custom_minimum_size(Vector2(minSize, 0))
 	for Unit in unitsList:
@@ -243,8 +255,8 @@ func surveySelf():
 		if Unit.unitCurrentManpower == 0:
 			Unit.disableMilModType("All") #disable all milmods which are 
 				#reliant on manpower.  all mil mods are reliant on manpow
-		if parentCountry.TotalManpower > 0:
-			Unit.refillManpower(parentCountry.armyReinforceRate)
+		#if parentCountry.TotalManpower > 0:
+			#Unit.refillManpower(parentCountry.armyReinforceRate)
 				#Unit.hurt() #hurt takes the level of the unit down, and deletes the unit if reaches level 0.
 		if parentCountry.TotalWeapons > 0:
 			Unit.disableMilModType("Weapons")
@@ -378,15 +390,21 @@ func _on_commander_button_pressed() -> void:
 signal battleBuilt
 
 var battleScene = preload("res://Game Scenes and Scripts/battle.tscn")
-func calculateBattle(armyPath, type, attacker, defenderAPF):
+func calculateBattle(armyPath, type, attacker, defenderAPF, lastSelectedPathPoint):
 	var newBattle = battleScene.instantiate()
 	newBattle.buildSelf(type, attacker, self)
 	defenderAPF.showBattle(newBattle)
 	newBattle.sendDefenderResults.connect(calculateDefenderResults)
+	newBattle.deleteBattles.connect(lastSelectedPathPoint.deleteNeighborBattles)
 	pass
 
-func calculateDefenderResults(manpowerLossAmount):
-	print("manpowerInArmy", manpowerInArmy, manpowerLossAmount)
-	manpowerInArmy += manpowerLossAmount
-	print("manpowerInArmy", manpowerInArmy, manpowerLossAmount)
+
+func calculateDefenderResults(type, manpowerLossAmount):
+	var damagePerUnit = (manpowerLossAmount/unitCount)
+	for Unit in unitsList:
+		Unit.takeLosses(type, damagePerUnit)
+	if manpowerInArmy <= 0:
+		deleteMode = true
+	else:
+		surveySelf()
 	pass

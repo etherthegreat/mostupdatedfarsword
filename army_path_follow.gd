@@ -25,7 +25,6 @@ var spellCost: int
 
 func move(key, keyPath, path):
 	currentPathPoint.occupied = false
-	currentPathPoint.stationedAPF = null
 	currentPath = path
 	match key:
 		"start":
@@ -45,38 +44,44 @@ var fuckyou : float
 var tempmanpowerinarmy: float
 var tempMaxManpower: float
 func _process(delta: float) -> void:
-	tempmanpowerinarmy = thisArmy.manpowerInArmy
-	tempMaxManpower = thisArmy.maxManpower
-	fuckyou = ((tempmanpowerinarmy/tempMaxManpower)*100)
-	if thisArmy.armyCharm != null:
-		$Label.text = "win"
-	print(str(fuckyou, "fuckyou", thisArmy.manpowerInArmy, thisArmy.maxManpower))
-	$ProgressBar.value = fuckyou
-	if movingBackward == true:
-		progressRate -= 0.02
-		if progressRate <= 0:
-			movingBackward = false
-			currentPathPoint = destinationPathPoint
-			currentPathPoint.occupied = true
-			#currentPathPoint.add_child(self)
-			var currentContainer = get_parent()
-			emit_signal("armyArrived", currentPath, destinationPathPoint, thisArmy, self, currentContainer)
-			destinationPathPoint = null
-		else:
-			emit_signal("armyTraveling", progressRate, destinationPathPoint, thisArmy)
-	if movingForward == true:
-		progressRate += 0.02
-		if progressRate >= 1:
-			movingForward = false
-			currentPathPoint = destinationPathPoint
-			currentPathPoint.occupied = true
-			#currentTile = currentPathPoint.ppbTile
-			#currentPathPoint.add_child(self)
-			var currentContainer = get_parent()
-			emit_signal("armyArrived", currentPath, destinationPathPoint, thisArmy, self, currentContainer)
-			destinationPathPoint = null
-		else:
-			emit_signal("armyTraveling", progressRate, destinationPathPoint, thisArmy)
+	if thisArmy.deleteMode == false:
+		tempmanpowerinarmy = thisArmy.manpowerInArmy
+		tempMaxManpower = thisArmy.maxManpower
+		fuckyou = ((tempmanpowerinarmy/tempMaxManpower)*100)
+		if thisArmy.armyCharm != null:
+			$Label.text = "win"
+		print(str(fuckyou, "fuckyou", thisArmy.manpowerInArmy, thisArmy.maxManpower))
+		$ProgressBar.value = fuckyou
+		if movingBackward == true:
+			progressRate -= 0.02
+			if progressRate <= 0:
+				movingBackward = false
+				currentPathPoint = destinationPathPoint
+				currentPathPoint.occupied = true
+				#currentPathPoint.add_child(self)
+				var currentContainer = get_parent()
+				emit_signal("armyArrived", currentPath, destinationPathPoint, thisArmy, self, currentContainer)
+				destinationPathPoint = null
+			else:
+				emit_signal("armyTraveling", progressRate, destinationPathPoint, thisArmy)
+		if movingForward == true:
+			progressRate += 0.02
+			if progressRate >= 1:
+				movingForward = false
+				currentPathPoint = destinationPathPoint
+				currentPathPoint.occupied = true
+				#currentTile = currentPathPoint.ppbTile
+				#currentPathPoint.add_child(self)
+				var currentContainer = get_parent()
+				emit_signal("armyArrived", currentPath, destinationPathPoint, thisArmy, self, currentContainer)
+				destinationPathPoint = null
+			else:
+				emit_signal("armyTraveling", progressRate, destinationPathPoint, thisArmy)
+	else:
+		currentPathPoint.stationedAPF = null
+		currentPathPoint.stationedArmy = null
+		thisArmy.queue_free()
+		self.queue_free()
 	pass
 
 func onRaise(Army, country, pathPoint):
@@ -101,6 +106,12 @@ func _on_apf_button_pressed() -> void:
 func showBattle(battle):
 	$battlecontrol.add_child(battle)
 	pass
+
+func deleteBattle():
+	if $battlecontrol.get_children() != null:
+		for Battle in $battlecontrol.get_children():
+			Battle.queue_free()
+		pass
 
 func prepareMilSpell(spellForCast):
 	spellToCast = spellForCast

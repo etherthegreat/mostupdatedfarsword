@@ -279,17 +279,18 @@ func NewGameBuild():
 			addMilMod("Berserkers")
 			addArmy("Palace Guards", 3)
 			addGovernorToGovernorPool("Wolverina Gundo", 1)
-			armyReinforceRate = 3 #add a function to determin reinforce rate
+			armyReinforceRate = 30 #add a function to determin reinforce rate
 			#for Tile in OwnedTileList:
 				
 			updateDiscoveredByPlayer()
 			for Army in countryArmyList:
 				if Army.ArmyName == "Palace Guards":
-					addNewUnit(Army, "Infantry", 4, "Macuahuitl", "Copper", "Scale", 1000, 1000)
+					addNewUnit(Army, "Ranged", 4, "Atlatl", "Copper", "Scale", 200, 400)
+					addNewUnit(Army, "Ranged", 2, "Atlatl", "Copper", "Cast", 100, 200)
+					addNewUnit(Army, "Ranged", 5, "Atlatl", "Wood", "Scout", 400, 500)
+					addNewUnit(Army, "Infantry", 4, "Macuahuitl", "Copper", "Scale", 400, 400)
 					addNewUnit(Army, "Ranged", 2, "Atlatl", "Copper", "Cast", 200, 200)
-					addNewUnit(Army, "Infantry", 5, "Club", "Wood", "Scout", 1000, 1000)
-					addNewUnit(Army, "Infantry", 3, "Pike", "Iron", "Cast", 300, 300)
-					addNewUnit(Army, "Infantry", 3, "Club", "Iron", "Point", 300, 300)
+					addNewUnit(Army, "Infantry", 5, "Club", "Wood", "Scout", 500, 500)
 		"DUM": #dummytest
 			spellBaseCost = 15
 			spellCostModifier = 0
@@ -329,9 +330,9 @@ func NewGameBuild():
 			updateDiscoveredByPlayer()
 			for Army in countryArmyList:
 				if Army.ArmyName == "Dummy Guards":
-					addNewUnit(Army, "Infantry", 4, "Macuahuitl", "Copper", "Scale", 400, 400)
-					addNewUnit(Army, "Ranged", 2, "Atlatl", "Copper", "Cast", 200, 200)
-					addNewUnit(Army, "Infantry", 3, "Pike", "Iron", "Cast", 300, 300)
+					addNewUnit(Army, "Infantry", 4, "Macuahuitl", "Copper", "Scale", 300, 400)
+					addNewUnit(Army, "Ranged", 2, "Atlatl", "Copper", "Cast", 150, 200)
+					addNewUnit(Army, "Infantry", 3, "Pike", "Iron", "Cast", 100, 300)
 		"ANL":
 			#capitalPathPointButton = $PathControl/PathPointsControl/PDT1
 			spellBaseCost = 15
@@ -1162,7 +1163,8 @@ func surveyResources():
 		illPoints += Tile.illPointsOutput
 		divPoints += Tile.divPointsOutput
 		druPoints += Tile.druPointsOutput
-	
+	collectTaxes()
+	payUnitMaintenance()
 	pass
 
 signal checkingOutput
@@ -1258,7 +1260,7 @@ func outputCheck(caller):
 
 func payUnitMaintenance():
 	for Army in countryArmyList:
-		Army.surveySelf()
+		Army.onTurnEnd()
 		FPM += Army.armyFoodCost
 		WPM += Army.armyWoodCost
 		MPM += Army.armyMetalCost

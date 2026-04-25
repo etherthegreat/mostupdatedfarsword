@@ -195,7 +195,7 @@ func calculateArmyMovement(pathPointButton, endNodes, startNodes, neighborPathPo
 		for Container in endNodes: 
 			print(Container, "DEUBUG NODEPATH")
 			if startingPoint.startNodePaths.has(Container):
-				print("DEBUG startingPoint2, ")
+				print("DEBUG startingPoint1, ")
 				moveArmy(Container, "start", pathPointButton)
 				#pathPointButton.occupied = false
 				#print("DEBUG PathPointButton", pathPointButton.occupied)
@@ -234,7 +234,6 @@ func moveArmy(newContainer, String, endPoint):
 				updatingArmyPathFollow = newContainer.get_parent()
 				var path = updatingArmyPathFollow.get_parent()
 				apfParent.call_deferred("remove_child",selectedAPF)
-				apfParent.stationedArmy = null
 				newContainer.call_deferred("add_child", selectedAPF)
 				selectedAPF.move("start", endPoint, path)
 				updatingArmyPathFollow = newContainer.get_parent()
@@ -410,6 +409,12 @@ signal meleeButtonPressed
 func _on_melee_attack_button_pressed() -> void:
 	if selectedAPF != null:
 		emit_signal("meleeButtonPressed", selectedAPF, selectedAPF.thisArmy)
+	pass # Replace with function body.
+
+signal rangedButtonPressed
+func _on_ranged_attack_button_pressed():
+	if selectedAPF != null:
+		emit_signal("rangedButtonPressed", selectedAPF, selectedAPF.thisArmy)
 	pass # Replace with function body.
 
 func spellSelectionMode(spell, cost, player):

@@ -123,10 +123,10 @@ func calculateGrossValues():
 	unitOffensiveScore += ((unitLevel * grossUnitOffence) * ((manPowerEffect+weaponsPowerEffect)/2))
 	unitRangedOffence += ((unitLevel * grossRangedOffence) * ((manPowerEffect+weaponsPowerEffect)/2))
 	unitMaxShield += ((unitLevel * oreMaxShield))
-	unitDefensiveScore += (armorMeleeBlock * .1)
-	unitRangedDefence += (armorRangedBlock * .1)
-	unitMagicDefence += (armorSpellBlock * .1)# to make percentages
-	print("caLCULATE gross values", unitRangedOffence, unitOffensiveScore)
+	unitDefensiveScore += (armorMeleeBlock * .01)
+	unitRangedDefence += (armorRangedBlock * .01)
+	unitMagicDefence += (armorSpellBlock * .01)# to make percentages
+	print("caLCULATE gross values", unitRangedOffence, unitOffensiveScore, unitDefensiveScore)
 	pass
 #add special super weapons gained from ruins and exploration, balance going heavy exploration with the other playthroughs
 #exploration should be as valid a strategy as building super tall or expanding wide.
@@ -194,4 +194,14 @@ func disableMilModType(Type):
 func enableMilModType(Type):
 	for MilMod in militaryModifierList:
 		MilMod.enableMilModType(Type)
+	pass
+
+func takeLosses(type, amount):
+	print("takingLosses amount1", amount, "currentManpower", unitCurrentManpower, "defensiveScore", unitDefensiveScore)
+	match type:
+		"melee":
+			unitCurrentManpower += (amount - (amount*unitDefensiveScore))
+		"ranged":
+			unitCurrentManpower += (amount - (amount*unitRangedDefence))
+	print("takingLosses amount2", amount, "currentManpower", unitCurrentManpower, "defensiveScore", unitDefensiveScore)
 	pass

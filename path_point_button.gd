@@ -48,8 +48,14 @@ func revealTile():
 	ppbTile.reveal()
 	pass
 
-func calculateBattle(armyPath, type, attackingArmy):
+func calculateBattle(armyPath, type, attackingArmy, lastSelectedPathPoint):
 	if stationedArmy != null:
 		if stationedArmy.enemy == true:
-			stationedArmy.calculateBattle(armyPath, type, attackingArmy, stationedAPF)
+			stationedArmy.calculateBattle(armyPath, type, attackingArmy, stationedAPF, lastSelectedPathPoint)
+	pass
+
+func deleteNeighborBattles():
+	for pathPointButton in neighborPathPoints:
+		if pathPointButton.stationedAPF != null:
+			pathPointButton.stationedAPF.deleteBattle()
 	pass

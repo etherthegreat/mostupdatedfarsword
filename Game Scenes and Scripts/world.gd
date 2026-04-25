@@ -256,6 +256,7 @@ func updatePlayerUI():
 	$PathControl.updateCivilian.connect(updateCivFunc)
 	$PathControl.tileDevelopment.connect(newTileDevelopment)
 	$PathControl.meleeButtonPressed.connect(meleePressed)
+	$PathControl.rangedButtonPressed.connect(rangedPressed)
 	$CanvasLayer/CivilianControl.loadCivilians(playerCountryNode, playerCountryNode.OwnedTileList)
 	$CanvasLayer/CivilianControl.raiseThisUnit.connect(raiseCivilianUnit)
 	$CanvasLayer/MilitaryPanelControl.buildSelf(playerCountryNode)
@@ -424,8 +425,6 @@ func _on_manpower_area_mouse_exited() -> void:
 #next turn function
 func _on_test_resource_button_pressed() -> void:
 	playerCountryNode.surveyResources()
-	playerCountryNode.payUnitMaintenance()
-	playerCountryNode.collectTaxes()
 	for pathPointButton in $PathControl/PathPointsControl.get_children():
 		if pathPointButton.get_children() != null:
 			print(pathPointButton.get_children(), "DEBUG PATHPOINTBUTTONCHILDREN")
@@ -759,20 +758,22 @@ func _on_path_control_show_army_info(key) -> void:
 	pass # Replace with function body.
 
 #this is where the battles for melee are calculated
-var attackingPlayerMelee: Army
 var calculateMelee: bool
 func meleePressed(armyPath, thisArmy) -> void:
-	#things to do:
-	#set the world's player attacking melee slot with this army
-	attackingPlayerMelee = thisArmy
 	if lastSelectedPathPoint != null:
 		for pathPointButton in lastSelectedPathPoint.neighborPathPoints:
-			pathPointButton.calculateBattle(armyPath, "melee", thisArmy)
+			pathPointButton.calculateBattle(armyPath, "melee", thisArmy, lastSelectedPathPoint)
 	#set all apfs that are not neighbors to 'disabled' which makes them unclickable
 	#set the world to 'melee attack calc' bool
 	#if an apf is hovered over while in melee attack calc, build a battle and display results
 	#if an apf is clicked while in melee attack calc, enact the battle and add damage/results
 	
+	pass # Replace with function body.
+
+func rangedPressed(armyPath, thisArmy) -> void:
+	if lastSelectedPathPoint != null:
+		for pathPointButton in lastSelectedPathPoint.neighborPathPoints:
+			pathPointButton.calculateBattle(armyPath, "ranged", thisArmy, lastSelectedPathPoint)
 	pass # Replace with function body.
 
 func updatePathPointsFunc(visibility):
