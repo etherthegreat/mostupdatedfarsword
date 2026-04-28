@@ -177,6 +177,9 @@ var weaponTemplateList: Array = []
 var countryBuildingList: Array = []
 var countryMilModList: Array = []
 
+var armyIconList: Array = []
+var armyIcon: Texture2D
+
 const armyScene = preload("res://Game Scenes and Scripts/army.tscn")
 const milModScene = preload("res://mil_mod.tscn")
 const unitScene = preload("res://unit.tscn")
@@ -277,11 +280,17 @@ func NewGameBuild():
 			addFaction("Elto-Tal", 20) # Moderates
 			updateUnlockableAttributes()
 			addMilMod("Berserkers")
-			addArmy("Palace Guards", 3)
+			var newIcon1: Texture2D = load("res://art assets/finishedAssets/armyicons/7.png")
+			var newIcon2: Texture2D = load("res://art assets/finishedAssets/armyicons/10.png")
+			var newIcon3: Texture2D = load("res://art assets/finishedAssets/armyicons/11.png")
+			addArmy("Palace Guards", 3, newIcon2)
 			addGovernorToGovernorPool("Wolverina Gundo", 1)
 			armyReinforceRate = 30 #add a function to determin reinforce rate
 			#for Tile in OwnedTileList:
-				
+			unlockArmyIcon(newIcon1)
+			unlockArmyIcon(newIcon2)
+			unlockArmyIcon(newIcon3)
+			armyIcon = newIcon2
 			updateDiscoveredByPlayer()
 			for Army in countryArmyList:
 				if Army.ArmyName == "Palace Guards":
@@ -323,11 +332,18 @@ func NewGameBuild():
 			#calculateToolsAndKits()
 			calculateTaxationAmounts()
 			updateUnlockableAttributes()
-			addArmy("Dummy Guards", 10)
+			var newIcon1: Texture2D = load("res://art assets/finishedAssets/armyicons/7.png")
+			var newIcon2: Texture2D = load("res://art assets/finishedAssets/armyicons/10.png")
+			var newIcon3: Texture2D = load("res://art assets/finishedAssets/armyicons/11.png")
+			addArmy("Dummy Guards", 10, newIcon3)
 			addGovernorToGovernorPool("Wolverina Gundo", 1)
 			armyReinforceRate = 3 #add a function to determin reinforce rate
 			#for Tile in OwnedTileList:
 			updateDiscoveredByPlayer()
+			unlockArmyIcon(newIcon1)
+			unlockArmyIcon(newIcon2)
+			unlockArmyIcon(newIcon3)
+			armyIcon = newIcon3
 			for Army in countryArmyList:
 				if Army.ArmyName == "Dummy Guards":
 					addNewUnit(Army, "Infantry", 4, "Macuahuitl", "Copper", "Scale", 300, 400)
@@ -652,7 +668,7 @@ func discoverTile(pathPointButton):
 
 signal updateDiscoveredTiles
 func updateDiscoveredByPlayer():
-	emit_signal("updateBeliefsSignal", discoveredTilesList)
+	emit_signal("updateDiscoveredTiles", discoveredTilesList)
 	pass
 
 func setStartingMagic():
@@ -750,9 +766,9 @@ func raiseThisArmy(Army, country, Tile):
 	emit_signal("raiseThisArmySignal", Army, country, Tile)
 	pass
 
-func addArmy (Name, TileNumber):
+func addArmy (Name, TileNumber, icon):
 	var armyInstance = load("res://Game Scenes and Scripts/army.tscn").instantiate()
-	armyInstance.buildSelf(Name, self, TileNumber)
+	armyInstance.buildSelf(Name, self, TileNumber, icon)
 	armyInstance.raisingArmy.connect(raiseThisArmy)
 	armyInstance.commanderButtonPressed.connect(showCommander)
 	#print("little things")
@@ -1433,4 +1449,8 @@ func addKit(type):
 
 func addTile(tileToAdd):
 	OwnedTileList.append(tileToAdd)
+	pass
+
+func unlockArmyIcon(icon):
+	armyIconList.append(icon)
 	pass

@@ -36,8 +36,8 @@ func buildSelf():
 signal pathPointClicked
 func _on_button_pressed() -> void:
 	print("DEBUG CLICK")
-	if occupied != true:
-		emit_signal("pathPointClicked", self, endNodePaths, startNodePaths, neighborPathPoints, ppbTile)
+	#if occupied != true:
+	emit_signal("pathPointClicked", self, endNodePaths, startNodePaths, neighborPathPoints, ppbTile)
 	pass # Replace with function body.
 
 func hideTile():
@@ -45,7 +45,7 @@ func hideTile():
 	pass
 
 func revealTile():
-	ppbTile.reveal()
+	ppbTile.discoverTile()
 	pass
 
 func calculateBattle(armyPath, type, attackingArmy, lastSelectedPathPoint):
@@ -58,4 +58,8 @@ func deleteNeighborBattles():
 	for pathPointButton in neighborPathPoints:
 		if pathPointButton.stationedAPF != null:
 			pathPointButton.stationedAPF.deleteBattle()
+	pass
+
+func siegeTile(army):
+	ppbTile.siegeCalculate(army)
 	pass

@@ -38,7 +38,7 @@ func _process(delta: float) -> void:
 		$"CanvasLayer/Resource Bar (TOP)/container/WoodLabel/Label".text = str(playerCountryNode.TotalWood)
 		$"CanvasLayer/Resource Bar (TOP)/container/MetalLabel/Label".text = str(playerCountryNode.TotalMetal)
 		$"CanvasLayer/Resource Bar (TOP)/container/WeaponsLabel/Label".text = str(playerCountryNode.TotalWeapons)
-		$"CanvasLayer/Resource Bar (TOP)/container/ScienceLabel/Label".text = str(playerCountryNode.TotalScience)
+		$"CanvasLayer/Resource Bar (TOP)/container/ScienceLabel/Label".text = str(playerCountryNode.SPM)
 		$"CanvasLayer/Resource Bar (TOP)/container/FaithLabel/Label".text = str(playerCountryNode.TotalFaith)
 		$"CanvasLayer/Resource Bar (TOP)/container/MagicLabel/Label".text = str(playerCountryNode.TotalMagic)
 		$"CanvasLayer/Resource Bar (TOP)/container/CultureLabel/Label".text = str(playerCountryNode.TotalCulture)
@@ -47,6 +47,12 @@ func _process(delta: float) -> void:
 		$"CanvasLayer/Resource Bar (TOP)/container/InfluenceLabel/Label".text = str(playerCountryNode.TotalInfluence)
 		$"CanvasLayer/Resource Bar (TOP)/container/ManpowerLabel/Label".text = str(playerCountryNode.TotalManpower)
 		updateMap()
+	if $CanvasLayer/TechTree.investmentTech == null:
+		$CanvasLayer/NextTurnControl/NextTurn.visible = false
+		$CanvasLayer/NextTurnControl/PickTech.visible = true
+	else:
+		$CanvasLayer/NextTurnControl/PickTech.visible = false
+		$CanvasLayer/NextTurnControl/NextTurn.visible = true
 	pass
 
 func updateMap():
@@ -95,15 +101,14 @@ func newGameBuild(CID, gameLang):
 	$CanvasLayer/LoadingLabel.text = "Loading UI (Magic)"
 	$CanvasLayer/LoadingProgressBar.value = 75
 	updatePlayerUI()
+	$TileController/Tile4.discoverTile()
+	$TileController/Tile5.discoverTile()
+	$TileController/Tile6.discoverTile()
+	$TileController/Tile7.discoverTile()
+	$TileController/Tile8.discoverTile()
+	$TileController/Tile9.discoverTile()
+	$TileController/Tile10.discoverTile()
 	$TileController.discoverTiles(playerCountryNode)
-	for country in aliveCountriesList:
-		country.discoverTile($"PathControl/PathPointsControl/4")
-		country.discoverTile($"PathControl/PathPointsControl/5")
-		country.discoverTile($"PathControl/PathPointsControl/6")
-		country.discoverTile($"PathControl/PathPointsControl/7")
-		country.discoverTile($"PathControl/PathPointsControl/8")
-		country.discoverTile($"PathControl/PathPointsControl/9")
-		country.discoverTile($"PathControl/PathPointsControl/10")
 	worldCreation = false
 	$RightClickDetector.visible = true
 	mapMode = "Polis"
@@ -113,9 +118,9 @@ func newGameBuild(CID, gameLang):
 	$CanvasLayer/LoadingSprite.visible = false
 	$CanvasLayer/LoadingProgressBar.visible = false
 	$CanvasLayer/LoadingLabel.visible = false
-	for country in aliveCountriesList:
-		for Army in country.countryArmyList:
-			Army.raiseSelf()
+	#for country in aliveCountriesList:
+		#for Army in country.countryArmyList:
+			#Army.raiseSelf()
 	pass
 
 var countryNode = load("res://Game Scenes and Scripts/country.tscn")
@@ -247,6 +252,7 @@ func updatePlayerUI():
 	$CanvasLayer/TileInfoPanel.governorButtonPressed.connect(openGovernorsPanel)
 	$CanvasLayer/TileInfoPanel.confirmThisGovernor.connect(assignGovernor)
 	$CanvasLayer/TechTree.buildSelf(playerCountryNode)
+	$CanvasLayer/TechTree.addTechToPlayer.connect(newPlayerTech)
 	$CanvasLayer/BeliefControl.buildSelf(playerCountryNode)
 	$CanvasLayer/BuildingInfoPanel/buildingPanelPanel.player = playerCountryNode
 	$PathControl.activateArmyControlMode.connect(activateArmyControl)
@@ -272,6 +278,7 @@ func updatePlayerUI():
 	$CanvasLayer/Spellbook.spellToUse.connect(activateSpellMapMode)
 	$TileController.spellAssignedToTile.connect(spellPurchased)
 	$TileController.colonizeTile.connect(updateCountryTiles)
+	$TileController.newTileOwner.connect(tileSiegeWon)
 	$PathControl.call_deferred("showPathPoints", playerCapitalPathButton)
 	$CanvasLayer/BuildingInfoPanel.buildSelf(playerCountryNode)
 	$CanvasLayer/BuildingInfoPanel.newBuildingInTile.connect(addNewBuildingToTile)
@@ -422,26 +429,13 @@ func _on_manpower_area_mouse_exited() -> void:
 	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
 	pass # Replace with function body.
 
-#next turn function
+#oldnext turn function
 func _on_test_resource_button_pressed() -> void:
-	playerCountryNode.surveyResources()
-	for pathPointButton in $PathControl/PathPointsControl.get_children():
-		if pathPointButton.get_children() != null:
-			print(pathPointButton.get_children(), "DEBUG PATHPOINTBUTTONCHILDREN")
-			for civilianPathFollow in pathPointButton.get_children():
-				if civilianPathFollow.is_class("Button") != true:
-					#print(civilianPathFollow, "DEBUG IS CLASS CONTROL")
-					#civilianPathFollow.emitTileChange()
-					pass
-	$CanvasLayer/SpellSchoolsControl.updateMagicAmounts(playerCountryNode)
-	for country in aliveCountriesList:
-		if country != playerCountryNode:
-			country.calculateTurn()
+	
 	pass # Replace with function body.
 
-func _on_tech_tree_add_tech_to_player(techName) -> void:
+func newPlayerTech(techName) -> void:
 	playerCountryNode.addTechnologicalDiscovery(techName)
-	print("message received")
 	pass # Replace with function body.
 
 func _on_building_panel_panel_upgrade_building(thisBuilding) -> void:
@@ -543,13 +537,7 @@ func raiseArmyFromWorld(Army, country, Tile):
 	#this is how the armies spawn into the world, will need a redo soon
 	#literally just add a system where tiles have a reference to their pathPointButton instead of this
 	#demon AI system will spawn units using raiseArmyFromWorld
-	match Tile.tileNumber:
-		3:
-			pathPointButtonToSend = $"PathControl/PathPointsControl/3"
-		4:
-			pathPointButtonToSend = $"PathControl/PathPointsControl/4"
-		10:
-			pathPointButtonToSend = $"PathControl/PathPointsControl/10"
+	pathPointButtonToSend = Tile.tileSpawnPoint
 	if country == playerCountryNode:
 		$PathControl.raisePlayerArmy(Army, country, Tile, pathPointButtonToSend)
 	else:
@@ -958,12 +946,34 @@ func addNewBuildingToTile(buildingType, goldCalculatedCost, foodCalculatedCost, 
 	$CanvasLayer/BuildingInfoPanel.displayBuildingInfo(thisTile)
 	pass
 
-
 func _on_spell_schools_control_ask_for_info(type, SpellUnlock) -> void:
 	giveSpellInfo(type, SpellUnlock)
 	pass # Replace with function body.
 
-
 func _on_spell_schools_control_calculate_player_outputs(spellSchools) -> void:
 	calculatePlayerOutputs(spellSchools)
+	pass # Replace with function body.
+
+func tileSiegeWon(tile, oldCID, newCID):
+	print("TileSiegeWon WORLD")
+	for country in aliveCountriesList:
+		if country.CID == oldCID:
+			aliveCountriesList.erase(tile)
+		if country.CID == newCID:
+			country.addTile(tile)
+	pass
+
+func _on_next_turn_pressed() -> void:
+	playerCountryNode.surveyResources()
+	for pathPointButton in $PathControl/PathPointsControl.get_children():
+		if pathPointButton.get_children() != null:
+			#print(pathPointButton.get_children(), "DEBUG PATHPOINTBUTTONCHILDREN")
+			for civilianPathFollow in pathPointButton.get_children():
+				if civilianPathFollow.is_class("Button") != true:
+					civilianPathFollow.emitTileChange()
+	$CanvasLayer/SpellSchoolsControl.updateMagicAmounts(playerCountryNode)
+	for country in aliveCountriesList:
+		if country != playerCountryNode:
+			country.calculateTurn()
+	$CanvasLayer/TechTree.investInTech(playerCountryNode.SPM)
 	pass # Replace with function body.

@@ -4,8 +4,10 @@ extends Control
 var unlockedTechs: Array = []
 var playerNode: country
 #signal updateTechTree
-
+var investmentTech: techButton
 var costForUnlock: int
+
+var nextTechChange: int
 
 func buildSelf(player):
 	#for Control in $TechPanel/GridContainer.get_children():
@@ -68,68 +70,34 @@ func buildSelf(player):
 	pass
 
 signal addTechToPlayer
-var TechButton: techButton
-
-var TechToDisplay: String
-func updateTechInfoPanel(TechButton):
-	if TechButton.purchased == true:
-		$TechInfoPanel/PurchaseTechButton.text = str("Purchased")
-	else:
-		$TechInfoPanel/PurchaseTechButton.text = str("Cost: ", TechButton.technologyCost)
-	$TechInfoPanel/TechNameLabel.text = str(TechButton.technologyName)
-	if TechButton.technologyDescription != null:
-		$TechInfoPanel/TechDescriptionLabel.text = str(TechButton.technologyDescription)
-	else:
-		$TechInfoPanel/TechDescriptionLabel.text = str("Error:  No Technology Description Found")
-	pass
-
-
-
-func _process(delta: float) -> void:
-	if $TechInfoPanel.visible == true && TechButton != null:
-		if TechButton.purchased == true || playerNode.TotalScience < TechButton.technologyCost:
-			$TechInfoPanel/PurchaseTechButton.disabled = true
-		else:
-			for techButton in TechButton.requiredTechs:
-				if techButton.purchased == false:
-					$TechInfoPanel/PurchaseTechButton.disabled = true
-					return
-				$TechInfoPanel/PurchaseTechButton.disabled = false
-				return
-	pass
-
-func _on_close_panel_button_pressed() -> void:
-	TechButton = null
-	$TechInfoPanel.visible = false
-	pass # Replace with function body.
-
-
-func _on_purchase_tech_button_pressed() -> void:
-	if TechButton == null:
-		print("Missing TechNology Error")
-	else:
-		TechButton.purchase()
-		emit_signal("addTechToPlayer", TechButton.technologyName)
-		playerNode.TotalScience -= TechButton.technologyCost
-		updateTechInfoPanel(TechButton)
-		$TechInfoPanel.visible = false
-	pass # Replace with function body.
 
 func connectTechButtons():
 	for techButton in $TechPanel/GridContainer.get_children():
-		techButton.newTech.connect(techButtonPressed)
+		techButton.selectInvestment.connect(selectInvestmentFunc)
+		techButton.newTech.connect(unlockTech)
 	for techButton in $TechPanel/InsititutionContainer.get_children():
-		techButton.newTech.connect(techButtonPressed)
+		techButton.selectInvestment.connect(selectInvestmentFunc)
+		techButton.newTech.connect(unlockTech)
 	for techButton in $TechPanel/UnlockedContainer.get_children():
-		techButton.newTech.connect(techButtonPressed)
+		techButton.selectInvestment.connect(selectInvestmentFunc)
+		techButton.newTech.connect(unlockTech)
 	pass
 
-func techButtonPressed(type, button):
-	TechButton = button
-	$TechInfoPanel.position = button.position
-	$TechInfoPanel.position.y += 330
-	$TechInfoPanel.position.x += 200
-	updateTechInfoPanel(TechButton)
-	if $TechInfoPanel.visible == false:
-		$TechInfoPanel.visible = true
+func unlockTech( techID, techButt, change):
+	nextTechChange = change
+	techButt.purchase()
+	emit_signal("addTechToPlayer", techID)
+	investmentTech = null
+	pass
+
+func selectInvestmentFunc(techbutt):
+	investmentTech = techbutt
+	if nextTechChange > 0:
+		investInTech(nextTechChange)
+		nextTechChange = 0
+	self.visible = false
+	pass
+
+func investInTech(science):
+	investmentTech.addScienceInvestment(science)
 	pass

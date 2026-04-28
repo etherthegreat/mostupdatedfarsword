@@ -131,7 +131,7 @@
 [ext_resource type="Texture2D" uid="uid://b6fudp24jq6xa" path="res://art assets/Map Art/Coastal Tiles/C 5 Tile.png" id="53_s0iph"]
 [ext_resource type="Texture2D" uid="uid://gca4kfqi3w14" path="res://art assets/Map Art/18Ring.png" id="54_apa2n"]
 [ext_resource type="Texture2D" uid="uid://cwj6iytunnw7v" path="res://art assets/Map Art/Coastal Tiles/C 6 Ring.png" id="54_njcev"]
-[ext_resource type="Script" path="res://Game Scenes and Scripts/faction_control.gd" id="54_sv2u8"]
+[ext_resource type="Script" uid="uid://bqoa1uaifkk6g" path="res://Game Scenes and Scripts/faction_control.gd" id="54_sv2u8"]
 [ext_resource type="Texture2D" uid="uid://bvi4hpeut63c3" path="res://art assets/Map Art/18FOG.png" id="55_702vd"]
 [ext_resource type="Texture2D" uid="uid://5xm7wsujdw13" path="res://art assets/Map Art/Coastal Tiles/C 6 Fog.png" id="55_nsmt3"]
 [ext_resource type="Script" uid="uid://idfuyp443x0" path="res://Game Scenes and Scripts/government_control.gd" id="55_w7ifc"]
@@ -2798,6 +2798,8 @@ _data = {
 }
 point_count = 7
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fwltf"]
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_y3tfg"]
 size = Vector2(365.324, 339.706)
 
@@ -2809,8 +2811,6 @@ size = Vector2(127, 132)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2v3gw"]
 size = Vector2(100, 102)
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fwltf"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8oo0e"]
 
@@ -12715,6 +12715,54 @@ offset_bottom = 40.0
 layer = 2
 script = ExtResource("12_lbt1a")
 
+[node name="NextTurnControl" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="nextTurn" type="Sprite2D" parent="CanvasLayer/NextTurnControl"]
+position = Vector2(1708.5, 981.502)
+scale = Vector2(0.0730001, 0.095)
+texture = ExtResource("520_fwltf")
+
+[node name="NextTurn" type="Button" parent="CanvasLayer/NextTurnControl"]
+layout_mode = 0
+offset_left = 1598.0
+offset_top = 928.0
+offset_right = 1828.0
+offset_bottom = 1034.0
+theme_override_colors/font_disabled_color = Color(0.731385, 0.428597, 0.13852, 1)
+theme_override_colors/font_hover_color = Color(0.749831, 3.85046e-07, 0.386302, 1)
+theme_override_colors/icon_hover_color = Color(0.76998, 0.592736, 0, 1)
+theme_override_colors/icon_pressed_color = Color(0.414039, 0.313543, 0, 1)
+theme_override_font_sizes/font_size = 35
+theme_override_styles/focus = SubResource("StyleBoxEmpty_fwltf")
+text = "Next Turn"
+icon = ExtResource("521_mfggh")
+flat = true
+autowrap_mode = 3
+expand_icon = true
+
+[node name="PickTech" type="Button" parent="CanvasLayer/NextTurnControl"]
+visible = false
+layout_mode = 0
+offset_left = 1598.0
+offset_top = 928.0
+offset_right = 1828.0
+offset_bottom = 1034.0
+theme_override_colors/font_disabled_color = Color(0.731385, 0.428597, 0.13852, 1)
+theme_override_colors/font_hover_color = Color(0.749831, 3.85046e-07, 0.386302, 1)
+theme_override_colors/icon_hover_color = Color(0.76998, 0.592736, 0, 1)
+theme_override_colors/icon_pressed_color = Color(0.414039, 0.313543, 0, 1)
+theme_override_font_sizes/font_size = 35
+theme_override_styles/focus = SubResource("StyleBoxEmpty_fwltf")
+text = "Pick Tech"
+icon = ExtResource("509_xr50o")
+flat = true
+autowrap_mode = 3
+expand_icon = true
+
 [node name="TileInfoPanel" parent="CanvasLayer" groups=["ScreenPanels"] instance=ExtResource("10_7wljm")]
 visible = false
 offset_left = 2.0
@@ -15525,28 +15573,6 @@ offset_right = 73.0
 offset_bottom = 61.0
 text = "10000"
 
-[node name="Sprite2D5" type="Sprite2D" parent="CanvasLayer/Resource Bar (TOP)"]
-position = Vector2(2042.86, 1672.84)
-scale = Vector2(0.125056, 0.162744)
-texture = ExtResource("520_fwltf")
-
-[node name="Test ResourceButton" type="Button" parent="CanvasLayer/Resource Bar (TOP)"]
-layout_mode = 0
-offset_left = 1853.57
-offset_top = 1591.46
-offset_right = 2228.57
-offset_bottom = 1757.46
-theme_override_colors/font_disabled_color = Color(0.731385, 0.428597, 0.13852, 1)
-theme_override_colors/font_hover_color = Color(0.749831, 3.85046e-07, 0.386302, 1)
-theme_override_colors/icon_hover_color = Color(0.76998, 0.592736, 0, 1)
-theme_override_colors/icon_pressed_color = Color(0.414039, 0.313543, 0, 1)
-theme_override_font_sizes/font_size = 35
-theme_override_styles/focus = SubResource("StyleBoxEmpty_fwltf")
-text = "Next Turn"
-icon = ExtResource("521_mfggh")
-flat = true
-expand_icon = true
-
 [node name="Button" type="Button" parent="CanvasLayer/Resource Bar (TOP)"]
 layout_mode = 0
 offset_left = 2247.58
@@ -16657,6 +16683,8 @@ shape = SubResource("RectangleShape2D_qt86y")
 [connection signal="mouse_exited" from="TileController/TileC76/Area2D" to="TileController/TileC76" method="_on_area_2d_mouse_exited"]
 [connection signal="meleeButtonPressed" from="PathControl" to="." method="_on_path_control_melee_button_pressed"]
 [connection signal="showArmyInfo" from="PathControl" to="." method="_on_path_control_show_army_info"]
+[connection signal="pressed" from="CanvasLayer/NextTurnControl/NextTurn" to="." method="_on_next_turn_pressed"]
+[connection signal="pressed" from="CanvasLayer/NextTurnControl/PickTech" to="CanvasLayer" method="_on_pick_tech_pressed"]
 [connection signal="pressed" from="CanvasLayer/TileInfoPanel/governorButton" to="CanvasLayer/TileInfoPanel" method="_on_governor_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/TileInfoPanel/OpenBuildingsButton" to="CanvasLayer" method="_on_open_buildings_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/TileInfoPanel/WizardButton" to="CanvasLayer" method="_on_wizard_button_pressed"]
@@ -16724,7 +16752,6 @@ shape = SubResource("RectangleShape2D_qt86y")
 [connection signal="mouse_exited" from="CanvasLayer/Resource Bar (TOP)/container/HarmonyControl/HarmonyArea" to="." method="_on_harmony_area_mouse_exited"]
 [connection signal="mouse_entered" from="CanvasLayer/Resource Bar (TOP)/container/InfluenceControl/InfluenceArea" to="." method="_on_influence_area_mouse_entered"]
 [connection signal="mouse_exited" from="CanvasLayer/Resource Bar (TOP)/container/InfluenceControl/InfluenceArea" to="." method="_on_influence_area_mouse_exited"]
-[connection signal="pressed" from="CanvasLayer/Resource Bar (TOP)/Test ResourceButton" to="." method="_on_test_resource_button_pressed"]
 [connection signal="mouse_entered" from="CanvasLayer/ArmyPanel/ArmyButtonsContainer/MoveButtonControl/MoveButton" to="PathControl" method="_on_move_button_mouse_entered"]
 [connection signal="mouse_exited" from="CanvasLayer/ArmyPanel/ArmyButtonsContainer/MoveButtonControl/MoveButton" to="PathControl" method="_on_move_button_mouse_exited"]
 [connection signal="mouse_entered" from="CanvasLayer/ArmyPanel/ArmyButtonsContainer/WaitButtonControl/WaitButton" to="PathControl" method="_on_wait_button_mouse_entered"]

@@ -46,6 +46,8 @@ var manpowerInArmy:int #actual manpower in armies, will be lower if units are da
 var maxWeapons: int
 var weaponsInArmy: int
 
+var armyIcon: Texture2D
+
 #Combat Modifiers
 var averageExperience: int #used to calculate the level of this army's level
 var armyLevel: int #1 = recruit, 2 = regulars, 3 = expert, 4 = veteran, gives buffs per level
@@ -60,6 +62,8 @@ var armyDefence: int
 var armyMagicDefense: int
 var armyShield: int
 var armyMaxShield: int
+
+var armySiegeScore: float
 
 #spawning and tiles
 var awake: bool #if a unit isn't stationed in a barracks, it is awake.  if awake, can be controlled
@@ -89,11 +93,12 @@ var enemy: bool #for any non-playable country
 
 var deleteMode: bool
 
-func buildSelf(Name, countryNode, TileNumber):
+func buildSelf(Name, countryNode, TileNumber, icon):
 	#print("wowo so cool")
 	enemy = false
 	raised = false
 	deleteMode = false
+	armyIcon = icon
 	ArmyName = Name
 	parentCountry = countryNode
 	match parentCountry.CID:
@@ -242,12 +247,14 @@ func surveySelf():
 	armyInfluenceCost = 0
 	armyHarmonyCost = 0
 	armyFaithCost = 0
+	armySiegeScore = 0
 	print("Surveying Self")
 	unitCount = 0
 	for Unit in unitsList:
 		unitCount += Unit.unitLevel
 	var minSize: int = (unitCount * 210)
 	$ScrollContainer/UnitUIContainer.set_custom_minimum_size(Vector2(minSize, 0))
+	armySiegeScore = unitCount * .1
 	for Unit in unitsList:
 		Unit.enableMilModType("All")
 		if Unit.unitCurrentManpower < Unit.unitMaxManpower:

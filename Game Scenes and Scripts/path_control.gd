@@ -19,6 +19,7 @@ func raisePlayerArmy(Army, country, Tile, pathPointToSend):
 	pathPointToSend.stationedArmy = Army
 	newAPF.apfSelected.connect(displayapfInfo)
 	newAPF.armyArrived.connect(armyArrivedFunc)
+	newAPF.siegeChange.connect(updateTileSiege)
 	newAPF.armyTraveling.connect(updateTravelingArmy)
 	newAPF.onRaise(Army, country, pathPointToSend)
 	showPathPoints(pathPointToSend)
@@ -33,6 +34,7 @@ func raiseComputerArmy(Army, country, Tile, pathPointToSend):
 	pathPointToSend.stationedArmy = Army
 	newAPF.apfSelected.connect(displayapfInfo)
 	newAPF.armyArrived.connect(armyArrivedFunc)
+	newAPF.siegeChange.connect(updateTileSiege)
 	newAPF.armyTraveling.connect(updateTravelingArmy)
 	newAPF.onRaise(Army, country, pathPointToSend)
 	showPathPoints(pathPointToSend)
@@ -421,4 +423,11 @@ func spellSelectionMode(spell, cost, player):
 	for pathPointButton in $PathPointsControl.get_children():
 		if pathPointButton.occupied == true:
 			pathPointButton.stationedAPF.prepareMilSpell(spell)
+	pass
+
+func updateTileSiege(army, pathPoint):
+	for pathPointButton in $PathPointsControl.get_children():
+		if pathPointButton == pathPoint:
+			pathPointButton.siegeTile(army)
+		pass
 	pass

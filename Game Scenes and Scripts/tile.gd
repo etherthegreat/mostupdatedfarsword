@@ -143,6 +143,9 @@ var undiscovered: bool
 var discovered: bool
 var activeView: bool
 
+var currentSiegeProgress: float
+var maxSiegeProgress: float
+
 #Map Graphics
 var tileRing
 var tileGraphic
@@ -156,6 +159,7 @@ var tileSpawnPoint: pathPointButton
 signal tileLoaded
 signal tileEvent
 
+
 var buildingScene = load("res://Game Scenes and Scripts/building.tscn")
 
 signal onNewGameWorldBuild
@@ -163,6 +167,8 @@ func onNewGame():
 	#pretty much every variable of a tile will be determined in this function
 	#it is determined by the tileNumber, which is non-dynamically created through the 
 	#TILENUMBEREXP variable, which is hand-typed into each tile on the map.
+	maxSiegeProgress = 1
+	currentSiegeProgress = 0
 	var corruptionModifier = tileEcoModifier.new()
 	corruptionModifier.modType = "CORRUPTION"
 	tileEcoModifiers.append(corruptionModifier)
@@ -171,6 +177,9 @@ func onNewGame():
 	tileGraphic = $TileGraphic
 	tileNumber = EXPTileNumber
 	ocean = oceanEXP
+	discovered = false
+	undiscovered = true
+	activeView = false
 	for NodePath in TileNeighborsEXP:
 		TileNeighbors.append(get_node(NodePath))
 	if ocean == true:
@@ -180,6 +189,7 @@ func onNewGame():
 	calculateCorruption()
 	emit_signal("tileLoaded", self)
 	pass
+
 
 
 func calculateAttributes(tileNumber):
@@ -246,7 +256,7 @@ func calculateAttributes(tileNumber):
 			addBuilding("Farm", 3)
 			#addBuilding("Granary", 1)
 			addBuilding("Barracks", 2)
-			addBuilding("Library", 4)
+			addBuilding("Library", 6)
 			#addBuilding("Mine", 2)
 			#addBuilding("Forge", 1)
 			#addBuilding("Camp", 5)
@@ -804,7 +814,6 @@ func calculateDiscovered(playerCountry):
 	if tileOwner == playerCountry.CID:
 		discovered = true
 		undiscovered = false
-		print("DEBUG tile neighbors", TileNeighbors)
 		for Tile in TileNeighbors:
 			Tile.discovered = true
 			Tile.undiscovered = false
@@ -1251,6 +1260,7 @@ func calculateSpellChanges():
 func updateGraphics(mapMode, displayCorruption, playerCountry):
 	if undiscovered == true:
 		$TileFOW.modulate = Color(0,0,0)
+		$TileFOW.self_modulate.a = .975
 		$TileFOW.visible = true
 		$TileGraphic.visible = false
 		activeView = false
@@ -1260,6 +1270,7 @@ func updateGraphics(mapMode, displayCorruption, playerCountry):
 			#if Tile.discovered == true:
 				#$TileFOW.self_modulate.a
 	if discovered == true:
+		#print("Discovered", discovered, "activeView", activeView, tileNumber)
 		#$TileGraphic.visible = true
 		match mapMode:
 			"Polis":
@@ -1271,7 +1282,6 @@ func updateGraphics(mapMode, displayCorruption, playerCountry):
 			for Tile in TileNeighbors:
 				Tile.activeView = true
 				return
-		
 		if tileSpawnPoint.occupied == true:
 			activeView = true
 			for Tile in TileNeighbors:
@@ -1294,8 +1304,7 @@ func calculateActiveView():
 	if activeView == false && discovered == true:
 		$TileFOW.modulate = Color(0,0,0)
 		$TileFOW.visible = true
-		$TileFOW.self_modulate.a = .75
-		#print("TroubleShooting DEBUG discovered by not visible")
+		$TileFOW.self_modulate.a = .6
 	pass
 
 func polisMode():
@@ -1325,6 +1334,7 @@ func naturalMode():
 	pass
 
 signal tileColonized
+
 
 func colonizeTile(civilian):
 	tileOwner = civilian.player.CID
@@ -1441,4 +1451,15 @@ func devChange(devType, devCivilian):
 						Tile.increasePlayerDiscoveryRate(50)
 					else:
 						Tile.increasePlayerDiscoveryRate(25)
+	pass
+
+signal newSiegeStatus
+func siegeCalculate(army):
+	#print("TileSiegeWon PATHCONTROL")
+	if tileOwner == "":
+		return
+	if army.parentCountry.CID != tileOwner:
+		currentSiegeProgress += army.armySiegeScore
+	if currentSiegeProgress >= maxSiegeProgress:
+		emit_signal("newSiegeStatus", self, tileOwner, army.parentCountry.CID)
 	pass

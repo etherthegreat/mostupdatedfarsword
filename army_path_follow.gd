@@ -7,6 +7,7 @@ var thisCountry: country
 var currentTile: Tile
 var currentPath: Path2D
 
+signal siegeChange
 var currentPathPoint: pathPointButton
 var destinationPathPoint: pathPointButton
 
@@ -89,6 +90,7 @@ func onRaise(Army, country, pathPoint):
 	thisCountry = country
 	currentPathPoint = pathPoint
 	currentPathPoint.occupied = true
+	$APFButton.icon = Army.armyIcon
 	#currentTile = Tile
 #	match currentPathPoint.currentPathPoint
 	#currentPath = path
@@ -115,4 +117,8 @@ func deleteBattle():
 
 func prepareMilSpell(spellForCast):
 	spellToCast = spellForCast
+	pass
+
+func emitTileChange():
+	emit_signal("siegeChange", thisArmy, currentPathPoint)
 	pass

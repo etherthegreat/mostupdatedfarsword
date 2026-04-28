@@ -3,20 +3,16 @@ extends Control
 var allTilesList: Array = []
 
 func connectTileSignals():
-	print("elevator", str(get_children()))
 	allTilesList.assign(get_children()) 
 	for Tile in get_children():
 		print(Tile.tileName, "penis penis penis")
 		Tile.tileLoaded.connect(connectEventSignal)
 		Tile.spellAssigned.connect(spellTileAssigned)
 		Tile.tileColonized.connect(colonizeThisTile)
+		Tile.newSiegeStatus.connect(siegeWon)
 	pass
 
 func discoverTiles(playerCountry):
-	for Tile in get_children():
-		Tile.activeView = false
-		Tile.undiscovered = true
-		Tile.discovered = false
 	for Tile in get_children():
 		Tile.calculateDiscovered(playerCountry)
 pass
@@ -30,7 +26,7 @@ func updateTiles(mapMode, displayCorruption, playerCountry):
 func connectEventSignal(tile):
 	tile.tileEvent.connect(transferTileEvent)
 	pass
-
+signal newTileOwner
 signal transfer
 func transferTileEvent(tile, type):
 	print("yippie")
@@ -52,9 +48,16 @@ func normalMode():
 signal colonizeTile
 func colonizeThisTile(thisTile):
 	emit_signal("colonizeTile", thisTile)
+	print("tilesiegewon tilecontrol colonize")
 	pass
 
 signal spellAssignedToTile
 func spellTileAssigned(cost):
 	emit_signal("spellAssignedToTile", cost)
+	pass
+
+
+func siegeWon(tile, lostCID, newCID):
+	tile.tileOwner = newCID
+	emit_signal("newTileOwner", tile, lostCID, newCID)
 	pass

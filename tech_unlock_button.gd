@@ -4,6 +4,7 @@ class_name techButton
 
 @export var techCost: int
 @export var techID: String
+var techScienceInvestment: int
 var technologyCost: int
 var technologyName: String
 var highestAvailable: bool
@@ -176,24 +177,25 @@ func _process(delta: float) -> void:
 		$UnlockButton.add_theme_color_override("icon_normal_color", grey)
 	pass
 
-
 func purchase():
 	purchased = true
+	$UnlockButton.disabled = true
 	pass
 
 signal newTech
-func unlockTech():
-	emit_signal("newTech", techID, self)
+func unlockTech(change):
+	emit_signal("newTech", techID, self, change)
 	pass
 
-
+signal selectInvestment
 func _on_unlock_button_pressed() -> void:
-	unlockTech()
+	emit_signal("selectInvestment", self)
 	pass # Replace with function body.
 
-
-func _on_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
-	if event is InputEventMouseMotion:
-		if Input.is_action_just_pressed('Left Click'):
-			unlockTech()
-	pass # Replace with function body.
+var change: int
+func addScienceInvestment(amount):
+	techScienceInvestment += amount
+	if techScienceInvestment > technologyCost:
+		change = techScienceInvestment - technologyCost
+		unlockTech(change)
+	pass
