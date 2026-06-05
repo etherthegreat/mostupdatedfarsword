@@ -7747,7 +7747,6 @@ metadata/_edit_use_anchors_ = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 layer = 2
-visible = false
 script = ExtResource("12_lbt1a")
 
 [node name="NextTurnControl" type="Control" parent="CanvasLayer"]
@@ -11223,6 +11222,20 @@ theme_override_font_sizes/font_size = 50
 text = "Loading World"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="TurnLabel" type="Label" parent="CanvasLayer"]
+offset_left = 113.0
+offset_top = 60.0
+offset_right = 163.0
+offset_bottom = 83.0
+text = "Turn 1"
+
+[node name="DateLabel" type="Label" parent="CanvasLayer"]
+offset_left = 302.0
+offset_top = 60.0
+offset_right = 352.0
+offset_bottom = 83.0
+text = "July 4, 2026"
 
 [node name="CameraMovementController" type="Control" parent="."]
 layout_mode = 3

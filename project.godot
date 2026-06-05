@@ -15,6 +15,10 @@ run/main_scene="res://Menu Scenes and Scripts/main_menu.tscn"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+TileDatabase="*res://TileDatabase.gd"
+
 [display]
 
 window/size/viewport_width=1920

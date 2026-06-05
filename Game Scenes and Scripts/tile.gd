@@ -4,37 +4,58 @@ class_name Tile
 
 @export var oceanEXP: bool
 
-#Base Variables
+# ============================================================
+# BASE VARIABLES
+# ============================================================
 @export var EXPTileNumber: int
 var tileNumber: int
 var tileName: String
 var tileOwner: String
-var tileContinent: String
-var tilePop #every number represents 5000 people in this tile.
+var tileContinent: String  # used for state/region e.g. "PA", "CA - OT"
+var tilePop            # every number represents 5000 people in this tile
 var ocean: bool
-var coastal: bool #determines if this tile is coastal or not
-var freshWater: bool #determines if this province has access to fresh water
-var terrain: String #determines the terrain of this province
-var season #determines the season, based on terrain type as well as current month
-var tileEcoModifiers: Array = [] #all resource modifiers for this tile
-var tileMilModifiers: Array = [] #all military modifiers for this tile
+var coastal: bool      # determines if this tile is coastal or not
+var freshWater: bool   # determines if this province has access to fresh water
+var terrain: String    # determines the terrain of this province
+var season             # determines the season, based on terrain type and current month
+var tileEcoModifiers: Array = []  # all resource modifiers for this tile
+var tileMilModifiers: Array = []  # all military modifiers for this tile
+
+var tileWizard: wizard
+var tileSpell: spell
 
 var countryCapital: bool
 
 signal clicked
 var thisTileNumber
 
-var cropSlot : crop
-var oreSlot: ore
-var tileWizard: wizard
-var tileTowerLevel
-var tileSpell: spell
-
-#TileGovernors
+# ============================================================
+# NEW: CSV-LOADED DATA VARIABLES
+# ============================================================
+var tileCrop: String = "corn"          # corn, apples, hay, soybeans, peanuts, peaches, oranges, mushrooms, cannabis
+var corruption: int = 0                # scale 0-100
+var buildings: Dictionary = {}         # {"barracks": 3, "farm": 1, "dock": 2}
+var tileSpecialFeatures: Array = []    # ["Gettysburg Memorial", "Appalachian Minerals"]
+var winterScore: int = 0
+# Eco modifier tracking
+var isRevolutionaryHotbed: bool = false   # computed, not from CSV
+var isOccupiedTerritory: bool = false     # computed, not from CSV
+var isSunbeltHeat: bool = false           # set from specialFeature
+# Conquest tracking (for recently_conquered helper)
+var lastConqueror: String = ""            # CID of who last took this tile
+var turnsSinceConquest: int = 0           # increments each month
+var conquestThreshold: int = 6           # 6 months = "recently conquered"
+# Espionage tracking (for has_recent_espionage helper)
+var lastEspionageTurn: int = -999         # world turn when spy last operated here
+var espionageCooldown: int = 12           # 12 months before tile is "clear"
+var espionageActive: bool = false         # is a spy currently embedded here
+# ============================================================
+# TILE GOVERNORS
+# ============================================================
 var filledGovernorSlot: bool
 var tileGovernor: governor
 
-#governorRequirements
+# Governor requirements
 var farmGovernorReq: bool = false
 var mineGovernorReq: bool = false
 var campGovernorReq: bool = false
@@ -47,41 +68,53 @@ var theaterGovernorReq: bool = false
 var towerGovernorReq: bool = false
 var granaryGovernorReq: bool = false
 
-#magicPoints
-var alcPointsOutput: int #alchemy
-var illPointsOutput: int #illusion
-var sumPointsOutput: int #summoning
-var druPointsOutput: int #druidism
-var elePointsOutput: int #elementalism
-var divPointsOutput: int #divination
+# ============================================================
+# MAGIC POINTS
+# ============================================================
+var alcPointsOutput: int  # alchemy
+var illPointsOutput: int  # illusion
+var sumPointsOutput: int  # summoning
+var druPointsOutput: int  # druidism
+var elePointsOutput: int  # elementalism
+var divPointsOutput: int  # divination
 
-#province neighbors, used for calculating movements, colonization, fog of war, etc.
+# ============================================================
+# NEIGHBORS & MOVEMENT
+# ============================================================
 @export var TileNeighborsEXP: Array = []
-var TileNeighbors: Array = [] #only add other tiles to this list after all tiles have been spawned
-var TileCrossingNeighbors: Array = [] #used for strait crossing calculations
+var TileNeighbors: Array = []         # only populated after all tiles spawned
+var TileCrossingNeighbors: Array = [] # used for strait crossing calculations
 
-#tile occupation mechanics
-var enemyCountryList: Array = [] #used to determine what armies can occupy this tile
-var tileDefenseScore: Array = [] #base 100.  tile modifiers can increase or decrease this score
-var tileOccupied: bool #this bool determines if the tile is occuped or not
-var tileOccupier #this uses the country CID to occupy the province
-var tileArmiesList: Array = [] #can put all armies that are present in this tile in this array
+var tileSpawnPath: String
+var tileSpawnPathPoint: int
+var tileSpawnPoint: pathPointButton
 
-#Economy
-var maxFertility: int #how many farm buildings can be built in this province
-var maxForestry: int #how many forestry buildings can be built in this tile
-var geologicResource #the resource this tile's mines produce (doesn't change the metal, just gives different resources)
-var allRuinsList: Array = [] #all ruins in the province
-var tileBuildingsList: Array = [] #used to determine all buildings in this province
-var possibleBuildingsList: Array = [] #used to determine what buildings can be built by the tile owner tech and terrain
+# ============================================================
+# OCCUPATION MECHANICS
+# ============================================================
+var enemyCountryList: Array = []
+var tileDefenseScore: Array = []
+var tileOccupied: bool
+var tileOccupier
+var tileArmiesList: Array = []
+
+# ============================================================
+# ECONOMY
+# ============================================================
+var maxFertility: int
+var maxForestry: int
+var geologicResource
+var allRuinsList: Array = []
+var tileBuildingsList: Array = []
+var possibleBuildingsList: Array = []
 var maxBuildingsInTile
-var damagedBuildingsList: Array = [] #if buildings are damaged by weather or sieges, they are put here
+var damagedBuildingsList: Array = []
 
-var tileOutput: float #used to calculate the output of all yields in the tile.
+var tileOutput: float
 
-#Resources produced by all this province's buildings
+# Building outputs
 var buildingGoldOutput: float
-var buildingFoodOutput 
+var buildingFoodOutput
 var buildingWoodOutput
 var buildingMetalOutput
 var buildingMagicOutput
@@ -94,7 +127,7 @@ var buildingHarmonyOutput: float
 var buildingManpowerOutput
 var buildingInfluenceOutput
 
-#Resources consumed by all this province's buildings
+# Building expenses
 var buildingGoldExpense: float
 var buildingFoodExpense
 var buildingWoodExpense
@@ -109,7 +142,7 @@ var buildingHarmonyExpense: float
 var buildingManpowerExpense
 var buildingInfluenceExpense
 
-#Yields this tile will produce this month
+# Monthly yields
 var tileFoodYield
 var tileWoodYield
 var tileGoldYield: float
@@ -124,7 +157,9 @@ var tileHarmonyYield: float
 var tileManpowerYield
 var tileInfluenceYield
 
-#Fillable Slots
+# ============================================================
+# FILLABLE SLOTS
+# ============================================================
 var filledEmbassySlot: bool
 var chosenEmbassay
 var filledSpySlot: bool
@@ -134,11 +169,12 @@ var stationedArmy: Army
 var filledNavySlot: bool
 var chosenNavy
 
-var corruption: int #scale of 0 to 100.  100 will make everything cost a ton of money and reduce all outputs
+# ============================================================
+# VISIBILITY & SIEGE
+# ============================================================
 var corruptionComparison: int
 var corruptionChange: int
 
-#visible levels
 var undiscovered: bool
 var discovered: bool
 var activeView: bool
@@ -146,27 +182,81 @@ var activeView: bool
 var currentSiegeProgress: float
 var maxSiegeProgress: float
 
-#Map Graphics
+# ============================================================
+# MAP GRAPHICS
+# ============================================================
 var tileRing
 var tileGraphic
 
-#tile Movement
-var tileSpawnPath: String
-var tileSpawnPathPoint: int
+# ============================================================
+# DEVELOPMENT POINTS
+# ============================================================
+var farmDevelopmentPoints: float
+var tileFarmDevCost: float = 10
+var campDevelopmentPoints: float
+var tileCampDevCost: float = 10
+var mineDevelopmentPoints: float
+var tileMineDevCost: float = 15
+var libraryDevelopmentPoints: float
+var tileLibraryDevCost: float = 25
+var towerDevelopmentPoints: float
+var tileTowerDevCost: float = 40
+var templeDevelopmentPoints: float
+var tileTempleDevCost: float = 20
+var faireDevelopmentPoints: float
+var tileFaireDevCost: float = 25
+var workshopDevelopmentPoints: float
+var tileWorkshopDevCost: float = 30
+var forgeDevelopmentPoints: float
+var tileForgeDevCost: float = 30
+var bathDevelopmentPoints: float
+var tileBathDevCost: float = 25
+var granaryDevelopmentPoints: float
+var tileGranaryDevCost: float = 25
+var barracksDevelopmentPoints: float
+var tileBarracksDevCost: float = 30
+var dockDevelopmentPoints: float
+var tileDockDevCost: float = 30
 
-var tileSpawnPoint: pathPointButton
+var colonizationPoints: float
+var colonizationReq: float = 2
 
+# ============================================================
+# SIGNALS
+# ============================================================
 signal tileLoaded
 signal tileEvent
+signal onNewGameWorldBuild
+signal onLoadWorldBuild
+signal spellAssigned
+signal tileColonized
+signal newSiegeStatus
+signal censusComplete
 
-
+# ============================================================
+# SCENES
+# ============================================================
 var buildingScene = load("res://Game Scenes and Scripts/building.tscn")
 
-signal onNewGameWorldBuild
+# ============================================================
+# SPELL
+# ============================================================
+var spellToCast: spell
+var spellCostToCast: int
+
+var tileGoldTax: float
+var tileHarmonyTax: float
+var tileFoodDic: Dictionary = {}
+
+var discoveryPoints: int = 0
+
+
+# ============================================================
+# NEW GAME INITIALIZATION
+# ============================================================
+
 func onNewGame():
-	#pretty much every variable of a tile will be determined in this function
-	#it is determined by the tileNumber, which is non-dynamically created through the 
-	#TILENUMBEREXP variable, which is hand-typed into each tile on the map.
+	# Sets up siege, signals, rings, neighbors, then loads tile data from CSV
 	maxSiegeProgress = 1
 	currentSiegeProgress = 0
 	var corruptionModifier = tileEcoModifier.new()
@@ -182,636 +272,117 @@ func onNewGame():
 	activeView = false
 	for NodePath in TileNeighborsEXP:
 		TileNeighbors.append(get_node(NodePath))
-	if ocean == true:
-		calculateOceanAttributes(tileNumber)
-	else:
-		calculateAttributes(tileNumber)
+	#if ocean == true:
+		#calculateOceanAttributes(tileNumber)
+	#else:
+	build_self()       # <-- replaces calculateAttributes()
 	calculateCorruption()
 	emit_signal("tileLoaded", self)
-	pass
 
 
+func build_self() -> void:
+	# Loads all tile data from TileDatabase (CSV) by tileNumber
+	var data = TileDatabase.get_tile(tileNumber)
 
-func calculateAttributes(tileNumber):
+	if data.is_empty():
+		# Tile not in CSV - use safe defaults so game doesn't crash
+		push_warning("Tile " + str(tileNumber) + " not found in TileDatabase - using defaults")
+		tileName = "Unknown Territory"
+		tileOwner = "Neutral"
+		terrain = "Woods"
+		corruption = 0
+		tileCrop = "corn"
+		buildings = {}
+		tileSpecialFeatures = []
+		tileSpawnPoint = get_node("../../PathControl/PathPointsControl/" + str(tileNumber))
+		return
+
+	# Core identity from CSV
+	tileName = data.get("tileName", "Unknown")
+	tileOwner = data.get("country", "Neutral")
+	tileContinent = data.get("state", "")
+	terrain = data.get("terrain", "Woods")
+	corruption = data.get("corruption", 0)
+	winterScore = data.get("winterScore",0)
+	tileCrop = data.get("tileCrop", "corn")
+	buildings = data.get("buildings", {})
+	tileSpecialFeatures = data.get("specialFeatures", [])
+
+	# Feed special features into tileEcoModifiers
+	for feature in tileSpecialFeatures:
+		var ecoMod = tileEcoModifier.new()
+		ecoMod.modType = feature
+		tileEcoModifiers.append(ecoMod)
+
+	# Spawn buildings from buildings dictionary
+	for building_name in buildings:
+		var level = buildings[building_name]
+		addBuilding(building_name.capitalize(), level)
+
+	# Connect tile to its path point on the map
 	tileSpawnPoint = get_node("../../PathControl/PathPointsControl/" + str(tileNumber))
-	match tileNumber:
-		1:
-			tileName = "Valley Forge"
-			tileOwner = "USA"
-			countryCapital = true
-			terrain = "hills"
-			corruption = 0
-			tileMilModifiers
-			#buildnewGameBuildings
-			var tileCrop = crop.new()
-			tileCrop.cropType = "Wheat"
-			cropSlot = tileCrop
-			var tileOre = ore.new()
-			tileOre.oreType = "Copper"
-			oreSlot = tileOre
-			addBuilding("Farm", 1)
-		2:
-			tileName = "Eighth House"
-			tileOwner = "EIG"
-			countryCapital = true
-			tileContinent
-			tilePop
-			coastal
-			freshWater
-			terrain = "meadow"
-			season
-			tileEcoModifiers
-			tileMilModifiers
-			corruption = 75
-			TileNeighbors
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/3"
-		3:
-			tileName = "Pender Tal"
-			tileOwner = "PDT"
-			countryCapital = true
-			tileContinent
-			tilePop
-			coastal = false
-			freshWater = true
-			terrain = "mountaintop"
-			season
-			tileEcoModifiers
-			tileMilModifiers
-			corruption = 0
-			TileNeighbors
-			var tileCrop = crop.new()
-			tileCrop.cropType = "Cannabis"
-			cropSlot = tileCrop
-			var tileOre = ore.new()
-			tileOre.updateSelf("Copper")
-			oreSlot = tileOre
-			#addWizard("Druid")
-			addBuilding("Tower", 1)
-			addBuilding("Farm", 3)
-			#addBuilding("Granary", 1)
-			addBuilding("Barracks", 2)
-			addBuilding("Library", 6)
-			#addBuilding("Mine", 2)
-			#addBuilding("Forge", 1)
-			#addBuilding("Camp", 5)
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/3"
-		#var actingSpell = spell.new()
-		#actingSpell.spellType = "Celebration"
-		#tileSpell = actingSpell
-		4:
-			tileName = "Enthenar"
-			#tileOwner = "PDT"
-			countryCapital = false
-			tileContinent = "Anlaxia"
-			tilePop
-			coastal = true
-			freshWater = false
-			terrain = "warm_coast"
-			season
-			tileMilModifiers
-			corruption = 100
-			TileNeighbors
-			var tileCrop = crop.new()
-			tileCrop.cropType = "Wheat"
-			cropSlot = tileCrop
-			var tileOre = ore.new()
-			tileOre.updateSelf("Marble")
-			oreSlot = tileOre
-			addBuilding("Farm", 3)
-			addBuilding("Granary", 2)
-			addBuilding("Temple", 2)
-			addBuilding("Barracks", 1)
-			addBuilding("Bath", 2)
-			addBuilding("Library", 4)
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/4"
-		5:
-			tileName
-			tileOwner
-			tileContinent
-			tilePop
-			coastal
-			freshWater
-			terrain
-			season
-			tileEcoModifiers
-			tileMilModifiers
-			corruption
-			TileNeighbors
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/5"
-		6:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/6"
-		7:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/7"
-		8:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/8"
-		9:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/9"
-		10:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/10"
-			tileName = "DUMLANDIA"
-			tileOwner = "DUM"
-			countryCapital = true
-			tileContinent
-			tilePop
-			coastal = false
-			freshWater = true
-			terrain = "mountaintop"
-			season
-			tileEcoModifiers
-			tileMilModifiers
-			corruption = 50
-			TileNeighbors
-			var tileCrop = crop.new()
-			tileCrop.cropType = "Cannabis"
-			cropSlot = tileCrop
-			var tileOre = ore.new()
-			tileOre.updateSelf("Copper")
-			oreSlot = tileOre
-			addBuilding("Barracks", 10)
-		11:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/11"
-		12:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/12"
-		13:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/13"
-		14:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/14"
-			tileOwner="ANL"
-		15:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/15"
-			tileOwner="ANL"
-		16:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/16"
-			tileOwner="EIG"
-		17:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/17"
-			tileOwner="ANL"
-		18:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/18"
-			tileOwner="ANL"
-		19:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/19"
-			tileOwner="EIG"
-		20:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/20"
-		21:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/21"
-			tileOwner="EIG"
-		22:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/22"
-			tileOwner="EIG"
-		23:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/23"
-			tileOwner="EIG"
-		24:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/24"
-			tileOwner="EIG"
-		25:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/25"
-			tileOwner="VTO"
-		26:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/26"
-			tileOwner="VTO"
-		27:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/27"
-			tileOwner="VTO"
-		28:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/28"
-			tileOwner="VTO"
-		29:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/29"
-			tileOwner="VTO"
-		30:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/30"
-			tileOwner="VTO"
-		31:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/31"
-			tileOwner="VTO"
-		32:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/32"
-		33:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/33"
-		34:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/34"
-		35:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/35"
-		36:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/36"
-		37:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/37"
-		38:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/38"
-		39:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/39"
-		40:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/40"
-		41:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/41"
-		42:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/42"
-		43:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/43"
-		44:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/44"
-		45:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/45"
-		46:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/46"
-		47:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/47"
-		48:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/48"
-		49:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/49"
-		50:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/50"
-		51:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/51"
-		52:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/52"
-		53:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/53"
-		54:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/54"
-		55:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/55"
-		56:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/56"
-		57:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/57"
-		58:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/58"
-		59:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/59"
-		60:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/60"
-		61:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/61"
-		62:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/62"
-		63:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/63"
-		64:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/64"
-		65:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/65"
-		66:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/66"
-		67:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/67"
-			tileOwner="EIG"
-		68:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/68"
-			tileOwner="VTO"
-		69:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/69"
-			tileOwner="VTO"
-		70:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/70"
-		71:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/71"
-		72:
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/72"
-	calculateCorruption()
-	emit_signal("tileLoaded", self)
-	pass
 
-func calculateOceanAttributes(tileNumber):
-	match tileNumber:
-		1:
-			tileName = "Cape of One Spear"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C1"
-		2:
-			tileName = "Cape of Two Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C2"
-		3:
-			tileName = "Cape of Three Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C3"
-		4:
-			tileName = "Cape of Four Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C4"
-		5:
-			tileName = "Cape of Five Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C5"
-		6:
-			tileName = "Cape of Six Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C6"
-		7:
-			tileName = "Cape of Seven Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C7"
-		8:
-			tileName = "Cape of Eight Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C8"
-		9:
-			tileName = "Cape of Nine Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C9"
-		10:
-			tileName = "Cape of Ten Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C10"
-		11:
-			tileName = "Cape of Eleven Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C11"
-		12:
-			tileName = "Cape of Twelve Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C12"
-		13:
-			tileName = "Cape of Thirteen Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C13"
-		14:
-			tileName = "Cape of Fourteen Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C14"
-		15:
-			tileName = "Cape of Fifteen Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C15"
-		16:
-			tileName = "Cape of Sixteen Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C16"
-		17:
-			tileName = "Cape of Seventeen Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C17"
-		18:
-			tileName = "Cape of Eighteen Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C18"
-		19:
-			tileName = "Cape of Nineteen Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C19"
-		20:
-			tileName = "Cape of Twenty Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C20"
-		21:
-			tileName = "Cape of Twenty-One Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C21"
-		22:
-			tileName = "Cape of Twenty-Two Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C22"
-		23:
-			tileName = "Cape of Twenty-Three Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C23"
-		24:
-			tileName = "Cape of Twenty-Four Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C24"
-		25:
-			tileName = "Cape of Twenty-Five Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C25"
-		26:
-			tileName = "Cape of Twenty-Six Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C26"
-		27:
-			tileName = "Cape of Twenty-Seven Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C27"
-		28:
-			tileName = "Cape of Twenty-Eight Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C28"
-		29:
-			tileName = "Cape of Twenty-Nine Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C29"
-		30:
-			tileName = "Cape of Thirty Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C30"
-		31:
-			tileName = "Cape of Thirty-One Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C31"
-		32:
-			tileName = "Cape of Thirty-Two Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C32"
-		33:
-			tileName = "Cape of Thirty-Three Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C33"
-		34:
-			tileName = "Cape of Thirty-Four Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C34"
-		35:
-			tileName = "Cape of Thirty-Five Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C35"
-		36:
-			tileName = "Cape of Thirty-Six Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C36"
-		37:
-			tileName = "Cape of Thirty-Seven Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C37"
-		38:
-			tileName = "Cape of Thirty-Eight Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C38"
-		39:
-			tileName = "Cape of Thirty-Nine Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C39"
-		40:
-			tileName = "Cape of Forty Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C40"
-		41:
-			tileName = "Cape of Forty-One Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C41"
-		42:
-			tileName = "Cape of Forty-Two Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C42"
-		43:
-			tileName = "Cape of Forty-Three Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C43"
-		44:
-			tileName = "Cape of Forty-Four Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C44"
-		45:
-			tileName = "Cape of Forty-Five Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C45"
-		46:
-			tileName = "Cape of Forty-Six Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C46"
-		47:
-			tileName = "Cape of Forty-Seven Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C47"
-		48:
-			tileName = "Cape of Forty-Eight Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C48"
-		49:
-			tileName = "Cape of Forty-Nine Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C49"
-		50:
-			tileName = "Cape of Fifty Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C50"
-		51:
-			tileName = "Cape of Fifty-One Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C51"
-		52:
-			tileName = "Cape of Fifty-Two Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C52"
-		53:
-			tileName = "Cape of Fifty-Three Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C53"
-		54:
-			tileName = "Cape of Fifty-Four Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C54"
-		55:
-			tileName = "Cape of Fifty-Five Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C55"
-		56:
-			tileName = "Cape of Fifty-Six Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C56"
-		57:
-			tileName = "Cape of Fifty-Seven Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C57"
-		58:
-			tileName = "Cape of Fifty-Eight Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C58"
-		59:
-			tileName = "Cape of Fifty-Nine Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C59"
-		60:
-			tileName = "Cape of Sixty Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C60"
-		61:
-			tileName = "Cape of Sixty-One Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C61"
-		62:
-			tileName = "Cape of Sixty-Two Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C62"
-		63:
-			tileName = "Cape of Sixty-Three Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C63"
-		64:
-			tileName = "Cape of Sixty-Four Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C64"
-		65:
-			tileName = "Cape of Sixty-Five Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C65"
-		66:
-			tileName = "Cape of Sixty-Six Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C66"
-		67:
-			tileName = "Cape of Sixty-Seven Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C67"
-		68:
-			tileName = "Cape of Sixty-Eight Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C68"
-		69:
-			tileName = "Cape of Sixty-Nine Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C69"
-		70:
-			tileName = "Cape of Seventy Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C70"
-		71:
-			tileName = "Cape of Seventy-One Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C71"
-		72:
-			tileName = "Cape of Seventy-Two Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C72"
-		73:
-			tileName = "Cape of Seventy-Three Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C73"
-		74:
-			tileName = "Cape of Seventy-Four Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C74"
-		75:
-			tileName = "Cape of Seventy-Five Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C75"
-		76:
-			tileName = "Cape of Seventy-Six Spears"
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/C76"
-	pass
+	print(tileName, " | winter: ", get_winter_category(), " (", winterScore, ")")
+# ============================================================
+# LOAD GAME INITIALIZATION
+# ============================================================
 
-
-signal onLoadWorldBuild
+signal onLoadGame_signal
 func onLoadGame():
 	emit_signal("onLoadWorldBuild")
-	#var gameFileToLoad = load(fileFromDocumentsPath)
 	tileRing = $Ring
 	tileGraphic = $TileGraphic
 	tileNumber = EXPTileNumber
-	if tileNumber == 1:
-		tileNumber
-		tileName
-		tileOwner
-		tileContinent
-		tilePop
-		coastal
-		freshWater
-		terrain
-		season
-		tileEcoModifiers
-		tileMilModifiers
-		corruption
-		TileNeighbors
-	pass
-	if tileNumber == 2:
-		tileNumber
-		tileName
-		tileOwner
-		tileContinent
-		tilePop
-		coastal
-		freshWater
-		terrain
-		season
-		tileEcoModifiers
-		tileMilModifiers
-		corruption
-		TileNeighbors
-	pass
-	if tileNumber == 3:
-		tileNumber
-		tileName
-		tileOwner
-		tileContinent
-		tilePop
-		coastal
-		freshWater
-		terrain
-		season
-		tileEcoModifiers
-		tileMilModifiers
-		corruption
-		TileNeighbors
-	pass
-	if tileNumber == 4:
-		tileNumber
-		tileName
-		tileOwner
-		tileContinent
-		tilePop
-		coastal
-		freshWater
-		terrain
-		season
-		tileEcoModifiers
-		tileMilModifiers
-		corruption
-		TileNeighbors
-	pass
-	if tileNumber == 5:
-		tileNumber
-		tileName
-		tileOwner
-		tileContinent
-		tilePop
-		coastal
-		freshWater
-		terrain
-		season
-		tileEcoModifiers
-		tileMilModifiers
-		corruption
-		TileNeighbors
-	pass
+	ocean = oceanEXP
+	discovered = false
+	undiscovered = true
+	activeView = false
+	for NodePath in TileNeighborsEXP:
+		TileNeighbors.append(get_node(NodePath))
+	build_self()  # CSV is the source of truth for load game too until save system is built
+	calculateCorruption()
+	emit_signal("tileLoaded", self)
+
+
+func build_self_from_save(save_data: Dictionary) -> void:
+	# Called when loading a saved game - same structure as build_self but from JSON
+	tileName = save_data.get("tileName", tileName)
+	tileOwner = save_data.get("country", tileOwner)
+	tileContinent = save_data.get("state", tileContinent)
+	terrain = save_data.get("terrain", terrain)
+	corruption = save_data.get("corruption", corruption)
+	winterScore = save_data.get("winterScore",0)
+	tileCrop = save_data.get("tileCrop", tileCrop)
+	buildings = save_data.get("buildings", {})
+	tileSpecialFeatures = save_data.get("specialFeatures", [])
+	lastConqueror = save_data.get("lastConqueror", "")
+	turnsSinceConquest = save_data.get("turnsSinceConquest", 0)
+	lastEspionageTurn = save_data.get("lastEspionageTurn", -999)
+	espionageActive = save_data.get("espionageActive", false)
+	for feature in tileSpecialFeatures:
+		var ecoMod = tileEcoModifier.new()
+		ecoMod.modType = feature
+		tileEcoModifiers.append(ecoMod)
+
+	for building_name in buildings:
+		var level = buildings[building_name]
+		addBuilding(building_name.capitalize(), level)
+
+	tileSpawnPoint = get_node("../../PathControl/PathPointsControl/" + str(tileNumber))
+
+
+# ============================================================
+# ECONOMY CALCULATIONS
+# ============================================================
 
 func calculateDailyTileEcoChanges():
-	#this is for easy changes that need to be updated often.  no complicated calculations
 	corruptionComparison = corruption
 	corruption -= corruptionChange
 	if corruption == corruptionComparison:
 		return
 	else:
-		print(tileName, corruptionChange, corruption, "CORRUPTION CHECK")
 		calculateCorruption()
-	pass
 
-
-func calculateDiscovered(playerCountry):
-	if tileOwner == playerCountry.CID:
-		discovered = true
-		undiscovered = false
-		for Tile in TileNeighbors:
-			Tile.discovered = true
-			Tile.undiscovered = false
-	pass
 
 func calculateCorruption():
 	tileEcoModifiers.clear()
@@ -820,17 +391,17 @@ func calculateCorruption():
 		newtileEco.modName = "TotalCorruption"
 		newtileEco.buildTileEcoMod()
 		tileEcoModifiers.append(newtileEco)
-	elif corruption >= 60 || corruption < 80:
+	elif corruption >= 60:
 		var newtileEco = tileEcoModifier.new()
 		newtileEco.modName = "HeavyCorruption"
 		newtileEco.buildTileEcoMod()
 		tileEcoModifiers.append(newtileEco)
-	elif corruption >= 40 || corruption < 60:
+	elif corruption >= 40:
 		var newtileEco = tileEcoModifier.new()
 		newtileEco.modName = "ModerateCorruption"
 		newtileEco.buildTileEcoMod()
 		tileEcoModifiers.append(newtileEco)
-	elif corruption >= 20 || corruption < 40:
+	elif corruption >= 20:
 		var newtileEco = tileEcoModifier.new()
 		newtileEco.modName = "LightCorruption"
 		newtileEco.buildTileEcoMod()
@@ -842,7 +413,7 @@ func calculateCorruption():
 		tileEcoModifiers.append(newtileEco)
 	corruptionChange = 0
 	calculateTerrain()
-	pass
+
 
 func calculateTerrain():
 	if terrain == "Rainforest":
@@ -856,23 +427,23 @@ func calculateTerrain():
 		grassland.buildTileEcoMod()
 		tileEcoModifiers.append(grassland)
 	if freshWater == true:
-		var freshWater = tileEcoModifier.new()
-		freshWater.modName = "FreshWater"
-		freshWater.buildTileEcoMod()
-		tileEcoModifiers.append(freshWater)
-	if freshWater == false && coastal == true:
+		var fw = tileEcoModifier.new()
+		fw.modName = "FreshWater"
+		fw.buildTileEcoMod()
+		tileEcoModifiers.append(fw)
+	elif coastal == true:
 		var coastalWater = tileEcoModifier.new()
 		coastalWater.modName = "CoastalWater"
 		coastalWater.buildTileEcoMod()
 		tileEcoModifiers.append(coastalWater)
-	if freshWater == false && coastal == false:
+	else:
 		var dry = tileEcoModifier.new()
 		dry.modName = "Dry"
 		dry.buildTileEcoMod()
 		tileEcoModifiers.append(dry)
-	else:
-		return
-	pass
+	calculateWinterModifier()
+	calculateDynamicModifiers()
+
 
 func calculateSeason(month):
 	var tileMonth = month
@@ -882,14 +453,7 @@ func calculateSeason(month):
 		summerMod.modName = "Summer"
 		summerMod.buildTileEcoMod()
 		tileEcoModifiers.append(summerMod)
-	pass
 
-var tileGoldTax: float
-var tileHarmonyTax: float
-
-var tileFoodDic: Dictionary = {}
-
-signal censusComplete
 
 func censusTile(playerCountryNode):
 	calculateDailyTileEcoChanges()
@@ -904,7 +468,7 @@ func censusTile(playerCountryNode):
 	buildingMandateOutput = 0
 	buildingInfluenceOutput = 0
 	buildingManpowerOutput = 0
-	buildingHarmonyOutput = 0 
+	buildingHarmonyOutput = 0
 	buildingCultureOutput = 0
 	corruptionChange = 0
 	tileGoldTax = 0
@@ -930,13 +494,8 @@ func censusTile(playerCountryNode):
 	for building in tileBuildingsList:
 		if building.foodDic.is_empty() == false:
 			tileFoodDic[building.buildingType] = building.foodDic
-			
 	if tileFoodDic.is_empty() == false:
 		emit_signal("censusComplete", "Food", buildingFoodOutput, tileFoodDic)
-	pass
-
-
-
 
 
 func surveyTile(playerCountryNode):
@@ -952,7 +511,7 @@ func surveyTile(playerCountryNode):
 	buildingMandateOutput = 0
 	buildingInfluenceOutput = 0
 	buildingManpowerOutput = 0
-	buildingHarmonyOutput = 0 
+	buildingHarmonyOutput = 0
 	buildingCultureOutput = 0
 	corruptionChange = 0
 	tileGoldTax = 0
@@ -977,49 +536,25 @@ func surveyTile(playerCountryNode):
 		tileHarmonyTax += building.harmonyTax
 		match building.buildingType:
 			"Farm":
-				if building.buildingLevel >= 3:
-					farmGovernorReq = true
-				else:
-					farmGovernorReq = false
+				farmGovernorReq = building.buildingLevel >= 3
 				if building.buildingLevel > 1:
 					tileFarmDevCost * (building.buildingLevel * 1.3)
 				else:
 					tileFarmDevCost * building.buildingLevel
 			"Camp":
-				if building.buildingLevel >= 3:
-					campGovernorReq = true
-				else:
-					campGovernorReq = false
+				campGovernorReq = building.buildingLevel >= 3
 			"Mine":
-				if building.buildingLevel >= 3:
-					mineGovernorReq = true
-				else:
-					mineGovernorReq = false
+				mineGovernorReq = building.buildingLevel >= 3
 			"Library":
-				if building.buildingLevel >= 3:
-					libraryGovernorReq = true
-				else:
-					libraryGovernorReq = false
+				libraryGovernorReq = building.buildingLevel >= 3
 			"Theater":
-				if building.buildingLevel >= 3:
-					theaterGovernorReq = true
-				else:
-					theaterGovernorReq = false
+				theaterGovernorReq = building.buildingLevel >= 3
 			"Workshop":
-				if building.buildingLevel >= 3:
-					workshopGovernorReq = true
-				else:
-					workshopGovernorReq = false
+				workshopGovernorReq = building.buildingLevel >= 3
 			"Forge":
-				if building.buildingLevel >= 3:
-					forgeGovernorReq = true
-				else:
-					forgeGovernorReq = false
+				forgeGovernorReq = building.buildingLevel >= 3
 			"Bath":
-				if building.buildingLevel >= 3:
-					bathGovernorReq = true
-				else:
-					bathGovernorReq = false
+				bathGovernorReq = building.buildingLevel >= 3
 			"Tower":
 				match building.magicOutput:
 					"alchemist":
@@ -1034,37 +569,14 @@ func surveyTile(playerCountryNode):
 						illPointsOutput = (1 * building.buildingLevel)
 					"diviner":
 						divPointsOutput = (1 * building.buildingLevel)
-				if building.buildingLevel >= 3:
-					towerGovernorReq = true
-				else:
-					towerGovernorReq = false
+				towerGovernorReq = building.buildingLevel >= 3
 			"Granary":
-				if building.buildingLevel >= 3:
-					granaryGovernorReq = true
-				else:
-					granaryGovernorReq = false
-	print("buildingMagicOutput1", buildingMagicOutput)
-	pass
-
-func addWizard(wizardType):
-	var actingWizard = wizard.new()
-	actingWizard.wizardType = wizardType
-	tileWizard = actingWizard
-	wizardCheck()
-	pass
-
-func wizardCheck():
-	if tileWizard == null:
-		print("No mother fuckin wizard type found")
-		emit_signal("tileEvent", self, "wizard")
-		pass
-	else:
-		for building in tileBuildingsList:
-			if building.buildingType == "Tower":
-				building.magicOutput = tileWizard.wizardType
-	pass
+				granaryGovernorReq = building.buildingLevel >= 3
 
 
+# ============================================================
+# BUILDINGS
+# ============================================================
 
 func addBuilding(buildingType, level):
 	var newBuild = buildingScene.instantiate()
@@ -1076,31 +588,21 @@ func addBuilding(buildingType, level):
 	self.add_child(newBuild)
 	if newBuild.buildingLevel == 1:
 		match newBuild.buildingType:
-			"Farm":
-				farmDevelopmentPoints = 0
-			"Camp":
-				campDevelopmentPoints = 0
-			"Mine":
-				mineDevelopmentPoints = 0
-			"Library":
-				libraryDevelopmentPoints = 0
-			"Granary":
-				granaryDevelopmentPoints = 0
-			"Temple":
-				templeDevelopmentPoints = 0
+			"Farm":      farmDevelopmentPoints = 0
+			"Camp":      campDevelopmentPoints = 0
+			"Mine":      mineDevelopmentPoints = 0
+			"Library":   libraryDevelopmentPoints = 0
+			"Granary":   granaryDevelopmentPoints = 0
+			"Temple":    templeDevelopmentPoints = 0
 			"Tower":
 				towerDevelopmentPoints = 0
 				newBuild.towerBuilding.connect(wizardCheck)
-			"Workshop":
-				workshopDevelopmentPoints = 0
-			"Forge":
-				forgeDevelopmentPoints = 0
-			"Bath":
-				bathDevelopmentPoints = 0
-			"Faire":
-				faireDevelopmentPoints = 0
-			"Barracks":
-				barracksDevelopmentPoints = 0
+			"Workshop":  workshopDevelopmentPoints = 0
+			"Forge":     forgeDevelopmentPoints = 0
+			"Bath":      bathDevelopmentPoints = 0
+			"Faire":     faireDevelopmentPoints = 0
+			"Barracks":  barracksDevelopmentPoints = 0
+			"Dock":      dockDevelopmentPoints = 0
 		newBuild.buildBuilding()
 	else:
 		match newBuild.buildingType:
@@ -1141,261 +643,100 @@ func addBuilding(buildingType, level):
 			"Barracks":
 				barracksDevelopmentPoints = 30 * ((newBuild.buildingLevel - 1) * 1.3)
 				tileBarracksDevCost = 30 * (newBuild.buildingLevel * 1.3)
+			"Dock":
+				dockDevelopmentPoints = 30 * ((newBuild.buildingLevel - 1) * 1.3)
+				tileDockDevCost = 30 * (newBuild.buildingLevel * 1.3)
 		newBuild.buildBuilding()
-		#levelUpBuilding(newBuild.buildingType)
-	pass
+
 
 func levelUpBuilding(type):
 	for building in tileBuildingsList:
 		if building.buildingType == type:
 			building.upgradeBuilding()
 			match type:
-				"Farm":
-					tileFarmDevCost = 10 * (building.buildingLevel * 1.3)
-				"Camp":
-					tileCampDevCost = 10 * (building.buildingLevel * 1.3)
-				"Granary":
-					tileCampDevCost = 25 * (building.buildingLevel * 1.3)
-				"Mine":
-					tileMineDevCost = 15 * (building.buildingLevel * 1.3)
-				"Library":
-					tileLibraryDevCost = 25 * (building.buildingLevel * 1.3)
-				"Tower":
-					tileTowerDevCost = 40 * (building.buildingLevel * 1.3)
-				"Temple":
-					tileTempleDevCost = 20 * (building.buildingLevel * 1.3)
-				"Faire":
-					tileFaireDevCost = 25 * (building.buildingLevel * 1.3)
-				"Bath":
-					tileBathDevCost = 25 * (building.buildingLevel * 1.3)
-				"Workshop":
-					tileWorkshopDevCost = 30 * (building.buildingLevel * 1.3)
-				"Forge":
-					tileForgeDevCost = 30 * (building.buildingLevel * 1.3)
-				"Barracks":
-					tileBarracksDevCost = 30 * (building.buildingLevel * 1.3)
-	pass
+				"Farm":      tileFarmDevCost = 10 * (building.buildingLevel * 1.3)
+				"Camp":      tileCampDevCost = 10 * (building.buildingLevel * 1.3)
+				"Granary":   tileGranaryDevCost = 25 * (building.buildingLevel * 1.3)
+				"Mine":      tileMineDevCost = 15 * (building.buildingLevel * 1.3)
+				"Library":   tileLibraryDevCost = 25 * (building.buildingLevel * 1.3)
+				"Tower":     tileTowerDevCost = 40 * (building.buildingLevel * 1.3)
+				"Temple":    tileTempleDevCost = 20 * (building.buildingLevel * 1.3)
+				"Faire":     tileFaireDevCost = 25 * (building.buildingLevel * 1.3)
+				"Bath":      tileBathDevCost = 25 * (building.buildingLevel * 1.3)
+				"Workshop":  tileWorkshopDevCost = 30 * (building.buildingLevel * 1.3)
+				"Forge":     tileForgeDevCost = 30 * (building.buildingLevel * 1.3)
+				"Barracks":  tileBarracksDevCost = 30 * (building.buildingLevel * 1.3)
+				"Dock":      tileDockDevCost = 30 * (building.buildingLevel * 1.3)
+
+
+# ============================================================
+# WIZARD (kept from original, used in DODK)
+# ============================================================
+
+func addWizard(wizardType):
+	var actingWizard = wizard.new()
+	actingWizard.wizardType = wizardType
+	tileWizard = actingWizard
+	wizardCheck()
+
+func wizardCheck():
+	if tileWizard == null:
+		emit_signal("tileEvent", self, "wizard")
+	else:
+		for building in tileBuildingsList:
+			if building.buildingType == "Tower":
+				building.magicOutput = tileWizard.wizardType
+
+
+# ============================================================
+# ARMY
+# ============================================================
 
 func addStationedArmy(armyNode):
 	stationedArmy = armyNode
-	pass
-
-signal spellAssigned
-func _on_area_2d_input_event(viewport, event, shape_idx):
-		if event is InputEventMouseButton and event.pressed:
-			if Input.is_action_just_pressed('Left Click'):
-				if spellToCast == null:
-					emit_signal("clicked", self)
-				else:
-					tileSpell = spellToCast
-					emit_signal("spellAssigned", spellCostToCast)
-					spellToCast = null
-					spellCostToCast = 0
-					match tileSpell.spellType:
-						"Raise Spring":
-							freshWater = true
-							tileSpell = null
-					calculateCorruption()
-
-func _on_area_2d_mouse_entered() -> void:
-	tileRing.modulate = Color(0, 0, 0)
-	tileGraphic.modulate = Color(0, 0, 1)
-	pass # Replace with function body.
 
 
-func _on_area_2d_mouse_exited() -> void:
-	tileRing.modulate = Color(1, 1, 1)
-	tileGraphic.modulate = Color(1, 1, 1)
-	pass # Replace with function body.
+# ============================================================
+# DISCOVERY & COLONIZATION
+# ============================================================
 
-func assignNewGovernor(newGovernor):
-	tileGovernor = newGovernor
-	pass
-
-var spellToCast: spell
-var spellCostToCast: int
-func spellCastMode(spell, cost, playerCountryNode):
-	if tileOwner == playerCountryNode.CID:
-		if tileSpell != null:
-			if tileSpell.spellType != spell.spellType:
-				if spell.spellType == "Raise Spring" && freshWater == true:
-					visible = false
-				else: 
-					spellToCast = spell
-					spellCostToCast = cost
-			else:
-				visible = false
-		else:
-			if spell.spellType == "Raise Spring" && freshWater == true:
-				visible = false
-			else:
-				spellToCast = spell
-				spellCostToCast = cost
-	else:
-		visible = false
-	pass
-
-func normalMode():
-	spellToCast = null
-	spellCostToCast = 0
-	visible = true
-	pass
-
-func calculateSpellChanges():
-	if tileSpell != null:
-		match tileSpell.spellType:
-			"Healing Winds":
-				corruptionChange += 2
-				buildingMagicOutput -= 4
-				print(buildingMagicOutput, "buildingMagicOutput2")
-	pass
-
-
-func updateGraphics(mapMode, displayCorruption, playerCountry):
-	if undiscovered == true:
-		$TileFOW.modulate = Color(0,0,0)
-		$TileFOW.self_modulate.a = .975
-		$TileFOW.visible = true
-		$TileGraphic.visible = false
-		activeView = false
-		#print("TroubleShooting DEBUG undisocvered")
-		return
-		#for Tile in TileNeighbors:
-			#if Tile.discovered == true:
-				#$TileFOW.self_modulate.a
-	if discovered == true:
-		#print("Discovered", discovered, "activeView", activeView, tileNumber)
-		#$TileGraphic.visible = true
-		match mapMode:
-			"Polis":
-				polisMode()
-			"Natural":
-				naturalMode()
-		if tileOwner == playerCountry.CID:
-			activeView = true
-			for Tile in TileNeighbors:
-				Tile.activeView = true
-				return
-		if tileSpawnPoint.occupied == true:
-			activeView = true
-			for Tile in TileNeighbors:
-				Tile.activeView = true
-				return
-		if tileSpawnPoint.occupied != true:
-			if TileNeighbors.size() < 0:
-				for Tile in TileNeighbors:
-					if Tile.tileSpawnPoint.occupied == true:
-						activeView = true
-						Tile.activeView = true
-						return
-					if Tile.tileOwner == playerCountry.CID:
-						activeView = true
-						Tile.activeView = true
-						return
-		activeView = false
-func calculateActiveView():
-	if activeView == true:
-		$TileFOW.visible = false
-	if activeView == false && discovered == true:
-		$TileFOW.modulate = Color(0,0,0)
-		$TileFOW.visible = true
-		$TileFOW.self_modulate.a = .6
-	pass
-
-func polisMode():
-	$TileGraphic.visible = false
-	$TileGraphic.modulate = Color(1,1,1)
-	match tileOwner:
-		"PDT":
-			$TileGraphic.modulate = Color(0,1,0)
-			$TileGraphic.visible = true
-		"ANL":
-			$TileGraphic.modulate = Color(0,0,1)
-			$TileGraphic.visible = true
-		"EIG":
-			$TileGraphic.modulate = Color(1, 0.078431375, 0.5764706)
-			$TileGraphic.visible = true
-		"VTO":
-			$TileGraphic.modulate = Color(1, 0.54901963, 0)
-			$TileGraphic.visible = true
-		"DUM":
-			$TileGraphic.modulate = Color(0.9,1,0.5)
-			$TileGraphic.visible = true
-	pass
-
-func naturalMode():
-	$TileGraphic.modulate = Color(1,1,1)
-	$TileFOW.self_modulate.a = 0.0
-	pass
-
-signal tileColonized
-
-
-func colonizeTile(civilian):
-	tileOwner = civilian.player.CID
-	emit_signal("tileColonized", self)
-	pass
-
-var discoveryPoints: int = 0
+func calculateDiscovered(playerCountry):
+	if tileOwner == playerCountry.CID:
+		discovered = true
+		undiscovered = false
+		for Tile in TileNeighbors:
+			Tile.discovered = true
+			Tile.undiscovered = false
 
 func increasePlayerDiscoveryRate(rate):
 	if discovered != true:
 		discoveryPoints += rate
 		if discoveryPoints >= 100:
 			discoverTile()
-	pass
 
 func discoverTile():
 	undiscovered = false
 	discovered = true
-	pass
+
+func colonizeTile(civilian):
+	tileOwner = civilian.player.CID
+	emit_signal("tileColonized", self)
 
 
-var farmDevelopmentPoints: float
-var tileFarmDevCost:float = 10
-var campDevelopmentPoints: float
-var tileCampDevCost:float = 10
-var mineDevelopmentPoints: float
-var tileMineDevCost:float = 15
-var libraryDevelopmentPoints: float
-var tileLibraryDevCost:float = 25
-var towerDevelopmentPoints: float
-var tileTowerDevCost:float = 40
-var templeDevelopmentPoints: float
-var tileTempleDevCost:float = 20
-var faireDevelopmentPoints: float
-var tileFaireDevCost:float = 25
-var workshopDevelopmentPoints: float
-var tileWorkshopDevCost:float = 30
-var forgeDevelopmentPoints: float
-var tileForgeDevCost:float = 30
-var bathDevelopmentPoints: float
-var tileBathDevCost:float = 25
-var granaryDevelopmentPoints: float
-var tileGranaryDevCost:float = 25
-var barracksDevelopmentPoints: float
-var tileBarracksDevCost:float = 30
-var dockDevelopmentPoints: float
-var tileDockDevCost: float =30
-
-var colonizationPoints: float
-var colonizationReq: float = 2
+# ============================================================
+# DEVELOPMENT
+# ============================================================
 
 func devChange(devType, devCivilian):
-	print("DEBUG DEV", devType, devCivilian)
 	match devType:
 		"Corruption":
 			corruption -= 1
-			match devCivilian.civilianKit.kitType:
-				"Homesteader":
-					#print("DEBUG HOMESTEADER CORRUPTION")
-					corruption -= 1
+			if devCivilian.civilianKit.kitType == "Homesteader":
+				corruption -= 1
 		"Colonize":
 			colonizationPoints += .1
-			match devCivilian.civilianKit.kitType:
-				"Homesteader":
-					#print("DEBUG HOMESTEADER COLONIZATION")
-					colonizationPoints += .2
+			if devCivilian.civilianKit.kitType == "Homesteader":
+				colonizationPoints += .2
 			if colonizationPoints >= colonizationReq:
 				colonizeTile(devCivilian)
 		"Agriculture":
@@ -1437,8 +778,8 @@ func devChange(devType, devCivilian):
 			forgeDevelopmentPoints += 2
 			if barracksDevelopmentPoints >= tileBarracksDevCost:
 				levelUpBuilding("Barracks")
-			if forgeDevelopmentPoints >= tileBarracksDevCost:
-				levelUpBuilding("Barracks")
+			if forgeDevelopmentPoints >= tileForgeDevCost:
+				levelUpBuilding("Forge")
 		"Discovery":
 			for Tile in TileNeighbors:
 				if Tile.discovered == false:
@@ -1446,15 +787,859 @@ func devChange(devType, devCivilian):
 						Tile.increasePlayerDiscoveryRate(50)
 					else:
 						Tile.increasePlayerDiscoveryRate(25)
-	pass
 
-signal newSiegeStatus
+
+# ============================================================
+# SIEGE
+# ============================================================
+
 func siegeCalculate(army):
-	#print("TileSiegeWon PATHCONTROL")
 	if tileOwner == "":
 		return
 	if army.parentCountry.CID != tileOwner:
 		currentSiegeProgress += army.armySiegeScore
 	if currentSiegeProgress >= maxSiegeProgress:
 		emit_signal("newSiegeStatus", self, tileOwner, army.parentCountry.CID)
-	pass
+
+
+# ============================================================
+# SPELLS
+# ============================================================
+
+func spellCastMode(spell, cost, playerCountryNode):
+	if tileOwner == playerCountryNode.CID:
+		if tileSpell != null:
+			if tileSpell.spellType != spell.spellType:
+				if spell.spellType == "Raise Spring" && freshWater == true:
+					visible = false
+				else:
+					spellToCast = spell
+					spellCostToCast = cost
+			else:
+				visible = false
+		else:
+			if spell.spellType == "Raise Spring" && freshWater == true:
+				visible = false
+			else:
+				spellToCast = spell
+				spellCostToCast = cost
+	else:
+		visible = false
+
+func normalMode():
+	spellToCast = null
+	spellCostToCast = 0
+	visible = true
+
+func calculateSpellChanges():
+	if tileSpell != null:
+		match tileSpell.spellType:
+			"Healing Winds":
+				corruptionChange += 2
+				buildingMagicOutput -= 4
+
+
+# ============================================================
+# GRAPHICS
+# ============================================================
+
+func updateGraphics(mapMode, displayCorruption, playerCountry):
+	if undiscovered == true:
+		$TileFOW.modulate = Color(0,0,0)
+		$TileFOW.self_modulate.a = .975
+		$TileFOW.visible = true
+		$TileGraphic.visible = false
+		activeView = false
+		return
+	if discovered == true:
+		match mapMode:
+			"Polis":
+				polisMode()
+			"Natural":
+				naturalMode()
+		if tileOwner == playerCountry.CID:
+			activeView = true
+			for Tile in TileNeighbors:
+				Tile.activeView = true
+				return
+		if tileSpawnPoint.occupied == true:
+			activeView = true
+			for Tile in TileNeighbors:
+				Tile.activeView = true
+				return
+		if tileSpawnPoint.occupied != true:
+			if TileNeighbors.size() < 0:
+				for Tile in TileNeighbors:
+					if Tile.tileSpawnPoint.occupied == true:
+						activeView = true
+						Tile.activeView = true
+						return
+					if Tile.tileOwner == playerCountry.CID:
+						activeView = true
+						Tile.activeView = true
+						return
+		activeView = false
+
+func calculateActiveView():
+	if activeView == true:
+		$TileFOW.visible = false
+	if activeView == false && discovered == true:
+		$TileFOW.modulate = Color(0,0,0)
+		$TileFOW.visible = true
+		$TileFOW.self_modulate.a = .6
+
+func polisMode():
+	$TileGraphic.visible = false
+	$TileGraphic.modulate = Color(1,1,1)
+	match tileOwner:
+		"USA":
+			$TileGraphic.modulate = Color(0.18, 0.31, 0.65)  # American blue
+			$TileGraphic.visible = true
+		"UK":
+			$TileGraphic.modulate = Color(0.7, 0.0, 0.1)     # British red
+			$TileGraphic.visible = true
+		"CA":
+			$TileGraphic.modulate = Color(0.9, 0.15, 0.15)   # Canadian red
+			$TileGraphic.visible = true
+		"BA":
+			$TileGraphic.modulate = Color(0.0, 0.5, 0.3)     # Bahamian teal
+			$TileGraphic.visible = true
+		# Legacy Farsword factions kept in case tiles still reference them
+		"PDT":
+			$TileGraphic.modulate = Color(0,1,0)
+			$TileGraphic.visible = true
+		"ANL":
+			$TileGraphic.modulate = Color(0,0,1)
+			$TileGraphic.visible = true
+		"EIG":
+			$TileGraphic.modulate = Color(1, 0.078431375, 0.5764706)
+			$TileGraphic.visible = true
+		"VTO":
+			$TileGraphic.modulate = Color(1, 0.54901963, 0)
+			$TileGraphic.visible = true
+		"DUM":
+			$TileGraphic.modulate = Color(0.9,1,0.5)
+			$TileGraphic.visible = true
+
+func naturalMode():
+	$TileGraphic.modulate = Color(1,1,1)
+	$TileFOW.self_modulate.a = 0.0
+
+
+# ============================================================
+# INPUT
+# ============================================================
+
+func _on_area_2d_input_event(viewport, event, shape_idx):
+	if event is InputEventMouseButton and event.pressed:
+		if Input.is_action_just_pressed('Left Click'):
+			if spellToCast == null:
+				emit_signal("clicked", self)
+			else:
+				tileSpell = spellToCast
+				emit_signal("spellAssigned", spellCostToCast)
+				spellToCast = null
+				spellCostToCast = 0
+				match tileSpell.spellType:
+					"Raise Spring":
+						freshWater = true
+						tileSpell = null
+				calculateCorruption()
+
+func _on_area_2d_mouse_entered() -> void:
+	tileRing.modulate = Color(0, 0, 0)
+	tileGraphic.modulate = Color(0, 0, 1)
+
+func _on_area_2d_mouse_exited() -> void:
+	tileRing.modulate = Color(1, 1, 1)
+	tileGraphic.modulate = Color(1, 1, 1)
+
+
+# ============================================================
+# GOVERNOR
+# ============================================================
+
+func assignNewGovernor(newGovernor):
+	tileGovernor = newGovernor
+
+
+
+
+# ============================================================
+# TILE HELPERS - add these to tile_complete.gd
+# Replace the existing "BUILDING HELPERS" section with this
+# ============================================================
+
+
+# ============================================================
+# BUILDING HELPERS
+# Ask questions about what buildings a tile has
+# ============================================================
+
+func has_building(building_name: String) -> bool:
+	# Does this tile have this building at all?
+	# Example: tile.has_building("barracks")
+	return buildings.has(building_name.to_lower())
+
+func get_building_level(building_name: String) -> int:
+	# What level is this building? Returns 0 if not present
+	# Example: tile.get_building_level("farm")
+	return buildings.get(building_name.to_lower(), 0)
+
+func has_building_at_level(building_name: String, min_level: int) -> bool:
+	# Does this tile have this building at or above a minimum level?
+	# Example: tile.has_building_at_level("barracks", 2)
+	# Use this for: unlocking units, triggering events, AI decisions
+	return get_building_level(building_name) >= min_level
+
+func has_dock() -> bool:
+	return has_building("dock")
+
+func get_dock_level() -> int:
+	return get_building_level("dock")
+
+func has_barracks() -> bool:
+	return has_building("barracks")
+
+func get_barracks_level() -> int:
+	return get_building_level("barracks")
+
+func has_fort() -> bool:
+	return has_building("fortress") or has_building("fort")
+
+func get_fortification_level() -> int:
+	# Returns the highest fort level between fortress and fort buildings
+	return max(get_building_level("fortress"), get_building_level("fort"))
+
+func has_market() -> bool:
+	return has_building("market")
+
+func has_library() -> bool:
+	return has_building("library")
+
+func has_farm() -> bool:
+	return has_building("farm")
+
+func has_mine() -> bool:
+	return has_building("mine")
+
+func total_buildings() -> int:
+	# How many different building types does this tile have?
+	# Use this for: development scoring, UI display, AI value assessment
+	return buildings.size()
+
+
+# ============================================================
+# MILITARY HELPERS
+# Useful for siege calculations, army movement, AI decisions
+# ============================================================
+
+func is_fortified() -> bool:
+	# Is this tile meaningfully defended?
+	# Use this for: increasing maxSiegeProgress, AI attack decisions
+	return get_fortification_level() >= 1
+
+func is_heavily_fortified() -> bool:
+	# High level fortification - major military target
+	# Use this for: AI avoiding tile, special siege events
+	return get_fortification_level() >= 3
+
+func is_military_hub() -> bool:
+	# Has significant barracks AND fortification
+	# Use this for: spawning garrison armies, UK stronghold events
+	return get_barracks_level() >= 2 and has_fort()
+
+func is_port() -> bool:
+	# Can this tile support naval operations?
+	# Use this for: spawning navies, naval supply lines, dock events
+	return has_dock()
+
+func get_siege_difficulty() -> float:
+	# Returns a multiplier for how hard this tile is to siege
+	# Use this in siegeCalculate() to scale maxSiegeProgress
+	var base: float = 1.0
+	base += get_fortification_level() * 0.5
+	base += get_barracks_level() * 0.25
+	if corruption >= 60:
+		base *= 0.7  # corrupted tiles are easier to take
+	return base
+
+
+# ============================================================
+# ECONOMIC HELPERS
+# Useful for census, resource calculations, UI display
+# ============================================================
+
+func is_corrupted() -> bool:
+	# Is corruption meaningfully affecting this tile?
+	# Use this for: applying penalties in censusTile, UI warnings
+	return corruption >= 40
+
+func is_heavily_corrupted() -> bool:
+	# Severe corruption
+	# Use this for: triggering rebellion events, AI abandoning tile
+	return corruption >= 70
+
+func is_prosperous() -> bool:
+	# Well developed economic tile
+	# Use this for: positive events, bonus yields, AI prioritizing defense
+	return has_farm() and has_market() and corruption < 30
+
+func is_agricultural() -> bool:
+	# Primary food producer
+	# Use this for: food supply calculations, famine events
+	return has_building_at_level("farm", 2)
+
+func is_industrial() -> bool:
+	# Has significant production infrastructure
+	# Use this for: weapons output, supply events
+	return has_building("forge") or has_building("mine")
+
+func get_economic_value() -> int:
+	# Rough score of how economically valuable this tile is
+	# Use this for: AI prioritization, victory point calculations
+	var value: int = 0
+	value += get_building_level("market") * 3
+	value += get_building_level("farm") * 2
+	value += get_building_level("forge") * 2
+	value += get_building_level("mine") * 2
+	value += get_building_level("library") * 1
+	value -= int(corruption * 0.1)
+	return max(value, 0)
+
+
+# ============================================================
+# CULTURAL & POLITICAL HELPERS
+# Useful for your liberty/liberalism themes
+# ============================================================
+
+func is_capital() -> bool:
+	# Is this tile a country capital?
+	# Use this for: capital capture events, war endings, special UI
+	return countryCapital
+
+func is_liberated() -> bool:
+	# Is this tile owned by USA (the rebellion)?
+	# Use this for: liberation events, commander story arcs,
+	# the core victory condition of your game
+	return tileOwner == "USA"
+
+func is_occupied() -> bool:
+	# Is this tile held by the King's forces?
+	# Use this for: occupation events, triggering resistance mechanics
+	return tileOwner == "UK"
+
+func is_canadian() -> bool:
+	# Is this tile Canadian faction?
+	return tileOwner == "CA"
+
+func is_contested() -> bool:
+	# Is there an active siege happening?
+	# Use this for: UI indicators, army AI, event triggers
+	return currentSiegeProgress > 0 and currentSiegeProgress < maxSiegeProgress
+
+func has_monument() -> bool:
+	# Does this tile have cultural/historical significance?
+	# Use this for: morale bonuses, special events, commander arcs
+	return has_building("monument")
+
+func has_university() -> bool:
+	# High level library = university
+	# Use this for: science bonuses, commander recruitment events
+	return has_building_at_level("library", 3)
+
+func is_resort() -> bool:
+	# Tourism tile
+	# Use this for: gold income bonuses, civilian happiness events
+	return has_building("resort")
+
+func has_special_feature(feature_name: String) -> bool:
+	# Does this tile have a specific special feature?
+	# Use this for: unique events tied to real locations
+	# Example: tile.has_special_feature("Gettysburg Memorial")
+	# Example: tile.has_special_feature("Naval Station Norfolk")
+	return tileSpecialFeatures.has(feature_name)
+
+func get_liberty_score() -> int:
+	var score: int = 0
+	if is_liberated():
+		score += 50
+	if has_monument():
+		score += 10
+	if has_university():
+		score += 15
+	if has_market():
+		score += 10
+	if is_historically_significant():
+		score += 10
+	# Fresh conquest by UK breeds radical resistance
+	score += get_conquest_liberty_boost()
+	score -= int(corruption * 0.5)
+	return max(score, 0)
+
+# ============================================================
+# CROP HELPERS
+# Useful for food events, seasonal mechanics, flavor text
+# ============================================================
+
+func get_crop() -> String:
+	return tileCrop
+
+func is_breadbasket() -> bool:
+	# Major food producing tile
+	# Use this for: food supply events, army supply lines
+	return tileCrop in ["corn", "soybeans"] and has_building_at_level("farm", 2)
+
+func has_rare_crop() -> bool:
+	# Special crop tile - mushrooms or cannabis
+	# Use this for: unique events, special resource bonuses
+	return tileCrop in ["mushrooms", "cannabis"]
+
+# ============================================================
+# WIZARD HELPERS (updated to match has_building() style)
+# Kept from original - will be more relevant for DODK
+# ============================================================
+
+func has_wizard() -> bool:
+	# Does this tile have an assigned wizard?
+	# Use this for: magic output calculations, tower events
+	return tileWizard != null
+
+func get_wizard_type() -> String:
+	# What kind of wizard is here?
+	# Returns empty string if no wizard
+	if not has_wizard():
+		return ""
+	return tileWizard.wizardType
+
+func is_magic_tile() -> bool:
+	# Has wizard AND tower
+	# Use this for: spell range calculations, magic events
+	return has_wizard() and has_building("tower")
+
+func get_magic_school() -> String:
+	# What magic school does this tile produce?
+	return get_wizard_type()
+
+func calculateWinterModifier() -> void:
+	# Called at end of calculateTerrain() — adds winter eco modifier
+	# Remove any existing winter modifier first so recalculation is clean
+	tileEcoModifiers = tileEcoModifiers.filter(
+		func(mod): return not mod.modName.begins_with("Winter_")
+	)
+	var winterMod = tileEcoModifier.new()
+	if winterScore <= -80:
+		winterMod.modName = "Winter_ExtremeHurricane"
+	elif winterScore <= -60:
+		winterMod.modName = "Winter_HurricaneTerritory"
+	elif winterScore <= -20:
+		winterMod.modName = "Winter_StormProne"
+	elif winterScore < 20:
+		winterMod.modName = "Winter_Mild"
+	elif winterScore < 60:
+		winterMod.modName = "Winter_Cold"
+	elif winterScore < 80:
+		winterMod.modName = "Winter_Harsh"
+	else:
+		winterMod.modName = "Winter_Blizzard"
+	winterMod.buildTileEcoMod()
+	tileEcoModifiers.append(winterMod)
+ 
+func has_occupying_army_commander() -> bool:
+	# Does the army stationed here have a named commander?
+	# Use for: commander-specific story events, special siege modifiers,
+	# Nzinga in Vermont behaves differently than a generic unit
+	if stationedArmy == null:
+		return false
+	# Checks if the army has a commander assigned
+	# Assumes army has a 'commander' variable — adjust if yours differs
+	return stationedArmy.get("commander") != null if stationedArmy.has_method("get") else false
+ 
+func get_occupying_commander():
+	# Returns the commander node/object, or null
+	if not has_occupying_army_commander():
+		return null
+	return stationedArmy.commander
+ 
+ 
+# --- HELPER 14: has_max_corruption ---
+func has_max_corruption() -> bool:
+	# Is this tile in total collapse? (corruption >= 80)
+	# Use for: bandit spawns, civilian exodus, buildings stop producing,
+	# revolution events, AI abandoning tile
+	return corruption >= 80
+ 
+func get_corruption_tier() -> String:
+	# Human-readable corruption state for events and UI
+	if corruption >= 80:
+		return "Collapsed"
+	elif corruption >= 60:
+		return "Severe"
+	elif corruption >= 40:
+		return "Moderate"
+	elif corruption >= 20:
+		return "Light"
+	else:
+		return "Clean"
+ 
+ 
+# --- HELPER 15: is_neighbor_of_capital ---
+func is_neighbor_of_capital() -> bool:
+	# Is this tile adjacent to any country's capital?
+	# Use for: king's reinforcement events, propaganda events,
+	# special siege modifiers near capitals
+	for neighbor in TileNeighbors:
+		if neighbor.countryCapital == true:
+			return true
+	return false
+ 
+func get_neighboring_capital() -> Tile:
+	# Returns the capital tile if adjacent, null otherwise
+	for neighbor in TileNeighbors:
+		if neighbor.countryCapital == true:
+			return neighbor
+	return null
+ 
+ 
+# --- HELPER 16: is_recently_liberated ---
+func is_recently_liberated() -> bool:
+	# Was this tile UK-owned and flipped to USA recently?
+	# Use for: jubilee event, temporary morale boost, Loyalist resistance
+	# "Recently" = within conquestThreshold months
+	return is_liberated() and lastConqueror == "UK" and turnsSinceConquest <= conquestThreshold
+ 
+func get_turns_since_liberation() -> int:
+	# How many months since this tile was liberated?
+	# Use for: scaling event intensity (fresh liberation = bigger celebration)
+	if not is_recently_liberated():
+		return 999
+	return turnsSinceConquest
+ 
+ 
+# --- HELPER 17: has_ideological_conflict ---
+func has_ideological_conflict() -> bool:
+	# Is this tile on the front line between USA and UK?
+	# Use for: debate events, defector events, spy events,
+	# the most politically charged tiles on the map
+	var hasUSA = false
+	var hasUK = false
+	for neighbor in TileNeighbors:
+		if neighbor.tileOwner == "USA":
+			hasUSA = true
+		if neighbor.tileOwner == "UK":
+			hasUK = true
+	return hasUSA and hasUK
+ 
+func get_faction_neighbor_count(factionCID: String) -> int:
+	# How many neighbors belong to a specific faction?
+	# Use for: measuring how surrounded/isolated a tile is
+	var count = 0
+	for neighbor in TileNeighbors:
+		if neighbor.tileOwner == factionCID:
+			count += 1
+	return count
+ 
+ 
+# --- HELPER 18: is_historically_significant ---
+func is_historically_significant() -> bool:
+	# Does this tile have a monument AND a named historical specialFeature?
+	# Use for: speech events, rally events, commander inspiration arc triggers
+	if not has_monument():
+		return false
+	# Check if any special feature sounds historical (not just geographic)
+	var historical_keywords = [
+		"Memorial", "Arsenal", "Battle", "College", "University",
+		"Birthplace", "Capital", "Historic", "Fort", "Naval"
+	]
+	for feature in tileSpecialFeatures:
+		for keyword in historical_keywords:
+			if feature.contains(keyword):
+				return true
+	return false
+ 
+func get_historical_features() -> Array:
+	# Returns only the historically significant special features
+	var historical_keywords = [
+		"Memorial", "Arsenal", "Battle", "College", "University",
+		"Birthplace", "Capital", "Historic", "Fort", "Naval"
+	]
+	var result = []
+	for feature in tileSpecialFeatures:
+		for keyword in historical_keywords:
+			if feature.contains(keyword):
+				result.append(feature)
+				break
+	return result
+
+# ============================================================
+#Governor Helpers
+# ============================================================
+
+func has_governor() -> bool:
+	# Does this tile have a governor assigned?
+	return filledGovernorSlot and tileGovernor != null
+ 
+func has_governor_at_level(min_level: int) -> bool:
+	# Is the governor at or above a minimum level?
+	# Use for: unlocking advanced events, bonus modifiers,
+	# governor-gated building upgrades
+	# Example: tile.has_governor_at_level(2)
+	if not has_governor():
+		return false
+	return tileGovernor.governorLevel >= min_level
+ 
+func get_governor_level() -> int:
+	# What level is the governor? Returns 0 if no governor
+	if not has_governor():
+		return 0
+	return tileGovernor.governorLevel
+ 
+func has_governor_faction(factionCID: String) -> bool:
+	# Is the governor aligned with a specific faction?
+	# Use for: loyalty events, defection risk, faction-specific bonuses
+	# Checks governorType against faction — adjust match logic
+	# if your governors store faction differently
+	if not has_governor():
+		return false
+	# Governor faction is inferred from governorType or a faction variable
+	# For now checks if the tile owner matches the faction
+	# TODO: add a governorFaction variable to governor.gd for more precision
+	return tileOwner == factionCID
+ 
+func get_governor_type() -> String:
+	# What type is the governor? Returns "" if none
+	if not has_governor():
+		return ""
+	return tileGovernor.governorType
+ 
+func is_governor_loyal() -> bool:
+	# Is the governor loyal to the current tile owner?
+	# Use for: preventing defection events, stability bonuses
+	if not has_governor():
+		return false
+	return has_governor_faction(tileOwner)
+ 
+func is_governor_hostile() -> bool:
+	# Is the governor from a rival faction?
+	# Use for: sabotage events, corruption increase, spy vulnerability
+	if not has_governor():
+		return false
+	return not has_governor_faction(tileOwner)
+# ============================================================
+# WINTER HELPERS
+# ============================================================
+ 
+func get_winter_score() -> int:
+	return winterScore
+ 
+func is_hurricane_territory() -> bool:
+	return winterScore <= -60
+ 
+func is_storm_prone() -> bool:
+	return winterScore <= -20
+ 
+func is_mild_winter() -> bool:
+	return winterScore > -20 and winterScore < 20
+ 
+func is_cold_winter() -> bool:
+	return winterScore >= 20 and winterScore < 60
+ 
+func is_harsh_winter() -> bool:
+	return winterScore >= 60 and winterScore < 80
+ 
+func is_blizzard_territory() -> bool:
+	return winterScore >= 80
+ 
+func get_winter_category() -> String:
+	if winterScore <= -80:
+		return "Extreme Hurricane Zone"
+	elif winterScore <= -60:
+		return "Hurricane Territory"
+	elif winterScore <= -20:
+		return "Storm Prone"
+	elif winterScore < 20:
+		return "Mild Winter"
+	elif winterScore < 60:
+		return "Cold Winter"
+	elif winterScore < 80:
+		return "Harsh Winter"
+	else:
+		return "Blizzard Territory"
+ 
+func get_winter_army_modifier() -> float:
+	# Movement/supply multiplier for winter army operations
+	# Placeholder values — tune percentages later
+	if winterScore <= -80:
+		return 0.5   # hurricane chaos disrupts both sides
+	elif winterScore <= -60:
+		return 0.7   # serious storm disruption
+	elif winterScore <= -20:
+		return 0.9   # mild storm risk
+	elif winterScore < 20:
+		return 1.0   # no modifier
+	elif winterScore < 60:
+		return 0.85  # cold slows movement
+	elif winterScore < 80:
+		return 0.65  # harsh winter, army suffers
+	else:
+		return 0.4   # blizzard, near-impassable
+ 
+func get_winter_badge_color() -> String:
+	# Returns color hint for the winter badge art
+	# Top half of badge = category color, bottom = intensity shade
+	if winterScore <= -60:
+		return "coral"    # hurricane — warm danger color
+	elif winterScore <= -20:
+		return "amber"    # storm prone — warning color
+	elif winterScore < 20:
+		return "teal"     # mild — calm neutral
+	elif winterScore < 60:
+		return "blue"     # cold — cool color
+	else:
+		return "purple"   # blizzard — deep cold
+
+
+# ============================================================
+# Recently Conquered
+# ============================================================
+func recently_conquered() -> bool:
+	# Was this tile conquered within the last conquestThreshold months?
+	# Use for: increasing liberty score, radical resistance events,
+	# fresh occupation instability
+	return turnsSinceConquest <= conquestThreshold and lastConqueror != ""
+ 
+func recently_conquered_by(factionCID: String) -> bool:
+	# Was this tile specifically conquered by this faction recently?
+	# Example: tile.recently_conquered_by("UK") = loyalist crackdown event
+	# Example: tile.recently_conquered_by("USA") = jubilee/liberation event
+	return recently_conquered() and lastConqueror == factionCID
+ 
+func record_conquest(conquering_faction: String) -> void:
+	# Call this when a tile changes hands (in your siege resolution code)
+	# Replaces whatever currently handles tileOwner changes
+	lastConqueror = conquering_faction
+	turnsSinceConquest = 0
+	tileOwner = conquering_faction
+	# Recalculate modifiers now that ownership changed
+	calculateCorruption()
+ 
+func tick_conquest_timer() -> void:
+	# Call this from world.gd each month for all tiles
+	# Increments the counter so "recently" eventually becomes "not recently"
+	if turnsSinceConquest <= conquestThreshold + 24:  # stop counting after 2 years
+		turnsSinceConquest += 1
+ 
+func get_conquest_liberty_boost() -> int:
+	# How much liberty bonus does recent conquest give?
+	# Fresh UK conquest of a tile = high resistance energy
+	# Use this in get_liberty_score() or event calculations
+	if not recently_conquered_by("UK"):
+		return 0
+	# Boost fades over time — strong at first, gone after threshold
+	var freshness = 1.0 - (float(turnsSinceConquest) / float(conquestThreshold))
+	return int(25 * freshness)  # up to +25 liberty from fresh conquest rage
+
+
+
+
+func calculateDynamicModifiers() -> void:
+	# Removes and recalculates the three dynamic eco modifiers
+	# Called at end of calculateTerrain() so it runs in the eco chain
+ 
+	# Clear previous dynamic modifiers
+	tileEcoModifiers = tileEcoModifiers.filter(
+		func(mod): return not mod.modName in [
+			"RevolutionaryHotbed",
+			"OccupiedTerritory",
+			"SunbeltHeat"
+		]
+	)
+ 
+	# --- REVOLUTIONARY HOTBED ---
+	# Pink/blue badge: high liberty score + UK owned
+	# Represents a restless occupied tile where ideas are spreading
+	isRevolutionaryHotbed = is_occupied() and get_liberty_score() >= 30
+	if isRevolutionaryHotbed:
+		var hotbedMod = tileEcoModifier.new()
+		hotbedMod.modName = "RevolutionaryHotbed"
+		hotbedMod.buildTileEcoMod()
+		tileEcoModifiers.append(hotbedMod)
+ 
+	# --- OCCUPIED TERRITORY ---
+	# Amber/red badge: UK-owned tile that was recently taken OR has active resistance
+	# Represents simmering resentment under occupation
+	isOccupiedTerritory = is_occupied() and (
+		recently_conquered() or
+		corruption >= 40 or
+		has_building_at_level("monument", 1)  # monuments inspire resistance
+	)
+	if isOccupiedTerritory:
+		var occupiedMod = tileEcoModifier.new()
+		occupiedMod.modName = "OccupiedTerritory"
+		occupiedMod.buildTileEcoMod()
+		tileEcoModifiers.append(occupiedMod)
+ 
+	# --- SUNBELT HEAT ---
+	# Coral badge: tiles with Sunbelt specialFeature
+	# Already tagged on dozens of southern tiles
+	isSunbeltHeat = tileSpecialFeatures.has("Sunbelt")
+	if isSunbeltHeat:
+		var sunbeltMod = tileEcoModifier.new()
+		sunbeltMod.modName = "SunbeltHeat"
+		sunbeltMod.buildTileEcoMod()
+		tileEcoModifiers.append(sunbeltMod)
+
+
+#===============
+#Espionage Helpers
+#===============
+
+func has_recent_espionage() -> bool:
+	# Has a spy operated in this tile recently?
+	# Use for: preventing new spy infiltration (cooldown),
+	# counterintelligence events, tile is "burned" to spies
+	# Requires world to pass current turn — see record_espionage()
+	return espionageActive or (
+		lastEspionageTurn >= 0 and
+		_get_world_turn() - lastEspionageTurn < espionageCooldown
+	)
+ 
+func _get_world_turn() -> int:
+	# Helper to safely get the current world turn
+	# Assumes world.gd has a 'day' variable accessible via get_tree()
+	var world = get_tree().get_root().get_node_or_null("World")
+	if world:
+		return world.day
+	return 0
+ 
+func record_espionage(spy_faction: String) -> void:
+	# Call this when a spy successfully infiltrates this tile
+	# spy_faction = CID of the country running the spy
+	lastEspionageTurn = _get_world_turn()
+	espionageActive = true
+	# You can store the spy faction for counterintelligence events later
+	# TODO: add var activeSpyFaction: String when spy system is built
+ 
+func clear_espionage() -> void:
+	# Call this when a spy is caught or extracted
+	espionageActive = false
+	# lastEspionageTurn stays set — tile is still "burned" for cooldown period
+ 
+func get_espionage_cooldown_remaining() -> int:
+	# How many more months until this tile can be infiltrated again?
+	if not has_recent_espionage():
+		return 0
+	var elapsed = _get_world_turn() - lastEspionageTurn
+	return max(0, espionageCooldown - elapsed)
+ 
+func is_spy_vulnerable() -> bool:
+	# Is this tile currently easy to infiltrate?
+	# High corruption + no recent espionage + no governor = easy target
+	# Use for: AI spy decisions, event triggers
+	return not has_recent_espionage() and corruption >= 40 and not has_governor()
+ 
+func is_counterintelligence_ready() -> bool:
+	# Can this tile catch a spy?
+	# Has barracks + governor + recent espionage activity
+	# Use for: spy capture events
+	return has_governor() and has_barracks() and espionageActive

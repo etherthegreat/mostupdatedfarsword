@@ -1,0 +1,202 @@
+number,tileName,terrain,state,country,corruption,specialFeature,buildings,tileCrop,winterScore
+1,Valley Forge,Fortress,PA,USA,0,Birthplace of America,barracks:3|monument:1|fortress:3,corn,45
+2,Philadelphia,Metro,PA,USA,0,Liberty Bell,barracks:2|courthouse:2|forge:1|library:2,corn,35
+3,West Chester,Suburbs,PA,USA,0,,market:1,corn,40
+4,Trenton,Suburbs,NJ,USA,0,,barracks:1|market:1,corn,38
+5,,,,,,,,,0
+6,Morristown,Woods,NJ,USA,0,Washington's Winter Encampment,barracks:2|monument:1,corn,42
+7,King of Prussia,Woods,PA,USA,0,,camp:1,corn,42
+8,Lancaster,Farmlands,PA,USA,0,,farm:1,corn,45
+9,York,Farmlands,PA,USA,0,,farm:1,corn,45
+10,Kennett Square,Farmlands,PA,USA,0,Mushroom Capital of the World,farm:1,mushrooms,40
+11,Gettysburg,Farmlands,PA,USA,0,Gettysburg Memorial,barracks:1|monument:2|farm:1,corn,48
+12,Harrisburg,Foothills,PA,USA,0,Appalachian Minerals,mine:1,corn,45
+13,Reading,Foothills,PA,USA,0,Appalachian Minerals,mine:1,apples,43
+14,New York City,Metro,NY,UK,0,NYC Metro Area|Ivy League|Stock Market|Statue of Liberty,barracks:4|monument:3|market:3|fortress:3|library:2,corn,30
+15,Newark,Metro,NJ,UK,0,,barracks:3|market:2|fortress:2,corn,32
+16,Princeton,Woods,NJ,USA,0,Princeton College,library:3,corn,35
+17,Peekskill,Woods,NY,USA,0,,camp:1,apples,45
+18,Scranton,Foothills,PA,USA,0,Appalachian Minerals,mine:2|camp:1,corn,55
+19,Stamford,Woods,CT,USA,0,,camp:1,apples,38
+20,,,,,,,,,0
+21,Danbury,Woods,CT,USA,0,,camp:1,apples,42
+22,Liberty,Foothills,NY,USA,0,,mine:1,apples,55
+23,Lakewood,Wetlands,NJ,USA,0,,market:1,corn,28
+24,Vorhees,Suburbs,NJ,USA,0,,market:1|camp:1,corn,30
+25,Vineland,Farmlands,NJ,USA,0,,farm:2,corn,28
+26,Atlantic City,Wetlands,NJ,USA,0,Atlantic City Casino Culture,resort:2,corn,-10
+27,Wilmington,Metro,DE,USA,0,,forge:1|market:2,corn,30
+28,Dover,Farmlands,DE,UK,0,,farm:1,corn,25
+29,Millsboro,Farmlands,DE,UK,0,,farm:1,soybeans,18
+30,Ocean City,Wetlands,MD,UK,0,,resort:1,corn,-15
+31,Chesapeake City,Farmlands,MD,UK,0,,farm:1,soybeans,20
+32,Easton,Farmlands,MD,UK,0,,farm:1,soybeans,22
+33,Princess Anne,Wetlands,MD,UK,0,,camp:1,soybeans,15
+34,Chincoteague,Wetlands,VA,UK,0,,resort:1|camp:1,corn,-20
+35,Elkton,Farmlands,MD,USA,0,,farm:1,soybeans,25
+36,Aberdeen,Farmlands,MD,USA,0,,farm:1,soybeans,28
+37,Baltimore,Metro,MD,USA,0,Fort McHenry|Chesapeake Shipyards,barracks:2|fortress:2|courthouse:2|market:1|monument:1|dock:2,corn,30
+38,Annapolis,Woods,MD,USA,0,Naval Academy,barracks:2|library:1|market:1,soybeans,22
+39,Alexandria,Suburbs,VA,USA,0,,barracks:3|monument:3,corn,28
+40,Waldorf,Woods,MD,USA,0,,camp:2,soybeans,25
+41,Bethesda,Suburbs,MD,USA,0,,market:1|barracks:1,corn,28
+42,Frederick,Farmlands,MD,USA,0,,farm:1,corn,35
+43,Chambersburg,Farmlands,PA,USA,0,,farm:1,corn,48
+44,McConnellsburg,Foothills,PA,USA,0,Appalachian Minerals,mine:1,apples,52
+45,Carlisle,Foothills,PA,USA,0,Appalachian Minerals,mine:1,corn,48
+46,Harper's Ferry,Farmlands,WV,USA,0,Appalachian Minerals|Harper's Ferry Arsenal,monument:1|forge:1|farm:1|mine:1,apples,42
+47,Winchester,Foothills,VA,USA,0,Shenandoah Apple Country,mine:1|farm:1,apples,38
+48,Leesburg,Farmlands,VA,USA,0,,farm:1,corn,32
+49,Fredericksburg,Woods,VA,USA,0,Appalachian Forest,camp:1|mine:1,corn,20
+50,West Point,Wetlands,VA,USA,0,West Point Military College,barracks:3|monument:1|library:1,corn,10
+51,Richmond,Metro,VA,USA,0,,barracks:2|forge:1|market:1|courthouse:2,corn,18
+52,Farmville,Farmlands,VA,USA,0,,farm:1,peanuts,22
+53,Norfolk,Wetlands,VA,USA,0,Naval Station Norfolk|Norfolk Defense Contracts,forge:2|market:2|fortress:2|dock:3,peanuts,-5
+54,New Haven,Suburbs,CT,USA,0,Gun Valley|Yale University,forge:2|library:3,apples,42
+55,New London,Woods,CT,USA,0,Home of the Submarine Force,dock:2|barracks:1|camp:1,apples,38
+56,Coventry,Woods,RI,USA,0,,camp:1,apples,45
+57,Providence,Suburbs,RI,UK,0,Ivy League,barracks:3|market:1|library:2,apples,48
+58,Torrington,Woods,CT,USA,0,,camp:1,apples,50
+59,Hartford,Suburbs,CT,USA,0,Gun Valley,courthouse:1|barracks:1|forge:2,apples,48
+60,Worcester,Suburbs,MA,USA,0,,market:1|library:2,apples,60
+61,Lexington,Suburbs,MA,USA,0,Lexington Cry,barracks:1|fortress:1|monument:2,apples,58
+62,Harvard,Woods,MA,USA,0,Harvard University,library:3,apples,60
+63,Portsmouth,Wetlands,NH,USA,0,First Naval Shipyard,dock:1|barracks:1|market:1,apples,55
+64,Salem,Woods,MA,USA,0,,market:2,apples,52
+65,Boston,Metro,MA,UK,0,MIT|Charlestown Navy Yard,barracks:3|courthouse:3|library:4|dock:2,apples,55
+66,Plymouth,Wetlands,MA,UK,0,The Original Dock,market:1|monument:2|dock:1,apples,50
+67,Nantucket,Wetlands,MA,UK,0,Whaling Capital — Formerly,resort:3|dock:1,hay,30
+68,Concord,Woods,NH,USA,0,,monument:1|barracks:1|courthouse:2,apples,68
+69,Conway,Woods,NH,USA,0,,camp:1|market:1,apples,78
+70,Pittsfield,Woods,MA,USA,0,Berkshire Highlands,camp:1,apples,65
+71,Springfield,Suburbs,MA,USA,0,Gun Valley,forge:3,apples,58
+72,Albany,Suburbs,NY,USA,0,,farm:1,apples,62
+73,Schenectady,Farmlands,NY,USA,0,,farm:1,corn,60
+74,Saratoga Springs,Farmlands,NY,USA,0,,farm:1|mine:1,corn,62
+75,Bennington,Foothills,VT,USA,0,Green Mountains,camp:1|barracks:1,apples,70
+76,Brattleboro,Foothills,VT,USA,0,Green Mountains,camp:1|market:1,cannabis,68
+77,Rutland,Foothills,VT,USA,0,Green Mountains,mine:1,apples,75
+78,Ticonderoga,Fort,NY,USA,0,,fort:1|barracks:1,hay,72
+79,Burlington,Woods,VT,USA,0,Green Mountains,camp:1,apples,78
+80,Montpelier,Woods,VT,USA,0,Green Mountains,barracks:1|courthouse:1,apples,82
+81,Utica,Farmlands,NY,USA,0,,farm:1,corn,65
+82,Syracuse,Farmlands,NY,USA,0,,farm:1,corn,70
+83,Watertown,Farmlands,NY,USA,0,Adirondack Wilderness,farm:1,hay,75
+84,Kingston,Suburbs,CA - OT,CA,0,Canadian Shield,forge:1|farm:1|market:1|barracks:2,hay,68
+85,Potsdam,Foothills,NY,USA,0,Adirondack Wilderness,mine:1,hay,78
+86,Lowville,Foothills,NY,USA,0,Adirondack Wilderness,mine:1,hay,80
+87,Malone,Foothills,NY,USA,0,Adirondack Wilderness,mine:1,hay,82
+88,Plattsburgh,Farmlands,NY,USA,0,Adirondack Wilderness,farm:1,corn,75
+89,Saint Jean,Farmlands,CA - QB,CA,0,,farm:1,corn,72
+90,Granby,Farmlands,CA - QB,CA,0,,farm:1,corn,70
+91,Sherbrooke,Woods,CA - QB,CA,0,,camp:1,hay,75
+92,Smiths Falls,Woods,CA - OT,CA,0,,camp:1,hay,68
+93,Cornwall,Farmlands,CA - OT,CA,0,,farm:1,corn,65
+94,Montreal,Metro,CA - QB,UK,0,Capital of Quebec,barracks:3|forge:2|fortress:1|market:2|courthouse:3|monument:2,corn,78
+95,Laval,Suburbs,CA - QB,UK,0,,market:1|farm:1,corn,78
+96,Joliette,Farmlands,CA - QB,UK,0,,farm:1,corn,75
+97,Berthierville,Farmlands,CA - QB,UK,0,,farm:1,corn,72
+98,Trois-Rivieres,Farmlands,CA - QB,UK,0,,farm:1,hay,75
+99,Saint-Georges,Woods,CA - QB,CA,0,,camp:1|barracks:2|fortress:2,hay,78
+100,St. Johnsbury,Foothills,VT,USA,0,Green Mountains,camp:2,apples,82
+101,Portland,Suburbs,ME,USA,0,Portland Harbor Forts,market:1|barracks:2|fortress:1,apples,70
+102,Lewiston,Farmlands,ME,USA,0,,farm:2,apples,72
+103,Farmington,Woods,ME,USA,0,,farm:1,apples,78
+104,Berlin,Foothills,NH,USA,0,,mine:1,hay,85
+105,Riviere-du-Loup,Woods,CA - QB,CA,0,Laurentian Highlands,camp:1,hay,82
+106,Trois-Pistoles,Woods,CA - QB,CA,0,Laurentian Highlands,barracks:1|camp:1|farm:1,hay,80
+107,Rimouski,Woods,CA - QB,CA,0,Laurentian Highlands,camp:1|mine:1,hay,82
+108,Edmundston,Farmlands,CA - NB,CA,0,,farm:1|mine:1,hay,80
+109,Bathurst,Farmlands,CA - NB,CA,0,Acadian Forest,farm:1,hay,75
+110,Charlottetown,Farmlands,CA - PEI,UK,0,Acadian Forest,farm:2,hay,72
+111,Antigonish,Woods,CA - NS,UK,0,Acadian Forest,camp:2,hay,68
+112,Lunenburg,Wetlands,CA - NS,UK,0,Acadian Forest,camp:2,hay,60
+113,Truro,Wetlands,CA - NS,UK,0,Acadian Forest,farm:1,hay,65
+114,Halifax,Suburbs,CA - NS,UK,0,Royal Navy Atlantic Command|Acadian Forest,courthouse:2|barracks:3|forge:1|market:1|fortress:2|dock:3,hay,62
+115,Sydney,Wetlands,CA - NS,UK,0,Cape Breton Highlands,farm:1,hay,70
+116,Presque Isle,Farmlands,ME,USA,0,North Maine Woods,farm:1|camp:1,hay,85
+117,Machias,Wetlands,ME,USA,0,North Maine Woods|First Naval Battle of the Revolution,barracks:1|camp:1,hay,78
+118,Bar Harbor,Wetlands,ME,USA,0,Acadia Wilderness,resort:2|barracks:1,apples,72
+119,Houlton,Woods,ME,USA,0,North Maine Woods,mine:1,hay,82
+120,Millinocket,Woods,ME,USA,0,North Maine Woods,camp:1,hay,85
+121,Bangor,Woods,ME,USA,0,North Maine Woods,camp:1,apples,75
+122,Augusta,Wetlands,ME,USA,0,North Maine Woods|Fort Western,courthouse:1|barracks:2|fortress:1,apples,72
+123,Quebec City,Metro,CA - QB,UK,0,St. Lawrence River Delta,barracks:2|fortress:2|forge:1|market:1|monument:1,corn,88
+124,Shawinigan,Farmlands,CA - QB,UK,0,,farm:1,corn,80
+125,,,,,,,,,0
+126,Mont-Tremblant,Woods,CA - QB,CA,0,Laurentian Highlands,camp:1|barracks:2,hay,85
+127,Pembroke,Farmlands,CA - OT,CA,0,Canadian Shield,farm:1,hay,72
+128,Deep River,Woods,CA - OT,CA,0,Canadian Shield,camp:1|barracks:1,hay,70
+129,Greater Napanee,Farmlands,CA - OT,CA,0,,camp:1,corn,65
+130,Kawartha Lakes,Farmlands,CA - OT,CA,20,Canadian Shield,barracks:1|camp:1|farm:1,corn,68
+131,Barrie,Wetlands,CA - OT,CA,20,Georgian Bay Forests,camp:2,hay,72
+132,Toronto,Metro,CA - OT,CA,20,Weird Toronto|Capital of Ottawa|Fort York,barracks:3|courthouse:2|market:1|forge:1|monument:1|fortress:1,corn,60
+133,London,Suburbs,CA - OT,CA,70,Borders Dust Bowl,barracks:1|market:1|library:1,corn,58
+134,Tobermory,Farmlands,CA - OT,CA,70,Borders Dust Bowl,farm:1|mine:1,hay,65
+135,Midland,Farmlands,CA - OT,CA,45,,farm:1,corn,65
+136,Huntsville,Wetlands,CA - OT,CA,20,Muskoka Highlands,camp:1,hay,70
+137,Parry Sound,Wetlands,CA - OT,CA,20,Georgian Bay Forests,camp:1,hay,68
+138,,,,,,,,,0
+139,Buffalo,Suburbs,NY,USA,70,Borders Dust Bowl|Niagara Falls,monument:3|barracks:1|forge:1|mine:1|market:2,corn,78
+140,Batavia,Farmlands,NY,USA,45,,farm:1|mine:1,corn,70
+141,Rochester,Farmlands,NY,USA,20,,farm:1|camp:1,apples,72
+142,Rocky Mount,Farmlands,NC,USA,0,Tobacco Belt,farm:2,soybeans,-15
+143,Nags Head,Wetlands,NC,USA,0,Outer Banks,resort:2,corn,-30
+144,Greensboro,Suburbs,NC,USA,0,,library:1|courthouse:1|camp:1,soybeans,10
+145,Asheville,Foothills,NC,USA,0,Blue Ridge Highlands,mine:1|camp:1|resort:1,apples,35
+146,Raleigh,Suburbs,NC,USA,0,Research Triangle,barracks:2|courthouse:2|library:2,soybeans,8
+147,Mooresville,Farmlands,NC,USA,0,,farm:1,corn,12
+148,Charlotte,Metro,NC,USA,0,,market:1|barracks:2,corn,10
+149,Myrtle Beach,Wetlands,SC,UK,0,,barracks:1|resort:1,soybeans,-35
+150,Greenville,Suburbs,SC,USA,0,,farm:1|market:1,peaches,15
+151,Charleston,Suburbs,SC,UK,0,Fort Sumter|Fort Moultrie|Charleston Harbor,fortress:2|market:1|barracks:2|dock:2,soybeans,-40
+152,Henderson,Foothills,NC,USA,0,,mine:1|camp:1,peaches,18
+153,Port Royal,Wetlands,SC,UK,0,,camp:1|resort:1,soybeans,-38
+154,Columbia,Suburbs,SC,USA,0,,market:2|courthouse:2|barracks:2,peaches,5
+155,Knoxville,Foothills,TN,USA,0,Great Smoky Mountains,mine:1|resort:1,corn,20
+156,Savannah,Wetlands,GA,USA,0,Sunbelt,farm:1|market:2|monument:1,soybeans,-45
+157,Statesboro,Farmlands,GA,USA,0,Sunbelt,farm:2,peanuts,-30
+158,Augusta,Suburbs,GA,USA,0,Sunbelt,farm:2|market:1|barracks:1|library:1,peaches,-15
+159,Brunswick,Wetlands,GA,USA,0,Sunbelt,camp:1|resort:1,soybeans,-50
+160,Dalton,Foothills,GA,USA,20,Carpet Capital of the World,forge:1|market:1,corn,15
+161,Macon,Woods,GA,USA,0,Sunbelt|Georgia Piedmont,farm:1,peaches,-20
+162,Athens,Farmlands,GA,USA,20,Sunbelt,farm:1|monument:1,peaches,-10
+163,Marietta,Suburbs,GA,USA,45,Sunbelt,market:1|barracks:2,peaches,5
+164,Atlanta,Metro,GA,USA,20,Sunbelt,courthouse:2|barracks:3|library:3,peaches,5
+165,Nashville,Metro,TN,USA,70,Borders Dust Bowl|Country Music Homeland,courthouse:1|barracks:1|monument:2|market:2,corn,15
+166,Americus,Farmlands,GA,USA,20,Sunbelt,farm:1,peanuts,-25
+167,Anniston,Woods,AL,USA,70,Borders Dust Bowl|Sunbelt,camp:1,corn,-10
+168,Birmingham,Suburbs,AL,USA,70,Borders Dust Bowl|Sunbelt,camp:1|courthouse:1|barracks:1|library:1,corn,-5
+169,Tallahassee,Woods,FL,UK,20,Sunbelt,barracks:2|courthouse:1|fortress:2|farm:1,oranges,-60
+170,Pensacola,Wetlands,FL,USA,45,Sunbelt,resort:1|farm:1,peanuts,-55
+171,Enterprise,Farmlands,AL,USA,45,Sunbelt,farm:1,peanuts,-40
+172,Tuscaloosa,Woods,AL,USA,70,Borders Dust Bowl,camp:1|farm:1|library:1|barracks:1,corn,-20
+173,Mobile,Suburbs,AL,USA,70,Borders Dust Bowl,barracks:1|farm:1,soybeans,-65
+174,Dublin,Farmlands,GA,USA,20,Sunbelt,farm:1,peanuts,-30
+175,Tifton,Farmlands,GA,UK,0,Sunbelt,farm:1,peanuts,-40
+176,Jacksonville,Suburbs,FL,UK,0,Sunbelt,resort:1|barracks:2,oranges,-65
+177,Gainesville,Wetlands,FL,UK,0,Sunbelt,camp:1|farm:1,oranges,-60
+178,Orlando,Metro,FL,UK,0,Space Coast|Sunbelt,resort:3|barracks:2|forge:1,oranges,-70
+179,Tampa,Suburbs,FL,UK,0,Sunbelt,market:2|barracks:1|resort:1,oranges,-72
+180,Naples,Wetlands,FL,UK,0,Sunbelt,camp:1|farm:2,oranges,-80
+181,Miami,Suburbs,FL,UK,0,Sunbelt,resort:1|market:2|barracks:2,oranges,-90
+182,Nassau,Farmlands,BA,UK,0,Pirate Republic of Nassau,farm:1|courthouse:1|dock:1,oranges,-95
+183,Fort Myers,Wetlands,FL,UK,0,Sunbelt,resort:2|fort:1,oranges,-85
+184,Columbus,Woods,GA,USA,45,Sunbelt|Georgia Piedmont,farm:2,peanuts,-15
+185,Wilmington,Wetlands,NC,USA,0,,barracks:1|farm:1,soybeans,-35
+186,Fayetteville,Farmlands,NC,USA,0,,farm:1,soybeans,-10
+187,Florence,Woods,NC,USA,0,Carolina Piedmont,camp:1,soybeans,-20
+188,Washington,Metro,DC,USA,0,National Mall|Pentagon|US Capitol,courthouse:4|monument:3|barracks:2|library:2,corn,32
+189,Allentown,Suburbs,PA,USA,0,Appalachian Minerals,barracks:2|mine:1,corn,45
+190,Hicksville,Suburbs,NY,USA,0,,market:2,corn,35
+191,Montauk,Wetlands,NY,USA,0,,camp:1,hay,25
+192,Newburgh,Woods,NY,USA,0,,camp:1,apples,48
+193,Moncton,Woods,CA - NB,CA,0,Acadian Forest|Fort Beauséjour,camp:1|barracks:1|fortress:1,hay,72
+194,Saint John,Wetlands,CA - NB,CA,0,Acadian Forest,camp:1,hay,68
+195,Anticosti,Woods,CA - QB,UK,0,Anticosti Wilderness,farm:1|barracks:1,hay,88
+196,Maniwaki,Woods,CA - QB,CA,0,Laurentian Highlands,camp:1,hay,82
+197,Peterborough,Farmlands,CA - OT,CA,20,,farm:1,corn,65
+198,Hamilton,Suburbs,CA - OT,CA,70,Niagara Falls,forge:1|barracks:2|monument:3,corn,62
+199,Mississauga,Metro,CA - OT,CA,45,,barracks:2|forge:1|market:1|mine:1,corn,60
+200,Windsor,Farmlands,CA - OT,CA,70,Borders Dust Bowl,farm:1|barracks:1|forge:1,corn,55
+201,Ottawa,Metro,CA - OT,CA,0,Capital of Canada|Rideau Canal,courthouse:3|barracks:3|monument:3|fortress:1,corn,80

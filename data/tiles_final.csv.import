@@ -1,0 +1,17 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://bkay70g7ppknw"
+
+[deps]
+
+files=["res://data/tiles_final.tileName.translation", "res://data/tiles_final.terrain.translation", "res://data/tiles_final.state.translation", "res://data/tiles_final.country.translation", "res://data/tiles_final.corruption.translation", "res://data/tiles_final.specialFeature.translation", "res://data/tiles_final.buildings.translation", "res://data/tiles_final.tileCrop.translation", "res://data/tiles_final.winterScore.translation"]
+
+source_file="res://data/tiles_final.csv"
+dest_files=["res://data/tiles_final.tileName.translation", "res://data/tiles_final.terrain.translation", "res://data/tiles_final.state.translation", "res://data/tiles_final.country.translation", "res://data/tiles_final.corruption.translation", "res://data/tiles_final.specialFeature.translation", "res://data/tiles_final.buildings.translation", "res://data/tiles_final.tileCrop.translation", "res://data/tiles_final.winterScore.translation"]
+
+[params]
+
+compress=true
+delimiter=0

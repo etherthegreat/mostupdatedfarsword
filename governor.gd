@@ -9,6 +9,7 @@ var governorLevel: int
 var governorTexture: Texture
 var governorDescription: String
 var governorBiography: String
+var governorFaction: String
 
 #requirements
 var coastal: bool = false #if yes, only allowed in coastal tiles

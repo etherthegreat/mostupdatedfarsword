@@ -60,9 +60,11 @@ func updateMap():
 	pass
 
 
+var currentWorldTurn: int = 0
 
 signal calculateSeason
 func newGameBuild(CID, gameLang):
+	currentWorldTurn = 1
 	worldCreation = true
 	gameLanguage = gameLang
 	var locBallUIWorld = locBallUIScene.instantiate()
@@ -961,6 +963,7 @@ func tileSiegeWon(tile, oldCID, newCID):
 			aliveCountriesList.erase(tile)
 		if country.CID == newCID:
 			country.addTile(tile)
+	tile.recordConquest(newCID)
 	pass
 
 func _on_next_turn_pressed() -> void:
@@ -976,4 +979,8 @@ func _on_next_turn_pressed() -> void:
 		if country != playerCountryNode:
 			country.calculateTurn()
 	$CanvasLayer/TechTree.investInTech(playerCountryNode.SPM)
+	currentWorldTurn += 1
+	for Tile in $TileController.get_children():
+		Tile.tick_conquest_timer()
+	$CanvasLayer/TurnLabel.text = str(currentWorldTurn)
 	pass # Replace with function body.
