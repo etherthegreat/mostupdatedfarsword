@@ -6,15 +6,15 @@
 [node name="PathPointButton" type="Control"]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_right = 21.0
+offset_bottom = 25.0
 mouse_filter = 2
 script = ExtResource("1_fdcwa")
 
 [node name="Button" type="Button" parent="."]
 layout_mode = 0
-offset_right = 32.0
-offset_bottom = 44.0
+offset_right = 21.0
+offset_bottom = 25.0
 button_mask = 2
 icon = ExtResource("2_fdcwa")
 icon_alignment = 1

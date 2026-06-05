@@ -187,44 +187,15 @@ func _process(delta: float) -> void:
 var startingPoint: pathPointButton#come back and fix this
 #incoming pathPointButtonSelf is different from the selectedAPF.  if we give the selectedAPF it's own
 #pathPointButton, we could compare them.
-func calculateArmyMovement(pathPointButton, endNodes, startNodes, neighborPathPoints, curTile):
+func calculateArmyMovement(endPathPoint, endNodes, startNodes, neighborPathPoints, curTile):
 	print("DEBUG Calculate", endNodes)
 	if selectedAPF != null:
 		startingPoint = selectedAPF.currentPathPoint
 	elif selectedCPF != null:
 		startingPoint = selectedCPF.currentPathPoint
-	if endNodes != null:
-		for Container in endNodes: 
-			print(Container, "DEUBUG NODEPATH")
-			if startingPoint.startNodePaths.has(Container):
-				print("DEBUG startingPoint1, ")
-				moveArmy(Container, "start", pathPointButton)
-				#pathPointButton.occupied = false
-				#print("DEBUG PathPointButton", pathPointButton.occupied)
-				return
-			elif startingPoint.endNodePaths.has(Container):
-				print("DEBUG startingPoint2, ")
-				moveArmy(Container, "end", pathPointButton)
-				#pathPointButton.occupied = false
-				#print("DEBUG PathPointButton", pathPointButton.occupied)
-				return
-			else:
-				print("DEBUG ERROR1")
-				#newContainer.queue_free()
-	if startNodes != null:
-		for Container in startNodes:
-			if startingPoint.startNodePaths.has(Container):
-				print("DEBUG startingPoint3, ")
-				moveArmy(Container, "start", pathPointButton)
-				#pathPointButton.occupied = false
-				return
-			elif startingPoint.endNodePaths.has(Container):
-				print("DEBUG startingPoint4, ")
-				#pathPointButton.occupied = false
-				moveArmy(Container, "end", pathPointButton)
-				return
-			else:
-				print("DEBUG ERROR2")
+	$PathsControl/Path.set_point_position(1, startingPoint.position)
+	$PathsControl/Path.set_point_position(2, endPathPoint.position)
+	moveArmy($PathsControl/Path/PathFollow/Control, "start", endPathPoint)
 	pass
 
 func moveArmy(newContainer, String, endPoint):
@@ -239,15 +210,6 @@ func moveArmy(newContainer, String, endPoint):
 				newContainer.call_deferred("add_child", selectedAPF)
 				selectedAPF.move("start", endPoint, path)
 				updatingArmyPathFollow = newContainer.get_parent()
-			"end":
-				var apfParent = selectedAPF.get_parent()
-				updatingArmyPathFollow = newContainer.get_parent()
-				var path = updatingArmyPathFollow.get_parent()
-				apfParent.call_deferred("remove_child",selectedAPF)
-				newContainer.call_deferred("add_child", selectedAPF)
-				selectedAPF.move("end", endPoint, path)
-				updatingArmyPathFollow = newContainer.get_parent()
-		return
 	else:
 		match String:
 			"start":
@@ -258,15 +220,6 @@ func moveArmy(newContainer, String, endPoint):
 				cpfParent.call_deferred("remove_child",selectedCPF)
 				newContainer.call_deferred("add_child", selectedCPF)
 				selectedCPF.move("start", endPoint, path)
-				updatingArmyPathFollow = newContainer.get_parent()
-			"end":
-				var cpfParent = selectedCPF.get_parent()
-				updatingArmyPathFollow = newContainer.get_parent()
-				var path = updatingArmyPathFollow.get_parent()
-				cpfParent.call_deferred("remove_child",selectedCPF)
-				#cpfParent.stationedCivilians.remove_at(selectedCPF)
-				newContainer.call_deferred("add_child", selectedCPF)
-				selectedCPF.move("end", endPoint, path)
 				updatingArmyPathFollow = newContainer.get_parent()
 	pass
 signal showArmyInfo

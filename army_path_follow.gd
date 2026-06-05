@@ -48,10 +48,10 @@ func _process(delta: float) -> void:
 	if thisArmy.deleteMode == false:
 		tempmanpowerinarmy = thisArmy.manpowerInArmy
 		tempMaxManpower = thisArmy.maxManpower
+		$APFButton.icon = thisArmy.armyIcon
 		fuckyou = ((tempmanpowerinarmy/tempMaxManpower)*100)
 		if thisArmy.armyCharm != null:
 			$Label.text = "win"
-		print(str(fuckyou, "fuckyou", thisArmy.manpowerInArmy, thisArmy.maxManpower))
 		$ProgressBar.value = fuckyou
 		if movingBackward == true:
 			progressRate -= 0.02

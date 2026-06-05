@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://uqyoshd2ki88"]
+
+[ext_resource type="Script" uid="uid://bmngkrfyhvjld" path="res://bannerButton.gd" id="1_w3n5k"]
+[ext_resource type="Texture2D" uid="uid://dkjqga0i1xw2p" path="res://art assets/finishedAssets/armyicons/test/6.png" id="2_pfdu4"]
+
+[node name="bannerButton" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_w3n5k")
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 0
+offset_right = 57.0
+offset_bottom = 57.0
+icon = ExtResource("2_pfdu4")
+expand_icon = true
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

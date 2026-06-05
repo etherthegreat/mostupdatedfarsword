@@ -101,14 +101,9 @@ func newGameBuild(CID, gameLang):
 	$CanvasLayer/LoadingLabel.text = "Loading UI (Magic)"
 	$CanvasLayer/LoadingProgressBar.value = 75
 	updatePlayerUI()
-	$TileController/Tile4.discoverTile()
-	$TileController/Tile5.discoverTile()
-	$TileController/Tile6.discoverTile()
-	$TileController/Tile7.discoverTile()
-	$TileController/Tile8.discoverTile()
-	$TileController/Tile9.discoverTile()
-	$TileController/Tile10.discoverTile()
-	$TileController.discoverTiles(playerCountryNode)
+	for Tile in $TileController.get_children():
+		Tile.discoverTile()
+	#$TileController.discoverTiles(playerCountryNode)
 	worldCreation = false
 	$RightClickDetector.visible = true
 	mapMode = "Polis"
@@ -118,15 +113,20 @@ func newGameBuild(CID, gameLang):
 	$CanvasLayer/LoadingSprite.visible = false
 	$CanvasLayer/LoadingProgressBar.visible = false
 	$CanvasLayer/LoadingLabel.visible = false
-	#for country in aliveCountriesList:
-		#for Army in country.countryArmyList:
-			#Army.raiseSelf()
+	for country in aliveCountriesList:
+		for Army in country.countryArmyList:
+			Army.raiseSelf()
 	pass
 
 var countryNode = load("res://Game Scenes and Scripts/country.tscn")
 
 func spawnNewGameCountries(CID):
 	playerCountry = CID
+	var unitedStates = countryNode.instantiate()
+	if playerCountry == "USA":
+		unitedStates.Player = true
+		playerCountryNode = unitedStates
+		playerCapitalPathButton = $"PathControl/PathPointsControl/3"
 	var penderTal = countryNode.instantiate()
 	if playerCountry == "PDT":
 		penderTal.Player = true

@@ -1,10 +1,13 @@
-[gd_scene load_steps=14 format=3 uid="uid://dep7mbivwnnvj"]
+[gd_scene load_steps=19 format=3 uid="uid://dep7mbivwnnvj"]
 
 [ext_resource type="Script" uid="uid://b81ynt4qwcsri" path="res://Menu Scenes and Scripts/main_menu.gd" id="1_rf07e"]
-[ext_resource type="Texture2D" uid="uid://cs7sycec0c5c3" path="res://art assets/Placeholder Art/UI Art/menuart/9-3-dungeon-library.png" id="2_s0tsv"]
+[ext_resource type="VideoStream" uid="uid://by5gw4q8kkt7j" path="res://art assets/AmericanRevolutionArt/menuart/truewinningvideo.ogv" id="2_s0tsv"]
 [ext_resource type="Texture2D" uid="uid://dknp3bwk3bnvh" path="res://art assets/Placeholder Art/UI Art/resources/black circle.png" id="3_s0tsv"]
 [ext_resource type="Texture2D" uid="uid://cifirfy3eyi30" path="res://art assets/Placeholder Art/UI Art/resources/chinese.png" id="4_oq647"]
+[ext_resource type="Texture2D" uid="uid://vmeysuy506u7" path="res://art assets/AmericanRevolutionArt/Panel/IMG_1690.PNG" id="4_wvvfk"]
 [ext_resource type="Texture2D" uid="uid://c7txommtrxrk3" path="res://art assets/Placeholder Art/UI Art/resources/english.png" id="5_so4gr"]
+[ext_resource type="Texture2D" uid="uid://ri5wqhitlpgp" path="res://art assets/AmericanRevolutionArt/Panel/IMG_1687.PNG" id="5_wktqo"]
+[ext_resource type="Texture2D" uid="uid://demtu316la1b4" path="res://art assets/AmericanRevolutionArt/Panel/IMG_1688.PNG" id="6_8x8sx"]
 [ext_resource type="Texture2D" uid="uid://dlugqagwlxm6w" path="res://art assets/Placeholder Art/UI Art/resources/french.png" id="6_wvvfk"]
 [ext_resource type="Texture2D" uid="uid://bm767bqfd0ifn" path="res://art assets/Placeholder Art/UI Art/resources/german.png" id="7_wktqo"]
 [ext_resource type="Texture2D" uid="uid://scvxad1jblcg" path="res://art assets/Placeholder Art/UI Art/resources/Irish.png" id="8_8x8sx"]
@@ -13,91 +16,22 @@
 [ext_resource type="Texture2D" uid="uid://bye4mrxf5cetf" path="res://art assets/Placeholder Art/UI Art/resources/portuguese.png" id="11_ee3of"]
 [ext_resource type="Texture2D" uid="uid://d385jgaploop4" path="res://art assets/Placeholder Art/UI Art/resources/russian.png" id="12_qlmj1"]
 [ext_resource type="Texture2D" uid="uid://coqvlvmr2swk4" path="res://art assets/Placeholder Art/UI Art/resources/spanish.png" id="13_s4pyd"]
+[ext_resource type="Texture2D" uid="uid://d3e1gu0tab0y2" path="res://art assets/AmericanRevolutionArt/menuart/IMG_1691.PNG" id="17_8x8sx"]
+[ext_resource type="Texture2D" uid="uid://b1pq420vskkvv" path="res://art assets/AmericanRevolutionArt/menuart/IMG_1692.PNG" id="18_w5v35"]
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_rf07e")
 
-[node name="Panel" type="Panel" parent="."]
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="."]
 layout_mode = 0
-offset_right = 1925.0
-offset_bottom = 1084.0
-
-[node name="Sprite2D" type="Sprite2D" parent="Panel"]
-position = Vector2(957, 542)
-scale = Vector2(1.50625, 1.53056)
-texture = ExtResource("2_s0tsv")
-
-[node name="NewGameButton" type="Button" parent="Panel"]
-layout_mode = 0
-offset_left = 1032.0
-offset_top = 20.0
-offset_right = 2044.0
-offset_bottom = 215.0
-scale = Vector2(0.840001, 0.800001)
-theme_override_colors/font_color = Color(0.882353, 0.886275, 1, 1)
-theme_override_font_sizes/font_size = 120
-text = "New Game"
-
-[node name="LoadGameButton" type="Button" parent="Panel"]
-layout_mode = 0
-offset_left = 1032.0
-offset_top = 237.0
-offset_right = 2044.0
-offset_bottom = 432.0
-scale = Vector2(0.840001, 0.800001)
-theme_override_colors/font_color = Color(0.882353, 0.886275, 1, 1)
-theme_override_font_sizes/font_size = 120
-text = "Load Game"
-
-[node name="GalleryButton" type="Button" parent="Panel"]
-layout_mode = 0
-offset_left = 1032.0
-offset_top = 457.0
-offset_right = 2044.0
-offset_bottom = 652.0
-scale = Vector2(0.840001, 0.800001)
-theme_override_colors/font_color = Color(0.882353, 0.886275, 1, 1)
-theme_override_font_sizes/font_size = 120
-text = "Gallery"
-
-[node name="SettingsButton" type="Button" parent="Panel"]
-layout_mode = 0
-offset_left = 1032.0
-offset_top = 679.0
-offset_right = 2044.0
-offset_bottom = 874.0
-scale = Vector2(0.840001, 0.800001)
-theme_override_colors/font_color = Color(0.882353, 0.886275, 1, 1)
-theme_override_font_sizes/font_size = 120
-text = "Settings
-"
-
-[node name="ExitButton" type="Button" parent="Panel"]
-layout_mode = 0
-offset_left = 1032.0
-offset_top = 891.0
-offset_right = 2044.0
-offset_bottom = 1086.0
-scale = Vector2(0.840001, 0.800001)
-theme_override_colors/font_color = Color(0.882353, 0.886275, 1, 1)
-theme_override_font_sizes/font_size = 120
-text = "Exit"
-
-[node name="Label" type="Label" parent="Panel"]
-layout_mode = 0
-offset_left = -2.0
-offset_top = 38.0
-offset_right = 1012.0
-offset_bottom = 208.0
-theme_override_colors/font_color = Color(0.652487, 0, 0.157964, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(1, 0.80747, 0.791871, 1)
-theme_override_font_sizes/font_size = 51
-text = "UPRISINGS: 
-DEATH OF THE DEMON KING"
-horizontal_alignment = 1
+offset_right = 1920.0
+offset_bottom = 1080.0
+stream = ExtResource("2_s0tsv")
+autoplay = true
+expand = true
+loop = true
 
 [node name="LanguageSelection" type="Sprite2D" parent="."]
 visible = false
@@ -105,12 +39,123 @@ position = Vector2(960, 525.125)
 scale = Vector2(3.38095, 1.83667)
 texture = ExtResource("3_s0tsv")
 
+[node name="NewGameButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 912.0
+offset_top = 56.0
+offset_right = 1291.0
+offset_bottom = 188.0
+scale = Vector2(0.840001, 0.800001)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(0.882353, 0.886275, 1, 1)
+theme_override_colors/font_pressed_color = Color(1.44392e-06, 0, 0.569404, 1)
+theme_override_font_sizes/font_size = 65
+text = "New Game"
+icon = ExtResource("4_wvvfk")
+icon_alignment = 1
+expand_icon = true
+
+[node name="LoadGameButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1241.0
+offset_top = 56.0
+offset_right = 1620.0
+offset_bottom = 188.0
+scale = Vector2(0.840001, 0.800001)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 0.65098, 1)
+theme_override_font_sizes/font_size = 65
+text = "Load Game"
+icon = ExtResource("5_wktqo")
+icon_alignment = 1
+expand_icon = true
+
+[node name="GalleryButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1572.0
+offset_top = 56.0
+offset_right = 1951.0
+offset_bottom = 188.0
+scale = Vector2(0.840001, 0.800001)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(0.882353, 0.886275, 1, 1)
+theme_override_colors/font_pressed_color = Color(0.726271, 0, 0, 1)
+theme_override_font_sizes/font_size = 65
+text = "Settings"
+icon = ExtResource("6_8x8sx")
+icon_alignment = 1
+expand_icon = true
+
+[node name="InfoButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 912.0
+offset_top = 172.0
+offset_right = 1291.0
+offset_bottom = 304.0
+scale = Vector2(0.840001, 0.800001)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(0.882353, 0.886275, 1, 1)
+theme_override_colors/font_pressed_color = Color(0.572717, 0, 0, 1)
+theme_override_font_sizes/font_size = 65
+text = "Codices"
+icon = ExtResource("6_8x8sx")
+icon_alignment = 1
+expand_icon = true
+
+[node name="SettingsButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1241.0
+offset_top = 172.0
+offset_right = 1620.0
+offset_bottom = 304.0
+scale = Vector2(0.840001, 0.800001)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 0.65098, 1)
+theme_override_font_sizes/font_size = 65
+text = "Gallery"
+icon = ExtResource("5_wktqo")
+icon_alignment = 1
+expand_icon = true
+
+[node name="CloseGameButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1572.0
+offset_top = 172.0
+offset_right = 1951.0
+offset_bottom = 304.0
+scale = Vector2(0.840001, 0.800001)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(0.882353, 0.886275, 1, 1)
+theme_override_colors/font_pressed_color = Color(2.74345e-06, 0, 0.646837, 1)
+theme_override_font_sizes/font_size = 65
+text = "Exit Game"
+icon = ExtResource("4_wvvfk")
+icon_alignment = 1
+expand_icon = true
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 412.0
+offset_top = 672.0
+offset_right = 1426.0
+offset_bottom = 764.0
+theme_override_colors/font_color = Color(0.999998, 0.964465, 0.963033, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 0.80747, 0.791871, 1)
+theme_override_font_sizes/font_size = 24
+text = "Ether Spacedesk Presents:"
+horizontal_alignment = 1
+
 [node name="GridContainer" type="GridContainer" parent="."]
 visible = false
 layout_mode = 0
 offset_left = 87.0
 offset_top = 226.0
-offset_right = 1785.0
+offset_right = 1862.0
 offset_bottom = 992.0
 theme_override_constants/h_separation = 45
 theme_override_constants/v_separation = 130
@@ -157,5 +202,31 @@ layout_mode = 2
 icon = ExtResource("13_s4pyd")
 expand_icon = true
 
-[connection signal="pressed" from="Panel/NewGameButton" to="." method="_on_new_game_button_pressed"]
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(917, 771.875)
+scale = Vector2(0.13575, 0.13575)
+texture = ExtResource("17_8x8sx")
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+position = Vector2(909.187, 896.313)
+scale = Vector2(0.112875, 0.112875)
+texture = ExtResource("18_w5v35")
+
+[node name="Label" type="Label" parent="Sprite2D2"]
+offset_left = -2500.0
+offset_top = -473.0
+offset_right = 2514.0
+offset_bottom = 501.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_y = 15
+theme_override_constants/outline_size = 65
+theme_override_constants/shadow_outline_size = 75
+theme_override_font_sizes/font_size = 561
+text = "PAX AMERICANA"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="NewGameButton" to="." method="_on_new_game_button_pressed"]
 [connection signal="pressed" from="GridContainer/EnglishButton" to="." method="_on_english_button_pressed"]

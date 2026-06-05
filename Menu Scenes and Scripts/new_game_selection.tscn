@@ -1,11 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://dhg43vhi18g7k"]
+[gd_scene load_steps=6 format=3 uid="uid://dhg43vhi18g7k"]
 
 [ext_resource type="Script" uid="uid://oskxr531oljk" path="res://Menu Scenes and Scripts/new_game_selection.gd" id="1_l7tiv"]
-[ext_resource type="Texture2D" uid="uid://bb1db6rh066fo" path="res://art assets/Placeholder Art/character/F4 - Copy.png" id="2_o7vlo"]
-[ext_resource type="Texture2D" uid="uid://ba5jt6t2e7fv1" path="res://art assets/Placeholder Art/character/F3 - Copy.png" id="3_8worc"]
-[ext_resource type="Texture2D" uid="uid://cdbcq4hgnjwlj" path="res://art assets/Placeholder Art/character/F11 - Copy.png" id="4_mmfx6"]
-[ext_resource type="Texture2D" uid="uid://dhr3u11scg6jq" path="res://art assets/Placeholder Art/character/F12 - Copy.png" id="5_rpjul"]
-[ext_resource type="Texture2D" uid="uid://dkc5utxkt0nna" path="res://art assets/Placeholder Art/character/F13 - Copy.png" id="6_swy51"]
+[ext_resource type="Texture2D" uid="uid://ctgoxa4gpuair" path="res://art assets/AmericanRevolutionArt/tempArt/Screenshot (2027).png" id="2_nswwa"]
+[ext_resource type="Texture2D" uid="uid://cdgxrr43oyh5e" path="res://art assets/AmericanRevolutionArt/tempArt/Larkin Love10.jpg" id="3_nswwa"]
+[ext_resource type="Texture2D" uid="uid://bidt76inkwvb8" path="res://art assets/AmericanRevolutionArt/tempArt/starfire_again.jpg" id="4_s2wbp"]
+[ext_resource type="Texture2D" uid="uid://cj5dm0t2gko2g" path="res://art assets/AmericanRevolutionArt/tempArt/Screenshot (2028).png" id="4_tf3hn"]
 
 [node name="NewGameSelection" type="Control"]
 layout_mode = 3
@@ -40,65 +39,53 @@ layout_mode = 0
 offset_right = 646.0
 offset_bottom = 556.0
 
-[node name="AnlaxiaButton" type="Button" parent="SelectionPanel"]
+[node name="USALABEL" type="Label" parent="SelectionPanel"]
 layout_mode = 0
-offset_left = 102.0
-offset_top = 71.0
-offset_right = 292.0
-offset_bottom = 251.0
+offset_left = 26.1905
+offset_top = 400.595
+offset_right = 127.19
+offset_bottom = 457.595
+rotation = -0.776581
+theme_override_font_sizes/font_size = 41
+text = "U S A"
 
-[node name="Sprite2D" type="Sprite2D" parent="SelectionPanel/AnlaxiaButton"]
-position = Vector2(92, 88.0001)
-scale = Vector2(0.145435, 0.145435)
-texture = ExtResource("2_o7vlo")
-
-[node name="PenderTalButton" type="Button" parent="SelectionPanel"]
+[node name="AmericaButton" type="Button" parent="SelectionPanel"]
 layout_mode = 0
-offset_left = 361.0
-offset_top = 71.0
-offset_right = 551.0
-offset_bottom = 251.0
+offset_left = 155.952
+offset_top = 295.238
+offset_right = 475.952
+offset_bottom = 489.238
+icon = ExtResource("2_nswwa")
+expand_icon = true
 
-[node name="Sprite2D" type="Sprite2D" parent="SelectionPanel/PenderTalButton"]
-position = Vector2(106, 90)
-scale = Vector2(0.142395, 0.142395)
-texture = ExtResource("3_8worc")
+[node name="Sprite2D" type="Sprite2D" parent="SelectionPanel/AmericaButton"]
+position = Vector2(396.429, 94.6429)
+scale = Vector2(0.158283, 0.155555)
+texture = ExtResource("3_nswwa")
 
-[node name="EighthHouseButton" type="Button" parent="SelectionPanel"]
+[node name="CanadaLabel" type="Label" parent="SelectionPanel"]
 layout_mode = 0
-offset_left = 30.0
-offset_top = 308.0
-offset_right = 220.0
-offset_bottom = 488.0
+offset_left = -2.38094
+offset_top = 191.071
+offset_right = 167.619
+offset_bottom = 248.071
+rotation = -0.776581
+theme_override_font_sizes/font_size = 41
+text = "CANADA"
 
-[node name="Sprite2D" type="Sprite2D" parent="SelectionPanel/EighthHouseButton"]
-position = Vector2(105, 88)
-scale = Vector2(0.156195, 0.156195)
-texture = ExtResource("4_mmfx6")
-
-[node name="DemonEmpireButton" type="Button" parent="SelectionPanel"]
+[node name="CanadaButton" type="Button" parent="SelectionPanel"]
 layout_mode = 0
-offset_left = 238.0
-offset_top = 308.0
-offset_right = 428.0
-offset_bottom = 488.0
+offset_left = 155.952
+offset_top = 52.9762
+offset_right = 475.952
+offset_bottom = 246.976
+icon = ExtResource("4_tf3hn")
+expand_icon = true
 
-[node name="Sprite2D" type="Sprite2D" parent="SelectionPanel/DemonEmpireButton"]
-position = Vector2(97, 89)
-scale = Vector2(0.128788, 0.128788)
-texture = ExtResource("5_rpjul")
-
-[node name="ValterianOrderButton" type="Button" parent="SelectionPanel"]
-layout_mode = 0
-offset_left = 442.0
-offset_top = 308.0
-offset_right = 632.0
-offset_bottom = 488.0
-
-[node name="Sprite2D" type="Sprite2D" parent="SelectionPanel/ValterianOrderButton"]
-position = Vector2(82, 99)
-scale = Vector2(0.153631, 0.153631)
-texture = ExtResource("6_swy51")
+[node name="Sprite2D" type="Sprite2D" parent="SelectionPanel/CanadaButton"]
+position = Vector2(395.238, 95.8333)
+scale = Vector2(0.158283, 0.155555)
+texture = ExtResource("4_s2wbp")
 
 [node name="CountryInfoPanel" type="Panel" parent="."]
 layout_mode = 0
@@ -144,8 +131,5 @@ autowrap_mode = 3
 
 [connection signal="pressed" from="ReturnButton" to="." method="_on_return_button_pressed"]
 [connection signal="pressed" from="PlayButton" to="." method="_on_play_button_pressed"]
-[connection signal="pressed" from="SelectionPanel/AnlaxiaButton" to="." method="_on_anlaxia_button_pressed"]
-[connection signal="pressed" from="SelectionPanel/PenderTalButton" to="." method="_on_pender_tal_button_pressed"]
-[connection signal="pressed" from="SelectionPanel/EighthHouseButton" to="." method="_on_eighth_house_button_pressed"]
-[connection signal="pressed" from="SelectionPanel/DemonEmpireButton" to="." method="_on_demon_empire_button_pressed"]
-[connection signal="pressed" from="SelectionPanel/ValterianOrderButton" to="." method="_on_valterian_order_button_pressed"]
+[connection signal="pressed" from="SelectionPanel/AmericaButton" to="." method="_on_america_button_pressed"]
+[connection signal="pressed" from="SelectionPanel/CanadaButton" to="." method="_on_canada_button_pressed"]

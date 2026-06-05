@@ -193,20 +193,15 @@ func onNewGame():
 
 
 func calculateAttributes(tileNumber):
+	tileSpawnPoint = get_node("../../PathControl/PathPointsControl/" + str(tileNumber))
 	match tileNumber:
 		1:
-			tileName = "Devil's Purlicue"
-			tileOwner = "DEM"
+			tileName = "Valley Forge"
+			tileOwner = "USA"
 			countryCapital = true
-			tileContinent = "Farsword"
-			tilePop = 10
-			coastal = false
-			freshWater = false
 			terrain = "hills"
-			season = "FALL"
-			corruption = 100
+			corruption = 0
 			tileMilModifiers
-			TileNeighbors
 			#buildnewGameBuildings
 			var tileCrop = crop.new()
 			tileCrop.cropType = "Wheat"
@@ -215,7 +210,6 @@ func calculateAttributes(tileNumber):
 			tileOre.oreType = "Copper"
 			oreSlot = tileOre
 			addBuilding("Farm", 1)
-			tileSpawnPoint = $"../../PathControl/PathPointsControl/3"
 		2:
 			tileName = "Eighth House"
 			tileOwner = "EIG"
@@ -1288,15 +1282,16 @@ func updateGraphics(mapMode, displayCorruption, playerCountry):
 				Tile.activeView = true
 				return
 		if tileSpawnPoint.occupied != true:
-			for Tile in TileNeighbors:
-				if Tile.tileSpawnPoint.occupied == true:
-					activeView = true
-					Tile.activeView = true
-					return
-				if Tile.tileOwner == playerCountry.CID:
-					activeView = true
-					Tile.activeView = true
-					return
+			if TileNeighbors.size() < 0:
+				for Tile in TileNeighbors:
+					if Tile.tileSpawnPoint.occupied == true:
+						activeView = true
+						Tile.activeView = true
+						return
+					if Tile.tileOwner == playerCountry.CID:
+						activeView = true
+						Tile.activeView = true
+						return
 		activeView = false
 func calculateActiveView():
 	if activeView == true:

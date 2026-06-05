@@ -21,57 +21,29 @@ func _on_anlaxia_button_pressed() -> void:
 	updateInfoPanel()
 	pass # Replace with function body.
 
-func _on_pender_tal_button_pressed() -> void:
-	selectedCountry = "PDT"
+func _on_america_button_pressed() -> void:
+	selectedCountry = "USA"
 	updateInfoPanel()
 	pass # Replace with function body.
 
-func _on_eighth_house_button_pressed() -> void:
-	selectedCountry = "EIG"
-	updateInfoPanel()
-	pass # Replace with function body.
-
-func _on_demon_empire_button_pressed() -> void:
-	selectedCountry = "DEM"
-	updateInfoPanel()
-	pass # Replace with function body.
-
-func _on_valterian_order_button_pressed() -> void:
-	selectedCountry = "VTO"
+func _on_canada_button_pressed() -> void:
+	selectedCountry = "CAN"
 	updateInfoPanel()
 	pass # Replace with function body.
 
 func updateInfoPanel():
 	match selectedCountry:
-		"ANL":
-			$CountryInfoPanel/InfoPanel/CountryArt.texture = load("res://art assets/UI Art/Placeholder Art/Screenshot (1067).png")
-			$CountryInfoPanel/InfoPanel/LeaderArt.texture = load("res://art assets/UI Art/Placeholder Art/F4 - Copy.png")
-			$CountryInfoPanel/InfoPanel/DescriptionLabel.text = "This country is a slave economy run by demonic wizards and shit!"
-			$CountryInfoPanel/CountrySelectionPanel/CountrySelectionLabel.text = "Selected Country: Anlaxian Estates"
+		"USA":
+			$CountryInfoPanel/InfoPanel/CountryArt.texture = load("res://art assets/AmericanRevolutionArt/tempArt/Screenshot (2027).png")
+			$CountryInfoPanel/InfoPanel/LeaderArt.texture = load("res://art assets/AmericanRevolutionArt/tempArt/Larkin Love10.jpg")
+			$CountryInfoPanel/InfoPanel/DescriptionLabel.text = "USA IS UNDER ATTACK FUCK! LARKIN LOVE IS HOT!"
+			$CountryInfoPanel/CountrySelectionPanel/CountrySelectionLabel.text = "Selected Country: American Rebels"
 			pass
-		"PDT":
-			$CountryInfoPanel/InfoPanel/CountryArt.texture = load("res://art assets/UI Art/Placeholder Art/Screenshot (1065).png")
-			$CountryInfoPanel/InfoPanel/LeaderArt.texture = load("res://art assets/UI Art/Placeholder Art/F3 - Copy.png")
-			$CountryInfoPanel/InfoPanel/DescriptionLabel.text = "Pacifist Orcs reside high in their monastic commune, hidden for centuries from the Demon King"
-			$CountryInfoPanel/CountrySelectionPanel/CountrySelectionLabel.text = "Selected Country: Pender Tal"
-			pass
-		"EIG":
-			$CountryInfoPanel/InfoPanel/CountryArt.texture = load("res://art assets/UI Art/Placeholder Art/Screenshot (1069).png")
-			$CountryInfoPanel/InfoPanel/LeaderArt.texture = load("res://art assets/UI Art/Placeholder Art/F11 - Copy.png")
-			$CountryInfoPanel/InfoPanel/DescriptionLabel.text = "The military arm of the Demon King, this country is a demonic military with a state"
-			$CountryInfoPanel/CountrySelectionPanel/CountrySelectionLabel.text = "Selected Country: Eighth House"
-			pass
-		"VTO":
-			$CountryInfoPanel/InfoPanel/CountryArt.texture = load("res://art assets/UI Art/Placeholder Art/Screenshot (1066).png")
-			$CountryInfoPanel/InfoPanel/LeaderArt.texture = load("res://art assets/UI Art/Placeholder Art/F13 - Copy.png")
-			$CountryInfoPanel/InfoPanel/DescriptionLabel.text = "The final fighting resistance against the Demon King, this fragile coalition of humans and elves defend their island to the death!"
-			$CountryInfoPanel/CountrySelectionPanel/CountrySelectionLabel.text = "Selected Country: Valtherian Order"
-			pass
-		"DEM":
-			$CountryInfoPanel/InfoPanel/CountryArt.texture = load("res://art assets/UI Art/Placeholder Art/Screenshot (1068).png")
-			$CountryInfoPanel/InfoPanel/LeaderArt.texture = load("res://art assets/UI Art/Placeholder Art/F12 - Copy.png")
-			$CountryInfoPanel/InfoPanel/DescriptionLabel.text = "The Demon Empire rules Farsword with an iron fist.  But with the Demon King's health failing, who knows how much longer this will be the case."
-			$CountryInfoPanel/CountrySelectionPanel/CountrySelectionLabel.text = "Selected Country: Demon Empire"
+		"CAN":
+			$CountryInfoPanel/InfoPanel/CountryArt.texture = load("res://art assets/AmericanRevolutionArt/tempArt/Screenshot (2028).png")
+			$CountryInfoPanel/InfoPanel/LeaderArt.texture = load("res://art assets/AmericanRevolutionArt/tempArt/starfire_again.jpg")
+			$CountryInfoPanel/InfoPanel/DescriptionLabel.text = "The Republic of Canada is the last country in North America to have withstood British conquest.  With recent citings on the border, will they hold out?"
+			$CountryInfoPanel/CountrySelectionPanel/CountrySelectionLabel.text = "Selected Country: Republic of Canada"
 			pass
 	$PlayButton.disabled = false
 	pass

@@ -13,8 +13,7 @@ var ToleratedPeoples: Array = [] #list of all accepted cultures in the country
 var isAlive: bool
 var Player: bool
 var AIPersonality
-var countryBanner #banner used for determining the banner that hangs from the top left
-var countryUnitBanner #banner used for this country's units
+
 var isPuppet #determines if this country is a Puppet of another country
 
 var primaryCapital #tile that acts as this country's capital city
@@ -117,6 +116,8 @@ var armyModList: Array = []
 var countryMaxNavySize
 var countryNavyList: Array = []
 var navyModList: Array = []
+
+var armyBannersList: Array = []
 
 #Diplomatic Actions
 var countryAllies: Array = [] #countries allied to this country
@@ -222,7 +223,7 @@ func NewGameBuild():
 	#will use the func LoadGameBuild():
 	$religionData.buildSelf()
 	match CID:
-		"PDT":
+		"USA":
 			#capitalPathPointButton = $PathControl/PathPointsControl/PDT1
 			spellBaseCost = 15
 			spellCostModifier = 0
@@ -280,9 +281,9 @@ func NewGameBuild():
 			addFaction("Elto-Tal", 20) # Moderates
 			updateUnlockableAttributes()
 			addMilMod("Berserkers")
-			var newIcon1: Texture2D = load("res://art assets/finishedAssets/armyicons/7.png")
-			var newIcon2: Texture2D = load("res://art assets/finishedAssets/armyicons/10.png")
-			var newIcon3: Texture2D = load("res://art assets/finishedAssets/armyicons/11.png")
+			var newIcon1: Texture = load("res://art assets/finishedAssets/armyicons/finished/heart.png")
+			var newIcon2: Texture = load("res://art assets/finishedAssets/armyicons/finished/horse.png")
+			var newIcon3: Texture = load("res://art assets/finishedAssets/armyicons/finished/circle.png")
 			addArmy("Palace Guards", 3, newIcon2)
 			addGovernorToGovernorPool("Wolverina Gundo", 1)
 			armyReinforceRate = 30 #add a function to determin reinforce rate
@@ -300,6 +301,68 @@ func NewGameBuild():
 					addNewUnit(Army, "Infantry", 4, "Macuahuitl", "Copper", "Scale", 400, 400)
 					addNewUnit(Army, "Ranged", 2, "Atlatl", "Copper", "Cast", 200, 200)
 					addNewUnit(Army, "Infantry", 5, "Club", "Wood", "Scout", 500, 500)
+		"CAN":
+			#capitalPathPointButton = $PathControl/PathPointsControl/PDT1
+			spellBaseCost = 15
+			spellCostModifier = 0
+			spellDiscountModifier = 0
+			#starting resources
+			TotalGold += 50
+			TotalFood += 75
+			TotalWood += 60
+			TotalFaith += 80
+			TotalScience += 20
+			TotalMagic += 30
+			TotalWeapons += 20
+			TotalMetal += 30
+			TotalCulture += 10
+			TotalHarmony += 5
+			TotalMandate += 15
+			TotalInfluence += 0
+			TotalManpower += 1000
+			setStartingMagic()
+			mandateThreshold = 50
+			foodStorageMax = 1000
+			#DON"T TRY AND ADD NEW TYPES OF UNLOCKABLES UNTIL YOU FIGURE OUT HOW TO GET AN INFO PANEL TO APPEAR WITH MOUSE
+			#OVER.  SHOULD BE A DYNAMICALLY SIZED PANEL.
+			var newOre = ore.new()
+			newOre.oreType = "Wood"
+			newOre.updateSelf("Wood")
+			availableOres.append(newOre)
+			var goldOre = ore.new()
+			goldOre.oreType = "Gold"
+			goldOre.updateSelf("Gold")
+			availableOres.append(goldOre)
+			var floodstoneOre = ore.new()
+			floodstoneOre.oreType = "Floodstone"
+			floodstoneOre.updateSelf("Floodstone")
+			availableOres.append(floodstoneOre)
+			addTechnologicalDiscovery("Language")
+			addTechnologicalDiscovery("Agriculture")
+			addTechnologicalDiscovery("Copper Working")
+			addTechnologicalDiscovery("Artistry")
+			loadBeliefsList("GenericDoc1")
+			loadBeliefsList("GenericDoc2")
+			loadBeliefsList("GenericGods1")
+			loadBeliefsList("GenericGods2")
+			#loadBeliefsList("PDTDoc1")
+			addReligiousBelief("Tower Control")
+			#addReligiousBelief("TYLA DYN")
+			#addCulturalTradition("Humble Folk")
+			addCulturalTradition("Guardian Cats")
+			addGovernmentLaw("Mercantilism")
+			#addGovernmentLaw("Citizen Militia")
+			#calculateToolsAndKits()
+			calculateTaxationAmounts()
+			addFaction("Vargo-Tal", 50) # Traditionalists
+			addFaction("Wixinx", 10) # Liberators
+			addFaction("Elto-Tal", 20) # Moderates
+			updateUnlockableAttributes()
+			addMilMod("Berserkers")
+			#addArmy("Palace Guards", 3)
+			addGovernorToGovernorPool("Wolverina Gundo", 1)
+			armyReinforceRate = 3 #add a function to determin reinforce rate
+			updateDiscoveredByPlayer()
 		"DUM": #dummytest
 			spellBaseCost = 15
 			spellCostModifier = 0
@@ -349,7 +412,7 @@ func NewGameBuild():
 					addNewUnit(Army, "Infantry", 4, "Macuahuitl", "Copper", "Scale", 300, 400)
 					addNewUnit(Army, "Ranged", 2, "Atlatl", "Copper", "Cast", 150, 200)
 					addNewUnit(Army, "Infantry", 3, "Pike", "Iron", "Cast", 100, 300)
-		"ANL":
+		"GRG": #king george III
 			#capitalPathPointButton = $PathControl/PathPointsControl/PDT1
 			spellBaseCost = 15
 			spellCostModifier = 0
@@ -411,255 +474,6 @@ func NewGameBuild():
 			addGovernorToGovernorPool("Wolverina Gundo", 1)
 			armyReinforceRate = 3 #add a function to determin reinforce rate
 			updateDiscoveredByPlayer()
-		"ANL":
-			#capitalPathPointButton = $PathControl/PathPointsControl/PDT1
-			spellBaseCost = 15
-			spellCostModifier = 0
-			spellDiscountModifier = 0
-			#starting resources
-			TotalGold += 50
-			TotalFood += 75
-			TotalWood += 60
-			TotalFaith += 80
-			TotalScience += 20
-			TotalMagic += 30
-			TotalWeapons += 20
-			TotalMetal += 30
-			TotalCulture += 10
-			TotalHarmony += 5
-			TotalMandate += 15
-			TotalInfluence += 0
-			TotalManpower += 1000
-			setStartingMagic()
-			mandateThreshold = 50
-			foodStorageMax = 1000
-			#DON"T TRY AND ADD NEW TYPES OF UNLOCKABLES UNTIL YOU FIGURE OUT HOW TO GET AN INFO PANEL TO APPEAR WITH MOUSE
-			#OVER.  SHOULD BE A DYNAMICALLY SIZED PANEL.
-			var newOre = ore.new()
-			newOre.oreType = "Wood"
-			newOre.updateSelf("Wood")
-			availableOres.append(newOre)
-			var goldOre = ore.new()
-			goldOre.oreType = "Gold"
-			goldOre.updateSelf("Gold")
-			availableOres.append(goldOre)
-			var floodstoneOre = ore.new()
-			floodstoneOre.oreType = "Floodstone"
-			floodstoneOre.updateSelf("Floodstone")
-			availableOres.append(floodstoneOre)
-			addTechnologicalDiscovery("Language")
-			addTechnologicalDiscovery("Agriculture")
-			addTechnologicalDiscovery("Copper Working")
-			addTechnologicalDiscovery("Artistry")
-			loadBeliefsList("GenericDoc1")
-			loadBeliefsList("GenericDoc2")
-			loadBeliefsList("GenericGods1")
-			loadBeliefsList("GenericGods2")
-			#loadBeliefsList("PDTDoc1")
-			addReligiousBelief("Tower Control")
-			#addReligiousBelief("TYLA DYN")
-			#addCulturalTradition("Humble Folk")
-			addCulturalTradition("Guardian Cats")
-			addGovernmentLaw("Mercantilism")
-			#addGovernmentLaw("Citizen Militia")
-			#calculateToolsAndKits()
-			calculateTaxationAmounts()
-			addFaction("Vargo-Tal", 50) # Traditionalists
-			addFaction("Wixinx", 10) # Liberators
-			addFaction("Elto-Tal", 20) # Moderates
-			updateUnlockableAttributes()
-			addMilMod("Berserkers")
-			#addArmy("Palace Guards", 3)
-			addGovernorToGovernorPool("Wolverina Gundo", 1)
-			armyReinforceRate = 3 #add a function to determin reinforce rate
-			updateDiscoveredByPlayer()
-		"VTO":
-			#capitalPathPointButton = $PathControl/PathPointsControl/PDT1
-			spellBaseCost = 15
-			spellCostModifier = 0
-			spellDiscountModifier = 0
-			#starting resources
-			TotalGold += 50
-			TotalFood += 75
-			TotalWood += 60
-			TotalFaith += 80
-			TotalScience += 20
-			TotalMagic += 30
-			TotalWeapons += 20
-			TotalMetal += 30
-			TotalCulture += 10
-			TotalHarmony += 5
-			TotalMandate += 15
-			TotalInfluence += 0
-			TotalManpower += 1000
-			setStartingMagic()
-			mandateThreshold = 50
-			foodStorageMax = 1000
-			#DON"T TRY AND ADD NEW TYPES OF UNLOCKABLES UNTIL YOU FIGURE OUT HOW TO GET AN INFO PANEL TO APPEAR WITH MOUSE
-			#OVER.  SHOULD BE A DYNAMICALLY SIZED PANEL.
-			var newOre = ore.new()
-			newOre.oreType = "Wood"
-			newOre.updateSelf("Wood")
-			availableOres.append(newOre)
-			var goldOre = ore.new()
-			goldOre.oreType = "Gold"
-			goldOre.updateSelf("Gold")
-			availableOres.append(goldOre)
-			var floodstoneOre = ore.new()
-			floodstoneOre.oreType = "Floodstone"
-			floodstoneOre.updateSelf("Floodstone")
-			availableOres.append(floodstoneOre)
-			addTechnologicalDiscovery("Language")
-			addTechnologicalDiscovery("Agriculture")
-			addTechnologicalDiscovery("Copper Working")
-			addTechnologicalDiscovery("Artistry")
-			loadBeliefsList("GenericDoc1")
-			loadBeliefsList("GenericDoc2")
-			loadBeliefsList("GenericGods1")
-			loadBeliefsList("GenericGods2")
-			#loadBeliefsList("PDTDoc1")
-			addReligiousBelief("Tower Control")
-			#addReligiousBelief("TYLA DYN")
-			#addCulturalTradition("Humble Folk")
-			addCulturalTradition("Guardian Cats")
-			addGovernmentLaw("Mercantilism")
-			#addGovernmentLaw("Citizen Militia")
-			#calculateToolsAndKits()
-			calculateTaxationAmounts()
-			addFaction("Vargo-Tal", 50) # Traditionalists
-			addFaction("Wixinx", 10) # Liberators
-			addFaction("Elto-Tal", 20) # Moderates
-			updateUnlockableAttributes()
-			addMilMod("Berserkers")
-			#addArmy("Palace Guards", 3)
-			addGovernorToGovernorPool("Wolverina Gundo", 1)
-			armyReinforceRate = 3 #add a function to determin reinforce rate
-			updateDiscoveredByPlayer()
-		"DEM":
-			#capitalPathPointButton = $PathControl/PathPointsControl/PDT1
-			spellBaseCost = 15
-			spellCostModifier = 0
-			spellDiscountModifier = 0
-			#starting resources
-			TotalGold += 50
-			TotalFood += 75
-			TotalWood += 60
-			TotalFaith += 80
-			TotalScience += 20
-			TotalMagic += 30
-			TotalWeapons += 20
-			TotalMetal += 30
-			TotalCulture += 10
-			TotalHarmony += 5
-			TotalMandate += 15
-			TotalInfluence += 0
-			TotalManpower += 1000
-			setStartingMagic()
-			mandateThreshold = 50
-			foodStorageMax = 1000
-			#DON"T TRY AND ADD NEW TYPES OF UNLOCKABLES UNTIL YOU FIGURE OUT HOW TO GET AN INFO PANEL TO APPEAR WITH MOUSE
-			#OVER.  SHOULD BE A DYNAMICALLY SIZED PANEL.
-			var newOre = ore.new()
-			newOre.oreType = "Wood"
-			newOre.updateSelf("Wood")
-			availableOres.append(newOre)
-			var goldOre = ore.new()
-			goldOre.oreType = "Gold"
-			goldOre.updateSelf("Gold")
-			availableOres.append(goldOre)
-			var floodstoneOre = ore.new()
-			floodstoneOre.oreType = "Floodstone"
-			floodstoneOre.updateSelf("Floodstone")
-			availableOres.append(floodstoneOre)
-			addTechnologicalDiscovery("Language")
-			addTechnologicalDiscovery("Agriculture")
-			addTechnologicalDiscovery("Copper Working")
-			addTechnologicalDiscovery("Artistry")
-			loadBeliefsList("GenericDoc1")
-			loadBeliefsList("GenericDoc2")
-			loadBeliefsList("GenericGods1")
-			loadBeliefsList("GenericGods2")
-			#loadBeliefsList("PDTDoc1")
-			addReligiousBelief("Tower Control")
-			#addReligiousBelief("TYLA DYN")
-			#addCulturalTradition("Humble Folk")
-			addCulturalTradition("Guardian Cats")
-			addGovernmentLaw("Mercantilism")
-			#addGovernmentLaw("Citizen Militia")
-			#calculateToolsAndKits()
-			calculateTaxationAmounts()
-			addFaction("Vargo-Tal", 50) # Traditionalists
-			addFaction("Wixinx", 10) # Liberators
-			addFaction("Elto-Tal", 20) # Moderates
-			updateUnlockableAttributes()
-			addMilMod("Berserkers")
-			#addArmy("Palace Guards", 3)
-			addGovernorToGovernorPool("Wolverina Gundo", 1)
-			armyReinforceRate = 3 #add a function to determin reinforce rate
-			updateDiscoveredByPlayer()
-		"EIG":
-			#capitalPathPointButton = $PathControl/PathPointsControl/PDT1
-			spellBaseCost = 15
-			spellCostModifier = 0
-			spellDiscountModifier = 0
-			#starting resources
-			TotalGold += 50
-			TotalFood += 75
-			TotalWood += 60
-			TotalFaith += 80
-			TotalScience += 20
-			TotalMagic += 30
-			TotalWeapons += 20
-			TotalMetal += 30
-			TotalCulture += 10
-			TotalHarmony += 5
-			TotalMandate += 15
-			TotalInfluence += 0
-			TotalManpower += 1000
-			setStartingMagic()
-			mandateThreshold = 50
-			foodStorageMax = 1000
-			#DON"T TRY AND ADD NEW TYPES OF UNLOCKABLES UNTIL YOU FIGURE OUT HOW TO GET AN INFO PANEL TO APPEAR WITH MOUSE
-			#OVER.  SHOULD BE A DYNAMICALLY SIZED PANEL.
-			var newOre = ore.new()
-			newOre.oreType = "Wood"
-			newOre.updateSelf("Wood")
-			availableOres.append(newOre)
-			var goldOre = ore.new()
-			goldOre.oreType = "Gold"
-			goldOre.updateSelf("Gold")
-			availableOres.append(goldOre)
-			var floodstoneOre = ore.new()
-			floodstoneOre.oreType = "Floodstone"
-			floodstoneOre.updateSelf("Floodstone")
-			availableOres.append(floodstoneOre)
-			addTechnologicalDiscovery("Language")
-			addTechnologicalDiscovery("Agriculture")
-			addTechnologicalDiscovery("Copper Working")
-			addTechnologicalDiscovery("Artistry")
-			loadBeliefsList("GenericDoc1")
-			loadBeliefsList("GenericDoc2")
-			loadBeliefsList("GenericGods1")
-			loadBeliefsList("GenericGods2")
-			loadBeliefsList("PDTDoc1")
-			addReligiousBelief("Tower Control")
-			addReligiousBelief("TYLA DYN")
-			addCulturalTradition("Humble Folk")
-			addCulturalTradition("Guardian Cats")
-			addGovernmentLaw("Mercantilism")
-			addGovernmentLaw("Citizen Militia")
-			#calculateToolsAndKits()
-			calculateTaxationAmounts()
-			addFaction("Vargo-Tal", 50) # Traditionalists
-			addFaction("Wixinx", 10) # Liberators
-			addFaction("Elto-Tal", 20) # Moderates
-			updateUnlockableAttributes()
-			addMilMod("Berserkers")
-			#addArmy("Palace Guards", 3)
-			addGovernorToGovernorPool("Wolverina Gundo", 1)
-			armyReinforceRate = 3 #add a function to determin reinforce rate
-			updateDiscoveredByPlayer()
-			
 	pass
 
 func discoverTile(pathPointButton):

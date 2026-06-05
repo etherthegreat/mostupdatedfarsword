@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="Farsword"
+config/name="Uprisings: Revolution"
 run/main_scene="res://Menu Scenes and Scripts/main_menu.tscn"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"

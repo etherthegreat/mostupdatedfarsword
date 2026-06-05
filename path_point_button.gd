@@ -5,14 +5,11 @@ class_name pathPointButton
 var stationedArmy: Army
 var stationedAPF: armyPathFollow
 
-@export var endNodePathsEXP: Array
-var endNodePaths: Array
-
-@export var startNodePathsEXP: Array
-var startNodePaths: Array
-
 @export var neighborPathPointsEXP: Array
 var neighborPathPoints: Array
+
+@export var navalPathPointsEXP: Array
+var navalPathPoints: Array
 
 @export var ppbTileEXP: Tile
 var ppbTile: Tile
@@ -24,10 +21,6 @@ var stationedCivilians: Array
 var discoveredByPlayer: bool
 
 func buildSelf():
-	for NodePath in endNodePathsEXP:
-		endNodePaths.append(get_node(NodePath))
-	for NodePath in startNodePathsEXP:
-		startNodePaths.append(get_node(NodePath))
 	for NodePath in neighborPathPointsEXP:
 		neighborPathPoints.append(get_node(NodePath))
 	ppbTile = ppbTileEXP
@@ -37,7 +30,7 @@ signal pathPointClicked
 func _on_button_pressed() -> void:
 	print("DEBUG CLICK")
 	#if occupied != true:
-	emit_signal("pathPointClicked", self, endNodePaths, startNodePaths, neighborPathPoints, ppbTile)
+	emit_signal("pathPointClicked", self,neighborPathPoints, ppbTile)
 	pass # Replace with function body.
 
 func hideTile():
