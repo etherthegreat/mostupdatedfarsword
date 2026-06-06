@@ -20,7 +20,7 @@ func buildTileEcoMod():
 			modType = "CORRUPTION"
 			modDescription = "The Demon King's corruption is prevalent here - Miasma stinks the air."
 			modSprite = load("res://art assets/ModifierIcons/TileEcoModifiers/CorruptionHeavy.png")
-			number == 60
+			number = 60
 		"ModerateCorruption":
 			modType = "CORRUPTION"
 			modDescription = "The Demon King's corruption has infiltrated this land - Sickness and famine have become commonplace."

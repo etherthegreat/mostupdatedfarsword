@@ -122,111 +122,44 @@ func newGameBuild(CID, gameLang):
 
 var countryNode = load("res://Game Scenes and Scripts/country.tscn")
 
-func spawnNewGameCountries(CID):
+func spawnNewGameCountries(CID: String) -> void:
 	playerCountry = CID
-	var unitedStates = countryNode.instantiate()
-	if playerCountry == "USA":
-		unitedStates.Player = true
-		playerCountryNode = unitedStates
-		playerCapitalPathButton = $"PathControl/PathPointsControl/3"
-	var penderTal = countryNode.instantiate()
-	if playerCountry == "PDT":
-		penderTal.Player = true
-		playerCountryNode = penderTal
-		playerCapitalPathButton = $"PathControl/PathPointsControl/3"
-	else:
-		penderTal.Player = false
-	penderTal.CID = "PDT"
-	for Tile in $TileController.get_children():
-		if Tile.tileOwner == "PDT":
-			penderTal.OwnedTileList.append(Tile)
-	penderTal.NewGameBuild()
-	aliveCountriesList.append(penderTal)
-	$CountryController.add_child(penderTal)
-	
-	#penderTal.surveyResources()
-	
-	var anlaxia = countryNode.instantiate()
-	if playerCountry == "ANL":
-		anlaxia.Player = true
-		playerCountryNode = anlaxia
-		playerCapitalPathButton = $"PathControl/PathPointsControl/17"
-	else:
-		anlaxia.Player = false
-	anlaxia.CID = "ANL"
-	for Tile in $TileController.get_children():
-		if Tile.tileOwner == "ANL":
-			anlaxia.OwnedTileList.append(Tile)
-	anlaxia.NewGameBuild()
-	aliveCountriesList.append(anlaxia)
-	$CountryController.add_child(anlaxia)
-	#anlaxia.surveyResources()
-	
-	var vitherianOrder = countryNode.instantiate()
-	if playerCountry == "VTO":
-		vitherianOrder.Player = true
-		playerCountryNode = vitherianOrder
-		playerCapitalPathButton = $"PathControl/PathPointsControl/29"
-	else:
-		vitherianOrder.Player = false
-	vitherianOrder.CID = "VTO"
-	for Tile in $TileController.get_children():
-		if Tile.tileOwner == "VTO":
-			vitherianOrder.OwnedTileList.append(Tile)
-	vitherianOrder.NewGameBuild()
-	aliveCountriesList.append(vitherianOrder)
-	$CountryController.add_child(vitherianOrder)
-	#vitherianOrder.surveyResources()
-	
-	var demonEmpire = countryNode.instantiate()
-	if playerCountry == "DEM":
-		demonEmpire.Player = true
-		playerCountryNode = demonEmpire
-		playerCapitalPathButton = $"PathControl/PathPointsControl/30"
-	else:
-		demonEmpire.Player = false
-	demonEmpire.CID = "DEM"
-	for Tile in $TileController.get_children():
-		if Tile.tileOwner == "DEM":
-			demonEmpire.OwnedTileList.append(Tile)
-	demonEmpire.NewGameBuild()
-	aliveCountriesList.append(demonEmpire)
-	$CountryController.add_child(demonEmpire)
-	#demonEmpire.surveyResources()
-	
-	var eighthHouse = countryNode.instantiate()
-	if playerCountry == "EIG":
-		eighthHouse.Player = true
-		playerCountryNode = eighthHouse
-		playerCapitalPathButton = $"PathControl/PathPointsControl/30"
-	else:
-		eighthHouse.Player = false
-	eighthHouse.CID = "EIG"
-	for Tile in $TileController.get_children():
-		if Tile.tileOwner == "EIG":
-			eighthHouse.OwnedTileList.append(Tile)
-	eighthHouse.NewGameBuild()
-	aliveCountriesList.append(eighthHouse)
-	$CountryController.add_child(eighthHouse)
-	#eighthHouse.surveyResources()
-	$CameraMovementController/Camera2D.global_position = playerCapitalPathButton.global_position
-	
-	var dummyCountry = countryNode.instantiate()
-	if playerCountry == "DUM":
-		dummyCountry.Player = true
-		playerCountryNode = dummyCountry
-		playerCapitalPathButton = $"PathControl/PathPointsControl/10"
-	else:
-		dummyCountry.Player = false
-	dummyCountry.CID = "DUM"
-	for Tile in $TileController.get_children():
-		if Tile.tileOwner == "DUM":
-			dummyCountry.OwnedTileList.append(Tile)
-	dummyCountry.NewGameBuild()
-	aliveCountriesList.append(dummyCountry)
-	$CountryController.add_child(dummyCountry)
-	
-	pass
+ 
+	# Spawn all countries defined in countries.csv
+	for countryCID in CountryDatabase.get_all_CIDs():
+		var newCountry = countryNode.instantiate()
+		newCountry.CID = countryCID
+ 
+		# Assign player flag
+		if countryCID == playerCountry:
+			newCountry.Player = true
+			playerCountryNode = newCountry
+ 
+		else:
+			newCountry.Player = false
+ 
+		# Assign tiles that belong to this country
+		for Tile in $TileController.get_children():
+			if Tile.tileOwner == countryCID:
+				newCountry.OwnedTileList.append(Tile)
+ 
+		# Build country from CSV data
+		newCountry.NewGameBuild()
+		aliveCountriesList.append(newCountry)
+		$CountryController.add_child(newCountry)
+ 
+	# Set player capital camera position
+	if playerCountryNode != null:
+		var capitalData = CountryDatabase.get_country(playerCountry)
+		var capitalTileNum = capitalData.get("primaryCapital", 1)
+		var capitalPathPoint = get_node_or_null(
+			"PathControl/PathPointsControl/" + str(capitalTileNum)
+		)
+		if capitalPathPoint:
+			playerCapitalPathButton = capitalPathPoint
+			$CameraMovementController/Camera2D.global_position = capitalPathPoint.global_position
+		else:
+			push_warning("spawnNewGameCountries: Could not find capital path point for " + playerCountry)
 
 var playerOutput: Dictionary = {}
 func calculatePlayerOutputs(caller):
@@ -274,6 +207,12 @@ func updatePlayerUI():
 	$CanvasLayer/GovernmentControl.buildSelf(playerCountryNode)
 	$CanvasLayer/GovernmentControl.addToConstitution.connect(addLawToCountry)
 	$CanvasLayer/FactionControl.newRewardSend.connect(addNewRewards)
+	for faction in playerCountryNode.countryFactionList:
+			$CanvasLayer/FactionControl.addFaction(
+				faction.factionName,
+				faction.factionLoyalty,
+				faction.factionLeader
+			)
 	$CanvasLayer/SpellSchoolsControl.connectSchools()
 	$CanvasLayer/SpellSchoolsControl.lvlUpSpell.connect(newSpellEvent)
 	#$CanvasLayer/SpellSchoolsControl.askForInfo.connect(giveSpellInfo)
@@ -547,8 +486,8 @@ func raiseArmyFromWorld(Army, country, Tile):
 		$PathControl.raiseComputerArmy(Army, country, Tile, pathPointButtonToSend)
 	pass
 func raiseCivilianUnit(civ, country):
-	if country == playerCountryNode:
-		$PathControl.raisePlayerCiv(civ, country, Tile)
+	var civTile = civ.stationNode.ppbTile if civ.stationNode != null else null
+	$PathControl.raisePlayerCiv(civ, country, civTile)
 	pass
 
 func activateArmyControl():
@@ -960,10 +899,10 @@ func tileSiegeWon(tile, oldCID, newCID):
 	print("TileSiegeWon WORLD")
 	for country in aliveCountriesList:
 		if country.CID == oldCID:
-			aliveCountriesList.erase(tile)
+			country.OwnedTileList.erase(tile)
 		if country.CID == newCID:
 			country.addTile(tile)
-	tile.recordConquest(newCID)
+	tile.record_conquest(newCID)
 	pass
 
 func _on_next_turn_pressed() -> void:
@@ -984,3 +923,117 @@ func _on_next_turn_pressed() -> void:
 		Tile.tick_conquest_timer()
 	$CanvasLayer/TurnLabel.text = str(currentWorldTurn)
 	pass # Replace with function body.
+
+#======
+#saving functionality
+#======
+
+func saveCountryStatesToFile() -> void:
+	var country_states = {}
+	for country in aliveCountriesList:
+		country_states[country.CID] = country.save_state()
+	var save_file = FileAccess.open("user://save_countries.json", FileAccess.WRITE)
+	if save_file:
+		save_file.store_string(JSON.stringify(country_states))
+		save_file.close()
+		print("World: Country states saved.")
+	else:
+		push_error("World: Could not save country states.")
+ 
+ 
+func loadCountryStatesFromFile() -> Dictionary:
+	if not FileAccess.file_exists("user://save_countries.json"):
+		return {}
+	var save_file = FileAccess.open("user://save_countries.json", FileAccess.READ)
+	if not save_file:
+		return {}
+	var json = JSON.new()
+	var error = json.parse(save_file.get_as_text())
+	save_file.close()
+	if error != OK:
+		push_error("World: Failed to parse country save file.")
+		return {}
+	return json.get_data()
+
+func save_all_armies(aliveCountriesList: Array) -> Array:
+	var all_armies = []
+	for country in aliveCountriesList:
+		for army in country.countryArmyList:
+			all_armies.append(save_army_state(army, country.CID))
+	return all_armies
+ 
+func save_army_state(army: Army, parentCID: String) -> Dictionary:
+	var state = {
+		"armyName":          army.ArmyName,
+		"parentCID":         parentCID,
+		"inTileNumber":      army.inTile.tileNumber if army.inTile != null else 0,
+		"inRetreat":         army.inRetreat,
+		"raised":            army.raised,
+		"deleteMode":        army.deleteMode,
+ 
+		# Spell state
+		"armySpell":         army.armySpell.spellType if army.has_active_spell() else "",
+		"armySpellDuration": army.armySpellDuration,
+		"armySpellCasterCID":army.armySpellCaster.CID if army.armySpellCaster != null else "",
+ 
+		# Unit states
+		"units": _save_unit_states(army),
+	}
+	return state
+ 
+func _save_unit_states(army: Army) -> Array:
+	var units = []
+	for unit in army.unitsList:
+		units.append({
+			"unitType":       unit.unitType,
+			"unitLevel":      unit.unitLevel,
+			"weaponType":     unit.unitWeapon.weaponType if unit.unitWeapon != null else "",
+			"uniformType":    unit.unitArmor.armorType if unit.unitArmor != null else "",
+			"oreType":        unit.unitOre.oreType if unit.unitOre != null else "",
+			"currentManpower":unit.unitCurrentManpower,
+			"currentWeapons": unit.unitCurrentWeapons,
+			"currentShield":  unit.unitShield,
+			"reloadCounter":  unit.reloadCounter,
+		})
+	return units
+
+
+func load_army_states_from_file() -> Array:
+	if not FileAccess.file_exists("user://save_armies.json"):
+		return []
+	var save_file = FileAccess.open("user://save_armies.json", FileAccess.READ)
+	if not save_file:
+		return []
+	var json = JSON.new()
+	var error = json.parse(save_file.get_as_text())
+	save_file.close()
+	if error != OK:
+		push_error("ArmyDatabase: Failed to parse army save file.")
+		return []
+	return json.get_data()
+ 
+func save_army_states_to_file(aliveCountriesList: Array) -> void:
+	var all_armies = save_all_armies(aliveCountriesList)
+	var save_file = FileAccess.open("user://save_armies.json", FileAccess.WRITE)
+	if save_file:
+		save_file.store_string(JSON.stringify(all_armies))
+		save_file.close()
+		print("ArmyDatabase: ", all_armies.size(), " armies saved.")
+	else:
+		push_error("ArmyDatabase: Could not write army save file.")
+
+
+# WORLD.GD ADDITIONS
+# Add to existing save/load functions
+# ============================================================
+ 
+# func saveGameState() -> void:
+#     saveTileStatesToFile()          # tiles
+#     saveCountryStatesToFile()       # countries
+#     ArmyDatabase.save_army_states_to_file(aliveCountriesList)  # armies
+ 
+# func loadGameState() -> void:
+#     var tileStates    = loadTileStatesFromFile()
+#     var countryStates = loadCountryStatesFromFile()
+#     var armyStates    = ArmyDatabase.load_army_states_from_file()
+#     # ... then initialize tiles, countries, then restore armies

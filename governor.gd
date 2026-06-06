@@ -29,23 +29,38 @@ func buildSelf(gT, gL):
 	governorLevel = gL
 	hired = false
 	match governorType:
-		"Wolverina Gundo":
+		"Patrick Henry":
 			governorTexture = load("res://art assets/Placeholder Art/character/4-22-Ikra-Colors - Copy.png")
-			governorDescription = "Escaped slave, returning to her homeland to free her hypnotized brethren."
-			governorBiography = "born in 1845, pittsburg ohio, sloberina gundo is the son of john f kennedy, also known as professor sex of the sex men.  will wolverina live up to her father's expectations or cum before the lord unashamed and loved dearly."
-			coastal = false
-			governorBuildingRequirement = "None"
-			governorPosition = "FARMER"
+			governorDescription = "Give me liberty or give me death. Henry brooks no compromise with tyranny."
+			governorBiography = "Virginia orator and patriot. His fury at the crown is matched only by his suspicion of centralized power in any form."
+			governorPosition = "ORATOR"
 			addMilMod("Visionary", 123)
 			addMilMod("Champion of the Sun", 23)
 			addMilMod("Healer", 3)
-		"Wello Jenni-Tur":
-			governorTexture = load("res://art assets/Placeholder Art/character/4-22-Samurai-Jack-Colors - Copy.png")
-			governorDescription = "Robo Cyborg visionary of the science demon wizard goblins."
-			governorBiography = "born in 1845, pittsburg ohio, sloberina gundo is the son of john f kennedy, also known as professor sex of the sex men.  will wolverina live up to her father's expectations or cum before the lord unashamed and loved dearly."
-			coastal = false
+ 
+		"Abigail Adams":
+			governorTexture = load("res://art assets/Placeholder Art/character/4-22-Ikra-Colors - Copy.png")
+			governorDescription = "Remember the ladies, or we will foment our own rebellion."
+			governorBiography = "Wife, intellectual, and the conscience of the revolution. Pushes the movement toward its own stated ideals."
+			governorPosition = "DIPLOMAT"
+ 
+		"Thomas Paine":
+			governorTexture = load("res://art assets/Placeholder Art/character/4-22-Ikra-Colors - Copy.png")
+			governorDescription = "Common sense is not so common. Government is a necessary evil at best."
+			governorBiography = "English immigrant turned American revolutionary. His pamphlets lit the fire. He believes in the people absolutely."
+			governorPosition = "SCHOLAR"
+ 
+		"Mercy Otis Warren":
+			governorTexture = load("res://art assets/Placeholder Art/character/4-22-Ikra-Colors - Copy.png")
+			governorDescription = "The pen is mightier than any redcoat bayonet."
+			governorBiography = "Playwright and historian of the revolution. Her sharp political satire keeps the movement honest."
+			governorPosition = "SCHOLAR"
+ 
+		"Daniel Shays":
+			governorTexture = load("res://art assets/Placeholder Art/character/4-22-Ikra-Colors - Copy.png")
+			governorDescription = "The farmers have had enough. We will not be taxed into poverty."
+			governorBiography = "Veteran of the Continental Army who led a farmers revolt when the revolution forgot the people who fought it."
 			governorPosition = "FARMER"
-			governorBuildingRequirement = "None"
 	pass
 
 func addMilMod(type, levels):

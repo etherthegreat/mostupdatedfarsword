@@ -18,6 +18,8 @@ config/icon="res://icon.svg"
 [autoload]
 
 TileDatabase="*res://TileDatabase.gd"
+CountryDatabase="*res://country_database.gd"
+ArmyDatabase="*res://army_database.gd"
 
 [display]
 

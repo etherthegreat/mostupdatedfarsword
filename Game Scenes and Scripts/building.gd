@@ -269,7 +269,6 @@ func matchPlayerUnlockables(playerCountryNode):
 		"Farm":
 			foodPerLevel = 1
 			foodDic["Base Farm Output"] = (1 * buildingLevel)
-			cropSlot = tile.cropSlot
 			var farmTech: int = 0
 			for Technology in playerCountry.unlockedTechnologies:
 				if Technology.techName == "Irrigation":
@@ -344,68 +343,49 @@ func matchPlayerUnlockables(playerCountryNode):
 					foodPerLevel += 1
 				if belief.beliefType == "SARATIAN":
 					culturePerLevel += 1
-			if cropSlot != null:
-				match cropSlot.cropType:
-					"Bananas":
-						foodPerLevel += 1
-						magicPerLevel += 1
-						foodDic["Farm Crop: Bananas"] = (1 * buildingLevel)
-						magicDic["Farm Crop: Bananas"] = (1 * buildingLevel)
-					"Razorberry":
-						goldPerLevel += 5
-						faithCostPerLevel +=1
-						foodCostPerLevel +=1
-						goldDic["Farm Crop: Razorberries"] = (4 * buildingLevel)
-						foodDic["Farm Crop: Razorberries"] = (-1 * buildingLevel)
-						faithDic["Farm Crop: Razorberries"] = (-1 * buildingLevel)
-					"Mushrooms":
-						magicPerLevel +=1
-						sciencePerLevel +=1
-						scienceDic["Farm Crop: Mushrooms"] = (1 * buildingLevel)
-						scienceDic["Farm Crop: Mushrooms"] = (1 * buildingLevel)
-					"Spices":
-						goldPerLevel += 1
-						culturePerLevel += 1
-						goldDic["Farm Crop: Spices"] = (1 * buildingLevel)
-						cultureDic["Farm Crop: Spices"] = (1 * buildingLevel)
-					"Wheat":
-						foodPerLevel += 2
-						foodDic["Farm Crop: Wheat"] = (2 * buildingLevel)
-					"Seaweed":
-						foodPerLevel += 1
-						culturePerLevel += 1
-						foodDic["Farm Crop: Seaweed"] = (1 * buildingLevel)
-						cultureDic["Farm Crop: Seaweed"] = (1 * buildingLevel)
-					"Copperflower":
-						metalPerLevel +=1
-						sciencePerLevel +=1
-						metalDic["Farm Crop: Copperflower"] = (1 * buildingLevel)
-						scienceDic["Farm Crop: Copperflower"] = (1 * buildingLevel)
-					"Incense":
-						faithPerLevel +=2
-						faithDic["Farm Crop: Incense"] = (2 * buildingLevel)
-					"Cannabis":
-						culturePerLevel +=2
-						cultureDic["Farm Crop: Cannabis"] = (2 * buildingLevel)
-					"Wereroot":
-						woodPerLevel +=1
-						faithPerLevel +=1
-						woodDic["Farm Crop: Wereroot"] = (1 * buildingLevel)
-						faithDic["Farm Crop: Wereroot"] = (1 * buildingLevel)
-					"Bamboo":
-						woodPerLevel +=2
-						woodDic["Farm Crop: Bamboo"] = (2 * buildingLevel)
-					"Cloudbean":
-						magicPerLevel +=2
-						magicDic["Farm Crop: Cloudbean"] = (2 * buildingLevel)
-					"Papyrus":
-						sciencePerLevel +=2
-						scienceDic["Farm Crop: Papyrus"] = (2 * buildingLevel)
-					"Cotton":
-						goldPerLevel +=2
-						goldDic["Farm Crop: Cotton"] = (2 * buildingLevel)
-			else:
-				print("error, no crop in", tile.tileNumber)
+			match tile.tileCrop:
+				"corn":
+					foodPerLevel += 2
+					foodDic["Farm Crop: Corn"] = (2 * buildingLevel)
+				"apples":
+					goldPerLevel += 1
+					culturePerLevel += 1
+					goldDic["Farm Crop: Apples"] = (1 * buildingLevel)
+					cultureDic["Farm Crop: Apples"] = (1 * buildingLevel)
+				"hay":
+					foodPerLevel += 1
+					manpowerPerLevel += 5  # hay feeds animals, animals pull plows
+					foodDic["Farm Crop: Hay"] = (1 * buildingLevel)
+				"soybeans":
+					foodPerLevel += 2
+					metalPerLevel += 1   # industrial crop, feeds ironworkers
+					foodDic["Farm Crop: Soybeans"] = (2 * buildingLevel)
+				"peanuts":
+					foodPerLevel += 1
+					goldPerLevel += 1
+					foodDic["Farm Crop: Peanuts"] = (1 * buildingLevel)
+					goldDic["Farm Crop: Peanuts"] = (1 * buildingLevel)
+				"peaches":
+					foodPerLevel += 1
+					culturePerLevel += 1
+					harmonyPerLevel += 1
+					foodDic["Farm Crop: Peaches"] = (1 * buildingLevel)
+				"oranges":
+					foodPerLevel += 2
+					harmonyPerLevel += 1
+					foodDic["Farm Crop: Oranges"] = (2 * buildingLevel)
+				"mushrooms":  # Kennett Square PA — easter egg
+					magicPerLevel += 1
+					sciencePerLevel += 1
+					magicDic["Farm Crop: Kennett Square Mushrooms"] = (1 * buildingLevel)
+					scienceDic["Farm Crop: Mushrooms"] = (1 * buildingLevel)
+				"cannabis":   # Brattleboro VT — easter egg
+					culturePerLevel += 2
+					harmonyPerLevel += 1
+					cultureDic["Farm Crop: Brattleboro Cannabis"] = (2 * buildingLevel)
+				_:
+					# Unknown crop — safe fallback
+					foodPerLevel += 1
 		"Granary":
 			goldCostPerLevel += 1
 			foodPerLevel = 1
@@ -452,39 +432,33 @@ func matchPlayerUnlockables(playerCountryNode):
 							mandatePerLevel += 1
 							magicCostPerLevel += 4
 		"Mine":
-			oreSlot = tile.oreSlot
-			if oreSlot != null:
-				match oreSlot.oreType:
-					"Copper":
-						metalPerLevel +=2
-						goldPerLevel +=1
-					"Iron":
-						metalPerLevel +=3
-					"Marble":
-						goldPerLevel +=1
-						culturePerLevel +=2
-					"Gold":
-						goldPerLevel +=2
-						mandatePerLevel +=1
-					"Jewels":
-						mandatePerLevel +=1
-						goldPerLevel +=1
-						faithPerLevel +=1
-					"Floodstone":
-						metalPerLevel +=1
-						magicPerLevel +=2
-					"Ivoroid":
-						faithPerLevel +=2
-						magicPerLevel +=1
-					"Moonbone":
-						metalPerLevel +=1
-						harmonyPerLevel +=1
-						culturePerLevel +=1
-					"Zylfire":
-						foodPerLevel +=2
-						metalPerLevel +=1
-			else:
-				print("error, no ore in", tile.tileNumber)
+			var geoResource = tile.geologicResource if tile.geologicResource != null else ""
+			match geoResource:
+				"Copper":
+					metalPerLevel += 2
+					goldPerLevel += 1
+					metalDic["Mine Resource: Copper"] = (2 * buildingLevel)
+					goldDic["Mine Resource: Copper"] = (1 * buildingLevel)
+				"Iron":
+					metalPerLevel += 3
+					metalDic["Mine Resource: Iron"] = (3 * buildingLevel)
+				"Marble":
+					goldPerLevel += 1
+					culturePerLevel += 2
+					goldDic["Mine Resource: Marble"] = (1 * buildingLevel)
+					cultureDic["Mine Resource: Marble"] = (2 * buildingLevel)
+				"Gold":
+					goldPerLevel += 2
+					mandatePerLevel += 1
+					goldDic["Mine Resource: Gold"] = (2 * buildingLevel)
+					mandateDic["Mine Resource: Gold"] = (1 * buildingLevel)
+				"None", "":
+					# Tile has no mineral resource — mine produces base output only
+					metalPerLevel += 1
+					metalDic["Base Mine Output (no resource)"] = (1 * buildingLevel)
+				_:
+					# Unknown resource — safe fallback
+					metalPerLevel += 1
 			for Technology in playerCountry.unlockedTechnologies:
 				if Technology.techName == "Steam Engine":
 					metalPerLevel += 3
@@ -623,9 +597,10 @@ func matchPlayerUnlockables(playerCountryNode):
 				if belief.beliefType == "VIBIAN KARIK":
 					foodPerLevel += 2
 					goldCostPerLevel += 1
-			cropSlot = tile.cropSlot
-			if cropSlot.cropType == "Incense":
+			if tile.tileCrop == "cannabis":
+				# Brattleboro's spiritual community appreciates the temple
 				faithPerLevel += 1
+				faithDic["Temple: Cannabis Crop Harmony"] = (1 * buildingLevel)
 		"Camp":
 			for belief in playerCountry.selectedBeliefs:
 				if belief.beliefType == "TYLA DYN":
@@ -721,7 +696,7 @@ func matchPlayerUnlockables(playerCountryNode):
 					faithPerLevel += 1
 					magicPerLevel += 1
 				if belief.beliefType == "Wandering Exorcists":
-					manpowerPerLevel == 250
+					manpowerPerLevel = 250
 			for Technology in playerCountry.unlockedTechnologies:
 				if Technology.techName == "Lenscraft":
 					magicPerLevel += 1
@@ -782,15 +757,15 @@ func matchPlayerUnlockables(playerCountryNode):
 						harmonyPerLevel += 1
 						influencePerLevel += 1
 						magicCostPerLevel += 5
-			cropSlot = tile.cropSlot
-			if cropSlot.cropType == "Cannabis":
+			if tile.tileCrop == "Cannabis":
 				culturePerLevel +=1
 				magicCostPerLevel += 1
-			if cropSlot.cropType == "Cloudbean":
+			if tile.tileCrop == "Cloudbean":
 				magicPerLevel +=1
-			oreSlot = tile.oreSlot
-			if oreSlot.oreType == "Floodstone":
-				magicPerLevel +=1
+			if tile.geologicResource == "Gold":
+				# Gold deposits correlate with ley lines (flavor)
+				magicPerLevel += 1
+				magicDic["Tower: Gold Deposits"] = (1 * buildingLevel)
 			pass
 		"Library":
 			for belief in playerCountry.selectedBeliefs:
@@ -859,10 +834,9 @@ func matchPlayerUnlockables(playerCountryNode):
 						harmonyPerLevel += 1
 						sciencePerLevel += 2
 						magicCostPerLevel += 6
-			cropSlot = tile.cropSlot
-			if cropSlot.cropType == "Papyrus":
+			if tile.geologicResource == "Gold":
 				sciencePerLevel += 1
-				goldPerLevel += 1
+				scienceDic["Library: Gold Deposit Funding"] = (1 * buildingLevel)
 		"Workshop":
 			for belief in playerCountry.selectedBeliefs:
 				if belief.beliefType == "Valued Idolatry":
@@ -1097,7 +1071,7 @@ func matchPlayerUnlockables(playerCountryNode):
 						#corruption in this tile +(2 * Governor.governorLevel)
 						metalCostPerLevel += (2 * Governor.governorLevel)
 					"BLADEMASTER":
-						manpowerPerLevel += (250 * Governor.governoLevel)
+						manpowerPerLevel += (250 * Governor.governorLevel)
 						weaponsPerLevel += (1 * Governor.governorLevel)
 						#corruption in this tile +(1 * Governor.governorLevel)
 						metalCostPerLevel += (1 * Governor.governorLevel)

@@ -1,0 +1,17 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://bihhwal7yumkd"
+
+[deps]
+
+files=["res://data/armies/army_templates.armyName.translation", "res://data/armies/army_templates.spawnTile.translation", "res://data/armies/army_templates.armyMods.translation", "res://data/armies/army_templates.units.translation"]
+
+source_file="res://data/armies/army_templates.csv"
+dest_files=["res://data/armies/army_templates.armyName.translation", "res://data/armies/army_templates.spawnTile.translation", "res://data/armies/army_templates.armyMods.translation", "res://data/armies/army_templates.units.translation"]
+
+[params]
+
+compress=true
+delimiter=0

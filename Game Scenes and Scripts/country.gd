@@ -218,263 +218,139 @@ var setBathTaxAmount: int = 0
 
 var capitalPathPointButton: pathPointButton
 
-func NewGameBuild():
-	#completely dynamically created by the World.  if its a new game, will use the new game stats, otherwise,
-	#will use the func LoadGameBuild():
+func NewGameBuild(CID) -> void:
+	# Loads all starting data from CountryDatabase (countries.csv)
+	# Replaces the old massive match statement
+	var data = CountryDatabase.get_country(CID)
+	if data.is_empty():
+		push_error("Country: No CSV data found for CID: " + CID)
+		return
+ 
 	$religionData.buildSelf()
+ 
+	# Identity
+	NatName   = data.get("NatName", CID)
+	NatAdj    = data.get("NatAdj", "Unknown")
+	GovernmentBase = data.get("GovernmentBase", "Republic")
+	AIPersonality  = data.get("AIPersonality", "Neutral")
+	isAlive   = true
+ 
+	# Economy settings
+	spellBaseCost      = data.get("spellBaseCost", 15)
+	spellCostModifier  = 0
+	spellDiscountModifier = 0
+	armyReinforceRate  = data.get("armyReinforceRate", 10)
+	mandateThreshold   = data.get("mandateThreshold", 50)
+	foodStorageMax     = data.get("foodStorageMax", 500)
+ 
+	# Starting resources
+	TotalGold     += data.get("startGold", 50.0)
+	TotalFood     += data.get("startFood", 50)
+	TotalWood     += data.get("startWood", 50)
+	TotalMetal    += data.get("startMetal", 20)
+	TotalFaith    += data.get("startFaith", 30)
+	TotalMagic    += data.get("startMagic", 10)
+	TotalWeapons  += data.get("startWeapons", 10)
+	TotalScience  += data.get("startScience", 10)
+	TotalCulture  += data.get("startCulture", 5)
+	TotalHarmony  += data.get("startHarmony", 5.0)
+	TotalMandate  += data.get("startMandate", 10)
+	TotalInfluence+= data.get("startInfluence", 0)
+	TotalManpower += data.get("startManpower", 500)
+ 
+	# Magic schools always start at zero
+	setStartingMagic()
+ 
+	# Starting technologies
+	for tech in data.get("startingTechs", []):
+		addTechnologicalDiscovery(tech)
+ 
+	# Starting beliefs (load belief lists then add selected)
+	loadBeliefsList("GenericDoc1")
+	loadBeliefsList("GenericDoc2")
+	loadBeliefsList("GenericGods1")
+	loadBeliefsList("GenericGods2")
+	for belief in data.get("startingBeliefs", []):
+		addReligiousBelief(belief)
+ 
+	# Starting traditions
+	for tradition in data.get("startingTraditions", []):
+		addCulturalTradition(tradition)
+ 
+	# Starting laws
+	for law in data.get("startingLaws", []):
+		addGovernmentLaw(law)
+ 
+	# Starting mil mods
+	for milMod in data.get("startingMilMods", []):
+		addMilMod(milMod)
+ 
+	# Starting governors — build pool then create factions
+	var governorPool: Dictionary = {}
+	for govData in data.get("startingGovernors", []):
+		var newGov = governor.new()
+		newGov.buildSelf(govData["type"], govData["level"])
+		unlockedGovernors.append(newGov)
+		governorPool[govData["type"]] = newGov
+ 
+	# Starting factions — needs governors already created
+	for factionData in data.get("startingFactions", []):
+		# Try to find a matching governor as faction leader
+		# Falls back to first available governor or placeholder
+		var leader = _find_faction_leader(factionData["name"], governorPool)
+		addFaction(factionData["name"], factionData["loyalty"], leader)
+ 
+	# Taxation and unlockables
+	calculateTaxationAmounts()
+	updateUnlockableAttributes()
+	updateDiscoveredByPlayer()
+ 
+	# Starting army — build after everything else is set up
+	var armyName = data.get("startingArmyName", "")
+	var armyTile = data.get("startingArmyTile", 0)
+	if armyName != "" and armyTile != 0:
+		var armyIcon = _get_default_army_icon()
+		addArmy(armyName, armyTile, armyIcon)
+ 
+ 
+func _find_faction_leader(factionName: String, governorPool: Dictionary) -> governor:
+	# Match faction to its natural leader from the governor pool
+	# Falls back gracefully if no match found
+	var factionLeaderMap = {
+		"Sons of Liberty":      "Patrick Henry",
+		"Continental Congress": "Abigail Adams",
+		"Common Cause":         "Daniel Shays",
+		"Abolitionist League":  "Mercy Otis Warren",
+		"Free Workers Union":   "Thomas Paine",
+		"Crown Loyalists":      "Lord Cornwallis",
+		"Tory Merchants":       "General Howe",
+		"Military Command":     "General Howe",
+		"French Habitants":     "Governor Carleton",
+		"British Settlers":     "Governor Carleton",
+		"Indigenous Allies":    "Governor Carleton",
+		"Nassau Pirates":       "Calico Jack",
+		"Loyalist Refugees":    "Calico Jack",
+	}
+	var leaderName = factionLeaderMap.get(factionName, "")
+	if leaderName != "" and governorPool.has(leaderName):
+		return governorPool[leaderName]
+	# Fallback — use first available governor or placeholder
+	if not governorPool.is_empty():
+		return governorPool.values()[0]
+	var placeholder = governor.new()
+	placeholder.buildSelf("Unknown Leader", 1)
+	return placeholder
+ 
+ 
+func _get_default_army_icon() -> Texture2D:
+	# Returns a default army icon based on CID
 	match CID:
 		"USA":
-			#capitalPathPointButton = $PathControl/PathPointsControl/PDT1
-			spellBaseCost = 15
-			spellCostModifier = 0
-			spellDiscountModifier = 0
-			#starting resources
-			TotalGold += 50
-			TotalFood += 75
-			TotalWood += 60
-			TotalFaith += 80
-			TotalScience += 20
-			TotalMagic += 30
-			TotalWeapons += 20
-			TotalMetal += 30
-			TotalCulture += 10
-			TotalHarmony += 5
-			TotalMandate += 15
-			TotalInfluence += 0
-			TotalManpower += 1000
-			setStartingMagic()
-			mandateThreshold = 50
-			foodStorageMax = 1000
-			#DON"T TRY AND ADD NEW TYPES OF UNLOCKABLES UNTIL YOU FIGURE OUT HOW TO GET AN INFO PANEL TO APPEAR WITH MOUSE
-			#OVER.  SHOULD BE A DYNAMICALLY SIZED PANEL.
-			var newOre = ore.new()
-			newOre.oreType = "Wood"
-			newOre.updateSelf("Wood")
-			availableOres.append(newOre)
-			var goldOre = ore.new()
-			goldOre.oreType = "Gold"
-			goldOre.updateSelf("Gold")
-			availableOres.append(goldOre)
-			var floodstoneOre = ore.new()
-			floodstoneOre.oreType = "Floodstone"
-			floodstoneOre.updateSelf("Floodstone")
-			availableOres.append(floodstoneOre)
-			addTechnologicalDiscovery("Language")
-			addTechnologicalDiscovery("Agriculture")
-			addTechnologicalDiscovery("Copper Working")
-			addTechnologicalDiscovery("Artistry")
-			loadBeliefsList("GenericDoc1")
-			loadBeliefsList("GenericDoc2")
-			loadBeliefsList("GenericGods1")
-			loadBeliefsList("GenericGods2")
-			loadBeliefsList("PDTDoc1")
-			#addReligiousBelief("Tower Control")
-			addReligiousBelief("Tyla-Dyn")
-			addCulturalTradition("Humble Folk")
-			addCulturalTradition("Guardian Cats")
-			addGovernmentLaw("Mercantilism")
-			addGovernmentLaw("Citizen Militia")
-			#calculateToolsAndKits()
-			calculateTaxationAmounts()
-			addFaction("Vargo-Tal", 50) # Traditionalists
-			addFaction("Wixinx", 10) # Liberators
-			addFaction("Elto-Tal", 20) # Moderates
-			updateUnlockableAttributes()
-			addMilMod("Berserkers")
-			var newIcon1: Texture = load("res://art assets/finishedAssets/armyicons/finished/heart.png")
-			var newIcon2: Texture = load("res://art assets/finishedAssets/armyicons/finished/horse.png")
-			var newIcon3: Texture = load("res://art assets/finishedAssets/armyicons/finished/circle.png")
-			addArmy("Palace Guards", 3, newIcon2)
-			addGovernorToGovernorPool("Wolverina Gundo", 1)
-			armyReinforceRate = 30 #add a function to determin reinforce rate
-			#for Tile in OwnedTileList:
-			unlockArmyIcon(newIcon1)
-			unlockArmyIcon(newIcon2)
-			unlockArmyIcon(newIcon3)
-			armyIcon = newIcon2
-			updateDiscoveredByPlayer()
-			for Army in countryArmyList:
-				if Army.ArmyName == "Palace Guards":
-					addNewUnit(Army, "Ranged", 4, "Atlatl", "Copper", "Scale", 200, 400)
-					addNewUnit(Army, "Ranged", 2, "Atlatl", "Copper", "Cast", 100, 200)
-					addNewUnit(Army, "Ranged", 5, "Atlatl", "Wood", "Scout", 400, 500)
-					addNewUnit(Army, "Infantry", 4, "Macuahuitl", "Copper", "Scale", 400, 400)
-					addNewUnit(Army, "Ranged", 2, "Atlatl", "Copper", "Cast", 200, 200)
-					addNewUnit(Army, "Infantry", 5, "Club", "Wood", "Scout", 500, 500)
-		"CAN":
-			#capitalPathPointButton = $PathControl/PathPointsControl/PDT1
-			spellBaseCost = 15
-			spellCostModifier = 0
-			spellDiscountModifier = 0
-			#starting resources
-			TotalGold += 50
-			TotalFood += 75
-			TotalWood += 60
-			TotalFaith += 80
-			TotalScience += 20
-			TotalMagic += 30
-			TotalWeapons += 20
-			TotalMetal += 30
-			TotalCulture += 10
-			TotalHarmony += 5
-			TotalMandate += 15
-			TotalInfluence += 0
-			TotalManpower += 1000
-			setStartingMagic()
-			mandateThreshold = 50
-			foodStorageMax = 1000
-			#DON"T TRY AND ADD NEW TYPES OF UNLOCKABLES UNTIL YOU FIGURE OUT HOW TO GET AN INFO PANEL TO APPEAR WITH MOUSE
-			#OVER.  SHOULD BE A DYNAMICALLY SIZED PANEL.
-			var newOre = ore.new()
-			newOre.oreType = "Wood"
-			newOre.updateSelf("Wood")
-			availableOres.append(newOre)
-			var goldOre = ore.new()
-			goldOre.oreType = "Gold"
-			goldOre.updateSelf("Gold")
-			availableOres.append(goldOre)
-			var floodstoneOre = ore.new()
-			floodstoneOre.oreType = "Floodstone"
-			floodstoneOre.updateSelf("Floodstone")
-			availableOres.append(floodstoneOre)
-			addTechnologicalDiscovery("Language")
-			addTechnologicalDiscovery("Agriculture")
-			addTechnologicalDiscovery("Copper Working")
-			addTechnologicalDiscovery("Artistry")
-			loadBeliefsList("GenericDoc1")
-			loadBeliefsList("GenericDoc2")
-			loadBeliefsList("GenericGods1")
-			loadBeliefsList("GenericGods2")
-			#loadBeliefsList("PDTDoc1")
-			addReligiousBelief("Tower Control")
-			#addReligiousBelief("TYLA DYN")
-			#addCulturalTradition("Humble Folk")
-			addCulturalTradition("Guardian Cats")
-			addGovernmentLaw("Mercantilism")
-			#addGovernmentLaw("Citizen Militia")
-			#calculateToolsAndKits()
-			calculateTaxationAmounts()
-			addFaction("Vargo-Tal", 50) # Traditionalists
-			addFaction("Wixinx", 10) # Liberators
-			addFaction("Elto-Tal", 20) # Moderates
-			updateUnlockableAttributes()
-			addMilMod("Berserkers")
-			#addArmy("Palace Guards", 3)
-			addGovernorToGovernorPool("Wolverina Gundo", 1)
-			armyReinforceRate = 3 #add a function to determin reinforce rate
-			updateDiscoveredByPlayer()
-		"DUM": #dummytest
-			spellBaseCost = 15
-			spellCostModifier = 0
-			spellDiscountModifier = 0
-			#starting resources
-			TotalGold += 50
-			TotalFood += 75
-			TotalWood += 60
-			TotalFaith += 80
-			TotalScience += 20
-			TotalMagic += 30
-			TotalWeapons += 20
-			TotalMetal += 30
-			TotalCulture += 10
-			TotalHarmony += 5
-			TotalMandate += 15
-			TotalInfluence += 0
-			TotalManpower += 1000
-			setStartingMagic()
-			mandateThreshold = 50
-			foodStorageMax = 1000
-			#DON"T TRY AND ADD NEW TYPES OF UNLOCKABLES UNTIL YOU FIGURE OUT HOW TO GET AN INFO PANEL TO APPEAR WITH MOUSE
-			#OVER.  SHOULD BE A DYNAMICALLY SIZED PANEL.
-			addTechnologicalDiscovery("Language")
-			addTechnologicalDiscovery("Agriculture")
-			addTechnologicalDiscovery("Copper Working")
-			addTechnologicalDiscovery("Artistry")
-			loadBeliefsList("GenericDoc1")
-			loadBeliefsList("GenericGods1")
-			#calculateToolsAndKits()
-			calculateTaxationAmounts()
-			updateUnlockableAttributes()
-			var newIcon1: Texture2D = load("res://art assets/finishedAssets/armyicons/7.png")
-			var newIcon2: Texture2D = load("res://art assets/finishedAssets/armyicons/10.png")
-			var newIcon3: Texture2D = load("res://art assets/finishedAssets/armyicons/11.png")
-			addArmy("Dummy Guards", 10, newIcon3)
-			addGovernorToGovernorPool("Wolverina Gundo", 1)
-			armyReinforceRate = 3 #add a function to determin reinforce rate
-			#for Tile in OwnedTileList:
-			updateDiscoveredByPlayer()
-			unlockArmyIcon(newIcon1)
-			unlockArmyIcon(newIcon2)
-			unlockArmyIcon(newIcon3)
-			armyIcon = newIcon3
-			for Army in countryArmyList:
-				if Army.ArmyName == "Dummy Guards":
-					addNewUnit(Army, "Infantry", 4, "Macuahuitl", "Copper", "Scale", 300, 400)
-					addNewUnit(Army, "Ranged", 2, "Atlatl", "Copper", "Cast", 150, 200)
-					addNewUnit(Army, "Infantry", 3, "Pike", "Iron", "Cast", 100, 300)
-		"GRG": #king george III
-			#capitalPathPointButton = $PathControl/PathPointsControl/PDT1
-			spellBaseCost = 15
-			spellCostModifier = 0
-			spellDiscountModifier = 0
-			#starting resources
-			TotalGold += 50
-			TotalFood += 75
-			TotalWood += 60
-			TotalFaith += 80
-			TotalScience += 20
-			TotalMagic += 30
-			TotalWeapons += 20
-			TotalMetal += 30
-			TotalCulture += 10
-			TotalHarmony += 5
-			TotalMandate += 15
-			TotalInfluence += 0
-			TotalManpower += 1000
-			setStartingMagic()
-			mandateThreshold = 50
-			foodStorageMax = 1000
-			#DON"T TRY AND ADD NEW TYPES OF UNLOCKABLES UNTIL YOU FIGURE OUT HOW TO GET AN INFO PANEL TO APPEAR WITH MOUSE
-			#OVER.  SHOULD BE A DYNAMICALLY SIZED PANEL.
-			var newOre = ore.new()
-			newOre.oreType = "Wood"
-			newOre.updateSelf("Wood")
-			availableOres.append(newOre)
-			var goldOre = ore.new()
-			goldOre.oreType = "Gold"
-			goldOre.updateSelf("Gold")
-			availableOres.append(goldOre)
-			var floodstoneOre = ore.new()
-			floodstoneOre.oreType = "Floodstone"
-			floodstoneOre.updateSelf("Floodstone")
-			availableOres.append(floodstoneOre)
-			addTechnologicalDiscovery("Language")
-			addTechnologicalDiscovery("Agriculture")
-			addTechnologicalDiscovery("Copper Working")
-			addTechnologicalDiscovery("Artistry")
-			loadBeliefsList("GenericDoc1")
-			loadBeliefsList("GenericDoc2")
-			loadBeliefsList("GenericGods1")
-			loadBeliefsList("GenericGods2")
-			#loadBeliefsList("PDTDoc1")
-			addReligiousBelief("Tower Control")
-			#addReligiousBelief("TYLA DYN")
-			#addCulturalTradition("Humble Folk")
-			addCulturalTradition("Guardian Cats")
-			addGovernmentLaw("Mercantilism")
-			#addGovernmentLaw("Citizen Militia")
-			#calculateToolsAndKits()
-			calculateTaxationAmounts()
-			addFaction("Vargo-Tal", 50) # Traditionalists
-			addFaction("Wixinx", 10) # Liberators
-			addFaction("Elto-Tal", 20) # Moderates
-			updateUnlockableAttributes()
-			addMilMod("Berserkers")
-			#addArmy("Palace Guards", 3)
-			addGovernorToGovernorPool("Wolverina Gundo", 1)
-			armyReinforceRate = 3 #add a function to determin reinforce rate
-			updateDiscoveredByPlayer()
-	pass
+			return load("res://art assets/finishedAssets/armyicons/finished/heart.png")
+		"UK":
+			return load("res://art assets/finishedAssets/armyicons/finished/horse.png")
+		_:
+			return load("res://art assets/finishedAssets/armyicons/finished/circle.png")
 
 func discoverTile(pathPointButton):
 	discoveredTilesList.append(pathPointButton)
@@ -552,22 +428,51 @@ func updateUnit(type, unitNode):
 			unitNode.addMilMod(MilMod)
 	pass
 
-func prospectForOres():
+func prospectForOres() -> void:
+	# Scans OwnedTileList for geological resources in mine-eligible tiles
+	# Populates availableOres array with resource type strings
+	# No longer uses Tile.oreSlot — uses Tile.geologicResource instead
+ 
 	for Tile in OwnedTileList:
-		if Tile.oreSlot != null:
+		# Only tiles with mines or foothills/fortress terrain are worth prospecting
+		if not Tile.has_mine() and Tile.terrain not in ["Foothills", "Fortress"]:
+			continue
+ 
+		var resource = Tile.geologicResource
+		if resource == "" or resource == "None":
+			continue
+ 
+		# Check if we already have this resource type
+		var alreadyHave = false
+		for existingOre in availableOres:
+			# availableOres stores ore objects — check their oreType
+			if existingOre.oreType == resource:
+				alreadyHave = true
+				break
+ 
+		if not alreadyHave:
 			var newOre = ore.new()
-			newOre.updateSelf(Tile.oreSlot.oreType)
-			var oreCheck: bool =  false
-			if availableOres != null:
-				for ore in availableOres:
-					if newOre.oreType == ore.oreType:
-						oreCheck = true
-			if oreCheck == true:
-				newOre.queue_free()
-			else:
-				availableOres.append(newOre)
-			print("availableOres", availableOres, "DEBUG")
-	pass
+			newOre.updateSelf(resource)
+			availableOres.append(newOre)
+ 
+	# Uprisings-specific: certain special features grant resources directly
+	for Tile in OwnedTileList:
+		if Tile.has_special_feature("Harper's Ferry Arsenal"):
+			# Harper's Ferry was chosen for its iron and water power
+			_add_ore_if_missing("Iron")
+		if Tile.has_special_feature("Chesapeake Shipyards"):
+			_add_ore_if_missing("Wood")  # treated as ore for shipbuilding
+		if Tile.has_special_feature("Gun Valley"):
+			_add_ore_if_missing("Iron")
+ 
+ 
+func _add_ore_if_missing(oreType: String) -> void:
+	for existingOre in availableOres:
+		if existingOre.oreType == oreType:
+			return
+	var newOre = ore.new()
+	newOre.updateSelf(oreType)
+	availableOres.append(newOre)
 
 func addMilMod(Type):
 	var milModInstance = milModScene.instantiate()
@@ -596,12 +501,18 @@ func addArmy (Name, TileNumber, icon):
 	countryArmyList.append(armyInstance)
 	pass
 
-func addFaction(Name, Loyalty):
+func addFaction(Name: String, Loyalty: int, factionLeader: String) -> void:
+	# If no leader provided, create a placeholder so faction.visualizeSelf() doesn't crash
+	var leader: governor
+	for governor in unlockedGovernors:
+		if governor.governorType == factionLeader:
+			leader = governor
+	if leader == null:
+		leader = governor.new()
+		leader.buildSelf("Unknown Leader", 1)
 	var newFaction = faction.new()
-	newFaction.factionName = Name
-	newFaction.factionLoyalty = Loyalty
+	newFaction.buildSelf(Name, Loyalty, leader)
 	countryFactionList.append(newFaction)
-	pass
 
 func addReligiousBelief(Name):
 	var newBelief = belief.new()
@@ -1268,3 +1179,287 @@ func addTile(tileToAdd):
 func unlockArmyIcon(icon):
 	armyIconList.append(icon)
 	pass
+
+#=============================================
+#Save Functions
+#=============================================
+
+func save_state() -> Dictionary:
+	var state = {
+		"CID": CID,
+		"isAlive": isAlive,
+ 
+		# Current resources
+		"TotalGold":     TotalGold,
+		"TotalFood":     TotalFood,
+		"TotalWood":     TotalWood,
+		"TotalMetal":    TotalMetal,
+		"TotalFaith":    TotalFaith,
+		"TotalMagic":    TotalMagic,
+		"TotalWeapons":  TotalWeapons,
+		"TotalScience":  TotalScience,
+		"TotalCulture":  TotalCulture,
+		"TotalHarmony":  TotalHarmony,
+		"TotalMandate":  TotalMandate,
+		"TotalInfluence":TotalInfluence,
+		"TotalManpower": TotalManpower,
+ 
+		# Magic schools
+		"alcPoints": alcPoints, "alcLevel": alcLevel,
+		"illPoints": illPoints, "illLevel": illLevel,
+		"sumPoints": sumPoints, "sumLevel": sumLevel,
+		"druPoints": druPoints, "druLevel": druLevel,
+		"elePoints": elePoints, "eleLevel": eleLevel,
+		"divPoints": divPoints, "divLevel": divLevel,
+ 
+		# Economy settings that can change
+		"armyReinforceRate": armyReinforceRate,
+		"mandateThreshold":  mandateThreshold,
+		"foodStorageMax":    foodStorageMax,
+		"spellBaseCost":     spellBaseCost,
+ 
+		# Unlockables — save names only, rebuild objects on load
+		"unlockedTechs": _save_tech_list(),
+		"selectedBeliefs": _save_belief_list(),
+		"lawsInConstitution": _save_law_list(),
+		"unlockedLaws": _save_unlocked_law_list(),
+		"unlockedTraditions": _save_tradition_list(),
+ 
+		# Factions — save name + loyalty
+		"factions": _save_faction_list(),
+ 
+		# Governors — save type + level + hired status
+		"governors": _save_governor_list(),
+ 
+		# Armies — save name + tile number + unit composition
+		"armies": _save_army_list(),
+ 
+		# Diplomacy
+		"countryEnemies": countryEnemies.map(func(c): return c.CID if c else ""),
+		"countryAllies":  countryAllies.map(func(c): return c.CID if c else ""),
+	}
+	return state
+ 
+ 
+func _save_tech_list() -> Array:
+	var result = []
+	for tech in unlockedTechnologies:
+		result.append(tech.techName)
+	return result
+ 
+func _save_belief_list() -> Array:
+	var result = []
+	for belief in selectedBeliefs:
+		result.append(belief.beliefType)
+	return result
+ 
+func _save_law_list() -> Array:
+	var result = []
+	for law in lawsInConstitution:
+		result.append(law.lawType)
+	return result
+ 
+func _save_unlocked_law_list() -> Array:
+	var result = []
+	for law in unlockedLaws:
+		result.append(law.lawType)
+	return result
+ 
+func _save_tradition_list() -> Array:
+	var result = []
+	for tradition in unlockedTraditions:
+		result.append(tradition.traditionType)
+	return result
+ 
+func _save_faction_list() -> Array:
+	var result = []
+	for f in countryFactionList:
+		result.append({
+			"name": f.factionName,
+			"loyalty": f.factionLoyalty
+		})
+	return result
+ 
+func _save_governor_list() -> Array:
+	var result = []
+	for gov in unlockedGovernors:
+		result.append({
+			"type": gov.governorType,
+			"level": gov.governorLevel,
+			"hired": gov.hired
+		})
+	return result
+ 
+func _save_army_list() -> Array:
+	var result = []
+	for army in countryArmyList:
+		var units = []
+		for unit in army.unitsList:
+			units.append({
+				"unitType": unit.unitType,
+				"level": unit.unitLevel,
+				"weaponType": unit.unitWeapon.weaponType if unit.unitWeapon else "",
+				"oreType": unit.unitOre.oreType if unit.unitOre else "",
+				"armorType": unit.unitArmor.armorType if unit.unitArmor else "",
+				"curMen": unit.unitCurrentManpower,
+				"curWeapons": unit.unitCurrentWeapons
+			})
+		result.append({
+			"name": army.ArmyName,
+			"tileNumber": army.inTile.tileNumber if army.inTile else 0,
+			"units": units
+		})
+	return result
+
+#===================
+#Load System
+#==================
+func build_from_save(save_data: Dictionary) -> void:
+	# Static identity already set by NewGameBuild from CSV
+	# This only restores the dynamic runtime state
+ 
+	isAlive = save_data.get("isAlive", true)
+ 
+	# Restore resources
+	TotalGold      = save_data.get("TotalGold", TotalGold)
+	TotalFood      = save_data.get("TotalFood", TotalFood)
+	TotalWood      = save_data.get("TotalWood", TotalWood)
+	TotalMetal     = save_data.get("TotalMetal", TotalMetal)
+	TotalFaith     = save_data.get("TotalFaith", TotalFaith)
+	TotalMagic     = save_data.get("TotalMagic", TotalMagic)
+	TotalWeapons   = save_data.get("TotalWeapons", TotalWeapons)
+	TotalScience   = save_data.get("TotalScience", TotalScience)
+	TotalCulture   = save_data.get("TotalCulture", TotalCulture)
+	TotalHarmony   = save_data.get("TotalHarmony", TotalHarmony)
+	TotalMandate   = save_data.get("TotalMandate", TotalMandate)
+	TotalInfluence = save_data.get("TotalInfluence", TotalInfluence)
+	TotalManpower  = save_data.get("TotalManpower", TotalManpower)
+ 
+	# Restore magic schools
+	alcPoints = save_data.get("alcPoints", 0)
+	alcLevel  = save_data.get("alcLevel", 0)
+	illPoints = save_data.get("illPoints", 0)
+	illLevel  = save_data.get("illLevel", 0)
+	sumPoints = save_data.get("sumPoints", 0)
+	sumLevel  = save_data.get("sumLevel", 0)
+	druPoints = save_data.get("druPoints", 0)
+	druLevel  = save_data.get("druLevel", 0)
+	elePoints = save_data.get("elePoints", 0)
+	eleLevel  = save_data.get("eleLevel", 0)
+	divPoints = save_data.get("divPoints", 0)
+	divLevel  = save_data.get("divLevel", 0)
+ 
+	# Restore economy settings
+	armyReinforceRate = save_data.get("armyReinforceRate", armyReinforceRate)
+	mandateThreshold  = save_data.get("mandateThreshold", mandateThreshold)
+	foodStorageMax    = save_data.get("foodStorageMax", foodStorageMax)
+ 
+	# Restore technologies (clear defaults then rebuild from save)
+	unlockedTechnologies.clear()
+	for techName in save_data.get("unlockedTechs", []):
+		addTechnologicalDiscovery(techName)
+ 
+	# Restore beliefs
+	selectedBeliefs.clear()
+	for beliefName in save_data.get("selectedBeliefs", []):
+		addReligiousBelief(beliefName)
+ 
+	# Restore laws
+	lawsInConstitution.clear()
+	for lawName in save_data.get("lawsInConstitution", []):
+		var newLaw = law.new()
+		newLaw.lawType = lawName
+		lawsInConstitution.append(newLaw)
+ 
+	unlockedLaws.clear()
+	for lawName in save_data.get("unlockedLaws", []):
+		addGovernmentLaw(lawName)
+ 
+	# Restore traditions
+	unlockedTraditions.clear()
+	for tradName in save_data.get("unlockedTraditions", []):
+		addCulturalTradition(tradName)
+ 
+	# Restore factions — update loyalty on existing factions
+	for savedFaction in save_data.get("factions", []):
+		for existingFaction in countryFactionList:
+			if existingFaction.factionName == savedFaction["name"]:
+				existingFaction.factionLoyalty = savedFaction["loyalty"]
+				break
+ 
+	# Restore governors — update levels and hired status
+	for savedGov in save_data.get("governors", []):
+		for existingGov in unlockedGovernors:
+			if existingGov.governorType == savedGov["type"]:
+				existingGov.governorLevel = savedGov["level"]
+				existingGov.hired = savedGov.get("hired", false)
+				break
+ 
+	# Recalculate derived values
+	calculateTaxationAmounts()
+	updateUnlockableAttributes()
+
+
+# func build_starting_armies() -> void:
+#     # Called from NewGameBuild() after tiles are assigned
+#     # Replaces the hardcoded addArmy() calls
+#     var templates = ArmyDatabase.get_templates_for_country(CID)
+#     for template in templates:
+#         var icon = _get_default_army_icon()
+#         addArmy(template["armyName"], template["spawnTile"], icon)
+#         # Find the army we just added and populate its units
+#         for army in countryArmyList:
+#             if army.ArmyName == template["armyName"]:
+#                 _populate_army_units(army, template["units"])
+#                 # Apply army mods from template
+#                 for modName in template["armyMods"]:
+#                     addMilMod(modName)
+#                 break
+#
+# func _populate_army_units(army: Army, unitTemplates: Array) -> void:
+#     for unitData in unitTemplates:
+#         addNewUnit(
+#             army,
+#             unitData["unitType"],
+#             unitData["level"],
+#             unitData["weaponType"],
+#             "Iron",                   # default ore — can extend CSV later
+#             unitData["uniformType"],
+#             unitData["manpower"],
+#             unitData["weapons"]
+#         )
+#
+# func restore_army_from_save(armyState: Dictionary, allTiles: Array) -> void:
+#     # Called during load game — rebuilds army from saved JSON state
+#     var icon = _get_default_army_icon()
+#     addArmy(armyState["armyName"], armyState["inTileNumber"], icon)
+#     for army in countryArmyList:
+#         if army.ArmyName == armyState["armyName"]:
+#             # Restore units
+#             for unitData in armyState.get("units", []):
+#                 addNewUnit(
+#                     army,
+#                     unitData["unitType"],
+#                     unitData["unitLevel"],
+#                     unitData["weaponType"],
+#                     unitData["oreType"],
+#                     unitData["uniformType"],
+#                     unitData["currentManpower"],
+#                     unitData["currentWeapons"]
+#                 )
+#                 # Restore per-unit dynamic state
+#                 var unit = army.unitsList.back()
+#                 unit.unitShield    = unitData.get("currentShield", unit.unitMaxShield)
+#                 unit.reloadCounter = unitData.get("reloadCounter", 0)
+#             # Restore army-level state
+#             army.inRetreat  = armyState.get("inRetreat", false)
+#             army.raised     = armyState.get("raised", false)
+#             army.deleteMode = armyState.get("deleteMode", false)
+#             # Restore spell if active
+#             var spellName = armyState.get("armySpell", "")
+#             if spellName != "":
+#                 var savedSpell = spell.new()
+#                 savedSpell.spellType = spellName
+#                 army.armySpell = savedSpell
+#                 army.armySpellDuration = armyState.get("armySpellDuration", 0)
+#             break

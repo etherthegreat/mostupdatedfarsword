@@ -319,6 +319,8 @@ func build_self() -> void:
 		var level = buildings[building_name]
 		addBuilding(building_name.capitalize(), level)
 
+	determine_geologic_resource()
+
 	# Connect tile to its path point on the map
 	tileSpawnPoint = get_node("../../PathControl/PathPointsControl/" + str(tileNumber))
 
@@ -444,6 +446,58 @@ func calculateTerrain():
 	calculateWinterModifier()
 	calculateDynamicModifiers()
 
+func determine_geologic_resource() -> void:
+	# Derives the mine resource from terrain and specialFeatures
+	# Called at end of build_self() so data is already loaded
+	# Sets geologicResource string used by building.gd Mine
+ 
+	# Special features take priority — named deposits
+	if has_special_feature("Appalachian Minerals"):
+		geologicResource = "Iron"
+		return
+	if has_special_feature("Gun Valley"):
+		geologicResource = "Iron"    # Connecticut iron made the guns
+		return
+	if has_special_feature("Niagara Falls"):
+		geologicResource = "Marble"  # limestone/dolomite geology
+		return
+	if has_special_feature("Canadian Shield"):
+		geologicResource = "Gold"    # Shield geology is gold/nickel country
+		return
+	if has_special_feature("Adirondack Wilderness"):
+		geologicResource = "Iron"    # Adirondack iron ore is historically real
+		return
+	if has_special_feature("Laurentian Highlands"):
+		geologicResource = "Gold"
+		return
+	if has_special_feature("Blue Ridge Highlands"):
+		geologicResource = "Copper"
+		return
+	if has_special_feature("Great Smoky Mountains"):
+		geologicResource = "Copper"
+		return
+	if has_special_feature("Muskoka Highlands"):
+		geologicResource = "Marble"
+		return
+ 
+	# Terrain-based fallback
+	match terrain:
+		"Foothills":
+			geologicResource = "Copper"   # most common Appalachian ore
+		"Fortress":
+			geologicResource = "Iron"     # fortress tiles built near iron deposits
+		"Metro":
+			geologicResource = "Marble"   # cities built near quarryable stone
+		"Farmlands":
+			geologicResource = "Copper"   # shallow surface deposits
+		"Woods":
+			geologicResource = "Copper"
+		"Wetlands":
+			geologicResource = "None"     # wetlands don't mine well
+		"Suburbs":
+			geologicResource = "None"
+		_:
+			geologicResource = "Copper"   # safe default
 
 func calculateSeason(month):
 	var tileMonth = month
@@ -1425,6 +1479,37 @@ func is_governor_hostile() -> bool:
 	if not has_governor():
 		return false
 	return not has_governor_faction(tileOwner)
+
+#===================================
+#FactionHelpers 
+#===========================
+func get_dominant_faction(playerCountry) -> String:
+	# Which faction has highest loyalty in this country?
+	# Use for: event flavor text, determining which reward fires
+	var highestLoyalty = 0
+	var dominantFaction = ""
+	for f in playerCountry.countryFactionList:
+		if f.factionLoyalty > highestLoyalty:
+			highestLoyalty = f.factionLoyalty
+			dominantFaction = f.factionName
+	return dominantFaction
+ 
+func is_abolitionist_territory() -> bool:
+	# Is this tile significant to the abolitionist cause?
+	# Use for: Underground Railroad events, freedom paper events
+	# Tiles with monuments in formerly-slave states
+	return has_monument() and tileContinent in ["VA", "NC", "SC", "GA", "AL", "FL"]
+ 
+func is_labor_territory() -> bool:
+	# Is this tile significant to the Free Workers Union?
+	# Use for: guild charter events, strike events
+	# Industrial tiles with forges or workshops
+	return is_industrial() and (
+		has_special_feature("Gun Valley") or
+		has_special_feature("Chesapeake Shipyards") or
+		has_special_feature("Carpet Capital of the World")
+	)
+
 # ============================================================
 # WINTER HELPERS
 # ============================================================

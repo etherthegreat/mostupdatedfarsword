@@ -38,23 +38,105 @@ var rewardScene = preload("res://faction_reward.tscn")
 func matchFactionRewards():
 	print(factionLoyalty, "faction Loyalty")
 	match factionName:
-		#Anlaxia
-		"ANL_Republicans":
+		"Sons of Liberty":
 			var FR_texture1 = preload("res://art assets/ModifierIcons/milMods/green cross.png")
-			var FR_description_1 = str("The Republican alliance of Wello Jenni-Tur, these governors believe in following the wills of the people rather than simply rule by decree.")
-			addFactionReward("Local Elections", FR_description_1, FR_texture1, 1)
+			addFactionReward(
+				"Militia Muster",
+				"The Sons call every able man to arms. Colonial militias form faster and cost less manpower.",
+				FR_texture1, 1
+			)
 			var FR_texture2 = preload("res://art assets/ModifierIcons/milMods/portal.png")
-			var FR_description_2 = str("Citizenship of Anlaxia will not be denied due to any trivial reason.  All who denounce the demon pretender and his cronies are welcome here.")
-			addFactionReward("Equality Starts Here", FR_description_2, FR_texture2, 2)
+			addFactionReward(
+				"Merchant Networks",
+				"Patriot merchants open their warehouses. Gold income from market tiles increases.",
+				FR_texture2, 2
+			)
 			var FR_texture3 = preload("res://art assets/ModifierIcons/milMods/purple vines.png")
-			var FR_description_3 = str("A well armed citizenry will help us repel any of the breakaway demonic states that dare try and reinvade our island.")
-			addFactionReward("Citizen Militias", FR_description_3, FR_texture3, 3)
-		#"ANL_Zealouts"
-		#"ANL_Monarchists"
-		#"ANL_Razorbacks"
-		#Pender Tal
-		
-		#Vitherian Order
+			addFactionReward(
+				"Letters of Marque",
+				"Privateers sail under the rebel flag. Dock tiles produce weapons and the Nassau pirates offer alliance.",
+				FR_texture3, 3
+			)
+ 
+		"Continental Congress":
+			var FR_texture1 = preload("res://art assets/ModifierIcons/milMods/green cross.png")
+			addFactionReward(
+				"Articles of Confederation",
+				"A framework for governance. Courthouse tiles produce more mandate and reduce corruption.",
+				FR_texture1, 1
+			)
+			var FR_texture2 = preload("res://art assets/ModifierIcons/milMods/portal.png")
+			addFactionReward(
+				"Foreign Diplomacy",
+				"Congress sends envoys abroad. Unlock diplomatic options with Canada and other European powers.",
+				FR_texture2, 2
+			)
+			var FR_texture3 = preload("res://art assets/ModifierIcons/milMods/purple vines.png")
+			addFactionReward(
+				"Constitutional Convention",
+				"The framework of a new nation. Major governance unlock — all laws cost less mandate.",
+				FR_texture3, 3
+			)
+ 
+		"Common Cause":
+			var FR_texture1 = preload("res://art assets/ModifierIcons/milMods/green cross.png")
+			addFactionReward(
+				"Frontier Homesteads",
+				"Settlers push into uncontrolled territory. Colonization speed increases significantly.",
+				FR_texture1, 1
+			)
+			var FR_texture2 = preload("res://art assets/ModifierIcons/milMods/portal.png")
+			addFactionReward(
+				"The People's Assembly",
+				"Direct democracy at the local level. Tiles with liberated status produce more harmony.",
+				FR_texture2, 2
+			)
+			var FR_texture3 = preload("res://art assets/ModifierIcons/milMods/purple vines.png")
+			addFactionReward(
+				"Land Reform",
+				"Seized loyalist estates redistributed. Farm tiles in liberated territory double food output.",
+				FR_texture3, 3
+			)
+ 
+		"Abolitionist League":
+			var FR_texture1 = preload("res://art assets/ModifierIcons/milMods/green cross.png")
+			addFactionReward(
+				"Freedom Papers",
+				"The League issues freedom papers to all who escape occupied territory. Manpower in liberated tiles increases.",
+				FR_texture1, 1
+			)
+			var FR_texture2 = preload("res://art assets/ModifierIcons/milMods/portal.png")
+			addFactionReward(
+				"Underground Railroad",
+				"Escape networks cross occupied territory. Espionage becomes available in all UK-held tiles.",
+				FR_texture2, 2
+			)
+			var FR_texture3 = preload("res://art assets/ModifierIcons/milMods/purple vines.png")
+			addFactionReward(
+				"Universal Emancipation",
+				"Freedom for all, everywhere, unconditionally. Liberty score in all tiles increases by 20. Revolutionary hotbed events trigger faster.",
+				FR_texture3, 3
+			)
+ 
+		"Free Workers Union":
+			var FR_texture1 = preload("res://art assets/ModifierIcons/milMods/green cross.png")
+			addFactionReward(
+				"Guild Charters",
+				"Artisan guilds organize production. Forge and workshop tiles produce more weapons and gold.",
+				FR_texture1, 1
+			)
+			var FR_texture2 = preload("res://art assets/ModifierIcons/milMods/portal.png")
+			addFactionReward(
+				"General Strike",
+				"Workers in occupied territory refuse to work for the Crown. Corruption increases in all UK tiles by 10.",
+				FR_texture2, 2
+			)
+			var FR_texture3 = preload("res://art assets/ModifierIcons/milMods/purple vines.png")
+			addFactionReward(
+				"Workers Commonwealth",
+				"The most radical vision of the new republic. All production buildings output +2 of their primary resource.",
+				FR_texture3, 3
+			)
 	pass
 
 func addFactionReward(rewardType, rewardDescription, rewardTexture, slot):
