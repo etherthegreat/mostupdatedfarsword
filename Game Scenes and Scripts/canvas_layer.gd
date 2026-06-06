@@ -92,3 +92,11 @@ func _on_magic_button_pressed() -> void:
 func _on_pick_tech_pressed() -> void:
 	_on_tech_tree_button_pressed()
 	pass # Replace with function body.
+
+
+func _on_war_room_button_pressed() -> void:
+	if $WarRoomPanel.visible == false:
+		$WarRoomPanel.visible = true
+	else:
+		$WarRoomPanel.visible = false
+	pass # Replace with function body.

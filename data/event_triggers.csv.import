@@ -1,0 +1,17 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://hnqjy0vla84b"
+
+[deps]
+
+files=["res://data/event_triggers.event.translation", "res://data/event_triggers.trigger.translation", "res://data/event_triggers.tile.translation", "res://data/event_triggers.tile.translation", "res://data/event_triggers.min.translation", "res://data/event_triggers.min.translation", "res://data/event_triggers.turn.translation", "res://data/event_triggers.turn.translation", "res://data/event_triggers.state.translation", "res://data/event_triggers.commander.translation", "res://data/event_triggers.protector.translation", "res://data/event_triggers.trigger.translation", "res://data/event_triggers.priority.translation"]
+
+source_file="res://data/event_triggers.csv"
+dest_files=["res://data/event_triggers.event.translation", "res://data/event_triggers.trigger.translation", "res://data/event_triggers.tile.translation", "res://data/event_triggers.tile.translation", "res://data/event_triggers.min.translation", "res://data/event_triggers.min.translation", "res://data/event_triggers.turn.translation", "res://data/event_triggers.turn.translation", "res://data/event_triggers.state.translation", "res://data/event_triggers.commander.translation", "res://data/event_triggers.protector.translation", "res://data/event_triggers.trigger.translation", "res://data/event_triggers.priority.translation"]
+
+[params]
+
+compress=true
+delimiter=0

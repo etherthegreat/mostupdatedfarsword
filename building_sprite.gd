@@ -49,7 +49,7 @@ func updateUI(tile):
 				$LevelUpPointsLabel.text = str(tile.faireDevelopmentPoints, " / " , tile.tileFaireDevCost)
 				$Button.icon = load("res://art assets/finishedAssets/buildingsketches/faire.png")
 			"Forge":
-				$LevelUpPointsLabel.text = str(tile.forgeDevelopmentPoints, " / " , tile.tileFrogeDevCost)
+				$LevelUpPointsLabel.text = str(tile.forgeDevelopmentPoints, " / " , tile.tileForgeDevCost)
 				$Button.icon = load("res://art assets/finishedAssets/buildingsketches/forge.png")
 			"Barracks":
 				$LevelUpPointsLabel.text = str(tile.barracksDevelopmentPoints, " / " , tile.tileBarracksDevCost)

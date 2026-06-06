@@ -20,6 +20,7 @@ config/icon="res://icon.svg"
 TileDatabase="*res://TileDatabase.gd"
 CountryDatabase="*res://country_database.gd"
 ArmyDatabase="*res://army_database.gd"
+EventDatabase="*res://EventDatabase.gd"
 
 [display]
 

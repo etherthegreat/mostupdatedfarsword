@@ -39,6 +39,8 @@ func initializeTiles(is_new_game: bool, save_data: Dictionary = {}) -> void:
 # (removed the debug print though - see note below)
 # ============================================================
 
+signal spellAssignedToTile
+
 func connectTileSignals() -> void:
 	allTilesList.assign(get_children())
 	for Tile in get_children():

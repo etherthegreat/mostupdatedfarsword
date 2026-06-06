@@ -1,0 +1,17 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://bkmd1ishxv6pc"
+
+[deps]
+
+files=["res://data/events.event.translation", "res://data/events.country.translation", "res://data/events.headline.translation", "res://data/events.short.translation", "res://data/events.long.translation", "res://data/events.image.translation", "res://data/events.tone.translation", "res://data/events.tile.translation", "res://data/events.tile.translation", "res://data/events.tile.translation", "res://data/events.content.translation", "res://data/events.repeatable.translation", "res://data/events.cooldown.translation"]
+
+source_file="res://data/events.csv"
+dest_files=["res://data/events.event.translation", "res://data/events.country.translation", "res://data/events.headline.translation", "res://data/events.short.translation", "res://data/events.long.translation", "res://data/events.image.translation", "res://data/events.tone.translation", "res://data/events.tile.translation", "res://data/events.tile.translation", "res://data/events.tile.translation", "res://data/events.content.translation", "res://data/events.repeatable.translation", "res://data/events.cooldown.translation"]
+
+[params]
+
+compress=true
+delimiter=0

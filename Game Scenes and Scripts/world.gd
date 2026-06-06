@@ -85,6 +85,7 @@ func newGameBuild(CID, gameLang):
 		Tile.calculateSeason(month)
 		Tile.clicked.connect(tileClicked)
 		Tile.censusComplete.connect(manaUpdate)
+		Tile.tileSpawnPoint = $PathControl/PathPointsControl.get_node_or_null(str(Tile.EXPTileNumber))
 	$CanvasLayer/LoadingLabel.text = "Spawning Countries"
 	$CanvasLayer/LoadingProgressBar.value = 25
 	spawnNewGameCountries(CID)
@@ -115,9 +116,9 @@ func newGameBuild(CID, gameLang):
 	$CanvasLayer/LoadingSprite.visible = false
 	$CanvasLayer/LoadingProgressBar.visible = false
 	$CanvasLayer/LoadingLabel.visible = false
-	for country in aliveCountriesList:
-		for Army in country.countryArmyList:
-			Army.raiseSelf()
+	#for country in aliveCountriesList:
+		#for Army in country.countryArmyList:
+			#Army.raiseSelf()
 	pass
 
 var countryNode = load("res://Game Scenes and Scripts/country.tscn")
@@ -218,7 +219,7 @@ func updatePlayerUI():
 	#$CanvasLayer/SpellSchoolsControl.askForInfo.connect(giveSpellInfo)
 	$CanvasLayer/Spellbook.spellToUse.connect(activateSpellMapMode)
 	$TileController.spellAssignedToTile.connect(spellPurchased)
-	$TileController.colonizeTile.connect(updateCountryTiles)
+	#$TileController.colonizeTile.connect(updateCountryTiles)
 	$TileController.newTileOwner.connect(tileSiegeWon)
 	$PathControl.call_deferred("showPathPoints", playerCapitalPathButton)
 	$CanvasLayer/BuildingInfoPanel.buildSelf(playerCountryNode)
@@ -226,6 +227,10 @@ func updatePlayerUI():
 	$CanvasLayer/TileInfoPanel.retrieveTileOutputs.connect(retrieveOutputs)
 	#$PathControl.makeAllContainersPassable()
 	#print("ALL I NEED")
+	# War Room panel wiring
+	$CanvasLayer/WarRoomPanel.buildSelf(playerCountryNode)
+	if not $CanvasLayer/WarRoomPanel.requestEventFire.is_connected(_on_arc_event_requested):
+		$CanvasLayer/WarRoomPanel.requestEventFire.connect(_on_arc_event_requested)
 	pass
 
 var thisTileNumber: int
@@ -415,6 +420,8 @@ func assignGovernor(governorToAssign, tileToAssignTo):
 	if tileToAssignTo.stationedArmy !=null:
 		tileToAssignTo.stationedArmy.addUnitCommander(governorToAssign)
 	calculateGovernorEvent(governorToAssign)
+	# Register commander arc in War Room
+	$CanvasLayer/WarRoomPanel.registerCommanderArc(governorToAssign, tileToAssignTo)
 	pass
 
 func openGovernorsPanel(tile):
@@ -424,19 +431,12 @@ func openGovernorsPanel(tile):
 #Magic Code
 
 func newSpellEvent(schoolType, currentLvl):
-	var sType = schoolType
-	var lvl = currentLvl
-	match sType:
+	match schoolType:
 		"elementalist":
-			match lvl:
-				0:
-					createNewEvent("spell", "GEN_PLENTIFY_UNLOCK", "GEN", gameLanguage)
-				1: 
-					createNewEvent("spell", "GEN_HEALING_WINDS_UNLOCK", "GEN", gameLanguage)
-				2:
-					createNewEvent("spell", "GEN_RAISE_SPRING_UNLOCK", "GEN", gameLanguage)
-				
-	pass
+			match currentLvl:
+				0: createNewEvent("GEN_PLENTIFY_UNLOCK")
+				1: createNewEvent("GEN_HEALING_WINDS_UNLOCK")
+				2: createNewEvent("GEN_RAISE_SPRING_UNLOCK")
 
 #Government Code
 func addLawToCountry(lawType):
@@ -512,104 +512,177 @@ func spellPurchased(cost):
 	pass
 
 #EVENT SYSTEM
-func calculateTileEvent(tile, type):
-	print("most up to date", tile.tileName, type)
+
+func calculateTileEvent(tile, type) -> void:
 	match type:
 		"wizard":
-			createNewTileEvent("tile", "wizardSelect", "GEN", tile, gameLanguage)
-	pass
+			createNewEvent("wizardSelect", tile)
 
-func calculateGovernorEvent(governor):
-	match governor.governorType:
+func calculateGovernorEvent(gov) -> void:
+	match gov.governorType:
 		"Wolverina Gundo":
-			match governor.governorLevel:
-				1:
-					createNewEvent("governor", "PDT_Wolverina0", "PDT", gameLanguage)
-	pass
+			match gov.governorLevel:
+				1: createNewEvent("PDT_Wolverina0")
 
-func createNewEvent(type, id, CID, language):
-	var newEvent = eventScene.instantiate()
-	match type:
-		"governor":
-			#print(type, id, CID, language, "looking gay")
-			newEvent.buildSelf(type, id, CID, language)
-			newEvent.eventButtonPressed.connect(matchEventOutcome)
-			$CanvasLayer/EventControl/EventContainer.add_child(newEvent)
-		"spell":
-			newEvent.buildSelf(type, id, CID, language)
-			newEvent.eventButtonPressed.connect(matchEventOutcome)
-			$CanvasLayer/EventControl/EventContainer.add_child(newEvent)
-	pass
+func _on_arc_event_requested(event_id: String, tile) -> void:
+	createNewEvent(event_id, tile)
 
-func createNewTileEvent(type, id, CID, tile, language):
-	#print("like a door", type, id, CID, tile, language)
+func createNewEvent(event_id: String, tile = null) -> void:
+	if not EventDatabase.event_can_fire(event_id, currentWorldTurn):
+		return
 	var newEvent = eventScene.instantiate()
-	newEvent.buildTileEventSelf(type, id, CID, tile, language)
-	newEvent.tileEventButtonPressed.connect(matchTileEventOutcome)
+	newEvent.build_from_csv(event_id, tile)
+	newEvent.eventButtonPressed.connect(_on_event_button_pressed)
+	newEvent.tileEventButtonPressed.connect(_on_tile_event_button_pressed)
 	$CanvasLayer/EventControl/EventContainer.add_child(newEvent)
-	pass
+	EventDatabase.mark_event_fired(event_id, currentWorldTurn)
 
-func matchEventOutcome(eventButtonID, eventType, eventID, eventCountry):
-	print("signal received ")
-	match eventCountry:
-		"GEN":
-			match eventType:
-				"spell":
-					match eventID:
-						"GEN_PLENTIFY_UNLOCK":
-							match eventButtonID:
-								"GEN_Plentify_Unlock_1":
-									playerCountryNode.addSpellToSpellbook("Plentify", 1, 0)
-									playerCountryNode.levelUpSchool("elementalist")
-						"GEN_HEALING_WINDS_UNLOCK":
-							match eventButtonID:
-								"GEN_Healing_Winds_Unlock_1":
-									playerCountryNode.addSpellToSpellbook("Healing Winds", 1, 0)
-									playerCountryNode.levelUpSchool("elementalist")
-						"GEN_RAISE_SPRING_UNLOCK":
-							match eventButtonID:
-								"GEN_Raise_Spring_Unlock_1":
-									playerCountryNode.addSpellToSpellbook("Raise Spring", 1, 0)
-									playerCountryNode.levelUpSchool("elementalist")
+func _on_event_button_pressed(button_id: String, event_id: String,
+		event_country: String, outcome_type: String,
+		outcome_value: String, outcome_amount: int) -> void:
+	executeOutcome(outcome_type, outcome_value, outcome_amount, null)
+	var btn = EventDatabase.get_button(button_id)
+	var next_id = btn.get("next_event_id", "")
+	if next_id != "":
+		createNewEvent(next_id)
+
+func _on_tile_event_button_pressed(button_id: String, event_id: String,
+		event_country: String, outcome_type: String,
+		outcome_value: String, outcome_amount: int, tile: Tile) -> void:
+	executeOutcome(outcome_type, outcome_value, outcome_amount, tile)
+	var btn = EventDatabase.get_button(button_id)
+	var next_id = btn.get("next_event_id", "")
+	if next_id != "":
+		createNewEvent(next_id, tile)
+
+func executeOutcome(outcome_type: String, outcome_value: String,
+		outcome_amount: int, tile) -> void:
+	match outcome_type:
+		"add_faction":
+			var leader = _find_or_create_leader(outcome_value)
+			$CanvasLayer/FactionControl.addFaction(outcome_value, outcome_amount, leader)
+		"loyalty_change":
+			playerCountryNode.changeFactionLoyalty(outcome_value, outcome_amount)
+		"add_spell":
+			playerCountryNode.addSpellToSpellbook(outcome_value, outcome_amount, 0)
+			playerCountryNode.levelUpSchool(_get_spell_school(outcome_value))
+		"add_tech":
+			playerCountryNode.addTechnologicalDiscovery(outcome_value)
+		"add_law":
+			playerCountryNode.addGovernmentLaw(outcome_value)
+		"add_governor":
+			playerCountryNode.addGovernorToGovernorPool(outcome_value, outcome_amount)
+		"add_mil_mod":
+			playerCountryNode.addMilMod(outcome_value)
+		"resource_change":
+			_apply_resource_change(outcome_value, outcome_amount)
+		"morale_boost":
+			_apply_morale_boost(outcome_amount)
+		"tile_liberation":
+			if tile != null:
+				tile.record_conquest("USA")
+				tileSiegeWon(tile, tile.tileOwner, "USA")
+		"tile_loyalty_change":
+			if tile != null:
+				tile.corruption = max(0, tile.corruption - outcome_amount)
+		"add_wizard":
+			if tile != null:
+				tile.addWizard(outcome_value)
+		"reveal_tiles":
+			if tile != null:
+				for neighbor in tile.TileNeighbors:
+					neighbor.discoverTile()
+		"tile_building":
+			if tile != null:
+				tile.addBuilding(outcome_value, outcome_amount)
+		"army_buff":
+			_apply_army_buff(outcome_value, outcome_amount, tile)
+		"summon_protector":
+			_summon_protector(outcome_value, tile)
+		"trigger_event":
+			createNewEvent(outcome_value, tile)
+		"set_flag":
+			playerCountryNode.CountryFlags.append(outcome_value)
+		"clear_flag":
+			playerCountryNode.CountryFlags.erase(outcome_value)
+		"nothing":
 			pass
-		"PDT":
-			match eventType:
-				"governor":
-					match eventID:
-						"PDT_Wolverina0":
-							match eventButtonID:
-								"PDT_Wolverina0-1":
-									print("YOUVE COMPLETED THE CHAIN")
-									var tempGov = governor.new()
-									for Tile in playerCountryNode.OwnedTileList:
-										if Tile.tileGovernor != null:
-											match Tile.tileGovernor.governorType:
-												"Wolverina Gundo":
-													tempGov = Tile.tileGovernor
-									$CanvasLayer/FactionControl.addFaction("ANL_Republicans", 10, tempGov)
-								"PDT_Wolverina0-2":
-									print("What's UP Chump?")
-	pass
+		_:
+			push_warning("executeOutcome: Unknown outcome type: " + outcome_type)
 
-func matchTileEventOutcome(eventButtonID, eventType, eventCountry, eventTile):
-	print(eventButtonID, "marvel rivals")
-	match eventCountry:
-		"GEN":
-			match eventButtonID:
-				"GEN_AssignDruidWizard":
-					eventTile.addWizard("druid")
-				"GEN_AssignElementalWizard":
-					eventTile.addWizard("elementalist")
-				"GEN_AssignIllusionWizard":
-					eventTile.addWizard("illusionist")
-				"GEN_AssignDivinerWizard":
-					eventTile.addWizard("diviner")
-				"GEN_AssignSummonerWizard":
-					eventTile.addWizard("summoner")
-				"GEN_AssignAlchemistWizard":
-					eventTile.addWizard("alchemist")
-			print(eventTile.tileWizard, "tileWizard")
-	pass
+func evaluateDateEvents() -> void:
+	var to_fire = EventDatabase.evaluate_date_triggers(currentWorldTurn, month)
+	for event_id in to_fire:
+		createNewEvent(event_id)
+
+func evaluateTileEvents(tile) -> void:
+	var to_fire = EventDatabase.evaluate_tile_triggers(tile, currentWorldTurn)
+	for event_id in to_fire:
+		createNewEvent(event_id, tile)
+
+func evaluateStateLiberation(state_code: String) -> void:
+	var to_fire = EventDatabase.evaluate_state_triggers(state_code, currentWorldTurn)
+	for event_id in to_fire:
+		createNewEvent(event_id)
+
+func evaluateCommanderObjective(archetype_id: String, objective_num: int) -> void:
+	var to_fire = EventDatabase.evaluate_commander_triggers(
+		archetype_id, objective_num, currentWorldTurn)
+	for event_id in to_fire:
+		createNewEvent(event_id)
+
+func evaluateProtectorSummon(protector_id: String) -> void:
+	var to_fire = EventDatabase.evaluate_protector_triggers(
+		protector_id, "protector_summon", currentWorldTurn)
+	for event_id in to_fire:
+		createNewEvent(event_id)
+
+func _apply_resource_change(resource: String, amount: int) -> void:
+	match resource:
+		"gold":     playerCountryNode.TotalGold     += amount
+		"food":     playerCountryNode.TotalFood     += amount
+		"wood":     playerCountryNode.TotalWood     += amount
+		"metal":    playerCountryNode.TotalMetal    += amount
+		"weapons":  playerCountryNode.TotalWeapons  += amount
+		"faith":    playerCountryNode.TotalFaith    += amount
+		"magic":    playerCountryNode.TotalMagic    += amount
+		"science":  playerCountryNode.TotalScience  += amount
+		"culture":  playerCountryNode.TotalCulture  += amount
+		"harmony":  playerCountryNode.TotalHarmony  += amount
+		"mandate":  playerCountryNode.TotalMandate  += amount
+		"manpower": playerCountryNode.TotalManpower += amount
+
+func _apply_morale_boost(amount: int) -> void:
+	for Tile in playerCountryNode.OwnedTileList:
+		Tile.corruption = max(0, Tile.corruption - int(amount * 0.5))
+
+func _apply_army_buff(buff_type: String, duration: int, tile) -> void:
+	for Army in playerCountryNode.countryArmyList:
+		if tile == null or Army.inTile == tile:
+			pass
+
+func _summon_protector(protector_id: String, tile) -> void:
+	createNewEvent("PROT_" + protector_id + "_SUMMON", tile)
+
+func _get_spell_school(spell_name: String) -> String:
+	match spell_name:
+		"Plentify", "Healing Winds", "Raise Spring": return "elementalist"
+		_: return "elementalist"
+
+func _find_or_create_leader(faction_name: String) -> governor:
+	for gov in playerCountryNode.unlockedGovernors:
+		if gov.governorType == faction_name:
+			return gov
+	var placeholder = governor.new()
+	placeholder.buildSelf("Unknown Leader", 1)
+	return placeholder
+
+func _is_state_liberated(state_code: String, cid: String) -> bool:
+	for Tile in $TileController.get_children():
+		if Tile.tileContinent == state_code and Tile.tileOwner != cid:
+			return false
+	return true
+
 
 
 func _on_right_click_detector_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
@@ -895,15 +968,17 @@ func _on_spell_schools_control_calculate_player_outputs(spellSchools) -> void:
 	calculatePlayerOutputs(spellSchools)
 	pass # Replace with function body.
 
-func tileSiegeWon(tile, oldCID, newCID):
-	print("TileSiegeWon WORLD")
+func tileSiegeWon(tile, oldCID: String, newCID: String) -> void:
 	for country in aliveCountriesList:
 		if country.CID == oldCID:
 			country.OwnedTileList.erase(tile)
 		if country.CID == newCID:
 			country.addTile(tile)
 	tile.record_conquest(newCID)
-	pass
+	evaluateTileEvents(tile)
+	var state_code = tile.tileContinent
+	if state_code != "" and _is_state_liberated(state_code, newCID):
+		evaluateStateLiberation(state_code)
 
 func _on_next_turn_pressed() -> void:
 	playerCountryNode.surveyResources()
@@ -917,8 +992,12 @@ func _on_next_turn_pressed() -> void:
 	for country in aliveCountriesList:
 		if country != playerCountryNode:
 			country.calculateTurn()
+	# Check War Room arc objectives (auto-detects completion, no player input needed)
+	$CanvasLayer/WarRoomPanel.checkObjectives(
+		$TileController.get_children(), currentWorldTurn)
 	$CanvasLayer/TechTree.investInTech(playerCountryNode.SPM)
 	currentWorldTurn += 1
+	evaluateDateEvents()
 	for Tile in $TileController.get_children():
 		Tile.tick_conquest_timer()
 	$CanvasLayer/TurnLabel.text = str(currentWorldTurn)

@@ -245,9 +245,9 @@ func buildBuilding():
 			woodPurchaseCost = 30
 			metalPurchaseCost = 90
 			manpowerDic["Base Barracks Manpower Output"] = (50 * buildingLevel)
-			goldDic["Base Forge Gold Cost"] = (-2 * buildingLevel)
-			woodDic["Base Forge Wood Cost"] = (-1 * buildingLevel)
-			foodDic["Base Forge Metal Cost"] = (-1 * buildingLevel)
+			goldDic["Base Barracks Gold Cost"] = (-2 * buildingLevel)
+			woodDic["Base Barracks Wood Cost"] = (-1 * buildingLevel)
+			foodDic["Base Barracks Food Cost"] = (-1 * buildingLevel)
 	pass
 
 func matchPlayerUnlockables(playerCountryNode):

@@ -1,0 +1,95 @@
+[gd_scene load_steps=2 format=3 uid="uid://ds1e16hqnvjib"]
+
+[ext_resource type="Script" uid="uid://bu4f5n4y5qv45" path="res://ProtectorArcEntry.gd" id="1_81sax"]
+
+[node name="ProtectorArcEntry" type="Control"]
+custom_minimum_size = Vector2(280, 200)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_81sax")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 1921.0
+offset_bottom = 1081.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+layout_mode = 0
+offset_left = 242.0
+offset_right = 1637.0
+offset_bottom = 132.0
+
+[node name="SomaMemoLabel" type="Label" parent="Panel/VBoxContainer"]
+layout_mode = 2
+text = "MemoLabel"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 200
+
+[node name="ProtectorNameLabel" type="Label" parent="Panel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 51
+text = "ProtectorNameLabel"
+
+[node name="DevotionBar" type="ProgressBar" parent="Panel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="HSeparator2" type="HSeparator" parent="Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="PrayersContainer" type="VBoxContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="PrayersRow_1" type="HBoxContainer" parent="Panel/VBoxContainer/PrayersContainer"]
+layout_mode = 2
+theme_override_constants/separation = 200
+
+[node name="TextureRect" type="TextureRect" parent="Panel/VBoxContainer/PrayersContainer/PrayersRow_1"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+
+[node name="PrayerLabel_1" type="Label" parent="Panel/VBoxContainer/PrayersContainer/PrayersRow_1"]
+layout_mode = 2
+text = "OBJECTIVE 1"
+autowrap_mode = 3
+
+[node name="PrayersRow_2" type="HBoxContainer" parent="Panel/VBoxContainer/PrayersContainer"]
+layout_mode = 2
+theme_override_constants/separation = 200
+
+[node name="TextureRect" type="TextureRect" parent="Panel/VBoxContainer/PrayersContainer/PrayersRow_2"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+
+[node name="PrayerLabel_1" type="Label" parent="Panel/VBoxContainer/PrayersContainer/PrayersRow_2"]
+layout_mode = 2
+text = "OBJECTIVE 1"
+autowrap_mode = 3
+
+[node name="PrayersRow_3" type="HBoxContainer" parent="Panel/VBoxContainer/PrayersContainer"]
+layout_mode = 2
+theme_override_constants/separation = 200
+
+[node name="TextureRect" type="TextureRect" parent="Panel/VBoxContainer/PrayersContainer/PrayersRow_3"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+
+[node name="PrayerLabel_1" type="Label" parent="Panel/VBoxContainer/PrayersContainer/PrayersRow_3"]
+layout_mode = 2
+text = "OBJECTIVE 1"
+autowrap_mode = 3
+
+[node name="HSeparator" type="HSeparator" parent="Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="SummonStatusLabel" type="Label" parent="Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 52
+text = "Reward Label"
+horizontal_alignment = 2

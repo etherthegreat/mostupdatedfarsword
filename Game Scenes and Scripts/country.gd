@@ -218,7 +218,7 @@ var setBathTaxAmount: int = 0
 
 var capitalPathPointButton: pathPointButton
 
-func NewGameBuild(CID) -> void:
+func NewGameBuild() -> void:
 	# Loads all starting data from CountryDatabase (countries.csv)
 	# Replaces the old massive match statement
 	var data = CountryDatabase.get_country(CID)
@@ -298,7 +298,7 @@ func NewGameBuild(CID) -> void:
 		# Try to find a matching governor as faction leader
 		# Falls back to first available governor or placeholder
 		var leader = _find_faction_leader(factionData["name"], governorPool)
-		addFaction(factionData["name"], factionData["loyalty"], leader)
+		addFaction(factionData["name"], factionData["loyalty"], leader.governorType)
  
 	# Taxation and unlockables
 	calculateTaxationAmounts()
@@ -500,7 +500,7 @@ func addArmy (Name, TileNumber, icon):
 			armyInstance.inTile = Tile
 	countryArmyList.append(armyInstance)
 	pass
-
+var factionScene = load("res://faction.tscn")
 func addFaction(Name: String, Loyalty: int, factionLeader: String) -> void:
 	# If no leader provided, create a placeholder so faction.visualizeSelf() doesn't crash
 	var leader: governor
@@ -510,9 +510,16 @@ func addFaction(Name: String, Loyalty: int, factionLeader: String) -> void:
 	if leader == null:
 		leader = governor.new()
 		leader.buildSelf("Unknown Leader", 1)
-	var newFaction = faction.new()
+	var newFaction = factionScene.instantiate()
 	newFaction.buildSelf(Name, Loyalty, leader)
 	countryFactionList.append(newFaction)
+
+func changeFactionLoyalty(factionName: String, amount: int) -> void:
+	for fac in countryFactionList:
+		if fac.factionName == factionName:
+			fac.upgradeFaction(amount)
+			return
+	push_warning("changeFactionLoyalty: faction '" + factionName + "' not found")
 
 func addReligiousBelief(Name):
 	var newBelief = belief.new()
@@ -881,7 +888,13 @@ func surveyResources():
 	HPM = 0
 	NDT = 0
 	NPM = 0
-	MAN =0
+	MAN = 0
+	alcPoints = 0
+	sumPoints = 0
+	elePoints = 0
+	illPoints = 0
+	divPoints = 0
+	druPoints = 0
 	for Tile in OwnedTileList:
 		Tile.surveyTile(self)
 		Tile.calculateSpellChanges()
@@ -1114,8 +1127,150 @@ func calculateTaxationAmounts():
 	minBathTaxAmount += minPosTaxationAmount
 	pass
 
-func calculateTurn():
-	
+func calculateTurn() -> void:
+	match CID:
+		"UK":
+			_uk_calculate_turn()
+		"CA":
+			pass  # CA is neutral for July 4th
+		"BA":
+			pass  # BA is opportunist — TODO DODK
+
+
+# ============================================================
+# UK AI — SUPPLY CHAIN SYSTEM
+# BFS from army tile through contiguous CID-owned tiles to a dock.
+# Unsupplied armies take 5% manpower attrition (bypasses armor).
+# ============================================================
+
+func _calculate_supply_from_owned() -> void:
+	for army in countryArmyList:
+		if army.inTile == null:
+			army.set_meta("supplied", false)
+			continue
+		var supplied = _trace_supply_to_port(army.inTile)
+		army.set_meta("supplied", supplied)
+		if not supplied:
+			_apply_supply_attrition(army)
+
+
+func _trace_supply_to_port(startTile) -> bool:
+	if startTile == null:
+		return false
+	var visited: Dictionary = {}
+	var queue: Array = [startTile]
+	visited[startTile.tileNumber] = true
+	while queue.size() > 0:
+		var current = queue.pop_front()
+		if current.has_dock() and current.tileOwner == CID:
+			return true
+		for neighbor in current.TileNeighbors:
+			if visited.has(neighbor.tileNumber):
+				continue
+			if neighbor.tileOwner != CID:
+				continue
+			visited[neighbor.tileNumber] = true
+			queue.append(neighbor)
+	return false
+
+
+func _apply_supply_attrition(army: Army) -> void:
+	var attrition_rate = 0.05
+	for unit in army.unitsList:
+		var loss = int(unit.unitCurrentManpower * attrition_rate)
+		unit.unitCurrentManpower = max(0, unit.unitCurrentManpower - loss)
+	army.surveySelf()
+	print(CID, " army ", army.ArmyName, " unsupplied — attrition applied")
+
+
+func is_army_supplied(army: Army) -> bool:
+	return army.get_meta("supplied", true)
+
+
+# ============================================================
+# UK AI — ZOMBIE HORDE MODEL
+# Pure military. No economy. No buildings.
+# ============================================================
+
+func _uk_calculate_turn() -> void:
+	_calculate_supply_from_owned()
+	for army in countryArmyList:
+		if army.inTile == null:
+			continue
+		if army.deleteMode:
+			continue
+		var supplied = is_army_supplied(army)
+		if not supplied:
+			_uk_retreat_to_supply(army)
+		else:
+			var target = _find_attack_target(army)
+			if target != null:
+				_uk_attack_tile(army, target)
+			else:
+				_uk_reinforce(army)
+
+
+func _find_attack_target(army: Army):
+	if army.inTile == null:
+		return null
+	var best_target = null
+	var lowest_defender_strength = INF
+	for neighbor in army.inTile.TileNeighbors:
+		if neighbor.tileOwner != "USA":
+			continue
+		var defender_strength = 0
+		if neighbor.stationedArmy != null:
+			defender_strength = neighbor.stationedArmy.manpowerInArmy
+		else:
+			defender_strength = int(neighbor.get_siege_difficulty() * 50)
+		if army.manpowerInArmy > defender_strength:
+			if defender_strength < lowest_defender_strength:
+				lowest_defender_strength = defender_strength
+				best_target = neighbor
+	return best_target
+
+
+func _uk_attack_tile(army: Army, targetTile) -> void:
+	if targetTile == null:
+		return
+	targetTile.siegeCalculate(army)
+	if targetTile.stationedArmy != null:
+		_resolve_ai_battle(army, targetTile.stationedArmy, targetTile)
+	print("UK ", army.ArmyName, " attacks ", targetTile.tileName)
+
+
+func _resolve_ai_battle(attacker: Army, defender: Army, _tile) -> void:
+	var raw_attack = float(attacker.armyPunch)
+	var block_ratio = clamp(
+		float(defender.armyBlock) / max(1.0, float(defender.unitsList.size())),
+		0.0, 0.9)
+	var defender_loss = int(raw_attack * (1.0 - block_ratio))
+
+	var counter = float(defender.armyPunch)
+	var attacker_block = clamp(
+		float(attacker.armyBlock) / max(1.0, float(attacker.unitsList.size())),
+		0.0, 0.9)
+	var attacker_loss = int(counter * (1.0 - attacker_block))
+
+	defender.calculateDefenderResults("melee", defender_loss)
+	attacker.calculateDefenderResults("melee", attacker_loss)
+	print("UK battle: attacker loses ", attacker_loss, " defender loses ", defender_loss)
+
+
+func _uk_retreat_to_supply(army: Army) -> void:
+	if army.inTile == null:
+		return
+	for tile in OwnedTileList:
+		if not tile.has_dock():
+			continue
+		for neighbor in army.inTile.TileNeighbors:
+			if neighbor == tile and neighbor.tileOwner == CID:
+				army.inTile = neighbor
+				print("UK ", army.ArmyName, " retreats to supply at ", neighbor.tileName)
+				return
+
+
+func _uk_reinforce(_army: Army) -> void:
 	pass
 
 func setNewTaxAmount(amount, type):

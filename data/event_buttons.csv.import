@@ -1,0 +1,17 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://5p4glh3dga8j"
+
+[deps]
+
+files=["res://data/event_buttons.event.translation", "res://data/event_buttons.button.translation", "res://data/event_buttons.button.translation", "res://data/event_buttons.outcome.translation", "res://data/event_buttons.outcome.translation", "res://data/event_buttons.outcome.translation", "res://data/event_buttons.loyalty.translation", "res://data/event_buttons.tile.translation", "res://data/event_buttons.army.translation", "res://data/event_buttons.next.translation", "res://data/event_buttons.prerequisite.translation"]
+
+source_file="res://data/event_buttons.csv"
+dest_files=["res://data/event_buttons.event.translation", "res://data/event_buttons.button.translation", "res://data/event_buttons.button.translation", "res://data/event_buttons.outcome.translation", "res://data/event_buttons.outcome.translation", "res://data/event_buttons.outcome.translation", "res://data/event_buttons.loyalty.translation", "res://data/event_buttons.tile.translation", "res://data/event_buttons.army.translation", "res://data/event_buttons.next.translation", "res://data/event_buttons.prerequisite.translation"]
+
+[params]
+
+compress=true
+delimiter=0

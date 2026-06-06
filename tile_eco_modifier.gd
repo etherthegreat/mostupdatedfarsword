@@ -55,12 +55,15 @@ func buildTileEcoMod():
 			modType = "TERRAIN"
 			modDescription = "Heavy rains hydrate a dense ecosystem rich with biodiversity."
 			modSprite = load("res://art assets/Placeholder Art/UI Art/resources/Green Circle.png")
+			number = 0
 		"Grassland":
 			modType = "TERRAIN"
 			modDescription = "Fertile plains ripe for agriculture, capable of feeding many mouths."
 			modSprite = load("res://art assets/Placeholder Art/UI Art/resources/Yellow Circle.png")
+			number = 0
 		"Summer":
 			modType = "TERRAIN"
 			modDescription = "Summer sun warms the air."
 			modSprite = load("res://art assets/Placeholder Art/UI Art/resources/Orange Circle.png")
+			number = 0
 	pass

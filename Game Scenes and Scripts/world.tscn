@@ -1,4 +1,4 @@
-[gd_scene load_steps=536 format=3 uid="uid://bfbouq3jfwkxl"]
+[gd_scene load_steps=538 format=3 uid="uid://bfbouq3jfwkxl"]
 
 [ext_resource type="Script" uid="uid://dthx176t72xxr" path="res://Game Scenes and Scripts/world.gd" id="1_6bnro"]
 [ext_resource type="Texture2D" uid="uid://co1xqkk2trdfd" path="res://art assets/AmericanRevolutionArt/tileandMaps/maps/usamap-borderless.png" id="2_8oo0e"]
@@ -500,7 +500,9 @@
 [ext_resource type="Texture2D" uid="uid://b1stieoh4sur8" path="res://art assets/AmericanRevolutionArt/tileandMaps/tiles/200.png" id="398_npiuy"]
 [ext_resource type="Texture2D" uid="uid://3k3umes3e83h" path="res://art assets/AmericanRevolutionArt/tileandMaps/tiles/201-r.png" id="399_7ybmk"]
 [ext_resource type="Texture2D" uid="uid://duyc1veuyyh1t" path="res://art assets/AmericanRevolutionArt/tileandMaps/tiles/201.png" id="400_11xh4"]
+[ext_resource type="PackedScene" uid="uid://c5r5ers4csm4f" path="res://WarRoomPanel.tscn" id="404_c5kbx"]
 [ext_resource type="Texture2D" uid="uid://yll6mlw1sya0" path="res://art assets/AmericanRevolutionArt/Panel/america2.png" id="432_ld12t"]
+[ext_resource type="Texture2D" uid="uid://bidt76inkwvb8" path="res://art assets/AmericanRevolutionArt/tempArt/starfire_again.jpg" id="471_vx15h"]
 [ext_resource type="Texture2D" uid="uid://byaqywypes15d" path="res://art assets/Placeholder Art/UI Art/resources/black.png" id="473_168he"]
 [ext_resource type="PackedScene" uid="uid://dxgbupy7n6qju" path="res://spell_branch_unlock.tscn" id="474_428lr"]
 [ext_resource type="Texture2D" uid="uid://db2hyfrnulqu8" path="res://art assets/finishedAssets/Panels/armypanelfinishedui/IMG_1548.PNG" id="478_8oo0e"]
@@ -7749,6 +7751,10 @@ metadata/_edit_use_anchors_ = true
 layer = 2
 script = ExtResource("12_lbt1a")
 
+[node name="WarRoomPanel" parent="CanvasLayer" instance=ExtResource("404_c5kbx")]
+visible = false
+z_index = -7
+
 [node name="NextTurnControl" type="Control" parent="CanvasLayer"]
 layout_mode = 3
 anchors_preset = 0
@@ -10037,7 +10043,6 @@ offset_bottom = 40.0
 mouse_filter = 2
 
 [node name="PanelOpenerControl" type="Control" parent="CanvasLayer"]
-visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_left = 10.0
@@ -10185,16 +10190,16 @@ offset_bottom = 70.0
 icon = ExtResource("28_2yctp")
 expand_icon = true
 
-[node name="DiploControl" type="Control" parent="CanvasLayer/PanelOpenerControl/ButtonPanel/VBoxContainer"]
+[node name="WarRoomControl" type="Control" parent="CanvasLayer/PanelOpenerControl/ButtonPanel/VBoxContainer"]
 layout_mode = 2
 
-[node name="TechTreeButton" type="Button" parent="CanvasLayer/PanelOpenerControl/ButtonPanel/VBoxContainer/DiploControl"]
+[node name="WarRoomButton" type="Button" parent="CanvasLayer/PanelOpenerControl/ButtonPanel/VBoxContainer/WarRoomControl"]
 layout_mode = 2
 offset_left = 6.0
 offset_top = -10.0
 offset_right = 86.0
 offset_bottom = 70.0
-icon = ExtResource("28_2yctp")
+icon = ExtResource("471_vx15h")
 expand_icon = true
 
 [node name="Resource Bar (TOP)" type="Control" parent="CanvasLayer"]
@@ -11944,6 +11949,7 @@ shape = SubResource("RectangleShape2D_qt86y")
 [connection signal="pressed" from="CanvasLayer/PanelOpenerControl/ButtonPanel/VBoxContainer/SpellbookControl/SpellBookButton" to="CanvasLayer" method="_on_spell_book_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/PanelOpenerControl/ButtonPanel/VBoxContainer/LawsControl/LawsButton" to="CanvasLayer" method="_on_laws_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/PanelOpenerControl/ButtonPanel/VBoxContainer/FactionsControl/FactionsButton" to="CanvasLayer" method="_on_factions_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/PanelOpenerControl/ButtonPanel/VBoxContainer/WarRoomControl/WarRoomButton" to="CanvasLayer" method="_on_war_room_button_pressed"]
 [connection signal="mouse_entered" from="CanvasLayer/Resource Bar (TOP)/container/GoldControl/GoldArea2D" to="." method="_on_gold_area_2d_mouse_entered"]
 [connection signal="mouse_exited" from="CanvasLayer/Resource Bar (TOP)/container/GoldControl/GoldArea2D" to="." method="_on_gold_area_2d_mouse_exited"]
 [connection signal="mouse_entered" from="CanvasLayer/Resource Bar (TOP)/container/FoodControl/FoodArea2D" to="." method="_on_food_area_2d_mouse_entered"]

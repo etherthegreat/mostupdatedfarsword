@@ -5,7 +5,7 @@ var loaded: bool = false
  
  
 func _ready() -> void:
-	load_templates("res://data/army_templates.csv")
+	load_templates("res://data/armies/army_templates.csv")
  
  
 func load_templates(path: String) -> void:

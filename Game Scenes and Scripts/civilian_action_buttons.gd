@@ -9,7 +9,7 @@ func updateUI(CID, civ, toolName, kitType, ppbTile):
 	$IncreaseEliteDevelopment.visible = false
 	$IncreaseMilitaryDevelopment.visible = false
 	match toolName:
-		"Seedbag":
+		"Seed Bag":
 			$IncreaseAgriculturalDevelopment.visible = true
 		"Dictionary":
 			$IncreaseEliteDevelopment.visible = true

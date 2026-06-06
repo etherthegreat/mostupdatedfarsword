@@ -10,7 +10,7 @@ func addFaction(Name: String, Loyalty: int, factionLeader: governor = null) -> v
 	if leader == null:
 		leader = governor.new()
 		leader.buildSelf("Unknown Leader", 1)
-	var newFaction = faction.new()
+	var newFaction = factionScene.instantiate()
 	newFaction.buildSelf(Name, Loyalty, leader)
 	factionList.append(newFaction)
 

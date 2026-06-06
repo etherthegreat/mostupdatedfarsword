@@ -123,32 +123,23 @@ func _on_governor_button_pressed() -> void:
 
 var governorSelectionScene = preload("res://governor_selection.tscn")
 func matchTileNaturals():
-	if selectedTile.cropSlot != null:
+	if selectedTile.tileCrop != null:
 		$CropPanelSprite.texture = load("res://art assets/finishedAssets/religiousIcons/cropIconFilled.PNG")
-		match selectedTile.cropSlot.cropType:
-			"Bamboo":
+		match selectedTile.tileCrop:
+			"Soybeans":
 				$CropSprite.texture = load("res://art assets/finishedAssets/ores/Bamboo.PNG")
-			"Bananas":
+			"Peanuts":
 				$CropSprite.texture = load("res://art assets/finishedAssets/ores/Bananas.PNG")
 			"Cannabis":
 				$CropSprite.texture = load("res://art assets/finishedAssets/ores/Cannabis.PNG")
-			"Razorberry":
+			"Peaches":
 				$CropSprite.texture = load("res://art assets/finishedAssets/ores/Razorberry.PNG")
-			"Seaweed":
+			"Apples":
 				$CropSprite.texture = load("res://art assets/finishedAssets/ores/Seaweed.PNG")
-			"Wereroot":
+			"Mushrooms":
 				$CropSprite.texture = load("res://art assets/finishedAssets/ores/Wereroot.PNG")
-			"Wheat":
+			"Hay":
 				$CropSprite.texture = load("res://art assets/finishedAssets/ores/Wheat.PNG")
-	else:
-		$CropPanelSprite.texture = load("res://art assets/finishedAssets/religiousIcons/cropIconEmpty.PNG")
-		$CropSprite.texture = null
-	if selectedTile.oreSlot != null:
-		$OrePanelSprite.texture = load("res://art assets/finishedAssets/religiousIcons/oreIconFilled.PNG")
-		$OreSprite.texture = selectedTile.oreSlot.oreImage
-	else:
-		$OrePanelSprite.texture = load("res://art assets/finishedAssets/religiousIcons/oreIconDisabled.PNG")
-		$OreSprite.texture = null
 	if selectedTile.terrain != null:
 		match selectedTile.terrain:
 			"jungle":
