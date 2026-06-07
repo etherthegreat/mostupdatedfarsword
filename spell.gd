@@ -25,102 +25,102 @@ func newGameSpellAssignment():
 			militarySpell = true
 			spellSprite = load("res://art assets/Placeholder Art/Spells/Fireworks.PNG")
 			spellCastCost = 15
-			spellShortDescription = "Increase plant and animal reproduction rates. \nFunding approved. Farmers not consulted."
+			spellShortDescription = "By executive order, plants, animals, and colonists shall reproduce with renewed vigor. The Secretary asks no questions and keeps his breeches on. Mostly."
 		"THOUGHTS & PRAYERS (FEDERAL ALLOCATION)":
 			militarySpell = false
 			spellSprite = load("res://art assets/Placeholder Art/Spells/Draught of Knowledge.PNG")
 			spellCastCost = 20
-			spellShortDescription = "Disperse demonic miasma via officially-sanctioned gusts. \nThe Secretary sends his regards."
+			spellShortDescription = "A righteous gust purges the land of foul miasma, demonic vapors, and whatever General Knox left in the tent. The Lord works in flatulent ways."
 		"UNAUTHORIZED WEATHER MODIFICATION ACT":
 			militarySpell = false
 			spellSprite = load("res://art assets/Placeholder Art/Spells/Health Potion.PNG")
 			spellCastCost = 100
-			spellShortDescription = "Raise the water table. Officially this is not happening. \nPlease disregard any associated paperwork."
+			spellShortDescription = "Our wizards shall coax the earth's most intimate waters to the surface. She was reluctant. They were persistent. A spring has emerged. The surveyor is not asking follow-up questions."
 		# ── Protector-Unlocked Presidential Powers ───────────────────────────────
 		# Each unlocked by summoning the corresponding Protector (tower placed at origin tile).
 		"FEDERAL ATMOSPHERIC SURVEILLANCE ACT":          # PROT_01 Mothman
 			militarySpell = false
 			spellSprite = load("res://art assets/Placeholder Art/Spells/Draught of Knowledge.PNG")
 			spellCastCost = 30
-			spellShortDescription = "Enhanced sky-watching. The agency denies all knowledge of the asset."
+			spellShortDescription = "Mothman observes all movements from great height. He sees everything. He has seen YOU. He does not look away. He does not sleep. He is looking right now. He might be judging you a little."
 		"PINE BARRENS DEVELOPMENT MORATORIUM":           # PROT_02 Jersey Devil
 			militarySpell = false
 			spellSprite = load("res://art assets/Placeholder Art/Spells/Draught of Knowledge.PNG")
 			spellCastCost = 25
-			spellShortDescription = "No one develops the Pine Barrens. Not now. Not ever. Don't ask why."
+			spellShortDescription = "The Jersey Devil holds dominion over these woods. He was born there under highly controversial circumstances and considers the territory personally his. Trespassers are corrected. Vigorously."
 		"PACIFIC NORTHWEST PRIVACY PROTECTION ACT":      # PROT_03 Bigfoot
 			militarySpell = false
 			spellSprite = load("res://art assets/Placeholder Art/Spells/Draught of Knowledge.PNG")
 			spellCastCost = 35
-			spellShortDescription = "Your armies move unseen. Your tracks are large but officially unconfirmed."
+			spellShortDescription = "Your armies move unseen, like a large hairy man through the ferns. The tracks are enormous, the evidence abundant, and yet the government swears it isn't there. Your scouts learn from the best."
 		"EXECUTIVE WEATHER CONTROL INITIATIVE":          # PROT_04 Thunderbird
 			militarySpell = true
 			spellSprite = load("res://art assets/Placeholder Art/Spells/Fireworks.PNG")
 			spellCastCost = 50
-			spellShortDescription = "Redirect storms. The Thunderbird does not have a W-2. This is fine."
+			spellShortDescription = "The Thunderbird, when properly aroused, shall release storms of such fury that enemy formations scatter. He is ancient, tremendous, and requires considerable coaxing. The results are worth the effort."
 		"CLASSIFIED TACTICAL TERROR BUDGET":             # PROT_05 Headless Horseman
 			militarySpell = true
 			spellSprite = load("res://art assets/Placeholder Art/Spells/Fireworks.PNG")
 			spellCastCost = 45
-			spellShortDescription = "Deploy psychological pressure. Asset is headless. Morale impact: significant."
+			spellShortDescription = "The Horseman rides at full gallop toward enemy lines. He cannot aim, having no head, but compensates with enthusiasm. Enemy commanders report being unsettled in ways they decline to specify in their reports."
 		"CHESAPEAKE WATERS RECLAMATION PROJECT":         # PROT_06 Chessie
 			militarySpell = false
 			spellSprite = load("res://art assets/Placeholder Art/Spells/Health Potion.PNG")
 			spellCastCost = 40
-			spellShortDescription = "Revitalize bay resources. Chessie is cooperative and has been fed."
+			spellShortDescription = "Chessie stirs the deep bay and brings forth rich bounty from her depths. She is ancient, immense, and responded positively to the Secretary's advances. He brought oysters. She appreciated the gesture."
 		"DEPARTMENT OF PSYCHOLOGICAL OPERATIONS":        # PROT_07 Bell Witch
 			militarySpell = true
 			spellSprite = load("res://art assets/Placeholder Art/Spells/Fireworks.PNG")
 			spellCastCost = 55
-			spellShortDescription = "Undermine enemy morale through targeted haunting. Budget: classified."
+			spellShortDescription = "The Bell Witch shall visit enemy commanders in the night and make herself thoroughly unforgettable. What happened to Andrew Jackson in that farmhouse remains classified. He still flinches at bells."
 		"NAVAL SUPERIORITY MAINTENANCE DIRECTIVE":       # PROT_08 Old Ironsides
 			militarySpell = true
 			spellSprite = load("res://art assets/Placeholder Art/Spells/Fireworks.PNG")
 			spellCastCost = 60
-			spellShortDescription = "She doesn't sink. We have tried to retire her. She refuses."
+			spellShortDescription = "Old Ironsides has survived more broadsides than any man of war in history and still cuts a fine figure in harbor. She has eaten three admirals who tried to retire her. Her timbers have endured all manner of insult and request more."
 		"COLD WEATHER RESILIENCE FUNDING ACT":           # PROT_09 Valley Forge Guardian
 			militarySpell = true
 			spellSprite = load("res://art assets/Placeholder Art/Spells/Fireworks.PNG")
 			spellCastCost = 35
-			spellShortDescription = "Troops endure winter conditions. Valley Forge: a learning experience, apparently."
+			spellShortDescription = "Our men survived Valley Forge with frozen breeches and fierce determination. They shall endure again. Extra breeches have been procured. The Commissary General assures us they are mostly dry this time."
 		"INTER-AGENCY CRYPTID INTEGRATION PROGRAM":      # PROT_10 Snallygaster
 			militarySpell = false
 			spellSprite = load("res://art assets/Placeholder Art/Spells/Draught of Knowledge.PNG")
 			spellCastCost = 45
-			spellShortDescription = "Assign a Snallygaster to a region. HR paperwork pending."
+			spellShortDescription = "A Snallygaster has been assigned to this region and has signed the relevant articles. He is enormous, many-tentacled, and surprisingly diligent. The other clerks avoid his desk area. The smell is distinct."
 		"MIDNIGHT EMERGENCY MOBILIZATION ORDER":         # PROT_11 Paul Revere
 			militarySpell = true
 			spellSprite = load("res://art assets/Placeholder Art/Spells/Fireworks.PNG")
 			spellCastCost = 40
-			spellShortDescription = "Move armies at night, very fast, loudly. One if by land, two if by sea, three if extremely urgent."
+			spellShortDescription = "Mr. Revere rides through the night in a state of considerable agitation. One if by land, two if by sea, three if everyone should put their breeches on this instant and leave through the back."
 		"FREEDOM RESONANCE AMPLIFICATION DECREE":        # PROT_12 Liberty Bell
 			militarySpell = false
 			spellSprite = load("res://art assets/Placeholder Art/Spells/Health Potion.PNG")
 			spellCastCost = 50
-			spellShortDescription = "Ring the bell. Boost mandate and happiness. The crack is a feature."
+			spellShortDescription = "Ring the bell. Let freedom's resonance stir the passions of free men and women everywhere. They are stirred. Vigorously. No one is taking responsibility for the crack."
 		"RURAL SPECTRAL INVESTMENT INITIATIVE":          # PROT_13 Green Mountain Ghost
 			militarySpell = false
 			spellSprite = load("res://art assets/Placeholder Art/Spells/Health Potion.PNG")
 			spellCastCost = 30
-			spellShortDescription = "Boost development in forested regions via spectral oversight. Ghost: enthusiastic."
+			spellShortDescription = "The Green Mountain Ghost haunts your forests in a professional capacity, encouraging settlers to greater productivity through nocturnal visitations. Settlers report working harder, sleeping less, and declining to elaborate on specifics."
 		"MONUMENT-BASED ECONOMIC STIMULUS PACKAGE":      # PROT_14 Mount Rushmore
 			militarySpell = false
 			spellSprite = load("res://art assets/Placeholder Art/Spells/Draught of Knowledge.PNG")
 			spellCastCost = 65
-			spellShortDescription = "Leverage national monuments for income. The presidents' expressions: unchanged."
+			spellShortDescription = "The four stone presidents gaze upon our commerce. Washington approves. Jefferson has seen things. Roosevelt is very excited about all of it. Lincoln looks as though he has been told something he cannot un-know."
 		"FLORIDA CRYPTID INTEGRATION TASK FORCE":        # PROT_15 Skunk Ape
 			militarySpell = false
 			spellSprite = load("res://art assets/Placeholder Art/Spells/Draught of Knowledge.PNG")
 			spellCastCost = 35
-			spellShortDescription = "Assign swamp assets to wetland tiles. Smells like success."
+			spellShortDescription = "The Skunk Ape has been deployed to your wetlands. He is massive, fragrant, and passionate about swamp sovereignty. Enemy scouts report being overwhelmed on two fronts: the creature's considerable size and its personal scent, which lingers for three turns."
 		"PERMANENT READINESS MANDATE (EXPIRES NEVER)":   # PROT_16 Eternal Minuteman
 			militarySpell = true
 			spellSprite = load("res://art assets/Placeholder Art/Spells/Fireworks.PNG")
 			spellCastCost = 75
-			spellShortDescription = "Armies are always ready. The Minuteman has been ready since 1775 and is frankly a little intense about it."
+			spellShortDescription = "The Minuteman has stood ready since 1775. His musket is primed, his powder is dry, and his breeches are fastened with the intensity of a man who has been waiting one hundred and fifty years for an excuse to unfasten them."
 		"EMANCIPATION PROCLAMATION 2: STILL EMANCIPATING":  # PROT_17 Lincoln's Ghost
 			militarySpell = false
 			spellSprite = load("res://art assets/Placeholder Art/Spells/Health Potion.PNG")
 			spellCastCost = 70
-			spellShortDescription = "Freedom, again, with feeling. Lincoln is pleased. Also still a ghost. These are related."
+			spellShortDescription = "The President, speaking from beyond mortality, assures us the work of freedom is never finished. He is still haunting the White House. He has strong opinions about the East Bedroom and will express them in full to anyone who enters, at any hour of the night."
 	pass
