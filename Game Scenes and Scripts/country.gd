@@ -138,19 +138,19 @@ var rANL #this country's attitude toward Anlaxia
 #eventually, fill with every country in the game
 
 #MagicSchools
-var alcPoints: int #alchemy
-var illPoints: int #illusion
-var sumPoints: int #summoning
-var druPoints: int #druidism
-var elePoints: int #elementalism
-var divPoints: int #divination
+var manifestPoints: int #alchemy
+var spectralPoints: int #illusion
+var cryptidPoints: int #summoning
+var stormPoints: int #druidism
+var ironPoints: int #elementalism
+var libertyPoints: int #divination
 
-var alcLevel: int
-var illLevel: int
-var sumLevel: int
-var druLevel: int
-var eleLevel: int
-var divLevel: int
+var manifestLevel: int
+var spectralLevel: int
+var cryptidLevel: int
+var stormLevel: int
+var ironLevel: int
+var libertyLevel: int
 
 var spellBaseCost: int #used to calculate the base cost of all spells
 var spellCostModifier: int #used when debuffs are applied for spell costs
@@ -365,18 +365,18 @@ func updateDiscoveredByPlayer():
 	pass
 
 func setStartingMagic():
-	alcPoints = 0
-	illPoints = 0
-	sumPoints = 0
-	druPoints = 0
-	elePoints = 0
-	divPoints = 0
-	alcLevel = 0
-	illLevel = 0
-	sumLevel = 0
-	druLevel = 0
-	eleLevel = 0
-	divLevel = 0
+	manifestPoints = 0
+	spectralPoints = 0
+	cryptidPoints = 0
+	stormPoints = 0
+	ironPoints = 0
+	libertyPoints = 0
+	manifestLevel = 0
+	spectralLevel = 0
+	cryptidLevel = 0
+	stormLevel = 0
+	ironLevel = 0
+	libertyLevel = 0
 	pass
 
 func connectBuilding(building):
@@ -623,18 +623,12 @@ func addSpellToSpellbook(Name, Level, Experience):
 
 func levelUpSchool(type):
 	match type:
-		"alchemy":
-			alcLevel += 1
-		"elementalist":
-			eleLevel += 1
-		"druid":
-			druLevel += 1
-		"diviner":
-			divLevel += 1
-		"summoner":
-			sumLevel += 1
-		"illusionist":
-			illLevel += 1
+		"manifest", "alchemy":    manifestLevel += 1
+		"iron", "elementalist":   ironLevel     += 1
+		"storm", "druid":         stormLevel    += 1
+		"liberty", "diviner":     libertyLevel  += 1
+		"cryptid", "summoner":    cryptidLevel  += 1
+		"spectral", "illusionist":spectralLevel += 1
 	pass
 
 func addTechnologicalDiscovery(Name):
@@ -915,12 +909,12 @@ func surveyResources():
 	NDT = 0
 	NPM = 0
 	MAN = 0
-	alcPoints = 0
-	sumPoints = 0
-	elePoints = 0
-	illPoints = 0
-	divPoints = 0
-	druPoints = 0
+	manifestPoints = 0
+	cryptidPoints = 0
+	ironPoints = 0
+	spectralPoints = 0
+	libertyPoints = 0
+	stormPoints = 0
 	for Tile in OwnedTileList:
 		Tile.surveyTile(self)
 		Tile.calculateSpellChanges()
@@ -938,12 +932,12 @@ func surveyResources():
 		NDT += Tile.buildingMandateOutput
 		NPM += Tile.buildingInfluenceOutput
 		MAN += Tile.buildingManpowerOutput
-		alcPoints += Tile.alcPointsOutput
-		sumPoints += Tile.sumPointsOutput
-		elePoints += Tile.elePointsOutput
-		illPoints += Tile.illPointsOutput
-		divPoints += Tile.divPointsOutput
-		druPoints += Tile.druPointsOutput
+		manifestPoints += Tile.manifestPointsOutput
+		cryptidPoints += Tile.cryptidPointsOutput
+		ironPoints += Tile.ironPointsOutput
+		spectralPoints += Tile.spectralPointsOutput
+		libertyPoints += Tile.libertyPointsOutput
+		stormPoints += Tile.stormPointsOutput
 	collectTaxes()
 	payUnitMaintenance()
 	pass
@@ -963,12 +957,12 @@ var tempBPM = 0
 var tempNDT = 0
 var tempNPM = 0
 var tempMAN = 0
-var tempAlcPoints = 0
-var tempSumPoints = 0
-var tempElePoints = 0
-var tempIllPoints = 0
-var tempDivPoints = 0
-var tempDruPoints = 0
+var tempManifestPoints = 0
+var tempCryptidPoints = 0
+var tempIronPoints = 0
+var tempSpectralPoints = 0
+var tempLibertyPoints = 0
+var tempStormPoints = 0
 
 func outputCheck(caller):
 	calculateUniqueBuildingAttributes()
@@ -988,12 +982,12 @@ func outputCheck(caller):
 	tempNDT = 0
 	tempNPM = 0
 	tempMAN = 0
-	tempAlcPoints = 0
-	tempSumPoints = 0
-	tempElePoints = 0
-	tempIllPoints = 0
-	tempDivPoints = 0
-	tempDruPoints = 0
+	tempManifestPoints = 0
+	tempCryptidPoints = 0
+	tempIronPoints = 0
+	tempSpectralPoints = 0
+	tempLibertyPoints = 0
+	tempStormPoints = 0
 	for Tile in OwnedTileList:
 		Tile.surveyTile(self)
 		Tile.calculateSpellChanges()
@@ -1011,13 +1005,13 @@ func outputCheck(caller):
 		tempNDT += Tile.buildingMandateOutput
 		tempNPM += Tile.buildingInfluenceOutput
 		tempMAN += Tile.buildingManpowerOutput
-		tempAlcPoints += Tile.alcPointsOutput
-		tempSumPoints += Tile.sumPointsOutput
-		tempElePoints += Tile.elePointsOutput
-		tempIllPoints += Tile.illPointsOutput
-		tempDivPoints += Tile.divPointsOutput
-		tempDruPoints += Tile.druPointsOutput
-		print("points", alcPoints, sumPoints, elePoints, illPoints, divPoints, druPoints)
+		tempManifestPoints += Tile.manifestPointsOutput
+		tempCryptidPoints += Tile.cryptidPointsOutput
+		tempIronPoints += Tile.ironPointsOutput
+		tempSpectralPoints += Tile.spectralPointsOutput
+		tempLibertyPoints += Tile.libertyPointsOutput
+		tempStormPoints += Tile.stormPointsOutput
+		print("points", manifestPoints, cryptidPoints, ironPoints, spectralPoints, libertyPoints, stormPoints)
 	outputsDict = {
 		"FPM" : tempFPM,
 		"WPM" : tempWPM,
@@ -1033,12 +1027,12 @@ func outputCheck(caller):
 		"NDT" : tempNDT,
 		"NPM" : tempNPM,
 		"MAN" : tempMAN,
-		"ALC" : tempAlcPoints,
-		"SUM" : tempSumPoints,
-		"ELE" : tempElePoints,
-		"ILL" : tempIllPoints,
-		"DIV" :tempDivPoints,
-		"DRU" :tempDruPoints,
+		"MANIFEST" : tempManifestPoints,
+		"CRYPTID"  : tempCryptidPoints,
+		"IRON"     : tempIronPoints,
+		"SPECTRAL" : tempSpectralPoints,
+		"LIBERTY"  : tempLibertyPoints,
+		"STORM"    : tempStormPoints,
 	}
 	emit_signal("checkingOutput", outputsDict, caller)
 	pass
@@ -1397,12 +1391,12 @@ func save_state() -> Dictionary:
 		"TotalManpower":  TotalManpower,
  
 		# Magic schools
-		"alcPoints": alcPoints, "alcLevel": alcLevel,
-		"illPoints": illPoints, "illLevel": illLevel,
-		"sumPoints": sumPoints, "sumLevel": sumLevel,
-		"druPoints": druPoints, "druLevel": druLevel,
-		"elePoints": elePoints, "eleLevel": eleLevel,
-		"divPoints": divPoints, "divLevel": divLevel,
+		"manifestPoints": manifestPoints, "manifestLevel": manifestLevel,
+		"spectralPoints": spectralPoints, "spectralLevel": spectralLevel,
+		"cryptidPoints": cryptidPoints, "cryptidLevel": cryptidLevel,
+		"stormPoints": stormPoints, "stormLevel": stormLevel,
+		"ironPoints": ironPoints, "ironLevel": ironLevel,
+		"libertyPoints": libertyPoints, "libertyLevel": libertyLevel,
  
 		# Economy settings that can change
 		"armyReinforceRate": armyReinforceRate,
@@ -1528,18 +1522,18 @@ func build_from_save(save_data: Dictionary) -> void:
 	TotalManpower  = save_data.get("TotalManpower",  TotalManpower)
  
 	# Restore magic schools
-	alcPoints = save_data.get("alcPoints", 0)
-	alcLevel  = save_data.get("alcLevel", 0)
-	illPoints = save_data.get("illPoints", 0)
-	illLevel  = save_data.get("illLevel", 0)
-	sumPoints = save_data.get("sumPoints", 0)
-	sumLevel  = save_data.get("sumLevel", 0)
-	druPoints = save_data.get("druPoints", 0)
-	druLevel  = save_data.get("druLevel", 0)
-	elePoints = save_data.get("elePoints", 0)
-	eleLevel  = save_data.get("eleLevel", 0)
-	divPoints = save_data.get("divPoints", 0)
-	divLevel  = save_data.get("divLevel", 0)
+	manifestPoints = save_data.get("manifestPoints", 0)
+	manifestLevel  = save_data.get("manifestLevel", 0)
+	spectralPoints = save_data.get("spectralPoints", 0)
+	spectralLevel  = save_data.get("spectralLevel", 0)
+	cryptidPoints = save_data.get("cryptidPoints", 0)
+	cryptidLevel  = save_data.get("cryptidLevel", 0)
+	stormPoints = save_data.get("stormPoints", 0)
+	stormLevel  = save_data.get("stormLevel", 0)
+	ironPoints = save_data.get("ironPoints", 0)
+	ironLevel  = save_data.get("ironLevel", 0)
+	libertyPoints = save_data.get("libertyPoints", 0)
+	libertyLevel  = save_data.get("libertyLevel", 0)
  
 	# Restore economy settings
 	armyReinforceRate = save_data.get("armyReinforceRate", armyReinforceRate)

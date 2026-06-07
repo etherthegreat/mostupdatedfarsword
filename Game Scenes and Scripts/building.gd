@@ -757,22 +757,17 @@ func matchPlayerUnlockables(playerCountryNode):
 			metalDic["Base Tower Metal Cost"] = (-1 * buildingLevel)
 			dollarsDic["Base Tower Gold Cost"] = (-1 * buildingLevel)
 			if tile.tileWizard != null:
-				match tile.tileWizard.wizardType:
-					"DRUID":
-						woodPerLevel += 3
-					"ALCHEMIST":
-						dollarsPerLevel += 3
-					"ELEMENTALST":
-						foodPerLevel += 3
-					"SUMMONER":
-						metalPerLevel += 2
-					"SEER":
-						culturePerLevel += 3
-					"PSIONICIST":
-						foodPerLevel += 1
-						woodPerLevel += 1
+				match tile.tileWizard.wizardSchool:
+					"storm":    woodPerLevel    += 3
+					"manifest": dollarsPerLevel += 3
+					"iron":     metalPerLevel   += 3
+					"cryptid":  metalPerLevel   += 2
+					"liberty":  culturePerLevel += 3
+					"spectral":
+						foodPerLevel    += 1
+						woodPerLevel    += 1
 						dollarsPerLevel += 1
-						metalPerLevel += 1
+						metalPerLevel   += 1
 			else:
 				print("no assigned wizard to tile:", tile.tileNumber)
 			for belief in playerCountry.selectedBeliefs:

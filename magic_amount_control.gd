@@ -11,12 +11,12 @@ var spellUnlocks: Array = []
 
 var amount: int
 
-var alcLevel: int
-var sumLevel: int
-var divLevel: int
-var druLevel: int
-var eleLevel: int
-var illLevel: int
+var manifestLevel: int
+var cryptidLevel: int
+var libertyLevel: int
+var stormLevel: int
+var ironLevel: int
+var spectralLevel: int
 
 var cost: int
 var costModifier: int
@@ -26,31 +26,31 @@ var amountPerTurn: int
 
 func buildSelf():
 	schoolType = schoolTypeEXP
-	print( "RETURN DEBUG12,", schoolType)
+	print("RETURN DEBUG12,", schoolType)
 	match schoolType:
-		"druid":
+		"storm", "druid":
 			$SchoolTreeSprite.texture = load("res://art assets/finishedAssets/spellschools/IMG_1255.PNG")
-			$spellSchool.text = "Druidism"
+			$spellSchool.text = "Stormcraft"
 			$MagicSprite2D.texture = load("res://art assets/Placeholder Art/UI Art/resources/Older Icons/druid big.png")
-		"elementalist":
+		"iron", "elementalist":
 			$SchoolTreeSprite.texture = load("res://art assets/finishedAssets/spellschools/IMG_1257.PNG")
-			$spellSchool.text = "Elementalism"
+			$spellSchool.text = "Ironclad Arts"
 			$MagicSprite2D.texture = load("res://art assets/Placeholder Art/UI Art/resources/Older Icons/elementalistbig.png")
-		"diviner":
+		"liberty", "diviner":
 			$SchoolTreeSprite.texture = load("res://art assets/finishedAssets/spellschools/IMG_1260.PNG")
-			$spellSchool.text = "Divination"
+			$spellSchool.text = "Liberty Rites"
 			$MagicSprite2D.texture = load("res://art assets/Placeholder Art/UI Art/resources/Older Icons/divinity big.png")
-		"alchemist":
+		"manifest", "alchemist":
 			$SchoolTreeSprite.texture = load("res://art assets/finishedAssets/spellschools/IMG_1256.PNG")
-			$spellSchool.text = "Alchemy"
+			$spellSchool.text = "Manifest Doctrine"
 			$MagicSprite2D.texture = load("res://art assets/Placeholder Art/UI Art/resources/Older Icons/alchemy big.png")
-		"summoner":
+		"cryptid", "summoner":
 			$SchoolTreeSprite.texture = load("res://art assets/finishedAssets/spellschools/IMG_1259.PNG")
-			$spellSchool.text = "Summoning"
+			$spellSchool.text = "Cryptidology"
 			$MagicSprite2D.texture = load("res://art assets/Placeholder Art/UI Art/resources/Older Icons/summoner big.png")
-		"illusionist":
+		"spectral", "illusionist":
 			$SchoolTreeSprite.texture = load("res://art assets/finishedAssets/spellschools/IMG_1258.PNG")
-			$spellSchool.text = "Illusion"
+			$spellSchool.text = "Spectrology"
 			$MagicSprite2D.texture = load("res://art assets/Placeholder Art/UI Art/resources/Older Icons/illusion big.png")
 	if spellUnlocksEXP != null:
 		for NodePath in spellUnlocksEXP:
@@ -75,36 +75,36 @@ func update(playerCountryNode, magicDic):
 	costModifier = playerCountryNode.spellCostModifier
 	discountModifier = playerCountryNode.spellDiscountModifier
 	match schoolType:
-		"druid":
-			amount = playerCountryNode.druPoints
-			druLevel = playerCountryNode.druLevel
-			calculateLevelUp(druLevel)
-			amountPerTurn = magicDic.DRU
-		"elementalist":
-			amount = playerCountryNode.elePoints
-			eleLevel = playerCountryNode.eleLevel
-			calculateLevelUp(eleLevel)
-			amountPerTurn = magicDic.ELE
-		"diviner":
-			amount = playerCountryNode.divPoints
-			druLevel = playerCountryNode.divLevel
-			calculateLevelUp(divLevel)
-			amountPerTurn = magicDic.DIV
-		"alchemist":
-			amount = playerCountryNode.alcPoints
-			druLevel = playerCountryNode.alcLevel
-			calculateLevelUp(alcLevel)
-			amountPerTurn = magicDic.ALC
-		"summoner":
-			amount = playerCountryNode.sumPoints
-			druLevel = playerCountryNode.sumLevel
-			calculateLevelUp(sumLevel)
-			amountPerTurn = magicDic.SUM
-		"illusionist":
-			amount = playerCountryNode.illPoints
-			druLevel = playerCountryNode.illLevel
-			calculateLevelUp(illLevel)
-			amountPerTurn = magicDic.ILL
+		"storm", "druid":
+			amount = playerCountryNode.stormPoints
+			stormLevel = playerCountryNode.stormLevel
+			calculateLevelUp(stormLevel)
+			amountPerTurn = magicDic.get("STORM", magicDic.get("DRU", 0))
+		"iron", "elementalist":
+			amount = playerCountryNode.ironPoints
+			ironLevel = playerCountryNode.ironLevel
+			calculateLevelUp(ironLevel)
+			amountPerTurn = magicDic.get("IRON", magicDic.get("ELE", 0))
+		"liberty", "diviner":
+			amount = playerCountryNode.libertyPoints
+			libertyLevel = playerCountryNode.libertyLevel
+			calculateLevelUp(libertyLevel)
+			amountPerTurn = magicDic.get("LIBERTY", magicDic.get("DIV", 0))
+		"manifest", "alchemist":
+			amount = playerCountryNode.manifestPoints
+			manifestLevel = playerCountryNode.manifestLevel
+			calculateLevelUp(manifestLevel)
+			amountPerTurn = magicDic.get("MANIFEST", magicDic.get("ALC", 0))
+		"cryptid", "summoner":
+			amount = playerCountryNode.cryptidPoints
+			cryptidLevel = playerCountryNode.cryptidLevel
+			calculateLevelUp(cryptidLevel)
+			amountPerTurn = magicDic.get("CRYPTID", magicDic.get("SUM", 0))
+		"spectral", "illusionist":
+			amount = playerCountryNode.spectralPoints
+			spectralLevel = playerCountryNode.spectralLevel
+			calculateLevelUp(spectralLevel)
+			amountPerTurn = magicDic.get("SPECTRAL", magicDic.get("ILL", 0))
 	$ProgressBar.value = amount
 	$AmountLabel.text = str(amount)
 	for spellBranchUnlock in spellUnlocks:

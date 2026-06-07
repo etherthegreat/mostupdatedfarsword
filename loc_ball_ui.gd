@@ -36,12 +36,12 @@ func buildSelf(domain, gameLanguage):
 			match gameLanguage:
 				"eng":
 					magicDic = {
-						"alchemy": "Alchemy",
-						"divinination": "Divination",
-						"druidism" : "Druidism",
-						"elementalism": "Elementalism",
-						"illusion": "Illusion",
-						"summoning":  "Summoning",
+						"manifest": "Manifest Doctrine",
+						"liberty":  "Liberty Rites",
+						"storm":    "Stormcraft",
+						"iron":     "Ironclad Arts",
+						"spectral": "Spectrology",
+						"cryptid":  "Cryptidology",
 						#Spells
 						"schoolPoints": "School Points",
 						"turnsUntil": "Turns Until Spell Unlock",

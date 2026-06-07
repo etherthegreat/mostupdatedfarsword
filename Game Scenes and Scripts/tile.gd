@@ -73,14 +73,14 @@ var granaryGovernorReq: bool = false
 var courthouseGovernorReq: bool = false
 
 # ============================================================
-# MAGIC POINTS
+# MAGIC POINTS — school names match protector/tower system
 # ============================================================
-var alcPointsOutput: int  # alchemy
-var illPointsOutput: int  # illusion
-var sumPointsOutput: int  # summoning
-var druPointsOutput: int  # druidism
-var elePointsOutput: int  # elementalism
-var divPointsOutput: int  # divination
+var manifestPointsOutput: int  # Manifest Doctrine  (was alchemy)
+var spectralPointsOutput: int  # Spectrology        (was illusion)
+var cryptidPointsOutput: int   # Cryptidology       (was summoning)
+var stormPointsOutput: int     # Stormcraft         (was druidism)
+var ironPointsOutput: int      # Ironclad Arts      (was elementalism)
+var libertyPointsOutput: int   # Liberty Rites      (was divination)
 
 # ============================================================
 # NEIGHBORS & MOVEMENT
@@ -631,18 +631,23 @@ func surveyTile(playerCountryNode):
 				bathGovernorReq = building.buildingLevel >= 3
 			"Tower":
 				match building.magicOutput:
-					"alchemist":
-						alcPointsOutput = (1 * building.buildingLevel)
-					"summoner":
-						sumPointsOutput = (1 * building.buildingLevel)
-					"elementalist":
-						elePointsOutput = (1 * building.buildingLevel)
-					"druid":
-						druPointsOutput = (1 * building.buildingLevel)
-					"illusionist":
-						illPointsOutput = (1 * building.buildingLevel)
-					"diviner":
-						divPointsOutput = (1 * building.buildingLevel)
+					"manifest", "alchemist", "Mount Rushmore":
+						manifestPointsOutput = (1 * building.buildingLevel)
+					"cryptid", "summoner", \
+					"Mothman", "Jersey Devil", "Bigfoot", "Snallygaster", "Skunk Ape":
+						cryptidPointsOutput = (1 * building.buildingLevel)
+					"spectral", "illusionist", \
+					"Headless Horseman", "Green Mountain Ghost", "Lincoln's Ghost":
+						spectralPointsOutput = (1 * building.buildingLevel)
+					"storm", "druid", \
+					"Thunderbird", "Chessie", "Bell Witch":
+						stormPointsOutput = (1 * building.buildingLevel)
+					"iron", "elementalist", \
+					"Old Ironsides", "Valley Forge Guardian", "Eternal Minuteman":
+						ironPointsOutput = (1 * building.buildingLevel)
+					"liberty", "diviner", \
+					"Paul Revere", "Liberty Bell":
+						libertyPointsOutput = (1 * building.buildingLevel)
 				towerGovernorReq = building.buildingLevel >= 3
 			"Granary":
 				granaryGovernorReq = building.buildingLevel >= 3
@@ -774,11 +779,34 @@ func levelUpBuilding(type):
 # WIZARD (kept from original, used in DODK)
 # ============================================================
 
-func addWizard(wizardType):
+func addWizard(wizardType: String, wizardSchool: String = ""):
 	var actingWizard = wizard.new()
-	actingWizard.wizardType = wizardType
+	actingWizard.wizardType   = wizardType
+	actingWizard.wizardSchool = wizardSchool if wizardSchool != "" \
+		else _resolve_wizard_school(wizardType)
 	tileWizard = actingWizard
 	wizardCheck()
+
+# Maps a wizard/protector name to its school short key.
+func _resolve_wizard_school(wtype: String) -> String:
+	match wtype:
+		"Mount Rushmore":                                          return "manifest"
+		"Mothman", "Jersey Devil", "Bigfoot", "Snallygaster", \
+		"Skunk Ape":                                               return "cryptid"
+		"Headless Horseman", "Green Mountain Ghost", \
+		"Lincoln's Ghost":                                         return "spectral"
+		"Thunderbird", "Chessie", "Bell Witch":                    return "storm"
+		"Old Ironsides", "Valley Forge Guardian", \
+		"Eternal Minuteman":                                       return "iron"
+		"Paul Revere", "Liberty Bell":                             return "liberty"
+		# Legacy role keys pass through unchanged
+		"alchemist":   return "manifest"
+		"summoner":    return "cryptid"
+		"illusionist": return "spectral"
+		"druid":       return "storm"
+		"elementalist":return "iron"
+		"diviner":     return "liberty"
+	return wtype
 
 func wizardCheck():
 	if tileWizard == null:
@@ -786,7 +814,10 @@ func wizardCheck():
 	else:
 		for building in tileBuildingsList:
 			if building.buildingType == "Tower":
-				building.magicOutput = tileWizard.wizardType
+				# Route through school key so the points match works,
+				# while wizardType keeps the protector's display name.
+				building.magicOutput = tileWizard.wizardSchool \
+					if tileWizard.wizardSchool != "" else tileWizard.wizardType
 
 
 # ============================================================

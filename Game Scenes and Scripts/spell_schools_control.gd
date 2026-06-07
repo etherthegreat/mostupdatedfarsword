@@ -41,12 +41,12 @@ func updateMagicAmounts(playerCountryNode):
 
 func returnedOutput(playerOutput):
 	magicDic= {
-		"ALC" : playerOutput.ALC,
-		"DIV" : playerOutput.DIV,
-		"DRU" : playerOutput.DRU,
-		"ELE" : playerOutput.ELE,
-		"ILL" : playerOutput.ILL,
-		"SUM" : playerOutput.SUM
+		"MANIFEST" : playerOutput.get("MANIFEST", playerOutput.get("ALC", 0)),
+		"LIBERTY"  : playerOutput.get("LIBERTY",  playerOutput.get("DIV", 0)),
+		"STORM"    : playerOutput.get("STORM",    playerOutput.get("DRU", 0)),
+		"IRON"     : playerOutput.get("IRON",     playerOutput.get("ELE", 0)),
+		"SPECTRAL" : playerOutput.get("SPECTRAL", playerOutput.get("ILL", 0)),
+		"CRYPTID"  : playerOutput.get("CRYPTID",  playerOutput.get("SUM", 0)),
 	}
 	for MagicAmountControl in $SpellSchoolsPanel/SchoolsAmounts/SpellsVBox.get_children():
 		MagicAmountControl.update(player, magicDic)

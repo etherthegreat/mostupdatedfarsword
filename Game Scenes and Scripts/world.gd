@@ -717,7 +717,7 @@ func openGovernorsPanel(tile):
 
 func newSpellEvent(schoolType, currentLvl):
 	match schoolType:
-		"elementalist":
+		"iron", "elementalist":
 			match currentLvl:
 				0: createNewEvent("GEN_PLENTIFY_UNLOCK")
 				1: createNewEvent("GEN_HEALING_WINDS_UNLOCK")
@@ -911,12 +911,25 @@ func _on_arc_event_requested(event_id: String, tile) -> void:
 
 func _on_protector_summoned(origin_tile, protector_name: String, protector_id: String) -> void:
 	if origin_tile != null:
-		origin_tile.addWizard(protector_name)
-		print("[Protectors] Tower: ", protector_name, " stationed at ", origin_tile.tileName)
+		var school: String = _protector_id_to_school(protector_id)
+		origin_tile.addWizard(protector_name, school)
+		print("[Protectors] Tower: ", protector_name,
+			  " (", school, ") stationed at ", origin_tile.tileName)
 	var spell_name: String = _protector_id_to_spell(protector_id)
 	if spell_name != "":
 		playerCountryNode.addSpellToSpellbook(spell_name, 1, 0)
 		print("[Protectors] Presidential Power unlocked: ", spell_name)
+
+
+func _protector_id_to_school(pid: String) -> String:
+	match pid:
+		"PROT_01", "PROT_02", "PROT_03", "PROT_10", "PROT_15": return "cryptid"
+		"PROT_04", "PROT_06", "PROT_07":                        return "storm"
+		"PROT_05", "PROT_13", "PROT_17":                        return "spectral"
+		"PROT_08", "PROT_09", "PROT_16":                        return "iron"
+		"PROT_11", "PROT_12":                                   return "liberty"
+		"PROT_14":                                              return "manifest"
+	return "manifest"
 
 
 func _protector_id_to_spell(pid: String) -> String:
@@ -1079,10 +1092,29 @@ func _summon_protector(protector_id: String, tile) -> void:
 
 func _get_spell_school(spell_name: String) -> String:
 	match spell_name:
-		"MANIFEST DESTINY SUBSIDY PROGRAM",
-		"THOUGHTS & PRAYERS (FEDERAL ALLOCATION)",
-		"UNAUTHORIZED WEATHER MODIFICATION ACT": return "elementalist"
-		_: return "elementalist"
+		"MANIFEST DESTINY SUBSIDY PROGRAM":        return "iron"
+		"THOUGHTS & PRAYERS (FEDERAL ALLOCATION)": return "spectral"
+		"UNAUTHORIZED WEATHER MODIFICATION ACT":   return "storm"
+		# Presidential Powers — map to their protector's school
+		"FEDERAL ATMOSPHERIC SURVEILLANCE ACT",
+		"PINE BARRENS DEVELOPMENT MORATORIUM",
+		"PACIFIC NORTHWEST PRIVACY PROTECTION ACT",
+		"INTER-AGENCY CRYPTID INTEGRATION PROGRAM",
+		"FLORIDA CRYPTID INTEGRATION TASK FORCE":  return "cryptid"
+		"EXECUTIVE WEATHER CONTROL INITIATIVE",
+		"CHESAPEAKE WATERS RECLAMATION PROJECT",
+		"DEPARTMENT OF PSYCHOLOGICAL OPERATIONS":  return "storm"
+		"CLASSIFIED TACTICAL TERROR BUDGET",
+		"NAVAL SUPERIORITY MAINTENANCE DIRECTIVE",
+		"COLD WEATHER RESILIENCE FUNDING ACT",
+		"MIDNIGHT EMERGENCY MOBILIZATION ORDER",
+		"PERMANENT READINESS MANDATE (EXPIRES NEVER)": return "iron"
+		"FREEDOM RESONANCE AMPLIFICATION DECREE",
+		"RURAL SPECTRAL INVESTMENT INITIATIVE",
+		"EMANCIPATION PROCLAMATION 2: STILL EMANCIPATING": return "liberty"
+		"MONUMENT-BASED ECONOMIC STIMULUS PACKAGE": return "manifest"
+		"HEADLESS HORSEMAN": return "spectral"
+		_: return "manifest"
 
 func _find_or_create_leader(faction_name: String) -> governor:
 	for gov in playerCountryNode.unlockedGovernors:
