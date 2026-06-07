@@ -117,9 +117,10 @@ func newGameBuild(CID, gameLang):
 	$CanvasLayer/LoadingProgressBar.visible = false
 	$CanvasLayer/LoadingLabel.visible = false
 	# Generate procedural commanders (assigns them to barracks tiles, adds
-	# Ualani Carlisle to pool), set up all 17 protector arcs, then fire
-	# the game-start event (DE_001 "A New War For An Old Republic").
+	# Ualani Carlisle to pool), spawn 3 random starting armies, set up all
+	# 17 protector arcs, then fire the game-start event.
 	generateBarracksCommanders()
+	spawnStartingArmies()
 	$CanvasLayer/WarRoomPanel.setupAllProtectors($TileController.get_children())
 	evaluateDateEvents()
 	#for country in aliveCountriesList:
@@ -340,6 +341,67 @@ func generateBarracksCommanders() -> void:
 			print("[Commanders] Assigned ", army.inTile.tileGovernor.governorType,
 				  " as commander of ", army.ArmyName)
 	print("[Commanders] ", assigned, " armies received a starting commander.")
+
+
+# ── STARTING ARMY SPAWNER ─────────────────────────────────────────────────────
+# Picks up to 3 player-owned, non-DC tiles that have a governor and a barracks
+# at level 2-4 with no army yet, then spawns a uniquely-named army drawn from
+# the tile name and the governor's archetype.  Must run after
+# generateBarracksCommanders() so every tile's tileGovernor is already set.
+func spawnStartingArmies() -> void:
+	var ARMY_SUFFIX := {
+		"ARC_01": "Wetlands Rangers",    "ARC_02": "Mountain Militia",
+		"ARC_03": "Volunteer Regiment",  "ARC_04": "Forest Skirmishers",
+		"ARC_05": "Green Mountain Boys", "ARC_06": "Harbor Guard",
+		"ARC_07": "Irregular Rifles",    "ARC_08": "Frontier Militia",
+		"ARC_09": "Liberty Brigade",     "ARC_10": "Ranger Company",
+		"ARC_11": "Sons of Liberty",     "ARC_12": "Continental Corps",
+		"ARC_13": "Naval Infantry",      "ARC_14": "Righteous Rifles",
+		"ARC_15": "Federal Guard",       "ARC_16": "Iron Brigade",
+		"ARC_17": "Freedom Rifles",      "ARC_18": "Bayou Raiders",
+		"ARC_19": "Privateer Corps",     "ARC_20": "Pacific Guard",
+		"ARC_21": "Border Company",      "ARC_22": "Forest Rangers",
+		"ARC_23": "Heritage Guard",      "ARC_24": "Solidarity Regiment",
+		"ARC_25": "Showmen's Rifles",
+	}
+
+	var candidates: Array = []
+	for tile in $TileController.get_children():
+		if tile.tileOwner != playerCountry:
+			continue
+		if tile.tileNumber == 188:            # Washington DC — Ualani's territory
+			continue
+		if not tile.filledGovernorSlot or tile.tileGovernor == null:
+			continue
+		var blvl: int = int(tile.buildings.get("barracks", 0))
+		if blvl < 2 or blvl > 4:
+			continue
+		if tile.stationedArmy != null:
+			continue
+		candidates.append(tile)
+
+	candidates.shuffle()
+	var chosen: Array = candidates.slice(0, min(3, candidates.size()))
+
+	for tile in chosen:
+		var gov: governor = tile.tileGovernor
+		var arc_id: String = gov.governorArchetypeId \
+			if gov.governorArchetypeId != "" else "ARC_01"
+		var army_name: String = tile.tileName + " " + ARMY_SUFFIX.get(arc_id, "Militia")
+
+		playerCountryNode.addArmy(army_name, tile.tileNumber)
+
+		# addArmy() always appends — grab the army we just added and assign its commander
+		var new_army = playerCountryNode.countryArmyList.back()
+		if new_army != null:
+			new_army.addUnitCommander(gov)
+			new_army.updateArmyUI()
+
+		print("[StartingArmies] '", army_name, "' at ", tile.tileName,
+			  " (barracks lvl ", int(tile.buildings.get("barracks", 0)),
+			  ", ", arc_id, ")")
+
+	print("[StartingArmies] ", chosen.size(), " starting armies placed.")
 
 
 var countryNode = load("res://Game Scenes and Scripts/country.tscn")
