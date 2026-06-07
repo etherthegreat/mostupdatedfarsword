@@ -32,6 +32,7 @@ var protectorArcEntryScene = preload("res://ProtectorArcEntry.tscn")
 signal arcObjectiveCompleted(arc_id, objective_num)
 signal arcFullyCompleted(arc_id)
 signal requestEventFire(event_id, tile)
+signal protectorSummoned(origin_tile, protector_name, protector_id)
 
 
 func buildSelf(playerNode: country) -> void:
@@ -642,8 +643,14 @@ func _on_protector_devotion_completed(protector_id: String) -> void:
 
 
 func _on_protector_summon_requested(protector_id: String) -> void:
-	# Player pressed the summon button — fire the summon event through world.gd
 	emit_signal("requestEventFire", protector_id + "_SUMMON", null)
+	for arc in activeProtectorArcs:
+		if arc.get("protector_id", "") == protector_id:
+			emit_signal("protectorSummoned",
+				arc.get("origin_tile", null),
+				arc.get("protector_name", protector_id),
+				protector_id)
+			break
 
 
 func _on_close_button_pressed() -> void:

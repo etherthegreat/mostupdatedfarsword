@@ -15,15 +15,15 @@ var enabledSprite: Texture
 
 func buildSelf(playerCountryNode):
 	match spellUnlockType:
-		"Plentify":
+		"MANIFEST DESTINY SUBSIDY PROGRAM":
 			disabledSprite = load("res://art assets/Placeholder Art/Spells/Plentify - disabled.png")
 			enabledSprite = load("res://art assets/Placeholder Art/UI Art/resources/Plentify.png")
 			spellSchoolType = "ele"
-		"Healing Winds":
+		"THOUGHTS & PRAYERS (FEDERAL ALLOCATION)":
 			disabledSprite = load("res://art assets/Placeholder Art/Spells/healingwinds - disabled.png")
 			enabledSprite = load("res://art assets/Placeholder Art/UI Art/resources/Older Icons/Magic.png")
 			spellSchoolType = "ele"
-		"Raise Spring":
+		"UNAUTHORIZED WEATHER MODIFICATION ACT":
 			disabledSprite = load("res://art assets/Placeholder Art/Spells/RaiseSpring - disbled.png")
 			enabledSprite = load("res://art assets/ModifierIcons/TileEcoModifiers/FreshWater.png")
 			spellSchoolType = "ele"

@@ -414,13 +414,13 @@ func matchPlayerUnlockables(playerCountryNode):
 					manpowerPerLevel += 250
 			if tile.tileSpell != null:
 				match tile.tileSpell.spellType:
-					"Plentify":
+					"MANIFEST DESTINY SUBSIDY PROGRAM":
 						foodPerLevel +=1
 						woodPerLevel +=1
 						magicCostPerLevel += 4
-						foodDic["Spell: Plentify"] = (1 * buildingLevel)
-						woodDic["Spell: Plentify"] = (1 * buildingLevel)
-						magicDic["Spell: Plentify"] = (-4 * buildingLevel)
+						foodDic["Spell: Manifest Destiny"] = (1 * buildingLevel)
+						woodDic["Spell: Manifest Destiny"] = (1 * buildingLevel)
+						magicDic["Spell: Manifest Destiny"] = (-4 * buildingLevel)
 					"Gentle Rains":
 						foodPerLevel += 2
 						magicCostPerLevel += 5

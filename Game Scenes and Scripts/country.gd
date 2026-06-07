@@ -113,6 +113,7 @@ var availableGods: Array = []
 #Country Armies, a place to store all armies
 var countryMaxArmySize
 var countryArmyList: Array = []
+var purchasedArmyCount: int = 0   # armies bought mid-game; excludes game-start spawns
 var armyModList: Array = []
 var countryMaxNavySize
 var countryNavyList: Array = []

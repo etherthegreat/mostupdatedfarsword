@@ -919,7 +919,7 @@ func spellCastMode(spell, cost, playerCountryNode):
 	if tileOwner == playerCountryNode.CID:
 		if tileSpell != null:
 			if tileSpell.spellType != spell.spellType:
-				if spell.spellType == "Raise Spring" && freshWater == true:
+				if spell.spellType == "UNAUTHORIZED WEATHER MODIFICATION ACT" && freshWater == true:
 					visible = false
 				else:
 					spellToCast = spell
@@ -927,7 +927,7 @@ func spellCastMode(spell, cost, playerCountryNode):
 			else:
 				visible = false
 		else:
-			if spell.spellType == "Raise Spring" && freshWater == true:
+			if spell.spellType == "UNAUTHORIZED WEATHER MODIFICATION ACT" && freshWater == true:
 				visible = false
 			else:
 				spellToCast = spell
@@ -943,7 +943,7 @@ func normalMode():
 func calculateSpellChanges():
 	if tileSpell != null:
 		match tileSpell.spellType:
-			"Healing Winds":
+			"THOUGHTS & PRAYERS (FEDERAL ALLOCATION)":
 				corruptionChange += 2
 				buildingMagicOutput -= 4
 
@@ -1050,7 +1050,7 @@ func _on_area_2d_input_event(viewport, event, shape_idx):
 				spellToCast = null
 				spellCostToCast = 0
 				match tileSpell.spellType:
-					"Raise Spring":
+					"UNAUTHORIZED WEATHER MODIFICATION ACT":
 						freshWater = true
 						tileSpell = null
 				calculateCorruption()

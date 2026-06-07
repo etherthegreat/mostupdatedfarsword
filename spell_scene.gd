@@ -17,10 +17,15 @@ func buildSpell(sName, cost, playerCountryNode, spell):
 	spellTexture = spell.spellSprite
 	$SpellButton.icon = spellTexture
 	match spellType:
-		"Plentify":
+		"MANIFEST DESTINY SUBSIDY PROGRAM":
 			description = "Increase the rate which plants and animals reproduce, allowing our farmers to produce more resources!"
-		"Healing Winds":
+		"THOUGHTS & PRAYERS (FEDERAL ALLOCATION)":
 			description = "Send mighty gusts to clear out Demonic miasma from this tile."
+		"UNAUTHORIZED WEATHER MODIFICATION ACT":
+			description = "Raise the water table and coax a spring from the earth. Freshwater tiles only."
+		_:
+			# Presidential Powers: fall back to the spell's own short description
+			description = thisSpell.spellShortDescription
 	pass
 
 signal spellButtonPressed

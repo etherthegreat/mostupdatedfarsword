@@ -514,6 +514,8 @@ func updatePlayerUI():
 	$CanvasLayer/WarRoomPanel.buildSelf(playerCountryNode)
 	if not $CanvasLayer/WarRoomPanel.requestEventFire.is_connected(_on_arc_event_requested):
 		$CanvasLayer/WarRoomPanel.requestEventFire.connect(_on_arc_event_requested)
+	if not $CanvasLayer/WarRoomPanel.protectorSummoned.is_connected(_on_protector_summoned):
+		$CanvasLayer/WarRoomPanel.protectorSummoned.connect(_on_protector_summoned)
 	pass
 
 var thisTileNumber: int
@@ -739,6 +741,21 @@ func _on_army_button_pressed() -> void:
 	
 const armyScene = preload("res://Game Scenes and Scripts/army.tscn")
 func buildNewPlayerArmy(barracksBuilding, barracksTile, bbButton, playerNode, newArmyName):
+	# Cost scales +20% per previously purchased army (game-start armies not counted).
+	var n: int  = playerNode.purchasedArmyCount
+	var cost: int = ceili(10.0 * pow(1.2, n))
+	if playerNode.TotalDollars  < cost or playerNode.TotalWeapons < cost \
+			or playerNode.TotalCulture < cost or playerNode.TotalScience < cost:
+		print("[Army] Cannot afford new army — need ", cost,
+			  " each of Dollars / Weapons / Culture / Science (army #", n + 1, ")")
+		return
+	playerNode.TotalDollars  -= cost
+	playerNode.TotalWeapons  -= cost
+	playerNode.TotalCulture  -= cost
+	playerNode.TotalScience  -= cost
+	playerNode.purchasedArmyCount += 1
+	var next_cost: int = ceili(10.0 * pow(1.2, playerNode.purchasedArmyCount))
+	print("[Army] Army purchased (cost ", cost, " each). Next army costs ", next_cost, " each.")
 	playerNode.addArmy(newArmyName, barracksTile.tileNumber)
 	for Army in playerNode.countryArmyList:
 		if Army.ArmyName == newArmyName:
@@ -891,6 +908,38 @@ func calculateGovernorEvent(gov) -> void:
 func _on_arc_event_requested(event_id: String, tile) -> void:
 	createNewEvent(event_id, tile)
 
+
+func _on_protector_summoned(origin_tile, protector_name: String, protector_id: String) -> void:
+	if origin_tile != null:
+		origin_tile.addWizard(protector_name)
+		print("[Protectors] Tower: ", protector_name, " stationed at ", origin_tile.tileName)
+	var spell_name: String = _protector_id_to_spell(protector_id)
+	if spell_name != "":
+		playerCountryNode.addSpellToSpellbook(spell_name, 1, 0)
+		print("[Protectors] Presidential Power unlocked: ", spell_name)
+
+
+func _protector_id_to_spell(pid: String) -> String:
+	match pid:
+		"PROT_01": return "FEDERAL ATMOSPHERIC SURVEILLANCE ACT"
+		"PROT_02": return "PINE BARRENS DEVELOPMENT MORATORIUM"
+		"PROT_03": return "PACIFIC NORTHWEST PRIVACY PROTECTION ACT"
+		"PROT_04": return "EXECUTIVE WEATHER CONTROL INITIATIVE"
+		"PROT_05": return "CLASSIFIED TACTICAL TERROR BUDGET"
+		"PROT_06": return "CHESAPEAKE WATERS RECLAMATION PROJECT"
+		"PROT_07": return "DEPARTMENT OF PSYCHOLOGICAL OPERATIONS"
+		"PROT_08": return "NAVAL SUPERIORITY MAINTENANCE DIRECTIVE"
+		"PROT_09": return "COLD WEATHER RESILIENCE FUNDING ACT"
+		"PROT_10": return "INTER-AGENCY CRYPTID INTEGRATION PROGRAM"
+		"PROT_11": return "MIDNIGHT EMERGENCY MOBILIZATION ORDER"
+		"PROT_12": return "FREEDOM RESONANCE AMPLIFICATION DECREE"
+		"PROT_13": return "RURAL SPECTRAL INVESTMENT INITIATIVE"
+		"PROT_14": return "MONUMENT-BASED ECONOMIC STIMULUS PACKAGE"
+		"PROT_15": return "FLORIDA CRYPTID INTEGRATION TASK FORCE"
+		"PROT_16": return "PERMANENT READINESS MANDATE (EXPIRES NEVER)"
+		"PROT_17": return "EMANCIPATION PROCLAMATION 2: STILL EMANCIPATING"
+	return ""
+
 func createNewEvent(event_id: String, tile = null) -> void:
 	if not EventDatabase.event_can_fire(event_id, currentWorldTurn):
 		return
@@ -1030,7 +1079,9 @@ func _summon_protector(protector_id: String, tile) -> void:
 
 func _get_spell_school(spell_name: String) -> String:
 	match spell_name:
-		"Plentify", "Healing Winds", "Raise Spring": return "elementalist"
+		"MANIFEST DESTINY SUBSIDY PROGRAM",
+		"THOUGHTS & PRAYERS (FEDERAL ALLOCATION)",
+		"UNAUTHORIZED WEATHER MODIFICATION ACT": return "elementalist"
 		_: return "elementalist"
 
 func _find_or_create_leader(faction_name: String) -> governor:
