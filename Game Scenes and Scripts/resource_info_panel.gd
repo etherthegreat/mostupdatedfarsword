@@ -4,9 +4,9 @@ extends Sprite2D
 func displayNationalResource(playerCountry, resourceNumber):
 	if resourceNumber == 0:
 		$ResourceIcon.texture = load("res://art assets/Placeholder Art/UI Art/resources/Older Icons/gold.png")
-		$TotalResourceLabel.text = str("Total Gold: ", playerCountry.TotalGold)
-		$ResourceIncomeLab.text = str("Total Gold Income: ", playerCountry.GPM)
-		$ResourceExpenseLab.text = str("Total Gold Expenses: ", playerCountry.goldEXPM)
+		$TotalResourceLabel.text = str("Total Dollars: ", playerCountry.TotalDollars)
+		$ResourceIncomeLab.text = str("Total Dollar Income: ", playerCountry.DPM)
+		$ResourceExpenseLab.text = str("Total Dollar Expenses: ", playerCountry.dollarsEXPM)
 		$ResourceMaxLabel.text = str("")
 	if resourceNumber == 1:
 		$ResourceIcon.texture = load("res://art assets/Placeholder Art/UI Art/resources/Older Icons/food.png")
@@ -40,9 +40,9 @@ func displayNationalResource(playerCountry, resourceNumber):
 		$ResourceMaxLabel.text = str("")
 	if resourceNumber == 6:
 		$ResourceIcon.texture = load("res://art assets/Placeholder Art/UI Art/resources/Older Icons/faith.png")
-		$TotalResourceLabel.text = str("Total Faith Reserves: ", playerCountry.TotalFaith)
-		$ResourceIncomeLab.text = str("Total Faith Income: ", playerCountry.IPM)
-		$ResourceExpenseLab.text = str("Total Faith Expenses: ", playerCountry.faithEXPM)
+		$TotalResourceLabel.text = str("Total Culture (incl. old Faith): ", playerCountry.TotalCulture)
+		$ResourceIncomeLab.text = str("Total Culture Income: ", playerCountry.CPM)
+		$ResourceExpenseLab.text = str("Total Culture Expenses: ", playerCountry.cultureEXPM)
 		$ResourceMaxLabel.text = str("")
 	if resourceNumber == 7:
 		$ResourceIcon.texture = load("res://art assets/Placeholder Art/UI Art/resources/Older Icons/Magic.png")
@@ -64,20 +64,25 @@ func displayNationalResource(playerCountry, resourceNumber):
 		$ResourceMaxLabel.text = str("")
 	if resourceNumber == 10:
 		$ResourceIcon.texture = load("res://art assets/Placeholder Art/UI Art/resources/Older Icons/harmony 100 x 100.png")
-		$TotalResourceLabel.text = str("Total Harmony: ", playerCountry.TotalHarmony)
-		$ResourceIncomeLab.text = str("Total Harmony Income: ", playerCountry.HPM)
-		$ResourceExpenseLab.text = str("Total Harmony Expenses: ", playerCountry.harmonyEXPM)
+		$TotalResourceLabel.text = str("Total Happiness: ", playerCountry.TotalHappiness)
+		$ResourceIncomeLab.text = str("Total Happiness Income: ", playerCountry.HPM)
+		$ResourceExpenseLab.text = str("Total Happiness Expenses: ", playerCountry.happinessEXPM)
 		$ResourceMaxLabel.text = str("")
 	if resourceNumber == 11:
 		$ResourceIcon.texture = load("res://art assets/Placeholder Art/UI Art/resources/Older Icons/influence 100 x 100.png")
 		$TotalResourceLabel.text = str("Total Influence: ", playerCountry.TotalInfluence)
-		$ResourceIncomeLab.text = str("Total Harmony Income: ", playerCountry.NPM)
-		$ResourceExpenseLab.text = str("Total Harmony Expenses: ", playerCountry.influenceEXPM)
+		$ResourceIncomeLab.text = str("Total Influence Income: ", playerCountry.NPM)
+		$ResourceExpenseLab.text = str("Total Influence Expenses: ", playerCountry.influenceEXPM)
 		$ResourceMaxLabel.text = str("")
 	if resourceNumber == 12:
 		$ResourceIcon.texture = load("res://art assets/Placeholder Art/UI Art/resources/Older Icons/manpower 100 x 100.png")
 		$TotalResourceLabel.text = str("Current Manpower: ", playerCountry.TotalManpower)
 		$ResourceIncomeLab.text = str("Total Manpower Increase: ", playerCountry.MAN)
-		$ResourceExpenseLab.text = str("Total Manpower Loses: ", playerCountry.manpowerEXPM)
+		$ResourceExpenseLab.text = str("Total Manpower Losses: ", playerCountry.manpowerEXPM)
+		$ResourceMaxLabel.text = str("")
+	if resourceNumber == 13:
+		$TotalResourceLabel.text = str("Total Boats: ", playerCountry.TotalBoats)
+		$ResourceIncomeLab.text = str("Boats Per Month: ", playerCountry.BPM)
+		$ResourceExpenseLab.text = str("")
 		$ResourceMaxLabel.text = str("")
 	pass

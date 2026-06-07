@@ -1,0 +1,17 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://r4k87krcucmg"
+
+[deps]
+
+files=["res://data/protector_objectives.protector.translation", "res://data/protector_objectives.origin.translation", "res://data/protector_objectives.origin.translation", "res://data/protector_objectives.origin.translation", "res://data/protector_objectives.origin.translation", "res://data/protector_objectives.resource.translation", "res://data/protector_objectives.resource.translation", "res://data/protector_objectives.resource.translation", "res://data/protector_objectives.dev.translation"]
+
+source_file="res://data/protector_objectives.csv"
+dest_files=["res://data/protector_objectives.protector.translation", "res://data/protector_objectives.origin.translation", "res://data/protector_objectives.origin.translation", "res://data/protector_objectives.origin.translation", "res://data/protector_objectives.origin.translation", "res://data/protector_objectives.resource.translation", "res://data/protector_objectives.resource.translation", "res://data/protector_objectives.resource.translation", "res://data/protector_objectives.dev.translation"]
+
+[params]
+
+compress=true
+delimiter=0

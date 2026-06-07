@@ -70,7 +70,7 @@ func updateUI():
 	else:
 		$MetalCostLabel.visible = false
 		$MetalCostSprite.visible = false
-	if player.TotalGold <= goldCost:
+	if player.TotalDollars <= goldCost:
 		$Button.disabled = true
 	if player.TotalFood <= foodCost:
 		$Button.disabled = true

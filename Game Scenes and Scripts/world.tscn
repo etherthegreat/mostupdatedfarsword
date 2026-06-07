@@ -7753,7 +7753,11 @@ script = ExtResource("12_lbt1a")
 
 [node name="WarRoomPanel" parent="CanvasLayer" instance=ExtResource("404_c5kbx")]
 visible = false
-z_index = -7
+z_index = 10
+offset_left = 1302.0
+offset_top = 487.0
+offset_right = 1342.0
+offset_bottom = 527.0
 
 [node name="NextTurnControl" type="Control" parent="CanvasLayer"]
 layout_mode = 3
@@ -11030,7 +11034,6 @@ icon = ExtResource("111_hs44g")
 expand_icon = true
 
 [node name="CivilianUnitControl" type="Control" parent="CanvasLayer"]
-visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
@@ -11174,7 +11177,7 @@ offset_bottom = 792.0
 icon = ExtResource("37_vrxkf")
 expand_icon = true
 
-[node name="DisbandUnit" type="Button" parent="CanvasLayer/CivilianUnitControl/CivilianActionButtons"]
+[node name="BuildRoad" type="Button" parent="CanvasLayer/CivilianUnitControl/CivilianActionButtons"]
 layout_mode = 0
 offset_left = 16.0
 offset_top = 677.0
@@ -12005,4 +12008,5 @@ shape = SubResource("RectangleShape2D_qt86y")
 [connection signal="pressed" from="CanvasLayer/CivilianUnitControl/CivilianActionButtons/IncreaseEliteDevelopment" to="." method="_on_increase_elite_development_pressed"]
 [connection signal="pressed" from="CanvasLayer/CivilianUnitControl/CivilianActionButtons/IncreaseMilitaryDevelopment" to="." method="_on_increase_military_development_pressed"]
 [connection signal="pressed" from="CanvasLayer/CivilianUnitControl/CivilianActionButtons/discoverNearbyTilesButton" to="." method="_on_discover_nearby_tiles_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/CivilianUnitControl/CivilianActionButtons/BuildRoad" to="PathControl" method="_on_build_road_pressed"]
 [connection signal="input_event" from="RightClickDetector" to="." method="_on_right_click_detector_input_event"]

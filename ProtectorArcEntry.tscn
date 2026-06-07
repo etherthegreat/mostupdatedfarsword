@@ -1,88 +1,168 @@
-[gd_scene load_steps=2 format=3 uid="uid://ds1e16hqnvjib"]
+[gd_scene load_steps=8 format=3 uid="uid://ds1e16hqnvjib"]
 
 [ext_resource type="Script" uid="uid://bu4f5n4y5qv45" path="res://ProtectorArcEntry.gd" id="1_81sax"]
+[ext_resource type="Texture2D" uid="uid://ci403wxfmii56" path="res://art assets/Placeholder Art/UI Art/Temp Event Background 2.png" id="2_ihkm6"]
+[ext_resource type="Texture2D" uid="uid://1g88ufe0p0n3" path="res://art assets/AmericanRevolutionArt/tempArt/claim.png" id="3_whf6q"]
+[ext_resource type="Texture2D" uid="uid://dg807fyssplrk" path="res://art assets/finishedAssets/armyicons/finished/zRed.png" id="4_nbg63"]
+[ext_resource type="Texture2D" uid="uid://cw1bihrb0a0pj" path="res://art assets/finishedAssets/armyicons/finished/zBlue.png" id="5_waq57"]
+[ext_resource type="Texture2D" uid="uid://dnkrgxnl2as5u" path="res://art assets/finishedAssets/armyicons/finished/spade.png" id="6_35ogj"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ihkm6"]
+bg_color = Color(0.0445106, 0.16445, 0.20369, 1)
 
 [node name="ProtectorArcEntry" type="Control"]
-custom_minimum_size = Vector2(280, 200)
+custom_minimum_size = Vector2(300, 0)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = -1203.0
+offset_bottom = -590.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_81sax")
 
 [node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MemoBackground" type="Sprite2D" parent="Panel"]
+position = Vector2(358, 244.25)
+scale = Vector2(0.341666, 0.326333)
+texture = ExtResource("2_ihkm6")
+
+[node name="ConfidentialLabel" type="Label" parent="Panel"]
+modulate = Color(1, 1, 1, 0.243137)
 layout_mode = 0
-offset_right = 1921.0
-offset_bottom = 1081.0
+offset_left = 75.0
+offset_top = 58.0
+offset_right = 700.0
+offset_bottom = 200.0
+rotation = 0.596289
+theme_override_colors/font_color = Color(0.66562, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 12
+theme_override_font_sizes/font_size = 80
+text = "CONFIDENTIAL"
+
+[node name="MemoBackground2" type="Sprite2D" parent="Panel"]
+modulate = Color(1, 1, 1, 0.509804)
+position = Vector2(65, 413)
+scale = Vector2(1.04952, 0.948156)
+texture = ExtResource("3_whf6q")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
-layout_mode = 0
-offset_left = 242.0
-offset_right = 1637.0
-offset_bottom = 132.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 6
 
 [node name="SomaMemoLabel" type="Label" parent="Panel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
-text = "MemoLabel"
-horizontal_alignment = 1
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 13
+text = "SoMA Memo"
+autowrap_mode = 3
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Panel/VBoxContainer"]
 layout_mode = 2
-theme_override_constants/separation = 200
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
 
 [node name="ProtectorNameLabel" type="Label" parent="Panel/VBoxContainer/HBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 51
-text = "ProtectorNameLabel"
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.0431373, 0.164706, 0.203922, 1)
+theme_override_font_sizes/font_size = 22
+text = "Protector Name"
+autowrap_mode = 3
 
 [node name="DevotionBar" type="ProgressBar" parent="Panel/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(100, 20)
 layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 14
+theme_override_styles/fill = SubResource("StyleBoxFlat_ihkm6")
+max_value = 3.0
 
 [node name="HSeparator2" type="HSeparator" parent="Panel/VBoxContainer"]
 layout_mode = 2
 
 [node name="PrayersContainer" type="VBoxContainer" parent="Panel/VBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
 
-[node name="PrayersRow_1" type="HBoxContainer" parent="Panel/VBoxContainer/PrayersContainer"]
+[node name="PrayerRow_1" type="HBoxContainer" parent="Panel/VBoxContainer/PrayersContainer"]
 layout_mode = 2
-theme_override_constants/separation = 200
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
 
-[node name="TextureRect" type="TextureRect" parent="Panel/VBoxContainer/PrayersContainer/PrayersRow_1"]
+[node name="CheckSprite" type="TextureRect" parent="Panel/VBoxContainer/PrayersContainer/PrayerRow_1"]
 custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
+texture = ExtResource("4_nbg63")
+stretch_mode = 2
 
-[node name="PrayerLabel_1" type="Label" parent="Panel/VBoxContainer/PrayersContainer/PrayersRow_1"]
+[node name="PrayerLabel_1" type="Label" parent="Panel/VBoxContainer/PrayersContainer/PrayerRow_1"]
 layout_mode = 2
-text = "OBJECTIVE 1"
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 16
+text = "PRAYER 1"
 autowrap_mode = 3
 
-[node name="PrayersRow_2" type="HBoxContainer" parent="Panel/VBoxContainer/PrayersContainer"]
+[node name="PrayerRow_2" type="HBoxContainer" parent="Panel/VBoxContainer/PrayersContainer"]
 layout_mode = 2
-theme_override_constants/separation = 200
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
 
-[node name="TextureRect" type="TextureRect" parent="Panel/VBoxContainer/PrayersContainer/PrayersRow_2"]
+[node name="CheckSprite" type="TextureRect" parent="Panel/VBoxContainer/PrayersContainer/PrayerRow_2"]
 custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
+texture = ExtResource("5_waq57")
+stretch_mode = 2
 
-[node name="PrayerLabel_1" type="Label" parent="Panel/VBoxContainer/PrayersContainer/PrayersRow_2"]
+[node name="PrayerLabel_2" type="Label" parent="Panel/VBoxContainer/PrayersContainer/PrayerRow_2"]
 layout_mode = 2
-text = "OBJECTIVE 1"
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 16
+text = "PRAYER 2"
 autowrap_mode = 3
 
-[node name="PrayersRow_3" type="HBoxContainer" parent="Panel/VBoxContainer/PrayersContainer"]
+[node name="PrayerRow_3" type="HBoxContainer" parent="Panel/VBoxContainer/PrayersContainer"]
 layout_mode = 2
-theme_override_constants/separation = 200
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
 
-[node name="TextureRect" type="TextureRect" parent="Panel/VBoxContainer/PrayersContainer/PrayersRow_3"]
+[node name="CheckSprite" type="TextureRect" parent="Panel/VBoxContainer/PrayersContainer/PrayerRow_3"]
 custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
+texture = ExtResource("6_35ogj")
+stretch_mode = 2
 
-[node name="PrayerLabel_1" type="Label" parent="Panel/VBoxContainer/PrayersContainer/PrayersRow_3"]
+[node name="PrayerLabel_3" type="Label" parent="Panel/VBoxContainer/PrayersContainer/PrayerRow_3"]
 layout_mode = 2
-text = "OBJECTIVE 1"
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 16
+text = "PRAYER 3"
 autowrap_mode = 3
 
 [node name="HSeparator" type="HSeparator" parent="Panel/VBoxContainer"]
@@ -90,6 +170,9 @@ layout_mode = 2
 
 [node name="SummonStatusLabel" type="Label" parent="Panel/VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 52
-text = "Reward Label"
-horizontal_alignment = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 16
+text = "Complete all three prayers to unlock presidential summon"
+horizontal_alignment = 1
+autowrap_mode = 3

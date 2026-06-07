@@ -6,7 +6,7 @@ number,tileName,terrain,state,country,corruption,specialFeature,buildings,tileCr
 5,,,,,,,,,0
 6,Morristown,Woods,NJ,USA,0,Washington's Winter Encampment,barracks:2|monument:1,corn,42
 7,King of Prussia,Woods,PA,USA,0,,camp:1,corn,42
-8,Lancaster,Farmlands,PA,USA,0,,farm:1,corn,45
+8,Lancaster,Farmlands,PA,USA,0,,farm:1|granary:2,corn,45
 9,York,Farmlands,PA,USA,0,,farm:1,corn,45
 10,Kennett Square,Farmlands,PA,USA,0,Mushroom Capital of the World,farm:1,mushrooms,40
 11,Gettysburg,Farmlands,PA,USA,0,Gettysburg Memorial,barracks:1|monument:2|farm:1,corn,48
@@ -40,8 +40,8 @@ number,tileName,terrain,state,country,corruption,specialFeature,buildings,tileCr
 39,Alexandria,Suburbs,VA,USA,0,,barracks:3|monument:3,corn,28
 40,Waldorf,Woods,MD,USA,0,,camp:2,soybeans,25
 41,Bethesda,Suburbs,MD,USA,0,,market:1|barracks:1,corn,28
-42,Frederick,Farmlands,MD,USA,0,,farm:1,corn,35
-43,Chambersburg,Farmlands,PA,USA,0,,farm:1,corn,48
+42,Frederick,Farmlands,MD,USA,0,,farm:1|granary:1,corn,35
+43,Chambersburg,Farmlands,PA,USA,0,,farm:1|granary:2,corn,48
 44,McConnellsburg,Foothills,PA,USA,0,Appalachian Minerals,mine:1,apples,52
 45,Carlisle,Foothills,PA,USA,0,Appalachian Minerals,mine:1,corn,48
 46,Harper's Ferry,Farmlands,WV,USA,0,Appalachian Minerals|Harper's Ferry Arsenal,monument:1|forge:1|farm:1|mine:1,apples,42
@@ -50,7 +50,7 @@ number,tileName,terrain,state,country,corruption,specialFeature,buildings,tileCr
 49,Fredericksburg,Woods,VA,USA,0,Appalachian Forest,camp:1|mine:1,corn,20
 50,West Point,Wetlands,VA,USA,0,West Point Military College,barracks:3|monument:1|library:1,corn,10
 51,Richmond,Metro,VA,USA,0,,barracks:2|forge:1|market:1|courthouse:2,corn,18
-52,Farmville,Farmlands,VA,USA,0,,farm:1,peanuts,22
+52,Farmville,Farmlands,VA,USA,0,,farm:1|granary:1,peanuts,22
 53,Norfolk,Wetlands,VA,USA,0,Naval Station Norfolk|Norfolk Defense Contracts,forge:2|market:2|fortress:2|dock:3,peanuts,-5
 54,New Haven,Suburbs,CT,USA,0,Gun Valley|Yale University,forge:2|library:3,apples,42
 55,New London,Woods,CT,USA,0,Home of the Submarine Force,dock:2|barracks:1|camp:1,apples,38
@@ -70,9 +70,9 @@ number,tileName,terrain,state,country,corruption,specialFeature,buildings,tileCr
 69,Conway,Woods,NH,USA,0,,camp:1|market:1,apples,78
 70,Pittsfield,Woods,MA,USA,0,Berkshire Highlands,camp:1,apples,65
 71,Springfield,Suburbs,MA,USA,0,Gun Valley,forge:3,apples,58
-72,Albany,Suburbs,NY,USA,0,,farm:1,apples,62
+72,Albany,Suburbs,NY,USA,0,,farm:1|granary:2,apples,62
 73,Schenectady,Farmlands,NY,USA,0,,farm:1,corn,60
-74,Saratoga Springs,Farmlands,NY,USA,0,,farm:1|mine:1,corn,62
+74,Saratoga Springs,Farmlands,NY,USA,0,,farm:1|mine:1|granary:1,corn,62
 75,Bennington,Foothills,VT,USA,0,Green Mountains,camp:1|barracks:1,apples,70
 76,Brattleboro,Foothills,VT,USA,0,Green Mountains,camp:1|market:1,cannabis,68
 77,Rutland,Foothills,VT,USA,0,Green Mountains,mine:1,apples,75
@@ -94,9 +94,9 @@ number,tileName,terrain,state,country,corruption,specialFeature,buildings,tileCr
 93,Cornwall,Farmlands,CA - OT,CA,0,,farm:1,corn,65
 94,Montreal,Metro,CA - QB,UK,0,Capital of Quebec,barracks:3|forge:2|fortress:1|market:2|courthouse:3|monument:2,corn,78
 95,Laval,Suburbs,CA - QB,UK,0,,market:1|farm:1,corn,78
-96,Joliette,Farmlands,CA - QB,UK,0,,farm:1,corn,75
+96,Joliette,Farmlands,CA - QB,UK,0,,farm:1|granary:2,corn,75
 97,Berthierville,Farmlands,CA - QB,UK,0,,farm:1,corn,72
-98,Trois-Rivieres,Farmlands,CA - QB,UK,0,,farm:1,hay,75
+98,Trois-Rivieres,Farmlands,CA - QB,UK,0,,farm:1|granary:1,hay,75
 99,Saint-Georges,Woods,CA - QB,CA,0,,camp:1|barracks:2|fortress:2,hay,78
 100,St. Johnsbury,Foothills,VT,USA,0,Green Mountains,camp:2,apples,82
 101,Portland,Suburbs,ME,USA,0,Portland Harbor Forts,market:1|barracks:2|fortress:1,apples,70
@@ -138,9 +138,9 @@ number,tileName,terrain,state,country,corruption,specialFeature,buildings,tileCr
 137,Parry Sound,Wetlands,CA - OT,CA,20,Georgian Bay Forests,camp:1,hay,68
 138,,,,,,,,,0
 139,Buffalo,Suburbs,NY,USA,70,Borders Dust Bowl|Niagara Falls,monument:3|barracks:1|forge:1|mine:1|market:2,corn,78
-140,Batavia,Farmlands,NY,USA,45,,farm:1|mine:1,corn,70
+140,Batavia,Farmlands,NY,USA,45,,farm:1|mine:1|granary:2,corn,70
 141,Rochester,Farmlands,NY,USA,20,,farm:1|camp:1,apples,72
-142,Rocky Mount,Farmlands,NC,USA,0,Tobacco Belt,farm:2,soybeans,-15
+142,Rocky Mount,Farmlands,NC,USA,0,Tobacco Belt,farm:2|granary:2,soybeans,-15
 143,Nags Head,Wetlands,NC,USA,0,Outer Banks,resort:2,corn,-30
 144,Greensboro,Suburbs,NC,USA,0,,library:1|courthouse:1|camp:1,soybeans,10
 145,Asheville,Foothills,NC,USA,0,Blue Ridge Highlands,mine:1|camp:1|resort:1,apples,35

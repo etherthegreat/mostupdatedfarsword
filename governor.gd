@@ -2,8 +2,9 @@ extends Node2D
 
 class_name governor
 
-var governorType: String #used to calculate rewards and quests
-var governorPosition: String #used to determine the character's name
+var governorType: String     # display name OR archetype name for named governors
+var governorArchetypeId: String = ""  # set by procedural generation — overrides archetype lookup
+var governorPosition: String # title / role (ORATOR, SCOUT, etc.)
 
 var governorLevel: int
 var governorTexture: Texture
@@ -61,6 +62,12 @@ func buildSelf(gT, gL):
 			governorDescription = "The farmers have had enough. We will not be taxed into poverty."
 			governorBiography = "Veteran of the Continental Army who led a farmers revolt when the revolution forgot the people who fought it."
 			governorPosition = "FARMER"
+
+		"Ualani Carlisle":
+			governorTexture = load("res://art assets/Placeholder Art/character/4-22-Ikra-Colors - Copy.png")
+			governorDescription = "The President does not wait for permission. She leads from the front and the briefing room and, when necessary, the battlefield."
+			governorBiography = "Hawaii's finest export and Washington's current occupant — when it is not occupied. President Carlisle commands the APF personally. Her security detail has filed seventeen formal objections. She has read none of them."
+			governorPosition = "PRESIDENT & COMMANDER"
 	pass
 
 func addMilMod(type, levels):

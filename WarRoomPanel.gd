@@ -27,7 +27,7 @@ var activeCommanderArcs: Array = []
 var activeProtectorArcs: Array = []
 
 var commanderArcEntryScene = preload("res://CommanderArcEntry.tscn")
-var protectorArcEntryScene = preload("res://CommanderArcEntry.tscn")
+var protectorArcEntryScene = preload("res://ProtectorArcEntry.tscn")
 
 signal arcObjectiveCompleted(arc_id, objective_num)
 signal arcFullyCompleted(arc_id)
@@ -41,43 +41,30 @@ func buildSelf(playerNode: country) -> void:
 
 
 func _populate_commander_tab() -> void:
-	if $PanelBackground/TabContainer/COMMANDERS/ScrollContainer/CommanderVBox.get_children() != null:
-		for child in $PanelBackground/TabContainer/COMMANDERS/ScrollContainer/CommanderVBox.get_children():
-			child.queue_free()
+	var vbox = $PanelBackground/TabContainer/COMMANDERS/ScrollContainer/CommanderVBox
+	for child in vbox.get_children():
+		child.queue_free()
 
 	for arcData in activeCommanderArcs:
 		var entry = commanderArcEntryScene.instantiate()
+		vbox.add_child(entry)
 		entry.buildSelf(arcData, playerCountryNode)
 		entry.objectiveCompleted.connect(_on_commander_objective_completed)
-		$PanelBackground/TabContainer/COMMANDERS/ScrollContainer/CommanderVBox.add_child(entry)
-
-	if activeCommanderArcs.is_empty():
-		var placeholder = Label.new()
-		placeholder.text = "No commanders currently assigned.\nAssign a governor to a tile to begin their arc."
-		placeholder.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		$PanelBackground/TabContainer/COMMANDERS/ScrollContainer/CommanderVBox.add_child(placeholder)
 
 
 func _populate_presidential_tab() -> void:
-	for child in $"PanelBackground/TabContainer/DEPTARTMENT OF MYTHOLOGICAL  AFFAIRS/ScrollContainer/PresidentialVBox".get_children():
+	var vbox = $"PanelBackground/TabContainer/DEPTARTMENT OF MYTHOLOGICAL  AFFAIRS/ScrollContainer/PresidentialVBox"
+	for child in vbox.get_children():
 		child.queue_free()
-
-	var somaHeader = Label.new()
-	somaHeader.text = "DEPARTMENT OF MYTHOLOGICAL AFFAIRS\nSecretary: [POSITION FILLED, NAME CLASSIFIED]\nBudget: Approved (Unusual Line Items Expected)\n─────────────────────────────────────"
-	somaHeader.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	$"PanelBackground/TabContainer/DEPTARTMENT OF MYTHOLOGICAL  AFFAIRS/ScrollContainer/PresidentialVBox".add_child(somaHeader)
 
 	for arcData in activeProtectorArcs:
 		var entry = protectorArcEntryScene.instantiate()
+		# add_child first so Godot runs _ready() on all child nodes before
+		# buildSelf() tries to write to them via $ paths.
+		vbox.add_child(entry)
 		entry.buildSelf(arcData, playerCountryNode)
 		entry.devotionCompleted.connect(_on_protector_devotion_completed)
-		$"PanelBackground/TabContainer/DEPTARTMENT OF MYTHOLOGICAL  AFFAIRS/ScrollContainer/PresidentialVBox".add_child(entry)
-
-	if activeProtectorArcs.is_empty():
-		var placeholder = Label.new()
-		placeholder.text = "RE: Asset Acquisition\nStatus: No active acquisition requests.\nNote: The Secretary is available for consultation."
-		placeholder.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		$"PanelBackground/TabContainer/DEPTARTMENT OF MYTHOLOGICAL  AFFAIRS/ScrollContainer/PresidentialVBox".add_child(placeholder)
+		entry.summonRequested.connect(_on_protector_summon_requested)
 
 
 # ============================================================
@@ -91,12 +78,14 @@ func registerCommanderArc(gov: governor, assignedTile) -> void:
 	for existing in activeCommanderArcs:
 		if existing["governor"] == gov:
 			return
+	var home_terrain: String = assignedTile.terrain if assignedTile != null else "Farmlands"
 	var arcData = {
 		"governor": gov,
 		"archetype_id": archetype.get("archetype_id", ""),
 		"archetype_name": archetype.get("archetype_name", ""),
 		"home_tile": assignedTile,
-		"objectives": _build_commander_objectives(archetype),
+		"home_terrain": home_terrain,
+		"objectives": _build_commander_objectives(archetype, home_terrain),
 		"objectives_complete": [false, false, false],
 		"arc_active": true,
 		"arc_complete": false,
@@ -107,23 +96,168 @@ func registerCommanderArc(gov: governor, assignedTile) -> void:
 
 
 func registerProtectorArc(protector_id: String) -> void:
+	# Thin wrapper kept for mid-game / scripted calls.
+	# Full game-start setup uses setupAllProtectors() instead.
 	for existing in activeProtectorArcs:
 		if existing["protector_id"] == protector_id:
 			return
-	var eventData = EventDatabase.get_event("PROT_" + protector_id + "_SUMMON")
-	if eventData.is_empty():
-		return
-	var protectorData = {
-		"protector_id": protector_id,
-		"protector_name": eventData.get("headline", protector_id),
-		"prayers": _build_protector_prayers(protector_id),
-		"prayers_complete": [false, false, false],
-		"devotion_level": 0,
-		"arc_complete": false,
-		"soma_memo": _get_soma_memo(protector_id),
-	}
-	activeProtectorArcs.append(protectorData)
 	_populate_presidential_tab()
+
+
+# ── FULL PROTECTOR SETUP (called from world.gd after the world is built) ─────
+# Reads protector_objectives.csv, resolves dynamic origins against the live tile
+# list, randomises resource thresholds, then fills activeProtectorArcs.
+func setupAllProtectors(allTiles: Array) -> void:
+	activeProtectorArcs.clear()
+	var obj_rows = _load_protector_objectives()
+	for row in obj_rows:
+		var pid: String = row.get("protector_id", "")
+		if pid == "":
+			continue
+		# Skip if no summon event exists in the database
+		if EventDatabase.get_event(pid + "_SUMMON").is_empty():
+			push_warning("WarRoomPanel: no summon event for " + pid + " — skipping")
+			continue
+		# Resolve origin tile
+		var origin_tile = _find_protector_origin(row, allTiles)
+		var origin_name: String = \
+			origin_tile.tileName if origin_tile != null else "Origin Undetermined"
+		# Randomise resource threshold
+		var rmin: int = row.get("resource_min", 20)
+		var rmax: int = row.get("resource_max", 40)
+		var threshold: int = rmin + (randi() % max(1, rmax - rmin + 1))
+		# Snapshot building levels at game start for dev-progress tracking
+		var bstart: int = \
+			_count_building_levels_in(origin_tile) if origin_tile != null else 0
+		# Build the three standardised prayers
+		var resource: String = row.get("resource_type", "gold")
+		var dev_req: int = row.get("dev_levels", 3)
+		var name: String = row.get("protector_name", pid)
+		var prayers: Array = [
+			{
+				"label": "Accumulate " + str(threshold) + " " + resource +
+						 " in national stockpiles",
+				"prayer_type": "resource_threshold",
+				"resource": resource,
+				"amount": threshold,
+			},
+			{
+				"label": "Build " + str(dev_req) + " new building level(s) in " +
+						 origin_name + " since game start",
+				"prayer_type": "dev_progress",
+				"levels": dev_req,
+			},
+			{
+				"label": "Station the APF with Ualani Carlisle in " + origin_name,
+				"prayer_type": "ualani_in_origin",
+			},
+		]
+		var arcData: Dictionary = {
+			"protector_id":          pid,
+			"protector_name":        name,
+			"soma_memo":             _gen_soma_memo(pid, name),
+			"origin_tile":           origin_tile,
+			"origin_tile_name":      origin_name,
+			"resource_type":         resource,
+			"resource_threshold":    threshold,
+			"dev_levels_required":   dev_req,
+			"origin_building_start": bstart,
+			"prayers":               prayers,
+			"prayers_complete":      [false, false, false],
+			"devotion_level":        0,
+			"arc_complete":          false,
+		}
+		activeProtectorArcs.append(arcData)
+	_populate_presidential_tab()
+	print("[Protectors] ", activeProtectorArcs.size(), " protector arcs registered.")
+
+
+func _load_protector_objectives() -> Array:
+	var result: Array = []
+	var file = FileAccess.open("res://data/protector_objectives.csv", FileAccess.READ)
+	if not file:
+		push_error("WarRoomPanel: cannot open protector_objectives.csv")
+		return result
+	var headers = file.get_csv_line()
+	while not file.eof_reached():
+		var row = file.get_csv_line()
+		if row.size() < 2:
+			continue
+		var entry: Dictionary = {}
+		for i in range(min(headers.size(), row.size())):
+			entry[headers[i].strip_edges()] = row[i].strip_edges()
+		entry["resource_min"]   = entry.get("resource_min",   "20").to_int()
+		entry["resource_max"]   = entry.get("resource_max",   "40").to_int()
+		entry["dev_levels"]     = entry.get("dev_levels",     "3").to_int()
+		entry["origin_tile_id"] = entry.get("origin_tile_id", "0").to_int()
+		result.append(entry)
+	file.close()
+	return result
+
+
+func _find_protector_origin(pdata: Dictionary, allTiles: Array):
+	var origin_type: String = pdata.get("origin_type", "dynamic")
+	var tile_id: int        = pdata.get("origin_tile_id", 0)
+	var req_state: String   = pdata.get("origin_state", "")
+	var req_terrain: String = pdata.get("origin_terrain", "")
+
+	if origin_type == "fixed":
+		for tile in allTiles:
+			if tile.tileNumber == tile_id:
+				return tile
+		return null
+
+	# Dynamic: filter all tiles by state and/or terrain, prefer player-owned
+	var candidates: Array = []
+	for tile in allTiles:
+		var state_ok   = req_state   == "" or tile.tileContinent.begins_with(req_state)
+		var terrain_ok = req_terrain == "" or tile.terrain       == req_terrain
+		if state_ok and terrain_ok:
+			candidates.append(tile)
+	if candidates.is_empty():
+		return null
+	# Prefer player-owned tiles; fall back to any matching tile
+	var owned: Array = candidates.filter(
+		func(t): return playerCountryNode != null and t.tileOwner == playerCountryNode.CID)
+	var pool: Array = owned if not owned.is_empty() else candidates
+	return pool[randi() % pool.size()]
+
+
+func _count_building_levels_in(tile) -> int:
+	var total: int = 0
+	for bname in tile.buildings:
+		total += tile.buildings[bname]
+	return total
+
+
+func _get_resource_amount(resource: String) -> float:
+	if playerCountryNode == null:
+		return 0.0
+	match resource:
+		"dollars", "gold":       return playerCountryNode.TotalDollars   # "gold" for CSV compat
+		"food":                  return playerCountryNode.TotalFood
+		"wood":                  return playerCountryNode.TotalWood
+		"metal":                 return playerCountryNode.TotalMetal
+		"weapons":               return playerCountryNode.TotalWeapons
+		"faith", "culture":      return playerCountryNode.TotalCulture   # "faith" for CSV compat
+		"magic":                 return playerCountryNode.TotalMagic
+		"happiness", "harmony":  return playerCountryNode.TotalHappiness # "harmony" for CSV compat
+		"boats":                 return playerCountryNode.TotalBoats
+		"mandate":               return playerCountryNode.TotalMandate
+		"manpower":              return playerCountryNode.TotalManpower
+	return 0.0
+
+
+func _gen_soma_memo(pid: String, name: String) -> String:
+	# Return the hand-written memo for special protectors, otherwise auto-generate
+	var custom: String = _get_soma_memo(pid)
+	if not custom.begins_with("RE: Asset Acquisition Request — [CLASSIFIED]"):
+		return custom
+	return ("RE: Asset Acquisition Request — " + name + " (" + pid + ")\n" +
+			"Status: In Progress\n" +
+			"Classification: MYTHOLOGICAL / SUPERNATURAL\n" +
+			"Note: The Secretary recommends receptive posture and avoidance of" +
+			" skepticism in initial contact. Standard acquisition forms attached.")
 
 
 # ============================================================
@@ -169,14 +303,13 @@ func _check_protector_prayers(allTiles: Array, currentTurn: int) -> void:
 			if arcData["prayers_complete"][i]:
 				continue
 			var prayer = arcData["prayers"][i]
-			var fulfilled = _evaluate_protector_prayer(prayer, allTiles, currentTurn)
+			var fulfilled = _evaluate_protector_prayer(prayer, arcData, currentTurn)
 			if fulfilled:
 				arcData["prayers_complete"][i] = true
 				arcData["devotion_level"] = min(100, arcData["devotion_level"] + 33)
 		if arcData["prayers_complete"].all(func(b): return b):
 			arcData["arc_complete"] = true
-			emit_signal("requestEventFire",
-				"PROT_" + arcData["protector_id"] + "_SUMMON", null)
+			# Don't auto-fire — the button in ProtectorArcEntry handles the summon
 
 
 # ============================================================
@@ -243,36 +376,35 @@ func _evaluate_commander_condition(obj: Dictionary,
 
 
 func _evaluate_protector_prayer(prayer: Dictionary,
-		_allTiles: Array, _currentTurn: int) -> bool:
+		arcData: Dictionary, _currentTurn: int) -> bool:
 	match prayer.get("prayer_type", ""):
 
-		"liberate_tile":
-			var tile_num = prayer.get("tile_id", 0)
-			for tile in playerCountryNode.OwnedTileList:
-				if tile.tileNumber == tile_num:
-					return true
-			return false
+		"resource_threshold":
+			# Nation must have accumulated the required amount in stockpiles
+			var resource: String = prayer.get("resource", "gold")
+			var amount: float    = float(prayer.get("amount", 50))
+			return _get_resource_amount(resource) >= amount
 
-		"liberate_terrain":
-			var terrain = prayer.get("terrain", "")
-			var count_required = prayer.get("count", 1)
-			var count = 0
-			for tile in playerCountryNode.OwnedTileList:
-				if tile.terrain == terrain:
-					count += 1
-			return count >= count_required
+		"dev_progress":
+			# Origin tile must have gained N building levels since game start
+			var origin_tile = arcData.get("origin_tile")
+			if origin_tile == null:
+				return false
+			var required: int = prayer.get("levels", 3)
+			var bstart: int   = arcData.get("origin_building_start", 0)
+			var current: int  = _count_building_levels_in(origin_tile)
+			return (current - bstart) >= required
 
-		"hold_region":
-			var state = prayer.get("state_code", "")
-			var min_tiles = prayer.get("min_tiles", 3)
-			var count = 0
-			for tile in playerCountryNode.OwnedTileList:
-				if tile.tileContinent.begins_with(state):
-					count += 1
-			return count >= min_tiles
-
-		"player_in_tile":
-			# TODO: wire to a presidential movement tracker
+		"ualani_in_origin":
+			# An army commanded by Ualani Carlisle must be in the origin tile
+			var origin_tile = arcData.get("origin_tile")
+			if origin_tile == null or playerCountryNode == null:
+				return false
+			for army in playerCountryNode.countryArmyList:
+				if army.commander != null:
+					if army.commander.governorType == "Ualani Carlisle":
+						if army.inTile == origin_tile:
+							return true
 			return false
 
 		_:
@@ -283,16 +415,16 @@ func _evaluate_protector_prayer(prayer: Dictionary,
 # DATA BUILDERS
 # ============================================================
 
-func _build_commander_objectives(archetype: Dictionary) -> Array:
+func _build_commander_objectives(archetype: Dictionary, home_terrain: String = "Farmlands") -> Array:
 	var arc_id = archetype.get("archetype_id", "")
 	return [
-		_get_commander_objective(arc_id, 1),
-		_get_commander_objective(arc_id, 2),
-		_get_commander_objective(arc_id, 3),
+		_get_commander_objective(arc_id, 1, home_terrain),
+		_get_commander_objective(arc_id, 2, home_terrain),
+		_get_commander_objective(arc_id, 3, home_terrain),
 	]
 
 
-func _get_commander_objective(arc_id: String, num: int) -> Dictionary:
+func _get_commander_objective(arc_id: String, num: int, home_terrain: String = "Farmlands") -> Dictionary:
 	match arc_id:
 		"ARC_01":  # Wetlands Fisher
 			match num:
@@ -361,6 +493,32 @@ func _get_commander_objective(arc_id: String, num: int) -> Dictionary:
 					"obj_index": 2,
 				}
 
+	# Generic terrain-based objectives for archetypes not individually scripted
+	return _get_generic_objective(home_terrain, num)
+
+
+func _get_generic_objective(terrain: String, num: int) -> Dictionary:
+	match num:
+		1: return {
+			"label": "Liberate a " + terrain + " tile",
+			"condition_type": "liberate_tile_terrain",
+			"condition_value": terrain,
+			"condition_state": "",
+			"obj_index": 0,
+		}
+		2: return {
+			"label": "Hold that " + terrain + " tile for 5 turns without retreating",
+			"condition_type": "hold_tile_turns",
+			"condition_value": "5",
+			"terrain": terrain,
+			"obj_index": 1,
+		}
+		3: return {
+			"label": "Be personally present in a liberated " + terrain + " tile",
+			"condition_type": "commander_present_in_tile",
+			"condition_value": terrain,
+			"obj_index": 2,
+		}
 	return {"label": "Unknown objective", "condition_type": "none", "obj_index": num - 1}
 
 
@@ -423,11 +581,44 @@ func _get_soma_memo(protector_id: String) -> String:
 
 
 func _get_archetype_for_governor(gov: governor) -> Dictionary:
+	# Procedurally generated commanders store their archetype ID directly
+	if gov.governorArchetypeId != "":
+		return _arc_id_to_dict(gov.governorArchetypeId)
+	# Named historic governors matched by governorType display name
 	match gov.governorType:
-		"War Widow":        return {"archetype_id": "ARC_09", "archetype_name": "The War Widow"}
-		"Wetlands Fisher":  return {"archetype_id": "ARC_01", "archetype_name": "The Wetlands Fisher"}
-		"Hawaiian Refugee": return {"archetype_id": "ARC_20", "archetype_name": "The Hawaiian Refugee"}
-		# TODO: add more archetypes as procedural commanders are added
+		"War Widow":        return _arc_id_to_dict("ARC_09")
+		"Wetlands Fisher":  return _arc_id_to_dict("ARC_01")
+		"Hawaiian Refugee": return _arc_id_to_dict("ARC_20")
+	return {}
+
+
+func _arc_id_to_dict(arc_id: String) -> Dictionary:
+	match arc_id:
+		"ARC_01": return {"archetype_id": "ARC_01", "archetype_name": "The Wetlands Fisher"}
+		"ARC_02": return {"archetype_id": "ARC_02", "archetype_name": "The Appalachian Miner"}
+		"ARC_03": return {"archetype_id": "ARC_03", "archetype_name": "The Ivy League Dropout"}
+		"ARC_04": return {"archetype_id": "ARC_04", "archetype_name": "The Seminole Fighter"}
+		"ARC_05": return {"archetype_id": "ARC_05", "archetype_name": "The Green Mountain Farmer"}
+		"ARC_06": return {"archetype_id": "ARC_06", "archetype_name": "The Chesapeake Shipwright"}
+		"ARC_07": return {"archetype_id": "ARC_07", "archetype_name": "The Loyalist Turncoat"}
+		"ARC_08": return {"archetype_id": "ARC_08", "archetype_name": "The Tobacco Belt Drifter"}
+		"ARC_09": return {"archetype_id": "ARC_09", "archetype_name": "The War Widow"}
+		"ARC_10": return {"archetype_id": "ARC_10", "archetype_name": "The Indigenous Scout"}
+		"ARC_11": return {"archetype_id": "ARC_11", "archetype_name": "The Boston Rabble-Rouser"}
+		"ARC_12": return {"archetype_id": "ARC_12", "archetype_name": "The Continental Surgeon"}
+		"ARC_13": return {"archetype_id": "ARC_13", "archetype_name": "The Nantucket Sailor"}
+		"ARC_14": return {"archetype_id": "ARC_14", "archetype_name": "The Frontier Preacher"}
+		"ARC_15": return {"archetype_id": "ARC_15", "archetype_name": "The DC Bureaucrat"}
+		"ARC_16": return {"archetype_id": "ARC_16", "archetype_name": "The Rust Belt Steelworker"}
+		"ARC_17": return {"archetype_id": "ARC_17", "archetype_name": "The Plantation Deserter"}
+		"ARC_18": return {"archetype_id": "ARC_18", "archetype_name": "The Swamp Witch"}
+		"ARC_19": return {"archetype_id": "ARC_19", "archetype_name": "The Caribbean Privateer"}
+		"ARC_20": return {"archetype_id": "ARC_20", "archetype_name": "The Hawaiian Refugee"}
+		"ARC_21": return {"archetype_id": "ARC_21", "archetype_name": "The Border Mercenary"}
+		"ARC_22": return {"archetype_id": "ARC_22", "archetype_name": "The Acadian Forest Ranger"}
+		"ARC_23": return {"archetype_id": "ARC_23", "archetype_name": "The Gettysburg Descendant"}
+		"ARC_24": return {"archetype_id": "ARC_24", "archetype_name": "The LGBTQ+ Organizer"}
+		"ARC_25": return {"archetype_id": "ARC_25", "archetype_name": "The Carnival Barker"}
 	return {}
 
 
@@ -448,6 +639,11 @@ func _on_commander_objective_completed(arc_id: String, obj_num: int) -> void:
 
 func _on_protector_devotion_completed(protector_id: String) -> void:
 	print("Protector ", protector_id, " prayers fulfilled!")
+
+
+func _on_protector_summon_requested(protector_id: String) -> void:
+	# Player pressed the summon button — fire the summon event through world.gd
+	emit_signal("requestEventFire", protector_id + "_SUMMON", null)
 
 
 func _on_close_button_pressed() -> void:

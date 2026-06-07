@@ -190,7 +190,7 @@ func _process(delta: float) -> void:
 	if $BeliefPanel/DoctrineScrollContainer/DoctrineContainer.get_children != null:
 		for beliefButton in $BeliefPanel/DoctrineScrollContainer/DoctrineContainer.get_children():
 			if beliefButton.bbPurchased != true:
-				if beliefButton.bbCost <= player.TotalFaith:
+				if beliefButton.bbCost <= player.TotalCulture:
 					beliefButton.makePurchaseable()
 				else:
 					beliefButton.cantAfford()
@@ -199,14 +199,14 @@ func _process(delta: float) -> void:
 	if $BeliefPanel/GodsScrollContainer/GodsContainer.get_children != null:
 		for beliefButton in $BeliefPanel/GodsScrollContainer/GodsContainer.get_children():
 			if beliefButton.bbPurchased != true:
-				if beliefButton.bbCost <= player.TotalFaith:
+				if beliefButton.bbCost <= player.TotalCulture:
 					beliefButton.makePurchaseable()
 				else:
 					beliefButton.cantAfford()
 			else:
 				beliefButton.purchased()
 	if pendingBelief != "" && pendingCost != 0:
-		if player.TotalFaith >= pendingCost:
+		if player.TotalCulture >= pendingCost:
 			$BeliefPanel/PurchasePanel/PurchaseButton.disabled = false
 		else:
 			$BeliefPanel/PurchasePanel/PurchaseButton.disabled = true

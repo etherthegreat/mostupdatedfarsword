@@ -22,6 +22,13 @@ func build_from_csv(eid: String, tile = null) -> void:
 		queue_free()
 		return
 
+	# ── Console preview (always prints so you can see what fired) ──
+	print("=== EVENT FIRED: " + eid + " ===")
+	print("HEADLINE:   " + event_data.get("headline",   ""))
+	print("SHORT DESC: " + event_data.get("short_desc", ""))
+	print("LONG DESC:  " + event_data.get("long_desc",  ""))
+	print("================================")
+
 	event_type    = event_data.get("event_type", "standard")
 	event_country = event_data.get("country_cid", "GEN")
 

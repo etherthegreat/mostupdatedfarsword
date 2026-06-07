@@ -1,0 +1,269 @@
+building_type,modifier_category,modifier_name,current_effect,effect_resources_changed,colonial_rename_suggestion,design_notes
+Farm,Technology,Irrigation,+1 food per level,food,Drainage Ditches,Colonial irrigation via hand-dug ditches and millponds
+Farm,Technology,Calendar,+1 food per level,food,Planting Calendar,Farmers' almanac — Poor Richard's style timing
+Farm,Technology,Engineering,+1 food per level,food,Land Survey,Land grants required surveying — Washington was a surveyor
+Farm,Law,Rural Education Initiative,+1 science / -1 dollars cost,science+dollars cost,Frontier Schoolhouse Act,One-room schoolhouse tied to farmsteads
+Farm,Law,Mercantilism,+1 dollars per level,dollars,Colonial Trade Act,Crown-enforced mercantile system — or colonial rejection of it
+Farm,Governor,BREWER (L1),+1 dollars,dollars,Innkeeper (L1),Taverns = colonial info/commerce hubs
+Farm,Governor,BREWER (L2),+2 dollars / +1 culture,dollars+culture,Innkeeper (L2),"Tavern culture — debates, pamphlets, organizing"
+Farm,Governor,BREWER (L3),+3 dollars / +2 culture / +1 mandate,dollars+culture+mandate,Innkeeper (L3),Sons of Liberty meeting in back rooms
+Farm,Governor,FARMER (L1),+1 food,food,Yeoman Farmer (L1),Independent freeholder — colonial ideal
+Farm,Governor,FARMER (L2),+2 food / +1 wood,food+wood,Yeoman Farmer (L2),Clearing land for more acreage
+Farm,Governor,FARMER (L3),+3 food / +2 wood / +1 dollars,food+wood+dollars,Yeoman Farmer (L3),Surplus crops sold at market
+Farm,Governor,RECRUITER (L1),+10 manpower,manpower,Militia Muster (L1),County militia muster rolls
+Farm,Governor,RECRUITER (L2),+20 manpower,manpower,Militia Muster (L2),
+Farm,Governor,RECRUITER (L3),+30 manpower,manpower,Militia Muster (L3),
+Farm,Tradition,Humble Folk,+1 culture,culture,Plain Folk Virtues,Quaker/Baptist values of simple honest labor
+Farm,Tradition,Peasant Militias,+250 manpower,manpower,Minuteman Ready,Farmers who train as minutemen between harvests
+Farm,Spell,Plentify,+1 food / +1 wood / -4 magic cost,food+wood+magic cost,Harvest Blessing,Ritual blessing of fields — tied to harvest festivals
+Farm,Spell,Gentle Rains,+2 food / -5 magic cost,food+magic cost,Weather Working,Folk magic weather prediction
+Farm,Belief,Gentle Shepherds,+1 food,food,Providence's Plenty,God provides for the faithful farmer
+Farm,Belief,SARATIAN,+1 culture,culture,Great Awakening Faith,Religious revival boosts community identity
+Farm,Crop,corn,+2 food,food,Corn — Native Gift,Corn adopted from Native Americans; colonial staple
+Farm,Crop,apples,+1 dollars / +1 culture,dollars+culture,Orchard Apple,Cider production; Johnny Appleseed legacy
+Farm,Crop,hay,+1 food / +5 manpower,food+manpower,Hay — Draft Animals,Horse and ox fodder drives farm labor capacity
+Farm,Crop,soybeans,+2 food / +1 metal,food+metal,Legume Rotation,Nitrogen-fixing crop improves soil for ironworkers
+Farm,Crop,peanuts,+1 food / +1 dollars,food+dollars,Peanut — Southern Cash Crop,Groundnut trade; later Carver connection
+Farm,Crop,peaches,+1 food / +1 culture / +1 happiness,food+culture+happiness,Peach Orchard,Georgia peaches; orchard culture and pride
+Farm,Crop,oranges,+2 food / +1 happiness,food+happiness,Citrus Grove,Florida/Southern citrus; warmth and abundance
+Farm,Crop,mushrooms,+1 magic / +1 science,magic+science,Kennett Square Fungi,Easter egg: Kennett Square PA mushroom capital
+Farm,Crop,cannabis,+2 culture / +1 happiness,culture+happiness,Brattleboro Hemp,Easter egg: VT hemp/cannabis culture
+Granary,Technology,Calendar,+1 food,food,Almanac Forecasting,Poor Richard's Almanac — optimizing grain storage
+Granary,Technology,Engineering,+1 food,food,Mill Construction,Grist mills extend storage and processing
+Granary,Technology,Statecraft (mandate trigger),+1 mandate,mandate,Public Granary Charter,Public granary as civic institution — mandate of the people
+Granary,Tradition,Meticulous Organizers (mandate trigger),+1 mandate,mandate,Continental Congress Ledgers,Organized record-keeping = legitimate governance
+Granary,Belief,FA ENEPO (mandate trigger),+1 mandate,mandate,Providence's Order,Divine sanction of proper food stewardship
+Granary,Governor,ADMINISTRATOR / mandate trigger (L1),+1 food,food,Quartermaster (L1),Continental Army supply chains
+Granary,Governor,ADMINISTRATOR / mandate trigger (L2),+2 food / +1 mandate,food+mandate,Quartermaster (L2),
+Granary,Governor,ADMINISTRATOR / mandate trigger (L3),+3 food / +2 mandate / +1 happiness,food+mandate+happiness,Quartermaster (L3),Well-fed armies are happy armies
+Granary,Spell,Celebration (mandate trigger),+1 mandate / -4 magic cost,mandate+magic cost,Harvest Festival,Community celebration builds civic mandate
+Mine,Geologic,Copper,+2 metal / +1 dollars,metal+dollars,Paul Revere's Copper,Revere was a famous coppersmith
+Mine,Geologic,Iron,+3 metal,metal,Saugus Iron Works,First iron foundry in America — 1646 MA
+Mine,Geologic,Marble,+1 dollars / +2 culture,dollars+culture,Vermont Quarry,White marble for civic monuments
+Mine,Geologic,Gold,+2 dollars / +1 mandate,dollars+mandate,Gold Rush Claim,California or Appalachian gold strikes
+Mine,Geologic,None,+1 metal (fallback),metal,Pit Mine,Basic excavation with no special resource
+Mine,Technology,Steam Engine,+3 metal / -magic cost / -wood cost / -food cost,metal+costs,Steam-Powered Shaft,Industrial revolution extraction
+Mine,Law,Free Land Prospecting,+1 dollars,dollars,Open Land Act,Homestead-style open mineral rights
+Mine,Law,State-Operated Mines,+2 metal / -1 dollars cost / -1 happiness cost,metal+dollars cost+happiness cost,Crown Monopoly / State Contract,Heavy-handed extraction — workers suffer
+Mine,Governor,MINER (L1),+1 metal,metal,Cornish Miner (L1),Immigrant mining expertise from Cornwall
+Mine,Governor,MINER (L2),+2 metal / +1 dollars,metal+dollars,Cornish Miner (L2),
+Mine,Governor,MINER (L3),+3 metal / +2 dollars / +1 wood,metal+dollars+wood,Cornish Miner (L3),Timber-shoring the shafts
+Mine,Governor,BUILDER (L2),+1 metal,metal,Engineer (L2),Military engineers improve mine efficiency
+Mine,Governor,BUILDER (L3),+2 metal,metal,Engineer (L3),
+Mine,Tradition,Home Underground,+1 culture,culture,Appalachian Heritage,Mountain folk culture tied to the land
+Mine,Tradition,Dungeon Gourmet,+1 food,food,Miners' Commons,Company-town cookhouse feeds the workers
+Mine,Tradition,Valued Expertise,+1 influence,influence,Master Craftsman Guild,Expert miners gain regional reputation
+Mine,Spell,Nightvision,+1 metal / -3 magic cost,metal+magic cost,Lantern Craft,Better lighting in shafts
+Mine,Spell,Divining Rods,+1 metal / +2 dollars / -6 magic cost,metal+dollars+magic cost,Dowsing Rod,Folk magic ore-finding
+Mine,Spell,Replenishment,+4 metal / -12 magic cost,metal+magic cost,Vein Renewal,Magical ore regeneration
+Mine,Belief,BIBWEY,+1 metal,metal,Earth's Bounty,Reverence for what the earth provides
+Mine,Belief,Precious Metals,+1 culture,culture,Silversmith Faith,Precious metalwork as religious art — Paul Revere
+Temple,ChurchLevel,Level 0 (balanced),+1 culture / +1 dollars / +1 mandate / +1 happiness,all,Great Awakening Balanced,Balanced revival fervor
+Temple,ChurchLevel,Level 1 (devout),+1 culture / +1 dollars / +1 mandate,culture+dollars+mandate,Congregationalist Order,New England Congregationalist church hierarchy
+Temple,ChurchLevel,Level 2 (institutional),+1 dollars / +1 mandate,dollars+mandate,Established Church,Church as tax-funded institution
+Temple,ChurchLevel,Level 3 (authoritarian),+1 dollars only,dollars,State Religion,Forced tithe — pure extraction
+Temple,ChurchLevel,Level -1 (free church),+1 culture / +1 dollars / +1 happiness,culture+dollars+happiness,Dissenter's Chapel,Baptist/Quaker freedom from state church
+Temple,ChurchLevel,Level -2 (separatist),+1 culture / +1 happiness,culture+happiness,Meetinghouse,Simple Puritan meeting — community over institution
+Temple,ChurchLevel,Level -3 (underground),+1 culture only,culture,Underground Faith,Persecuted faith builds strongest cultural bonds
+Temple,Technology,Architecture,-1 wood cost / -1 metal cost / -2 culture cost,costs,Carpenter's Guild,Church-building by skilled colonial carpenters
+Temple,Law,Pacifist Sanctuaries,+1 happiness,happiness,Right of Sanctuary,Quaker tradition of nonviolence and shelter
+Temple,Law,Clerical Administration,+1 culture,culture,Parish Records,Church kept births/deaths/land records
+Temple,Governor,NUN (L1),+1 culture,culture,Parish Rector (L1),Local minister builds community culture
+Temple,Governor,NUN (L2),+2 culture / +1 food,culture+food,Parish Rector (L2),Church-run charitable food distribution
+Temple,Governor,NUN (L3),+3 culture / +2 food / +1 culture bonus,culture+food,Parish Rector (L3),Community pillar
+Temple,Governor,BISHOP (L1),+1 culture,culture,Circuit Rider (L1),Methodist circuit riders spreading faith
+Temple,Governor,BISHOP (L2),+2 culture / +1 happiness,culture+happiness,Circuit Rider (L2),
+Temple,Governor,BISHOP (L3),+3 culture / +2 happiness / +1 mandate,culture+happiness+mandate,Circuit Rider (L3),Revivalist mandate
+Temple,Tradition,Studious Monks,+1 science,science,Puritan Scholarship,Harvard founded by Puritans for minister education
+Temple,Tradition,Quiet Gardens,+1 culture,culture,Meetinghouse Gardens,Quaker simplicity and contemplation
+Temple,Spell,Foresight,+2 mandate / -6 magic cost,mandate+magic cost,Prophetic Vision,Colonial preachers claiming divine mandate
+Temple,Spell,Omniscient Direction,+2 culture / +5 mandate / -15 magic cost,culture+mandate+magic cost,Great Awakening Fervor,Massive revival — Jonathan Edwards-style
+Temple,Belief,Religious Arts,+1 culture,culture,Sacred Craft,Church art and architecture as cultural expression
+Temple,Belief,Protected Pilgrims,+1 influence,influence,Pilgrims' Right,Religious freedom as founding principle
+Temple,Belief,VIBIAN KARIK,+2 food / -1 dollars cost,food+dollars cost,Charitable Table,Church-run community feast — colonial mutual aid
+Temple,Crop,cannabis (Brattleboro),+1 culture,culture,Brattleboro Congregation,Vermont religious free-thinking
+Camp,Belief,TYLA DYN,+1 food,food,Hunter's Providence,God guides the hunter's aim
+Camp,Belief,Tree of Life,+1 happiness,happiness,Old Growth Reverence,Native and settler reverence for ancient forest
+Camp,Technology,Bronze Working,+2 wood / -1 metal cost,wood+metal cost,Axe Grinding,Better tools for woodcutting
+Camp,Technology,Iron Working,+2 wood / -1 metal cost,wood+metal cost,Iron Saw,Water-powered sawmill technology
+Camp,Law,Universal Land Rights,+1 happiness,happiness,Land Grant Act,Bounty land grants for veterans and settlers
+Camp,Law,Land Conservation,+1 culture,culture,Timber Reserve,Early American conservation — protect the mast forests
+Camp,Law,Mercantilism,+1 dollars,dollars,Naval Stores Act,British demand for tar/pitch/turpentine from American forests
+Camp,Governor,FORESTER (L1),+1 wood,wood,Woodsman (L1),Daniel Boone-style frontier woodsman
+Camp,Governor,FORESTER (L2),+2 wood / +1 food,wood+food,Woodsman (L2),Subsistence hunting alongside logging
+Camp,Governor,FORESTER (L3),+3 wood / +2 food / +1 culture,wood+food+culture,Woodsman (L3),Frontier culture — tall tales and heritage
+Camp,Governor,ADMIRAL (L2),+1 wood,wood,Ship's Carpenter (L2),Navy procurement of mast timber
+Camp,Governor,ADMIRAL (L3),+2 wood,wood,Ship's Carpenter (L3),King's Broad Arrow — marked mast trees
+Camp,Governor,ARTISAN (L3),+1 culture,culture,Cabinet Maker (L3),Fine colonial furniture from quality timber
+Camp,Tradition,Hunting Parties,food+manpower scaled by governor level,food+manpower,Frontier Scouts,Ranging companies — Rogers' Rangers style
+Camp,Tradition,Forest Wardens,+1 mandate,mandate,King's Forest Warden / Surveyor-General,Enforcing the Broad Arrow Policy
+Camp,Spell,Ent Tongue,+1 wood / +1 culture / -4 magic cost,wood+culture+magic cost,Speaking to the Forest,Native animist relationship with old growth
+Camp,Spell,Hunter's Mark,+1 food / -2 magic cost,food+magic cost,Tracker's Gift,Frontier hunting magic
+Tower,Wizard,DRUID,+3 wood,wood,Herbalist,Colonial herb doctors and apothecaries
+Tower,Wizard,ALCHEMIST,+3 dollars,dollars,Apothecary-Chemist,Colonial pharmacist/chemist — early natural science
+Tower,Wizard,ELEMENTALST,+3 food,food,Soil Scientist,Early agricultural science — scientific farming
+Tower,Wizard,SUMMONER,+2 metal,metal,Metallurgist,Benjamin Rush / colonial metals knowledge
+Tower,Wizard,SEER,+3 culture,culture,Pamphlet Printer,Tom Paine / colonial print culture as cultural magic
+Tower,Wizard,PSIONICIST,+1 each food+wood+dollars+metal,mixed,Polymath,Franklin-style polymath — expert at everything
+Tower,Belief,ORIL-RA,+2 magic,magic,Ley Line Devotion,Ancient power nodes in the new world
+Tower,Belief,VANODAM,+1 culture / +1 magic,culture+magic,Natural Philosophy Faith,Deist/rationalist faith in natural law
+Tower,Belief,Wandering Exorcists,+250 manpower,manpower,Spirit Hunters,Frontier occult hunters — colonial exorcism tradition
+Tower,Technology,Lenscraft,+1 magic / +1 science / -1 metal cost,magic+science+metal cost,Optician's Art,Franklin bifocals / colonial optics / telescopes
+Tower,Law,Freedom of Movement,+2 happiness,happiness,Right of Travel,No internal tariffs — free movement of people
+Tower,Law,Record Keeping Act,+1 culture / +1 science,culture+science,Land Registry,Systematic land records — foundation of property law
+Tower,Law,Apprenticeship Programs,+2 magic,magic,Colonial Apprenticeship,Ben Franklin-style apprentice system
+Tower,Governor,ASTROLOGER (L1),+1 magic,magic,Natural Philosopher (L1),Rittenhouse / Banneker — colonial astronomy
+Tower,Governor,ASTROLOGER (L2),+2 magic / +1 science,magic+science,Natural Philosopher (L2),Scientific instrument makers
+Tower,Governor,ASTROLOGER (L3),+3 magic / +2 science / +1 culture,magic+science+culture,Natural Philosopher (L3),Published treatises and reputation
+Tower,Governor,MYSTIC (L1),+1 culture,culture,Cunning Folk (L1),Colonial folk magic practitioners
+Tower,Governor,MYSTIC (L2),+2 culture / +1 magic,culture+magic,Cunning Folk (L2),
+Tower,Governor,MYSTIC (L3),+3 culture / +2 magic / +1 mandate,culture+magic+mandate,Cunning Folk (L3),Prophecy and community guidance
+Tower,Tradition,Cosmic Inspiration,+1 science,science,Natural Order Studies,Enlightenment natural philosophy tradition
+Tower,Tradition,Ancient Wizdom,+1 influence,influence,Old Ways Knowledge,Respect for pre-colonial and Native knowledge
+Tower,Tradition,Natural Order,+1 mandate,mandate,Republican Virtue,Civic order from natural law — Enlightenment mandate
+Tower,Spell,Extradimensional Servants,+1 each food+wood+dollars+metal / -4 magic,mixed+magic cost,Cornucopia Working,Spell of miraculous plenty
+Tower,Spell,Clear Skies,+1 science / +1 culture / -5 magic,science+culture+magic cost,Weather Observation,Colonial meteorology / Franklin lightning rod
+Tower,Spell,Peace,+1 happiness / +1 influence / -5 magic,happiness+influence+magic cost,Peace Wampum,Iroquois Great Law of Peace influence
+Tower,Crop,Cannabis,+1 culture / -1 magic cost,culture+magic cost,Hemp Research,Industrial hemp grows near towers
+Tower,Crop,Cloudbean,+1 magic,magic,Sacred Bean,Rare crop with magical properties
+Tower,Geologic,Gold,+1 magic,magic,Ley Line Confluence,Gold deposits mark natural power nodes
+Library,Belief,DILNITH-AMEN,+2 science,science,Enlightenment Reason,Pure rational inquiry — Voltaire/Locke influence
+Library,Belief,Divine Spark,+1 science,science,Natural Theology,God revealed through nature — Deist thought
+Library,Belief,Church Records,+1 culture,culture,Parish Archive,Church as keeper of community memory
+Library,Technology,Statecraft,+1 science / +1 mandate / -1 dollars cost,science+mandate+dollars cost,Constitutional Studies,Montesquieu / Locke read in colonial libraries
+Library,Technology,Paper,+1 science / +1 wood,science+wood,Paper Mill,Colonial paper mills — essential for print culture
+Library,Technology,Alphabet,+1 science,science,Common Literacy,Widespread literacy was a colonial revolutionary tool
+Library,Law,Standardized Measurements,+1 science,science,Weights and Measures Act,Standardization essential for commerce and science
+Library,Law,Philosopher Kings,+1 influence,influence,Philosopher-Statesmen,Jefferson/Madison/Adams as philosopher-kings
+Library,Law,Freedom of the Press,+1 happiness,happiness,Free Press Act,First Amendment foundation — colonial newspapers
+Library,Governor,SCHOLAR (L1),+1 science,science,Printer (L1),Ben Franklin printer-philosopher
+Library,Governor,SCHOLAR (L2),+2 science / +1 magic,science+magic,Printer (L2),Natural philosophy experiments alongside printing
+Library,Governor,SCHOLAR (L3),+3 science / +2 magic / +1 culture,science+magic+culture,Printer (L3),Published works reshape culture
+Library,Governor,INVENTOR (L1),+1 science,science,Tinkerer (L1),Franklin / Rittenhouse / Banneker colonial inventors
+Library,Governor,INVENTOR (L2),+2 science / +1 dollars,science+dollars,Tinkerer (L2),Patents and practical inventions
+Library,Governor,INVENTOR (L3),+3 science / +2 dollars / +1 culture,science+dollars+culture,Tinkerer (L3),Inventions that reshape the economy and culture
+Library,Tradition,Free Thinkers,+1 science,science,Republican Letters,Exchange of ideas through correspondence networks
+Library,Tradition,Renaissance Men,+1 culture,culture,Gentleman Scholar,Educated class values — Jefferson's library ideal
+Library,Spell,Potion: Focusing Dust,+1 science / -2 magic,science+magic cost,Clarity Draught,Focus potion for scholars
+Library,Spell,Inspiration,+3 science / +1 culture / -8 magic,science+culture+magic cost,Muse's Touch,Divine inspiration for the scholar
+Library,Spell,Hive Mind,+1 happiness / +2 science / -6 magic,happiness+science+magic cost,Collective Reason,Enlightenment salons — shared intellectual life
+Library,Geologic,Gold,+1 science,science,Sponsored Research,Wealthy patrons fund scientific inquiry
+Workshop,Belief,Valued Idolatry,+1 culture / +1 mandate / -2 metal cost,culture+mandate+metal cost,Craft Pride,Pride in American-made goods
+Workshop,Belief,TYRUS,+2 dollars / -1 metal cost,dollars+metal cost,Merchant's Blessing,Commerce as divinely sanctioned
+Workshop,Belief,Busy Hands,+2 culture / -1 wood cost / -1 food cost,culture+wood cost+food cost,Idle Hands Doctrine,Puritan work ethic — idle hands do the devil's work
+Workshop,Technology,Banking,+2 dollars,dollars,Land Bank,Colonial land banks and paper money experiments
+Workshop,Technology,Craftsmenship,+2 dollars / -2 wood cost,dollars+wood cost,Guild Craft,Artisan guilds protecting trade skills
+Workshop,Technology,Metal Casting,+2 dollars / -1 metal cost,dollars+metal cost,Foundry Casting,Bell-casting / cannon-casting — patriot foundries
+Workshop,Law,Labor Contracts,-2 food cost,food cost,Indentured Terms,Indentured servant labor reduces food overhead
+Workshop,Law,Protected Supply Chain,+2 dollars / -1 food cost / -1 metal cost,dollars+food cost+metal cost,Non-Importation Agreement,Colonial boycotts protecting local production
+Workshop,Law,Military Engineers,+300 manpower,manpower,Continental Engineers,Engineering Corps attached to workshops
+Workshop,Law,Mercantilism,+1 dollars / -2 mandate cost,dollars+mandate cost,Navigation Acts,Mercantile regulation — profitable but resented
+Workshop,Governor,MINTER (L1),+1 dollars,dollars,Master Craftsman (L1),Guild master overseeing production
+Workshop,Governor,MINTER (L2),+2 dollars / +1 culture,dollars+culture,Master Craftsman (L2),Reputation for quality builds local pride
+Workshop,Governor,MINTER (L3),+3 dollars / +2 culture / +1 mandate,dollars+culture+mandate,Master Craftsman (L3),Artisan as civic leader — Sons of Liberty membership
+Workshop,Governor,BUILDER (L1),+1 dollars,dollars,Contractor (L1),Colonial building trades
+Workshop,Governor,BUILDER (L2),+2 dollars,dollars,Contractor (L2),
+Workshop,Governor,BUILDER (L3),+3 dollars,dollars,Contractor (L3),Large construction contracts = political influence
+Workshop,Tradition,Artist Enclaves,+1 culture,culture,Artisan Quarter,Neighborhood of skilled craftspeople — Revere's Boston
+Workshop,Tradition,Guild Education,+1 science,science,Apprentice System,Formal trade apprenticeships transfer technical knowledge
+Workshop,Tradition,Meritocracy,+1 mandate,mandate,Self-Made Man,Franklin's self-made ideal justifies the republic
+Workshop,Spell,Potion: Stamina,+2 dollars / -1 metal / -1 wood / -2 magic,dollars+costs+magic cost,Stimulant Tonic,Colonial tonics and patent medicines boosting output
+Workshop,Spell,Duplication,+4 dollars / -1 happiness cost / -7 magic,dollars+happiness cost+magic cost,Printing Press Working,Magical mass production — industrial revolution foreshadow
+Bath,Belief,Healing Waters,+1 culture / -1 corruption,culture+corruption,Sacred Spring,Natural spring as healing place — colonial spas
+Bath,Belief,JERRIWIX,-1 corruption / +1 mandate,corruption+mandate,Civic Order Faith,Faith in clean governance reduces moral decay
+Bath,Technology,Engineering,+1 dollars / -1 corruption,dollars+corruption,Aqueduct Construction,Roman-inspired public waterworks
+Bath,Law,Pollution Control,-1 corruption / +1 food,corruption+food,Clean Water Ordinance,Town water regulation — reduces disease
+Bath,Law,Mandatory Hygiene,+1 culture / -1 corruption,culture+corruption,Public Health Act,Enlightenment hygiene — smallpox inoculation debate
+Bath,Law,Freedom of Speech,+1 influence / +1 mandate,influence+mandate,Town Meeting Rights,Bath as gathering place — New England town meeting
+Bath,Governor,MASSEUSE (L1),+1 culture,culture,Physician (L1),Colonial doctor as community pillar
+Bath,Governor,MASSEUSE (L2),+2 culture / +1 magic,culture+magic,Physician (L2),Experimental medicine / natural philosophy crossover
+Bath,Governor,MASSEUSE (L3),+3 culture / +2 magic / +1 dollars,culture+magic+dollars,Physician (L3),Rush-style physician as cultural and economic leader
+Bath,Governor,ARTISAN (L2),+1 dollars,dollars,Apothecary (L2),Medicinal goods production
+Bath,Governor,ARTISAN (L3),+2 dollars,dollars,Apothecary (L3),
+Bath,Tradition,Communal Bathing,+1 mandate,mandate,Public Well Customs,Common well = community gathering = mandate
+Bath,Tradition,Beautiful Spaces,+1 culture,culture,Common Green,Town common / village green as civic space
+Bath,Tradition,Soaps Lotions Perfumes,+1 happiness,happiness,Colonial Apothecary,Perfumes and soaps as colonial luxury goods
+Bath,Spell,Geothermic Well,+3 dollars / +2 culture / -10 magic,dollars+culture+magic cost,Hot Spring Resort,Natural hot spring draws wealthy visitors
+Bath,Spell,Vitamins and Minerals,+1 science / +1 culture / -6 magic,science+culture+magic cost,Mineral Water Cure,Taking the waters — fashionable health cure
+Faire,Belief,Holiday Feasts,+2 culture / -2 food cost,culture+food cost,Harvest Celebration,Thanksgiving and harvest festivals
+Faire,Belief,BENAXTARA,+2 mandate,mandate,Public Celebration Mandate,Festivals build community loyalty
+Faire,Technology,Architecture,+2 culture / +2 wood,culture+wood,Exhibition Hall,State fair exhibition buildings
+Faire,Law,National Exhibitions,+1 influence,influence,Continental Exhibition,Early American world's fair prototype
+Faire,Law,Freedom of Expression,+1 culture,culture,Free Assembly Act,Right to peaceful assembly = culture
+Faire,Law,Sanctified Sports,+15 manpower,manpower,Muster Day Games,Militia muster days included athletic competitions
+Faire,Governor,TAMER (L1),+1 happiness,happiness,Showman (L1),P.T. Barnum-style entertainers
+Faire,Governor,TAMER (L2),+2 happiness / +1 culture,happiness+culture,Showman (L2),Traveling shows spreading culture
+Faire,Governor,TAMER (L3),+3 happiness / +2 culture / +1 dollars,happiness+culture+dollars,Showman (L3),Profitable entertainment circuit
+Faire,Governor,EXPLORER (L1),+10 manpower,manpower,Frontier Guide (L1),Lewis & Clark-type frontier explorers
+Faire,Governor,EXPLORER (L2),+20 manpower / +1 weapons,manpower+weapons,Frontier Guide (L2),Armed exploration parties
+Faire,Governor,EXPLORER (L3),+30 manpower / +2 weapons / +1 culture,manpower+weapons+culture,Frontier Guide (L3),Exploration as cultural heroism
+Faire,Tradition,Gastronomic Studies,+1 culture,culture,Colonial Cookbook,American regional cuisine as cultural identity
+Faire,Tradition,Art Trade,+1 dollars,dollars,Artisan Market,Craftwork sold at the fair
+Faire,Tradition,Bread and Circuses,+1 food,food,Free Cider Day,Colonial politicians giving out free food for votes
+Faire,Spell,Celebration,+1 dollars / +1 culture / +1 food / -6 magic,mixed+magic cost,Festival Enchantment,Magical enhancement of the fair
+Faire,Spell,Fireworks,+3 happiness / -7 magic,happiness+magic cost,Liberty Fireworks,July 4th fireworks — happiness boost
+Forge,Belief,Sacred Bladecraft,+1 culture / +1 weapons / -1 metal cost,culture+weapons+metal cost,Patriot's Iron,Forging weapons as sacred duty to liberty
+Forge,Belief,QALIN LING,+2 weapons / -2 metal cost,weapons+metal cost,War Spirit,Martial spirit blessing weapons production
+Forge,Technology,Iron Working,+2 weapons / -1 metal / -1 wood / -1 dollars cost,weapons+costs,Blast Furnace,Iron furnaces like Durham and Principio
+Forge,Technology,Tempuring,+2 weapons / -1 metal / -1 dollars cost,weapons+costs,Quench Hardening,Steel tempering techniques
+Forge,Law,Bulk Orders,+2 weapons / -1 dollars cost / -1 metal cost,weapons+costs,Continental Contract,Government bulk weapons contracts
+Forge,Law,Licensed Swordsmen,+1 weapons / +1 happiness / -1 metal cost,weapons+happiness+metal cost,Armorer's License,Regulated weapons production with pride of craft
+Forge,Law,Recycling Centers,+1 metal / +1 dollars,metal+dollars,Scrap Metal Drive,Recasting captured British cannon
+Forge,Governor,BLACKSMITH (scales with level),+2 weapons / -2 metal cost (per level),weapons+metal cost,Master Armorer,Patriot armorers — Henry Knox's supply network
+Forge,Governor,BLADEMASTER (scales with level),+250 manpower / +1 weapons / -1 metal cost (per level),manpower+weapons+metal cost,Militia Armorer,Arms the local militia
+Forge,Governor,ARTISAN (L1),+1 weapons,weapons,Gunsmith (L1),Kentucky rifle gunsmiths — American precision arms
+Forge,Governor,ARTISAN (L2),+2 weapons,weapons,Gunsmith (L2),
+Forge,Governor,ARTISAN (L3),+3 weapons,weapons,Gunsmith (L3),Famous for long rifle accuracy
+Forge,Tradition,Steady Hands,+1 weapons,weapons,Iron Discipline,Steady hands from training and tradition
+Forge,Tradition,Battlesmiths,+250 manpower,manpower,Fighting Smiths,Every forge worker is also a soldier
+Forge,Tradition,Intricate Designs,+1 culture,culture,Decorative Ironwork,Colonial decorative ironwork as art — Williamsburg gates
+Forge,Spell,Heart of the Forge,+1 food / +2 culture / +1 happiness / -8 magic,mixed+magic cost,Forge Fire Blessing,Sacred fire of liberty
+Forge,Spell,Resist Heat,+3 weapons / -3 metal cost / -9 magic,weapons+metal cost+magic cost,Fire Resistance,Working hotter fires for superior steel
+Barracks,NOTE,EMPTY — needs implementation,No unlockables implemented yet,none,NEEDS COLONIAL THEMED UNLOCKABLES,See design_notes column for suggestions
+Barracks,Technology,SUGGESTED: Drill Manual,#NAME?,manpower,Steuben Drill Manual,Baron von Steuben's Regulations for the Order and Discipline
+Barracks,Technology,SUGGESTED: Fortification,#NAME?,defensiveness,Field Fortification,Vauban-style earthwork construction
+Barracks,Law,SUGGESTED: Conscription Act,#NAME?,manpower+happiness cost,Continental Draft,Mandatory service — controversial in colonial era
+Barracks,Law,SUGGESTED: Bounty Land Grants,#NAME?,manpower+dollars cost,Enlistment Bounty,Cash and land bounties for enlistment
+Barracks,Governor,SUGGESTED: DRILL SERGEANT,#NAME?,manpower+weapons,Drill Sergeant,Von Steuben-type professional training officer
+Barracks,Governor,SUGGESTED: COLONEL,#NAME?,manpower+mandate,Regimental Colonel,Washington-style regimental leadership
+Barracks,Tradition,SUGGESTED: Minuteman Tradition,#NAME?,manpower,Minuteman Ready,60 seconds to muster — colonial militia tradition
+Barracks,Tradition,SUGGESTED: Veterans' Honor,#NAME?,weapons+culture,Continental Veterans,Pride in service after war
+Market,Technology,Banking,+2 dollars,dollars,Land Bank,Colonial land banking — paper currency experiments
+Market,Technology,Craftsmenship,+2 dollars / -2 wood cost,dollars+wood cost,Artisan Craft,American-made goods movement
+Market,Law,Mercantilism,+1 dollars / -2 mandate cost,dollars+mandate cost,Navigation Acts,Resentment of British mercantile control
+Market,Law,Protected Supply Chain,+2 dollars / -1 food / -1 metal cost,dollars+costs,Non-Importation Agreement,Colonial boycott of British goods
+Market,Tradition,Agrarian Bastions,+1 food,food,Market Garden,Farmer's market — food produced alongside trade
+Market,Tradition,Artist Enclaves,+1 culture,culture,Artisan Quarter,Craftspeople cluster around the market
+Dock,Technology,Navigation,+1 boats,boats,Dead Reckoning,Colonial celestial navigation techniques
+Dock,Technology,Engineering,+1 boats,boats,Dry Dock Construction,Shipyard engineering
+Dock,Law,Naval Contracts,+1 boats / -1 dollars cost,boats+dollars cost,Prize Contracts,Privateering contracts and naval shipbuilding
+Dock,Tradition,Agrarian Bastions,+1 dollars,dollars,Market Wharf,Dock doubles as trade post — farmland to port pipeline
+Monument,Technology,Architecture,-1 wood cost / -1 metal cost / -2 culture cost,costs,Classical Design,Roman-inspired architecture — Neoclassical American style
+Monument,Law,Pacifist Sanctuaries,+1 happiness,happiness,Peace Memorial,Monuments to peace — not just war
+Monument,Tradition,Studious Monks,+1 science,science,Memorial Library,Monument includes a reading room
+Monument,Belief,Religious Arts,+1 culture,culture,Sacred Monument,Monument as spiritual landmark
+Resort,Technology,Architecture,+1 happiness,happiness,Spa Construction,Fashionable resort architecture
+Resort,Law,Pacifist Sanctuaries,+1 happiness,happiness,Right of Rest,Law protecting leisure — radical colonial concept
+Resort,Tradition,Humble Folk,+1 happiness,happiness,Common Respite,Rest for ordinary working people
+Fortress,Tradition,Agrarian Bastions,+1 food,food,Garrison Farm,Soldiers farm the fortress grounds
+Fortress,Tradition,Martial Heritage,+1 defensiveness,defensiveness,Star Fort Tradition,Vauban earthwork fortification expertise
+Fortress,Technology,Engineering,+1 defensiveness,defensiveness,Military Engineering,Continental Army engineers — Kosciuszko at West Point
+Fortress,Law,Military Engineers,+1 defensiveness,defensiveness,Engineer Corps,Dedicated fortification engineers
+Courthouse,NOTE,BASE BUILDING,+1 mandate per level / -1 dollars -1 culture -1 wood per level,mandate+costs,Courthouse,The republic's legitimacy engine — mandate from civic investment
+Courthouse,Technology,Statecraft,+1 mandate / +1 science / -1 dollars cost,mandate+science+dollars cost,Constitutional Studies,Governance theory becomes law — Montesquieu and Locke read in colonial courthouses
+Courthouse,Technology,Alphabet,+1 science / +1 mandate,science+mandate,Common Literacy,A literate citizenry understands its rights — and demands them at the courthouse
+Courthouse,Law,Philosopher Kings,+1 influence / +1 mandate,influence+mandate,Philosopher-Statesmen,Jefferson / Madison / Adams as philosopher-judges — learned governance lifts influence
+Courthouse,Law,Clerical Administration,+1 culture,culture,Parish Records Act,Church records absorbed into legal records — culture from civic continuity
+Courthouse,Law,Freedom of Speech,+1 happiness / +1 influence,happiness+influence,Free Speech Act,The courthouse protects the right to speak — citizens are happier and more engaged
+Courthouse,Governor,ADMINISTRATOR (L1),+1 mandate,mandate,Circuit Judge (L1),Riding judge carries law to frontier communities — mandate on horseback
+Courthouse,Governor,ADMINISTRATOR (L2),+2 mandate / +1 influence,mandate+influence,Circuit Judge (L2),Established circuit judge builds regional legal reputation
+Courthouse,Governor,ADMINISTRATOR (L3),+3 mandate / +2 influence / +1 happiness,mandate+influence+happiness,Circuit Judge (L3),Senior judge as civic pillar — trust in law becomes trust in the republic
+Courthouse,Governor,BISHOP (L1),+1 mandate,mandate,Magistrate (L1),Local magistrate handles minor cases — the republic's first line of civic order
+Courthouse,Governor,BISHOP (L2),+2 mandate / +1 culture,mandate+culture,Magistrate (L2),Public proceedings build civic culture — law as community theater
+Courthouse,Governor,BISHOP (L3),+3 mandate / +2 culture / +1 happiness,mandate+culture+happiness,Magistrate (L3),Senior magistrate as community institution — legitimacy produces happiness
+Courthouse,Tradition,Meticulous Organizers,+1 mandate,mandate,Continental Congress Ledgers,Organized legal record-keeping documents the mandate of the people
+Courthouse,Tradition,Meritocracy,+1 mandate,mandate,Self-Made Man,Meritocratic courts reward competence not birth — mandate from earned standing
+Courthouse,Belief,Valued Idolatry,+1 culture / +1 mandate,culture+mandate,Civic Pride,Pride in the courthouse as civic institution — the building itself generates culture
+Courthouse,Belief,JERRIWIX,-1 corruption / +1 mandate,corruption+mandate,Civic Order Faith,Faith in honest governance — clean courts reduce corruption and boost mandate
+Courthouse,Spell,Foresight,+2 mandate / -6 magic cost,mandate+magic cost,Prophetic Ruling,The judge sees the outcome before the trial — mandate from swift certain justice
+Courthouse,Spell,Omniscient Direction,+2 culture / +5 mandate / -15 magic cost,culture+mandate+magic cost,Unanimous Verdict,Perfect civic alignment — the community trusts the court completely
