@@ -66,12 +66,17 @@ func _process(delta: float) -> void:
 			else:
 				emit_signal("armyTraveling", progressRate, destinationPathPoint, thisArmy)
 		if movingForward == true:
-			progressRate += 0.02
+			# Visual march speed — slowed by winter on cold tiles for non-adapted armies
+			var march_speed: float = 0.02
+			if currentTile != null and currentTile.winterScore > 0 \
+					and not thisArmy.armyTags.has("Cold Weather"):
+				march_speed *= currentTile.get_winter_army_modifier()
+			progressRate += march_speed
 			if progressRate >= 1:
 				movingForward = false
 				currentPathPoint = destinationPathPoint
 				currentPathPoint.occupied = true
-				#currentTile = currentPathPoint.ppbTile
+				currentTile = currentPathPoint.ppbTile
 				#currentPathPoint.add_child(self)
 				var currentContainer = get_parent()
 				emit_signal("armyArrived", currentPath, destinationPathPoint, thisArmy, self, currentContainer)
@@ -91,9 +96,7 @@ func onRaise(Army, country, pathPoint):
 	currentPathPoint = pathPoint
 	currentPathPoint.occupied = true
 	$APFButton.icon = Army.armyIcon
-	#currentTile = Tile
-#	match currentPathPoint.currentPathPoint
-	#currentPath = path
+	currentTile = pathPoint.ppbTile   # populate immediately so winter drain/speed is safe on turn 1
 	pass
 
 signal apfSelected

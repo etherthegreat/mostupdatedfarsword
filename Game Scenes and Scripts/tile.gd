@@ -37,6 +37,9 @@ var corruption: int = 0                # scale 0-100
 var buildings: Dictionary = {}         # {"barracks": 3, "farm": 1, "dock": 2}
 var tileSpecialFeatures: Array = []    # ["Gettysburg Memorial", "Appalachian Minerals"]
 var winterScore: int = 0
+# Road infrastructure — built by construction worker civilians (Pickaxe tool)
+# 0 = no road, 1 = dirt road (−1 move cost), 2 = post road (−2), 3 = king's highway (−3, min 1)
+var road_level: int = 0
 # Eco modifier tracking
 var isRevolutionaryHotbed: bool = false   # computed, not from CSV
 var isOccupiedTerritory: bool = false     # computed, not from CSV
@@ -67,6 +70,7 @@ var bathGovernorReq: bool = false
 var theaterGovernorReq: bool = false
 var towerGovernorReq: bool = false
 var granaryGovernorReq: bool = false
+var courthouseGovernorReq: bool = false
 
 # ============================================================
 # MAGIC POINTS
@@ -113,47 +117,49 @@ var damagedBuildingsList: Array = []
 var tileOutput: float
 
 # Building outputs
-var buildingGoldOutput: float
+var buildingDollarsOutput: float   # renamed from buildingDollarsOutput
 var buildingFoodOutput
 var buildingWoodOutput
 var buildingMetalOutput
 var buildingMagicOutput
-var buildingCultureOutput
-var buildingFaithOutput
+var buildingCultureOutput          # now covers old Faith + Culture
+# buildingFaithOutput removed — merged into buildingCultureOutput
 var buildingWeaponsOutput
 var buildingScienceOutput
 var buildingMandateOutput
-var buildingHarmonyOutput: float
+var buildingHappinessOutput: float # renamed from buildingHappinessOutput
+var buildingBoatsOutput: int       # new Boats resource
 var buildingManpowerOutput
 var buildingInfluenceOutput
 
 # Building expenses
-var buildingGoldExpense: float
+var buildingDollarsExpense: float  # renamed from buildingDollarsExpense
 var buildingFoodExpense
 var buildingWoodExpense
 var buildingMetalExpense
 var buildingMagicExpense
-var buildingCultureExpense
-var buildingFaithExpense
+var buildingCultureExpense         # covers old Faith + Culture
+# buildingFaithExpense removed
 var buildingScienceExpense
 var buildingWeaponsExpense
 var buildingMandateExpense
-var buildingHarmonyExpense: float
+var buildingHappinessExpense: float # renamed from buildingHappinessExpense
 var buildingManpowerExpense
 var buildingInfluenceExpense
 
 # Monthly yields
 var tileFoodYield
 var tileWoodYield
-var tileGoldYield: float
+var tileDollarsYield: float   # renamed from tileDollarsYield
 var tileMetalYield
 var tileMagicYield
-var tileCultureYield
-var tileFaithYield
+var tileCultureYield          # covers old Faith + Culture
+# tileFaithYield removed
 var tileWeaponsYield
 var tileScienceYield
 var tileMandateYield
-var tileHarmonyYield: float
+var tileHappinessYield: float # renamed from tileHappinessYield
+var tileBoatsYield: int       # new Boats resource
 var tileManpowerYield
 var tileInfluenceYield
 
@@ -217,6 +223,16 @@ var barracksDevelopmentPoints: float
 var tileBarracksDevCost: float = 30
 var dockDevelopmentPoints: float
 var tileDockDevCost: float = 30
+var courthouseDevelopmentPoints: float
+var tileCourthouseDevCost: float = 35
+var marketDevelopmentPoints: float
+var tileMarketDevCost: float = 30
+var monumentDevelopmentPoints: float
+var tileMonumentDevCost: float = 30
+var resortDevelopmentPoints: float
+var tileResortDevCost: float = 35
+var fortressDevelopmentPoints: float
+var tileFortressDevCost: float = 40
 
 var colonizationPoints: float
 var colonizationReq: float = 2
@@ -244,8 +260,8 @@ var buildingScene = load("res://Game Scenes and Scripts/building.tscn")
 var spellToCast: spell
 var spellCostToCast: int
 
-var tileGoldTax: float
-var tileHarmonyTax: float
+var tileDollarsTax: float
+var tileHappinessTax: float
 var tileFoodDic: Dictionary = {}
 
 var discoveryPoints: int = 0
@@ -513,38 +529,40 @@ func censusTile(playerCountryNode):
 	calculateDailyTileEcoChanges()
 	buildingFoodOutput = 0
 	buildingWoodOutput = 0
-	buildingGoldOutput = 0
+	buildingDollarsOutput = 0
 	buildingMetalOutput = 0
 	buildingWeaponsOutput = 0
 	buildingScienceOutput = 0
-	buildingFaithOutput = 0
+	# buildingFaithOutput removed — merged into buildingCultureOutput
 	buildingMagicOutput = 0
 	buildingMandateOutput = 0
 	buildingInfluenceOutput = 0
 	buildingManpowerOutput = 0
-	buildingHarmonyOutput = 0
+	buildingHappinessOutput = 0
 	buildingCultureOutput = 0
+	buildingBoatsOutput = 0
 	corruptionChange = 0
-	tileGoldTax = 0
-	tileHarmonyTax = 0
+	tileDollarsTax = 0
+	tileHappinessTax = 0
 	for building in tileBuildingsList:
 		building.calculateOutputs(playerCountryNode)
 		buildingFoodOutput += building.totalBuildingFood
 		buildingWoodOutput += building.totalBuildingWood
-		buildingGoldOutput += building.totalBuildingGold
+		buildingDollarsOutput += building.totalBuildingDollars
 		buildingMetalOutput += building.totalBuildingMetal
 		buildingWeaponsOutput += building.totalBuildingWeapons
 		buildingScienceOutput += building.totalBuildingScience
-		buildingFaithOutput += building.totalBuildingFaith
+		# totalBuildingFaith removed — merged into totalBuildingCulture
 		buildingMagicOutput += building.totalBuildingMagic
-		buildingCultureOutput += building.totalBuildingCulture
+		buildingCultureOutput += building.totalBuildingCulture  # covers old faith + culture
 		buildingMandateOutput += building.totalBuildingMandate
-		buildingHarmonyOutput += building.totalBuildingHarmony
+		buildingHappinessOutput += building.totalBuildingHappiness
+		buildingBoatsOutput += building.totalBuildingBoats
 		buildingManpowerOutput += building.totalBuildingManpower
 		buildingInfluenceOutput += building.totalBuildingInfluence
 		corruptionChange += building.corruptionChange
-		tileGoldTax += building.goldTax
-		tileHarmonyTax += building.harmonyTax
+		tileDollarsTax += building.dollarsTax
+		tileHappinessTax += building.happinessTax
 	for building in tileBuildingsList:
 		if building.foodDic.is_empty() == false:
 			tileFoodDic[building.buildingType] = building.foodDic
@@ -556,38 +574,40 @@ func surveyTile(playerCountryNode):
 	calculateDailyTileEcoChanges()
 	buildingFoodOutput = 0
 	buildingWoodOutput = 0
-	buildingGoldOutput = 0
+	buildingDollarsOutput = 0
 	buildingMetalOutput = 0
 	buildingWeaponsOutput = 0
 	buildingScienceOutput = 0
-	buildingFaithOutput = 0
+	# buildingFaithOutput removed — merged into buildingCultureOutput
 	buildingMagicOutput = 0
 	buildingMandateOutput = 0
 	buildingInfluenceOutput = 0
 	buildingManpowerOutput = 0
-	buildingHarmonyOutput = 0
+	buildingHappinessOutput = 0
 	buildingCultureOutput = 0
+	buildingBoatsOutput = 0
 	corruptionChange = 0
-	tileGoldTax = 0
-	tileHarmonyTax = 0
+	tileDollarsTax = 0
+	tileHappinessTax = 0
 	for building in tileBuildingsList:
 		building.calculateOutputs(playerCountryNode)
 		buildingFoodOutput += building.totalBuildingFood
 		buildingWoodOutput += building.totalBuildingWood
-		buildingGoldOutput += building.totalBuildingGold
+		buildingDollarsOutput += building.totalBuildingDollars
 		buildingMetalOutput += building.totalBuildingMetal
 		buildingWeaponsOutput += building.totalBuildingWeapons
 		buildingScienceOutput += building.totalBuildingScience
-		buildingFaithOutput += building.totalBuildingFaith
+		# totalBuildingFaith removed — merged into totalBuildingCulture
 		buildingMagicOutput += building.totalBuildingMagic
-		buildingCultureOutput += building.totalBuildingCulture
+		buildingCultureOutput += building.totalBuildingCulture  # covers old faith + culture
 		buildingMandateOutput += building.totalBuildingMandate
-		buildingHarmonyOutput += building.totalBuildingHarmony
+		buildingHappinessOutput += building.totalBuildingHappiness
+		buildingBoatsOutput += building.totalBuildingBoats
 		buildingManpowerOutput += building.totalBuildingManpower
 		buildingInfluenceOutput += building.totalBuildingInfluence
 		corruptionChange += building.corruptionChange
-		tileGoldTax += building.goldTax
-		tileHarmonyTax += building.harmonyTax
+		tileDollarsTax += building.dollarsTax
+		tileHappinessTax += building.happinessTax
 		match building.buildingType:
 			"Farm":
 				farmGovernorReq = building.buildingLevel >= 3
@@ -626,6 +646,8 @@ func surveyTile(playerCountryNode):
 				towerGovernorReq = building.buildingLevel >= 3
 			"Granary":
 				granaryGovernorReq = building.buildingLevel >= 3
+			"Courthouse":
+				courthouseGovernorReq = building.buildingLevel >= 3
 
 
 # ============================================================
@@ -642,21 +664,26 @@ func addBuilding(buildingType, level):
 	self.add_child(newBuild)
 	if newBuild.buildingLevel == 1:
 		match newBuild.buildingType:
-			"Farm":      farmDevelopmentPoints = 0
-			"Camp":      campDevelopmentPoints = 0
-			"Mine":      mineDevelopmentPoints = 0
-			"Library":   libraryDevelopmentPoints = 0
-			"Granary":   granaryDevelopmentPoints = 0
-			"Temple":    templeDevelopmentPoints = 0
+			"Farm":       farmDevelopmentPoints = 0
+			"Camp":       campDevelopmentPoints = 0
+			"Mine":       mineDevelopmentPoints = 0
+			"Library":    libraryDevelopmentPoints = 0
+			"Granary":    granaryDevelopmentPoints = 0
+			"Temple":     templeDevelopmentPoints = 0
 			"Tower":
 				towerDevelopmentPoints = 0
 				newBuild.towerBuilding.connect(wizardCheck)
-			"Workshop":  workshopDevelopmentPoints = 0
-			"Forge":     forgeDevelopmentPoints = 0
-			"Bath":      bathDevelopmentPoints = 0
-			"Faire":     faireDevelopmentPoints = 0
-			"Barracks":  barracksDevelopmentPoints = 0
-			"Dock":      dockDevelopmentPoints = 0
+			"Workshop":   workshopDevelopmentPoints = 0
+			"Forge":      forgeDevelopmentPoints = 0
+			"Bath":       bathDevelopmentPoints = 0
+			"Faire":      faireDevelopmentPoints = 0
+			"Barracks":   barracksDevelopmentPoints = 0
+			"Dock":       dockDevelopmentPoints = 0
+			"Courthouse": courthouseDevelopmentPoints = 0
+			"Market":     marketDevelopmentPoints = 0
+			"Monument":   monumentDevelopmentPoints = 0
+			"Resort":     resortDevelopmentPoints = 0
+			"Fortress":   fortressDevelopmentPoints = 0
 		newBuild.buildBuilding()
 	else:
 		match newBuild.buildingType:
@@ -700,6 +727,21 @@ func addBuilding(buildingType, level):
 			"Dock":
 				dockDevelopmentPoints = 30 * ((newBuild.buildingLevel - 1) * 1.3)
 				tileDockDevCost = 30 * (newBuild.buildingLevel * 1.3)
+			"Courthouse":
+				courthouseDevelopmentPoints = 35 * ((newBuild.buildingLevel - 1) * 1.3)
+				tileCourthouseDevCost = 35 * (newBuild.buildingLevel * 1.3)
+			"Market":
+				marketDevelopmentPoints = 30 * ((newBuild.buildingLevel - 1) * 1.3)
+				tileMarketDevCost = 30 * (newBuild.buildingLevel * 1.3)
+			"Monument":
+				monumentDevelopmentPoints = 30 * ((newBuild.buildingLevel - 1) * 1.3)
+				tileMonumentDevCost = 30 * (newBuild.buildingLevel * 1.3)
+			"Resort":
+				resortDevelopmentPoints = 35 * ((newBuild.buildingLevel - 1) * 1.3)
+				tileResortDevCost = 35 * (newBuild.buildingLevel * 1.3)
+			"Fortress":
+				fortressDevelopmentPoints = 40 * ((newBuild.buildingLevel - 1) * 1.3)
+				tileFortressDevCost = 40 * (newBuild.buildingLevel * 1.3)
 		newBuild.buildBuilding()
 
 
@@ -708,19 +750,24 @@ func levelUpBuilding(type):
 		if building.buildingType == type:
 			building.upgradeBuilding()
 			match type:
-				"Farm":      tileFarmDevCost = 10 * (building.buildingLevel * 1.3)
-				"Camp":      tileCampDevCost = 10 * (building.buildingLevel * 1.3)
-				"Granary":   tileGranaryDevCost = 25 * (building.buildingLevel * 1.3)
-				"Mine":      tileMineDevCost = 15 * (building.buildingLevel * 1.3)
-				"Library":   tileLibraryDevCost = 25 * (building.buildingLevel * 1.3)
-				"Tower":     tileTowerDevCost = 40 * (building.buildingLevel * 1.3)
-				"Temple":    tileTempleDevCost = 20 * (building.buildingLevel * 1.3)
-				"Faire":     tileFaireDevCost = 25 * (building.buildingLevel * 1.3)
-				"Bath":      tileBathDevCost = 25 * (building.buildingLevel * 1.3)
-				"Workshop":  tileWorkshopDevCost = 30 * (building.buildingLevel * 1.3)
-				"Forge":     tileForgeDevCost = 30 * (building.buildingLevel * 1.3)
-				"Barracks":  tileBarracksDevCost = 30 * (building.buildingLevel * 1.3)
-				"Dock":      tileDockDevCost = 30 * (building.buildingLevel * 1.3)
+				"Farm":       tileFarmDevCost = 10 * (building.buildingLevel * 1.3)
+				"Camp":       tileCampDevCost = 10 * (building.buildingLevel * 1.3)
+				"Granary":    tileGranaryDevCost = 25 * (building.buildingLevel * 1.3)
+				"Mine":       tileMineDevCost = 15 * (building.buildingLevel * 1.3)
+				"Library":    tileLibraryDevCost = 25 * (building.buildingLevel * 1.3)
+				"Tower":      tileTowerDevCost = 40 * (building.buildingLevel * 1.3)
+				"Temple":     tileTempleDevCost = 20 * (building.buildingLevel * 1.3)
+				"Faire":      tileFaireDevCost = 25 * (building.buildingLevel * 1.3)
+				"Bath":       tileBathDevCost = 25 * (building.buildingLevel * 1.3)
+				"Workshop":   tileWorkshopDevCost = 30 * (building.buildingLevel * 1.3)
+				"Forge":      tileForgeDevCost = 30 * (building.buildingLevel * 1.3)
+				"Barracks":   tileBarracksDevCost = 30 * (building.buildingLevel * 1.3)
+				"Dock":       tileDockDevCost = 30 * (building.buildingLevel * 1.3)
+				"Courthouse": tileCourthouseDevCost = 35 * (building.buildingLevel * 1.3)
+				"Market":     tileMarketDevCost = 30 * (building.buildingLevel * 1.3)
+				"Monument":   tileMonumentDevCost = 30 * (building.buildingLevel * 1.3)
+				"Resort":     tileResortDevCost = 35 * (building.buildingLevel * 1.3)
+				"Fortress":   tileFortressDevCost = 40 * (building.buildingLevel * 1.3)
 
 
 # ============================================================
@@ -841,6 +888,14 @@ func devChange(devType, devCivilian):
 						Tile.increasePlayerDiscoveryRate(50)
 					else:
 						Tile.increasePlayerDiscoveryRate(25)
+		"Road":
+			# Each fortnight the construction worker improves the tile's road level
+			# by 1, up to the max of 3 (King's Highway).
+			# Level 0 → 1 = Dirt Road      (−1 move cost)
+			# Level 1 → 2 = Post Road      (−2 move cost)
+			# Level 2 → 3 = King's Highway (−3 move cost, floored at 1)
+			if road_level < 3:
+				road_level += 1
 
 
 # ============================================================
@@ -1511,9 +1566,59 @@ func is_labor_territory() -> bool:
 	)
 
 # ============================================================
+# MOVEMENT COST
+# ============================================================
+#
+# Civ-style tile entry cost consumed from an army's currentMovementPoints.
+#
+# Base costs by terrain:
+#   Metro / Fort / Suburbs / Farmlands  →  1
+#   Woods / Foothills / Wetlands        →  2
+#
+# Roads reduce the base cost (min 1):
+#   road_level 1 (dirt road)     → −1
+#   road_level 2 (post road)     → −2
+#   road_level 3 (king's highway)→ −3  (always floored at 1)
+#
+# Metro tiles have an implicit road_level bonus of 2 (they're already paved).
+#
+# Winter amplification — applied only to cold-terrain tiles (winterScore > 0)
+# and only for armies that do NOT carry the "Cold Weather" armyTag.
+#   factor = 1.0 + (1.0 − get_winter_army_modifier()) × 1.0
+#   Examples: cold (0.85) → ×1.15, harsh (0.65) → ×1.35, blizzard (0.40) → ×1.60
+#   Result is always ceiled to the next integer.
+#
+# The "Cold Weather" tag means armies from winter-adapted regions (Canadian
+# rangers, Indigenous winter warriors, fur-trade militias) pay no winter surcharge.
+func get_move_cost(army = null) -> int:
+	# 1 — Base terrain cost
+	var base: int
+	match terrain:
+		"Metro":     base = 1
+		"Fort":      base = 1
+		"Suburbs":   base = 1
+		"Farmlands": base = 1
+		"Woods":     base = 2
+		"Foothills": base = 2
+		"Wetlands":  base = 2
+		_:           base = 1   # safe default for any future terrain
+	# 2 — Road reduction (Metro already acts as road_level 2)
+	var effective_road: int = road_level
+	if terrain == "Metro":
+		effective_road = max(effective_road, 2)
+	base = max(1, base - effective_road)
+	# 3 — Winter amplification for non-adapted armies on cold tiles
+	if winterScore > 0 and army != null and not army.armyTags.has("Cold Weather"):
+		var modifier: float = get_winter_army_modifier()
+		if modifier < 1.0:
+			var factor: float = 1.0 + (1.0 - modifier) * 1.0
+			base = int(ceil(float(base) * factor))
+	return base
+
+# ============================================================
 # WINTER HELPERS
 # ============================================================
- 
+
 func get_winter_score() -> int:
 	return winterScore
  

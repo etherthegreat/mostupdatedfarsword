@@ -29,60 +29,64 @@ var faithChurchLevel: int
 #Resources
 #each month, this building produces this amount of resources
 var foodPerLevel: int = 0
-var goldPerLevel: float = 0
+var dollarsPerLevel: float = 0   # renamed from dollarsPerLevel
 var woodPerLevel: int = 0
 var magicPerLevel: int = 0
-var faithPerLevel: int = 0
+# culturePerLevel removed — faith merged into culture
 var weaponsPerLevel: int = 0
 var metalPerLevel: int = 0
 var sciencePerLevel: int = 0
-var culturePerLevel: int = 0
+var culturePerLevel: int = 0     # now covers both Culture and old Faith outputs
 var mandatePerLevel: int = 0
-var harmonyPerLevel: float = 0
+var happinessPerLevel: float = 0 # renamed from happinessPerLevel
 var manpowerPerLevel: int = 0
 var influencePerLevel: int = 0
+var boatsPerLevel: int = 0       # new Boats resource
 var corruptionLossPerLevel: int = 0
+var defensivenessPerLevel: int = 0  # for Fortress building
 #each month this building costs this amount of resources
 var foodCostPerLevel: int = 0
-var goldCostPerLevel: float = 0
+var dollarsCostPerLevel: float = 0   # renamed from dollarsCostPerLevel
 var woodCostPerLevel: int = 0
 var magicCostPerLevel: int = 0
-var faithCostPerLevel: int = 0
+# cultureCostPerLevel removed — faith merged into culture
 var weaponsCostPerLevel: int = 0
 var metalCostPerLevel: int = 0
 var scienceCostPerLevel: int = 0
 var cultureCostPerLevel: int = 0
 var mandateCostPerLevel: int = 0
-var harmonyCostPerLevel: float = 0
+var happinessCostPerLevel: float = 0 # renamed from happinessCostPerLevel
 var manpowerCostPerLevel: int = 0
 var influenceCostPerLevel: int = 0
+var boatsCostPerLevel: int = 0
 var corruptionGainPerLevel: int = 0
 
 #the balance of resourcePerLevel - resourceCostPerLevel
 var totalBuildingFood: int = 0
-var totalBuildingGold: float = 0
+var totalBuildingDollars: float = 0   # renamed from totalBuildingDollars
 var totalBuildingWood: int = 0
 var totalBuildingMagic: int = 0
-var totalBuildingFaith: int = 0
+# totalBuildingCulture removed — merged into totalBuildingCulture
 var totalBuildingWeapons: int = 0
 var totalBuildingScience: int = 0
-var totalBuildingCulture: int = 0
+var totalBuildingCulture: int = 0     # now covers both Culture and old Faith
 var totalBuildingMetal: int = 0
 var totalBuildingMandate: int = 0
 var totalBuildingInfluence: int = 0
 var totalBuildingManpower: int = 0
-var totalBuildingHarmony: float = 0
-var totalBuildingDefensiveness: int  = 0#how much defensiveness this building gives the province
+var totalBuildingHappiness: float = 0 # renamed from totalBuildingHappiness
+var totalBuildingBoats: int = 0       # new Boats resource
+var totalBuildingDefensiveness: int = 0  # how much defensiveness this building gives the province
 var corruptionChange: int #corruption difference
 #storage capacity buildings - used to increase max national storage capacity of resource
 var foodStorageIncrease: int #granaries
 var woodStorageIncrease: int #warehouse
-var goldStorageIncrease: int #banks
+var dollarsStorageIncrease: int #banks (renamed from goldStorageIncrease)
 var magicStorageIncrease: int #towers
-var faithStorageIncrease: int #temple
+# faithStorageIncrease removed — merged into cultureStorageIncrease
 var weaponsStorageIncrease: int #barracks
 var scienceStorageIncrease: int #libraries
-var cultureStorageIncrease: int #monuments
+var cultureStorageIncrease: int #monuments (now covers old faith temple storage too)
 var metalStorageIncrease: int #warehouse
 
 var magicOutput: String
@@ -92,7 +96,7 @@ var goldPurchaseCost: float
 var woodPurchaseCost: float
 var metalPurchaseCost: float
 
-var goldDic: Dictionary
+var dollarsDic: Dictionary   # renamed from dollarsDic
 var foodDic: Dictionary
 var woodDic: Dictionary
 var metalDic: Dictionary
@@ -101,13 +105,14 @@ var manpowerDic: Dictionary
 var weaponsDic: Dictionary
 
 var scienceDic: Dictionary
-var faithDic: Dictionary
+# cultureDic removed — faith merged into cultureDic
 var magicDic: Dictionary
-var cultureDic: Dictionary
+var cultureDic: Dictionary   # now covers old Faith and Culture outputs
 
 var mandateDic: Dictionary
-var harmonyDic: Dictionary
+var happinessDic: Dictionary # renamed from happinessDic
 var influenceDic: Dictionary
+var boatsDic: Dictionary     # new Boats resource dictionary
 
 var corruptionDic: Dictionary
 
@@ -129,16 +134,16 @@ func buildBuilding():
 			metalPurchaseCost = 0
 		"Temple":
 			buildingSprite = load("res://art assets/finishedAssets/buildingsketches/temple.png")
-			foodCostPerLevel +=2
-			woodCostPerLevel +=1
-			faithPerLevel = 1
+			foodCostPerLevel += 2
+			woodCostPerLevel += 1
+			culturePerLevel += 1  # faith → culture merge
 			foodPurchaseCost = 75
 			goldPurchaseCost = 100
 			woodPurchaseCost = 50
 			metalPurchaseCost = 0
-			goldDic["Base Temple Food Cost"] = (-2 * buildingLevel)
+			foodDic["Base Temple Food Cost"] = (-2 * buildingLevel)
 			woodDic["Base Temple Wood Cost"] = (-1 * buildingLevel)
-			faithDic["Base Temple Faith Output"] = (1 * buildingLevel)
+			cultureDic["Base Temple Culture Output"] = (1 * buildingLevel)
 		"Mine":
 			buildingSprite = load("res://art assets/finishedAssets/buildingsketches/mine.png")
 			foodCostPerLevel +=1
@@ -170,7 +175,7 @@ func buildBuilding():
 			print("building type in", tile.tileName)
 		"Library":
 			buildingSprite = load("res://art assets/finishedAssets/buildingsketches/library.png")
-			goldCostPerLevel += 1
+			dollarsCostPerLevel += 1
 			woodCostPerLevel += 1
 			sciencePerLevel += 2
 			foodPurchaseCost = 0
@@ -179,45 +184,111 @@ func buildBuilding():
 			metalPurchaseCost = 0
 			scienceDic["Base Library Science Output"] = (2 * buildingLevel)
 			woodDic["Base Library Wood Cost"] = (-2 * buildingLevel)
-			goldDic["Base Library Gold Cost"] = (-1 * buildingLevel)
+			dollarsDic["Base Library Gold Cost"] = (-1 * buildingLevel)
 		"Workshop":
 			buildingSprite = load("res://art assets/finishedAssets/buildingsketches/workshop.png")
-			goldPerLevel += 1
+			dollarsPerLevel += 1
 			metalCostPerLevel += 1
 			woodCostPerLevel += 1
 			foodPurchaseCost = 25
 			goldPurchaseCost = 25
 			woodPurchaseCost = 50
 			metalPurchaseCost = 100
-			goldDic["Base Workshop Gold Output"] = (1 * buildingLevel)
+			dollarsDic["Base Workshop Dollars Output"] = (1 * buildingLevel)
 			woodDic["Base Workshop Wood Cost"] = (-1 * buildingLevel)
 			metalDic["Base Workshop Metal Cost"] = (-1 * buildingLevel)
+		"Market":
+			# Market = Workshop equivalent (produces Dollars)
+			buildingSprite = load("res://art assets/finishedAssets/buildingsketches/workshop.png")
+			dollarsPerLevel += 1
+			metalCostPerLevel += 1
+			woodCostPerLevel += 1
+			foodPurchaseCost = 25
+			goldPurchaseCost = 25
+			woodPurchaseCost = 50
+			metalPurchaseCost = 100
+			dollarsDic["Base Market Dollars Output"] = (1 * buildingLevel)
+			woodDic["Base Market Wood Cost"] = (-1 * buildingLevel)
+			metalDic["Base Market Metal Cost"] = (-1 * buildingLevel)
+		"Dock":
+			# Dock produces Boats (new mana resource)
+			buildingSprite = load("res://art assets/finishedAssets/buildingsketches/workshop.png")
+			boatsPerLevel += 1
+			woodCostPerLevel += 1
+			foodCostPerLevel += 1
+			foodPurchaseCost = 50
+			goldPurchaseCost = 75
+			woodPurchaseCost = 100
+			metalPurchaseCost = 50
+			boatsDic["Base Dock Boats Output"] = (1 * buildingLevel)
+			woodDic["Base Dock Wood Cost"] = (-1 * buildingLevel)
+			foodDic["Base Dock Food Cost"] = (-1 * buildingLevel)
+		"Monument":
+			# Monument = Temple equivalent (produces Culture instead of old Faith)
+			buildingSprite = load("res://art assets/finishedAssets/buildingsketches/temple.png")
+			foodCostPerLevel += 2
+			woodCostPerLevel += 1
+			culturePerLevel += 1
+			foodPurchaseCost = 75
+			goldPurchaseCost = 150
+			woodPurchaseCost = 100
+			metalPurchaseCost = 50
+			foodDic["Base Monument Food Cost"] = (-2 * buildingLevel)
+			woodDic["Base Monument Wood Cost"] = (-1 * buildingLevel)
+			cultureDic["Base Monument Culture Output"] = (1 * buildingLevel)
+		"Resort":
+			# Resort produces Happiness
+			buildingSprite = load("res://art assets/finishedAssets/buildingsketches/bath.png")
+			happinessPerLevel += 1
+			foodCostPerLevel += 2
+			dollarsCostPerLevel += 1
+			foodPurchaseCost = 100
+			goldPurchaseCost = 150
+			woodPurchaseCost = 75
+			metalPurchaseCost = 0
+			happinessDic["Base Resort Happiness Output"] = (1 * buildingLevel)
+			dollarsDic["Base Resort Dollar Cost"] = (-1 * buildingLevel)
+			foodDic["Base Resort Food Cost"] = (-2 * buildingLevel)
+		"Fortress":
+			# Fortress adds tile defensiveness (no mana output)
+			buildingSprite = load("res://art assets/finishedAssets/buildingsketches/barracks.png")
+			defensivenessPerLevel += 2
+			foodCostPerLevel += 1
+			woodCostPerLevel += 1
+			metalCostPerLevel += 2
+			foodPurchaseCost = 50
+			goldPurchaseCost = 100
+			woodPurchaseCost = 75
+			metalPurchaseCost = 200
+			woodDic["Base Fortress Wood Cost"] = (-1 * buildingLevel)
+			metalDic["Base Fortress Metal Cost"] = (-2 * buildingLevel)
+			foodDic["Base Fortress Food Cost"] = (-1 * buildingLevel)
 		"Bath":
 			buildingSprite = load("res://art assets/finishedAssets/buildingsketches/bath.png")
 			corruptionLossPerLevel -= 1
 			foodCostPerLevel += 3
-			goldCostPerLevel += 1
-			harmonyPerLevel +=1
+			dollarsCostPerLevel += 1
+			happinessPerLevel += 1
 			foodPurchaseCost = 100
 			goldPurchaseCost = 100
 			woodPurchaseCost = 50
 			metalPurchaseCost = 20
-			harmonyDic["Base Bath Harmony Output"] = (1 * buildingLevel)
-			goldDic["Base Bath Gold Cost"] = (-1 * buildingLevel)
+			happinessDic["Base Bath Happiness Output"] = (1 * buildingLevel)
+			dollarsDic["Base Bath Dollar Cost"] = (-1 * buildingLevel)
 			foodDic["Base Bath Food Cost"] = (-1 * buildingLevel)
 			corruptionDic["Base Corruption Loss From Baths"] = (-1 * buildingLevel)
 		"Faire":
 			buildingSprite = load("res://art assets/finishedAssets/buildingsketches/faire.png")
-			culturePerLevel +=1
-			foodCostPerLevel +=2
-			woodCostPerLevel +=1
-			goldCostPerLevel += 2
+			culturePerLevel += 1
+			foodCostPerLevel += 2
+			woodCostPerLevel += 1
+			dollarsCostPerLevel += 2
 			foodPurchaseCost = 100
 			goldPurchaseCost = 100
 			woodPurchaseCost = 50
 			metalPurchaseCost = 20
 			cultureDic["Base Faire Culture Output"] = (1 * buildingLevel)
-			goldDic["Base Faire Gold Cost"] = (-2 * buildingLevel)
+			dollarsDic["Base Faire Dollar Cost"] = (-2 * buildingLevel)
 			foodDic["Base Faire Food Cost"] = (-2 * buildingLevel)
 			woodDic["Base Faire Wood Cost"] = (-1 * buildingLevel)
 		"Forge":
@@ -225,45 +296,60 @@ func buildBuilding():
 			weaponsPerLevel += 1
 			metalPerLevel += 1
 			woodPerLevel += 1
-			goldPerLevel += 1
+			dollarsPerLevel += 1
 			foodPurchaseCost = 25
 			goldPurchaseCost = 25
 			woodPurchaseCost = 50
 			metalPurchaseCost = 100
 			weaponsDic["Base Forge Weapons Output"] = (1 * buildingLevel)
-			goldDic["Base Forge Gold Cost"] = (-1 * buildingLevel)
+			dollarsDic["Base Forge Dollar Output"] = (-1 * buildingLevel)
 			woodDic["Base Forge Wood Cost"] = (-1 * buildingLevel)
 			metalDic["Base Forge Metal Cost"] = (-1 * buildingLevel)
 		"Barracks":
 			buildingSprite = load("res://art assets/finishedAssets/buildingsketches/barracks.png")
 			manpowerPerLevel += 15
-			goldCostPerLevel += 2
-			woodCostPerLevel +=1
+			dollarsCostPerLevel += 2
+			woodCostPerLevel += 1
 			foodCostPerLevel += 1
 			foodPurchaseCost = 30
 			goldPurchaseCost = 30
 			woodPurchaseCost = 30
 			metalPurchaseCost = 90
 			manpowerDic["Base Barracks Manpower Output"] = (50 * buildingLevel)
-			goldDic["Base Barracks Gold Cost"] = (-2 * buildingLevel)
+			dollarsDic["Base Barracks Dollar Cost"] = (-2 * buildingLevel)
 			woodDic["Base Barracks Wood Cost"] = (-1 * buildingLevel)
 			foodDic["Base Barracks Food Cost"] = (-1 * buildingLevel)
+		"Courthouse":
+			buildingSprite = load("res://art assets/finishedAssets/buildingsketches/courthouse.png")
+			mandatePerLevel += 1
+			dollarsCostPerLevel += 1
+			cultureCostPerLevel += 1
+			woodCostPerLevel += 1
+			foodPurchaseCost = 50
+			goldPurchaseCost = 100
+			woodPurchaseCost = 75
+			metalPurchaseCost = 25
+			mandateDic["Base Courthouse Mandate Output"] = (1 * buildingLevel)
+			dollarsDic["Base Courthouse Dollar Cost"] = (-1 * buildingLevel)
+			cultureDic["Base Courthouse Culture Cost"] = (-1 * buildingLevel)
+			woodDic["Base Courthouse Wood Cost"] = (-1 * buildingLevel)
 	pass
 
 func matchPlayerUnlockables(playerCountryNode):
 	foodDic.clear()
-	goldDic.clear()
+	dollarsDic.clear()
 	woodDic.clear()
 	metalDic.clear()
-	harmonyDic.clear()
+	happinessDic.clear()
 	influenceDic.clear()
 	mandateDic.clear()
 	weaponsDic.clear()
 	manpowerDic.clear()
 	scienceDic.clear()
-	faithDic.clear()
+	# cultureDic removed — merged into cultureDic
 	magicDic.clear()
 	cultureDic.clear()
+	boatsDic.clear()
 	playerCountry = playerCountryNode
 	match buildingType:
 		"Farm":
@@ -271,35 +357,35 @@ func matchPlayerUnlockables(playerCountryNode):
 			foodDic["Base Farm Output"] = (1 * buildingLevel)
 			var farmTech: int = 0
 			for Technology in playerCountry.unlockedTechnologies:
-				if Technology.techName == "Irrigation":
+				if Technology.techName == "Drainage Ditches":
 					foodPerLevel += 1
 					farmTech += 1
-				if Technology.techName == "Calendar":
+				if Technology.techName == "Planting Calendar":
 					foodPerLevel += 1
 					farmTech += 1
-				if Technology.techName == "Engineering":
+				if Technology.techName == "Land Survey":
 					foodPerLevel += 1
 					farmTech += 1
 			if farmTech != 0:
 				foodDic["Farm Technology Food Bonus"] = farmTech
 			for law in playerCountry.lawsInConstitution:
-				if law.lawType == "Rural Education Initiative":
+				if law.lawType == "Frontier Schoolhouse Act":
 					sciencePerLevel += 1
-					goldCostPerLevel +=1
-				if law.lawType == "Mercantilism":
-					goldPerLevel += 1
-					goldDic["Enacted Law: Mercantilism"] = (1 * buildingLevel)
+					dollarsCostPerLevel += 1
+				if law.lawType == "Colonial Trade Act":
+					dollarsPerLevel += 1
+					dollarsDic["Enacted Law: Mercantilism"] = (1 * buildingLevel)
 			if tile.tileGovernor != null:
 				match tile.tileGovernor.governorPosition:
 					"BREWER":
 						match tile.tileGovernor.governorLevel:
 							1:
-								goldPerLevel += 1
+								dollarsPerLevel += 1
 							2:
-								goldPerLevel += 2
+								dollarsPerLevel += 2
 								culturePerLevel += 1
 							3: 
-								goldPerLevel += 3
+								dollarsPerLevel += 3
 								culturePerLevel += 2
 								mandatePerLevel += 1
 					"FARMER":
@@ -312,7 +398,7 @@ func matchPlayerUnlockables(playerCountryNode):
 							3: 
 								foodPerLevel += 3
 								woodPerLevel += 2
-								goldPerLevel += 1
+								dollarsPerLevel += 1
 					"RECRUITER":
 						match tile.tileGovernor.governorLevel:
 							1:
@@ -322,9 +408,9 @@ func matchPlayerUnlockables(playerCountryNode):
 							3: 
 								manpowerPerLevel += 30
 			for tradition in playerCountry.unlockedTraditions:
-				if tradition.traditionType == "Humble Folk":
-					faithPerLevel += 1
-				if tradition.traditionType == "Peasant Militias":
+				if tradition.traditionType == "Plain Folk Virtues":
+					culturePerLevel += 1
+				if tradition.traditionType == "Minuteman Ready":
 					manpowerPerLevel += 250
 			if tile.tileSpell != null:
 				match tile.tileSpell.spellType:
@@ -339,18 +425,18 @@ func matchPlayerUnlockables(playerCountryNode):
 						foodPerLevel += 2
 						magicCostPerLevel += 5
 			for belief in playerCountry.selectedBeliefs:
-				if belief.beliefType == "Gentle Shepherds":
+				if belief.beliefType == "Providence's Plenty":
 					foodPerLevel += 1
-				if belief.beliefType == "SARATIAN":
+				if belief.beliefType == "Great Awakening Faith":
 					culturePerLevel += 1
 			match tile.tileCrop:
 				"corn":
 					foodPerLevel += 2
 					foodDic["Farm Crop: Corn"] = (2 * buildingLevel)
 				"apples":
-					goldPerLevel += 1
+					dollarsPerLevel += 1
 					culturePerLevel += 1
-					goldDic["Farm Crop: Apples"] = (1 * buildingLevel)
+					dollarsDic["Farm Crop: Apples"] = (1 * buildingLevel)
 					cultureDic["Farm Crop: Apples"] = (1 * buildingLevel)
 				"hay":
 					foodPerLevel += 1
@@ -362,17 +448,17 @@ func matchPlayerUnlockables(playerCountryNode):
 					foodDic["Farm Crop: Soybeans"] = (2 * buildingLevel)
 				"peanuts":
 					foodPerLevel += 1
-					goldPerLevel += 1
+					dollarsPerLevel += 1
 					foodDic["Farm Crop: Peanuts"] = (1 * buildingLevel)
-					goldDic["Farm Crop: Peanuts"] = (1 * buildingLevel)
+					dollarsDic["Farm Crop: Peanuts"] = (1 * buildingLevel)
 				"peaches":
 					foodPerLevel += 1
 					culturePerLevel += 1
-					harmonyPerLevel += 1
+					happinessPerLevel += 1
 					foodDic["Farm Crop: Peaches"] = (1 * buildingLevel)
 				"oranges":
 					foodPerLevel += 2
-					harmonyPerLevel += 1
+					happinessPerLevel += 1
 					foodDic["Farm Crop: Oranges"] = (2 * buildingLevel)
 				"mushrooms":  # Kennett Square PA — easter egg
 					magicPerLevel += 1
@@ -381,22 +467,22 @@ func matchPlayerUnlockables(playerCountryNode):
 					scienceDic["Farm Crop: Mushrooms"] = (1 * buildingLevel)
 				"cannabis":   # Brattleboro VT — easter egg
 					culturePerLevel += 2
-					harmonyPerLevel += 1
+					happinessPerLevel += 1
 					cultureDic["Farm Crop: Brattleboro Cannabis"] = (2 * buildingLevel)
 				_:
 					# Unknown crop — safe fallback
 					foodPerLevel += 1
 		"Granary":
-			goldCostPerLevel += 1
+			dollarsCostPerLevel += 1
 			foodPerLevel = 1
-			goldDic["Base Granary Gold Cost"] = (-1 * buildingLevel)
+			dollarsDic["Base Granary Gold Cost"] = (-1 * buildingLevel)
 			foodDic["Base Granary Food Output"] = (1 * buildingLevel)
 			var granaryTech: int = 0
 			for Technology in playerCountry.unlockedTechnologies:
-				if Technology.techName == "Calendar":
+				if Technology.techName == "Almanac Forecasting":
 					foodPerLevel += 1
 					granaryTech += 1
-				if Technology.techName == "Engineering":
+				if Technology.techName == "Mill Construction":
 					foodPerLevel += 1
 					granaryTech += 1
 			if granaryTech != 0:
@@ -404,14 +490,14 @@ func matchPlayerUnlockables(playerCountryNode):
 			if playerCountry.mandateFromGranaries == true:
 				mandatePerLevel += 1
 				for Technology in playerCountry.unlockedTechnologies:
-					if Technology.techName == "Statecraft":
+					if Technology.techName == "Public Granary Charter":
 						mandatePerLevel += 1
 						mandateDic["Granary Technology Mandate Bonus"] = (1 * buildingLevel)
 				for tradition in playerCountry.unlockedTraditions:
-					if tradition.traditionType == "Meticulous Organizers":
+					if tradition.traditionType == "Continental Congress Ledgers":
 						mandatePerLevel += 1
 				for belief in playerCountry.selectedBeliefs:
-					if belief.beliefType == "FA ENEPO":
+					if belief.beliefType == "Providence's Order":
 						mandatePerLevel += 1
 				if tile.tileGovernor != null:
 					match tile.tileGovernor.governorPosition:
@@ -425,7 +511,7 @@ func matchPlayerUnlockables(playerCountryNode):
 								3: 
 									foodPerLevel += 3
 									mandatePerLevel += 2
-									harmonyPerLevel += 1
+									happinessPerLevel += 1
 				if tile.tileSpell != null:
 					match tile.tileSpell.spellType:
 						"Celebration":
@@ -436,21 +522,21 @@ func matchPlayerUnlockables(playerCountryNode):
 			match geoResource:
 				"Copper":
 					metalPerLevel += 2
-					goldPerLevel += 1
+					dollarsPerLevel += 1
 					metalDic["Mine Resource: Copper"] = (2 * buildingLevel)
-					goldDic["Mine Resource: Copper"] = (1 * buildingLevel)
+					dollarsDic["Mine Resource: Copper"] = (1 * buildingLevel)
 				"Iron":
 					metalPerLevel += 3
 					metalDic["Mine Resource: Iron"] = (3 * buildingLevel)
 				"Marble":
-					goldPerLevel += 1
+					dollarsPerLevel += 1
 					culturePerLevel += 2
-					goldDic["Mine Resource: Marble"] = (1 * buildingLevel)
+					dollarsDic["Mine Resource: Marble"] = (1 * buildingLevel)
 					cultureDic["Mine Resource: Marble"] = (2 * buildingLevel)
 				"Gold":
-					goldPerLevel += 2
+					dollarsPerLevel += 2
 					mandatePerLevel += 1
-					goldDic["Mine Resource: Gold"] = (2 * buildingLevel)
+					dollarsDic["Mine Resource: Gold"] = (2 * buildingLevel)
 					mandateDic["Mine Resource: Gold"] = (1 * buildingLevel)
 				"None", "":
 					# Tile has no mineral resource — mine produces base output only
@@ -460,17 +546,17 @@ func matchPlayerUnlockables(playerCountryNode):
 					# Unknown resource — safe fallback
 					metalPerLevel += 1
 			for Technology in playerCountry.unlockedTechnologies:
-				if Technology.techName == "Steam Engine":
+				if Technology.techName == "Steam-Powered Shaft":
 					metalPerLevel += 3
 					magicCostPerLevel += 1
 					woodCostPerLevel += 1
 					foodCostPerLevel += 1
 			for law in playerCountry.lawsInConstitution:
-				if law.lawType == "Free Land Prospecting":
-					goldPerLevel += 1
-				if law.lawType == "State-Operated Mines":
-					goldCostPerLevel +=1
-					harmonyCostPerLevel +=1
+				if law.lawType == "Open Land Act":
+					dollarsPerLevel += 1
+				if law.lawType == "Crown Monopoly":
+					dollarsCostPerLevel +=1
+					happinessCostPerLevel +=1
 					metalPerLevel += 2
 			if tile.tileGovernor != null:
 				match tile.tileGovernor.governorPosition:
@@ -480,10 +566,10 @@ func matchPlayerUnlockables(playerCountryNode):
 								metalPerLevel += 1
 							2: 
 								metalPerLevel += 2
-								goldPerLevel += 1
+								dollarsPerLevel += 1
 							3: 
 								metalPerLevel += 3
-								goldPerLevel += 2
+								dollarsPerLevel += 2
 								woodPerLevel += 1
 					"BUILDER":
 						match tile.tileGovernor.governorLevel:
@@ -492,11 +578,11 @@ func matchPlayerUnlockables(playerCountryNode):
 							3:
 								metalPerLevel += 2
 			for tradition in playerCountry.unlockedTraditions:
-				if tradition.traditionType == "Home Underground":
+				if tradition.traditionType == "Appalachian Heritage":
 					culturePerLevel += 1
-				if tradition.traditionType == "Dungeon Gourmet":
+				if tradition.traditionType == "Miners' Commons":
 					foodPerLevel +=1
-				if tradition.traditionType == "Valued Expertise":
+				if tradition.traditionType == "Master Craftsman Guild":
 					influencePerLevel +=1
 			if tile.tileSpell != null:
 				match tile.tileSpell.spellType:
@@ -505,122 +591,122 @@ func matchPlayerUnlockables(playerCountryNode):
 						magicCostPerLevel += 3
 					"Divining Rods":
 						metalPerLevel +=1
-						goldPerLevel +=2
+						dollarsPerLevel +=2
 						magicCostPerLevel += 6
 					"Replenishment":
 						metalPerLevel += 4
 						magicCostPerLevel += 12
 			for belief in playerCountry.selectedBeliefs:
-				if belief.beliefType == "BIBWEY":
+				if belief.beliefType == "Earth's Bounty":
 					metalPerLevel += 1
-				if belief.beliefType == "Precious Metals":
-					faithPerLevel += 1
+				if belief.beliefType == "Silversmith Faith":
+					culturePerLevel += 1
 		"Temple":
 			faithChurchLevel = playerCountry.churchLevel
 			match faithChurchLevel:
 				0:
-					faithPerLevel += 1
-					goldPerLevel +=1
+					culturePerLevel += 1
+					dollarsPerLevel +=1
 					mandatePerLevel += 1
-					harmonyPerLevel += 1
+					happinessPerLevel += 1
 				1:
-					faithPerLevel += 1
-					goldPerLevel +=1
+					culturePerLevel += 1
+					dollarsPerLevel +=1
 					mandatePerLevel +=1
 				2:
-					goldPerLevel +=1
+					dollarsPerLevel +=1
 					mandatePerLevel +=1
 				3:
-					goldPerLevel +=1
+					dollarsPerLevel +=1
 				-1:
-					faithPerLevel += 1
-					goldPerLevel +=1
-					harmonyPerLevel +=1
+					culturePerLevel += 1
+					dollarsPerLevel +=1
+					happinessPerLevel +=1
 				-2:
-					faithPerLevel += 1
-					harmonyPerLevel +=1
+					culturePerLevel += 1
+					happinessPerLevel +=1
 				-3:
-					faithPerLevel += 1
+					culturePerLevel += 1
 			for Technology in playerCountry.unlockedTechnologies:
-				if Technology.techName == "Architecture":
+				if Technology.techName == "Carpenter's Guild":
 					woodCostPerLevel +=1
 					metalCostPerLevel +=1
 					cultureCostPerLevel +=2
 			for law in playerCountry.lawsInConstitution:
-				if law.lawType == "Pacifist Sanctuaries":
-					harmonyPerLevel +=1
-				if law.lawType == "Clerical Administration":
-					faithPerLevel +=1
+				if law.lawType == "Right of Sanctuary":
+					happinessPerLevel +=1
+				if law.lawType == "Parish Records":
+					culturePerLevel +=1
 			if tile.tileGovernor != null:
 				match tile.tileGovernor.governorPosition:
 					"NUN":
 						match tile.tileGovernor.governorLevel:
 							1:
-								faithPerLevel += 1
+								culturePerLevel += 1
 							2:
-								faithPerLevel += 2
+								culturePerLevel += 2
 								foodPerLevel += 1
 							3:
-								faithPerLevel += 3
+								culturePerLevel += 3
 								foodPerLevel += 2
 								culturePerLevel += 1
 					"BISHOP":
 						match tile.tileGovernor.governorLevel:
 							1: 
-								faithPerLevel += 1
+								culturePerLevel += 1
 							2:
-								faithPerLevel += 2
-								harmonyPerLevel += 1
+								culturePerLevel += 2
+								happinessPerLevel += 1
 							3:
-								faithPerLevel += 3
-								harmonyPerLevel += 2
+								culturePerLevel += 3
+								happinessPerLevel += 2
 								mandatePerLevel += 1
 			for tradition in playerCountry.unlockedTraditions:
-				if tradition.traditionType == "Studious Monks":
+				if tradition.traditionType == "Puritan Scholarship":
 					sciencePerLevel += 1
-				if tradition.traditionType == "Quiet Gardens":
-					faithPerLevel +=1
+				if tradition.traditionType == "Meetinghouse Gardens":
+					culturePerLevel +=1
 			if tile.tileSpell != null:
 				match tile.tileSpell.spellType:
 					"Foresight":
 						mandatePerLevel += 2
 						magicCostPerLevel += 6
 					"Omniscient Direction":
-						faithPerLevel += 2
+						culturePerLevel += 2
 						mandatePerLevel += 5
 						magicCostPerLevel += 15
 			for belief in playerCountry.selectedBeliefs:
-				if belief.beliefType == "Religious Arts":
+				if belief.beliefType == "Sacred Craft":
 					culturePerLevel += 1
-				if belief.beliefType == "Protected Pilgrims":
+				if belief.beliefType == "Pilgrims' Right":
 					influencePerLevel += 1
-				if belief.beliefType == "VIBIAN KARIK":
+				if belief.beliefType == "Charitable Table":
 					foodPerLevel += 2
-					goldCostPerLevel += 1
+					dollarsCostPerLevel += 1
 			if tile.tileCrop == "cannabis":
 				# Brattleboro's spiritual community appreciates the temple
-				faithPerLevel += 1
-				faithDic["Temple: Cannabis Crop Harmony"] = (1 * buildingLevel)
+				culturePerLevel += 1
+				cultureDic["Temple: Cannabis Crop Harmony"] = (1 * buildingLevel)
 		"Camp":
 			for belief in playerCountry.selectedBeliefs:
-				if belief.beliefType == "TYLA DYN":
+				if belief.beliefType == "Hunter's Providence":
 					foodPerLevel += 1
-				if belief.beliefType == "Tree of Life":
-					harmonyPerLevel += 1
+				if belief.beliefType == "Old Growth Reverence":
+					happinessPerLevel += 1
 			for Technology in playerCountry.unlockedTechnologies:
-				if Technology.techName == "Bronze Working":
+				if Technology.techName == "Axe Grinding":
 					woodPerLevel +=2
 					metalCostPerLevel +=1
-				if Technology.techName == "Iron Working":
+				if Technology.techName == "Iron Saw":
 					woodPerLevel +=2
 					metalCostPerLevel +=1
 			for law in playerCountry.lawsInConstitution:
-				if law.lawType == "Universal Land Rights":
-					harmonyPerLevel +=1
-				if law.lawType == "Land Conservation":
+				if law.lawType == "Land Grant Act":
+					happinessPerLevel +=1
+				if law.lawType == "Timber Reserve":
 					culturePerLevel +=1
-				if law.lawType == "Mercantilism":
-					goldPerLevel += 1
+				if law.lawType == "Naval Stores Act":
+					dollarsPerLevel += 1
 			if tile.tileGovernor != null:
 				match tile.tileGovernor.governorPosition:
 					"FORESTER":
@@ -633,7 +719,7 @@ func matchPlayerUnlockables(playerCountryNode):
 							3:
 								woodPerLevel += 3
 								foodPerLevel += 2
-								faithPerLevel += 1
+								culturePerLevel += 1
 					"ADMIRAL":
 						match tile.tileGovernor.governorLevel:
 							2:
@@ -645,10 +731,10 @@ func matchPlayerUnlockables(playerCountryNode):
 							3:
 								culturePerLevel += 1
 			for tradition in playerCountry.unlockedTraditions:
-				if tradition.traditionType == "Hunting Parties":
+				if tradition.traditionType == "Frontier Scouts":
 					foodPerLevel += (1 * Governor.governorLevel)
 					manpowerPerLevel += (50 * Governor.governorLevel)
-				if tradition.traditionType == "Forest Wardens":
+				if tradition.traditionType == "Timber Warden":
 					mandatePerLevel +=1
 			if tile.tileSpell != null:
 				match tile.tileSpell.spellType:
@@ -664,51 +750,51 @@ func matchPlayerUnlockables(playerCountryNode):
 			foodCostPerLevel += 2
 			metalCostPerLevel += 1
 			woodCostPerLevel += 2
-			goldCostPerLevel += 1
+			dollarsCostPerLevel += 1
 			magicDic["Base Tower Magic Output"] = (4 * buildingLevel)
 			foodDic["Base Tower Food Cost"] = (-2 * buildingLevel)
 			woodDic["Base Tower Wood Cost"] = (-2 * buildingLevel)
 			metalDic["Base Tower Metal Cost"] = (-1 * buildingLevel)
-			goldDic["Base Tower Gold Cost"] = (-1 * buildingLevel)
+			dollarsDic["Base Tower Gold Cost"] = (-1 * buildingLevel)
 			if tile.tileWizard != null:
 				match tile.tileWizard.wizardType:
 					"DRUID":
 						woodPerLevel += 3
 					"ALCHEMIST":
-						goldPerLevel += 3
+						dollarsPerLevel += 3
 					"ELEMENTALST":
 						foodPerLevel += 3
 					"SUMMONER":
 						metalPerLevel += 2
 					"SEER":
-						faithPerLevel += 3
+						culturePerLevel += 3
 					"PSIONICIST":
 						foodPerLevel += 1
 						woodPerLevel += 1
-						goldPerLevel += 1
+						dollarsPerLevel += 1
 						metalPerLevel += 1
 			else:
 				print("no assigned wizard to tile:", tile.tileNumber)
 			for belief in playerCountry.selectedBeliefs:
-				if belief.beliefType == "ORIL-RA":
+				if belief.beliefType == "Ley Line Devotion":
 					magicPerLevel += 2
-				if belief.beliefType == "VANODAM":
-					faithPerLevel += 1
+				if belief.beliefType == "Natural Philosophy Faith":
+					culturePerLevel += 1
 					magicPerLevel += 1
-				if belief.beliefType == "Wandering Exorcists":
+				if belief.beliefType == "Spirit Hunters":
 					manpowerPerLevel = 250
 			for Technology in playerCountry.unlockedTechnologies:
-				if Technology.techName == "Lenscraft":
+				if Technology.techName == "Optician's Art":
 					magicPerLevel += 1
 					sciencePerLevel += 1
 					metalCostPerLevel +=1
 			for law in playerCountry.lawsInConstitution:
-				if law.lawType == "Freedom of Movement":
-					harmonyPerLevel +=2
-				if law.lawType == "Record Keeping Act":
+				if law.lawType == "Right of Travel":
+					happinessPerLevel +=2
+				if law.lawType == "Land Registry":
 					culturePerLevel +=1
 					sciencePerLevel +=1
-				if law.lawType == "Apprenticeship Programs":
+				if law.lawType == "Colonial Apprenticeship":
 					magicPerLevel += 2
 			if tile.tileGovernor != null:
 				match tile.tileGovernor.governorPosition:
@@ -722,39 +808,39 @@ func matchPlayerUnlockables(playerCountryNode):
 							3:
 								magicPerLevel += 3
 								sciencePerLevel += 2
-								faithPerLevel += 1
+								culturePerLevel += 1
 					"MYSTIC":
 						match tile.tileGovernor.governorLevel:
 							1:
-								faithPerLevel += 1
+								culturePerLevel += 1
 							2:
-								faithPerLevel += 2
+								culturePerLevel += 2
 								magicPerLevel += 1
 							3:
-								faithPerLevel += 3
+								culturePerLevel += 3
 								magicPerLevel += 2
 								mandatePerLevel += 1
 			for tradition in playerCountry.unlockedTraditions:
-				if tradition.traditionType == "Cosmic Inspiration":
+				if tradition.traditionType == "Natural Order Studies":
 					sciencePerLevel += 1
-				if tradition.traditionType == "Ancient Wizdom":
+				if tradition.traditionType == "Old Ways Knowledge":
 					influencePerLevel +=1
-				if tradition.traditionType == "Natural Order":
+				if tradition.traditionType == "Republican Virtue":
 					mandatePerLevel +=1
 			if tile.tileSpell != null:
 				match tile.tileSpell.spellType:
 					"Extradimensional Servants":
 						woodPerLevel +=1
 						foodPerLevel += 1
-						goldPerLevel += 1
+						dollarsPerLevel += 1
 						metalPerLevel += 1
 						magicCostPerLevel += 4
 					"Clear Skies":
 						sciencePerLevel += 1
-						faithPerLevel += 1
+						culturePerLevel += 1
 						magicCostPerLevel += 5
 					"Peace":
-						harmonyPerLevel += 1
+						happinessPerLevel += 1
 						influencePerLevel += 1
 						magicCostPerLevel += 5
 			if tile.tileCrop == "Cannabis":
@@ -769,29 +855,29 @@ func matchPlayerUnlockables(playerCountryNode):
 			pass
 		"Library":
 			for belief in playerCountry.selectedBeliefs:
-				if belief.beliefType == "DILNITH-AMEN":
+				if belief.beliefType == "Enlightenment Reason":
 					sciencePerLevel += 2
-				if belief.beliefType == "Divine Spark":
+				if belief.beliefType == "Natural Theology":
 					sciencePerLevel += 1
-				if belief.beliefType == "Church Records":
-					faithPerLevel += 1
+				if belief.beliefType == "Parish Archive":
+					culturePerLevel += 1
 			for Technology in playerCountry.unlockedTechnologies:
-				if Technology.techName == "Statecraft":
+				if Technology.techName == "Constitutional Studies":
 					sciencePerLevel += 1
 					mandatePerLevel += 1
-					goldCostPerLevel += 1
-				if Technology.techName == "Paper":
+					dollarsCostPerLevel += 1
+				if Technology.techName == "Paper Mill":
 					sciencePerLevel += 1
 					woodPerLevel += 1
-				if Technology.techName == "Alphabet":
+				if Technology.techName == "Common Literacy":
 					sciencePerLevel += 1
 			for law in playerCountry.lawsInConstitution:
-				if law.lawType == "Standardized Measurements":
+				if law.lawType == "Weights and Measures Act":
 					sciencePerLevel += 1
-				if law.lawType == "Philosopher Kings":
+				if law.lawType == "Philosopher-Statesmen":
 					influencePerLevel += 1
-				if law.lawType == "Freedom of the Press":
-					harmonyPerLevel += 1
+				if law.lawType == "Free Press Act":
+					happinessPerLevel += 1
 			if tile.tileGovernor != null:
 				match tile.tileGovernor.governorPosition:
 					"SCHOLAR":
@@ -804,22 +890,22 @@ func matchPlayerUnlockables(playerCountryNode):
 							3:
 								sciencePerLevel += 3
 								magicPerLevel += 2
-								faithPerLevel += 1
+								culturePerLevel += 1
 					"INVENTOR":
 						match tile.tileGovernor.governorLevel:
 							1:
 								sciencePerLevel += 1
 							2:
 								sciencePerLevel += 2
-								goldPerLevel += 1
+								dollarsPerLevel += 1
 							3:
 								sciencePerLevel += 3
-								goldPerLevel += 2
+								dollarsPerLevel += 2
 								culturePerLevel += 1
 			for tradition in playerCountry.unlockedTraditions:
-				if tradition.traditionType == "Free Thinkers":
+				if tradition.traditionType == "Republican Letters":
 					sciencePerLevel += 1
-				if tradition.traditionType == "Renaissance Men":
+				if tradition.traditionType == "Gentleman Scholar":
 					culturePerLevel +=1
 			if tile.tileSpell != null:
 				match tile.tileSpell.spellType:
@@ -831,7 +917,7 @@ func matchPlayerUnlockables(playerCountryNode):
 						culturePerLevel += 1
 						magicCostPerLevel += 8
 					"Hive Mind":
-						harmonyPerLevel += 1
+						happinessPerLevel += 1
 						sciencePerLevel += 2
 						magicCostPerLevel += 6
 			if tile.geologicResource == "Gold":
@@ -839,97 +925,97 @@ func matchPlayerUnlockables(playerCountryNode):
 				scienceDic["Library: Gold Deposit Funding"] = (1 * buildingLevel)
 		"Workshop":
 			for belief in playerCountry.selectedBeliefs:
-				if belief.beliefType == "Valued Idolatry":
-					faithPerLevel += 1
+				if belief.beliefType == "Craft Pride":
+					culturePerLevel += 1
 					mandatePerLevel += 1
 					metalCostPerLevel += 2
-				if belief.beliefType == "TYRUS":
-					goldPerLevel += 2
+				if belief.beliefType == "Merchant's Blessing":
+					dollarsPerLevel += 2
 					metalCostPerLevel += 1
-				if belief.beliefType == "Busy Hands":
-					faithPerLevel += 2
+				if belief.beliefType == "Idle Hands Doctrine":
+					culturePerLevel += 2
 					woodCostPerLevel += 1
 					foodCostPerLevel += 1
 			for Technology in playerCountry.unlockedTechnologies:
-				if Technology.techName == "Banking":
-					goldPerLevel += 2
-				if Technology.techName == "Craftsmenship":
-					goldPerLevel += 2
+				if Technology.techName == "Land Bank":
+					dollarsPerLevel += 2
+				if Technology.techName == "Guild Craft":
+					dollarsPerLevel += 2
 					woodCostPerLevel += 2
-				if Technology.techName == "Metal Casting":
+				if Technology.techName == "Foundry Casting":
 					metalCostPerLevel += 1
-					goldPerLevel += 2
+					dollarsPerLevel += 2
 			for law in playerCountry.lawsInConstitution:
-				if law.lawType == "Labor Contracts":
+				if law.lawType == "Indentured Terms":
 					foodCostPerLevel += 2
-				if law.lawType == "Protected Supply Chain":
+				if law.lawType == "Non-Importation Agreement":
 					foodCostPerLevel += 1
 					metalCostPerLevel += 1
-					goldPerLevel += 2
-				if law.lawType == "Military Engineers":
+					dollarsPerLevel += 2
+				if law.lawType == "Continental Engineers":
 					manpowerPerLevel += 300
-				if law.lawType == "Mercantilism":
-					goldPerLevel += 1
+				if law.lawType == "Navigation Acts":
+					dollarsPerLevel += 1
 					mandateCostPerLevel += 2
 			if tile.tileGovernor != null:
 				match tile.tileGovernor.governorPosition:
 					"MINTER":
 						match tile.tileGovernor.governorLevel:
 							1:
-								goldPerLevel += 1
+								dollarsPerLevel += 1
 							2:
-								goldPerLevel += 2
+								dollarsPerLevel += 2
 								culturePerLevel += 1
 							3:
-								goldPerLevel += 3
+								dollarsPerLevel += 3
 								culturePerLevel += 2
 								mandatePerLevel += 1
 					"BUILDER":
 						match tile.tileGovernor.governorLevel:
 							1:
-								goldPerLevel += 1
+								dollarsPerLevel += 1
 							2:
-								goldPerLevel += 2
+								dollarsPerLevel += 2
 							3:
-								goldPerLevel += 3
+								dollarsPerLevel += 3
 			for tradition in playerCountry.unlockedTraditions:
-				if tradition.traditionType == "Artist Enclaves":
+				if tradition.traditionType == "Artisan Quarter":
 					culturePerLevel += 1
-				if tradition.traditionType == "Guild Education":
+				if tradition.traditionType == "Apprentice System":
 					sciencePerLevel +=1
-				if tradition.traditionType == "Meritocracy":
+				if tradition.traditionType == "Self-Made Man":
 					mandatePerLevel += 1
 			if tile.tileSpell != null:
 				match tile.tileSpell.spellType:
 					"Potion: Stamina":
-						goldPerLevel += 2
+						dollarsPerLevel += 2
 						metalCostPerLevel += 1
 						woodCostPerLevel += 1
 						magicCostPerLevel += 2
 					"Duplication":
-						goldPerLevel += 4
-						harmonyCostPerLevel += 1
+						dollarsPerLevel += 4
+						happinessCostPerLevel += 1
 						magicCostPerLevel += 7
 		"Bath":
 			for belief in playerCountry.selectedBeliefs:
-				if belief.beliefType == "Healing Waters":
-					faithPerLevel += 1
+				if belief.beliefType == "Sacred Spring":
+					culturePerLevel += 1
 					corruptionLossPerLevel -= 1
-				if belief.beliefType == "JERRIWIX":
+				if belief.beliefType == "Civic Order Faith":
 					corruptionLossPerLevel -= 1
 					mandatePerLevel += 1
 			for Technology in playerCountry.unlockedTechnologies:
-				if Technology.techName == "Engineering":
-					goldPerLevel += 1
+				if Technology.techName == "Aqueduct Construction":
+					dollarsPerLevel += 1
 					corruptionLossPerLevel -= 1
 			for law in playerCountry.lawsInConstitution:
-				if law.lawType == "Pollution Control":
+				if law.lawType == "Clean Water Ordinance":
 					corruptionLossPerLevel -= 1
 					foodPerLevel += 1
-				if law.lawType == "Mandatory Hygiene":
+				if law.lawType == "Public Health Act":
 					culturePerLevel += 1
 					corruptionLossPerLevel -= 1
-				if law.lawType == "Freedom of Speech":
+				if law.lawType == "Town Meeting Rights":
 					influencePerLevel +=1
 					mandatePerLevel += 1
 			if tile.tileGovernor != null:
@@ -944,63 +1030,63 @@ func matchPlayerUnlockables(playerCountryNode):
 							3:
 								culturePerLevel += 3
 								magicPerLevel += 2
-								goldPerLevel += 1
+								dollarsPerLevel += 1
 					"ARTISAN":
 						match tile.tileGovernor.governorLevel:
 							2:
-								goldPerLevel += 1
+								dollarsPerLevel += 1
 							3:
-								goldPerLevel += 2
+								dollarsPerLevel += 2
 			for tradition in playerCountry.unlockedTraditions:
-				if tradition.traditionType == "Communal Bathing":
+				if tradition.traditionType == "Public Well Customs":
 					mandatePerLevel += 1
-				if tradition.traditionType == "Beautiful Spaces":
+				if tradition.traditionType == "Common Green":
 					culturePerLevel += 1
-				if tradition.traditionType == "Soaps, Lotions, Perfumes":
-					harmonyPerLevel += 1
+				if tradition.traditionType == "Colonial Apothecary":
+					happinessPerLevel += 1
 			if tile.tileSpell != null:
 				match tile.tileSpell.spellType:
 					"Geothermic Well":
-						goldPerLevel += 3
+						dollarsPerLevel += 3
 						culturePerLevel += 2
 						magicCostPerLevel += 10
 					"Vitamins and Minerals":
 						#-1 corruption in this tile per level
 						sciencePerLevel += 1
-						faithPerLevel += 1
+						culturePerLevel += 1
 						magicCostPerLevel += 6
 		"Faire":
 			for belief in playerCountry.selectedBeliefs:
-				if belief.beliefType == "Holiday Feasts":
-					faithPerLevel += 1
+				if belief.beliefType == "Harvest Celebration":
+					culturePerLevel += 1
 					culturePerLevel += 1
 					foodCostPerLevel += 2
-				if belief.beliefType == "BENAXTARA":
+				if belief.beliefType == "Public Celebration Mandate":
 					mandatePerLevel += 2
 			for Technology in playerCountry.unlockedTechnologies:
-				if Technology.techName == "Architecture":
+				if Technology.techName == "Exhibition Hall":
 					culturePerLevel += 2
 					woodPerLevel += 2
 			for law in playerCountry.lawsInConstitution:
-				if law.lawType == "National Exhibitions":
+				if law.lawType == "Continental Exhibition":
 					influencePerLevel += 1
-				if law.lawType == "Freedom of Expression":
+				if law.lawType == "Free Assembly Act":
 					culturePerLevel += 1
-				if law.lawType == "Sanctified Sports":
+				if law.lawType == "Muster Day Games":
 					manpowerPerLevel += 15
 			if tile.tileGovernor != null:
 				match tile.tileGovernor.governorPosition:
 					"TAMER":
 						match tile.tileGovernor.governorLevel:
 							1:
-								harmonyPerLevel += 1
+								happinessPerLevel += 1
 							2:
-								harmonyPerLevel += 2
+								happinessPerLevel += 2
 								culturePerLevel += 1
 							3:
-								harmonyPerLevel += 3
+								happinessPerLevel += 3
 								culturePerLevel += 2
-								goldPerLevel += 1
+								dollarsPerLevel += 1
 					"EXPLORER":
 						match tile.tileGovernor.governorLevel:
 							1:
@@ -1013,57 +1099,57 @@ func matchPlayerUnlockables(playerCountryNode):
 								weaponsPerLevel += 2
 								culturePerLevel += 1
 			for tradition in playerCountry.unlockedTraditions:
-				if tradition.traditionType == "Gastronomic Studies":
+				if tradition.traditionType == "Colonial Cookbook":
 					culturePerLevel += 1
-				if tradition.traditionType == "Art Trade":
-					goldPerLevel += 1
-				if tradition.traditionType == "Bread and Circuses":
+				if tradition.traditionType == "Artisan Market":
+					dollarsPerLevel += 1
+				if tradition.traditionType == "Free Cider Day":
 					foodPerLevel += 1
 			if tile.tileSpell != null:
 				match tile.tileSpell.spellType:
 					"Celebration":
-						goldPerLevel += 1
+						dollarsPerLevel += 1
 						culturePerLevel += 1
 						foodPerLevel += 1
 						magicCostPerLevel += 6
 					"Fireworks":
-						harmonyPerLevel += 3
+						happinessPerLevel += 3
 						magicCostPerLevel +=7
 		"Forge":
 			for belief in playerCountry.selectedBeliefs:
-				if belief.beliefType == "Sacred Bladecraft":
-					faithPerLevel += 1
+				if belief.beliefType == "Patriot's Iron":
+					culturePerLevel += 1
 					weaponsPerLevel += 1
 					metalCostPerLevel += 1
-				if belief.beliefType == "QALIN LING":
+				if belief.beliefType == "War Spirit":
 					weaponsPerLevel += 2
 					metalCostPerLevel += 2
 			for Technology in playerCountry.unlockedTechnologies:
-				if Technology.techName == "Iron Working":
+				if Technology.techName == "Blast Furnace":
 					weaponsPerLevel += 2
 					metalCostPerLevel += 1
 					woodCostPerLevel += 1
-					goldCostPerLevel += 1
+					dollarsCostPerLevel += 1
 					#corruption in this tile +1
-				if Technology.techName == "Tempuring":
+				if Technology.techName == "Quench Hardening":
 					weaponsPerLevel += 2
 					metalCostPerLevel += 1
-					goldCostPerLevel += 1
+					dollarsCostPerLevel += 1
 					#corruption in this tile +1
 			for law in playerCountry.lawsInConstitution:
-				if law.lawType == "Bulk Orders":
+				if law.lawType == "Continental Contract":
 					weaponsPerLevel += 2
-					goldCostPerLevel += 1
+					dollarsCostPerLevel += 1
 					metalCostPerLevel += 1
 					#corruption in this tile +1
-				if law.lawType == "Licensed Swordsmen":
+				if law.lawType == "Armorer's License":
 					weaponsPerLevel += 1
 					#corruption in this tile +1
-					harmonyPerLevel += 1
+					happinessPerLevel += 1
 					metalCostPerLevel += 1
-				if law.lawType == "Recycling Centers":
+				if law.lawType == "Scrap Metal Drive":
 					metalPerLevel += 1
-					goldPerLevel += 1
+					dollarsPerLevel += 1
 			if tile.tileGovernor != null:
 				match tile.tileGovernor.governorPosition:
 					"BLACKSMITH":
@@ -1084,80 +1170,271 @@ func matchPlayerUnlockables(playerCountryNode):
 							3:
 								weaponsPerLevel += 3
 			for tradition in playerCountry.unlockedTraditions:
-				if tradition.traditionType == "Steady Hands":
+				if tradition.traditionType == "Iron Discipline":
 					weaponsPerLevel += 1
 				#corruption in this tile +1
-				if tradition.traditionType == "Battlesmiths":
+				if tradition.traditionType == "Fighting Smiths":
 					manpowerPerLevel += 250
-				if tradition.traditionType == "Intricate Designs":
+				if tradition.traditionType == "Decorative Ironwork":
 					culturePerLevel += 1
 			if tile.tileSpell != null:
 				match tile.tileSpell.spellType:
 					"Heart of the Forge":
 						foodPerLevel += 1
 						culturePerLevel += 1
-						faithPerLevel += 1
-						harmonyPerLevel += 1
+						culturePerLevel += 1
+						happinessPerLevel += 1
 						magicCostPerLevel += 8
 					"Resist Heat":
 						weaponsPerLevel += 3
 						#corruption in this tile +3
 						metalCostPerLevel += 3
 						magicCostPerLevel += 9
-	#add Barracks Unlockables
+		"Barracks":
+			# Barracks produces Manpower — drill technologies, conscription laws, and military traditions boost it.
+			for Technology in playerCountry.unlockedTechnologies:
+				if Technology.techName == "Steuben Drill Manual":
+					# Baron von Steuben's training regimen — more manpower per level, costs dollars
+					manpowerPerLevel += 300
+					dollarsCostPerLevel += 1
+				if Technology.techName == "Field Fortification":
+					# Vauban earthworks — barracks contributes to tile defense
+					defensivenessPerLevel += 1
+					woodCostPerLevel += 1
+			for law in playerCountry.lawsInConstitution:
+				if law.lawType == "Continental Draft":
+					# Mandatory service — historically controversial, historically effective
+					manpowerPerLevel += 300
+					happinessCostPerLevel += 1
+				if law.lawType == "Enlistment Bounty":
+					# Cash and land bounties to fill the ranks
+					manpowerPerLevel += 200
+					dollarsCostPerLevel += 2
+			if tile.tileGovernor != null:
+				match tile.tileGovernor.governorPosition:
+					"DRILL SERGEANT":
+						match tile.tileGovernor.governorLevel:
+							1: manpowerPerLevel += 200
+							2: manpowerPerLevel += 400; weaponsPerLevel += 1
+							3: manpowerPerLevel += 600; weaponsPerLevel += 2
+					"COLONEL":
+						match tile.tileGovernor.governorLevel:
+							1: manpowerPerLevel += 150; mandatePerLevel += 1
+							2: manpowerPerLevel += 300; mandatePerLevel += 2
+							3: manpowerPerLevel += 450; mandatePerLevel += 3; influencePerLevel += 1
+			for tradition in playerCountry.unlockedTraditions:
+				if tradition.traditionType == "Minuteman Ready":
+					# Sixty seconds to muster — colonial militia tradition; benefits both farms and barracks
+					manpowerPerLevel += 250
+				if tradition.traditionType == "Continental Veterans":
+					# Pride in service — veterans improve weapons output and inspire culture
+					weaponsPerLevel += 1
+					culturePerLevel += 1
+		"Market":
+			# Market uses the same unlockable logic as Workshop (both produce Dollars).
+			# Any tradition/tech/law that would boost Workshop also boosts Market.
+			for belief in playerCountry.selectedBeliefs:
+				if belief.beliefType == "Merchant's Blessing":
+					dollarsPerLevel += 2
+					metalCostPerLevel += 1
+				if belief.beliefType == "Idle Hands Doctrine":
+					culturePerLevel += 2
+					woodCostPerLevel += 1
+					foodCostPerLevel += 1
+			for Technology in playerCountry.unlockedTechnologies:
+				if Technology.techName == "Land Bank":
+					dollarsPerLevel += 2
+				if Technology.techName == "Artisan Craft":
+					dollarsPerLevel += 2
+					woodCostPerLevel += 2
+			for law in playerCountry.lawsInConstitution:
+				if law.lawType == "Navigation Acts":
+					dollarsPerLevel += 1
+					mandateCostPerLevel += 2
+				if law.lawType == "Non-Importation Agreement":
+					dollarsPerLevel += 2
+					foodCostPerLevel += 1
+					metalCostPerLevel += 1
+			for tradition in playerCountry.unlockedTraditions:
+				if tradition.traditionType == "Agrarian Bastions":
+					# Agrarian Bastions: markets also produce food
+					foodPerLevel += 1
+				if tradition.traditionType == "Artisan Quarter":
+					culturePerLevel += 1
+		"Dock":
+			# Dock unlockables: traditions/techs/laws that boost naval output.
+			for Technology in playerCountry.unlockedTechnologies:
+				if Technology.techName == "Dead Reckoning":
+					boatsPerLevel += 1
+				if Technology.techName == "Dry Dock Construction":
+					boatsPerLevel += 1
+			for law in playerCountry.lawsInConstitution:
+				if law.lawType == "Naval Contracts":
+					boatsPerLevel += 1
+					dollarsCostPerLevel += 1
+			for tradition in playerCountry.unlockedTraditions:
+				if tradition.traditionType == "Agrarian Bastions":
+					# Agrarian Bastions: docks can produce dollars from trade
+					dollarsPerLevel += 1
+		"Monument":
+			# Monument uses the same unlockable logic as Temple (both produce Culture).
+			for Technology in playerCountry.unlockedTechnologies:
+				if Technology.techName == "Classical Design":
+					woodCostPerLevel += 1
+					metalCostPerLevel += 1
+					cultureCostPerLevel += 2
+			for law in playerCountry.lawsInConstitution:
+				if law.lawType == "Peace Memorial":
+					happinessPerLevel += 1
+			for tradition in playerCountry.unlockedTraditions:
+				if tradition.traditionType == "Puritan Scholarship":
+					sciencePerLevel += 1
+			for belief in playerCountry.selectedBeliefs:
+				if belief.beliefType == "Sacred Craft":
+					culturePerLevel += 1
+		"Resort":
+			# Resort produces Happiness — buffed by comfort/hospitality traditions.
+			for Technology in playerCountry.unlockedTechnologies:
+				if Technology.techName == "Spa Construction":
+					happinessPerLevel += 1
+			for law in playerCountry.lawsInConstitution:
+				if law.lawType == "Right of Rest":
+					happinessPerLevel += 1
+			for tradition in playerCountry.unlockedTraditions:
+				if tradition.traditionType == "Common Respite":
+					happinessPerLevel += 1
+		"Fortress":
+			# Fortress adds defensiveness; traditions can unlock food production.
+			for tradition in playerCountry.unlockedTraditions:
+				if tradition.traditionType == "Garrison Farm":
+					# Agrarian Bastions: fortresses produce food from garrison farming
+					foodPerLevel += 1
+				if tradition.traditionType == "Star Fort Tradition":
+					defensivenessPerLevel += 1
+			for Technology in playerCountry.unlockedTechnologies:
+				if Technology.techName == "Military Engineering":
+					defensivenessPerLevel += 1
+			for law in playerCountry.lawsInConstitution:
+				if law.lawType == "Engineer Corps":
+					defensivenessPerLevel += 1
+		"Courthouse":
+			# Courthouse produces Mandate — governance technologies, civic laws, and administrative traditions boost it.
+			for Technology in playerCountry.unlockedTechnologies:
+				if Technology.techName == "Constitutional Studies":
+					mandatePerLevel += 1
+					sciencePerLevel += 1
+				if Technology.techName == "Common Literacy":
+					sciencePerLevel += 1
+					mandatePerLevel += 1
+			for law in playerCountry.lawsInConstitution:
+				if law.lawType == "Philosopher-Statesmen":
+					influencePerLevel += 1
+					mandatePerLevel += 1
+				if law.lawType == "Parish Records Act":
+					culturePerLevel += 1
+				if law.lawType == "Free Speech Act":
+					happinessPerLevel += 1
+					influencePerLevel += 1
+			if tile.tileGovernor != null:
+				match tile.tileGovernor.governorPosition:
+					"ADMINISTRATOR":
+						match tile.tileGovernor.governorLevel:
+							1:
+								mandatePerLevel += 1
+							2:
+								mandatePerLevel += 2
+								influencePerLevel += 1
+							3:
+								mandatePerLevel += 3
+								influencePerLevel += 2
+								happinessPerLevel += 1
+					"BISHOP":
+						match tile.tileGovernor.governorLevel:
+							1:
+								mandatePerLevel += 1
+							2:
+								mandatePerLevel += 2
+								culturePerLevel += 1
+							3:
+								mandatePerLevel += 3
+								culturePerLevel += 2
+								happinessPerLevel += 1
+			for tradition in playerCountry.unlockedTraditions:
+				if tradition.traditionType == "Continental Congress Ledgers":
+					mandatePerLevel += 1
+				if tradition.traditionType == "Self-Made Man":
+					mandatePerLevel += 1
+			for belief in playerCountry.selectedBeliefs:
+				if belief.beliefType == "Civic Pride":
+					culturePerLevel += 1
+					mandatePerLevel += 1
+				if belief.beliefType == "Civic Order Faith":
+					corruptionLossPerLevel += 1
+					mandatePerLevel += 1
+			if tile.tileSpell != null:
+				match tile.tileSpell.spellType:
+					"Foresight":
+						mandatePerLevel += 2
+						magicCostPerLevel += 6
+					"Omniscient Direction":
+						culturePerLevel += 2
+						mandatePerLevel += 5
+						magicCostPerLevel += 15
 	pass
 
-var goldTax: float
-var harmonyTax: float
+var dollarsTax: float
+var happinessTax: float
 
 func calculateOutputs(playerCountryNode):
 	foodPerLevel = 0
 	woodPerLevel = 0
-	goldPerLevel = 0
+	dollarsPerLevel = 0
 	metalPerLevel = 0
 	magicPerLevel = 0
 	weaponsPerLevel = 0
-	faithPerLevel = 0
+	culturePerLevel = 0    # covers both Culture and old Faith
 	sciencePerLevel = 0
-	culturePerLevel = 0
 	mandatePerLevel = 0
-	harmonyPerLevel = 0
+	happinessPerLevel = 0  # renamed from harmonyPerLevel
 	influencePerLevel = 0
 	manpowerPerLevel = 0
+	boatsPerLevel = 0
+	defensivenessPerLevel = 0
 	corruptionLossPerLevel = 0
-	
+
 	foodCostPerLevel = 0
 	woodCostPerLevel = 0
-	goldCostPerLevel = 0
+	dollarsCostPerLevel = 0
 	metalCostPerLevel = 0
 	magicCostPerLevel = 0
-	faithCostPerLevel = 0
-	scienceCostPerLevel =0
-	weaponsCostPerLevel = 0
 	cultureCostPerLevel = 0
+	scienceCostPerLevel = 0
+	weaponsCostPerLevel = 0
 	mandateCostPerLevel = 0
-	harmonyCostPerLevel = 0
+	happinessCostPerLevel = 0
 	influenceCostPerLevel = 0
 	manpowerCostPerLevel = 0
+	boatsCostPerLevel = 0
 	corruptionGainPerLevel = 0
 	buildBuilding()
 	matchPlayerUnlockables(playerCountryNode)
-	totalBuildingGold = 0
+	totalBuildingDollars = 0
 	totalBuildingFood = 0
 	totalBuildingWood = 0
 	totalBuildingMetal = 0
 	totalBuildingWeapons = 0
 	totalBuildingScience = 0
-	totalBuildingFaith = 0
+	totalBuildingCulture = 0   # covers both Culture and old Faith
 	totalBuildingMagic = 0
-	totalBuildingCulture = 0
 	totalBuildingManpower = 0
 	totalBuildingInfluence = 0
-	totalBuildingHarmony = 0
+	totalBuildingHappiness = 0 # renamed from totalBuildingHarmony
+	totalBuildingBoats = 0
+	totalBuildingDefensiveness = 0
 	corruptionChange = 0
-	if goldPerLevel != 0 or goldCostPerLevel != 0:
-		totalBuildingGold = (goldPerLevel - goldCostPerLevel)
-		totalBuildingGold *= buildingLevel
+	if dollarsPerLevel != 0 or dollarsCostPerLevel != 0:
+		totalBuildingDollars = (dollarsPerLevel - dollarsCostPerLevel)
+		totalBuildingDollars *= buildingLevel
 	if foodPerLevel != 0 or foodCostPerLevel != 0:
 		totalBuildingFood = (foodPerLevel - foodCostPerLevel)
 		totalBuildingFood *= buildingLevel
@@ -1173,56 +1450,80 @@ func calculateOutputs(playerCountryNode):
 	if sciencePerLevel != 0 or scienceCostPerLevel != 0:
 		totalBuildingScience = (sciencePerLevel - scienceCostPerLevel)
 		totalBuildingScience *= buildingLevel
-	if faithPerLevel != 0 or faithCostPerLevel != 0:
-		totalBuildingFaith = (faithPerLevel - faithCostPerLevel)
-		totalBuildingFaith *= buildingLevel
+	if culturePerLevel != 0 or cultureCostPerLevel != 0:
+		totalBuildingCulture = (culturePerLevel - cultureCostPerLevel)
+		totalBuildingCulture *= buildingLevel
 	if magicPerLevel != 0 or magicCostPerLevel != 0:
 		totalBuildingMagic = (magicPerLevel - magicCostPerLevel)
 		totalBuildingMagic *= buildingLevel
 	if mandatePerLevel != 0 or mandateCostPerLevel != 0:
 		totalBuildingMandate = (mandatePerLevel - mandateCostPerLevel)
 		totalBuildingMandate *= buildingLevel
-	if harmonyPerLevel != 0 or harmonyCostPerLevel != 0:
-		totalBuildingHarmony = (harmonyPerLevel - harmonyCostPerLevel)
-		totalBuildingHarmony *= buildingLevel
+	if happinessPerLevel != 0 or happinessCostPerLevel != 0:
+		totalBuildingHappiness = (happinessPerLevel - happinessCostPerLevel)
+		totalBuildingHappiness *= buildingLevel
 	if manpowerPerLevel != 0 or manpowerCostPerLevel != 0:
 		totalBuildingManpower = (manpowerPerLevel - manpowerCostPerLevel)
 		totalBuildingManpower *= buildingLevel
 	if influencePerLevel != 0 or influenceCostPerLevel != 0:
 		totalBuildingInfluence = (influencePerLevel - influenceCostPerLevel)
 		totalBuildingInfluence *= buildingLevel
+	if boatsPerLevel != 0 or boatsCostPerLevel != 0:
+		totalBuildingBoats = (boatsPerLevel - boatsCostPerLevel)
+		totalBuildingBoats *= buildingLevel
+	if defensivenessPerLevel != 0:
+		totalBuildingDefensiveness = defensivenessPerLevel * buildingLevel
 	if corruptionLossPerLevel != 0 or corruptionGainPerLevel != 0:
 		corruptionChange = corruptionGainPerLevel - corruptionLossPerLevel
 	match buildingType:
 		"Farm":
-			goldTax = (totalBuildingFood * (playerCountry.setFarmTaxAmount * .01))
-			harmonyTax = (totalBuildingFood  * (playerCountry.setFarmTaxAmount * .02))
+			dollarsTax = (totalBuildingFood * (playerCountry.setFarmTaxAmount * .01))
+			happinessTax = (totalBuildingFood * (playerCountry.setFarmTaxAmount * .02))
 		"Camp":
-			goldTax = (totalBuildingWood * (playerCountry.setCampTaxAmount * .01))
-			harmonyTax = (totalBuildingWood  * (playerCountry.setCampTaxAmount * .02))
+			dollarsTax = (totalBuildingWood * (playerCountry.setCampTaxAmount * .01))
+			happinessTax = (totalBuildingWood * (playerCountry.setCampTaxAmount * .02))
 		"Mine":
-			goldTax = (totalBuildingMetal * (playerCountry.setMineTaxAmount * .01))
-			harmonyTax = (totalBuildingMetal  * (playerCountry.setMineTaxAmount * .02))
+			dollarsTax = (totalBuildingMetal * (playerCountry.setMineTaxAmount * .01))
+			happinessTax = (totalBuildingMetal * (playerCountry.setMineTaxAmount * .02))
 		"Library":
-			goldTax = (totalBuildingScience * (playerCountry.setLibraryTaxAmount * .01))
-			harmonyTax = (totalBuildingScience  * (playerCountry.setLibraryTaxAmount * .02))
-		"Temple":
-			goldTax = (totalBuildingFaith * (playerCountry.setTempleTaxAmount * .01))
-			harmonyTax = (totalBuildingFaith  * (playerCountry.setTempleTaxAmount * .02))
+			dollarsTax = (totalBuildingScience * (playerCountry.setLibraryTaxAmount * .01))
+			happinessTax = (totalBuildingScience * (playerCountry.setLibraryTaxAmount * .02))
+		"Temple", "Monument":
+			# Both Temple and Monument generate Culture; taxed the same way
+			dollarsTax = (totalBuildingCulture * (playerCountry.setTempleTaxAmount * .01))
+			happinessTax = (totalBuildingCulture * (playerCountry.setTempleTaxAmount * .02))
 		"Tower":
-			goldTax = (totalBuildingMagic * (playerCountry.setTowerTaxAmount * .01))
-			harmonyTax = (totalBuildingMagic  * (playerCountry.setTowerTaxAmount * .02))
+			dollarsTax = (totalBuildingMagic * (playerCountry.setTowerTaxAmount * .01))
+			happinessTax = (totalBuildingMagic * (playerCountry.setTowerTaxAmount * .02))
 		"Forge":
-			goldTax = (totalBuildingWeapons * (playerCountry.setForgeTaxAmount * .01))
-			harmonyTax = (totalBuildingWeapons  * (playerCountry.setForgeTaxAmount * .02))
-		"Workshop":
-			goldTax = (totalBuildingGold * (playerCountry.setWorkshopTaxAmount * .01))
-			harmonyTax = (totalBuildingGold * (playerCountry.setWorkshopTaxAmount * .02))
-		"Bath":
-			goldTax = (corruptionLossPerLevel * (playerCountry.setBathTaxAmount * .01))
-			harmonyTax = (corruptionLossPerLevel  * (playerCountry.setBathTaxAmount * .02))
-	totalBuildingGold += goldTax
-	totalBuildingHarmony -= harmonyTax
+			dollarsTax = (totalBuildingWeapons * (playerCountry.setForgeTaxAmount * .01))
+			happinessTax = (totalBuildingWeapons * (playerCountry.setForgeTaxAmount * .02))
+		"Workshop", "Market":
+			# Both Workshop and Market generate Dollars; taxed the same way
+			dollarsTax = (totalBuildingDollars * (playerCountry.setWorkshopTaxAmount * .01))
+			happinessTax = (totalBuildingDollars * (playerCountry.setWorkshopTaxAmount * .02))
+		"Bath", "Resort":
+			# Both Bath and Resort affect Happiness/corruption
+			dollarsTax = (corruptionLossPerLevel * (playerCountry.setBathTaxAmount * .01))
+			happinessTax = (corruptionLossPerLevel * (playerCountry.setBathTaxAmount * .02))
+		"Dock":
+			# Dock produces Boats — no dollar/happiness tax (naval tax system TBD)
+			dollarsTax = 0
+			happinessTax = 0
+		"Fortress":
+			# Fortress adds defensiveness — no resource tax
+			dollarsTax = 0
+			happinessTax = 0
+		"Courthouse":
+			# Courthouse produces Mandate — taxed at the Temple/culture rate
+			dollarsTax = (totalBuildingMandate * (playerCountry.setTempleTaxAmount * .01))
+			happinessTax = (totalBuildingMandate * (playerCountry.setTempleTaxAmount * .02))
+		"Granary", "Barracks":
+			# Granary provides food storage; Barracks provides manpower — no resource tax
+			dollarsTax = 0
+			happinessTax = 0
+	totalBuildingDollars += dollarsTax
+	totalBuildingHappiness -= happinessTax
 	#print("totalBuildingMagic", totalBuildingMagic)
 	pass
 

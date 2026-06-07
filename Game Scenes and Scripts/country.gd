@@ -22,14 +22,14 @@ var primaryCapital #tile that acts as this country's capital city
 var countryFactionList: Array = []
 
 #Resources - How much they have currently
-var TotalGold: float
+var TotalDollars: float   # renamed from TotalGold
 var TotalMetal: int
 var TotalWood: int
 var TotalFood: int
 var TotalMagic: int
-var TotalFaith: int
-var TotalCulture: int
-var TotalHarmony: float
+var TotalCulture: int     # now covers both Culture and old Faith
+var TotalHappiness: float # renamed from TotalHarmony
+var TotalBoats: int       # new Boats resource
 var TotalMandate: int
 var TotalScience: int
 var TotalWeapons: int
@@ -48,14 +48,15 @@ var mandateThreshold: int #can be 0 to 100.  almost always starts at 50 for ever
 #only has to be 40% of the foodStorageMax for the mandateFromGranaries bool to be set to true
 
 #gains per month
-var GPM: int #gold per month
+var DPM: int #dollars per month (renamed from DPM)
 var MPM: int #metal per month
 var WPM: int #wood per month
 var FPM: int #food per month
 var APM: int #magic per month
-var IPM: int #Faith per month
-var CPM: int #Culture per month
-var HPM: int #Harmony per month
+# IPM (Faith per month) removed — faith merged into Culture
+var CPM: int #Culture per month (now covers Faith + Culture)
+var HPM: int #Happiness per month (renamed from Harmony)
+var BPM: int #boats per month (new)
 var NDT: int #Mandate per month
 var SPM: int #science per month
 var PPM: int #weapons per month
@@ -63,14 +64,14 @@ var NPM: int #influence per month
 var MAN: int #manpower per month
 
 #expenses per month
-var goldEXPM: int
+var dollarsEXPM: int  # renamed from goldEXPM
 var metalEXPM: int
 var woodEXPM: int
 var foodEXPM: int
 var magicEXPM: int
-var faithEXPM: int
+# faithEXPM removed — merged into cultureEXPM
 var cultureEXPM: int
-var harmonyEXPM: int
+var happinessEXPM: int  # renamed from harmonyEXPM
 var mandateEXPM: int
 var scienceEXPM: int
 var weaponsEXPM: int
@@ -244,19 +245,20 @@ func NewGameBuild() -> void:
 	foodStorageMax     = data.get("foodStorageMax", 500)
  
 	# Starting resources
-	TotalGold     += data.get("startGold", 50.0)
-	TotalFood     += data.get("startFood", 50)
-	TotalWood     += data.get("startWood", 50)
-	TotalMetal    += data.get("startMetal", 20)
-	TotalFaith    += data.get("startFaith", 30)
-	TotalMagic    += data.get("startMagic", 10)
-	TotalWeapons  += data.get("startWeapons", 10)
-	TotalScience  += data.get("startScience", 10)
-	TotalCulture  += data.get("startCulture", 5)
-	TotalHarmony  += data.get("startHarmony", 5.0)
-	TotalMandate  += data.get("startMandate", 10)
-	TotalInfluence+= data.get("startInfluence", 0)
-	TotalManpower += data.get("startManpower", 500)
+	TotalDollars   += data.get("startGold", 50.0)     # "startGold" key kept for save compat
+	TotalFood      += data.get("startFood", 50)
+	TotalWood      += data.get("startWood", 50)
+	TotalMetal     += data.get("startMetal", 20)
+	# startFaith merged into startCulture — combine both defaults into TotalCulture
+	TotalCulture   += data.get("startCulture", 5) + data.get("startFaith", 0)
+	TotalMagic     += data.get("startMagic", 10)
+	TotalWeapons   += data.get("startWeapons", 10)
+	TotalScience   += data.get("startScience", 10)
+	TotalHappiness += data.get("startHarmony", 5.0)   # "startHarmony" key kept for compat
+	TotalBoats     += data.get("startBoats", 0)
+	TotalMandate   += data.get("startMandate", 10)
+	TotalInfluence += data.get("startInfluence", 0)
+	TotalManpower  += data.get("startManpower", 500)
  
 	# Magic schools always start at zero
 	setStartingMagic()
@@ -406,8 +408,8 @@ func addGovernorToGovernorPool(governorType, governorLevel):
 	pass
 
 signal displayCommander
-func showCommander(commander):
-	emit_signal("displayCommander", commander)
+func showCommander(commander, army):
+	emit_signal("displayCommander", commander, army)
 	pass
 
 func addNewUnit(Army, UnitType, Level, WeaponType, OreType, ArmorType, curMen, curWeapons):
@@ -485,18 +487,40 @@ func raiseThisArmy(Army, country, Tile):
 	emit_signal("raiseThisArmySignal", Army, country, Tile)
 	pass
 
-func addArmy (Name, TileNumber, icon):
+func addArmy(Name, TileNumber, icon = null, tags: Array = []):
+	# icon is optional — defaults to CID-based icon if not provided
+	if icon == null:
+		icon = _get_default_army_icon()
 	var armyInstance = load("res://Game Scenes and Scripts/army.tscn").instantiate()
 	armyInstance.buildSelf(Name, self, TileNumber, icon)
 	armyInstance.raisingArmy.connect(raiseThisArmy)
 	armyInstance.commanderButtonPressed.connect(showCommander)
-	#print("little things")
-	#print(OwnedTileList, "OwnedTiles")
+	# ── Template lookup: populate armyTags AND units from army_templates.csv ──
+	# Tags: caller-supplied tags take priority; otherwise read from CSV armyMods
+	if not tags.is_empty():
+		armyInstance.armyTags = tags
+	var templates = ArmyDatabase.get_templates_for_country(CID)
+	for template in templates:
+		if template.get("armyName", "") == Name:
+			if tags.is_empty():
+				armyInstance.armyTags = template.get("armyMods", [])
+			# Spawn every unit defined in the CSV into the army
+			for unitData in template.get("units", []):
+				addNewUnit(
+					armyInstance,
+					unitData.get("unitType",    "Infantry"),
+					unitData.get("level",       1),
+					unitData.get("weaponType",  "Flintlock"),
+					"Iron",                              # OreType — default for all starting armies
+					unitData.get("uniformType", "Cloth"),# ArmorType maps to uniform cosmetic
+					unitData.get("manpower",    100),
+					unitData.get("weapons",     100)
+				)
+			break
+	# ── Tile placement ────────────────────────────────────────────────────────
 	for Tile in OwnedTileList:
-		print("TileNumber1 ", Tile.tileNumber, " tilenumber2 ", TileNumber)
 		if Tile.tileNumber == TileNumber:
 			Tile.addStationedArmy(armyInstance)
-			print("tile.stationedarmy", Tile.stationedArmy)
 			armyInstance.inTile = Tile
 	countryArmyList.append(armyInstance)
 	pass
@@ -878,14 +902,15 @@ func surveyResources():
 	calculateUniqueBuildingAttributes()
 	FPM = 0
 	WPM = 0
-	GPM = 0
+	DPM = 0
 	PPM = 0
 	APM = 0
-	IPM = 0
+	# IPM removed — faith merged into Culture/CPM
 	SPM = 0
 	MPM = 0
 	CPM = 0
 	HPM = 0
+	BPM = 0
 	NDT = 0
 	NPM = 0
 	MAN = 0
@@ -901,13 +926,14 @@ func surveyResources():
 		FPM += Tile.buildingFoodOutput
 		WPM += Tile.buildingWoodOutput
 		MPM += Tile.buildingMetalOutput
-		GPM += Tile.buildingGoldOutput
-		IPM += Tile.buildingFaithOutput
+		DPM += Tile.buildingDollarsOutput    # renamed from buildingGoldOutput
+		# buildingFaithOutput removed — faith merged into culture
 		PPM += Tile.buildingWeaponsOutput
 		APM += Tile.buildingMagicOutput
 		SPM += Tile.buildingScienceOutput
-		CPM += Tile.buildingCultureOutput
-		HPM += Tile.buildingHarmonyOutput
+		CPM += Tile.buildingCultureOutput    # covers both old faith and culture
+		HPM += Tile.buildingHappinessOutput  # renamed from buildingHarmonyOutput
+		BPM += Tile.buildingBoatsOutput      # new Boats resource
 		NDT += Tile.buildingMandateOutput
 		NPM += Tile.buildingInfluenceOutput
 		MAN += Tile.buildingManpowerOutput
@@ -924,17 +950,18 @@ func surveyResources():
 signal checkingOutput
 var tempFPM = 0
 var tempWPM = 0
-var tempGPM = 0
+var tempDPM = 0
 var tempPPM = 0
 var tempAPM = 0
-var tempIPM = 0
+# tempIPM removed — faith merged into culture
 var tempSPM = 0
 var tempMPM = 0
 var tempCPM = 0
 var tempHPM = 0
+var tempBPM = 0
 var tempNDT = 0
 var tempNPM = 0
-var tempMAN =0
+var tempMAN = 0
 var tempAlcPoints = 0
 var tempSumPoints = 0
 var tempElePoints = 0
@@ -948,17 +975,18 @@ func outputCheck(caller):
 	outputsDict.clear()
 	tempFPM = 0
 	tempWPM = 0
-	tempGPM = 0
-	tempPPM = 0	
+	tempDPM = 0
+	tempPPM = 0
 	tempAPM = 0
-	tempIPM = 0
+	# tempIPM removed — faith merged into culture
 	tempSPM = 0
 	tempMPM = 0
 	tempCPM = 0
 	tempHPM = 0
+	tempBPM = 0
 	tempNDT = 0
 	tempNPM = 0
-	tempMAN =0
+	tempMAN = 0
 	tempAlcPoints = 0
 	tempSumPoints = 0
 	tempElePoints = 0
@@ -971,13 +999,14 @@ func outputCheck(caller):
 		tempFPM += Tile.buildingFoodOutput
 		tempWPM += Tile.buildingWoodOutput
 		tempMPM += Tile.buildingMetalOutput
-		tempGPM += Tile.buildingGoldOutput
-		tempIPM += Tile.buildingFaithOutput
+		tempDPM += Tile.buildingDollarsOutput    # renamed from buildingGoldOutput
+		# buildingFaithOutput removed — faith merged into culture
 		tempPPM += Tile.buildingWeaponsOutput
 		tempAPM += Tile.buildingMagicOutput
 		tempSPM += Tile.buildingScienceOutput
-		tempCPM += Tile.buildingCultureOutput
-		tempHPM += Tile.buildingHarmonyOutput
+		tempCPM += Tile.buildingCultureOutput    # covers old faith + culture
+		tempHPM += Tile.buildingHappinessOutput  # renamed from buildingHarmonyOutput
+		tempBPM += Tile.buildingBoatsOutput      # new Boats resource
 		tempNDT += Tile.buildingMandateOutput
 		tempNPM += Tile.buildingInfluenceOutput
 		tempMAN += Tile.buildingManpowerOutput
@@ -991,21 +1020,22 @@ func outputCheck(caller):
 	outputsDict = {
 		"FPM" : tempFPM,
 		"WPM" : tempWPM,
-		"GPM" : tempGPM,
+		"DPM" : tempDPM,
 		"PPM" : tempPPM,
 		"APM" : tempAPM,
-		"IPM" :tempIPM,
-		"SPM" :tempSPM,
-		"MPM" :tempMPM,
-		"CPM" :tempCPM,
-		"HPM" :tempHPM,
-		"NDT" :tempNDT,
-		"NPM" :tempNPM,
-		"MAN" :tempMAN,
-		"ALC" :tempAlcPoints,
-		"SUM" :tempSumPoints,
-		"ELE" :tempElePoints,
-		"ILL" :tempIllPoints,
+		# IPM removed from dict
+		"SPM" : tempSPM,
+		"MPM" : tempMPM,
+		"CPM" : tempCPM,
+		"HPM" : tempHPM,
+		"BPM" : tempBPM,
+		"NDT" : tempNDT,
+		"NPM" : tempNPM,
+		"MAN" : tempMAN,
+		"ALC" : tempAlcPoints,
+		"SUM" : tempSumPoints,
+		"ELE" : tempElePoints,
+		"ILL" : tempIllPoints,
 		"DIV" :tempDivPoints,
 		"DRU" :tempDruPoints,
 	}
@@ -1018,20 +1048,20 @@ func payUnitMaintenance():
 		FPM += Army.armyFoodCost
 		WPM += Army.armyWoodCost
 		MPM += Army.armyMetalCost
-		GPM += Army.armyGoldCost
-		IPM += Army.armyFaithCost
+		DPM += Army.armyGoldCost     # armyGoldCost still works (dollars cost)
+		# armyFaithCost removed — faith merged into culture
 		PPM += Army.armyWeaponsCost
 		APM += Army.armyMagicCost
 		SPM += Army.armyScienceCost
 		CPM += Army.armyCultureCost
-		HPM += Army.armyHarmonyCost
+		HPM += Army.armyHarmonyCost  # still valid var name in army.gd (cost rename deferred)
 		NDT += Army.armyMandateCost
 		NPM += Army.armyInfluenceCost
 		MAN += Army.armyManpowerCost
 	pass
 
 func collectTaxes():
-	TotalGold += GPM
+	TotalDollars += DPM
 	if TotalFood >= foodStorageMax:
 		TotalFood = foodStorageMax
 	else:
@@ -1039,11 +1069,12 @@ func collectTaxes():
 	TotalWood += WPM
 	TotalMetal += MPM
 	TotalWeapons += PPM
-	TotalFaith += IPM
+	# IPM removed — faith merged into culture; CPM covers both
 	TotalMagic += APM
 	TotalScience += SPM
-	TotalCulture += CPM
-	TotalHarmony += HPM
+	TotalCulture += CPM   # covers old Faith + Culture outputs
+	TotalHappiness += HPM # renamed from TotalHarmony
+	TotalBoats += BPM     # new Boats resource
 	TotalMandate += NDT
 	TotalInfluence += NPM
 	TotalManpower += MAN
@@ -1298,9 +1329,14 @@ func setNewTaxAmount(amount, type):
 
 func payBill(type, amount):
 	match type:
-		"faith":
-			TotalFaith -= amount
-			print("debug")
+		"faith", "culture":  # "faith" kept for backward compat with existing call sites
+			TotalCulture -= amount
+		"dollars", "gold":   # "gold" kept for backward compat
+			TotalDollars -= amount
+		"happiness", "harmony":  # "harmony" kept for backward compat
+			TotalHappiness -= amount
+		"boats":
+			TotalBoats -= amount
 	pass
 
 var newToolScene = load("res://tool.tscn")
@@ -1345,19 +1381,19 @@ func save_state() -> Dictionary:
 		"isAlive": isAlive,
  
 		# Current resources
-		"TotalGold":     TotalGold,
-		"TotalFood":     TotalFood,
-		"TotalWood":     TotalWood,
-		"TotalMetal":    TotalMetal,
-		"TotalFaith":    TotalFaith,
-		"TotalMagic":    TotalMagic,
-		"TotalWeapons":  TotalWeapons,
-		"TotalScience":  TotalScience,
-		"TotalCulture":  TotalCulture,
-		"TotalHarmony":  TotalHarmony,
-		"TotalMandate":  TotalMandate,
-		"TotalInfluence":TotalInfluence,
-		"TotalManpower": TotalManpower,
+		"TotalDollars":   TotalDollars,
+		"TotalFood":      TotalFood,
+		"TotalWood":      TotalWood,
+		"TotalMetal":     TotalMetal,
+		"TotalCulture":   TotalCulture,   # covers old Faith + Culture
+		"TotalMagic":     TotalMagic,
+		"TotalWeapons":   TotalWeapons,
+		"TotalScience":   TotalScience,
+		"TotalHappiness": TotalHappiness,
+		"TotalBoats":     TotalBoats,
+		"TotalMandate":   TotalMandate,
+		"TotalInfluence": TotalInfluence,
+		"TotalManpower":  TotalManpower,
  
 		# Magic schools
 		"alcPoints": alcPoints, "alcLevel": alcLevel,
@@ -1476,19 +1512,19 @@ func build_from_save(save_data: Dictionary) -> void:
 	isAlive = save_data.get("isAlive", true)
  
 	# Restore resources
-	TotalGold      = save_data.get("TotalGold", TotalGold)
-	TotalFood      = save_data.get("TotalFood", TotalFood)
-	TotalWood      = save_data.get("TotalWood", TotalWood)
-	TotalMetal     = save_data.get("TotalMetal", TotalMetal)
-	TotalFaith     = save_data.get("TotalFaith", TotalFaith)
-	TotalMagic     = save_data.get("TotalMagic", TotalMagic)
-	TotalWeapons   = save_data.get("TotalWeapons", TotalWeapons)
-	TotalScience   = save_data.get("TotalScience", TotalScience)
-	TotalCulture   = save_data.get("TotalCulture", TotalCulture)
-	TotalHarmony   = save_data.get("TotalHarmony", TotalHarmony)
-	TotalMandate   = save_data.get("TotalMandate", TotalMandate)
+	TotalDollars   = save_data.get("TotalDollars",   TotalDollars)
+	TotalFood      = save_data.get("TotalFood",      TotalFood)
+	TotalWood      = save_data.get("TotalWood",      TotalWood)
+	TotalMetal     = save_data.get("TotalMetal",     TotalMetal)
+	TotalCulture   = save_data.get("TotalCulture",   TotalCulture)  # covers old Faith + Culture
+	TotalMagic     = save_data.get("TotalMagic",     TotalMagic)
+	TotalWeapons   = save_data.get("TotalWeapons",   TotalWeapons)
+	TotalScience   = save_data.get("TotalScience",   TotalScience)
+	TotalHappiness = save_data.get("TotalHappiness", TotalHappiness)
+	TotalBoats     = save_data.get("TotalBoats",     TotalBoats)
+	TotalMandate   = save_data.get("TotalMandate",   TotalMandate)
 	TotalInfluence = save_data.get("TotalInfluence", TotalInfluence)
-	TotalManpower  = save_data.get("TotalManpower", TotalManpower)
+	TotalManpower  = save_data.get("TotalManpower",  TotalManpower)
  
 	# Restore magic schools
 	alcPoints = save_data.get("alcPoints", 0)

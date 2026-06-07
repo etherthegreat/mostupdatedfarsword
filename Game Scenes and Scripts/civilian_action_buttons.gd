@@ -8,6 +8,8 @@ func updateUI(CID, civ, toolName, kitType, ppbTile):
 	$IncreaseUrbanDevelopment.visible = false
 	$IncreaseEliteDevelopment.visible = false
 	$IncreaseMilitaryDevelopment.visible = false
+	if $BuildRoad != null:
+		$BuildRoad.visible = false
 	match toolName:
 		"Seed Bag":
 			$IncreaseAgriculturalDevelopment.visible = true
@@ -19,6 +21,9 @@ func updateUI(CID, civ, toolName, kitType, ppbTile):
 			$IncreaseUrbanDevelopment.visible = true
 		"Steel Tools":
 			$IncreaseMilitaryDevelopment.visible = true
+		"Pickaxe":
+			if $BuildRoad != null:
+				$BuildRoad.visible = true
 	match kitType:
 		"Constructor":
 			$IncreaseAgriculturalDevelopment.visible = true

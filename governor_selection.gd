@@ -15,6 +15,9 @@ func buildSelf(receivedGovernor):
 	pass
 
 func buildSelectedSelf(receivedGovernor):
+	# Guard: called with null when army has no commander — skip silently
+	if receivedGovernor == null:
+		return
 	thisGovernor = receivedGovernor
 	$MasterPanel/GovernorNameLabel.text = thisGovernor.governorType
 	$MasterPanel/levelLabel.text = str(thisGovernor.governorLevel)

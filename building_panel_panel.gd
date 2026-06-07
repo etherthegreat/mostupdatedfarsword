@@ -45,10 +45,10 @@ func updateInspector(building):
 			$Panel/OutputsControl/MetalOutputLabel.set("theme_override_colors/font_color",white)
 		else:
 			$Panel/OutputsControl/MetalOutputLabel.set("theme_override_colors/font_color",red)
-		$Panel/OutputsControl/GoldOutputLabel.text = str(building.totalBuildingGold)
-		if building.totalBuildingGold > 0:
+		$Panel/OutputsControl/GoldOutputLabel.text = str(building.totalBuildingDollars)
+		if building.totalBuildingDollars > 0:
 			$Panel/OutputsControl/GoldOutputLabel.set("theme_override_colors/font_color",green)
-		elif building.totalBuildingGold == 0:
+		elif building.totalBuildingDollars == 0:
 			$Panel/OutputsControl/GoldOutputLabel.set("theme_override_colors/font_color",white)
 		else:
 			$Panel/OutputsControl/GoldOutputLabel.set("theme_override_colors/font_color",red)
@@ -80,10 +80,10 @@ func updateInspector(building):
 			$Panel/OutputsControl/CultureOutputLabel.set("theme_override_colors/font_color",white)
 		else:
 			$Panel/OutputsControl/CultureOutputLabel.set("theme_override_colors/font_color",red)
-		$Panel/OutputsControl/FaithOutputLabel.text = str(building.totalBuildingFaith)
-		if building.totalBuildingFaith > 0:
+		$Panel/OutputsControl/FaithOutputLabel.text = str(building.totalBuildingCulture)
+		if building.totalBuildingCulture > 0:
 			$Panel/OutputsControl/FaithOutputLabel.set("theme_override_colors/font_color",green)
-		elif building.totalBuildingFaith == 0:
+		elif building.totalBuildingCulture == 0:
 			$Panel/OutputsControl/FaithOutputLabel.set("theme_override_colors/font_color",white)
 		else:
 			$Panel/OutputsControl/FaithOutputLabel.set("theme_override_colors/font_color",red)
@@ -129,7 +129,7 @@ func updateInspector(building):
 			$Panel/WoodLabel.set("theme_override_colors/font_color",white)
 			$Panel/Upgrade.disabled = false
 		$Panel/GoldLabel.text = str(goldUpgradeCost)
-		if goldUpgradeCost > player.TotalGold:
+		if goldUpgradeCost > player.TotalDollars:
 			$Panel/GoldLabel.set("theme_override_colors/font_color",red)
 			$Panel/Upgrade.disabled = true
 		else:
@@ -161,7 +161,7 @@ func _on_upgrade_pressed() -> void:
 	emit_signal("upgradeBuilding", buildingUnderInspection)
 	player.TotalFood -= foodUpgradeCost
 	player.TotalWood -= woodUpgradeCost
-	player.TotalGold -= goldUpgradeCost
+	player.TotalDollars -= goldUpgradeCost
 	player.TotalMetal -= metalUpgradeCost
 	pass # Replace with function body.
 
@@ -215,6 +215,7 @@ func calculateUpgradeCost(building):
 			woodUpgradeCost += (20 + (20 * building.buildingLevel))
 			goldUpgradeCost += (20 + (20 * building.buildingLevel))
 			metalUpgradeCost += (20 + (20 * building.buildingLevel))
+		return
 	if building.buildingType == "Library":
 		foodUpgradeCost += (25 + (25 * building.buildingLevel))
 		woodUpgradeCost += (35 + (35 * building.buildingLevel))
@@ -227,7 +228,67 @@ func calculateUpgradeCost(building):
 			foodUpgradeCost += (15 + (15 * building.buildingLevel))
 			woodUpgradeCost += (40 + (40 * building.buildingLevel))
 			goldUpgradeCost += (35 + (35 * building.buildingLevel))
-			
-	else:
-		print("no building recognized")
+		return
+	if building.buildingType == "Courthouse":
+		# Civic/governance building: gold and wood primary, food for officials, metal at high level
+		foodUpgradeCost += (15 + (15 * building.buildingLevel))
+		goldUpgradeCost += (25 + (25 * building.buildingLevel))
+		woodUpgradeCost += (20 + (20 * building.buildingLevel))
+		if building.buildingLevel > 4:
+			goldUpgradeCost += (15 + (15 * building.buildingLevel))
+			foodUpgradeCost += (10 + (10 * building.buildingLevel))
+		if building.buildingLevel > 8:
+			goldUpgradeCost += (20 + (20 * building.buildingLevel))
+			metalUpgradeCost += (15 + (15 * building.buildingLevel))
+		return
+	if building.buildingType == "Market":
+		# Commerce building: wood and metal stalls, gold and food at higher levels
+		woodUpgradeCost += (20 + (20 * building.buildingLevel))
+		metalUpgradeCost += (15 + (15 * building.buildingLevel))
+		if building.buildingLevel > 4:
+			goldUpgradeCost += (20 + (20 * building.buildingLevel))
+			woodUpgradeCost += (15 + (15 * building.buildingLevel))
+		if building.buildingLevel > 8:
+			foodUpgradeCost += (20 + (20 * building.buildingLevel))
+			goldUpgradeCost += (25 + (25 * building.buildingLevel))
+			metalUpgradeCost += (10 + (10 * building.buildingLevel))
+		return
+	if building.buildingType == "Monument":
+		# Cultural landmark: food for artisan labor, wood and gold throughout, metal for grand works
+		foodUpgradeCost += (30 + (30 * building.buildingLevel))
+		woodUpgradeCost += (35 + (35 * building.buildingLevel))
+		goldUpgradeCost += (25 + (25 * building.buildingLevel))
+		if building.buildingLevel > 4:
+			woodUpgradeCost += (20 + (20 * building.buildingLevel))
+			goldUpgradeCost += (20 + (20 * building.buildingLevel))
+		if building.buildingLevel > 8:
+			foodUpgradeCost += (20 + (20 * building.buildingLevel))
+			woodUpgradeCost += (20 + (20 * building.buildingLevel))
+			metalUpgradeCost += (25 + (25 * building.buildingLevel))
+		return
+	if building.buildingType == "Resort":
+		# Luxury building: food and gold heavy throughout, wood added at highest tiers
+		foodUpgradeCost += (40 + (40 * building.buildingLevel))
+		goldUpgradeCost += (35 + (35 * building.buildingLevel))
+		if building.buildingLevel > 4:
+			foodUpgradeCost += (20 + (20 * building.buildingLevel))
+			goldUpgradeCost += (25 + (25 * building.buildingLevel))
+		if building.buildingLevel > 8:
+			foodUpgradeCost += (20 + (20 * building.buildingLevel))
+			goldUpgradeCost += (20 + (20 * building.buildingLevel))
+			woodUpgradeCost += (30 + (30 * building.buildingLevel))
+		return
+	if building.buildingType == "Fortress":
+		# Military fortification: metal heavy, wood for palisades, food for garrison, gold for engineers at peak
+		metalUpgradeCost += (40 + (40 * building.buildingLevel))
+		woodUpgradeCost += (30 + (30 * building.buildingLevel))
+		if building.buildingLevel > 4:
+			metalUpgradeCost += (20 + (20 * building.buildingLevel))
+			foodUpgradeCost += (20 + (20 * building.buildingLevel))
+		if building.buildingLevel > 8:
+			metalUpgradeCost += (20 + (20 * building.buildingLevel))
+			woodUpgradeCost += (15 + (15 * building.buildingLevel))
+			goldUpgradeCost += (30 + (30 * building.buildingLevel))
+		return
+	print("no building recognized")
 	pass

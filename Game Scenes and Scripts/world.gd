@@ -34,16 +34,16 @@ func _process(delta: float) -> void:
 		return
 	else:
 		$"CanvasLayer/Resource Bar (TOP)/container/FoodLabel/Label".text = str(playerCountryNode.TotalFood)
-		$"CanvasLayer/Resource Bar (TOP)/container/GoldLabel/Label".text = str(playerCountryNode.TotalGold)
+		$"CanvasLayer/Resource Bar (TOP)/container/GoldLabel/Label".text = str(playerCountryNode.TotalDollars)
 		$"CanvasLayer/Resource Bar (TOP)/container/WoodLabel/Label".text = str(playerCountryNode.TotalWood)
 		$"CanvasLayer/Resource Bar (TOP)/container/MetalLabel/Label".text = str(playerCountryNode.TotalMetal)
 		$"CanvasLayer/Resource Bar (TOP)/container/WeaponsLabel/Label".text = str(playerCountryNode.TotalWeapons)
 		$"CanvasLayer/Resource Bar (TOP)/container/ScienceLabel/Label".text = str(playerCountryNode.SPM)
-		$"CanvasLayer/Resource Bar (TOP)/container/FaithLabel/Label".text = str(playerCountryNode.TotalFaith)
+		$"CanvasLayer/Resource Bar (TOP)/container/FaithLabel/Label".text = str(playerCountryNode.TotalCulture)  # Faith→Culture
 		$"CanvasLayer/Resource Bar (TOP)/container/MagicLabel/Label".text = str(playerCountryNode.TotalMagic)
 		$"CanvasLayer/Resource Bar (TOP)/container/CultureLabel/Label".text = str(playerCountryNode.TotalCulture)
 		$"CanvasLayer/Resource Bar (TOP)/container/MandateLabel/Label".text = str(playerCountryNode.TotalMandate)
-		$"CanvasLayer/Resource Bar (TOP)/container/HarmonyLabel/Label".text = str(playerCountryNode.TotalHarmony)
+		$"CanvasLayer/Resource Bar (TOP)/container/HarmonyLabel/Label".text = str(playerCountryNode.TotalHappiness)  # Harmony→Happiness
 		$"CanvasLayer/Resource Bar (TOP)/container/InfluenceLabel/Label".text = str(playerCountryNode.TotalInfluence)
 		$"CanvasLayer/Resource Bar (TOP)/container/ManpowerLabel/Label".text = str(playerCountryNode.TotalManpower)
 		updateMap()
@@ -116,10 +116,231 @@ func newGameBuild(CID, gameLang):
 	$CanvasLayer/LoadingSprite.visible = false
 	$CanvasLayer/LoadingProgressBar.visible = false
 	$CanvasLayer/LoadingLabel.visible = false
+	# Generate procedural commanders (assigns them to barracks tiles, adds
+	# Ualani Carlisle to pool), set up all 17 protector arcs, then fire
+	# the game-start event (DE_001 "A New War For An Old Republic").
+	generateBarracksCommanders()
+	$CanvasLayer/WarRoomPanel.setupAllProtectors($TileController.get_children())
+	evaluateDateEvents()
 	#for country in aliveCountriesList:
 		#for Army in country.countryArmyList:
 			#Army.raiseSelf()
 	pass
+
+# ── BARRACKS COMMANDER GENERATION ───────────────────────────────────────────
+# Scans every tile owned by the player at game start.  For each Barracks tile
+# a procedural governor is built using a terrain-matched archetype and a name
+# drawn from the appropriate cultural name pool.  The governor is added to the
+# player's unlocked pool AND registered in the War Room as a CommanderArcEntry.
+func generateBarracksCommanders() -> void:
+	# ── Archetype table ──────────────────────────────────────────────────────
+	# terrain: which tile terrains can produce this archetype
+	# name_pools: preferred cultural name pools (one picked at random)
+	# position: governor role title
+	var ARCHETYPES := [
+		{"id":"ARC_01","name":"Wetlands Fisher",      "position":"SCOUT",      "terrain":["Wetlands"],               "pools":["NP_01","NP_04"]},
+		{"id":"ARC_02","name":"Appalachian Miner",     "position":"ENGINEER",   "terrain":["Foothills"],              "pools":["NP_03"]},
+		{"id":"ARC_03","name":"Ivy League Dropout",    "position":"SCHOLAR",    "terrain":["Metro"],                  "pools":["NP_01","NP_09","NP_10"]},
+		{"id":"ARC_04","name":"Seminole Fighter",      "position":"WARRIOR",    "terrain":["Wetlands","Farmlands"],   "pools":["NP_07"]},
+		{"id":"ARC_05","name":"Green Mountain Farmer", "position":"FARMER",     "terrain":["Foothills","Farmlands"],  "pools":["NP_01","NP_06"]},
+		{"id":"ARC_06","name":"Chesapeake Shipwright", "position":"ENGINEER",   "terrain":["Wetlands"],               "pools":["NP_01","NP_04"]},
+		{"id":"ARC_07","name":"Loyalist Turncoat",     "position":"SPY",        "terrain":["Metro","Suburbs"],        "pools":["NP_01","NP_02"]},
+		{"id":"ARC_08","name":"Tobacco Belt Drifter",  "position":"SCOUT",      "terrain":["Farmlands"],              "pools":["NP_03","NP_04"]},
+		{"id":"ARC_09","name":"War Widow",             "position":"DIPLOMAT",   "terrain":["Suburbs","Metro"],        "pools":["NP_01","NP_04","NP_09"]},
+		{"id":"ARC_10","name":"Indigenous Scout",      "position":"SCOUT",      "terrain":["Woods","Wetlands"],       "pools":["NP_07"]},
+		{"id":"ARC_11","name":"Boston Rabble-Rouser",  "position":"ORATOR",     "terrain":["Metro"],                  "pools":["NP_01","NP_09"]},
+		{"id":"ARC_12","name":"Continental Surgeon",   "position":"HEALER",     "terrain":["Farmlands","Foothills"],  "pools":["NP_01","NP_02"]},
+		{"id":"ARC_13","name":"Nantucket Sailor",      "position":"ADMIRAL",    "terrain":["Wetlands"],               "pools":["NP_01"]},
+		{"id":"ARC_14","name":"Frontier Preacher",     "position":"ORATOR",     "terrain":["Woods","Foothills"],      "pools":["NP_03"]},
+		{"id":"ARC_15","name":"DC Bureaucrat",         "position":"BUREAUCRAT", "terrain":["Metro"],                  "pools":["NP_01","NP_04"]},
+		{"id":"ARC_16","name":"Rust Belt Steelworker", "position":"ENGINEER",   "terrain":["Suburbs"],               "pools":["NP_02","NP_09"]},
+		{"id":"ARC_17","name":"Plantation Deserter",   "position":"SOLDIER",    "terrain":["Farmlands"],              "pools":["NP_04"]},
+		{"id":"ARC_18","name":"Swamp Witch",           "position":"MAGE",       "terrain":["Wetlands"],               "pools":["NP_04","NP_05"]},
+		{"id":"ARC_19","name":"Caribbean Privateer",   "position":"ADMIRAL",    "terrain":["Wetlands","Suburbs"],     "pools":["NP_05"]},
+		{"id":"ARC_20","name":"Hawaiian Refugee",      "position":"DIPLOMAT",   "terrain":["Wetlands","Metro"],       "pools":["NP_08"]},
+		{"id":"ARC_21","name":"Border Mercenary",      "position":"SOLDIER",    "terrain":["Suburbs","Farmlands"],    "pools":["NP_03","NP_05"]},
+		{"id":"ARC_22","name":"Acadian Forest Ranger", "position":"SCOUT",      "terrain":["Woods","Wetlands"],       "pools":["NP_06"]},
+		{"id":"ARC_23","name":"Gettysburg Descendant", "position":"SOLDIER",    "terrain":["Farmlands","Foothills"],  "pools":["NP_01","NP_04"]},
+		{"id":"ARC_24","name":"LGBTQ+ Organizer",      "position":"DIPLOMAT",   "terrain":["Metro","Suburbs"],        "pools":["NP_01","NP_04","NP_09"]},
+		{"id":"ARC_25","name":"Carnival Barker",       "position":"ORATOR",     "terrain":["Wetlands","Suburbs"],     "pools":["NP_03","NP_05"]},
+	]
+
+	# ── Name pools (first-male, first-female, first-nb, last) ────────────────
+	var NAME_POOLS := {
+		"NP_01": {
+			"m":  ["Elias","Caleb","Josiah","Nathan","Ezra","Silas","Amos","Seth","Gideon","Abel"],
+			"f":  ["Abigail","Prudence","Mercy","Hannah","Thankful","Patience","Ruth","Lydia","Miriam","Constance"],
+			"nb": ["Sable","Rowe","Birch","Wren","Ash","Flint","Grey"],
+			"l":  ["Aldrich","Whitfield","Hatch","Coffin","Morse","Tilden","Brewster","Alden","Sears"],
+		},
+		"NP_02": {
+			"m":  ["Heinrich","Jakob","Gottfried","Samuel","Johannes","Luther","Conrad","Wilhelm","Ezekiel","Barnabas"],
+			"f":  ["Katarina","Liesel","Anna","Greta","Hilde","Martha","Clara","Dorothea","Marta","Bettina"],
+			"nb": ["Rael","Stern","Thorn","Kels","Bram"],
+			"l":  ["Zimmermann","Keller","Brauer","Hochstetler","Mast","Yoder","Kreider","Becker","Roth"],
+		},
+		"NP_03": {
+			"m":  ["Beauregard","Hezekiah","Cletus","Earl","Virgil","Jasper","Leland","Floyd","Harlan","Orville"],
+			"f":  ["Beulah","Maybelle","Loretta","Edna","Clementine","Opaline","Willa","Dovie","Rosalee","Faye"],
+			"nb": ["Dale","Lee","Bo","Rue","Sly","Beau"],
+			"l":  ["Hatfield","McCoy","Combs","Slone","Tackett","Blevins","Castle","Holbrook","Prater"],
+		},
+		"NP_04": {
+			"m":  ["Isaiah","Elijah","Marcus","Darius","Leroy","Roosevelt","Clarence","Augustus","Cornelius","Theron"],
+			"f":  ["Ida","Zenobia","Celestine","Lavinia","Ophelia","Harriet","Josephine","Addie","Cora","Estelle"],
+			"nb": ["Soleil","Roux","Jael","Lux","Zephyr"],
+			"l":  ["Washington","Freeman","Justice","Douglass","Truth","Tubman","Bell","Price","Gaines","Bridges"],
+		},
+		"NP_05": {
+			"m":  ["Carlos","Miguel","Alejandro","Rafael","Ernesto","Joaquin","Mateo","Santiago","Hector","Rodrigo"],
+			"f":  ["Carmen","Pilar","Rosario","Dolores","Ines","Valentina","Marisol","Lupe","Consuelo","Xiomara"],
+			"nb": ["Paz","Sol","Cruz","Rio","Lune","Ciel"],
+			"l":  ["Reyes","Morales","Delgado","Vega","Fuentes","Castellanos","Cienfuegos","Garza","Ybarra"],
+		},
+		"NP_06": {
+			"m":  ["Jean-Baptiste","Rene","Gaston","Emile","Theodore","Alphonse","Honore","Sebastien","Lucien","Fernand"],
+			"f":  ["Marie-Claire","Therese","Marguerite","Colette","Vivienne","Celeste","Odette","Elise","Adele","Brigitte"],
+			"nb": ["Claude","Dominique","Sable","Lune","Rene"],
+			"l":  ["Tremblay","Gagnon","Roy","Cote","Bouchard","Leblanc","Pelletier","Lavoie","Fortin","Bergeron"],
+		},
+		"NP_07": {
+			"m":  ["Skenandoa","Chayton","Tokala","Mahpiya","Elan","Hotah","Chaska","Mato","Ohiyesa","Kimimela"],
+			"f":  ["Winona","Kaya","Aiyana","Taini","Chenoa","Aponi","Wren","Dove","Ama","Shoshana"],
+			"nb": ["River","Ash","Stone","Flint","Cedar","Birch","Sky"],
+			"l":  [""],   # Nation-specific; will appear as single-name
+		},
+		"NP_08": {
+			"m":  ["Kai","Koa","Makoa","Keoni","Hoku","Noa","Kahale","Ikaika","Kaimana","Lono"],
+			"f":  ["Leilani","Malia","Nohea","Haunani","Kalani","Pua","Moana","Alana","Kealoha","Kaimana"],
+			"nb": ["Kai","Noa","Lani","Hoku","Koa"],
+			"l":  ["Kahananui","Akana","Kealoha","Makoa","Puanani","Kamaka","Akina"],
+		},
+		"NP_09": {
+			"m":  ["Seamus","Brennan","Declan","Cormac","Finn","Rory","Patrick","Kieran","Liam","Conor"],
+			"f":  ["Brigid","Siobhan","Aoife","Niamh","Maeve","Fionnuala","Roisin","Ciara","Grainne","Nora"],
+			"nb": ["Quinn","Rowan","Riley","Shea","Carey"],
+			"l":  ["O'Brien","Murphy","Doyle","Callahan","Sullivan","Flanagan","McCarthy","Hennessy","Gallagher"],
+		},
+		"NP_10": {
+			"m":  ["Abraham","Mordecai","Solomon","Isaac","Levi","Tobias","Emanuel","Felix","Siegfried","Otto"],
+			"f":  ["Miriam","Rebecca","Leah","Esther","Judith","Rachel","Deborah","Hannah","Sarah","Naomi"],
+			"nb": ["Sable","Rael","Aron","Sol","Lev"],
+			"l":  ["Goldstein","Rosenberg","Weiss","Katz","Schwartz","Blum","Stein","Levy","Cohen","Bernstein"],
+		},
+	}
+
+	var portrait_placeholder: Texture = load(
+		"res://art assets/Placeholder Art/character/4-22-Ikra-Colors - Copy.png")
+
+	# ── Spawn Ualani Carlisle FIRST, station her in Washington DC ────────────
+	var carlisle: governor = governor.new()
+	carlisle.buildSelf("Ualani Carlisle", 3)
+	playerCountryNode.unlockedGovernors.append(carlisle)
+	for tile in $TileController.get_children():
+		if tile.tileNumber == 188 and tile.tileOwner == playerCountry:
+			tile.tileGovernor       = carlisle
+			tile.filledGovernorSlot = true
+			carlisle.hired          = true
+			print("[Commanders] President Carlisle stationed in Washington DC (tile 188).")
+			break
+	if not carlisle.hired:
+		print("[Commanders] Washington DC not player-owned at start — Carlisle added to pool unassigned.")
+
+	var used_names: Dictionary = {}
+	var generated: int = 0
+
+	for tile in $TileController.get_children():
+		# Only player-owned tiles with a barracks
+		if tile.tileOwner != playerCountry:
+			continue
+		if not tile.buildings.has("barracks"):
+			continue
+		# Skip tiles already governed (e.g., DC if Ualani was stationed there)
+		if tile.filledGovernorSlot:
+			continue
+
+		# ── Pick archetype ────────────────────────────────────────────────
+		var candidates: Array = []
+		for arch in ARCHETYPES:
+			if tile.terrain in arch["terrain"]:
+				candidates.append(arch)
+		if candidates.is_empty():
+			candidates = ARCHETYPES          # any archetype if terrain has no match
+		var chosen: Dictionary = candidates[randi() % candidates.size()]
+
+		# ── Pick name pool ────────────────────────────────────────────────
+		var pool_id: String = chosen["pools"][randi() % chosen["pools"].size()]
+		var pool: Dictionary = NAME_POOLS.get(pool_id, NAME_POOLS["NP_01"])
+
+		# Gender: 0 = m, 1 = f, 2 = nb
+		var gender: int = randi() % 3
+		var first_list: Array
+		match gender:
+			0: first_list = pool["m"]
+			1: first_list = pool["f"]
+			_: first_list = pool["nb"]
+		var last_list: Array = pool.get("l", [])
+
+		var first: String = first_list[randi() % first_list.size()]
+		var last: String  = ""
+		if last_list.size() > 0 and last_list[0] != "":
+			last = last_list[randi() % last_list.size()]
+
+		var full_name: String = (first + " " + last).strip_edges()
+
+		# Deduplicate — try up to 8 times before giving up
+		var tries: int = 0
+		while used_names.has(full_name) and tries < 8:
+			first = first_list[randi() % first_list.size()]
+			full_name = (first + " " + last).strip_edges()
+			tries += 1
+		used_names[full_name] = true
+
+		# ── Build governor ────────────────────────────────────────────────
+		var new_gov: governor = governor.new()
+		new_gov.governorType       = full_name           # display name shown in UI
+		new_gov.governorArchetypeId = chosen["id"]       # archetype for War Room matching
+		new_gov.governorPosition   = chosen["position"]  # role title (SCOUT, ORATOR, …)
+		new_gov.governorLevel      = 1
+		new_gov.governorDescription = \
+			"A " + chosen["name"] + " who answered the revolution's call from " + tile.tileName + "."
+		new_gov.governorBiography  = \
+			full_name + " came from " + tile.tileName + " (" + tile.terrain + "). " + \
+			"They carry the skills of " + chosen["name"] + " into the fight for independence."
+		new_gov.governorTexture    = portrait_placeholder
+		new_gov.hired              = false
+
+		# Add to player's unlocked governor pool
+		playerCountryNode.unlockedGovernors.append(new_gov)
+
+		# Auto-assign as the tile's governor so they show up immediately
+		tile.tileGovernor      = new_gov
+		tile.filledGovernorSlot = true
+		new_gov.hired           = true
+
+		# Register their arc in the War Room
+		$CanvasLayer/WarRoomPanel.registerCommanderArc(new_gov, tile)
+
+		generated += 1
+		print("[Commanders] Generated: ", full_name, " — ", chosen["name"],
+			  " (", chosen["id"], ") at ", tile.tileName, " [", tile.terrain, "]")
+
+	print("[Commanders] Barracks scan complete. ", generated, " commanders generated.")
+
+	# ── Auto-assign tile governors to stationed armies ────────────────────────
+	# Every barracks tile that received a governor above also has an army
+	# stationed in it (army.inTile).  Match them now so armies start the game
+	# with a commander already assigned.
+	var assigned: int = 0
+	for army in playerCountryNode.countryArmyList:
+		if army.inTile != null and army.inTile.tileGovernor != null:
+			army.addUnitCommander(army.inTile.tileGovernor)
+			army.updateArmyUI()
+			assigned += 1
+			print("[Commanders] Assigned ", army.inTile.tileGovernor.governorType,
+				  " as commander of ", army.ArmyName)
+	print("[Commanders] ", assigned, " armies received a starting commander.")
+
 
 var countryNode = load("res://Game Scenes and Scripts/country.tscn")
 
@@ -462,15 +683,96 @@ func buildNewPlayerArmy(barracksBuilding, barracksTile, bbButton, playerNode, ne
 			bbButton.addPrebuiltArmy(Army)
 	pass
 
-func UICommander(commander):
-	$CanvasLayer/TileInfoPanel/GovernorSelection.buildSelectedSelf(commander)
-	$CanvasLayer/TileInfoPanel/GovernorSelection.changePanel("commander")
-	$CanvasLayer/TileInfoPanel/GovernorSelection.position = Vector2(-212, -473)
-	if $CanvasLayer/TileInfoPanel/GovernorSelection.visible == false:
-		$CanvasLayer/TileInfoPanel/GovernorSelection.visible = true
+func UICommander(commander, army):
+	if commander != null:
+		# Show the assigned commander's details panel
+		$CanvasLayer/TileInfoPanel/GovernorSelection.buildSelectedSelf(commander)
+		$CanvasLayer/TileInfoPanel/GovernorSelection.changePanel("commander")
+		$CanvasLayer/TileInfoPanel/GovernorSelection.position = Vector2(-212, -473)
+		if $CanvasLayer/TileInfoPanel/GovernorSelection.visible == false:
+			$CanvasLayer/TileInfoPanel/GovernorSelection.visible = true
+		else:
+			$CanvasLayer/TileInfoPanel/GovernorSelection.visible = false
 	else:
-		$CanvasLayer/TileInfoPanel/GovernorSelection.visible = false
+		# No commander yet — open the governor picker so the player can assign one
+		_open_army_commander_picker(army)
 	pass
+
+# ── ARMY COMMANDER PICKER ─────────────────────────────────────────────────────
+# Built entirely in code — no .tscn changes needed.
+# Opens a floating panel over the canvas that lists every governor in
+# playerCountryNode.unlockedGovernors.  Clicking a governor's confirm button
+# calls army.addUnitCommander() and closes the panel.
+# ─────────────────────────────────────────────────────────────────────────────
+const _govSelScene = preload("res://governor_selection.tscn")
+var _commanderPickerPanel: Panel = null
+var _armyAwaitingCommander: Army = null
+
+func _open_army_commander_picker(army: Army) -> void:
+	# Close any existing picker first
+	if _commanderPickerPanel != null:
+		_commanderPickerPanel.queue_free()
+		_commanderPickerPanel = null
+
+	_armyAwaitingCommander = army
+
+	# ── Outer panel ──────────────────────────────────────────────────────────
+	var panel = Panel.new()
+	panel.size     = Vector2(440, 520)
+	panel.position = Vector2(220, 80)
+	$CanvasLayer.add_child(panel)
+	_commanderPickerPanel = panel
+
+	# ── Title ────────────────────────────────────────────────────────────────
+	var title = Label.new()
+	title.text     = "Assign Commander — " + army.ArmyName
+	title.position = Vector2(10, 8)
+	title.size     = Vector2(380, 24)
+	panel.add_child(title)
+
+	# ── Close button ─────────────────────────────────────────────────────────
+	var closeBtn = Button.new()
+	closeBtn.text     = "X"
+	closeBtn.position = Vector2(402, 4)
+	closeBtn.size     = Vector2(32, 32)
+	closeBtn.pressed.connect(_close_army_commander_picker)
+	panel.add_child(closeBtn)
+
+	# ── Scroll container holding one GovernorSelection per unlocked governor ─
+	var scroll = ScrollContainer.new()
+	scroll.position = Vector2(4, 40)
+	scroll.size     = Vector2(432, 472)
+	panel.add_child(scroll)
+
+	var vbox = VBoxContainer.new()
+	vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	scroll.add_child(vbox)
+
+	if playerCountryNode.unlockedGovernors.is_empty():
+		var empty = Label.new()
+		empty.text = "No governors available."
+		vbox.add_child(empty)
+	else:
+		for gov in playerCountryNode.unlockedGovernors:
+			var govSel = _govSelScene.instantiate()
+			vbox.add_child(govSel)
+			govSel.buildSelf(gov)
+			# Lambda captures gov by value at loop time
+			govSel.governorConfirmed.connect(
+				func(confirmed_gov): _assign_army_commander(confirmed_gov)
+			)
+
+func _assign_army_commander(gov) -> void:
+	if _armyAwaitingCommander != null:
+		_armyAwaitingCommander.addUnitCommander(gov)
+		_armyAwaitingCommander.updateArmyUI()
+	_close_army_commander_picker()
+
+func _close_army_commander_picker() -> void:
+	if _commanderPickerPanel != null:
+		_commanderPickerPanel.queue_free()
+		_commanderPickerPanel = null
+	_armyAwaitingCommander = null
 var pathPointButtonToSend: pathPointButton
 
 func raiseArmyFromWorld(Army, country, Tile):
@@ -639,18 +941,18 @@ func evaluateProtectorSummon(protector_id: String) -> void:
 
 func _apply_resource_change(resource: String, amount: int) -> void:
 	match resource:
-		"gold":     playerCountryNode.TotalGold     += amount
-		"food":     playerCountryNode.TotalFood     += amount
-		"wood":     playerCountryNode.TotalWood     += amount
-		"metal":    playerCountryNode.TotalMetal    += amount
-		"weapons":  playerCountryNode.TotalWeapons  += amount
-		"faith":    playerCountryNode.TotalFaith    += amount
-		"magic":    playerCountryNode.TotalMagic    += amount
-		"science":  playerCountryNode.TotalScience  += amount
-		"culture":  playerCountryNode.TotalCulture  += amount
-		"harmony":  playerCountryNode.TotalHarmony  += amount
-		"mandate":  playerCountryNode.TotalMandate  += amount
-		"manpower": playerCountryNode.TotalManpower += amount
+		"gold", "dollars": playerCountryNode.TotalDollars  += amount  # "gold" kept for CSV compat
+		"food":            playerCountryNode.TotalFood      += amount
+		"wood":            playerCountryNode.TotalWood      += amount
+		"metal":           playerCountryNode.TotalMetal     += amount
+		"weapons":         playerCountryNode.TotalWeapons   += amount
+		"faith", "culture":playerCountryNode.TotalCulture   += amount  # "faith" kept for compat
+		"magic":           playerCountryNode.TotalMagic     += amount
+		"science":         playerCountryNode.TotalScience   += amount
+		"harmony", "happiness": playerCountryNode.TotalHappiness += amount  # "harmony" compat
+		"boats":           playerCountryNode.TotalBoats     += amount
+		"mandate":         playerCountryNode.TotalMandate   += amount
+		"manpower":        playerCountryNode.TotalManpower  += amount
 
 func _apply_morale_boost(amount: int) -> void:
 	for Tile in playerCountryNode.OwnedTileList:
@@ -952,7 +1254,7 @@ func _on_building_info_panel_fill_with_unlocked_buildings() -> void:
 
 func addNewBuildingToTile(buildingType, goldCalculatedCost, foodCalculatedCost, woodCalculatedCost, metalCalculatedCost, thisTile,player):
 	thisTile.addBuilding(buildingType, 1)
-	playerCountryNode.TotalGold -= goldCalculatedCost
+	playerCountryNode.TotalDollars -= goldCalculatedCost
 	playerCountryNode.TotalFood -= foodCalculatedCost
 	playerCountryNode.TotalWood -= woodCalculatedCost
 	playerCountryNode.TotalMetal -= metalCalculatedCost
@@ -997,11 +1299,81 @@ func _on_next_turn_pressed() -> void:
 		$TileController.get_children(), currentWorldTurn)
 	$CanvasLayer/TechTree.investInTech(playerCountryNode.SPM)
 	currentWorldTurn += 1
+	_advance_fortnight()
+	_apply_winter_army_drain()
 	evaluateDateEvents()
 	for Tile in $TileController.get_children():
 		Tile.tick_conquest_timer()
-	$CanvasLayer/TurnLabel.text = str(currentWorldTurn)
+	$CanvasLayer/TurnLabel.text = _format_game_date()
 	pass # Replace with function body.
+
+# ── DATE SYSTEM ──────────────────────────────────────────────────────────────
+# Each turn represents one fortnight (14 days).
+# Calendar: 25-day months, 12 months per year (300-day year).
+# Game starts month=6 year=673 (equivalent to June 1775).
+# At ~26 fortnights per year, four years ≈ 104 turns — one presidential term.
+func _advance_fortnight() -> void:
+	var FORTNIGHT: int = 14
+	var DAYS_PER_MONTH: int = 25
+	var MONTHS_PER_YEAR: int = 12
+	dayOfMonth += FORTNIGHT
+	day += FORTNIGHT
+	if dayOfMonth > DAYS_PER_MONTH:
+		dayOfMonth -= DAYS_PER_MONTH
+		month += 1
+		if month > MONTHS_PER_YEAR:
+			month = 1
+			year += 1
+		# Broadcast season change to all tiles
+		emit_signal("calculateSeason", month)
+
+func _format_game_date() -> String:
+	var month_names: Array = [
+		"January","February","March","April","May","June",
+		"July","August","September","October","November","December"
+	]
+	var mname: String = month_names[month - 1] if (month >= 1 and month <= 12) else ("Month " + str(month))
+	return mname + " " + str(year)
+
+# ── WINTER ARMY SUPPLY DRAIN ─────────────────────────────────────────────────
+# During winter months (Nov–Feb), armies stationed in cold-winter tiles consume
+# extra food from the national stockpile.  Tropical/storm tiles (negative
+# winterScore) are excluded — they have hurricane penalties, not cold ones.
+#
+# Drain per army per fortnight, keyed to tile.get_winter_army_modifier():
+#   modifier 1.0  (mild/no winter)  → 0 food
+#   modifier 0.85 (cold winter)     → 3 food
+#   modifier 0.65 (harsh winter)    → 7 food
+#   modifier 0.40 (blizzard)        → 12 food
+#
+# Formula: drain = int((1.0 - modifier) * 20)
+# Scale factor 20 keeps numbers small enough that a well-stocked nation
+# survives one winter but not two back-to-back without granaries.
+#
+# Snow-adapted armies (future: armyTags contains "Cold Weather") will bypass
+# this drain — see snow adapter design note in army.gd.
+func _apply_winter_army_drain() -> void:
+	var is_winter: bool = (month == 11 or month == 12 or month == 1 or month == 2)
+	if not is_winter:
+		return
+	var total_drain: int = 0
+	for army in playerCountryNode.countryArmyList:
+		if army.inTile == null:
+			continue
+		# Negative winterScore = tropical / hurricane territory — no cold drain
+		if army.inTile.winterScore <= 0:
+			continue
+		# Armies with Cold Weather tag are adapted — no supply drain
+		if army.armyTags.has("Cold Weather"):
+			continue
+		var modifier: float = army.inTile.get_winter_army_modifier()
+		# modifier == 1.0 means mild winter zone, no penalty
+		if modifier >= 1.0:
+			continue
+		var drain: int = int((1.0 - modifier) * 20)
+		total_drain += drain
+	if total_drain > 0:
+		playerCountryNode.TotalFood = max(0, playerCountryNode.TotalFood - total_drain)
 
 #======
 #saving functionality

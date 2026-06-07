@@ -191,6 +191,19 @@ func calculateArmyMovement(endPathPoint, endNodes, startNodes, neighborPathPoint
 	print("DEBUG Calculate", endNodes)
 	if selectedAPF != null:
 		startingPoint = selectedAPF.currentPathPoint
+		# ── Movement point gate ───────────────────────────────────────────
+		# Check whether this army has enough movement points to enter the
+		# destination tile.  Civilians (selectedCPF) are not gated here;
+		# they operate on a separate action-per-turn model.
+		var army: Army = selectedAPF.thisArmy
+		var dest_tile: Tile = endPathPoint.ppbTile
+		if dest_tile != null and army != null:
+			var cost: int = dest_tile.get_move_cost(army)
+			if army.currentMovementPoints < cost:
+				# Not enough movement points — block the move silently.
+				# TODO: show a small UI indicator ("Not enough movement points")
+				return
+			army.currentMovementPoints -= cost
 	elif selectedCPF != null:
 		startingPoint = selectedCPF.currentPathPoint
 	$PathsControl/Path.set_point_position(1, startingPoint.position)
@@ -384,3 +397,10 @@ func updateTileSiege(army, pathPoint):
 			pathPointButton.siegeTile(army)
 		pass
 	pass
+
+
+func _on_build_road_pressed() -> void:
+	if selectedCPF != null:
+		selectedCPF.roadMode()
+		selectedCPF = null
+	pass # Replace with function body.

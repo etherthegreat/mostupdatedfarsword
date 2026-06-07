@@ -75,9 +75,7 @@ func onRaise(Civilian, country, pathPoint):
 	thisCountry = country
 	currentPathPoint = pathPoint
 	currentPathPoint.occupied = true
-	#currentTile = Tile
-#	match currentPathPoint.currentPathPoint
-	#currentPath = path
+	currentTile = pathPoint.ppbTile   # populate immediately so emitTileChange is safe on turn 1
 	pass
 
 signal cpfSelected
@@ -109,6 +107,11 @@ func urbanMode():
 func discoveryMode():
 	civilianMode = "Discovery"
 	pass
+
+func roadMode():
+	civilianMode = "Road"
+	pass
+
 signal tileChanging
 func emitTileChange():
 	emit_signal("tileChanging", currentTile, civilianMode, thisCivilian)

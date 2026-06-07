@@ -18,6 +18,19 @@ var armyInfluenceCost: int = 0
 var armyWeaponsCost: int = 0
 var armyManpowerCost: int = 0
 
+# ── MOVEMENT POINTS ───────────────────────────────────────────────────────────
+# Civ-style: each army gets maxMovementPoints per turn, spent when entering tiles.
+# Terrain and winter conditions increase tile entry cost.  Armies with the
+# "Cold Weather" tag in armyTags ignore winter cost penalties.
+var maxMovementPoints: int = 3
+var currentMovementPoints: int = 3
+
+# ── ARMY TAGS ─────────────────────────────────────────────────────────────────
+# Populated from army_templates.csv armyMods column (pipe-delimited).
+# Used by the movement and winter-drain systems to grant terrain exemptions.
+# Examples: "Cold Weather", "Naval Power", "Redcoats", "Pirates"
+var armyTags: Array = []
+
 var ArmyName: String
 #var Icon
 
@@ -129,6 +142,8 @@ func updateArmyUI(): #call whenever attacked, or just whenever the player opens 
 	pass
 
 func onTurnEnd():
+	# Restore full movement points at the start of each new turn
+	currentMovementPoints = maxMovementPoints
 	if parentCountry.TotalManpower > 0:
 		for Unit in unitsList:
 			Unit.refillManpower(parentCountry.armyReinforceRate)
@@ -274,16 +289,16 @@ func surveySelf():
 			Unit.disableMilModType("Weapons")
 		if parentCountry.TotalWood <= 0:
 			Unit.disableMilModType("Wood")
-		if parentCountry.TotalHarmony <= 0:
-			Unit.disableMilModType("Harmony")
+		if parentCountry.TotalHappiness <= 0:
+			Unit.disableMilModType("Happiness")
 			# unitsWillBecomeMutinous
 		if parentCountry.TotalCulture <= 0:
+			# TotalCulture now covers both Culture and old Faith
 			Unit.disableMilModType("Culture")
-		if parentCountry.TotalFaith <= 0:
-			Unit.disableMilModType("Faith")
+		# TotalFaith removed — merged into TotalCulture
 		if parentCountry.TotalInfluence <= 0:
 			Unit.disableMilModType("Influence")
-		if parentCountry.TotalGold <= 0:
+		if parentCountry.TotalDollars <= 0:
 			Unit.disableMilModType("Gold")
 			# unitsWon'tListenToOrders
 		if parentCountry.TotalScience <= 0:
@@ -394,7 +409,9 @@ func commanderCheck():
 
 signal commanderButtonPressed
 func _on_commander_button_pressed() -> void:
-	emit_signal("commanderButtonPressed", commander)
+	# Pass both the current commander (may be null) AND this army so the
+	# world can decide whether to show details or open a commander picker.
+	emit_signal("commanderButtonPressed", commander, self)
 	pass # Replace with function body.
 
 signal battleBuilt

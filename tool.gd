@@ -50,4 +50,9 @@ func buildSelf(Name):
 			var newMilMod = milModScene.instantiate()
 			newMilMod.buildSelf("Steel Tools")
 			toolMilMod = newMilMod
+		"Pickaxe":
+			toolImage = load("res://art assets/Placeholder Art/UI Art/resources/Metal.png")
+			var newMilMod = milModScene.instantiate()
+			newMilMod.buildSelf("Pickaxe")
+			toolMilMod = newMilMod
 	pass

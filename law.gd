@@ -31,7 +31,7 @@ func buildSelf(newLawType, selected):
 						+25 Manpower Per Farm
 						-1 Mandate Per Farm
 						+1 Mandate Per Forge")
-		"Mercantilism":
+		"Navigation Acts":
 			lawDescription = "By creating a new corp of bureacratic tax collectors, we can attempt to more directly control the economy.  By pushing exports and minimizing imports, we hope to become quite wealthy."
 			quadrant = "Order"
 			lawIcon = load("res://art assets/Placeholder Art/UI Art/resources/gold.png")
