@@ -24,6 +24,15 @@ func updateUI(CID, civ, toolName, kitType, ppbTile):
 		"Pickaxe":
 			if $BuildRoad != null:
 				$BuildRoad.visible = true
+		"Codebook":
+			# Spy action buttons — add SabotageButton, ContactTurncoatsButton,
+			# and ReconnaissanceButton to this scene to activate them.
+			if has_node("SabotageButton"):
+				$SabotageButton.visible = true
+			if has_node("ContactTurncoatsButton"):
+				$ContactTurncoatsButton.visible = true
+			if has_node("ReconnaissanceButton"):
+				$ReconnaissanceButton.visible = true
 	match kitType:
 		"Constructor":
 			$IncreaseAgriculturalDevelopment.visible = true

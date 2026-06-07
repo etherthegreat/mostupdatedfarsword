@@ -84,8 +84,8 @@ func _on_button_pressed(btn: Button) -> void:
 
 func _player_allows_content(flag: String) -> bool:
 	match flag:
-		"kinky_lewd": return true   # TODO: wire to Settings.content_kinky_lewd
-		"explicit":   return true   # TODO: wire to Settings.content_explicit
+		"kinky_lewd": return Settings.content_kinky_lewd
+		"explicit":   return Settings.content_explicit
 	return true
 
 

@@ -55,4 +55,9 @@ func buildSelf(Name):
 			var newMilMod = milModScene.instantiate()
 			newMilMod.buildSelf("Pickaxe")
 			toolMilMod = newMilMod
+		"Codebook":
+			toolImage = load("res://art assets/Placeholder Art/UI Art/resources/Science.png")
+			var newMilMod = milModScene.instantiate()
+			newMilMod.buildSelf("Codebook")
+			toolMilMod = newMilMod
 	pass

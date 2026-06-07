@@ -49,10 +49,10 @@ func raisePlayerCiv(civ, country, Tile):
 	civ.stationNode.add_child(newCPF)
 	raisedPlayerCPFs.append(newCPF)
 	civ.stationNode.occupied = true
-	#civ.stationNode.stationedCivilians.append(newCPF)
 	newCPF.cpfSelected.connect(displaycpfInfo)
 	newCPF.civilianArrived.connect(civilianArrivedFunc)
 	newCPF.tileChanging.connect(newTileDevelopment)
+	newCPF.spyActionPerformed.connect(_on_spy_action_performed)
 	newCPF.onRaise(civ, country, civ.stationNode)
 	showPathPoints(civ.stationNode)
 	pass
@@ -191,21 +191,27 @@ func calculateArmyMovement(endPathPoint, endNodes, startNodes, neighborPathPoint
 	print("DEBUG Calculate", endNodes)
 	if selectedAPF != null:
 		startingPoint = selectedAPF.currentPathPoint
-		# ── Movement point gate ───────────────────────────────────────────
-		# Check whether this army has enough movement points to enter the
-		# destination tile.  Civilians (selectedCPF) are not gated here;
-		# they operate on a separate action-per-turn model.
 		var army: Army = selectedAPF.thisArmy
+		# Sabotage blocks all movement for the affected turn
+		if army != null and army.sabotaged:
+			print("MOVEMENT BLOCKED: This army has been sabotaged and cannot move.")
+			return
+		# Movement point gate — terrain cost consumed from army's pool
 		var dest_tile: Tile = endPathPoint.ppbTile
 		if dest_tile != null and army != null:
 			var cost: int = dest_tile.get_move_cost(army)
 			if army.currentMovementPoints < cost:
-				# Not enough movement points — block the move silently.
 				# TODO: show a small UI indicator ("Not enough movement points")
 				return
 			army.currentMovementPoints -= cost
 	elif selectedCPF != null:
 		startingPoint = selectedCPF.currentPathPoint
+		# Action point gate — civilians spend 1 point per tile moved
+		if selectedCPF.thisCivilian != null:
+			if selectedCPF.thisCivilian.currentActionPoints <= 0:
+				print("MOVEMENT BLOCKED: No action points remaining for this civilian.")
+				return
+			selectedCPF.thisCivilian.currentActionPoints -= 1
 	$PathsControl/Path.set_point_position(1, startingPoint.position)
 	$PathsControl/Path.set_point_position(2, endPathPoint.position)
 	moveArmy($PathsControl/Path/PathFollow/Control, "start", endPathPoint)
@@ -403,4 +409,57 @@ func _on_build_road_pressed() -> void:
 	if selectedCPF != null:
 		selectedCPF.roadMode()
 		selectedCPF = null
-	pass # Replace with function body.
+	pass
+
+# ── SPY ACTIONS (Codebook tool) ───────────────────────────────────────────────
+# Wire SabotageButton, ContactTurncoatsButton, ReconnaissanceButton pressed
+# signals in the scene editor to these methods.
+
+func sabotageTile() -> void:
+	if selectedCPF != null:
+		selectedCPF.sabotageMode()
+		selectedCPF = null
+
+func contactTurncoatsTile() -> void:
+	if selectedCPF != null:
+		selectedCPF.contactTurncoatsMode()
+		selectedCPF = null
+
+func reconTile() -> void:
+	if selectedCPF != null:
+		selectedCPF.reconMode()
+		selectedCPF = null
+
+func _on_spy_action_performed(action_type: String, tile, civilian) -> void:
+	if tile == null:
+		return
+	var target_army: Army = tile.stationedArmy
+	if target_army == null or not target_army.enemy:
+		print("SPY: No enemy army in tile ", tile.tileName if tile else "?")
+		raisedPlayerCPFs.erase(civilian)
+		return
+	match action_type:
+		"Sabotage":
+			target_army.sabotaged = true
+			target_army.sabotageTimer = 1
+			print("SPY: Sabotage — ", target_army.ArmyName, " in ", tile.tileName, " cannot act next turn.")
+		"ContactTurncoats":
+			var siphon := int(target_army.manpowerInArmy * 0.20)
+			target_army.manpowerInArmy -= siphon
+			if playerCountry != null:
+				playerCountry.TotalManpower += siphon
+			print("SPY: Contact Turncoats — siphoned ", siphon, " manpower from ", target_army.ArmyName)
+		"Reconnaissance":
+			target_army.reconDebuffed = true
+			target_army.reconDebuffTimer = 3
+			print("SPY: Reconnaissance — ", target_army.ArmyName, " defence debuffed for 3 turns.")
+	# Remove the now-consumed CPF from the tracking list
+	raisedPlayerCPFs.erase(civilian)
+
+# ── TURN END ─────────────────────────────────────────────────────────────────
+# Call this from country.gd payUnitMaintenance() or world.gd turn-end handler
+# alongside Army.onTurnEnd() so civilians reset their action points each turn.
+func onTurnEnd() -> void:
+	for cpf in raisedPlayerCPFs:
+		if is_instance_valid(cpf) and cpf.thisCivilian != null:
+			cpf.thisCivilian.onTurnEnd()

@@ -76,6 +76,12 @@ var armyMagicDefense: int
 var armyShield: int
 var armyMaxShield: int
 
+# ── SPY EFFECTS ───────────────────────────────────────────────────────────────
+var sabotaged: bool = false       # enemy spy Sabotage — blocks movement/action for the turn
+var sabotageTimer: int = 0        # turns remaining before sabotage clears
+var reconDebuffed: bool = false   # enemy spy Reconnaissance — reduces armyDefence in battle
+var reconDebuffTimer: int = 0     # turns remaining before recon debuff clears
+
 var armySiegeScore: float
 
 #spawning and tiles
@@ -144,6 +150,15 @@ func updateArmyUI(): #call whenever attacked, or just whenever the player opens 
 func onTurnEnd():
 	# Restore full movement points at the start of each new turn
 	currentMovementPoints = maxMovementPoints
+	# Tick down spy effect timers
+	if sabotageTimer > 0:
+		sabotageTimer -= 1
+		if sabotageTimer <= 0:
+			sabotaged = false
+	if reconDebuffTimer > 0:
+		reconDebuffTimer -= 1
+		if reconDebuffTimer <= 0:
+			reconDebuffed = false
 	if parentCountry.TotalManpower > 0:
 		for Unit in unitsList:
 			Unit.refillManpower(parentCountry.armyReinforceRate)

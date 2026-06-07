@@ -25,6 +25,12 @@ var influenceCost: int
 
 var milMods: Array
 
+# ── ACTION POINTS ─────────────────────────────────────────────────────────────
+# Mirrors the army movement-point system. Civilians spend 1 point per tile
+# moved; spy actions (Codebook) also cost 1 and consume the unit.
+var maxActionPoints: int = 2
+var currentActionPoints: int = 2
+
 var toolScene = load("res://tool.tscn")
 var kitScene = load("res://kit.tscn")
 
@@ -112,13 +118,13 @@ func displayAvailableTools(playerCountryNode):
 	pass
 	pass
 
+func onTurnEnd():
+	currentActionPoints = maxActionPoints
+
 func calculateCivilianCost():
-	
 	pass
 
-
 func calculateCivilianAttributes():
-	
 	pass
 
 

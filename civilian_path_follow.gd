@@ -86,31 +86,52 @@ func _on_cpf_button_pressed() -> void:
 
 func colonizeMode():
 	civilianMode = "Colonize"
-	pass
 
 func corruptionMode():
 	civilianMode = "Corruption"
-	pass
 
 func agricultureMode():
 	civilianMode = "Agriculture"
-	pass
 
 func resourceMode():
 	civilianMode = "Resource"
-	pass
 
 func urbanMode():
 	civilianMode = "Urban"
-	pass
+
+func eliteMode():
+	civilianMode = "Elite"
 
 func discoveryMode():
 	civilianMode = "Discovery"
-	pass
 
 func roadMode():
 	civilianMode = "Road"
-	pass
+
+# ── SPY MODES (Codebook tool) ─────────────────────────────────────────────────
+# Each spy action costs 1 action point, emits its signal, then removes the CPF.
+
+signal spyActionPerformed(action_type, tile, civilian)
+
+func sabotageMode():
+	civilianMode = "Sabotage"
+	_consumeAndAct("Sabotage")
+
+func contactTurncoatsMode():
+	civilianMode = "ContactTurncoats"
+	_consumeAndAct("ContactTurncoats")
+
+func reconMode():
+	civilianMode = "Reconnaissance"
+	_consumeAndAct("Reconnaissance")
+
+func _consumeAndAct(action_type: String) -> void:
+	if thisCivilian != null:
+		thisCivilian.currentActionPoints -= 1
+	emit_signal("spyActionPerformed", action_type, currentTile, thisCivilian)
+	if currentPathPoint != null:
+		currentPathPoint.occupied = false
+	queue_free()
 
 signal tileChanging
 func emitTileChange():
