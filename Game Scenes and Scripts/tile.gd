@@ -35,6 +35,7 @@ var thisTileNumber
 var tileCrop: String = "corn"          # corn, apples, hay, soybeans, peanuts, peaches, oranges, mushrooms, cannabis
 var corruption: int = 0                # scale 0-100; environmental decay — reduces tile output
 var tileMoralDecay: int = 0            # scale 0-100; political corruption — reduces tile output; grows on courthouse tiles
+var electionPressure: int = 0         # scale -100 to 100; tracks election momentum (-100=Crown, +100=Liberty Coalition)
 var fortDisrepair: bool = false        # set by FORT_001 event chain; reduces garrison output
 var presidentFailedTimer: int = 0      # > 0: presidential neglect active; ticks down each turn
 var disabled_buildings: Dictionary = {}   # buildingType → turns_remaining until re-enabled
@@ -373,7 +374,8 @@ func build_self_from_save(save_data: Dictionary) -> void:
 	tileContinent = save_data.get("state", tileContinent)
 	terrain = save_data.get("terrain", terrain)
 	corruption = save_data.get("corruption", corruption)
-	tileMoralDecay = save_data.get("tileMoralDecay", 0)
+	tileMoralDecay     = save_data.get("tileMoralDecay", 0)
+	electionPressure   = save_data.get("electionPressure", 0)
 	winterScore = save_data.get("winterScore",0)
 	tileCrop = save_data.get("tileCrop", tileCrop)
 	buildings = save_data.get("buildings", {})

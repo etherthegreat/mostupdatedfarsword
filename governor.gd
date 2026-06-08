@@ -27,6 +27,7 @@ var hired: bool
 
 var loyalty: float = 0.0      # –20 to +20; passive cap of 10 without questComplete
 var morale: int = 50          # 0–100; multiplies army armyPunch/armyDefence by up to +25%
+var isVicePresident: bool = false  # true for one randomly-assigned named governor per game
 var questComplete: bool = false
 var _loyalty_acc: float = 0.0  # accumulates sub-integer deltas between turns
 

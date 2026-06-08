@@ -29,11 +29,26 @@ var mapMode: String
 var displayCorruption: bool
 
 var _republic_collapsed: bool = false
+var _game_ended: bool = false
 var _mission_timers: Dictionary = {}   # flag_key → turns_remaining until expiry
 var _event_cooldowns: Dictionary = {}  # event_id → turns_remaining before can fire again
 var _commander_turns: Dictionary = {}  # "TileName:CommanderName" → turns_served
+var _vp_governor = null                # reference to the assigned Vice President governor
+var _vp_faction: String = ""           # game faction name belonging to the VP
 
 const CANADIAN_STATES = ["CA - QB", "CA - OT", "CA - NB", "CA - NS", "CA - PEI"]
+
+# Maps named governor display names → their in-game faction name
+const VP_FACTION_MAP: Dictionary = {
+	"Patrick Henry":    "Sons of Liberty",
+	"Abigail Adams":    "Continental Congress",
+	"Thomas Paine":     "Free Workers Union",
+	"Mercy Otis Warren":"Abolitionist League",
+	"Daniel Shays":     "Common Cause",
+	"Benjamin Tallmadge":"Sons of Liberty",
+	"Phillis Wheatley": "Abolitionist League",
+	"Francis Asbury":   "Common Cause",
+}
 
 const PROTECTOR_IDS: Array = [
 	"PROT_01", "PROT_02", "PROT_03", "PROT_04", "PROT_05",
@@ -166,6 +181,7 @@ func newGameBuild(CID, gameLang):
 	generateBarracksCommanders()
 	spawnStartingArmies()
 	$CanvasLayer/WarRoomPanel.setupAllProtectors($TileController.get_children())
+	_assign_vice_president()
 	evaluateDateEvents()
 	#for country in aliveCountriesList:
 		#for Army in country.countryArmyList:
@@ -1032,7 +1048,10 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 			var leader = _find_or_create_leader(outcome_value)
 			$CanvasLayer/FactionControl.addFaction(outcome_value, outcome_amount, leader)
 		"loyalty_change":
-			playerCountryNode.changeFactionLoyalty(outcome_value, outcome_amount)
+			var lc_amount = outcome_amount
+			if _vp_faction != "" and outcome_value == _vp_faction:
+				lc_amount *= 2
+			playerCountryNode.changeFactionLoyalty(outcome_value, lc_amount)
 		"add_spell":
 			playerCountryNode.addSpellToSpellbook(outcome_value, outcome_amount, 0)
 			playerCountryNode.levelUpSchool(_get_spell_school(outcome_value))
@@ -1164,6 +1183,11 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 					tile.tileGovernor.loyalty + float(outcome_amount), -20.0, 20.0)
 				print("[GovLoyalty] ", tile.tileGovernor.governorType,
 					" at ", tile.tileName, " → ", tile.tileGovernor.loyalty)
+		"election_pressure_change":
+			if tile != null:
+				tile.electionPressure = clampi(
+					tile.electionPressure + outcome_amount, -100, 100)
+				print("[Election] ", tile.tileName, " pressure → ", tile.electionPressure)
 		"trigger_collapse":
 			_execute_republic_collapse()
 		"nothing":
@@ -1203,6 +1227,10 @@ func evaluateDateEvents() -> void:
 		_check_cmd_merit()
 		_check_cmd_recognition()
 		_check_cmd_thanks()
+		_tick_election_pressure()
+		_check_stump_speech()
+		_check_election_season()
+	_check_end_game()
 	var to_fire = EventDatabase.evaluate_date_triggers(currentWorldTurn, month)
 	for event_id in to_fire:
 		if event_id == "FORT_001":
@@ -1940,6 +1968,95 @@ func _check_ualani_frontier() -> void:
 			print("[Ualani] Frontier at ", tile.tileName,
 				" bordering ", neighbor.tileContinent)
 			return
+
+
+# ── VICE PRESIDENT & ELECTION SYSTEM ────────────────────────────
+
+func _assign_vice_president() -> void:
+	var candidates: Array = []
+	for tile in playerCountryNode.OwnedTileList:
+		if tile.tileGovernor == null:
+			continue
+		var gov = tile.tileGovernor
+		if gov.governorArchetypeId != "":
+			continue  # skip procedural governors
+		if gov.governorType == "Ualani Carlisle":
+			continue
+		candidates.append(gov)
+	if candidates.is_empty():
+		return
+	_vp_governor = candidates[randi() % candidates.size()]
+	_vp_governor.isVicePresident = true
+	_vp_faction = VP_FACTION_MAP.get(_vp_governor.governorType, "")
+	print("[VP] Assigned: ", _vp_governor.governorType,
+		" | Faction: ", _vp_faction)
+
+
+func _election_pressure_total() -> int:
+	var total: int = 0
+	for tile in playerCountryNode.OwnedTileList:
+		total += tile.electionPressure
+	return total
+
+
+func _tick_election_pressure() -> void:
+	# King George's Bre-entrance campaign — passive pressure drain from turn 90
+	if currentWorldTurn < 90:
+		return
+	for tile in playerCountryNode.OwnedTileList:
+		tile.electionPressure = clampi(tile.electionPressure - 1, -100, 100)
+	# UK-owned neighbor tiles push harder against Liberty
+	for tile in $TileController.get_children():
+		if tile.tileOwner == "UK":
+			for neighbor in tile.TileNeighbors:
+				if neighbor.tileOwner == playerCountry:
+					neighbor.electionPressure = clampi(
+						neighbor.electionPressure - 2, -100, 100)
+
+
+func _check_stump_speech() -> void:
+	if currentWorldTurn < 90 or currentWorldTurn > 100:
+		return
+	if _event_on_cooldown("STUMP_SPEECH_01"):
+		return
+	var tile: Tile = _find_ualani_tile()
+	if tile == null:
+		return
+	var has_courthouse = false
+	for b in tile.tileBuildingsList:
+		if b.buildingType == "Courthouse" and not tile.disabled_buildings.has("Courthouse"):
+			has_courthouse = true
+			break
+	if not has_courthouse:
+		return
+	_start_cooldown("STUMP_SPEECH_01", 2)
+	createNewEvent("STUMP_SPEECH_01", tile)
+	print("[Election] Stump speech available at ", tile.tileName)
+
+
+func _check_election_season() -> void:
+	if currentWorldTurn < 93 or currentWorldTurn > 95:
+		return
+	if _event_on_cooldown("ELECTION_SEASON"):
+		return
+	_start_cooldown("ELECTION_SEASON", 999)
+	createNewEvent("ELECTION_SEASON", null)
+	print("[Election] Election season event fired on turn ", currentWorldTurn)
+
+
+func _check_end_game() -> void:
+	if _game_ended or _republic_collapsed:
+		return
+	if currentWorldTurn < 100:
+		return
+	_game_ended = true
+	var total = _election_pressure_total()
+	if total > 0:
+		createNewEvent("ELECTION_NIGHT_WIN", null)
+		print("[EndGame] Liberty Coalition wins — pressure total: ", total)
+	else:
+		createNewEvent("ELECTION_NIGHT_LOSE", null)
+		print("[EndGame] Crown wins — pressure total: ", total)
 
 
 # ── COMMANDER PROGRESSION ────────────────────────────────────────

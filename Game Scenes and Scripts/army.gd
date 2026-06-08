@@ -394,12 +394,14 @@ func _on_raise_army_pressed() -> void:
 
 func addUnitCommander(newCommander):
 	commander = newCommander
-	for MilMod in commander.govMilModsLvl1:
-		commanderModifiers1.append(MilMod)
-	for MilMod in commander.govMilModsLvl2:
-		commanderModifiers2.append(MilMod)
-	for MilMod in commander.govMilModsLvl3:
-		commanderModifiers3.append(MilMod)
+	var passes = 2 if commander.isVicePresident else 1
+	for i in passes:
+		for MilMod in commander.govMilModsLvl1:
+			commanderModifiers1.append(MilMod)
+		for MilMod in commander.govMilModsLvl2:
+			commanderModifiers2.append(MilMod)
+		for MilMod in commander.govMilModsLvl3:
+			commanderModifiers3.append(MilMod)
 	print("MILMODS IN 1", commanderModifiers1)
 	#updateArmyUI()
 	pass
