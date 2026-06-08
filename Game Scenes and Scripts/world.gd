@@ -35,6 +35,8 @@ var _event_cooldowns: Dictionary = {}  # event_id → turns_remaining before can
 var _commander_turns: Dictionary = {}  # "TileName:CommanderName" → turns_served
 var _vp_governor = null                # reference to the assigned Vice President governor
 var _vp_faction: String = ""           # game faction name belonging to the VP
+var _peace_dock_was_uk: Dictionary = {}  # tile_num → bool; tracks UK ownership flip per turn
+var _peace_last_freed_tile = null        # most-recently freed peace dock tile node
 
 const CANADIAN_STATES = ["CA - QB", "CA - OT", "CA - NB", "CA - NS", "CA - PEI"]
 
@@ -90,6 +92,10 @@ const CA_PROT_TILES: Dictionary = {
 	"CA_PROT_07": 128,   # La Chasse-Galerie — Deep River, ON (Woods)
 	"CA_PROT_08": 109,   # Le Gougou         — Bathurst, NB (Farmlands)
 }
+
+# Dock tiles that must be liberated for peace — Nassau (182, BA) excluded
+const PEACE_DOCK_USA: Array = [65, 66, 67, 151]  # Boston/MA, Plymouth/MA, Nantucket/MA, Charleston/SC
+const PEACE_DOCK_CA:  Array = [114]               # Halifax/CA-NS
 
 const STATE_FULL_NAMES: Dictionary = {
 	"PA": "Commonwealth of Pennsylvania",
@@ -1455,6 +1461,7 @@ func evaluateDateEvents() -> void:
 		_check_war_events()
 		_check_can_events()
 		_check_ca_protectors()
+		_check_peace_conditions()
 		_check_harvest_crisis()
 		_check_harbor_threat()
 		_check_forge_threat()
@@ -2771,6 +2778,102 @@ func _check_ca_protectors() -> void:
 		print("[CA Protector] SUMMON fired: ", summon_id,
 			  " at tile ", CA_PROT_TILES.get(pid, 0), " turn ", currentWorldTurn)
 		return
+
+
+# ── PEACE CONDITIONS ─────────────────────────────────────────────────────────
+
+func _get_peace_tile(tile_num: int):
+	for tile in $TileController.get_children():
+		if tile.tileNumber == tile_num:
+			return tile
+	return null
+
+
+func _check_peace_conditions() -> void:
+	var uk_country = null
+	for c in aliveCountriesList:
+		if c.CID == "UK":
+			uk_country = c
+			break
+	if uk_country == null:
+		return
+
+	var usa_peace: bool = uk_country.CountryFlags.has("uk_usa_peace")
+	var ca_peace:  bool = uk_country.CountryFlags.has("uk_ca_peace")
+	if usa_peace and ca_peace:
+		return
+
+	var is_allied: bool = playerCountryNode.CountryFlags.has("can_allied")
+
+	# Update flip tracker — detect which dock tile was most recently freed
+	for tile_num in PEACE_DOCK_USA + PEACE_DOCK_CA:
+		var tile = _get_peace_tile(tile_num)
+		if tile == null:
+			continue
+		var is_uk: bool = tile.tileOwner == "UK"
+		var was_uk: bool = _peace_dock_was_uk.get(tile_num, true)
+		if was_uk and not is_uk:
+			_peace_last_freed_tile = tile
+		_peace_dock_was_uk[tile_num] = is_uk
+
+	# Count remaining UK-owned peace dock tiles per region
+	var usa_uk: int = 0
+	var ca_uk: int = 0
+	for tile_num in PEACE_DOCK_USA:
+		var tile = _get_peace_tile(tile_num)
+		if tile != null and tile.tileOwner == "UK":
+			usa_uk += 1
+	for tile_num in PEACE_DOCK_CA:
+		var tile = _get_peace_tile(tile_num)
+		if tile != null and tile.tileOwner == "UK":
+			ca_uk += 1
+
+	var peace_tile = _peace_last_freed_tile
+
+	# Allied peace: ALL USA and CA dock tiles must be liberated together
+	if is_allied and not usa_peace and not ca_peace:
+		if usa_uk == 0 and ca_uk == 0:
+			_execute_allied_peace(uk_country, peace_tile)
+			return
+
+	# USA separate peace (only when unallied or CA already at peace separately)
+	if not usa_peace and not is_allied:
+		if usa_uk == 0:
+			_execute_usa_peace(uk_country, peace_tile)
+
+	# CA separate peace
+	if not ca_peace and not is_allied:
+		if ca_uk == 0:
+			_execute_ca_peace(uk_country, peace_tile)
+
+
+func _execute_allied_peace(uk_country, peace_tile) -> void:
+	uk_country.CountryFlags.append("uk_usa_peace")
+	uk_country.CountryFlags.append("uk_ca_peace")
+	for c in aliveCountriesList:
+		if c.CID == "CA":
+			c.CountryFlags.append("uk_ca_peace")
+			break
+	createNewEvent("PEACE_ALLIED_01", peace_tile)
+	print("[Peace] Allied peace signed — PEACE_ALLIED_01 fired")
+
+
+func _execute_usa_peace(uk_country, peace_tile) -> void:
+	if not uk_country.CountryFlags.has("uk_usa_peace"):
+		uk_country.CountryFlags.append("uk_usa_peace")
+	createNewEvent("PEACE_USA_01", peace_tile)
+	print("[Peace] USA separate peace signed — PEACE_USA_01 fired")
+
+
+func _execute_ca_peace(uk_country, peace_tile) -> void:
+	if not uk_country.CountryFlags.has("uk_ca_peace"):
+		uk_country.CountryFlags.append("uk_ca_peace")
+	for c in aliveCountriesList:
+		if c.CID == "CA":
+			c.CountryFlags.append("uk_ca_peace")
+			break
+	createNewEvent("PEACE_CA_AI_01", peace_tile)
+	print("[Peace] CA separate peace signed — PEACE_CA_AI_01 fired")
 
 
 func _generate_and_assign_governor(tile: Tile) -> void:

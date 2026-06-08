@@ -991,6 +991,25 @@ EVENTS = [
      "FIRST PASS","","Not Started","YES","explicit option","0",
      "Sets ca_prot_08_agreed; BTN2 explicit — the Gougou's real name"),
 
+    # ── PEACE EVENTS ────────────────────────────────────────────────────────
+    ("Canada","Peace","PEACE_ALLIED_01",
+     "PEACE OF [TILE_NAME] — THE CROWN EXPELLED FROM THE CONTINENT",
+     "Root","—","—",
+     "FIRST PASS","","Not Started","YES","sensual option","0",
+     "Allied peace: fires when all UK dock tiles in USA+CA regions liberated (can_allied); sets uk_usa_peace+uk_ca_peace on UK country; BTN2 sensual — Ualani+Jessica celebrate"),
+
+    ("Canada","Peace","PEACE_USA_01",
+     "PEACE OF [TILE_NAME] — THE REPUBLIC HAS EXPELLED THE CROWN",
+     "Root","—","—",
+     "FIRST PASS","","Not Started","YES","sensual option","0",
+     "USA separate peace (unallied): fires when all USA dock tiles liberated (65,66,67,151); sets uk_usa_peace on UK country; BTN2 sensual — Ualani alone at dawn"),
+
+    ("Canada","Peace","PEACE_CA_AI_01",
+     "PEACE OF [TILE_NAME] — CANADA NEGOTIATES SEPARATE PEACE",
+     "Root","—","—",
+     "FIRST PASS","","Not Started","NO","standard","0",
+     "CA separate peace (unallied): fires when Halifax (tile 114) liberated; sets uk_ca_peace on UK+CA; player-visible dispatch; both buttons standard"),
+
     ("VP Arc","VP Arc","VP_LEGACY",
      "THE VICE PRESIDENT LEAVES A NOTE — [COMMANDER_NAME] HAS SOMETHING TO SAY",
      "Followup","VP_FIRST_MEETING (turn 96+)","—",
@@ -1275,7 +1294,7 @@ def add_legend_sheet(wb):
         "Tile Crisis":    "Dynamic tile-based crisis chains; triggered by world.gd check functions",
         "Ualani":         "Ualani Carlisle army presence events; personal storyline",
         "VP Arc":         "Vice President relationship arc; 9 events tied to the VP governor",
-        "Canada":         "Canadian Alliance diplomatic arc (war declaration + 8 CAN_ events)",
+        "Canada":         "Canadian Alliance diplomatic arc + 3 peace events (PEACE_ALLIED_01, PEACE_USA_01, PEACE_CA_AI_01)",
         "CA Protector":   "Jessica Clear-Water's 8 creature arcs; Algonquin, Mi'kmaq, French-Canadian folklore",
         "Idea":           "Not yet implemented; concept stage or referenced-but-missing events",
     }

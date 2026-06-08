@@ -1188,6 +1188,8 @@ func _ca_calculate_turn() -> void:
 
 
 func _ca_press_uk_borders() -> void:
+	if CountryFlags.has("uk_ca_peace"):
+		return
 	var allied_cids: Array = []
 	for ally in ALLIED:
 		if is_instance_valid(ally):
