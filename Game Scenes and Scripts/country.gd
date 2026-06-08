@@ -1161,6 +1161,13 @@ func calculateTurn() -> void:
 			pass  # CA is neutral for July 4th
 		"BA":
 			pass  # BA is opportunist — TODO DODK
+		_:
+			# Generic passive AI for all state countries spawned at runtime.
+			# To add per-state behaviour later, insert a match arm above this one:
+			#   "PA": _pennsylvania_calculate_turn()
+			#   "VA": _virginia_calculate_turn()
+			if not Player and isAlive:
+				_generic_calculate_turn()
 
 
 # ============================================================
@@ -1301,6 +1308,32 @@ func _uk_retreat_to_supply(army: Army) -> void:
 
 func _uk_reinforce(_army: Army) -> void:
 	pass
+
+
+# ============================================================
+# GENERIC STATE-COUNTRY AI
+# Passive hold: reinforces existing armies, does not expand.
+#
+# Per-country overrides: add a match arm in calculateTurn()
+# above the "_:" default, then implement _<cid>_calculate_turn().
+# ============================================================
+
+func _generic_calculate_turn() -> void:
+	_passive_hold()
+
+
+func _passive_hold() -> void:
+	# Trickle manpower from the country reserve into stationed armies.
+	for army in countryArmyList:
+		if not is_instance_valid(army):
+			continue
+		if army.inTile == null or army.deleteMode:
+			continue
+		var reinforce: int = mini(armyReinforceRate, TotalManpower)
+		if reinforce > 0:
+			army.manpowerInArmy += reinforce
+			TotalManpower -= reinforce
+
 
 func setNewTaxAmount(amount, type):
 	match type:

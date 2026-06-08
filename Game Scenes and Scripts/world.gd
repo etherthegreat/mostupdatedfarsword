@@ -1157,25 +1157,21 @@ func _execute_republic_collapse() -> void:
 	if uk_country != null and not uk_country.CountryFlags.has("uk_usa_peace"):
 		uk_country.CountryFlags.append("uk_usa_peace")
 
-	# Snapshot — we mutate OwnedTileList below
+	# Snapshot — we mutate OwnedTileList as we go
 	var usa_tiles: Array = playerCountryNode.OwnedTileList.duplicate()
 
-	var state_tile_groups: Dictionary = {}  # state_code → Array[Tile]
+	# ── Pass 1: categorise every USA tile ─────────────────────────
+	var coastal_tiles: Array  = []            # → UK (Wetlands)
+	var state_tile_groups: Dictionary = {}    # state_code → Array[Tile]
 
 	for tile in usa_tiles:
-		# Washington DC stays with Ualani
 		if tile.tileContinent == "DC":
-			continue
+			continue  # Washington stays with Ualani
 
-		# Wetlands = coastal → King George annexes them
 		if tile.terrain == "Wetlands" and uk_country != null:
-			playerCountryNode.OwnedTileList.erase(tile)
-			uk_country.addTile(tile)
-			tile.record_conquest("UK")
-			print("[Collapse] Coastal annexation: ", tile.tileName, " → UK")
+			coastal_tiles.append(tile)
 			continue
 
-		# Interior tiles — queue for their state country
 		var sc: String = tile.tileContinent
 		if sc == "":
 			continue
@@ -1183,55 +1179,91 @@ func _execute_republic_collapse() -> void:
 			state_tile_groups[sc] = []
 		state_tile_groups[sc].append(tile)
 
-	# Spawn one country per state and transfer tiles
+	# ── Pass 2: coastal tiles → UK ─────────────────────────────────
+	for tile in coastal_tiles:
+		# Governors on coastal tiles are released — no longer under any presidency
+		if tile.tileGovernor != null:
+			var gov = tile.tileGovernor
+			playerCountryNode.unlockedGovernors.erase(gov)
+			gov.hired = false
+			tile.tileGovernor = null
+			tile.filledGovernorSlot = false
+
+		# Armies on coastal tiles are captured/disbanded under peace terms
+		if tile.stationedArmy != null:
+			var army = tile.stationedArmy
+			if army.parentCountry == playerCountryNode:
+				playerCountryNode.countryArmyList.erase(army)
+				tile.stationedArmy = null
+				army.queue_free()
+
+		playerCountryNode.OwnedTileList.erase(tile)
+		uk_country.addTile(tile)
+		tile.record_conquest("UK")
+		print("[Collapse] Coastal annexation: ", tile.tileName, " → UK")
+
+	# ── Pass 3: interior tiles → state countries ───────────────────
 	for state_code in state_tile_groups.keys():
 		var tiles: Array = state_tile_groups[state_code]
 		var display_name: String = STATE_FULL_NAMES.get(state_code, "State of " + state_code)
-		_spawn_state_country(state_code, display_name, tiles)
+		var state_country: country = _spawn_state_country(state_code, display_name)
+
 		for tile in tiles:
 			playerCountryNode.OwnedTileList.erase(tile)
+			state_country.addTile(tile)
 			tile.record_conquest(state_code)
+
+			# Transfer governor: moves to state country's pool, stays on tile
+			if tile.tileGovernor != null:
+				var gov = tile.tileGovernor
+				playerCountryNode.unlockedGovernors.erase(gov)
+				state_country.unlockedGovernors.append(gov)
+
+			# Transfer stationed USA army: becomes the state's garrison
+			if tile.stationedArmy != null:
+				var army = tile.stationedArmy
+				if army.parentCountry == playerCountryNode:
+					playerCountryNode.countryArmyList.erase(army)
+					state_country.countryArmyList.append(army)
+					army.parentCountry = state_country
+					army.enemy = false
+
+		print("[Collapse] ", display_name, " (", state_code, ") — ", tiles.size(), " tiles")
 
 	print("[Collapse] USA retains ", playerCountryNode.OwnedTileList.size(), " tile(s):")
 	for tile in playerCountryNode.OwnedTileList:
 		print("[Collapse]   • ", tile.tileName)
 
-	# Aftermath event
 	createNewEvent("COLLAPSE_02")
 
 
-func _spawn_state_country(state_code: String, display_name: String, tile_list: Array) -> void:
-	# Guard: don't double-spawn if called twice for the same state
+func _spawn_state_country(state_code: String, display_name: String) -> country:
+	# Guard: return existing node if somehow called twice for the same state
 	for c in aliveCountriesList:
 		if c.CID == state_code:
-			for tile in tile_list:
-				if not c.OwnedTileList.has(tile):
-					c.addTile(tile)
-			return
+			return c
 
-	var new_country = countryNode.instantiate()
-	new_country.name = state_code + "_state"
-	new_country.CID = state_code
-	new_country.NatName = display_name
-	new_country.NatAdj = state_code
-	new_country.isAlive = true
-	new_country.Player = false
-	new_country.AIPersonality = "Passive"
-	new_country.TotalDollars = 50.0
-	new_country.TotalFood = 100
-	new_country.TotalWood = 50
-	new_country.TotalMetal = 20
-	new_country.TotalWeapons = 5
-	new_country.TotalManpower = 200
+	var new_country: country = countryNode.instantiate()
+	new_country.name        = state_code + "_state"
+	new_country.CID         = state_code
+	new_country.NatName     = display_name
+	new_country.NatAdj      = state_code
+	new_country.isAlive     = true
+	new_country.Player      = false
+	new_country.AIPersonality      = "Passive"
+	new_country.armyReinforceRate  = 5
+	new_country.TotalDollars   = 50.0
+	new_country.TotalFood      = 100
+	new_country.TotalWood      = 50
+	new_country.TotalMetal     = 20
+	new_country.TotalWeapons   = 5
+	new_country.TotalManpower  = 200
 	new_country.TotalHappiness = 5.0
-	new_country.TotalMandate = 10
-
-	for tile in tile_list:
-		new_country.addTile(tile)
+	new_country.TotalMandate   = 10
 
 	aliveCountriesList.append(new_country)
 	$CountryController.add_child(new_country)
-	print("[Collapse] Spawned: ", display_name, " (", state_code, ") — ", tile_list.size(), " tiles")
+	return new_country
 
 
 func _fire_fort_disrepair_event() -> void:
