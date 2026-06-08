@@ -1237,6 +1237,9 @@ func _uk_calculate_turn() -> void:
 
 
 func _find_attack_target(army: Army):
+	# Respect the post-collapse peace treaty — UK stops pressing into USA territory
+	if CountryFlags.has("uk_usa_peace"):
+		return null
 	if army.inTile == null:
 		return null
 	var best_target = null

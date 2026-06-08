@@ -28,6 +28,30 @@ var playerCapitalPathButton: pathPointButton
 var mapMode: String
 var displayCorruption: bool
 
+var _republic_collapsed: bool = false
+
+const STATE_FULL_NAMES: Dictionary = {
+	"PA": "Commonwealth of Pennsylvania",
+	"NJ": "State of New Jersey",
+	"NY": "State of New York",
+	"MA": "Commonwealth of Massachusetts",
+	"VT": "Republic of Vermont",
+	"MD": "State of Maryland",
+	"VA": "Commonwealth of Virginia",
+	"CT": "State of Connecticut",
+	"RI": "State of Rhode Island",
+	"DE": "State of Delaware",
+	"WV": "State of West Virginia",
+	"NC": "State of North Carolina",
+	"SC": "State of South Carolina",
+	"GA": "State of Georgia",
+	"TN": "State of Tennessee",
+	"AL": "State of Alabama",
+	"FL": "State of Florida",
+	"NH": "State of New Hampshire",
+	"ME": "District of Maine",
+}
+
 func _process(delta: float) -> void:
 	if worldCreation == true:
 		$CanvasLayer/LoadingSprite.rotation += 1
@@ -1053,6 +1077,8 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 			if tile != null:
 				tile.fortDisrepair = false
 			playerCountryNode.CountryFlags.erase("ualani_at_fort")
+		"trigger_collapse":
+			_execute_republic_collapse()
 		"nothing":
 			pass
 		_:
@@ -1060,6 +1086,7 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 
 func evaluateDateEvents() -> void:
 	checkPendingMissions()
+	checkCollapseCondition()
 	var to_fire = EventDatabase.evaluate_date_triggers(currentWorldTurn, month)
 	for event_id in to_fire:
 		if event_id == "FORT_001":
@@ -1098,6 +1125,114 @@ func checkPendingMissions() -> void:
 		playerCountryNode.CountryFlags.erase(flag)
 	for pair in events_to_fire:
 		createNewEvent(pair[0], pair[1])
+
+
+func checkCollapseCondition() -> void:
+	if playerCountry != "USA" or _republic_collapsed:
+		return
+	var canadian_states: Array = ["CA - QB", "CA - OT", "CA - NB", "CA - NS", "CA - PEI"]
+	for tile in $TileController.get_children():
+		if tile.terrain != "Metro":
+			continue
+		if tile.tileContinent in canadian_states:
+			continue
+		if tile.tileOwner == "USA":
+			return  # Still hold at least one American metro — no collapse yet
+	# Every US metro has fallen — fire the collapse event once
+	_republic_collapsed = true
+	print("[Collapse] All American metros have fallen. Triggering COLLAPSE_01.")
+	createNewEvent("COLLAPSE_01")
+
+
+func _execute_republic_collapse() -> void:
+	print("[Collapse] Executing republic fragmentation...")
+
+	# Find UK so we can hand over coastal tiles and set the peace flag
+	var uk_country = null
+	for c in aliveCountriesList:
+		if c.CID == "UK":
+			uk_country = c
+			break
+
+	if uk_country != null and not uk_country.CountryFlags.has("uk_usa_peace"):
+		uk_country.CountryFlags.append("uk_usa_peace")
+
+	# Snapshot — we mutate OwnedTileList below
+	var usa_tiles: Array = playerCountryNode.OwnedTileList.duplicate()
+
+	var state_tile_groups: Dictionary = {}  # state_code → Array[Tile]
+
+	for tile in usa_tiles:
+		# Washington DC stays with Ualani
+		if tile.tileContinent == "DC":
+			continue
+
+		# Wetlands = coastal → King George annexes them
+		if tile.terrain == "Wetlands" and uk_country != null:
+			playerCountryNode.OwnedTileList.erase(tile)
+			uk_country.addTile(tile)
+			tile.record_conquest("UK")
+			print("[Collapse] Coastal annexation: ", tile.tileName, " → UK")
+			continue
+
+		# Interior tiles — queue for their state country
+		var sc: String = tile.tileContinent
+		if sc == "":
+			continue
+		if not state_tile_groups.has(sc):
+			state_tile_groups[sc] = []
+		state_tile_groups[sc].append(tile)
+
+	# Spawn one country per state and transfer tiles
+	for state_code in state_tile_groups.keys():
+		var tiles: Array = state_tile_groups[state_code]
+		var display_name: String = STATE_FULL_NAMES.get(state_code, "State of " + state_code)
+		_spawn_state_country(state_code, display_name, tiles)
+		for tile in tiles:
+			playerCountryNode.OwnedTileList.erase(tile)
+			tile.record_conquest(state_code)
+
+	print("[Collapse] USA retains ", playerCountryNode.OwnedTileList.size(), " tile(s):")
+	for tile in playerCountryNode.OwnedTileList:
+		print("[Collapse]   • ", tile.tileName)
+
+	# Aftermath event
+	createNewEvent("COLLAPSE_02")
+
+
+func _spawn_state_country(state_code: String, display_name: String, tile_list: Array) -> void:
+	# Guard: don't double-spawn if called twice for the same state
+	for c in aliveCountriesList:
+		if c.CID == state_code:
+			for tile in tile_list:
+				if not c.OwnedTileList.has(tile):
+					c.addTile(tile)
+			return
+
+	var new_country = countryNode.instantiate()
+	new_country.name = state_code + "_state"
+	new_country.CID = state_code
+	new_country.NatName = display_name
+	new_country.NatAdj = state_code
+	new_country.isAlive = true
+	new_country.Player = false
+	new_country.AIPersonality = "Passive"
+	new_country.TotalDollars = 50.0
+	new_country.TotalFood = 100
+	new_country.TotalWood = 50
+	new_country.TotalMetal = 20
+	new_country.TotalWeapons = 5
+	new_country.TotalManpower = 200
+	new_country.TotalHappiness = 5.0
+	new_country.TotalMandate = 10
+
+	for tile in tile_list:
+		new_country.addTile(tile)
+
+	aliveCountriesList.append(new_country)
+	$CountryController.add_child(new_country)
+	print("[Collapse] Spawned: ", display_name, " (", state_code, ") — ", tile_list.size(), " tiles")
+
 
 func _fire_fort_disrepair_event() -> void:
 	if not EventDatabase.event_can_fire("FORT_001", currentWorldTurn):
