@@ -1105,6 +1105,17 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 			_summon_protector(outcome_value, tile)
 		"trigger_event":
 			createNewEvent(outcome_value, tile)
+		"form_alliance":
+			playerCountryNode.CountryFlags.append("can_allied")
+			for c in aliveCountriesList:
+				if c.CID == outcome_value:
+					if not playerCountryNode.ALLIED.has(c):
+						playerCountryNode.ALLIED.append(c)
+					if not c.ALLIED.has(playerCountryNode):
+						c.ALLIED.append(playerCountryNode)
+					print("[Alliance] Formal alliance established: ",
+						playerCountryNode.CID, " ↔ ", c.CID)
+					break
 		"set_flag":
 			playerCountryNode.CountryFlags.append(outcome_value)
 		"clear_flag":
@@ -1208,6 +1219,8 @@ func evaluateDateEvents() -> void:
 	_update_governor_loyalty()
 	_tick_event_cooldowns()
 	if playerCountry == "USA" and not _republic_collapsed:
+		_check_war_events()
+		_check_can_events()
 		_check_harvest_crisis()
 		_check_harbor_threat()
 		_check_forge_threat()
@@ -2114,6 +2127,155 @@ func _try_vp_legacy(vp_tile: Tile) -> bool:
 	if not playerCountryNode.CountryFlags.has("vp_met"):
 		return false
 	return _fire_vp_event("VP_LEGACY", vp_tile)
+
+
+# ── WAR DECLARATION & CANADIAN ALLIANCE ─────────────────────────
+
+func _fire_war_event(event_id: String) -> bool:
+	_start_cooldown(event_id, 999)
+	createNewEvent(event_id, null)
+	print("[War] Event fired: ", event_id)
+	return true
+
+
+func _fire_can_event(event_id: String) -> bool:
+	_start_cooldown(event_id, 999)
+	_start_cooldown("CAN_EVENTS", 3)
+	createNewEvent(event_id, null)
+	print("[Canada] Event fired: ", event_id)
+	return true
+
+
+func _check_war_events() -> void:
+	_try_uk_buildup()
+	_try_uk_declaration()
+
+
+func _try_uk_buildup() -> bool:
+	if _event_on_cooldown("UK_BUILDUP_01"):
+		return false
+	if currentWorldTurn < 7:
+		return false
+	return _fire_war_event("UK_BUILDUP_01")
+
+
+func _try_uk_declaration() -> bool:
+	if _event_on_cooldown("UK_DECLARATION_01"):
+		return false
+	if currentWorldTurn < 10 or currentWorldTurn > 16:
+		return false
+	if not playerCountryNode.CountryFlags.has("uk_buildup_known"):
+		return false
+	if randf() > 0.30:
+		return false
+	return _fire_war_event("UK_DECLARATION_01")
+
+
+func _check_can_events() -> void:
+	if _event_on_cooldown("CAN_EVENTS"):
+		return
+	if playerCountryNode.CountryFlags.has("can_rejected"):
+		return
+	var penoit_ready: bool = (playerCountryNode.CountryFlags.has("can_penoit_agreed") or
+		playerCountryNode.CountryFlags.has("can_penoit_negotiating"))
+	var clearwater_ready: bool = (playerCountryNode.CountryFlags.has("can_clearwater_warm") or
+		playerCountryNode.CountryFlags.has("can_clearwater_close"))
+
+	if _try_can_call(): return
+	if _try_can_penoit(): return
+	if _try_can_clearwater(penoit_ready): return
+	if _try_can_joint_ops(penoit_ready, clearwater_ready): return
+	if _try_can_summit(clearwater_ready): return
+	if _try_can_alliance_signed(): return
+	if _try_can_peace(): return
+	if _try_can_election_luck(): return
+
+
+func _try_can_call() -> bool:
+	if _event_on_cooldown("CAN_CALL_01"):
+		return false
+	if playerCountryNode.CountryFlags.has("can_contact"):
+		return false
+	if currentWorldTurn < 8:
+		return false
+	if not (playerCountryNode.CountryFlags.has("uk_buildup_known") or
+			playerCountryNode.CountryFlags.has("uk_declared_war")):
+		return false
+	return _fire_can_event("CAN_CALL_01")
+
+
+func _try_can_penoit() -> bool:
+	if _event_on_cooldown("CAN_PENOIT_01"):
+		return false
+	if not playerCountryNode.CountryFlags.has("can_contact"):
+		return false
+	if currentWorldTurn < 12:
+		return false
+	return _fire_can_event("CAN_PENOIT_01")
+
+
+func _try_can_clearwater(penoit_ready: bool) -> bool:
+	if _event_on_cooldown("CAN_CLEARWATER_01"):
+		return false
+	if not playerCountryNode.CountryFlags.has("can_contact"):
+		return false
+	if not penoit_ready:
+		return false
+	return _fire_can_event("CAN_CLEARWATER_01")
+
+
+func _try_can_joint_ops(penoit_ready: bool, clearwater_ready: bool) -> bool:
+	if _event_on_cooldown("CAN_JOINT_OPS_01"):
+		return false
+	if not penoit_ready or not clearwater_ready:
+		return false
+	return _fire_can_event("CAN_JOINT_OPS_01")
+
+
+func _try_can_summit(clearwater_ready: bool) -> bool:
+	if _event_on_cooldown("CAN_SUMMIT_01"):
+		return false
+	if not playerCountryNode.CountryFlags.has("can_penoit_agreed"):
+		return false
+	if not clearwater_ready:
+		return false
+	if currentWorldTurn < 13:
+		return false
+	return _fire_can_event("CAN_SUMMIT_01")
+
+
+func _try_can_alliance_signed() -> bool:
+	if _event_on_cooldown("CAN_ALLIANCE_SIGNED"):
+		return false
+	if not playerCountryNode.CountryFlags.has("can_summit_complete"):
+		return false
+	return _fire_can_event("CAN_ALLIANCE_SIGNED")
+
+
+func _try_can_peace() -> bool:
+	if _event_on_cooldown("CAN_PEACE_01"):
+		return false
+	if not playerCountryNode.CountryFlags.has("can_allied"):
+		return false
+	if currentWorldTurn < 60:
+		return false
+	var uk_tiles: int = 0
+	for tile in $TileController.get_children():
+		if tile.tileOwner == "UK":
+			uk_tiles += 1
+	if uk_tiles > 20:
+		return false
+	return _fire_can_event("CAN_PEACE_01")
+
+
+func _try_can_election_luck() -> bool:
+	if _event_on_cooldown("CAN_ELECTION_LUCK"):
+		return false
+	if not playerCountryNode.CountryFlags.has("can_allied"):
+		return false
+	if currentWorldTurn < 93:
+		return false
+	return _fire_can_event("CAN_ELECTION_LUCK")
 
 
 # ── VICE PRESIDENT & ELECTION SYSTEM ────────────────────────────

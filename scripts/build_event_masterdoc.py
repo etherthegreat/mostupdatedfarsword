@@ -24,6 +24,7 @@ CAT_COLORS = {
     "Tile Crisis":    "FDEBD0",
     "Ualani":         "D6F5EA",
     "VP Arc":         "F5E6D6",
+    "Canada":         "D6EAF8",
     "Idea":           "EDE0F7",
 }
 
@@ -787,6 +788,66 @@ EVENTS = [
      "Branch","VP_FIRST_MEETING (vp_met flag)","—",
      "FIRST PASS","","Not Started","NO","","0",
      "Fires when agreed_protectors >= 3; BTN1 morale +15 / BTN2 vp_faction +10"),
+
+    ("Canada","War Arc","UK_BUILDUP_01",
+     "INTELLIGENCE REPORT: CROWN FORCES AMASSING ON ALL BORDERS",
+     "Root","—","→ CAN_CALL_01 (uk_buildup_known flag)",
+     "FIRST PASS","","Not Started","NO","","0",
+     "Fires turn 7, one-time; BTN1 alert / BTN2 contact Ottawa; both set uk_buildup_known"),
+
+    ("Canada","War Arc","UK_DECLARATION_01",
+     "KING GEORGE III DECLARES WAR: THE CROWN HAS MOVED ON BOTH FRONTS",
+     "Branch","UK_BUILDUP_01","—",
+     "FIRST PASS","","Not Started","NO","","0",
+     "Fires turns 10-16 (30%/turn) once uk_buildup_known; sets uk_declared_war"),
+
+    ("Canada","Canadian Alliance","CAN_CALL_01",
+     "THE OTTAWA CALL: PRESIDENT PENOIT AND PM CLEAR-WATER ARE ON THE LINE",
+     "Root","UK_BUILDUP_01 (flag)","→ CAN_PENOIT_01 (BTN1) or END (BTN2)",
+     "FIRST PASS","","Not Started","NO","","0",
+     "Fires turn 8+ after uk_buildup_known; BTN1 sets can_contact / BTN2 sets can_rejected (ends arc)"),
+
+    ("Canada","Canadian Alliance","CAN_PENOIT_01",
+     "PRESIDENT PENOIT'S CONDITIONS: MARK PENOIT PUTS IT IN WRITING",
+     "Branch","CAN_CALL_01 (can_contact)","→ CAN_CLEARWATER_01",
+     "FIRST PASS","","Not Started","NO","","0",
+     "Fires turn 12+ after can_contact; BTN1 can_penoit_agreed / BTN2 can_penoit_negotiating"),
+
+    ("Canada","Canadian Alliance","CAN_CLEARWATER_01",
+     "PM CLEAR-WATER'S PRIVATE CHANNEL: JESSICA WRITES OUTSIDE OFFICIAL CHANNELS",
+     "Branch","CAN_PENOIT_01","→ CAN_JOINT_OPS_01",
+     "FIRST PASS","","Not Started","NO","sensual option","0",
+     "After penoit path + can_contact; BTN1 can_clearwater_warm / BTN2 sensual can_clearwater_close"),
+
+    ("Canada","Canadian Alliance","CAN_JOINT_OPS_01",
+     "JOINT INTELLIGENCE SUMMIT: THREE GOVERNMENTS SHARE ONE MAP",
+     "Branch","CAN_CLEARWATER_01","→ CAN_SUMMIT_01",
+     "FIRST PASS","","Not Started","YES","explicit option","0",
+     "After penoit+clearwater paths; BTN1 +weapons 20 / BTN2 explicit +morale 25"),
+
+    ("Canada","Canadian Alliance","CAN_SUMMIT_01",
+     "THE OTTAWA SUMMIT: ALL THREE IN THE SAME ROOM FOR THE FIRST TIME",
+     "Branch","CAN_JOINT_OPS_01","→ CAN_ALLIANCE_SIGNED",
+     "FIRST PASS","","Not Started","YES","explicit","0",
+     "EXPLICIT #1 (all three); turn 13+, penoit_agreed+clearwater; BTN1/BTN2 set can_summit_complete"),
+
+    ("Canada","Canadian Alliance","CAN_ALLIANCE_SIGNED",
+     "THE CONTINENTAL DEFENSE ALLIANCE IS SIGNED: THREE NATIONS — ONE FRONT",
+     "Branch","CAN_SUMMIT_01","→ CAN_PEACE_01",
+     "FIRST PASS","","Not Started","YES","explicit","0",
+     "EXPLICIT #2 (all three); fires after can_summit_complete; form_alliance CA outcome"),
+
+    ("Canada","Canadian Alliance","CAN_PEACE_01",
+     "THE TIDE HAS TURNED: PENOIT AND CLEAR-WATER COME TO WASHINGTON",
+     "Followup","CAN_ALLIANCE_SIGNED (can_allied flag)","—",
+     "FIRST PASS","","Not Started","YES","explicit","0",
+     "EXPLICIT #3 (all three); fires when can_allied + UK tiles ≤ 20 + turn ≥ 60; BTN2 +morale 40"),
+
+    ("Canada","Canadian Alliance","CAN_ELECTION_LUCK",
+     "PM CLEAR-WATER'S CALL: JESSICA HAS SOMETHING TO SAY BEFORE THE ELECTION",
+     "Followup","CAN_PEACE_01 (can_allied)","—",
+     "FIRST PASS","","Not Started","NO","sensual option","0",
+     "End-game; fires turn 93+ if can_allied; BTN1 +pressure 10 / BTN2 sensual +pressure 15"),
 
     ("VP Arc","VP Arc","VP_LEGACY",
      "THE VICE PRESIDENT LEAVES A NOTE — [COMMANDER_NAME] HAS SOMETHING TO SAY",

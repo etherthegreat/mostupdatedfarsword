@@ -97,6 +97,9 @@ var unlockedTraditions: Array = []
 #Country Flags, used for determining events and lots of other things
 var CountryFlags: Array = []
 
+# Countries formally allied with this one — allows tile entry and shared visibility
+var ALLIED: Array = []
+
 #Country Laws are basically buffs you can set as active, they are unlocked by Government Policies
 #Pretty much all cost Mandate per month, as well as a second resource per month
 #revoking a law causes a temporary debuff for a unique amount of time
