@@ -1032,14 +1032,15 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 		"clear_flag":
 			playerCountryNode.CountryFlags.erase(outcome_value)
 		"set_mission_flag":
-			# Like set_flag but encodes the target tile number so the checker
-			# knows which fort the mission is attached to.
-			var flag_val: String = outcome_value
-			if tile != null:
-				flag_val = outcome_value + "_" + str(tile.tileNumber)
-			if not playerCountryNode.CountryFlags.has(flag_val):
-				playerCountryNode.CountryFlags.append(flag_val)
-				print("[Fort Mission] Activated: ", flag_val)
+			# Encodes completion event ID + tile number: "mission_<eventId>_<tileNum>"
+			# checkPendingMissions() parses this format each turn to fire the right event.
+			if tile == null:
+				push_warning("executeOutcome: set_mission_flag requires a tile context")
+			else:
+				var flag_val: String = "mission_" + outcome_value + "_" + str(tile.tileNumber)
+				if not playerCountryNode.CountryFlags.has(flag_val):
+					playerCountryNode.CountryFlags.append(flag_val)
+					print("[Mission] Activated: ", flag_val)
 		"remove_governor":
 			# Sack the tile's governor and generate a procedural replacement.
 			if tile != null and tile.tileGovernor != null:
@@ -1058,7 +1059,7 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 			push_warning("executeOutcome: Unknown outcome type: " + outcome_type)
 
 func evaluateDateEvents() -> void:
-	checkPendingFortMissions()
+	checkPendingMissions()
 	var to_fire = EventDatabase.evaluate_date_triggers(currentWorldTurn, month)
 	for event_id in to_fire:
 		if event_id == "FORT_001":
@@ -1066,23 +1067,37 @@ func evaluateDateEvents() -> void:
 		else:
 			createNewEvent(event_id)
 
-func checkPendingFortMissions() -> void:
-	for tile in playerCountryNode.OwnedTileList:
-		if not tile.fortDisrepair:
+func checkPendingMissions() -> void:
+	var flags_to_remove: Array = []
+	var events_to_fire: Array = []   # each entry is [event_id, tile]
+
+	for flag in playerCountryNode.CountryFlags:
+		if not flag.begins_with("mission_"):
 			continue
-		if tile.stationedArmy == null or tile.stationedArmy.parentCountry != playerCountryNode:
+		var body: String = flag.substr(8)          # strip leading "mission_"
+		var last_us: int  = body.rfind("_")
+		if last_us == -1:
 			continue
-		var tile_id: String = str(tile.tileNumber)
-		var pub_flag:  String = "fort_mission_public_"  + tile_id
-		var priv_flag: String = "fort_mission_private_" + tile_id
-		if playerCountryNode.CountryFlags.has(pub_flag):
-			playerCountryNode.CountryFlags.erase(pub_flag)
-			print("[Fort Mission] Army arrived — firing public confrontation at ", tile.tileName)
-			createNewEvent("FORT_003", tile)
-		elif playerCountryNode.CountryFlags.has(priv_flag):
-			playerCountryNode.CountryFlags.erase(priv_flag)
-			print("[Fort Mission] Army arrived — firing private meeting at ", tile.tileName)
-			createNewEvent("FORT_004", tile)
+		var event_id:      String = body.substr(0, last_us)
+		var tile_num_str:  String = body.substr(last_us + 1)
+		if not tile_num_str.is_valid_int():
+			continue
+		var tile_num: int = tile_num_str.to_int()
+
+		for tile in playerCountryNode.OwnedTileList:
+			if tile.tileNumber != tile_num:
+				continue
+			# Condition: player's army must be present in that tile
+			if tile.stationedArmy != null and tile.stationedArmy.parentCountry == playerCountryNode:
+				flags_to_remove.append(flag)
+				events_to_fire.append([event_id, tile])
+				print("[Mission] Army present — firing ", event_id, " at ", tile.tileName)
+			break
+
+	for flag in flags_to_remove:
+		playerCountryNode.CountryFlags.erase(flag)
+	for pair in events_to_fire:
+		createNewEvent(pair[0], pair[1])
 
 func _fire_fort_disrepair_event() -> void:
 	if not EventDatabase.event_can_fire("FORT_001", currentWorldTurn):
