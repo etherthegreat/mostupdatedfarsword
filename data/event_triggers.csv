@@ -32,3 +32,5 @@ TRIG_029,PROT_13_SUMMON,protector_summon,0,,0,0,0,9999,,,PROT_13,,1
 TRIG_030,PROT_15_SUMMON,protector_summon,0,,0,0,0,9999,,,PROT_15,,1
 TRIG_031,PROT_16_SUMMON,protector_summon,0,,0,0,0,9999,,,PROT_16,,1
 TRIG_032,PROT_17_SUMMON,protector_summon,0,,0,0,0,9999,,,PROT_17,,1
+TRIG_034,FORT_001,annual_date,0,,0,0,0,9999,,,,2,3
+TRIG_035,FORT_001,annual_date,0,,0,0,0,9999,,,,3,3

@@ -6,14 +6,16 @@ var event_country: String
 var target_tile: Tile
 var event_data: Dictionary
 var button_data: Array = []
+var player_country = null   # set by createNewEvent so prerequisites can check CountryFlags
 
 signal eventButtonPressed
 signal tileEventButtonPressed
 
 
-func build_from_csv(eid: String, tile = null) -> void:
-	event_id    = eid
-	target_tile = tile
+func build_from_csv(eid: String, tile = null, player = null) -> void:
+	event_id       = eid
+	target_tile    = tile
+	player_country = player
 	event_data  = EventDatabase.get_event(eid)
 	button_data = EventDatabase.get_buttons_for_event(eid)
 
@@ -37,9 +39,9 @@ func build_from_csv(eid: String, tile = null) -> void:
 		queue_free()
 		return
 
-	$EventPanel/EventNameLabel.text             = event_data.get("headline", "")
-	$EventPanel/EventShortDescriptionLabel.text = event_data.get("short_desc", "")
-	$EventPanel/EventLongDescriptionLabel.text  = event_data.get("long_desc", "")
+	$EventPanel/EventNameLabel.text             = _substitute(event_data.get("headline", ""))
+	$EventPanel/EventShortDescriptionLabel.text = _substitute(event_data.get("short_desc", ""))
+	$EventPanel/EventLongDescriptionLabel.text  = _substitute(event_data.get("long_desc", ""))
 
 	_build_buttons()
 
@@ -90,8 +92,19 @@ func _player_allows_content(flag: String) -> bool:
 
 
 func _check_prerequisite(prereq: String) -> bool:
-	# TODO: expand as flag system grows
-	return true
+	if player_country != null:
+		return player_country.CountryFlags.has(prereq)
+	return true   # no country ref: show all buttons (safe fallback)
+
+func _substitute(text: String) -> String:
+	if target_tile != null:
+		var tile_name: String = target_tile.tileName if target_tile.tileName else "the Fort"
+		text = text.replace("[TILE_NAME]", tile_name)
+		var cmd_name: String = "the Commander"
+		if target_tile.tileGovernor != null:
+			cmd_name = target_tile.tileGovernor.governorType
+		text = text.replace("[COMMANDER_NAME]", cmd_name)
+	return text
 
 
 # ── LEGACY WRAPPERS ──────────────────────────────────────────

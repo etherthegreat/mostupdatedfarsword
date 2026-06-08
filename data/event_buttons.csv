@@ -36,3 +36,10 @@ PROT_14_BTN2,PROT_14_SUMMON,Gentlemen - One Thing,standard,trigger_event,PROT_14
 CMD_OBJ1_BTN1,CMD_OBJECTIVE_1,Move Forward,standard,nothing,,,,,,,
 CMD_OBJ1_BTN2,CMD_OBJECTIVE_1,Talk to Them,standard,loyalty_change,,10,,,,,
 CMD_REUNION_BTN1,CMD_REUNION,The Reunion,explicit,set_flag,commander_reunited,0,,,,,
+FORT_001_BTN1,FORT_001,"Dispatch Advisors — Monitor the Situation",standard,nothing,,,,,,,
+FORT_001_BTN2,FORT_001,"Confront Publicly (Army Required)",standard,trigger_event,FORT_003,0,,,,,ualani_at_fort
+FORT_001_BTN3,FORT_001,"Visit Privately (Army Required)",standard,trigger_event,FORT_004,0,,,,,ualani_at_fort
+FORT_003_BTN1,FORT_003,"Remove the Commander",standard,remove_governor,,,,,,,
+FORT_004_BTN1,FORT_004,"Accept the Resolution",standard,repair_fort,,,,,,,FORT_005,
+FORT_005_BTN1,FORT_005,"The Full Classified Briefing",explicit,morale_boost,,30,,,,,
+FORT_005_BTN2,FORT_005,"Keep It Professional",standard,morale_boost,,10,,,,,

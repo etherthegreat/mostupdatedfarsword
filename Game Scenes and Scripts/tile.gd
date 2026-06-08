@@ -34,6 +34,7 @@ var thisTileNumber
 # ============================================================
 var tileCrop: String = "corn"          # corn, apples, hay, soybeans, peanuts, peaches, oranges, mushrooms, cannabis
 var corruption: int = 0                # scale 0-100
+var fortDisrepair: bool = false        # set by FORT_001 event chain; reduces garrison output
 var buildings: Dictionary = {}         # {"barracks": 3, "farm": 1, "dock": 2}
 var tileSpecialFeatures: Array = []    # ["Gettysburg Memorial", "Appalachian Minerals"]
 var winterScore: int = 0

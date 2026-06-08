@@ -957,7 +957,7 @@ func createNewEvent(event_id: String, tile = null) -> void:
 	if not EventDatabase.event_can_fire(event_id, currentWorldTurn):
 		return
 	var newEvent = eventScene.instantiate()
-	newEvent.build_from_csv(event_id, tile)
+	newEvent.build_from_csv(event_id, tile, playerCountryNode)
 	newEvent.eventButtonPressed.connect(_on_event_button_pressed)
 	newEvent.tileEventButtonPressed.connect(_on_tile_event_button_pressed)
 	$CanvasLayer/EventControl/EventContainer.add_child(newEvent)
@@ -1031,6 +1031,18 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 			playerCountryNode.CountryFlags.append(outcome_value)
 		"clear_flag":
 			playerCountryNode.CountryFlags.erase(outcome_value)
+		"remove_governor":
+			# Sack the tile's governor and generate a procedural replacement.
+			if tile != null and tile.tileGovernor != null:
+				tile.tileGovernor.hired = false
+				tile.tileGovernor = null
+				tile.filledGovernorSlot = false
+				_generate_and_assign_governor(tile)
+		"repair_fort":
+			# Clear the fort disrepair flag and clean up the presence check flag.
+			if tile != null:
+				tile.fortDisrepair = false
+			playerCountryNode.CountryFlags.erase("ualani_at_fort")
 		"nothing":
 			pass
 		_:
@@ -1039,7 +1051,71 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 func evaluateDateEvents() -> void:
 	var to_fire = EventDatabase.evaluate_date_triggers(currentWorldTurn, month)
 	for event_id in to_fire:
-		createNewEvent(event_id)
+		if event_id == "FORT_001":
+			_fire_fort_disrepair_event()
+		else:
+			createNewEvent(event_id)
+
+func _fire_fort_disrepair_event() -> void:
+	if not EventDatabase.event_can_fire("FORT_001", currentWorldTurn):
+		return
+	# Find a random owned Fortress tile that has a non-Ualani governor and isn't already in disrepair
+	var candidates: Array = []
+	for tile in playerCountryNode.OwnedTileList:
+		if tile.terrain == "Fortress" \
+				and not tile.fortDisrepair \
+				and tile.tileGovernor != null \
+				and tile.tileGovernor.governorType != "Ualani Carlisle":
+			candidates.append(tile)
+	if candidates.is_empty():
+		return
+	var target: Tile = candidates[randi() % candidates.size()]
+	target.fortDisrepair = true
+	# Check if a player army is already garrisoned in this tile
+	playerCountryNode.CountryFlags.erase("ualani_at_fort")
+	if target.stationedArmy != null and target.stationedArmy.parentCountry == playerCountryNode:
+		playerCountryNode.CountryFlags.append("ualani_at_fort")
+	EventDatabase.mark_event_fired("FORT_001", currentWorldTurn)
+	createNewEvent("FORT_001", target)
+
+func _generate_and_assign_governor(tile: Tile) -> void:
+	var portrait_placeholder: Texture = load(
+		"res://art assets/Placeholder Art/character/4-22-Ikra-Colors - Copy.png")
+	var candidates: Array = []
+	for arch in ARCHETYPES:
+		if tile.terrain in arch["terrain"]:
+			candidates.append(arch)
+	if candidates.is_empty():
+		candidates = ARCHETYPES
+	var chosen: Dictionary = candidates[randi() % candidates.size()]
+	var pool_id: String = chosen["pools"][randi() % chosen["pools"].size()]
+	var pool: Dictionary = NAME_POOLS.get(pool_id, NAME_POOLS["NP_01"])
+	var gender: int = randi() % 3
+	var first_list: Array
+	match gender:
+		0: first_list = pool["m"]
+		1: first_list = pool["f"]
+		_: first_list = pool["nb"]
+	var last_list: Array = pool.get("l", [])
+	var first: String = first_list[randi() % first_list.size()]
+	var last: String = ""
+	if last_list.size() > 0 and last_list[0] != "":
+		last = last_list[randi() % last_list.size()]
+	var full_name: String = (first + " " + last).strip_edges()
+	var new_gov: governor = governor.new()
+	new_gov.governorType        = full_name
+	new_gov.governorArchetypeId = chosen["id"]
+	new_gov.governorPosition    = chosen["position"]
+	new_gov.governorLevel       = 1
+	new_gov.governorDescription = "A " + chosen["name"] + " appointed to " + tile.tileName + " by presidential order."
+	new_gov.governorBiography   = full_name + " was appointed following a change of command at " + tile.tileName + "."
+	new_gov.governorTexture     = portrait_placeholder
+	new_gov.hired               = true
+	playerCountryNode.unlockedGovernors.append(new_gov)
+	tile.tileGovernor      = new_gov
+	tile.filledGovernorSlot = true
+	$CanvasLayer/WarRoomPanel.registerCommanderArc(new_gov, tile)
+	print("[Fort] Replacement governor generated: ", full_name, " at ", tile.tileName)
 
 func evaluateTileEvents(tile) -> void:
 	var to_fire = EventDatabase.evaluate_tile_triggers(tile, currentWorldTurn)
