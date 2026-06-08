@@ -1,0 +1,1 @@
+Run `python3 scripts/build_project_masterdoc.py` from the repo root to regenerate the project masterdoc spreadsheet, then send the updated `project_masterdoc.xlsx` file to the user with a one-line summary of system counts (LIVE / PARTIAL / STUB) and character counts (implemented / added / proposed).
