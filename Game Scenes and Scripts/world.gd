@@ -29,6 +29,9 @@ var mapMode: String
 var displayCorruption: bool
 
 var _republic_collapsed: bool = false
+var _mission_timers: Dictionary = {}   # flag_key → turns_remaining until expiry
+
+const CANADIAN_STATES = ["CA - QB", "CA - OT", "CA - NB", "CA - NS", "CA - PEI"]
 
 const STATE_FULL_NAMES: Dictionary = {
 	"PA": "Commonwealth of Pennsylvania",
@@ -1057,14 +1060,46 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 			playerCountryNode.CountryFlags.erase(outcome_value)
 		"set_mission_flag":
 			# Encodes completion event ID + tile number: "mission_<eventId>_<tileNum>"
-			# checkPendingMissions() parses this format each turn to fire the right event.
+			# outcome_amount = turn countdown before mission expires (0 = no timer)
 			if tile == null:
 				push_warning("executeOutcome: set_mission_flag requires a tile context")
 			else:
 				var flag_val: String = "mission_" + outcome_value + "_" + str(tile.tileNumber)
 				if not playerCountryNode.CountryFlags.has(flag_val):
 					playerCountryNode.CountryFlags.append(flag_val)
-					print("[Mission] Activated: ", flag_val)
+					var timeout: int = int(outcome_amount)
+					if timeout > 0:
+						_mission_timers[flag_val] = timeout
+						print("[Mission] Activated: ", flag_val, " — expires in ", timeout, " turns")
+					else:
+						print("[Mission] Activated: ", flag_val, " — no timeout")
+		"claim_change":
+			playerCountryNode.presidentialClaim = clampf(
+				playerCountryNode.presidentialClaim + float(outcome_amount), -10.0, 10.0)
+			print("[Claim] Event adjustment: ", outcome_amount, " → now ", playerCountryNode.presidentialClaim)
+		"pardon_state_governors":
+			# Keep governors on their tiles but reset any negative loyalty to 0
+			if tile != null:
+				var sc: String = tile.tileContinent
+				for t in $TileController.get_children():
+					if t.tileContinent == sc and t.tileGovernor != null:
+						t.tileGovernor.loyalty = maxf(t.tileGovernor.loyalty, 0.0)
+				playerCountryNode.presidentialClaim = clampf(
+					playerCountryNode.presidentialClaim + 1.0, -10.0, 10.0)
+				print("[Pardon] Governors in ", sc, " pardoned — loyalty floored at 0")
+		"replace_state_governors":
+			# Remove every governor in the state and generate fresh ones
+			if tile != null:
+				var sc: String = tile.tileContinent
+				for t in $TileController.get_children():
+					if t.tileContinent == sc and t.tileOwner == "USA":
+						if t.tileGovernor != null:
+							playerCountryNode.unlockedGovernors.erase(t.tileGovernor)
+							t.tileGovernor.hired = false
+							t.tileGovernor = null
+							t.filledGovernorSlot = false
+						_generate_and_assign_governor(t)
+				print("[Replace] All governors in ", sc, " replaced with fresh appointments")
 		"remove_governor":
 			# Sack the tile's governor and generate a procedural replacement.
 			if tile != null and tile.tileGovernor != null:
@@ -1086,7 +1121,11 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 
 func evaluateDateEvents() -> void:
 	checkPendingMissions()
+	checkMissionExpiry()
 	checkCollapseCondition()
+	checkStateSecessionConditions()
+	_calculate_presidential_claim()
+	_update_governor_loyalty()
 	var to_fire = EventDatabase.evaluate_date_triggers(currentWorldTurn, month)
 	for event_id in to_fire:
 		if event_id == "FORT_001":
@@ -1130,18 +1169,202 @@ func checkPendingMissions() -> void:
 func checkCollapseCondition() -> void:
 	if playerCountry != "USA" or _republic_collapsed:
 		return
-	var canadian_states: Array = ["CA - QB", "CA - OT", "CA - NB", "CA - NS", "CA - PEI"]
 	for tile in $TileController.get_children():
 		if tile.terrain != "Metro":
 			continue
-		if tile.tileContinent in canadian_states:
+		if tile.tileContinent in CANADIAN_STATES or tile.tileContinent == "":
 			continue
 		if tile.tileOwner == "USA":
 			return  # Still hold at least one American metro — no collapse yet
-	# Every US metro has fallen — fire the collapse event once
 	_republic_collapsed = true
 	print("[Collapse] All American metros have fallen. Triggering COLLAPSE_01.")
 	createNewEvent("COLLAPSE_01")
+
+
+# ── PRESIDENTIAL CLAIM ───────────────────────────────────────────
+func _calculate_presidential_claim() -> void:
+	if playerCountry != "USA" or _republic_collapsed:
+		return
+	var metro_gain: float = 0.0
+	var loss_penalty: float = 0.0
+	var uk_penalty: float = 0.0
+	for tile in $TileController.get_children():
+		var sc: String = tile.tileContinent
+		if sc in CANADIAN_STATES or sc == "" or sc == "DC":
+			continue
+		if tile.terrain == "Metro":
+			if tile.tileOwner == "USA":
+				metro_gain += 0.25
+			else:
+				loss_penalty += 0.20
+		else:
+			if tile.tileOwner != "USA":
+				loss_penalty += 0.025
+		if tile.tileOwner == "UK":
+			uk_penalty += 0.025
+	var delta: float = clampf(metro_gain - loss_penalty - uk_penalty, -2.0, 2.0)
+	playerCountryNode.presidentialClaim = clampf(
+		playerCountryNode.presidentialClaim + delta, -10.0, 10.0)
+
+
+func _update_governor_loyalty() -> void:
+	if playerCountry != "USA":
+		return
+	var claim: float = playerCountryNode.presidentialClaim
+	for gov in playerCountryNode.unlockedGovernors:
+		if is_instance_valid(gov):
+			gov.update_loyalty(claim)
+
+
+# ── MISSION EXPIRY ───────────────────────────────────────────────
+func checkMissionExpiry() -> void:
+	if playerCountry != "USA":
+		return
+	var expired: Array = []
+	for flag in _mission_timers.keys():
+		_mission_timers[flag] -= 1
+		if _mission_timers[flag] <= 0:
+			expired.append(flag)
+	for flag in expired:
+		_mission_timers.erase(flag)
+		playerCountryNode.CountryFlags.erase(flag)
+		_on_mission_expired(flag)
+
+
+func _on_mission_expired(flag: String) -> void:
+	# Parse "mission_<eventId>_<tileNum>"
+	var body: String = flag.substr(8)
+	var last_us: int  = body.rfind("_")
+	if last_us == -1:
+		return
+	var tile_num_str: String = body.substr(last_us + 1)
+	if not tile_num_str.is_valid_int():
+		return
+	var tile_num: int = tile_num_str.to_int()
+
+	var source_tile = null
+	for t in $TileController.get_children():
+		if t.tileNumber == tile_num:
+			source_tile = t
+			break
+	if source_tile == null:
+		return
+
+	var sc: String = source_tile.tileContinent
+	print("[Mission] EXPIRED — flagging all tiles in '", sc, "' as president_failed for 10 turns")
+	for t in $TileController.get_children():
+		if t.tileContinent == sc:
+			t.presidentFailedTimer = 10
+	playerCountryNode.presidentialClaim = clampf(
+		playerCountryNode.presidentialClaim - 2.0, -10.0, 10.0)
+	print("[Claim] Mission-failure penalty. Claim now: ", playerCountryNode.presidentialClaim)
+
+
+# ── STATE SECESSION ──────────────────────────────────────────────
+func checkStateSecessionConditions() -> void:
+	if playerCountry != "USA" or _republic_collapsed:
+		return
+	if playerCountryNode.presidentialClaim > -3.0:
+		return  # Claim not low enough to enable secession
+
+	# Find all USA states that have at least one tile with an active failure timer
+	var states_at_risk: Dictionary = {}
+	for tile in playerCountryNode.OwnedTileList:
+		var sc: String = tile.tileContinent
+		if sc in CANADIAN_STATES or sc == "" or sc == "DC":
+			continue
+		if tile.presidentFailedTimer > 0:
+			states_at_risk[sc] = true
+
+	for state_code in states_at_risk.keys():
+		if playerCountryNode.CountryFlags.has("rebel_" + state_code):
+			continue  # Already in rebellion
+		# Look for at least one disloyal governor (loyalty ≤ –5) in this state
+		for tile in $TileController.get_children():
+			if tile.tileContinent != state_code or tile.tileOwner != "USA":
+				continue
+			if tile.tileGovernor != null and tile.tileGovernor.loyalty <= -5.0:
+				print("[Secession] All conditions met — ", state_code, " declares independence!")
+				_fire_state_secession(state_code)
+				break
+
+
+func _fire_state_secession(state_code: String) -> void:
+	var tiles_to_seize: Array = []
+	for tile in playerCountryNode.OwnedTileList.duplicate():
+		if tile.tileContinent == state_code:
+			tiles_to_seize.append(tile)
+	if tiles_to_seize.is_empty():
+		return
+
+	var display_name: String = STATE_FULL_NAMES.get(state_code, "State of " + state_code)
+	var rebel_country: country = _spawn_state_country(state_code, display_name)
+
+	var metro_tile = null
+	for tile in tiles_to_seize:
+		playerCountryNode.OwnedTileList.erase(tile)
+		rebel_country.addTile(tile)
+		tile.record_conquest(state_code)
+
+		if tile.terrain == "Metro" and metro_tile == null:
+			metro_tile = tile
+
+		if tile.tileGovernor != null:
+			var gov = tile.tileGovernor
+			playerCountryNode.unlockedGovernors.erase(gov)
+			rebel_country.unlockedGovernors.append(gov)
+
+		if tile.stationedArmy != null:
+			var army = tile.stationedArmy
+			if army.parentCountry == playerCountryNode:
+				playerCountryNode.countryArmyList.erase(army)
+				rebel_country.countryArmyList.append(army)
+				army.parentCountry = rebel_country
+				army.enemy = true  # Rebel armies are hostile to USA
+
+	playerCountryNode.CountryFlags.append("rebel_" + state_code)
+	playerCountryNode.presidentialClaim = clampf(
+		playerCountryNode.presidentialClaim - 3.0, -10.0, 10.0)
+	createNewEvent("STATE_REBEL_01", metro_tile)
+	print("[Secession] ", display_name, " has seceded — ", tiles_to_seize.size(), " tiles lost.")
+
+
+func _fire_state_reintegration(state_code: String, metro_tile) -> void:
+	var rebel_country = null
+	for c in aliveCountriesList:
+		if c.CID == state_code:
+			rebel_country = c
+			break
+	if rebel_country == null:
+		return
+
+	# Transfer all tiles the rebel country still holds back to USA
+	var rebel_tiles: Array = rebel_country.OwnedTileList.duplicate()
+	for tile in rebel_tiles:
+		rebel_country.OwnedTileList.erase(tile)
+		playerCountryNode.OwnedTileList.append(tile)
+		tile.record_conquest("USA")
+		if tile.stationedArmy != null:
+			var army = tile.stationedArmy
+			if army.parentCountry == rebel_country:
+				rebel_country.countryArmyList.erase(army)
+				playerCountryNode.countryArmyList.append(army)
+				army.parentCountry = playerCountryNode
+				army.enemy = false
+
+	# Move governor references back to USA pool so event buttons can act on them
+	for gov in rebel_country.unlockedGovernors.duplicate():
+		rebel_country.unlockedGovernors.erase(gov)
+		playerCountryNode.unlockedGovernors.append(gov)
+
+	playerCountryNode.CountryFlags.erase("rebel_" + state_code)
+	aliveCountriesList.erase(rebel_country)
+	rebel_country.queue_free()
+
+	playerCountryNode.presidentialClaim = clampf(
+		playerCountryNode.presidentialClaim + 2.0, -10.0, 10.0)
+	createNewEvent("STATE_REINTEGRATED_01", metro_tile)
+	print("[Reintegration] ", STATE_FULL_NAMES.get(state_code, state_code), " reintegrated!")
 
 
 func _execute_republic_collapse() -> void:
@@ -1317,6 +1540,7 @@ func _generate_and_assign_governor(tile: Tile) -> void:
 	new_gov.governorBiography   = full_name + " was appointed following a change of command at " + tile.tileName + "."
 	new_gov.governorTexture     = portrait_placeholder
 	new_gov.hired               = true
+	new_gov.loyalty             = float(randi_range(-6, 6))
 	playerCountryNode.unlockedGovernors.append(new_gov)
 	tile.tileGovernor      = new_gov
 	tile.filledGovernorSlot = true
@@ -1708,6 +1932,12 @@ func tileSiegeWon(tile, oldCID: String, newCID: String) -> void:
 	var state_code = tile.tileContinent
 	if state_code != "" and _is_state_liberated(state_code, newCID):
 		evaluateStateLiberation(state_code)
+
+	# Reintegration: USA recaptures a state capitol (Metro + courthouse) from a rebel state
+	if newCID == "USA" and tile.terrain == "Metro" and state_code != "":
+		var has_courthouse: bool = tile.buildings.get("courthouse", 0) > 0
+		if has_courthouse and playerCountryNode.CountryFlags.has("rebel_" + state_code):
+			_fire_state_reintegration(state_code, tile)
 
 func _on_next_turn_pressed() -> void:
 	playerCountryNode.surveyResources()

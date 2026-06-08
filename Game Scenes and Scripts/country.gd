@@ -14,6 +14,8 @@ var isAlive: bool
 var Player: bool
 var AIPersonality
 
+var presidentialClaim: float = 0.0  # USA only: –10 to +10 political legitimacy
+
 var isPuppet #determines if this country is a Puppet of another country
 
 var primaryCapital #tile that acts as this country's capital city

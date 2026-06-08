@@ -35,6 +35,7 @@ var thisTileNumber
 var tileCrop: String = "corn"          # corn, apples, hay, soybeans, peanuts, peaches, oranges, mushrooms, cannabis
 var corruption: int = 0                # scale 0-100
 var fortDisrepair: bool = false        # set by FORT_001 event chain; reduces garrison output
+var presidentFailedTimer: int = 0      # > 0: presidential neglect active; ticks down each turn
 var buildings: Dictionary = {}         # {"barracks": 3, "farm": 1, "dock": 2}
 var tileSpecialFeatures: Array = []    # ["Gettysburg Memorial", "Appalachian Minerals"]
 var winterScore: int = 0
@@ -1747,9 +1748,10 @@ func record_conquest(conquering_faction: String) -> void:
  
 func tick_conquest_timer() -> void:
 	# Call this from world.gd each month for all tiles
-	# Increments the counter so "recently" eventually becomes "not recently"
-	if turnsSinceConquest <= conquestThreshold + 24:  # stop counting after 2 years
+	if turnsSinceConquest <= conquestThreshold + 24:
 		turnsSinceConquest += 1
+	if presidentFailedTimer > 0:
+		presidentFailedTimer -= 1
  
 func get_conquest_liberty_boost() -> int:
 	# How much liberty bonus does recent conquest give?
