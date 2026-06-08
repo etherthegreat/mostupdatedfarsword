@@ -74,6 +74,28 @@ func buildSelf(gT, gL):
 			governorBiography = "Hawaii's finest export and Washington's current occupant — when it is not occupied. President Carlisle commands the APF personally. Her security detail has filed seventeen formal objections. She has read none of them."
 			governorPosition = "PRESIDENT & COMMANDER"
 			governorFaction = "Federal"
+
+		"Benjamin Tallmadge":
+			governorTexture = load("res://art assets/Placeholder Art/character/4-22-Ikra-Colors - Copy.png")
+			governorDescription = "The Culper Ring never stopped running. It merely changed names."
+			governorBiography = "Washington's spymaster and the architect of America's first intelligence network. Tallmadge ran agents behind Crown lines for six years without losing one. He is methodical, loyal, and deeply suspicious of everyone — including himself. The Codebook is his invention. The Ring is his life's work. He keeps a ledger. The ledger is encrypted. He is the only one who knows the key."
+			governorPosition = "SPYMASTER"
+			governorFaction = "Patriot"
+			addMilMod("Translator", 123)
+
+		"Phillis Wheatley":
+			governorTexture = load("res://art assets/Placeholder Art/character/4-22-Ikra-Colors - Copy.png")
+			governorDescription = "Liberty and peace are not decorative concepts. They are demands."
+			governorBiography = "The first published African American poet and the revolution's most inconvenient mirror. She met Washington and wrote him a poem and the poem was better than the war. Her work is circulating in British-held territories. Crown officers have begun confiscating it, which, historically speaking, is how you know a poem is working. She does not fight with a musket. She does not need to."
+			governorPosition = "HERALD"
+			governorFaction = "Abolitionist League"
+
+		"Francis Asbury":
+			governorTexture = load("res://art assets/Placeholder Art/character/4-22-Ikra-Colors - Copy.png")
+			governorDescription = "I have traveled three hundred thousand miles in this country and I am not done yet."
+			governorBiography = "The Father of American Methodism arrived from England in 1771 and proceeded to cover every inch of the new nation on horseback at a pace that worried his horse. He preaches liberation theology in territories where armies cannot follow. His circuits reach the frontier settlements, the Appalachian hollows, the farmlands between battlefields. He is anti-slavery, democratic, tireless, and genuinely impossible to stop. Crown forces have twice tried to arrest him. He preached at both arresting officers. One converted."
+			governorPosition = "CIRCUIT PREACHER"
+			governorFaction = "Common Cause"
 	pass
 
 func addMilMod(type, levels):
