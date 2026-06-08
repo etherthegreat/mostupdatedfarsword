@@ -33,7 +33,8 @@ var thisTileNumber
 # NEW: CSV-LOADED DATA VARIABLES
 # ============================================================
 var tileCrop: String = "corn"          # corn, apples, hay, soybeans, peanuts, peaches, oranges, mushrooms, cannabis
-var corruption: int = 0                # scale 0-100
+var corruption: int = 0                # scale 0-100; environmental decay — reduces tile output
+var tileMoralDecay: int = 0            # scale 0-100; political corruption — reduces tile output; grows on courthouse tiles
 var fortDisrepair: bool = false        # set by FORT_001 event chain; reduces garrison output
 var presidentFailedTimer: int = 0      # > 0: presidential neglect active; ticks down each turn
 var disabled_buildings: Dictionary = {}   # buildingType → turns_remaining until re-enabled
@@ -372,6 +373,7 @@ func build_self_from_save(save_data: Dictionary) -> void:
 	tileContinent = save_data.get("state", tileContinent)
 	terrain = save_data.get("terrain", terrain)
 	corruption = save_data.get("corruption", corruption)
+	tileMoralDecay = save_data.get("tileMoralDecay", 0)
 	winterScore = save_data.get("winterScore",0)
 	tileCrop = save_data.get("tileCrop", tileCrop)
 	buildings = save_data.get("buildings", {})
@@ -568,6 +570,7 @@ func censusTile(playerCountryNode):
 		corruptionChange += building.corruptionChange
 		tileDollarsTax += building.dollarsTax
 		tileHappinessTax += building.happinessTax
+	_apply_output_reductions()
 	for building in tileBuildingsList:
 		if building.foodDic.is_empty() == false:
 			tileFoodDic[building.buildingType] = building.foodDic
@@ -660,6 +663,7 @@ func surveyTile(playerCountryNode):
 				granaryGovernorReq = building.buildingLevel >= 3
 			"Courthouse":
 				courthouseGovernorReq = building.buildingLevel >= 3
+	_apply_output_reductions()
 
 
 # ============================================================
@@ -1743,12 +1747,10 @@ func recently_conquered_by(factionCID: String) -> bool:
 	return recently_conquered() and lastConqueror == factionCID
  
 func record_conquest(conquering_faction: String) -> void:
-	# Call this when a tile changes hands (in your siege resolution code)
-	# Replaces whatever currently handles tileOwner changes
 	lastConqueror = conquering_faction
 	turnsSinceConquest = 0
 	tileOwner = conquering_faction
-	# Recalculate modifiers now that ownership changed
+	tileMoralDecay = 0   # new administration resets political corruption
 	calculateCorruption()
  
 func tick_conquest_timer() -> void:
@@ -1768,6 +1770,30 @@ func tick_conquest_timer() -> void:
 				b.enabled = true
 				print("[Tile] Re-enabled '", btype, "' at ", tileName)
 				break
+	# Courthouse tiles accumulate moral decay over time when unchecked
+	if tileMoralDecay < 100:
+		for b in tileBuildingsList:
+			if b.buildingType == "Courthouse":
+				tileMoralDecay += 1
+				break
+
+func _apply_output_reductions() -> void:
+	if corruption == 0 and tileMoralDecay == 0:
+		return
+	var multiplier: float = (1.0 - float(corruption) / 100.0) * (1.0 - float(tileMoralDecay) / 100.0)
+	if buildingFoodOutput    > 0: buildingFoodOutput    = int(float(buildingFoodOutput)    * multiplier)
+	if buildingWoodOutput    > 0: buildingWoodOutput    = int(float(buildingWoodOutput)    * multiplier)
+	if buildingDollarsOutput > 0: buildingDollarsOutput = buildingDollarsOutput            * multiplier
+	if buildingMetalOutput   > 0: buildingMetalOutput   = int(float(buildingMetalOutput)   * multiplier)
+	if buildingWeaponsOutput > 0: buildingWeaponsOutput = int(float(buildingWeaponsOutput) * multiplier)
+	if buildingScienceOutput > 0: buildingScienceOutput = int(float(buildingScienceOutput) * multiplier)
+	if buildingMagicOutput   > 0: buildingMagicOutput   = int(float(buildingMagicOutput)   * multiplier)
+	if buildingCultureOutput > 0: buildingCultureOutput = int(float(buildingCultureOutput) * multiplier)
+	if buildingMandateOutput > 0: buildingMandateOutput = int(float(buildingMandateOutput) * multiplier)
+	if buildingHappinessOutput > 0: buildingHappinessOutput = int(float(buildingHappinessOutput) * multiplier)
+	if buildingManpowerOutput  > 0: buildingManpowerOutput  = int(float(buildingManpowerOutput)  * multiplier)
+	if buildingInfluenceOutput > 0: buildingInfluenceOutput = int(float(buildingInfluenceOutput) * multiplier)
+	if buildingBoatsOutput     > 0: buildingBoatsOutput     = int(float(buildingBoatsOutput)     * multiplier)
 
 func disable_building(type: String, turns: int) -> void:
 	for b in tileBuildingsList:

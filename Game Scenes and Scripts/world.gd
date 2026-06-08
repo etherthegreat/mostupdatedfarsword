@@ -1039,6 +1039,10 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 		"tile_loyalty_change":
 			if tile != null:
 				tile.corruption = max(0, tile.corruption - outcome_amount)
+		"tile_moral_decay_change":
+			if tile != null:
+				tile.tileMoralDecay = clampi(tile.tileMoralDecay + outcome_amount, 0, 100)
+				print("[MoralDecay] ", tile.tileName, " → ", tile.tileMoralDecay)
 		"add_wizard":
 			if tile != null:
 				tile.addWizard(outcome_value)
@@ -1640,7 +1644,7 @@ func _check_corruption_crisis() -> void:
 		return
 	var candidates: Array = []
 	for tile in playerCountryNode.OwnedTileList:
-		if tile.corruption < 50:
+		if tile.tileMoralDecay < 50:
 			continue
 		for b in tile.tileBuildingsList:
 			if b.buildingType == "Courthouse" and b.enabled:
@@ -1651,7 +1655,7 @@ func _check_corruption_crisis() -> void:
 	var target: Tile = candidates[randi() % candidates.size()]
 	_start_cooldown("CORRUPT_001", 12)
 	createNewEvent("CORRUPT_001", target)
-	print("[Corrupt] Crisis detected — firing CORRUPT_001 at ", target.tileName)
+	print("[Corrupt] Crisis — moral decay ", target.tileMoralDecay, " at ", target.tileName)
 
 
 # ── CHAIN 9: BORDER DISPUTE ──────────────────────────────────────
