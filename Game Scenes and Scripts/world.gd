@@ -65,6 +65,32 @@ const PROTECTOR_SUMMON_TURNS: Dictionary = {
 	"PROT_17": 90
 }
 
+# ── CANADIAN PROTECTORS ───────────────────────────────────────────────────────
+# Eight creatures from Algonquin, Mi'kmaq, and French-Canadian folklore.
+# Each anchored to a specific CA-owned tile.  Fire as dispatches from Jessica
+# Clear-Water to President Carlisle regardless of alliance status.
+const CA_PROT_IDS: Array = [
+	"CA_PROT_01", "CA_PROT_02", "CA_PROT_03", "CA_PROT_04",
+	"CA_PROT_05", "CA_PROT_06", "CA_PROT_07", "CA_PROT_08"
+]
+
+const CA_PROT_SUMMON_TURNS: Dictionary = {
+	"CA_PROT_01":  8, "CA_PROT_02": 13, "CA_PROT_03": 18, "CA_PROT_04": 23,
+	"CA_PROT_05": 28, "CA_PROT_06": 33, "CA_PROT_07": 38, "CA_PROT_08": 43
+}
+
+# Maps CA_PROT_ID → tile number where the creature lives
+const CA_PROT_TILES: Dictionary = {
+	"CA_PROT_01":  99,   # Le Wendigo        — Saint-Georges, QC (Woods)
+	"CA_PROT_02": 105,   # Le Loup-Garou     — Rivière-du-Loup, QC (Woods)
+	"CA_PROT_03": 194,   # Les Feux Follets  — Saint John, NB (Wetlands)
+	"CA_PROT_04": 131,   # Mishepeshu        — Barrie, ON (Wetlands)
+	"CA_PROT_05": 106,   # La Corriveau      — Trois-Pistoles, QC (Woods)
+	"CA_PROT_06": 193,   # Le Carcajou       — Moncton, NB (Woods)
+	"CA_PROT_07": 128,   # La Chasse-Galerie — Deep River, ON (Woods)
+	"CA_PROT_08": 109,   # Le Gougou         — Bathurst, NB (Farmlands)
+}
+
 const STATE_FULL_NAMES: Dictionary = {
 	"PA": "Commonwealth of Pennsylvania",
 	"NJ": "State of New Jersey",
@@ -1428,6 +1454,7 @@ func evaluateDateEvents() -> void:
 	if playerCountry == "USA" and not _republic_collapsed:
 		_check_war_events()
 		_check_can_events()
+		_check_ca_protectors()
 		_check_harvest_crisis()
 		_check_harbor_threat()
 		_check_forge_threat()
@@ -1447,6 +1474,7 @@ func evaluateDateEvents() -> void:
 		_check_ualani_frontier()
 		_check_vp_events()
 		_tick_wild_protectors()
+		_tick_wild_ca_protectors()
 		_check_protector_summons()
 		_tick_commander_turns()
 		_check_cmd_merit()
@@ -2683,6 +2711,65 @@ func _check_protector_summons() -> void:
 		_start_cooldown(summon_id, 20)
 		createNewEvent(summon_id, null)
 		print("[Protector] SUMMON fired: ", summon_id, " on turn ", currentWorldTurn)
+		return
+
+
+# ── CANADIAN PROTECTOR CHECKS ────────────────────────────────────────────────
+
+func _is_ca_prot_wild(pid: String) -> bool:
+	var tame_flag    = pid.to_lower() + "_tame"
+	var agreed_flag  = pid.to_lower() + "_agreed"
+	return not playerCountryNode.CountryFlags.has(tame_flag) \
+		and not playerCountryNode.CountryFlags.has(agreed_flag)
+
+
+func _get_ca_prot_tile(pid: String):
+	var tile_num: int = CA_PROT_TILES.get(pid, 0)
+	if tile_num == 0:
+		return null
+	for tile in $TileController.get_children():
+		if tile.tileNumber == tile_num:
+			return tile
+	return null
+
+
+func _tick_wild_ca_protectors() -> void:
+	# Wild CA protectors have a 25% chance per turn to add +1 corruption to a
+	# random CA-owned tile (mirrors _tick_wild_protectors for USA).
+	var ca_country = null
+	for c in aliveCountriesList:
+		if c.CID == "CA":
+			ca_country = c
+			break
+	if ca_country == null or ca_country.OwnedTileList.is_empty():
+		return
+	for pid in CA_PROT_IDS:
+		if not _is_ca_prot_wild(pid):
+			continue
+		if randf() < 0.25:
+			var target = ca_country.OwnedTileList[randi() % ca_country.OwnedTileList.size()]
+			target.corruption = clampi(target.corruption + 1, 0, 100)
+			print("[CA WildProt] ", pid, " added +1 corruption to ", target.tileName)
+
+
+func _check_ca_protectors() -> void:
+	# Don't fire if the Canadian arc was rejected (can_rejected ends Canada diplomacy)
+	if playerCountryNode.CountryFlags.has("can_rejected"):
+		return
+	for pid in CA_PROT_IDS:
+		if not _is_ca_prot_wild(pid):
+			continue
+		var min_turn: int = CA_PROT_SUMMON_TURNS.get(pid, 999)
+		if currentWorldTurn < min_turn:
+			continue
+		var summon_id = pid + "_SUMMON"
+		if _event_on_cooldown(summon_id):
+			continue
+		var prot_tile = _get_ca_prot_tile(pid)
+		_start_cooldown(summon_id, 15)
+		createNewEvent(summon_id, prot_tile)
+		print("[CA Protector] SUMMON fired: ", summon_id,
+			  " at tile ", CA_PROT_TILES.get(pid, 0), " turn ", currentWorldTurn)
 		return
 
 

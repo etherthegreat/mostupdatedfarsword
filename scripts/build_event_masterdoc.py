@@ -25,6 +25,7 @@ CAT_COLORS = {
     "Ualani":         "D6F5EA",
     "VP Arc":         "F5E6D6",
     "Canada":         "D6EAF8",
+    "CA Protector":   "B8D6F7",
     "Idea":           "EDE0F7",
 }
 
@@ -849,6 +850,147 @@ EVENTS = [
      "FIRST PASS","","Not Started","NO","sensual option","0",
      "End-game; fires turn 93+ if can_allied; BTN1 +pressure 10 / BTN2 sensual +pressure 15"),
 
+    # ── CANADIAN PROTECTORS ──────────────────────────────────────────────────
+    # 8 creatures from Algonquin, Mi'kmaq, and French-Canadian folklore.
+    # Fire as dispatches from Jessica Clear-Water to Ualani Carlisle.
+    # Turns 8–43, staggered at 5-turn intervals.
+
+    # Le Wendigo
+    ("CA Protector","Le Wendigo","CA_PROT_01_SUMMON",
+     "LE WENDIGO WAKES IN THE LAURENTIAN FOREST",
+     "Root","—","→ CA_PROT_01_TAME",
+     "FIRST PASS","wendigo_approach","Not Started","NO","","0",
+     "Wild: +1 corruption/turn (25% chance) to CA tiles; fires turn 8+; Saint-Georges tile 99"),
+    ("CA Protector","Le Wendigo","CA_PROT_01_TAME",
+     "THE WENDIGO RECEDES FROM THE HARVEST CORRIDOR",
+     "Branch","CA_PROT_01_SUMMON","→ CA_PROT_01_AGREE (next_event_id)",
+     "FIRST PASS","","Not Started","NO","","0",
+     "Sets ca_prot_01_tame flag; immediately chains to AGREE"),
+    ("CA Protector","Le Wendigo","CA_PROT_01_AGREE",
+     "LE WENDIGO STANDS DOWN: SAINT-GEORGES FOREST ACCORD",
+     "Followup","CA_PROT_01_TAME","—",
+     "FIRST PASS","","Not Started","YES","explicit option","0",
+     "Sets ca_prot_01_agreed; BTN2 explicit — private dispatch from Jessica"),
+
+    # Le Loup-Garou
+    ("CA Protector","Le Loup-Garou","CA_PROT_02_SUMMON",
+     "LE LOUP-GAROU RUNS THE RIVER ROAD — RIVIÈRE-DU-LOUP QUARANTINED",
+     "Root","—","→ CA_PROT_02_TAME",
+     "FIRST PASS","loup_garou","Not Started","NO","","0",
+     "Wild: +1 corruption/turn to CA tiles; fires turn 13+; Rivière-du-Loup tile 105"),
+    ("CA Protector","Le Loup-Garou","CA_PROT_02_TAME",
+     "LE LOUP-GAROU ALLOWS PASSAGE — THE RIVER ROAD REOPENS",
+     "Branch","CA_PROT_02_SUMMON","→ CA_PROT_02_AGREE (next_event_id)",
+     "FIRST PASS","","Not Started","NO","","0",
+     "Sets ca_prot_02_tame flag; immediately chains to AGREE"),
+    ("CA Protector","Le Loup-Garou","CA_PROT_02_AGREE",
+     "LE LOUP-GAROU OF RIVIÈRE-DU-LOUP: FORMALLY ACKNOWLEDGED BY THE REPUBLIC",
+     "Followup","CA_PROT_02_TAME","—",
+     "FIRST PASS","","Not Started","YES","explicit option","0",
+     "Sets ca_prot_02_agreed; BTN2 explicit — the wolf stops running"),
+
+    # Les Feux Follets
+    ("CA Protector","Les Feux Follets","CA_PROT_03_SUMMON",
+     "LES FEUX FOLLETS RISE OVER THE SAINT JOHN MARSHES — NAVIGATION DISRUPTED",
+     "Root","—","→ CA_PROT_03_TAME",
+     "FIRST PASS","feux_follets","Not Started","NO","","0",
+     "Wild: +1 corruption/turn to CA tiles; fires turn 18+; Saint John tile 194"),
+    ("CA Protector","Les Feux Follets","CA_PROT_03_TAME",
+     "LES FEUX FOLLETS QUIET — MALISEET PROTOCOLS ESTABLISHED",
+     "Branch","CA_PROT_03_SUMMON","→ CA_PROT_03_AGREE (next_event_id)",
+     "FIRST PASS","","Not Started","NO","","0",
+     "Sets ca_prot_03_tame flag; immediately chains to AGREE"),
+    ("CA Protector","Les Feux Follets","CA_PROT_03_AGREE",
+     "LES FEUX FOLLETS FORMALLY ACKNOWLEDGED: THE SAINT JOHN MARSH ACCORD",
+     "Followup","CA_PROT_03_TAME","—",
+     "FIRST PASS","","Not Started","NO","sensual option","0",
+     "Sets ca_prot_03_agreed; BTN2 sensual — Jessica walks you through the marsh"),
+
+    # Mishepeshu
+    ("CA Protector","Mishepeshu","CA_PROT_04_SUMMON",
+     "MISHEPESHU STIRS BENEATH LAKE SIMCOE — CROSSINGS CONTESTED",
+     "Root","—","→ CA_PROT_04_TAME",
+     "FIRST PASS","mishepeshu","Not Started","NO","","0",
+     "Wild: +1 corruption/turn to CA tiles; fires turn 23+; Barrie tile 131"),
+    ("CA Protector","Mishepeshu","CA_PROT_04_TAME",
+     "MISHEPESHU WITHDRAWS FROM THE CROSSING LANES — LAKE SIMCOE NAVIGABLE",
+     "Branch","CA_PROT_04_SUMMON","→ CA_PROT_04_AGREE (next_event_id)",
+     "FIRST PASS","","Not Started","NO","","0",
+     "Sets ca_prot_04_tame flag; immediately chains to AGREE"),
+    ("CA Protector","Mishepeshu","CA_PROT_04_AGREE",
+     "MISHEPESHU PACT FORMALIZED: THE GREAT LYNX HOLDS THE ONTARIO WATERWAYS",
+     "Followup","CA_PROT_04_TAME","—",
+     "FIRST PASS","","Not Started","YES","explicit option","0",
+     "Sets ca_prot_04_agreed; BTN2 explicit — why the Republic had to apologize first"),
+
+    # La Corriveau
+    ("CA Protector","La Corriveau","CA_PROT_05_SUMMON",
+     "LA CORRIVEAU IS FREE — THE IRON CAGE HAS BEEN SWINGING IN TROIS-PISTOLES",
+     "Root","—","→ CA_PROT_05_TAME",
+     "FIRST PASS","la_corriveau","Not Started","NO","","0",
+     "Wild: +1 corruption/turn to CA tiles; fires turn 28+; Trois-Pistoles tile 106"),
+    ("CA Protector","La Corriveau","CA_PROT_05_TAME",
+     "LA CORRIVEAU QUIETS — THE REPUBLIC ACKNOWLEDGES THE VERDICT WAS WRONG",
+     "Branch","CA_PROT_05_SUMMON","→ CA_PROT_05_AGREE (next_event_id)",
+     "FIRST PASS","","Not Started","NO","","0",
+     "Sets ca_prot_05_tame flag; immediately chains to AGREE"),
+    ("CA Protector","La Corriveau","CA_PROT_05_AGREE",
+     "LA CORRIVEAU FORMALLY ALLIES WITH THE REPUBLIC — THREE GARRISONS EVACUATED THIS WEEK",
+     "Followup","CA_PROT_05_TAME","—",
+     "FIRST PASS","","Not Started","YES","explicit option","0",
+     "Sets ca_prot_05_agreed; BTN2 explicit — what Corriveau actually wanted to say"),
+
+    # Le Carcajou
+    ("CA Protector","Le Carcajou","CA_PROT_06_SUMMON",
+     "LE CARCAJOU MOVES THROUGH THE MONCTON FOREST — NOTHING STOPS IT",
+     "Root","—","→ CA_PROT_06_TAME",
+     "FIRST PASS","carcajou","Not Started","NO","","0",
+     "Wild: +1 corruption/turn to CA tiles; fires turn 33+; Moncton tile 193"),
+    ("CA Protector","Le Carcajou","CA_PROT_06_TAME",
+     "LE CARCAJOU REDIRECTS — CONTINENTAL LINES EXEMPTED FROM DESTRUCTION",
+     "Branch","CA_PROT_06_SUMMON","→ CA_PROT_06_AGREE (next_event_id)",
+     "FIRST PASS","","Not Started","NO","","0",
+     "Sets ca_prot_06_tame flag; immediately chains to AGREE"),
+    ("CA Protector","Le Carcajou","CA_PROT_06_AGREE",
+     "LE CARCAJOU FORMALLY RECOGNIZED: THE MONCTON CORRIDOR ACCORD",
+     "Followup","CA_PROT_06_TAME","—",
+     "FIRST PASS","","Not Started","YES","explicit option","0",
+     "Sets ca_prot_06_agreed; BTN2 explicit — why the Carcajou accepted the accord"),
+
+    # La Chasse-Galerie
+    ("CA Protector","La Chasse-Galerie","CA_PROT_07_SUMMON",
+     "THE FLYING CANOE RUNS THE OTTAWA RIVER — THREE SIGHTINGS, TWO MISSING PATROLS",
+     "Root","—","→ CA_PROT_07_TAME",
+     "FIRST PASS","chasse_galerie","Not Started","NO","","0",
+     "Wild: +1 corruption/turn to CA tiles; fires turn 38+; Deep River tile 128"),
+    ("CA Protector","La Chasse-Galerie","CA_PROT_07_TAME",
+     "THE FLYING CANOE ACKNOWLEDGES THE REPUBLIC — THE OTTAWA RIVER CORRIDOR SECURED",
+     "Branch","CA_PROT_07_SUMMON","→ CA_PROT_07_AGREE (next_event_id)",
+     "FIRST PASS","","Not Started","NO","","0",
+     "Sets ca_prot_07_tame flag; immediately chains to AGREE"),
+    ("CA Protector","La Chasse-Galerie","CA_PROT_07_AGREE",
+     "LA CHASSE-GALERIE: THE RIVER RUNS FOR THE REPUBLIC NOW",
+     "Followup","CA_PROT_07_TAME","—",
+     "FIRST PASS","","Not Started","NO","sensual option","0",
+     "Sets ca_prot_07_agreed; BTN2 sensual — Mark Penoit on the river"),
+
+    # Le Gougou
+    ("CA Protector","Le Gougou","CA_PROT_08_SUMMON",
+     "THE GOUGOU RISES IN THE CHALEUR BAY — CHAMPLAIN'S MONSTER IS REAL",
+     "Root","—","→ CA_PROT_08_TAME",
+     "FIRST PASS","le_gougou","Not Started","NO","","0",
+     "Wild: +1 corruption/turn to CA tiles; fires turn 43+; Bathurst tile 109"),
+    ("CA Protector","Le Gougou","CA_PROT_08_TAME",
+     "THE GOUGOU WITHDRAWS FROM THE BAY LANES — RESTITUTION PROTOCOLS ACTIVE",
+     "Branch","CA_PROT_08_SUMMON","→ CA_PROT_08_AGREE (next_event_id)",
+     "FIRST PASS","","Not Started","NO","","0",
+     "Sets ca_prot_08_tame flag; immediately chains to AGREE"),
+    ("CA Protector","Le Gougou","CA_PROT_08_AGREE",
+     "THE GOUGOU FORMALLY GUARDS THE CHALEUR BAY FOR THE CONTINENTAL ALLIANCE",
+     "Followup","CA_PROT_08_TAME","—",
+     "FIRST PASS","","Not Started","YES","explicit option","0",
+     "Sets ca_prot_08_agreed; BTN2 explicit — the Gougou's real name"),
+
     ("VP Arc","VP Arc","VP_LEGACY",
      "THE VICE PRESIDENT LEAVES A NOTE — [COMMANDER_NAME] HAS SOMETHING TO SAY",
      "Followup","VP_FIRST_MEETING (turn 96+)","—",
@@ -1018,6 +1160,50 @@ def write_row(ws, row_num: int, event: tuple):
     ws.row_dimensions[row_num].height = 30
 
 
+def add_canadian_events_sheet(wb):
+    """Dedicated tab showing all Canada + CA Protector category events."""
+    ws = wb.create_sheet("Canadian Events")
+    ws.sheet_view.showGridLines = False
+    ws.freeze_panes = "A2"
+    apply_header(ws)
+
+    ca_events = [e for e in EVENTS if e[0] in ("Canada", "CA Protector")]
+
+    prev_cat = None
+    row_num = 2
+    for event in ca_events:
+        cat = event[0]
+        if prev_cat is not None and cat != prev_cat:
+            ws.row_dimensions[row_num].height = 8
+            for col_idx in range(1, len(COLUMNS) + 1):
+                cell = ws.cell(row=row_num, column=col_idx)
+                cell.fill = make_fill("E8E8E8")
+            row_num += 1
+        write_row(ws, row_num, event)
+        prev_cat = cat
+        row_num += 1
+
+    # Summary box
+    row_num += 1
+    summary_data = [
+        ("Canadian events total",              len(ca_events)),
+        ("Canada (Alliance arc)",              sum(1 for e in ca_events if e[0] == "Canada")),
+        ("CA Protector (Jessica's creatures)", sum(1 for e in ca_events if e[0] == "CA Protector")),
+        ("Need explicit art (YES)",            sum(1 for e in ca_events if e[10] == "YES")),
+    ]
+    for label, count in summary_data:
+        lc = ws.cell(row=row_num, column=1, value=label)
+        cc = ws.cell(row=row_num, column=2, value=count)
+        lc.fill = make_fill(HEADER_BG)
+        cc.fill = make_fill(HEADER_BG)
+        lc.font = make_font(bold=True, color=HEADER_FG, size=10)
+        cc.font = make_font(bold=True, color=HEADER_FG, size=10)
+        lc.alignment = Alignment(horizontal="left", vertical="center")
+        cc.alignment = Alignment(horizontal="center", vertical="center")
+        ws.row_dimensions[row_num].height = 20
+        row_num += 1
+
+
 def add_legend_sheet(wb):
     ws = wb.create_sheet("Legend")
     ws.sheet_view.showGridLines = False
@@ -1088,6 +1274,9 @@ def add_legend_sheet(wb):
         "Collapse":       "Republic collapse sequence",
         "Tile Crisis":    "Dynamic tile-based crisis chains; triggered by world.gd check functions",
         "Ualani":         "Ualani Carlisle army presence events; personal storyline",
+        "VP Arc":         "Vice President relationship arc; 9 events tied to the VP governor",
+        "Canada":         "Canadian Alliance diplomatic arc (war declaration + 8 CAN_ events)",
+        "CA Protector":   "Jessica Clear-Water's 8 creature arcs; Algonquin, Mi'kmaq, French-Canadian folklore",
         "Idea":           "Not yet implemented; concept stage or referenced-but-missing events",
     }
     for cat, color in CAT_COLORS.items():
@@ -1139,6 +1328,7 @@ def build_workbook():
         ws.row_dimensions[row_num].height = 20
         row_num += 1
 
+    add_canadian_events_sheet(wb)
     add_legend_sheet(wb)
     wb.save(OUT_PATH)
     print(f"Saved: {OUT_PATH}")
