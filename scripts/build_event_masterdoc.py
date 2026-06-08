@@ -26,6 +26,7 @@ CAT_COLORS = {
     "VP Arc":         "F5E6D6",
     "Canada":         "D6EAF8",
     "CA Protector":   "B8D6F7",
+    "Loyal Governor": "F5ECD5",
     "Idea":           "EDE0F7",
 }
 
@@ -1016,6 +1017,45 @@ EVENTS = [
      "FIRST PASS","","Not Started","NO","standard","0",
      "CA separate peace (unallied): fires when Halifax (114), Quebec City (123), and Anticosti (195) all liberated; sets uk_ca_peace on UK+CA; player-visible dispatch; both buttons standard"),
 
+    # ── LOYAL GOVERNOR DISPATCH EVENTS ──────────────────────────────────────
+    # 25 one-shot events, one per USA governor archetype.
+    # 3% chance per turn at loyalty ≥ 8; max one per turn; never VP/Leader/named.
+    # Outcome: tile_yield — resource × turns based on tile's building output.
+] + [
+    ("Loyal Governor", arc_name, f"GOV_LOYAL_{arc_id}",
+     f"DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] (LOYAL {arc_name.upper()})",
+     "Root", "—", "—",
+     "FIRST PASS", "", "Not Started", "NO", "standard", "0",
+     f"tile_yield {resource}×{turns}; 3%/turn at loyalty≥8; once per governor")
+    for arc_id, arc_name, resource, turns in [
+        ("ARC_01","Wetlands Fisher",      "food",     4),
+        ("ARC_02","Appalachian Miner",    "metal",    5),
+        ("ARC_03","Ivy League Dropout",   "gold",     4),
+        ("ARC_04","Seminole Fighter",     "manpower", 3),
+        ("ARC_05","Green Mountain Farmer","food",     5),
+        ("ARC_06","Chesapeake Shipwright","wood",     5),
+        ("ARC_07","Loyalist Turncoat",    "gold",     3),
+        ("ARC_08","Tobacco Belt Drifter", "food",     4),
+        ("ARC_09","War Widow",            "culture",  4),
+        ("ARC_10","Indigenous Scout",     "manpower", 3),
+        ("ARC_11","Boston Rabble-Rouser", "culture",  4),
+        ("ARC_12","Continental Surgeon",  "food",     4),
+        ("ARC_13","Nantucket Sailor",     "boats",    3),
+        ("ARC_14","Frontier Preacher",    "culture",  4),
+        ("ARC_15","DC Bureaucrat",        "gold",     4),
+        ("ARC_16","Rust Belt Steelworker","metal",    5),
+        ("ARC_17","Plantation Deserter",  "manpower", 4),
+        ("ARC_18","Swamp Witch",          "magic",    4),
+        ("ARC_19","Caribbean Privateer",  "gold",     4),
+        ("ARC_20","Hawaiian Refugee",     "food",     3),
+        ("ARC_21","Border Mercenary",     "weapons",  4),
+        ("ARC_22","Acadian Forest Ranger","wood",     5),
+        ("ARC_23","Gettysburg Descendant","manpower", 4),
+        ("ARC_24","LGBTQ+ Organizer",     "culture",  4),
+        ("ARC_25","Carnival Barker",      "gold",     3),
+    ]
+] + [
+
     ("VP Arc","VP Arc","VP_LEGACY",
      "THE VICE PRESIDENT LEAVES A NOTE — [COMMANDER_NAME] HAS SOMETHING TO SAY",
      "Followup","VP_FIRST_MEETING (turn 96+)","—",
@@ -1302,6 +1342,7 @@ def add_legend_sheet(wb):
         "VP Arc":         "Vice President relationship arc; 9 events tied to the VP governor",
         "Canada":         "Canadian Alliance diplomatic arc + 3 peace events (PEACE_ALLIED_01, PEACE_USA_01, PEACE_CA_AI_01)",
         "CA Protector":   "Jessica Clear-Water's 8 creature arcs; Algonquin, Mi'kmaq, French-Canadian folklore",
+        "Loyal Governor": "25 one-shot dispatch events, one per USA governor archetype; tile_yield resource×turns; 3% chance/turn at loyalty≥8",
         "Idea":           "Not yet implemented; concept stage or referenced-but-missing events",
     }
     for cat, color in CAT_COLORS.items():

@@ -97,6 +97,10 @@ const CA_PROT_TILES: Dictionary = {
 const PEACE_DOCK_USA: Array = [65, 66, 67, 151]  # Boston/MA, Plymouth/MA, Nantucket/MA, Charleston/SC
 const PEACE_DOCK_CA:  Array = [114, 123, 195]     # Halifax/CA-NS, Quebec City/CA-QB, Anticosti/CA-QB
 
+# Loyal governor dispatch system
+const GOV_LOYAL_THRESHOLD: float = 8.0   # minimum loyalty to be eligible
+const GOV_LOYAL_CHANCE:    float = 0.03  # 3% per governor per turn
+
 const STATE_FULL_NAMES: Dictionary = {
 	"PA": "Commonwealth of Pennsylvania",
 	"NJ": "State of New Jersey",
@@ -1442,6 +1446,16 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 				tile.electionPressure = clampi(
 					tile.electionPressure + outcome_amount, -100, 100)
 				print("[Election] ", tile.tileName, " pressure → ", tile.electionPressure)
+		"tile_yield":
+			if tile != null:
+				var turns: int = max(outcome_amount, 1)
+				var per_turn: int = _get_tile_resource_output(tile, outcome_value)
+				var total: int = per_turn * turns
+				_apply_resource_change(outcome_value, total)
+				print("[TileYield] ", tile.tileName, " ", outcome_value,
+					" ×", turns, " (", per_turn, "/turn) = ", total)
+			else:
+				push_warning("executeOutcome: tile_yield requires a tile context")
 		"trigger_collapse":
 			_execute_republic_collapse()
 		"george_peace_accept":
@@ -1469,6 +1483,7 @@ func evaluateDateEvents() -> void:
 		_check_war_events()
 		_check_can_events()
 		_check_ca_protectors()
+		_check_loyal_governor_events()
 		_check_george_peace_offer()
 		_check_peace_conditions()
 		_check_harvest_crisis()
@@ -2787,6 +2802,47 @@ func _check_ca_protectors() -> void:
 		print("[CA Protector] SUMMON fired: ", summon_id,
 			  " at tile ", CA_PROT_TILES.get(pid, 0), " turn ", currentWorldTurn)
 		return
+
+
+# ── LOYAL GOVERNOR DISPATCH EVENTS ──────────────────────────────────────────
+
+func _check_loyal_governor_events() -> void:
+	var tiles_copy: Array = playerCountryNode.OwnedTileList.duplicate()
+	tiles_copy.shuffle()
+	for tile in tiles_copy:
+		if tile.tileGovernor == null:
+			continue
+		var gov = tile.tileGovernor
+		if gov.isVicePresident or gov.isLeader:
+			continue
+		if gov.governorArchetypeId == "":
+			continue  # named governor — skip
+		if gov.loyalty < GOV_LOYAL_THRESHOLD:
+			continue
+		var fired_flag: String = "loyal_event_" + gov.governorArchetypeId + "_" + str(tile.tileNumber)
+		if playerCountryNode.CountryFlags.has(fired_flag):
+			continue
+		if randf() >= GOV_LOYAL_CHANCE:
+			continue
+		playerCountryNode.CountryFlags.append(fired_flag)
+		createNewEvent("GOV_LOYAL_" + gov.governorArchetypeId, tile)
+		print("[LoyalGov] ", gov.governorType, " (", gov.governorArchetypeId,
+			") loyal event fired at ", tile.tileName)
+		return  # one per turn max
+
+
+func _get_tile_resource_output(tile, resource: String) -> int:
+	match resource:
+		"food":     return max(int(tile.buildingFoodOutput), 2)
+		"wood":     return max(int(tile.buildingWoodOutput), 2)
+		"metal":    return max(int(tile.buildingMetalOutput), 2)
+		"gold":     return max(int(tile.buildingDollarsOutput), 2)
+		"weapons":  return max(int(tile.buildingWeaponsOutput), 2)
+		"manpower": return max(int(tile.buildingManpowerOutput), 2)
+		"culture":  return max(int(tile.buildingCultureOutput), 2)
+		"magic":    return max(int(tile.buildingMagicOutput), 2)
+		"boats":    return max(tile.buildingBoatsOutput, 1)
+		_:          return 2
 
 
 # ── GEORGE III PEACE OFFER ───────────────────────────────────────────────────
