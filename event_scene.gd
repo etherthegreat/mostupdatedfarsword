@@ -92,13 +92,16 @@ func _player_allows_content(flag: String) -> bool:
 	match flag:
 		"kinky_lewd": return Settings.content_kinky_lewd
 		"explicit":   return Settings.content_explicit
+		"sensual":    return Settings.content_sensual
 	return true
 
 
 func _check_prerequisite(prereq: String) -> bool:
-	if player_country != null:
-		return player_country.CountryFlags.has(prereq)
-	return true   # no country ref: show all buttons (safe fallback)
+	if player_country == null:
+		return true
+	if prereq.begins_with("!"):
+		return not player_country.CountryFlags.has(prereq.substr(1))
+	return player_country.CountryFlags.has(prereq)
 
 func _substitute(text: String) -> String:
 	if target_tile != null:

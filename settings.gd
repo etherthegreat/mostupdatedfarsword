@@ -4,3 +4,4 @@ extends Node
 
 var content_kinky_lewd: bool = false
 var content_explicit: bool = false
+var content_sensual: bool = false

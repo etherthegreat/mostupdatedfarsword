@@ -23,6 +23,7 @@ CAT_COLORS = {
     "Collapse":       "DCDCDC",
     "Tile Crisis":    "FDEBD0",
     "Ualani":         "D6F5EA",
+    "VP Arc":         "F5E6D6",
     "Idea":           "EDE0F7",
 }
 
@@ -712,6 +713,86 @@ EVENTS = [
      "Root","—","—",
      "FIRST PASS","","Not Started","YES","explicit option","20",
      "Ualani in Woods/Foothills bordering CA - * tile; BTN3 explicit +morale 30"),
+
+    # ── ELECTION ─────────────────────────────────────────────────────────────
+    ("Tile Crisis","Election Arc","ELECTION_SEASON",
+     "UALANI'S TERM IS ENDING — THE REPUBLIC MUST CHOOSE A SUCCESSOR",
+     "Root","—","—",
+     "FIRST PASS","","Not Started","NO","","0",
+     "Fires once turns 93-95; presents 5 faction endorsement buttons; ELECTION_BTN1 gated by !vp_declined_candidacy"),
+
+    ("Tile Crisis","Election Arc","STUMP_SPEECH_01",
+     "PRESIDENT CARLISLE TAKES THE FLOOR AT [TILE_NAME] — THE CAMPAIGN IS HERE",
+     "Root","—","—",
+     "FIRST PASS","","Not Started","YES","explicit option","2",
+     "Ualani at Courthouse turns 90-100; BTN1 +15 pressure / BTN2 explicit +25 pressure"),
+
+    ("Tile Crisis","Election Arc","ELECTION_NIGHT_WIN",
+     "THE REPUBLIC ENDURES: UALANI'S COALITION CARRIES THE ELECTION",
+     "Followup","turn 100 (pressure > 0)","—",
+     "FIRST PASS","","Not Started","NO","","0",
+     "End-game WIN; fires when sum(electionPressure) > 0 at turn 100"),
+
+    ("Tile Crisis","Election Arc","ELECTION_NIGHT_LOSE",
+     "WELL. THIS IS SOMETHING: KING GEORGE III WINS THE AMERICAN POPULAR VOTE",
+     "Followup","turn 100 (pressure ≤ 0)","—",
+     "FIRST PASS","","Not Started","NO","","0",
+     "End-game LOSE; fires when sum(electionPressure) ≤ 0 at turn 100"),
+
+    # ── VICE PRESIDENT ───────────────────────────────────────────────────────
+    ("VP Arc","VP Arc","VP_FIRST_MEETING",
+     "THE VICE PRESIDENT REQUESTS A WORD: [COMMANDER_NAME] MAKES THEIR POSITION CLEAR",
+     "Root","—","—",
+     "FIRST PASS","","Not Started","NO","","0",
+     "Fires turn 5+, one-time; sets vp_met flag; gates all other VP events"),
+
+    ("VP Arc","VP Arc","VP_COUNSEL",
+     "THE VICE PRESIDENT ARRIVES LATE WITH GOOD ADVICE: [COMMANDER_NAME] READS THE SITUATION",
+     "Branch","VP_FIRST_MEETING (vp_met flag)","—",
+     "FIRST PASS","","Not Started","NO","","0",
+     "Fires when presidentialClaim < -2; BTN1 morale +10 / BTN2 loyalty vp_faction +10"),
+
+    ("VP Arc","VP Arc","VP_DOUBT",
+     "THE VICE PRESIDENT AT 2 A.M.: [COMMANDER_NAME] IS QUESTIONING EVERYTHING",
+     "Branch","VP_FIRST_MEETING (vp_met flag)","—",
+     "FIRST PASS","","Not Started","NO","sensual option","0",
+     "Fires when VP tile moralDecay >= 30; BTN2 sensual morale +25"),
+
+    ("VP Arc","VP Arc","VP_LOYALTY_TEST",
+     "[COMMANDER_NAME]'S COALITION WANTS ANSWERS — THE FACTION DEMANDS A PUBLIC STATEMENT",
+     "Branch","VP_FIRST_MEETING (vp_met flag)","—",
+     "FIRST PASS","","Not Started","NO","","0",
+     "Fires when VP faction loyalty < 20; BTN1 vp_faction +15 / BTN2 vp_faction +5"),
+
+    ("VP Arc","VP Arc","VP_BATTLEFIELD",
+     "THE VICE PRESIDENT PICKS UP A MUSKET: [COMMANDER_NAME] AT THE FRONT LINE",
+     "Branch","VP_FIRST_MEETING (vp_met flag)","—",
+     "FIRST PASS","","Not Started","YES","explicit option","0",
+     "Fires when VP tile has UK neighbor + stationed army; BTN2 explicit morale +30"),
+
+    ("VP Arc","VP Arc","VP_PRE_ELECTION",
+     "THE VICE PRESIDENT CALLS AN UNSCHEDULED MEETING — [COMMANDER_NAME] ISN'T SURE THEY WANT TO RUN",
+     "Branch","VP_FIRST_MEETING (vp_met flag)","—",
+     "FIRST PASS","","Not Started","YES","explicit option","0",
+     "Fires turns 88-92; BTN1 sets vp_declined_candidacy (hides ELECTION_BTN1); BTN2 explicit morale +20"),
+
+    ("VP Arc","VP Arc","VP_SACRIFICE",
+     "THE VICE PRESIDENT OFFERS THEIR RESIGNATION — [COMMANDER_NAME] WANTS TO PROTECT THE REPUBLIC",
+     "Branch","VP_FIRST_MEETING (vp_met flag)","—",
+     "FIRST PASS","","Not Started","NO","","0",
+     "Fires when VP tile electionPressure < -20; BTN1 sets vp_resigned / BTN2 vp_faction +10"),
+
+    ("VP Arc","VP Arc","VP_SOLIDARITY",
+     "THE VICE PRESIDENT HAS BEEN PAYING ATTENTION — [COMMANDER_NAME] MAKES A SPECIFIC OBSERVATION",
+     "Branch","VP_FIRST_MEETING (vp_met flag)","—",
+     "FIRST PASS","","Not Started","NO","","0",
+     "Fires when agreed_protectors >= 3; BTN1 morale +15 / BTN2 vp_faction +10"),
+
+    ("VP Arc","VP Arc","VP_LEGACY",
+     "THE VICE PRESIDENT LEAVES A NOTE — [COMMANDER_NAME] HAS SOMETHING TO SAY",
+     "Followup","VP_FIRST_MEETING (turn 96+)","—",
+     "FIRST PASS","","Not Started","YES","explicit option","0",
+     "Fires turn 96+; BTN1 claim +1 / BTN2 explicit morale +30"),
 
     # ── IDEAS ────────────────────────────────────────────────────────────────
     ("Idea","Ualani Expansion","UALANI_DOCK_01",

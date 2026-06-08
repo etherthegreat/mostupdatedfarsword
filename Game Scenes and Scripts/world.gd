@@ -1048,10 +1048,14 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 			var leader = _find_or_create_leader(outcome_value)
 			$CanvasLayer/FactionControl.addFaction(outcome_value, outcome_amount, leader)
 		"loyalty_change":
+			var lc_faction: String = outcome_value
+			if lc_faction == "vp_faction" and _vp_faction != "":
+				lc_faction = _vp_faction
 			var lc_amount = outcome_amount
-			if _vp_faction != "" and outcome_value == _vp_faction:
+			if _vp_faction != "" and lc_faction == _vp_faction:
 				lc_amount *= 2
-			playerCountryNode.changeFactionLoyalty(outcome_value, lc_amount)
+			if lc_faction != "":
+				playerCountryNode.changeFactionLoyalty(lc_faction, lc_amount)
 		"add_spell":
 			playerCountryNode.addSpellToSpellbook(outcome_value, outcome_amount, 0)
 			playerCountryNode.levelUpSchool(_get_spell_school(outcome_value))
@@ -1221,6 +1225,7 @@ func evaluateDateEvents() -> void:
 		_check_ualani_culper()
 		_check_ualani_alliance()
 		_check_ualani_frontier()
+		_check_vp_events()
 		_tick_wild_protectors()
 		_check_protector_summons()
 		_tick_commander_turns()
@@ -1968,6 +1973,147 @@ func _check_ualani_frontier() -> void:
 			print("[Ualani] Frontier at ", tile.tileName,
 				" bordering ", neighbor.tileContinent)
 			return
+
+
+# ── VICE PRESIDENT EVENTS ────────────────────────────────────────
+
+func _find_governor_tile(gov) -> Tile:
+	if gov == null:
+		return null
+	for tile in playerCountryNode.OwnedTileList:
+		if tile.tileGovernor == gov:
+			return tile
+	return null
+
+
+func _count_agreed_protectors() -> int:
+	var count: int = 0
+	for pid in PROTECTOR_IDS:
+		if playerCountryNode.CountryFlags.has(pid.to_lower() + "_agreed"):
+			count += 1
+	return count
+
+
+func _fire_vp_event(event_id: String, vp_tile: Tile) -> bool:
+	_start_cooldown(event_id, 999)
+	_start_cooldown("VP_EVENTS", 13)
+	createNewEvent(event_id, vp_tile)
+	print("[VP] Event fired: ", event_id)
+	return true
+
+
+func _check_vp_events() -> void:
+	if _vp_governor == null:
+		return
+	if _event_on_cooldown("VP_EVENTS"):
+		return
+	var vp_tile: Tile = _find_governor_tile(_vp_governor)
+	if vp_tile == null:
+		return
+	if _try_vp_first_meeting(vp_tile): return
+	if _try_vp_doubt(vp_tile): return
+	if _try_vp_sacrifice(vp_tile): return
+	if _try_vp_pre_election(vp_tile): return
+	if _try_vp_loyalty_test(vp_tile): return
+	if _try_vp_counsel(vp_tile): return
+	if _try_vp_battlefield(vp_tile): return
+	if _try_vp_solidarity(vp_tile): return
+	if _try_vp_legacy(vp_tile): return
+
+
+func _try_vp_first_meeting(vp_tile: Tile) -> bool:
+	if _event_on_cooldown("VP_FIRST_MEETING"):
+		return false
+	if currentWorldTurn < 5:
+		return false
+	return _fire_vp_event("VP_FIRST_MEETING", vp_tile)
+
+
+func _try_vp_counsel(vp_tile: Tile) -> bool:
+	if _event_on_cooldown("VP_COUNSEL"):
+		return false
+	if not playerCountryNode.CountryFlags.has("vp_met"):
+		return false
+	if playerCountryNode.presidentialClaim >= -2.0:
+		return false
+	return _fire_vp_event("VP_COUNSEL", vp_tile)
+
+
+func _try_vp_doubt(vp_tile: Tile) -> bool:
+	if _event_on_cooldown("VP_DOUBT"):
+		return false
+	if not playerCountryNode.CountryFlags.has("vp_met"):
+		return false
+	if vp_tile.tileMoralDecay < 30:
+		return false
+	return _fire_vp_event("VP_DOUBT", vp_tile)
+
+
+func _try_vp_loyalty_test(vp_tile: Tile) -> bool:
+	if _event_on_cooldown("VP_LOYALTY_TEST"):
+		return false
+	if not playerCountryNode.CountryFlags.has("vp_met"):
+		return false
+	if _vp_faction == "":
+		return false
+	for faction in playerCountryNode.countryFactionList:
+		if faction.factionName == _vp_faction and faction.factionLoyalty < 20:
+			return _fire_vp_event("VP_LOYALTY_TEST", vp_tile)
+	return false
+
+
+func _try_vp_battlefield(vp_tile: Tile) -> bool:
+	if _event_on_cooldown("VP_BATTLEFIELD"):
+		return false
+	if not playerCountryNode.CountryFlags.has("vp_met"):
+		return false
+	if not vp_tile.has_neighbor_owned_by("UK"):
+		return false
+	if vp_tile.stationedArmy == null:
+		return false
+	return _fire_vp_event("VP_BATTLEFIELD", vp_tile)
+
+
+func _try_vp_pre_election(vp_tile: Tile) -> bool:
+	if _event_on_cooldown("VP_PRE_ELECTION"):
+		return false
+	if currentWorldTurn < 88 or currentWorldTurn > 92:
+		return false
+	if not playerCountryNode.CountryFlags.has("vp_met"):
+		return false
+	return _fire_vp_event("VP_PRE_ELECTION", vp_tile)
+
+
+func _try_vp_sacrifice(vp_tile: Tile) -> bool:
+	if _event_on_cooldown("VP_SACRIFICE"):
+		return false
+	if not playerCountryNode.CountryFlags.has("vp_met"):
+		return false
+	if playerCountryNode.CountryFlags.has("vp_resigned"):
+		return false
+	if vp_tile.electionPressure >= -20:
+		return false
+	return _fire_vp_event("VP_SACRIFICE", vp_tile)
+
+
+func _try_vp_solidarity(vp_tile: Tile) -> bool:
+	if _event_on_cooldown("VP_SOLIDARITY"):
+		return false
+	if not playerCountryNode.CountryFlags.has("vp_met"):
+		return false
+	if _count_agreed_protectors() < 3:
+		return false
+	return _fire_vp_event("VP_SOLIDARITY", vp_tile)
+
+
+func _try_vp_legacy(vp_tile: Tile) -> bool:
+	if _event_on_cooldown("VP_LEGACY"):
+		return false
+	if currentWorldTurn < 96:
+		return false
+	if not playerCountryNode.CountryFlags.has("vp_met"):
+		return false
+	return _fire_vp_event("VP_LEGACY", vp_tile)
 
 
 # ── VICE PRESIDENT & ELECTION SYSTEM ────────────────────────────
