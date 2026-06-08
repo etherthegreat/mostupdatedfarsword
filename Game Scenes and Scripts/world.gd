@@ -1031,6 +1031,15 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 			playerCountryNode.CountryFlags.append(outcome_value)
 		"clear_flag":
 			playerCountryNode.CountryFlags.erase(outcome_value)
+		"set_mission_flag":
+			# Like set_flag but encodes the target tile number so the checker
+			# knows which fort the mission is attached to.
+			var flag_val: String = outcome_value
+			if tile != null:
+				flag_val = outcome_value + "_" + str(tile.tileNumber)
+			if not playerCountryNode.CountryFlags.has(flag_val):
+				playerCountryNode.CountryFlags.append(flag_val)
+				print("[Fort Mission] Activated: ", flag_val)
 		"remove_governor":
 			# Sack the tile's governor and generate a procedural replacement.
 			if tile != null and tile.tileGovernor != null:
@@ -1049,12 +1058,31 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 			push_warning("executeOutcome: Unknown outcome type: " + outcome_type)
 
 func evaluateDateEvents() -> void:
+	checkPendingFortMissions()
 	var to_fire = EventDatabase.evaluate_date_triggers(currentWorldTurn, month)
 	for event_id in to_fire:
 		if event_id == "FORT_001":
 			_fire_fort_disrepair_event()
 		else:
 			createNewEvent(event_id)
+
+func checkPendingFortMissions() -> void:
+	for tile in playerCountryNode.OwnedTileList:
+		if not tile.fortDisrepair:
+			continue
+		if tile.stationedArmy == null or tile.stationedArmy.parentCountry != playerCountryNode:
+			continue
+		var tile_id: String = str(tile.tileNumber)
+		var pub_flag:  String = "fort_mission_public_"  + tile_id
+		var priv_flag: String = "fort_mission_private_" + tile_id
+		if playerCountryNode.CountryFlags.has(pub_flag):
+			playerCountryNode.CountryFlags.erase(pub_flag)
+			print("[Fort Mission] Army arrived — firing public confrontation at ", tile.tileName)
+			createNewEvent("FORT_003", tile)
+		elif playerCountryNode.CountryFlags.has(priv_flag):
+			playerCountryNode.CountryFlags.erase(priv_flag)
+			print("[Fort Mission] Army arrived — firing private meeting at ", tile.tileName)
+			createNewEvent("FORT_004", tile)
 
 func _fire_fort_disrepair_event() -> void:
 	if not EventDatabase.event_can_fire("FORT_001", currentWorldTurn):
@@ -1071,10 +1099,6 @@ func _fire_fort_disrepair_event() -> void:
 		return
 	var target: Tile = candidates[randi() % candidates.size()]
 	target.fortDisrepair = true
-	# Check if a player army is already garrisoned in this tile
-	playerCountryNode.CountryFlags.erase("ualani_at_fort")
-	if target.stationedArmy != null and target.stationedArmy.parentCountry == playerCountryNode:
-		playerCountryNode.CountryFlags.append("ualani_at_fort")
 	EventDatabase.mark_event_fired("FORT_001", currentWorldTurn)
 	createNewEvent("FORT_001", target)
 
