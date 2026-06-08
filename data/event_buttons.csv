@@ -303,6 +303,8 @@ CA_PROT_08_T_BTN1,CA_PROT_08_TAME,File the Repatriation Record — Objects Retur
 CA_PROT_08_T_BTN2,CA_PROT_08_TAME,Issue Continental Legal Authority Certificate — Crown Custody Contested,standard,set_flag,ca_prot_08_tame,0,,,,CA_PROT_08_AGREE,
 CA_PROT_08_A_BTN1,CA_PROT_08_AGREE,Classify the Gougou as Active Strategic Asset — Issue Maritime Permits,standard,set_flag,ca_prot_08_agreed,0,,,,,
 CA_PROT_08_A_BTN2,CA_PROT_08_AGREE,What Jessica Told You About the Gougou's Real Name — and What It Cost Her to Learn It,explicit,set_flag,ca_prot_08_agreed,0,,,,,
+GEORGE_PEACE_BTN1,GEORGE_PEACE_01,Accept His Majesty's Terms — The War Ends Here,standard,george_peace_accept,,0,,,,,
+GEORGE_PEACE_BTN2,GEORGE_PEACE_01,Decline — The Republic Does Not Negotiate on the Crown's Schedule,standard,george_peace_reject,,0,,,,,
 PEACE_ALLIED_BTN1,PEACE_ALLIED_01,Sign the Treaty — The Crown Departs the Continent,standard,set_flag,peace_allied_signed,0,,,,,
 PEACE_ALLIED_BTN2,PEACE_ALLIED_01,The Night After the Peace Was Signed — Ualani Carlisle and Jessica Clear-Water Celebrate Alone,sensual,set_flag,peace_allied_signed,0,,,,,
 PEACE_USA_BTN1,PEACE_USA_01,Sign the Treaty — The Republic Stands,standard,set_flag,peace_usa_signed,0,,,,,

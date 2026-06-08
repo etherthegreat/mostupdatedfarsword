@@ -992,6 +992,12 @@ EVENTS = [
      "Sets ca_prot_08_agreed; BTN2 explicit — the Gougou's real name"),
 
     # ── PEACE EVENTS ────────────────────────────────────────────────────────
+    ("Canada","Peace","GEORGE_PEACE_01",
+     "A ROYAL LETTER ARRIVES — HIS MAJESTY PROPOSES PEACE",
+     "Root","—","—",
+     "FIRST PASS","","Not Started","NO","standard","0",
+     "Fires turn 75-80 if war ongoing; BTN1 george_peace_accept (allied=both peaces, unallied=USA only); BTN2 george_peace_reject (+claim +1); never fires if peace already settled"),
+
     ("Canada","Peace","PEACE_ALLIED_01",
      "PEACE OF [TILE_NAME] — THE CROWN EXPELLED FROM THE CONTINENT",
      "Root","—","—",

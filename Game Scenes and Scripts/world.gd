@@ -1444,6 +1444,14 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 				print("[Election] ", tile.tileName, " pressure → ", tile.electionPressure)
 		"trigger_collapse":
 			_execute_republic_collapse()
+		"george_peace_accept":
+			_apply_george_peace()
+		"george_peace_reject":
+			if not playerCountryNode.CountryFlags.has("george_peace_rejected"):
+				playerCountryNode.CountryFlags.append("george_peace_rejected")
+			playerCountryNode.presidentialClaim = clampf(
+				playerCountryNode.presidentialClaim + 1.0, -10.0, 10.0)
+			print("[George Peace] Rejected — presidentialClaim +1")
 		"nothing":
 			pass
 		_:
@@ -1461,6 +1469,7 @@ func evaluateDateEvents() -> void:
 		_check_war_events()
 		_check_can_events()
 		_check_ca_protectors()
+		_check_george_peace_offer()
 		_check_peace_conditions()
 		_check_harvest_crisis()
 		_check_harbor_threat()
@@ -2778,6 +2787,68 @@ func _check_ca_protectors() -> void:
 		print("[CA Protector] SUMMON fired: ", summon_id,
 			  " at tile ", CA_PROT_TILES.get(pid, 0), " turn ", currentWorldTurn)
 		return
+
+
+# ── GEORGE III PEACE OFFER ───────────────────────────────────────────────────
+
+func _check_george_peace_offer() -> void:
+	if currentWorldTurn < 75 or currentWorldTurn > 80:
+		return
+	if _event_on_cooldown("GEORGE_PEACE_01"):
+		return
+	if playerCountryNode.CountryFlags.has("george_peace_rejected"):
+		return
+	if playerCountryNode.CountryFlags.has("george_peace_accepted"):
+		return
+
+	var uk_country = null
+	for c in aliveCountriesList:
+		if c.CID == "UK":
+			uk_country = c
+			break
+	if uk_country == null:
+		return
+
+	# Don't fire if peace is already settled
+	var usa_peace: bool = uk_country.CountryFlags.has("uk_usa_peace")
+	var ca_peace:  bool = uk_country.CountryFlags.has("uk_ca_peace")
+	var is_allied: bool = playerCountryNode.CountryFlags.has("can_allied")
+	if usa_peace and (not is_allied or ca_peace):
+		return
+
+	_start_cooldown("GEORGE_PEACE_01", 999)
+	createNewEvent("GEORGE_PEACE_01", null)
+	print("[George Peace] Turn ", currentWorldTurn, " — peace offer fired")
+
+
+func _apply_george_peace() -> void:
+	var uk_country = null
+	for c in aliveCountriesList:
+		if c.CID == "UK":
+			uk_country = c
+			break
+	if uk_country == null:
+		return
+
+	var is_allied: bool = playerCountryNode.CountryFlags.has("can_allied")
+
+	if not uk_country.CountryFlags.has("uk_usa_peace"):
+		uk_country.CountryFlags.append("uk_usa_peace")
+
+	if is_allied:
+		if not uk_country.CountryFlags.has("uk_ca_peace"):
+			uk_country.CountryFlags.append("uk_ca_peace")
+		for c in aliveCountriesList:
+			if c.CID == "CA":
+				if not c.CountryFlags.has("uk_ca_peace"):
+					c.CountryFlags.append("uk_ca_peace")
+				break
+
+	if not playerCountryNode.CountryFlags.has("george_peace_accepted"):
+		playerCountryNode.CountryFlags.append("george_peace_accepted")
+
+	print("[George Peace] Accepted — uk_usa_peace set",
+		" + uk_ca_peace (allied)" if is_allied else " (USA only)")
 
 
 # ── PEACE CONDITIONS ─────────────────────────────────────────────────────────
