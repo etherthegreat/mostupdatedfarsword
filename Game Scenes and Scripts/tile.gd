@@ -36,6 +36,7 @@ var tileCrop: String = "corn"          # corn, apples, hay, soybeans, peanuts, p
 var corruption: int = 0                # scale 0-100
 var fortDisrepair: bool = false        # set by FORT_001 event chain; reduces garrison output
 var presidentFailedTimer: int = 0      # > 0: presidential neglect active; ticks down each turn
+var disabled_buildings: Dictionary = {}   # buildingType → turns_remaining until re-enabled
 var buildings: Dictionary = {}         # {"barracks": 3, "farm": 1, "dock": 2}
 var tileSpecialFeatures: Array = []    # ["Gettysburg Memorial", "Appalachian Minerals"]
 var winterScore: int = 0
@@ -547,6 +548,8 @@ func censusTile(playerCountryNode):
 	tileDollarsTax = 0
 	tileHappinessTax = 0
 	for building in tileBuildingsList:
+		if not building.enabled:
+			continue
 		building.calculateOutputs(playerCountryNode)
 		buildingFoodOutput += building.totalBuildingFood
 		buildingWoodOutput += building.totalBuildingWood
@@ -592,6 +595,8 @@ func surveyTile(playerCountryNode):
 	tileDollarsTax = 0
 	tileHappinessTax = 0
 	for building in tileBuildingsList:
+		if not building.enabled:
+			continue
 		building.calculateOutputs(playerCountryNode)
 		buildingFoodOutput += building.totalBuildingFood
 		buildingWoodOutput += building.totalBuildingWood
@@ -1747,12 +1752,41 @@ func record_conquest(conquering_faction: String) -> void:
 	calculateCorruption()
  
 func tick_conquest_timer() -> void:
-	# Call this from world.gd each month for all tiles
 	if turnsSinceConquest <= conquestThreshold + 24:
 		turnsSinceConquest += 1
 	if presidentFailedTimer > 0:
 		presidentFailedTimer -= 1
- 
+	var re_enable: Array = []
+	for btype in disabled_buildings.keys():
+		disabled_buildings[btype] -= 1
+		if disabled_buildings[btype] <= 0:
+			re_enable.append(btype)
+	for btype in re_enable:
+		disabled_buildings.erase(btype)
+		for b in tileBuildingsList:
+			if b.buildingType == btype:
+				b.enabled = true
+				print("[Tile] Re-enabled '", btype, "' at ", tileName)
+				break
+
+func disable_building(type: String, turns: int) -> void:
+	for b in tileBuildingsList:
+		if b.buildingType == type:
+			b.enabled = false
+			disabled_buildings[type] = turns
+			print("[Tile] Disabled '", type, "' for ", turns, " turns at ", tileName)
+			return
+	push_warning("[Tile] disable_building: no building of type '" + type + "' at " + tileName)
+
+func is_building_disabled(type: String) -> bool:
+	return disabled_buildings.has(type)
+
+func has_neighbor_owned_by(cid: String) -> bool:
+	for n in TileNeighbors:
+		if n.tileOwner == cid:
+			return true
+	return false
+
 func get_conquest_liberty_boost() -> int:
 	# How much liberty bonus does recent conquest give?
 	# Fresh UK conquest of a tile = high resistance energy

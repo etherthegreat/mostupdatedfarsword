@@ -30,6 +30,7 @@ var displayCorruption: bool
 
 var _republic_collapsed: bool = false
 var _mission_timers: Dictionary = {}   # flag_key → turns_remaining until expiry
+var _event_cooldowns: Dictionary = {}  # event_id → turns_remaining before can fire again
 
 const CANADIAN_STATES = ["CA - QB", "CA - OT", "CA - NB", "CA - NS", "CA - PEI"]
 
@@ -1108,10 +1109,28 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 				tile.filledGovernorSlot = false
 				_generate_and_assign_governor(tile)
 		"repair_fort":
-			# Clear the fort disrepair flag and clean up the presence check flag.
 			if tile != null:
 				tile.fortDisrepair = false
 			playerCountryNode.CountryFlags.erase("ualani_at_fort")
+		"disable_building":
+			if tile != null:
+				tile.disable_building(outcome_value, int(outcome_amount))
+			else:
+				push_warning("executeOutcome: disable_building requires a tile context")
+		"set_mission_flag_own":
+			# Like set_mission_flag but completion condition is tile ownership, not army presence
+			if tile == null:
+				push_warning("executeOutcome: set_mission_flag_own requires a tile context")
+			else:
+				var flag_val: String = "mission_" + outcome_value + "_" + str(tile.tileNumber) + "_own"
+				if not playerCountryNode.CountryFlags.has(flag_val):
+					playerCountryNode.CountryFlags.append(flag_val)
+					var timeout: int = int(outcome_amount)
+					if timeout > 0:
+						_mission_timers[flag_val] = timeout
+						print("[Mission] Activated (own): ", flag_val, " — expires in ", timeout, " turns")
+					else:
+						print("[Mission] Activated (own): ", flag_val, " — no timeout")
 		"trigger_collapse":
 			_execute_republic_collapse()
 		"nothing":
@@ -1126,6 +1145,16 @@ func evaluateDateEvents() -> void:
 	checkStateSecessionConditions()
 	_calculate_presidential_claim()
 	_update_governor_loyalty()
+	_tick_event_cooldowns()
+	if playerCountry == "USA" and not _republic_collapsed:
+		_check_harvest_crisis()
+		_check_harbor_threat()
+		_check_forge_threat()
+		_check_corruption_crisis()
+		_check_border_dispute()
+		_check_garrison_hunger()
+		_check_legitimacy_crisis()
+		_check_turncoat_general()
 	var to_fire = EventDatabase.evaluate_date_triggers(currentWorldTurn, month)
 	for event_id in to_fire:
 		if event_id == "FORT_001":
@@ -1135,29 +1164,41 @@ func evaluateDateEvents() -> void:
 
 func checkPendingMissions() -> void:
 	var flags_to_remove: Array = []
-	var events_to_fire: Array = []   # each entry is [event_id, tile]
+	var events_to_fire: Array = []
 
 	for flag in playerCountryNode.CountryFlags:
 		if not flag.begins_with("mission_"):
 			continue
-		var body: String = flag.substr(8)          # strip leading "mission_"
-		var last_us: int  = body.rfind("_")
+		var body: String = flag.substr(8)
+
+		# Detect ownership-type mission (_own suffix)
+		var own_type: bool = body.ends_with("_own")
+		if own_type:
+			body = body.substr(0, body.length() - 4)
+
+		var last_us: int = body.rfind("_")
 		if last_us == -1:
 			continue
-		var event_id:      String = body.substr(0, last_us)
-		var tile_num_str:  String = body.substr(last_us + 1)
+		var event_id: String = body.substr(0, last_us)
+		var tile_num_str: String = body.substr(last_us + 1)
 		if not tile_num_str.is_valid_int():
 			continue
 		var tile_num: int = tile_num_str.to_int()
 
-		for tile in playerCountryNode.OwnedTileList:
+		# _own missions search all tiles; army missions only search owned tiles
+		var search_list: Array = $TileController.get_children() if own_type else playerCountryNode.OwnedTileList
+		for tile in search_list:
 			if tile.tileNumber != tile_num:
 				continue
-			# Condition: player's army must be present in that tile
-			if tile.stationedArmy != null and tile.stationedArmy.parentCountry == playerCountryNode:
+			var condition_met: bool
+			if own_type:
+				condition_met = tile.tileOwner == "USA"
+			else:
+				condition_met = tile.stationedArmy != null and tile.stationedArmy.parentCountry == playerCountryNode
+			if condition_met:
 				flags_to_remove.append(flag)
 				events_to_fire.append([event_id, tile])
-				print("[Mission] Army present — firing ", event_id, " at ", tile.tileName)
+				print("[Mission] Condition met (", "own" if own_type else "army", ") — firing ", event_id, " at ", tile.tileName)
 			break
 
 	for flag in flags_to_remove:
@@ -1232,11 +1273,14 @@ func checkMissionExpiry() -> void:
 
 
 func _on_mission_expired(flag: String) -> void:
-	# Parse "mission_<eventId>_<tileNum>"
 	var body: String = flag.substr(8)
-	var last_us: int  = body.rfind("_")
+	# Strip _own suffix before parsing
+	if body.ends_with("_own"):
+		body = body.substr(0, body.length() - 4)
+	var last_us: int = body.rfind("_")
 	if last_us == -1:
 		return
+	var event_id: String = body.substr(0, last_us)
 	var tile_num_str: String = body.substr(last_us + 1)
 	if not tile_num_str.is_valid_int():
 		return
@@ -1258,6 +1302,11 @@ func _on_mission_expired(flag: String) -> void:
 	playerCountryNode.presidentialClaim = clampf(
 		playerCountryNode.presidentialClaim - 2.0, -10.0, 10.0)
 	print("[Claim] Mission-failure penalty. Claim now: ", playerCountryNode.presidentialClaim)
+
+	# Event-specific expiry effects
+	if event_id.begins_with("CORRUPT_"):
+		source_tile.disable_building("Courthouse", 10)
+		print("[Corrupt] Courthouse disabled 10 turns at ", source_tile.tileName)
 
 
 # ── STATE SECESSION ──────────────────────────────────────────────
@@ -1506,6 +1555,173 @@ func _fire_fort_disrepair_event() -> void:
 	target.fortDisrepair = true
 	EventDatabase.mark_event_fired("FORT_001", currentWorldTurn)
 	createNewEvent("FORT_001", target)
+
+
+# ── EVENT COOLDOWN HELPERS ───────────────────────────────────────
+func _tick_event_cooldowns() -> void:
+	var expired: Array = []
+	for eid in _event_cooldowns.keys():
+		_event_cooldowns[eid] -= 1
+		if _event_cooldowns[eid] <= 0:
+			expired.append(eid)
+	for eid in expired:
+		_event_cooldowns.erase(eid)
+
+func _event_on_cooldown(event_id: String) -> bool:
+	return _event_cooldowns.has(event_id)
+
+func _start_cooldown(event_id: String, turns: int) -> void:
+	_event_cooldowns[event_id] = turns
+
+
+# ── CHAIN 5: HARVEST CRISIS ──────────────────────────────────────
+func _check_harvest_crisis() -> void:
+	if _event_on_cooldown("HARVEST_001"):
+		return
+	if playerCountryNode.TotalFood >= 50:
+		return
+	var candidates: Array = []
+	for tile in playerCountryNode.OwnedTileList:
+		for b in tile.tileBuildingsList:
+			if b.buildingType == "Farm" and b.enabled:
+				candidates.append(tile)
+				break
+	if candidates.is_empty():
+		return
+	var target: Tile = candidates[randi() % candidates.size()]
+	_start_cooldown("HARVEST_001", 20)
+	createNewEvent("HARVEST_001", target)
+	print("[Harvest] Food crisis — firing HARVEST_001 at ", target.tileName)
+
+
+# ── CHAIN 1: HARBOR THREAT ───────────────────────────────────────
+func _check_harbor_threat() -> void:
+	if _event_on_cooldown("HARBOR_001"):
+		return
+	var candidates: Array = []
+	for tile in playerCountryNode.OwnedTileList:
+		if not tile.has_neighbor_owned_by("UK"):
+			continue
+		for b in tile.tileBuildingsList:
+			if b.buildingType == "Dock" and b.enabled:
+				candidates.append(tile)
+				break
+	if candidates.is_empty():
+		return
+	var target: Tile = candidates[randi() % candidates.size()]
+	_start_cooldown("HARBOR_001", 15)
+	createNewEvent("HARBOR_001", target)
+	print("[Harbor] Threat detected — firing HARBOR_001 at ", target.tileName)
+
+
+# ── CHAIN 6: FORGE THREAT ────────────────────────────────────────
+func _check_forge_threat() -> void:
+	if _event_on_cooldown("FORGE_001"):
+		return
+	var candidates: Array = []
+	for tile in playerCountryNode.OwnedTileList:
+		if not tile.has_neighbor_owned_by("UK"):
+			continue
+		for b in tile.tileBuildingsList:
+			if b.buildingType == "Forge" and b.enabled:
+				candidates.append(tile)
+				break
+	if candidates.is_empty():
+		return
+	var target: Tile = candidates[randi() % candidates.size()]
+	_start_cooldown("FORGE_001", 15)
+	createNewEvent("FORGE_001", target)
+	print("[Forge] Threat detected — firing FORGE_001 at ", target.tileName)
+
+
+# ── CHAIN 2: CORRUPTION CRISIS ───────────────────────────────────
+func _check_corruption_crisis() -> void:
+	if _event_on_cooldown("CORRUPT_001"):
+		return
+	var candidates: Array = []
+	for tile in playerCountryNode.OwnedTileList:
+		if tile.corruption < 50:
+			continue
+		for b in tile.tileBuildingsList:
+			if b.buildingType == "Courthouse" and b.enabled:
+				candidates.append(tile)
+				break
+	if candidates.is_empty():
+		return
+	var target: Tile = candidates[randi() % candidates.size()]
+	_start_cooldown("CORRUPT_001", 12)
+	createNewEvent("CORRUPT_001", target)
+	print("[Corrupt] Crisis detected — firing CORRUPT_001 at ", target.tileName)
+
+
+# ── CHAIN 9: BORDER DISPUTE ──────────────────────────────────────
+func _check_border_dispute() -> void:
+	if _event_on_cooldown("BORDER_001"):
+		return
+	var candidates: Array = []
+	for tile in playerCountryNode.OwnedTileList:
+		if tile.terrain not in ["Woods", "Foothills", "Wetlands"]:
+			continue
+		var has_ca_neighbor: bool = false
+		for n in tile.TileNeighbors:
+			if n.tileContinent in CANADIAN_STATES:
+				has_ca_neighbor = true
+				break
+		if has_ca_neighbor:
+			candidates.append(tile)
+	if candidates.is_empty():
+		return
+	var target: Tile = candidates[randi() % candidates.size()]
+	_start_cooldown("BORDER_001", 15)
+	createNewEvent("BORDER_001", target)
+	print("[Border] Dispute detected — firing BORDER_001 at ", target.tileName)
+
+
+# ── CHAIN 3: STARVING GARRISON ───────────────────────────────────
+func _check_garrison_hunger() -> void:
+	if _event_on_cooldown("GARRISON_001"):
+		return
+	for army in playerCountryNode.countryArmyList:
+		if not is_instance_valid(army) or army.deleteMode or army.inTile == null:
+			continue
+		if army.inTile.tileOwner != "USA":
+			continue
+		if army.manpowerInArmy < 50:
+			_start_cooldown("GARRISON_001", 12)
+			createNewEvent("GARRISON_001", army.inTile)
+			print("[Garrison] Starving army at ", army.inTile.tileName)
+			return
+
+
+# ── CHAIN 8: LEGITIMACY CRISIS ───────────────────────────────────
+func _check_legitimacy_crisis() -> void:
+	if _event_on_cooldown("CRISIS_CLAIM_001"):
+		return
+	if playerCountryNode.presidentialClaim > -5.0:
+		return
+	_start_cooldown("CRISIS_CLAIM_001", 20)
+	createNewEvent("CRISIS_CLAIM_001")
+	print("[Crisis] Legitimacy crisis — claim at ", playerCountryNode.presidentialClaim)
+
+
+# ── CHAIN 4: TURNED GENERAL ──────────────────────────────────────
+func _check_turncoat_general() -> void:
+	if _event_on_cooldown("TURNCOAT_001"):
+		return
+	var suspect_tile: Tile = null
+	for tile in $TileController.get_children():
+		if tile.tileOwner != "USA" or tile.tileGovernor == null:
+			continue
+		if tile.tileGovernor.loyalty <= -8.0:
+			suspect_tile = tile
+			break
+	if suspect_tile == null:
+		return
+	_start_cooldown("TURNCOAT_001", 15)
+	createNewEvent("TURNCOAT_001", suspect_tile)
+	print("[Turncoat] Suspicious commander: ", suspect_tile.tileGovernor.governorType,
+		" at ", suspect_tile.tileName)
+
 
 func _generate_and_assign_governor(tile: Tile) -> void:
 	var portrait_placeholder: Texture = load(
@@ -1938,6 +2154,13 @@ func tileSiegeWon(tile, oldCID: String, newCID: String) -> void:
 		var has_courthouse: bool = tile.buildings.get("courthouse", 0) > 0
 		if has_courthouse and playerCountryNode.CountryFlags.has("rebel_" + state_code):
 			_fire_state_reintegration(state_code, tile)
+
+	# Memorial: UK captures a tile with special features — fire rescue event
+	if newCID == "UK" and playerCountry == "USA" and tile.tileSpecialFeatures.size() > 0:
+		var mem_flag: String = "memorial_mission_" + str(tile.tileNumber)
+		if not playerCountryNode.CountryFlags.has(mem_flag):
+			createNewEvent("MEMORIAL_001", tile)
+			print("[Memorial] UK occupied special feature tile: ", tile.tileName)
 
 func _on_next_turn_pressed() -> void:
 	playerCountryNode.surveyResources()
