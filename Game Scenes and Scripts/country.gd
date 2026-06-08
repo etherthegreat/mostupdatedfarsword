@@ -1163,7 +1163,7 @@ func calculateTurn() -> void:
 		"UK":
 			_uk_calculate_turn()
 		"CA":
-			pass  # CA is neutral for July 4th
+			_ca_calculate_turn()
 		"BA":
 			pass  # BA is opportunist — TODO DODK
 		_:
@@ -1173,6 +1173,54 @@ func calculateTurn() -> void:
 			#   "VA": _virginia_calculate_turn()
 			if not Player and isAlive:
 				_generic_calculate_turn()
+
+
+# ============================================================
+# CANADA AI — DEFENSIVE MILITIA
+# Reinforces armies each turn via _passive_hold(), then presses any
+# adjacent UK tiles where CA has a manpower advantage.
+# Respects formal alliances — never enters allied-country tiles.
+# ============================================================
+
+func _ca_calculate_turn() -> void:
+	_passive_hold()
+	_ca_press_uk_borders()
+
+
+func _ca_press_uk_borders() -> void:
+	var allied_cids: Array = []
+	for ally in ALLIED:
+		if is_instance_valid(ally):
+			allied_cids.append(ally.CID)
+
+	for army in countryArmyList:
+		if not is_instance_valid(army):
+			continue
+		if army.deleteMode or army.inTile == null:
+			continue
+
+		var best_target = null
+		var lowest_strength: float = INF
+		for neighbor in army.inTile.TileNeighbors:
+			if neighbor.tileOwner != "UK":
+				continue
+			if neighbor.tileOwner in allied_cids:
+				continue
+			var def_str: float = 0.0
+			if neighbor.stationedArmy != null:
+				def_str = float(neighbor.stationedArmy.manpowerInArmy)
+			else:
+				def_str = float(neighbor.get_siege_difficulty()) * 30.0
+			if float(army.manpowerInArmy) > def_str * 1.2:
+				if def_str < lowest_strength:
+					lowest_strength = def_str
+					best_target = neighbor
+
+		if best_target != null:
+			best_target.siegeCalculate(army)
+			if best_target.stationedArmy != null:
+				_resolve_ai_battle(army, best_target.stationedArmy, best_target)
+			print("CA ", army.ArmyName, " presses UK at ", best_target.tileName)
 
 
 # ============================================================

@@ -180,6 +180,14 @@ func newGameBuild(CID, gameLang):
 	# 17 protector arcs, then fire the game-start event.
 	generateBarracksCommanders()
 	spawnStartingArmies()
+	# Populate AI country commanders and armies at barracks tiles
+	for ai_country in aliveCountriesList:
+		if ai_country.Player:
+			continue
+		match ai_country.CID:
+			"CA":
+				_generate_ai_barracks_commanders(ai_country)
+				_spawn_ai_starting_armies(ai_country)
 	$CanvasLayer/WarRoomPanel.setupAllProtectors($TileController.get_children())
 	_assign_vice_president()
 	evaluateDateEvents()
@@ -462,6 +470,174 @@ func spawnStartingArmies() -> void:
 			  ", ", arc_id, ")")
 
 	print("[StartingArmies] ", chosen.size(), " starting armies placed.")
+
+
+# ── CANADIAN AI BARRACKS COMMANDERS ─────────────────────────────────────────
+# Scans all CA-owned tiles at game start.  For each barracks tile without a
+# governor already assigned, generates a procedural governor drawn from
+# Canadian-themed archetypes and name pools.  Does NOT register commanders in
+# the War Room (player-only UI) and does NOT spawn Ualani.
+func _generate_ai_barracks_commanders(country_node: country) -> void:
+	var CA_ARCHETYPES := [
+		{"id":"CA_ARC_01","name":"Coureur des Bois",    "position":"SCOUT",     "terrain":["Woods","Wetlands"],       "pools":["NP_06"]},
+		{"id":"CA_ARC_02","name":"Voyageur",             "position":"DIPLOMAT",  "terrain":["Wetlands"],               "pools":["NP_06"]},
+		{"id":"CA_ARC_03","name":"Mi'kmaq Tracker",      "position":"SCOUT",     "terrain":["Woods","Wetlands"],       "pools":["NP_07"]},
+		{"id":"CA_ARC_04","name":"Loyalist Farmer",      "position":"FARMER",    "terrain":["Farmlands","Foothills"],  "pools":["NP_01","NP_02"]},
+		{"id":"CA_ARC_05","name":"Montreal Merchant",    "position":"DIPLOMAT",  "terrain":["Metro"],                  "pools":["NP_06","NP_01"]},
+		{"id":"CA_ARC_06","name":"Habitant Militia",     "position":"SOLDIER",   "terrain":["Farmlands"],              "pools":["NP_06"]},
+		{"id":"CA_ARC_07","name":"Anglican Officer",     "position":"SOLDIER",   "terrain":["Suburbs","Metro"],        "pools":["NP_01","NP_02"]},
+		{"id":"CA_ARC_08","name":"Iroquois Warrior",     "position":"WARRIOR",   "terrain":["Woods"],                  "pools":["NP_07"]},
+		{"id":"CA_ARC_09","name":"Acadian Fisherman",    "position":"SCOUT",     "terrain":["Wetlands","Foothills"],   "pools":["NP_06"]},
+		{"id":"CA_ARC_10","name":"Lumber Camp Foreman",  "position":"ENGINEER",  "terrain":["Woods","Foothills"],      "pools":["NP_01","NP_06"]},
+	]
+
+	var CA_NAME_POOLS := {
+		"NP_01": {
+			"m":  ["Elias","Caleb","Josiah","Nathan","Ezra","Silas","Amos","Seth","Gideon","Abel"],
+			"f":  ["Abigail","Prudence","Mercy","Hannah","Thankful","Patience","Ruth","Lydia","Miriam","Constance"],
+			"nb": ["Sable","Rowe","Birch","Wren","Ash","Flint","Grey"],
+			"l":  ["Aldrich","Whitfield","Hatch","Coffin","Morse","Tilden","Brewster","Alden","Sears"],
+		},
+		"NP_02": {
+			"m":  ["Heinrich","Jakob","Gottfried","Samuel","Johannes","Luther","Conrad","Wilhelm","Ezekiel","Barnabas"],
+			"f":  ["Katarina","Liesel","Anna","Greta","Hilde","Martha","Clara","Dorothea","Marta","Bettina"],
+			"nb": ["Rael","Stern","Thorn","Kels","Bram"],
+			"l":  ["Zimmermann","Keller","Brauer","Hochstetler","Mast","Yoder","Kreider","Becker","Roth"],
+		},
+		"NP_06": {
+			"m":  ["Jean-Baptiste","Rene","Gaston","Emile","Theodore","Alphonse","Honore","Sebastien","Lucien","Fernand"],
+			"f":  ["Marie-Claire","Therese","Marguerite","Colette","Vivienne","Celeste","Odette","Elise","Adele","Brigitte"],
+			"nb": ["Claude","Dominique","Sable","Lune","Rene"],
+			"l":  ["Tremblay","Gagnon","Roy","Cote","Bouchard","Leblanc","Pelletier","Lavoie","Fortin","Bergeron"],
+		},
+		"NP_07": {
+			"m":  ["Skenandoa","Chayton","Tokala","Mahpiya","Elan","Hotah","Chaska","Mato","Ohiyesa","Kimimela"],
+			"f":  ["Winona","Kaya","Aiyana","Taini","Chenoa","Aponi","Wren","Dove","Ama","Shoshana"],
+			"nb": ["River","Ash","Stone","Flint","Cedar","Birch","Sky"],
+			"l":  [""],
+		},
+	}
+
+	var used_names: Dictionary = {}
+	var generated: int = 0
+
+	for tile in $TileController.get_children():
+		if tile.tileOwner != country_node.CID:
+			continue
+		if not tile.buildings.has("barracks"):
+			continue
+		if tile.filledGovernorSlot:
+			continue
+
+		var candidates: Array = []
+		for arch in CA_ARCHETYPES:
+			if tile.terrain in arch["terrain"]:
+				candidates.append(arch)
+		if candidates.is_empty():
+			candidates = CA_ARCHETYPES
+		var chosen_arch: Dictionary = candidates[randi() % candidates.size()]
+
+		var pool_id: String = chosen_arch["pools"][randi() % chosen_arch["pools"].size()]
+		var pool: Dictionary = CA_NAME_POOLS.get(pool_id, CA_NAME_POOLS["NP_06"])
+
+		var gender: int = randi() % 3
+		var first_list: Array
+		match gender:
+			0: first_list = pool["m"]
+			1: first_list = pool["f"]
+			_: first_list = pool["nb"]
+		var last_list: Array = pool.get("l", [])
+
+		var first: String = first_list[randi() % first_list.size()]
+		var last: String = ""
+		if last_list.size() > 0 and last_list[0] != "":
+			last = last_list[randi() % last_list.size()]
+
+		var full_name: String = (first + " " + last).strip_edges()
+
+		var tries: int = 0
+		while used_names.has(full_name) and tries < 8:
+			first = first_list[randi() % first_list.size()]
+			full_name = (first + " " + last).strip_edges()
+			tries += 1
+		used_names[full_name] = true
+
+		var new_gov: governor = governor.new()
+		new_gov.governorType        = full_name
+		new_gov.governorArchetypeId = chosen_arch["id"]
+		new_gov.governorPosition    = chosen_arch["position"]
+		new_gov.governorLevel       = 1
+		new_gov.governorDescription = \
+			"A " + chosen_arch["name"] + " from " + tile.tileName + "."
+		new_gov.governorBiography   = \
+			full_name + " from " + tile.tileName + " (" + tile.terrain + "). " + \
+			"A " + chosen_arch["name"] + " defending the colony."
+		new_gov.hired = false
+
+		country_node.unlockedGovernors.append(new_gov)
+		tile.tileGovernor      = new_gov
+		tile.filledGovernorSlot = true
+		new_gov.hired           = true
+
+		generated += 1
+		print("[CA Commanders] Generated: ", full_name, " — ", chosen_arch["name"],
+			  " at ", tile.tileName, " [", tile.terrain, "]")
+
+	# Assign tile governors to stationed armies
+	var assigned: int = 0
+	for army in country_node.countryArmyList:
+		if army.inTile != null and army.inTile.tileGovernor != null:
+			army.addUnitCommander(army.inTile.tileGovernor)
+			army.updateArmyUI()
+			assigned += 1
+	print("[CA Commanders] ", generated, " commanders generated, ",
+		  assigned, " armies received a commander.")
+
+
+# ── CANADIAN AI STARTING ARMIES ──────────────────────────────────────────────
+# Spawns up to 4 armies at CA-owned barracks tiles (level 2+) that already
+# have a governor assigned.  Must run after _generate_ai_barracks_commanders().
+func _spawn_ai_starting_armies(country_node: country) -> void:
+	var CA_ARMY_SUFFIX := {
+		"CA_ARC_01": "Coureurs Company",   "CA_ARC_02": "River Brigade",
+		"CA_ARC_03": "Forest Trackers",    "CA_ARC_04": "Loyalist Militia",
+		"CA_ARC_05": "Montreal Guard",     "CA_ARC_06": "Habitant Rifles",
+		"CA_ARC_07": "Colonial Infantry",  "CA_ARC_08": "Iroquois Warriors",
+		"CA_ARC_09": "Acadian Rangers",    "CA_ARC_10": "Timber Men",
+	}
+
+	var candidates: Array = []
+	for tile in $TileController.get_children():
+		if tile.tileOwner != country_node.CID:
+			continue
+		if not tile.filledGovernorSlot or tile.tileGovernor == null:
+			continue
+		var blvl: int = int(tile.buildings.get("barracks", 0))
+		if blvl < 2 or blvl > 4:
+			continue
+		if tile.stationedArmy != null:
+			continue
+		candidates.append(tile)
+
+	candidates.shuffle()
+	var chosen: Array = candidates.slice(0, min(4, candidates.size()))
+
+	for tile in chosen:
+		var gov: governor = tile.tileGovernor
+		var arc_id: String = gov.governorArchetypeId if gov.governorArchetypeId != "" else "CA_ARC_06"
+		var army_name: String = tile.tileName + " " + CA_ARMY_SUFFIX.get(arc_id, "Colonial Militia")
+
+		country_node.addArmy(army_name, tile.tileNumber)
+
+		var new_army = country_node.countryArmyList.back()
+		if new_army != null:
+			new_army.addUnitCommander(gov)
+			new_army.updateArmyUI()
+
+		print("[CA Armies] '", army_name, "' at ", tile.tileName,
+			  " (barracks lvl ", int(tile.buildings.get("barracks", 0)), ", ", arc_id, ")")
+
+	print("[CA Armies] ", chosen.size(), " starting armies placed for ", country_node.CID, ".")
 
 
 var countryNode = load("res://Game Scenes and Scripts/country.tscn")
