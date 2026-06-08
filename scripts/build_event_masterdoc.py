@@ -27,6 +27,7 @@ CAT_COLORS = {
     "Canada":         "D6EAF8",
     "CA Protector":   "B8D6F7",
     "Loyal Governor": "F5ECD5",
+    "White House":    "F5E6F0",
     "Idea":           "EDE0F7",
 }
 
@@ -1062,6 +1063,31 @@ EVENTS = [
      "FIRST PASS","","Not Started","YES","explicit option","0",
      "Fires turn 96+; BTN1 claim +1 / BTN2 explicit morale +30"),
 
+    # ── WHITE HOUSE SECRETS ──────────────────────────────────────────────────
+    # Fires when Ualani is stationed at DC (tile 188) during the matching month.
+    # One-shot per event; 12 total; cover holidays Jan–Dec (game starts month 6).
+] + [
+    ("White House", f"Month {month}", f"WH_SECRET_{str(num).zfill(2)}",
+     f"WHITE HOUSE SECRET — {holiday.upper()}",
+     "Root", "—", "—",
+     "FIRST PASS", "", "Not Started", explicit, btn_note, "0",
+     f"Fires when Ualani in DC (tile 188) during month {month}; one-shot")
+    for num, month, holiday, explicit, btn_note in [
+        ( 1,  1, "New Year's Day",           "YES", "sensual option"),
+        ( 2,  2, "President's Day",           "NO",  "standard"),
+        ( 3,  3, "Cherry Blossom Season",     "NO",  "standard"),
+        ( 4,  4, "Easter Morning",            "NO",  "standard"),
+        ( 5,  5, "Cinco de Mayo",             "NO",  "standard"),
+        ( 6,  6, "Juneteenth",                "NO",  "standard"),
+        ( 7,  7, "Independence Day & Pride",  "YES", "explicit option"),
+        ( 8,  8, "Diwali",                    "NO",  "standard"),
+        ( 9,  9, "Halloween",                 "NO",  "standard"),
+        (10, 10, "Indigenous Peoples Day",    "YES", "sensual option"),
+        (11, 11, "Thanksgiving",              "NO",  "standard"),
+        (12, 12, "Christmas",                 "YES", "sensual option"),
+    ]
+] + [
+
     # ── IDEAS ────────────────────────────────────────────────────────────────
     ("Idea","Ualani Expansion","UALANI_DOCK_01",
      "PRESIDENT CARLISLE SURVEYS THE HARBOR AT [TILE_NAME]  ← IDEA",
@@ -1343,6 +1369,7 @@ def add_legend_sheet(wb):
         "Canada":         "Canadian Alliance diplomatic arc + 3 peace events (PEACE_ALLIED_01, PEACE_USA_01, PEACE_CA_AI_01)",
         "CA Protector":   "Jessica Clear-Water's 8 creature arcs; Algonquin, Mi'kmaq, French-Canadian folklore",
         "Loyal Governor": "25 one-shot dispatch events, one per USA governor archetype; tile_yield resource×turns; 3% chance/turn at loyalty≥8",
+        "White House":    "12 personal Ualani events (WH_SECRET_01–12); fires when she is stationed at DC (tile 188) during the matching calendar month; all sensual in tone; some have explicit BTN2",
         "Idea":           "Not yet implemented; concept stage or referenced-but-missing events",
     }
     for cat, color in CAT_COLORS.items():

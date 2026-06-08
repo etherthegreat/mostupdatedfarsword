@@ -1503,6 +1503,7 @@ func evaluateDateEvents() -> void:
 		_check_ualani_culper()
 		_check_ualani_alliance()
 		_check_ualani_frontier()
+		_check_white_house_secrets()
 		_check_vp_events()
 		_tick_wild_protectors()
 		_tick_wild_ca_protectors()
@@ -2252,6 +2253,37 @@ func _check_ualani_frontier() -> void:
 			print("[Ualani] Frontier at ", tile.tileName,
 				" bordering ", neighbor.tileContinent)
 			return
+
+
+# ── WHITE HOUSE SECRETS ──────────────────────────────────────────────────────
+# One event per calendar month, fires when Ualani is stationed at DC (tile 188).
+# One-shot per event; once fired that secret is permanently logged.
+
+func _check_white_house_secrets() -> void:
+	var ualani_tile: Tile = _find_ualani_tile()
+	if ualani_tile == null or ualani_tile.tileNumber != 188:
+		return
+
+	var event_id: String = ""
+	match month:
+		1:  event_id = "WH_SECRET_01"
+		2:  event_id = "WH_SECRET_02"
+		3:  event_id = "WH_SECRET_03"
+		4:  event_id = "WH_SECRET_04"
+		5:  event_id = "WH_SECRET_05"
+		6:  event_id = "WH_SECRET_06"
+		7:  event_id = "WH_SECRET_07"
+		8:  event_id = "WH_SECRET_08"
+		9:  event_id = "WH_SECRET_09"
+		10: event_id = "WH_SECRET_10"
+		11: event_id = "WH_SECRET_11"
+		12: event_id = "WH_SECRET_12"
+
+	if event_id == "" or _event_on_cooldown(event_id):
+		return
+	_start_cooldown(event_id, 999)
+	createNewEvent(event_id, ualani_tile)
+	print("[WHSecrets] ", event_id, " fired — Ualani in DC, month ", month)
 
 
 # ── VICE PRESIDENT EVENTS ────────────────────────────────────────
