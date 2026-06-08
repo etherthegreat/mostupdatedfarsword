@@ -367,6 +367,10 @@ func surveySelf():
 			for law in parentCountry.lawsInConstitution:
 				if law.lawType == "Mercantilism":
 					armyHarmonyCost += (2*uLV)
+	if commander != null:
+		var mm: float = 1.0 + (float(commander.morale) / 100.0) * 0.25
+		armyPunch   = int(float(armyPunch)   * mm)
+		armyDefence = int(float(armyDefence) * mm)
 	pass
 
 func calculateMaxUnitLevel():

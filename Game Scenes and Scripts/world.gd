@@ -31,6 +31,7 @@ var displayCorruption: bool
 var _republic_collapsed: bool = false
 var _mission_timers: Dictionary = {}   # flag_key → turns_remaining until expiry
 var _event_cooldowns: Dictionary = {}  # event_id → turns_remaining before can fire again
+var _commander_turns: Dictionary = {}  # "TileName:CommanderName" → turns_served
 
 const CANADIAN_STATES = ["CA - QB", "CA - OT", "CA - NB", "CA - NS", "CA - PEI"]
 
@@ -1046,7 +1047,14 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 		"resource_change":
 			_apply_resource_change(outcome_value, outcome_amount)
 		"morale_boost":
-			_apply_morale_boost(outcome_amount)
+			_apply_morale_boost(outcome_amount, tile)
+		"promote_commander":
+			if tile != null and tile.tileGovernor != null:
+				tile.tileGovernor.governorLevel = mini(tile.tileGovernor.governorLevel + 1, 3)
+				if tile.tileGovernor.governorLevel >= 3:
+					tile.tileGovernor.questComplete = true
+				print("[Commander] Promoted ", tile.tileGovernor.governorType,
+					" to level ", tile.tileGovernor.governorLevel)
 		"tile_liberation":
 			if tile != null:
 				tile.record_conquest("USA")
@@ -1191,6 +1199,10 @@ func evaluateDateEvents() -> void:
 		_check_ualani_frontier()
 		_tick_wild_protectors()
 		_check_protector_summons()
+		_tick_commander_turns()
+		_check_cmd_merit()
+		_check_cmd_recognition()
+		_check_cmd_thanks()
 	var to_fire = EventDatabase.evaluate_date_triggers(currentWorldTurn, month)
 	for event_id in to_fire:
 		if event_id == "FORT_001":
@@ -1930,6 +1942,81 @@ func _check_ualani_frontier() -> void:
 			return
 
 
+# ── COMMANDER PROGRESSION ────────────────────────────────────────
+
+func _commander_key(tile: Tile) -> String:
+	return tile.tileName + ":" + tile.tileGovernor.governorType
+
+
+func _tick_commander_turns() -> void:
+	for tile in playerCountryNode.OwnedTileList:
+		if tile.tileGovernor == null:
+			continue
+		if tile.stationedArmy == null or tile.stationedArmy.commander == null:
+			continue
+		if tile.stationedArmy.commander != tile.tileGovernor:
+			continue
+		var key = _commander_key(tile)
+		_commander_turns[key] = _commander_turns.get(key, 0) + 1
+
+
+func _check_cmd_merit() -> void:
+	if _event_on_cooldown("CMD_MERIT"):
+		return
+	for tile in playerCountryNode.OwnedTileList:
+		if tile.tileGovernor == null or tile.stationedArmy == null:
+			continue
+		if tile.stationedArmy.commander != tile.tileGovernor:
+			continue
+		if tile.tileGovernor.governorLevel != 1:
+			continue
+		var key = _commander_key(tile)
+		if _commander_turns.get(key, 0) < 5:
+			continue
+		_start_cooldown("CMD_MERIT", 10)
+		createNewEvent("CMD_MERIT", tile)
+		print("[Commander] CMD_MERIT fired for ", tile.tileGovernor.governorType)
+		return
+
+
+func _check_cmd_recognition() -> void:
+	if _event_on_cooldown("CMD_RECOGNITION"):
+		return
+	for tile in playerCountryNode.OwnedTileList:
+		if tile.tileGovernor == null or tile.stationedArmy == null:
+			continue
+		if tile.stationedArmy.commander != tile.tileGovernor:
+			continue
+		if tile.tileGovernor.governorLevel != 2:
+			continue
+		var key = _commander_key(tile)
+		if _commander_turns.get(key, 0) < 20:
+			continue
+		_start_cooldown("CMD_RECOGNITION", 10)
+		createNewEvent("CMD_RECOGNITION", tile)
+		print("[Commander] CMD_RECOGNITION fired for ", tile.tileGovernor.governorType)
+		return
+
+
+func _check_cmd_thanks() -> void:
+	if _event_on_cooldown("CMD_THANKS"):
+		return
+	for tile in playerCountryNode.OwnedTileList:
+		if tile.tileGovernor == null or tile.stationedArmy == null:
+			continue
+		if tile.stationedArmy.commander != tile.tileGovernor:
+			continue
+		if tile.tileGovernor.governorLevel != 3:
+			continue
+		var key = _commander_key(tile)
+		if _commander_turns.get(key, 0) < 50:
+			continue
+		_start_cooldown("CMD_THANKS", 999)
+		createNewEvent("CMD_THANKS", tile)
+		print("[Commander] CMD_THANKS fired for ", tile.tileGovernor.governorType)
+		return
+
+
 # ── WILD PROTECTOR SYSTEM ────────────────────────────────────────
 
 func _is_protector_wild(pid: String) -> bool:
@@ -2044,9 +2131,15 @@ func _apply_resource_change(resource: String, amount: int) -> void:
 		"mandate":         playerCountryNode.TotalMandate   += amount
 		"manpower":        playerCountryNode.TotalManpower  += amount
 
-func _apply_morale_boost(amount: int) -> void:
-	for Tile in playerCountryNode.OwnedTileList:
-		Tile.corruption = max(0, Tile.corruption - int(amount * 0.5))
+func _apply_morale_boost(amount: int, tile = null) -> void:
+	if tile != null and tile.tileGovernor != null:
+		tile.tileGovernor.morale = clampi(tile.tileGovernor.morale + amount, 0, 100)
+		print("[Morale] ", tile.tileGovernor.governorType, " at ", tile.tileName,
+			" morale → ", tile.tileGovernor.morale)
+	else:
+		for t in playerCountryNode.OwnedTileList:
+			if t.tileGovernor != null:
+				t.tileGovernor.morale = clampi(t.tileGovernor.morale + amount, 0, 100)
 
 func _apply_army_buff(buff_type: String, duration: int, tile) -> void:
 	for Army in playerCountryNode.countryArmyList:

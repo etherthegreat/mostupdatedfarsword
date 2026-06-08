@@ -475,17 +475,23 @@ EVENTS = [
      "Sets prot_17_agreed; BTN2 explicit gated"),
 
     # ── COMMANDER ────────────────────────────────────────────────────────────
-    ("Commander","Commander Arc","CMD_OBJECTIVE_1",
-     "A COMMANDER COMPLETES THEIR FIRST TASK",
-     "Root","—","→ CMD_REUNION (arc conclusion)",
-     "FIRST PASS","commander_obj1","Not Started","NO","","0",
-     "commander_objective type; non-repeatable; [COMMANDER_NAME] substitution"),
+    ("Commander","Commander Arc","CMD_MERIT",
+     "FIELD PROMOTION: [COMMANDER_NAME] DISTINGUISHED IN EARLY OPERATIONS",
+     "Root","—","—",
+     "FIRST PASS","","Not Started","NO","","0",
+     "Fires at governorLevel==1 after 5 turns stationed; promote_commander BTN1; morale_boost BTN2"),
 
-    ("Commander","Commander Arc","CMD_REUNION",
-     "THE REUNION",
-     "Followup","CMD_OBJECTIVE_1","—",
-     "FIRST PASS","commander_reunion","Not Started","YES","explicit","0",
-     "commander_reunion type; explicit gated; non-repeatable"),
+    ("Commander","Commander Arc","CMD_RECOGNITION",
+     "CITATION FOR EXCEPTIONAL SERVICE: [COMMANDER_NAME] AT [TILE_NAME]",
+     "Branch","CMD_MERIT","—",
+     "FIRST PASS","","Not Started","NO","","0",
+     "Fires at governorLevel==2 after 20 turns stationed; promote_commander BTN1; claim_change BTN2"),
+
+    ("Commander","Commander Arc","CMD_THANKS",
+     "PRESIDENT CARLISLE DELIVERS PERSONAL THANKS TO [COMMANDER_NAME] AT [TILE_NAME]",
+     "Followup","CMD_RECOGNITION","—",
+     "FIRST PASS","","Not Started","YES","explicit","0",
+     "Fires at governorLevel==3 after 50 turns stationed; BTN2 explicit morale_boost +40; non-repeatable"),
 
     # ── FORT CHAIN ───────────────────────────────────────────────────────────
     ("Fort Chain","Fort Disrepair","FORT_001",
