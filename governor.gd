@@ -28,6 +28,7 @@ var hired: bool
 var loyalty: float = 0.0      # –20 to +20; passive cap of 10 without questComplete
 var morale: int = 50          # 0–100; multiplies army armyPunch/armyDefence by up to +25%
 var isVicePresident: bool = false  # true for one randomly-assigned named governor per game
+var isLeader: bool = false         # true for the named head-of-state of any country
 var questComplete: bool = false
 var _loyalty_acc: float = 0.0  # accumulates sub-integer deltas between turns
 
@@ -112,6 +113,25 @@ func buildSelf(gT, gL):
 			governorPosition = "CIRCUIT PREACHER"
 			governorFaction = "Common Cause"
 			loyalty = 5.0
+
+		"Jessica Clear-Water":
+			governorTexture = load("res://art assets/Placeholder Art/character/4-22-Ikra-Colors - Copy.png")
+			governorDescription = "The colony belongs to no crown. The land remembers who tended it long before London drew a line."
+			governorBiography = "Anishinaabe-Métis leader and the voice the Continental Republic actually needs to hear. Clear-Water grew up on the waterways between territories London calls borders and her people call home. She speaks three languages and none of them are asking permission. She came to Ottawa not as a supplicant but as the only person in the room who has been right about every British promise for forty years. The Governor's Council objected to her presence at the table. The Governor's Council is no longer at the table."
+			governorPosition = "LEADER & CHIEF"
+			governorFaction = "Indigenous Allies"
+			loyalty = 20.0
+			questComplete = true
+			isLeader = true
+
+		"Mark Penoit":
+			governorTexture = load("res://art assets/Placeholder Art/character/4-22-Ikra-Colors - Copy.png")
+			governorDescription = "I did not march this far to hand the colony back to London in a different hat."
+			governorBiography = "Québécois militia commander and deputy to Clear-Water. Penoit spent two winters at the siege of Saint-Georges before the Continental Republic knew his name. Pragmatic where Clear-Water is principled, military where she is diplomatic, and entirely convinced that the French Habitants will only survive this war if someone is watching the eastern flank. He disagrees with the alliance about once a week. He never disagreed enough to leave."
+			governorPosition = "DEPUTY GOVERNOR"
+			governorFaction = "French Habitants"
+			loyalty = 15.0
+			isVicePresident = true
 	pass
 
 

@@ -518,6 +518,37 @@ func _generate_ai_barracks_commanders(country_node: country) -> void:
 		},
 	}
 
+	# ── Spawn Jessica Clear-Water (leader) at Ottawa, tile 201 ──────────────────
+	var jessica: governor = governor.new()
+	jessica.buildSelf("Jessica Clear-Water", 3)
+	country_node.unlockedGovernors.append(jessica)
+	country_node.NatLeader = jessica
+	for tile in $TileController.get_children():
+		if tile.tileNumber == 201 and tile.tileOwner == country_node.CID:
+			tile.tileGovernor       = jessica
+			tile.filledGovernorSlot = true
+			jessica.hired           = true
+			print("[CA Leaders] Jessica Clear-Water stationed at Ottawa (tile 201).")
+			break
+	if not jessica.hired:
+		print("[CA Leaders] Ottawa not CA-owned at start — Jessica added to pool unassigned.")
+
+	# ── Spawn Mark Penoit (deputy/VP) at Saint-Georges, tile 99 ─────────────────
+	# Montreal (tile 94) is UK-occupied at game start; Saint-Georges is the nearest
+	# CA-owned Quebec tile with a fortress (fortress:2, barracks:2).
+	var mark: governor = governor.new()
+	mark.buildSelf("Mark Penoit", 2)
+	country_node.unlockedGovernors.append(mark)
+	for tile in $TileController.get_children():
+		if tile.tileNumber == 99 and tile.tileOwner == country_node.CID:
+			tile.tileGovernor       = mark
+			tile.filledGovernorSlot = true
+			mark.hired              = true
+			print("[CA Leaders] Mark Penoit stationed at Saint-Georges (tile 99).")
+			break
+	if not mark.hired:
+		print("[CA Leaders] Saint-Georges not CA-owned at start — Mark added to pool unassigned.")
+
 	var used_names: Dictionary = {}
 	var generated: int = 0
 
