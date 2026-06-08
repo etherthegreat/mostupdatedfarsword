@@ -1,0 +1,1 @@
+Run `python3 scripts/build_event_masterdoc.py` from the repo root to regenerate the event masterdoc spreadsheet, then send the updated `event_masterdoc.xlsx` file to the user with a one-line summary of the event counts (total, FIRST PASS, IDEA, explicit art needed).
