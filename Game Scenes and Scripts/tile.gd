@@ -1813,6 +1813,12 @@ func has_neighbor_owned_by(cid: String) -> bool:
 			return true
 	return false
 
+func has_neighbor_with_espionage() -> bool:
+	for n in TileNeighbors:
+		if n.espionageActive:
+			return true
+	return false
+
 func get_conquest_liberty_boost() -> int:
 	# How much liberty bonus does recent conquest give?
 	# Fresh UK conquest of a tile = high resistance energy

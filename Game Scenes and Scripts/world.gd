@@ -1135,6 +1135,12 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 						print("[Mission] Activated (own): ", flag_val, " — expires in ", timeout, " turns")
 					else:
 						print("[Mission] Activated (own): ", flag_val, " — no timeout")
+		"governor_loyalty_change":
+			if tile != null and tile.tileGovernor != null:
+				tile.tileGovernor.loyalty = clampf(
+					tile.tileGovernor.loyalty + float(outcome_amount), -20.0, 20.0)
+				print("[GovLoyalty] ", tile.tileGovernor.governorType,
+					" at ", tile.tileName, " → ", tile.tileGovernor.loyalty)
 		"trigger_collapse":
 			_execute_republic_collapse()
 		"nothing":
@@ -1159,6 +1165,15 @@ func evaluateDateEvents() -> void:
 		_check_garrison_hunger()
 		_check_legitimacy_crisis()
 		_check_turncoat_general()
+		_check_ualani_ambush()
+		_check_ualani_dignitary()
+		_check_ualani_memorial()
+		_check_ualani_wounded()
+		_check_ualani_winter()
+		_check_ualani_forge()
+		_check_ualani_culper()
+		_check_ualani_alliance()
+		_check_ualani_frontier()
 	var to_fire = EventDatabase.evaluate_date_triggers(currentWorldTurn, month)
 	for event_id in to_fire:
 		if event_id == "FORT_001":
@@ -1725,6 +1740,177 @@ func _check_turncoat_general() -> void:
 	createNewEvent("TURNCOAT_001", suspect_tile)
 	print("[Turncoat] Suspicious commander: ", suspect_tile.tileGovernor.governorType,
 		" at ", suspect_tile.tileName)
+
+
+# ── UALANI EVENTS ──────────────────────────────────────────────
+
+func _find_ualani_tile() -> Tile:
+	for tile in playerCountryNode.OwnedTileList:
+		if tile.tileGovernor == null:
+			continue
+		if tile.tileGovernor.governorType != "Ualani Carlisle":
+			continue
+		if tile.stationedArmy != null and tile.stationedArmy.parentCountry == playerCountryNode:
+			return tile
+	return null
+
+
+func _check_ualani_ambush() -> void:
+	if _event_on_cooldown("UALANI_AMBUSH_01"):
+		return
+	var tile: Tile = _find_ualani_tile()
+	if tile == null:
+		return
+	if tile.terrain != "Wetlands":
+		return
+	if not tile.has_neighbor_owned_by("UK"):
+		return
+	_start_cooldown("UALANI_AMBUSH_01", 15)
+	createNewEvent("UALANI_AMBUSH_01", tile)
+	print("[Ualani] Ambush event at ", tile.tileName)
+
+
+func _check_ualani_dignitary() -> void:
+	if _event_on_cooldown("UALANI_DIGNITARY_01"):
+		return
+	var tile: Tile = _find_ualani_tile()
+	if tile == null:
+		return
+	if tile.terrain not in ["Metro", "Suburbs"]:
+		return
+	if tile.tileMoralDecay >= 30:
+		return
+	var has_courthouse: bool = false
+	for b in tile.tileBuildingsList:
+		if b.buildingType == "Courthouse" and b.enabled:
+			has_courthouse = true
+			break
+	if not has_courthouse:
+		return
+	_start_cooldown("UALANI_DIGNITARY_01", 18)
+	createNewEvent("UALANI_DIGNITARY_01", tile)
+	print("[Ualani] Dignitary reception at ", tile.tileName)
+
+
+func _check_ualani_memorial() -> void:
+	if _event_on_cooldown("UALANI_MEMORIAL_01"):
+		return
+	var tile: Tile = _find_ualani_tile()
+	if tile == null:
+		return
+	if tile.tileSpecialFeatures.is_empty():
+		return
+	_start_cooldown("UALANI_MEMORIAL_01", 20)
+	createNewEvent("UALANI_MEMORIAL_01", tile)
+	print("[Ualani] Memorial address at ", tile.tileName)
+
+
+func _check_ualani_wounded() -> void:
+	if _event_on_cooldown("UALANI_WOUNDED_01"):
+		return
+	var tile: Tile = _find_ualani_tile()
+	if tile == null:
+		return
+	var army = tile.stationedArmy
+	if army == null:
+		return
+	if float(army.manpowerInArmy) >= float(army.maxManpower) * 0.8:
+		return
+	_start_cooldown("UALANI_WOUNDED_01", 12)
+	createNewEvent("UALANI_WOUNDED_01", tile)
+	print("[Ualani] Wounded visit at ", tile.tileName,
+		" (", army.manpowerInArmy, "/", army.maxManpower, ")")
+
+
+func _check_ualani_winter() -> void:
+	if _event_on_cooldown("UALANI_WINTER_01"):
+		return
+	if month not in [11, 12, 1, 2]:
+		return
+	var tile: Tile = _find_ualani_tile()
+	if tile == null:
+		return
+	if tile.terrain not in ["Foothills", "Woods"]:
+		return
+	if tile.winterScore <= 0:
+		return
+	_start_cooldown("UALANI_WINTER_01", 20)
+	createNewEvent("UALANI_WINTER_01", tile)
+	print("[Ualani] Winter march at ", tile.tileName)
+
+
+func _check_ualani_forge() -> void:
+	if _event_on_cooldown("UALANI_FORGE_01"):
+		return
+	var tile: Tile = _find_ualani_tile()
+	if tile == null:
+		return
+	var has_forge: bool = false
+	for b in tile.tileBuildingsList:
+		if b.buildingType == "Forge" and b.enabled:
+			has_forge = true
+			break
+	if not has_forge:
+		return
+	_start_cooldown("UALANI_FORGE_01", 15)
+	createNewEvent("UALANI_FORGE_01", tile)
+	print("[Ualani] Forge inspection at ", tile.tileName)
+
+
+func _check_ualani_culper() -> void:
+	if _event_on_cooldown("UALANI_CULPER_01"):
+		return
+	var tile: Tile = _find_ualani_tile()
+	if tile == null:
+		return
+	if not tile.has_neighbor_with_espionage():
+		return
+	_start_cooldown("UALANI_CULPER_01", 18)
+	createNewEvent("UALANI_CULPER_01", tile)
+	print("[Ualani] Culper meeting at ", tile.tileName)
+
+
+func _check_ualani_alliance() -> void:
+	if _event_on_cooldown("UALANI_ALLIANCE_01"):
+		return
+	var tile: Tile = _find_ualani_tile()
+	if tile == null:
+		return
+	var ally_tile: Tile = null
+	for neighbor in tile.TileNeighbors:
+		if neighbor.tileOwner != "USA":
+			continue
+		if neighbor.tileGovernor == null:
+			continue
+		if neighbor.tileGovernor.governorType == "Ualani Carlisle":
+			continue
+		if neighbor.tileGovernor.governorArchetypeId != "":
+			continue
+		ally_tile = neighbor
+		break
+	if ally_tile == null:
+		return
+	_start_cooldown("UALANI_ALLIANCE_01", 18)
+	createNewEvent("UALANI_ALLIANCE_01", ally_tile)
+	print("[Ualani] Alliance meeting at ", ally_tile.tileName,
+		" with ", ally_tile.tileGovernor.governorType)
+
+
+func _check_ualani_frontier() -> void:
+	if _event_on_cooldown("UALANI_FRONTIER_01"):
+		return
+	var tile: Tile = _find_ualani_tile()
+	if tile == null:
+		return
+	if tile.terrain not in ["Woods", "Foothills"]:
+		return
+	for neighbor in tile.TileNeighbors:
+		if neighbor.tileContinent.begins_with("CA - "):
+			_start_cooldown("UALANI_FRONTIER_01", 20)
+			createNewEvent("UALANI_FRONTIER_01", tile)
+			print("[Ualani] Frontier at ", tile.tileName,
+				" bordering ", neighbor.tileContinent)
+			return
 
 
 func _generate_and_assign_governor(tile: Tile) -> void:
