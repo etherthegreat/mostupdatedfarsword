@@ -1504,6 +1504,8 @@ func evaluateDateEvents() -> void:
 		_check_ualani_alliance()
 		_check_ualani_frontier()
 		_check_white_house_secrets()
+		_check_chalch_summon()
+		_check_chalch_quests()
 		_check_vp_events()
 		_tick_wild_protectors()
 		_tick_wild_ca_protectors()
@@ -2284,6 +2286,79 @@ func _check_white_house_secrets() -> void:
 	_start_cooldown(event_id, 999)
 	createNewEvent(event_id, ualani_tile)
 	print("[WHSecrets] ", event_id, " fired — Ualani in DC, month ", month)
+
+
+# ── CHALCHIUHTOTOLIN PROTECTOR ARC ──────────────────────────────────────────
+# Super-secret: fires only when Ualani is stationed at Plymouth (tile 66) in
+# month 11 (Thanksgiving).  Quest chain: SUMMON → Q1 (3 farms) → Q2 (150 food)
+# → Q3 (5 farms) → AGREE (big food bounty).
+
+func _count_player_farms() -> int:
+	var count: int = 0
+	for tile in playerCountryNode.OwnedTileList:
+		for b in tile.tileBuildingsList:
+			if b.buildingType == "Farm" and b.enabled:
+				count += 1
+	return count
+
+
+func _check_chalch_summon() -> void:
+	if month != 11:
+		return
+	var ualani_tile: Tile = _find_ualani_tile()
+	if ualani_tile == null or ualani_tile.tileNumber != 66:
+		return
+	if _event_on_cooldown("CHALCH_SUMMON"):
+		return
+	_start_cooldown("CHALCH_SUMMON", 999)
+	if not playerCountryNode.CountryFlags.has("chalch_summoned"):
+		playerCountryNode.CountryFlags.append("chalch_summoned")
+	createNewEvent("CHALCH_SUMMON", ualani_tile)
+	print("[Chalch] CHALCH_SUMMON fired — Ualani at Plymouth, month 11")
+
+
+func _check_chalch_quests() -> void:
+	if not playerCountryNode.CountryFlags.has("chalch_summoned"):
+		return
+
+	# Q1: 3+ farms
+	if not _event_on_cooldown("CHALCH_Q1"):
+		if _count_player_farms() >= 3:
+			_start_cooldown("CHALCH_Q1", 999)
+			if not playerCountryNode.CountryFlags.has("chalch_q1_done"):
+				playerCountryNode.CountryFlags.append("chalch_q1_done")
+			createNewEvent("CHALCH_Q1", _find_ualani_tile())
+			print("[Chalch] CHALCH_Q1 fired — 3+ farms")
+			return
+
+	# Q2: 150+ food stockpile (requires Q1 done)
+	if playerCountryNode.CountryFlags.has("chalch_q1_done") \
+			and not _event_on_cooldown("CHALCH_Q2"):
+		if playerCountryNode.TotalFood >= 150:
+			_start_cooldown("CHALCH_Q2", 999)
+			if not playerCountryNode.CountryFlags.has("chalch_q2_done"):
+				playerCountryNode.CountryFlags.append("chalch_q2_done")
+			createNewEvent("CHALCH_Q2", _find_ualani_tile())
+			print("[Chalch] CHALCH_Q2 fired — 150+ food")
+			return
+
+	# Q3: 5+ farms (requires Q2 done)
+	if playerCountryNode.CountryFlags.has("chalch_q2_done") \
+			and not _event_on_cooldown("CHALCH_Q3"):
+		if _count_player_farms() >= 5:
+			_start_cooldown("CHALCH_Q3", 999)
+			if not playerCountryNode.CountryFlags.has("chalch_q3_done"):
+				playerCountryNode.CountryFlags.append("chalch_q3_done")
+			createNewEvent("CHALCH_Q3", _find_ualani_tile())
+			print("[Chalch] CHALCH_Q3 fired — 5+ farms")
+			return
+
+	# AGREE: all quests done
+	if playerCountryNode.CountryFlags.has("chalch_q3_done") \
+			and not _event_on_cooldown("CHALCH_AGREE"):
+		_start_cooldown("CHALCH_AGREE", 999)
+		createNewEvent("CHALCH_AGREE", _find_ualani_tile())
+		print("[Chalch] CHALCH_AGREE fired — all quests complete")
 
 
 # ── VICE PRESIDENT EVENTS ────────────────────────────────────────

@@ -26,9 +26,10 @@ CAT_COLORS = {
     "VP Arc":         "F5E6D6",
     "Canada":         "D6EAF8",
     "CA Protector":   "B8D6F7",
-    "Loyal Governor": "F5ECD5",
-    "White House":    "F5E6F0",
-    "Idea":           "EDE0F7",
+    "Loyal Governor":    "F5ECD5",
+    "White House":       "F5E6F0",
+    "Chalchiuhtotolin":  "D6F5D6",
+    "Idea":              "EDE0F7",
 }
 
 STATUS_COLORS = {
@@ -1088,6 +1089,39 @@ EVENTS = [
     ]
 ] + [
 
+    # ── CHALCHIUHTOTOLIN PROTECTOR ARC ──────────────────────────────────────
+    # Super-secret 5-event chain; fires only when Ualani is at Plymouth (tile 66)
+    # in month 11 (Thanksgiving).  Three food/farm quests then a big bounty.
+    ("Chalchiuhtotolin","Jade Turkey Arc","CHALCH_SUMMON",
+     "CHALCHIUHTOTOLIN ARRIVES AT PLYMOUTH ON THANKSGIVING",
+     "Root","—","CHALCH_Q1",
+     "FIRST PASS","","Not Started","NO","","0",
+     "Month 11, Ualani at tile 66 (Plymouth); one-shot; sets chalch_summoned flag"),
+
+    ("Chalchiuhtotolin","Jade Turkey Arc","CHALCH_Q1",
+     "THE JADE TURKEY DEMANDS THREE GRANARIES",
+     "Quest 1","CHALCH_SUMMON","CHALCH_Q2",
+     "FIRST PASS","","Not Started","NO","","0",
+     "Fires when chalch_summoned + 3+ farms; reward: +30 food"),
+
+    ("Chalchiuhtotolin","Jade Turkey Arc","CHALCH_Q2",
+     "THE JADE TURKEY DEMANDS A STOCKPILE WORTHY OF ITS REGARD",
+     "Quest 2","CHALCH_Q1","CHALCH_Q3",
+     "FIRST PASS","","Not Started","NO","","0",
+     "Fires when chalch_q1_done + TotalFood >= 150; reward: +50 food"),
+
+    ("Chalchiuhtotolin","Jade Turkey Arc","CHALCH_Q3",
+     "THE JADE TURKEY DEMANDS A NATION OF FARMS",
+     "Quest 3","CHALCH_Q2","CHALCH_AGREE",
+     "FIRST PASS","","Not Started","NO","","0",
+     "Fires when chalch_q2_done + 5+ farms; reward: +40 food"),
+
+    ("Chalchiuhtotolin","Jade Turkey Arc","CHALCH_AGREE",
+     "CHALCHIUHTOTOLIN ACCEPTS THE PACT — REPUBLIC EARNS TURKEY GOD'S PROTECTION",
+     "Resolution","CHALCH_Q3","—",
+     "FIRST PASS","","Not Started","NO","","0",
+     "Fires when chalch_q3_done; BTN1: +100 food; closes the arc"),
+
     # ── IDEAS ────────────────────────────────────────────────────────────────
     ("Idea","Ualani Expansion","UALANI_DOCK_01",
      "PRESIDENT CARLISLE SURVEYS THE HARBOR AT [TILE_NAME]  ← IDEA",
@@ -1369,8 +1403,9 @@ def add_legend_sheet(wb):
         "Canada":         "Canadian Alliance diplomatic arc + 3 peace events (PEACE_ALLIED_01, PEACE_USA_01, PEACE_CA_AI_01)",
         "CA Protector":   "Jessica Clear-Water's 8 creature arcs; Algonquin, Mi'kmaq, French-Canadian folklore",
         "Loyal Governor": "25 one-shot dispatch events, one per USA governor archetype; tile_yield resource×turns; 3% chance/turn at loyalty≥8",
-        "White House":    "12 personal Ualani events (WH_SECRET_01–12); fires when she is stationed at DC (tile 188) during the matching calendar month; all sensual in tone; some have explicit BTN2",
-        "Idea":           "Not yet implemented; concept stage or referenced-but-missing events",
+        "White House":       "12 personal Ualani events (WH_SECRET_01–12); fires when she is stationed at DC (tile 188) during the matching calendar month; all sensual in tone; some have explicit BTN2",
+        "Chalchiuhtotolin":  "5-event super-secret arc (CHALCH_SUMMON → Q1 → Q2 → Q3 → AGREE); fires only when Ualani is at Plymouth (tile 66) on Thanksgiving (month 11); quests: 3 farms, 150 food, 5 farms; reward: up to +220 food total",
+        "Idea":              "Not yet implemented; concept stage or referenced-but-missing events",
     }
     for cat, color in CAT_COLORS.items():
         legend_row(r, cat, cat_descs.get(cat, ""), color); r += 1
