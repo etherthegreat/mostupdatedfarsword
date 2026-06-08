@@ -55,6 +55,10 @@ func _build_buttons() -> void:
 		if prereq != "" and not _check_prerequisite(prereq):
 			continue
 
+		var btype = btn_data.get("button_type", "standard")
+		if not _player_allows_content(btype):
+			continue
+
 		var newButton = Button.new()
 		newButton.text = btn_data.get("button_text", "Choose")
 		newButton.name = btn_data.get("button_id", "btn")

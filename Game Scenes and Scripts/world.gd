@@ -34,6 +34,21 @@ var _event_cooldowns: Dictionary = {}  # event_id → turns_remaining before can
 
 const CANADIAN_STATES = ["CA - QB", "CA - OT", "CA - NB", "CA - NS", "CA - PEI"]
 
+const PROTECTOR_IDS: Array = [
+	"PROT_01", "PROT_02", "PROT_03", "PROT_04", "PROT_05",
+	"PROT_06", "PROT_07", "PROT_08", "PROT_09", "PROT_10",
+	"PROT_11", "PROT_12", "PROT_13", "PROT_14", "PROT_15",
+	"PROT_16", "PROT_17"
+]
+
+const PROTECTOR_SUMMON_TURNS: Dictionary = {
+	"PROT_01": 10,  "PROT_02": 15,  "PROT_03": 20,  "PROT_04": 25,
+	"PROT_05": 30,  "PROT_06": 35,  "PROT_07": 40,  "PROT_08": 45,
+	"PROT_09": 50,  "PROT_10": 55,  "PROT_11": 60,  "PROT_12": 65,
+	"PROT_13": 70,  "PROT_14": 75,  "PROT_15": 80,  "PROT_16": 85,
+	"PROT_17": 90
+}
+
 const STATE_FULL_NAMES: Dictionary = {
 	"PA": "Commonwealth of Pennsylvania",
 	"NJ": "State of New Jersey",
@@ -1174,6 +1189,8 @@ func evaluateDateEvents() -> void:
 		_check_ualani_culper()
 		_check_ualani_alliance()
 		_check_ualani_frontier()
+		_tick_wild_protectors()
+		_check_protector_summons()
 	var to_fire = EventDatabase.evaluate_date_triggers(currentWorldTurn, month)
 	for event_id in to_fire:
 		if event_id == "FORT_001":
@@ -1911,6 +1928,43 @@ func _check_ualani_frontier() -> void:
 			print("[Ualani] Frontier at ", tile.tileName,
 				" bordering ", neighbor.tileContinent)
 			return
+
+
+# ── WILD PROTECTOR SYSTEM ────────────────────────────────────────
+
+func _is_protector_wild(pid: String) -> bool:
+	var pid_lower = pid.to_lower()
+	return (not playerCountryNode.CountryFlags.has(pid_lower + "_tame") and
+			not playerCountryNode.CountryFlags.has(pid_lower + "_agreed"))
+
+
+func _tick_wild_protectors() -> void:
+	var owned_tiles: Array = playerCountryNode.OwnedTileList
+	if owned_tiles.is_empty():
+		return
+	for pid in PROTECTOR_IDS:
+		if not _is_protector_wild(pid):
+			continue
+		if randf() < 0.25:
+			var target: Tile = owned_tiles[randi() % owned_tiles.size()]
+			target.corruption = clampi(target.corruption + 1, 0, 100)
+			print("[WildProt] ", pid, " added +1 corruption to ", target.tileName)
+
+
+func _check_protector_summons() -> void:
+	for pid in PROTECTOR_IDS:
+		if not _is_protector_wild(pid):
+			continue
+		var min_turn: int = PROTECTOR_SUMMON_TURNS.get(pid, 999)
+		if currentWorldTurn < min_turn:
+			continue
+		var summon_id = pid + "_SUMMON"
+		if _event_on_cooldown(summon_id):
+			continue
+		_start_cooldown(summon_id, 20)
+		createNewEvent(summon_id, null)
+		print("[Protector] SUMMON fired: ", summon_id, " on turn ", currentWorldTurn)
+		return
 
 
 func _generate_and_assign_governor(tile: Tile) -> void:
