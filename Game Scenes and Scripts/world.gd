@@ -95,7 +95,7 @@ const CA_PROT_TILES: Dictionary = {
 
 # Dock tiles that must be liberated for peace — Nassau (182, BA) excluded
 const PEACE_DOCK_USA: Array = [65, 66, 67, 151]  # Boston/MA, Plymouth/MA, Nantucket/MA, Charleston/SC
-const PEACE_DOCK_CA:  Array = [114]               # Halifax/CA-NS
+const PEACE_DOCK_CA:  Array = [114, 123, 195]     # Halifax/CA-NS, Quebec City/CA-QB, Anticosti/CA-QB
 
 const STATE_FULL_NAMES: Dictionary = {
 	"PA": "Commonwealth of Pennsylvania",

@@ -121,7 +121,7 @@ number,tileName,terrain,state,country,corruption,specialFeature,buildings,tileCr
 120,Millinocket,Woods,ME,USA,0,North Maine Woods,camp:1,hay,85
 121,Bangor,Woods,ME,USA,0,North Maine Woods,camp:1,apples,75
 122,Augusta,Wetlands,ME,USA,0,North Maine Woods|Fort Western,courthouse:1|barracks:2|fortress:1,apples,72
-123,Quebec City,Metro,CA - QB,UK,0,St. Lawrence River Delta,barracks:2|fortress:2|forge:1|market:1|monument:1,corn,88
+123,Quebec City,Metro,CA - QB,UK,0,St. Lawrence River Delta,barracks:2|fortress:2|forge:1|market:1|monument:1|dock:2,corn,88
 124,Shawinigan,Farmlands,CA - QB,UK,0,,farm:1,corn,80
 125,,,,,,,,,0
 126,Mont-Tremblant,Woods,CA - QB,CA,0,Laurentian Highlands,camp:1|barracks:2,hay,85
@@ -193,7 +193,7 @@ number,tileName,terrain,state,country,corruption,specialFeature,buildings,tileCr
 192,Newburgh,Woods,NY,USA,0,,camp:1,apples,48
 193,Moncton,Woods,CA - NB,CA,0,Acadian Forest|Fort Beauséjour,camp:1|barracks:1|fortress:1,hay,72
 194,Saint John,Wetlands,CA - NB,CA,0,Acadian Forest,camp:1,hay,68
-195,Anticosti,Woods,CA - QB,UK,0,Anticosti Wilderness,farm:1|barracks:1,hay,88
+195,Anticosti,Woods,CA - QB,UK,0,Anticosti Wilderness,farm:1|barracks:1|dock:1,hay,88
 196,Maniwaki,Woods,CA - QB,CA,0,Laurentian Highlands,camp:1,hay,82
 197,Peterborough,Farmlands,CA - OT,CA,20,,farm:1,corn,65
 198,Hamilton,Suburbs,CA - OT,CA,70,Niagara Falls,forge:1|barracks:2|monument:3,corn,62

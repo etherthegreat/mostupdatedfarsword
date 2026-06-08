@@ -1008,7 +1008,7 @@ EVENTS = [
      "PEACE OF [TILE_NAME] — CANADA NEGOTIATES SEPARATE PEACE",
      "Root","—","—",
      "FIRST PASS","","Not Started","NO","standard","0",
-     "CA separate peace (unallied): fires when Halifax (tile 114) liberated; sets uk_ca_peace on UK+CA; player-visible dispatch; both buttons standard"),
+     "CA separate peace (unallied): fires when Halifax (114), Quebec City (123), and Anticosti (195) all liberated; sets uk_ca_peace on UK+CA; player-visible dispatch; both buttons standard"),
 
     ("VP Arc","VP Arc","VP_LEGACY",
      "THE VICE PRESIDENT LEAVES A NOTE — [COMMANDER_NAME] HAS SOMETHING TO SAY",
