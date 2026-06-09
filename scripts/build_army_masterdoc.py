@@ -1,0 +1,1481 @@
+"""
+Generates army_masterdoc.xlsx — complete reference for all Farsword army/combat systems.
+Run from repo root: python3 scripts/build_army_masterdoc.py
+
+Sheets:
+  1. Systems Overview    — every army subsystem with FULL PASS / FIRST PASS / FIRST DRAFT / IDEA label
+  2. Mil Mods            — all 60+ mil mods (weapon-embedded, armor-embedded, commander, legacy)
+  3. Weapons             — all weapon types by class with stats and embedded mods
+  4. Armor & Uniforms    — all armor/uniform types with stats and embedded mods
+  5. Archetypes          — all 25 procedural archetypes with assigned mil mod tiers
+  6. Battle Mechanics    — combat subsystem breakdown (damage formula, shields, morale, retreat)
+  7. Known Bugs          — confirmed code-level bugs flagged for fixing
+"""
+
+import openpyxl
+from openpyxl.styles import PatternFill, Font, Alignment, Border, Side
+from openpyxl.utils import get_column_letter
+
+OUT_PATH = "army_masterdoc.xlsx"
+
+# ── PALETTE ──────────────────────────────────────────────────────────────────
+HEADER_BG = "1F3864"
+HEADER_FG = "FFFFFF"
+NORMAL_FG = "1A1A1A"
+BUG_BG    = "FF4444"
+BUG_FG    = "FFFFFF"
+
+STATUS_COLORS = {
+    "FULL PASS":   "00B050",
+    "FIRST PASS":  "92D050",
+    "FIRST DRAFT": "FFEB9C",
+    "IDEA":        "C9B1E8",
+}
+STATUS_FG = {
+    "FULL PASS":   "FFFFFF",
+    "FIRST PASS":  "1A3A00",
+    "FIRST DRAFT": "7A5A00",
+    "IDEA":        "3A1A6A",
+}
+
+CAT_COLORS = {
+    "Army Core":       "D6E4F7",
+    "Unit Core":       "D6F0F7",
+    "Combat":          "FCE0D6",
+    "Weapons":         "FFF3CC",
+    "Armor":           "FDEBD0",
+    "Mil Mods":        "EDD6F7",
+    "Commander":       "D6E1F7",
+    "Movement":        "D6F0D6",
+    "Weather":         "DCDCDC",
+    "Spawn":           "D6F5EA",
+    "Special":         "F5E6D6",
+}
+
+TIER_COLORS = {
+    "T1 (123)": "D6E4F7",
+    "T2 (23)":  "FFF3CC",
+    "T3 (3)":   "FCE0D6",
+    "Weapon":   "D6F0D6",
+    "Armor":    "FDEBD0",
+    "Legacy":   "DCDCDC",
+    "Civilian": "EDD6F7",
+    "Resource": "F5E6D6",
+}
+
+thin = Side(style="thin", color="AAAAAA")
+BORDER = Border(left=thin, right=thin, top=thin, bottom=thin)
+
+
+def mf(hex_color):
+    return PatternFill(fill_type="solid", fgColor=hex_color)
+
+def mfont(bold=False, color=NORMAL_FG, size=10):
+    return Font(bold=bold, color=color, name="Calibri", size=size)
+
+def hcell(ws, row, col, text, width=None):
+    c = ws.cell(row=row, column=col, value=text)
+    c.fill = mf(HEADER_BG)
+    c.font = mfont(bold=True, color=HEADER_FG, size=10)
+    c.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
+    c.border = BORDER
+    if width:
+        ws.column_dimensions[get_column_letter(col)].width = width
+    return c
+
+def pcell(ws, row, col, value, bg=None, fg=None, bold=False, wrap=True, align="left"):
+    c = ws.cell(row=row, column=col, value=str(value) if value is not None else "")
+    c.font = mfont(bold=bold, color=fg or NORMAL_FG)
+    c.alignment = Alignment(horizontal=align, vertical="top", wrap_text=wrap)
+    c.border = BORDER
+    if bg:
+        c.fill = mf(bg)
+    return c
+
+def divider(ws, row, ncols, text, bg="2F4F6F"):
+    for ci in range(1, ncols + 1):
+        c = ws.cell(row=row, column=ci, value=text if ci == 1 else "")
+        c.fill = mf(bg)
+        c.font = mfont(bold=True, color="FFFFFF", size=10)
+        c.alignment = Alignment(vertical="center")
+        c.border = BORDER
+    ws.row_dimensions[row].height = 16
+
+
+# ── SHEET 1: SYSTEMS OVERVIEW ─────────────────────────────────────────────────
+# status, category, system, key_file(s), description, notes/gaps
+
+SYSTEMS = [
+    # ── ARMY CORE ──────────────────────────────────────────────────────────────
+    ("FULL PASS", "Army Core", "Army Class & Properties",
+     "army.gd",
+     "Army node with armyPunch/Block/Launch/Defence/MagicDefense/Shield; "
+     "maxMovementPoints (3); armyTags[]; commander; commanderModifiers1/2/3; "
+     "unitsList; parentCountry; inTile; sabotaged/reconDebuffed flags",
+     "All core vars declared and used. armyCurse/armyCharm vars declared but inactive."),
+
+    ("FULL PASS", "Army Core", "Army Survey (stat recalc)",
+     "army.gd surveySelf()",
+     "Rebuilds armyPunch/Block/Launch/Defence from all units; applies morale "
+     "multiplier from commander (1.0–1.25); calculates resource costs; disables mods "
+     "when resources run out. Called by updateArmyUI().",
+     "calculateMilMods() has inverted disabled check — see Known Bugs sheet."),
+
+    ("FULL PASS", "Army Core", "Army UI Update",
+     "army.gd updateArmyUI()",
+     "Chain: getUnitAttributes → commanderCheck → surveySelf → updateUnitUIs → "
+     "updateCommanderUI → updateFinalTotals. Called on turn end, after battle, "
+     "after promotion.",
+     "promote_commander now calls updateArmyUI() on stationedArmy."),
+
+    ("FULL PASS", "Army Core", "Turn-End Reset",
+     "army.gd onTurnEnd()",
+     "Restores currentMovementPoints = maxMovementPoints; ticks sabotage/recon debuff "
+     "timers; calls refillManpower(armyReinforceRate) per unit; calls updateArmyUI().",
+     ""),
+
+    ("FULL PASS", "Army Core", "Resource Cost Aggregation",
+     "army.gd surveySelf()",
+     "Sums food/wood/gold/metal/manpower/weapons/magic/science/culture/influence/"
+     "harmony/faith costs across all units. Mercantilism law adds +2 harmonyCost/unit-level.",
+     "Weapon costs use old DODK weapon names (Spear/Club/Atlatl etc), not new Saber/Musket names."),
+
+    ("FULL PASS", "Army Core", "Spy Effects (Sabotage / Recon)",
+     "army.gd",
+     "sabotaged bool + sabotageTimer: blocks movement/action for N turns. "
+     "reconDebuffed bool + reconDebuffTimer: reduces armyDefence in battle. "
+     "Both tick down on onTurnEnd().",
+     "Wiring from espionage events to set these flags is partial."),
+
+    ("FULL PASS", "Army Core", "Army Tags",
+     "army.gd, army_database.gd",
+     "armyTags[] populated from army_templates CSV armyMods column (pipe-delimited). "
+     "Tags: Cold Weather, Naval Power, Redcoats, Pirates. "
+     "Cold Weather tag exempts army from winter movement and supply drain penalties.",
+     ""),
+
+    # ── UNIT CORE ──────────────────────────────────────────────────────────────
+    ("FULL PASS", "Unit Core", "Unit Class & Stats",
+     "unit.gd",
+     "unitType, unitLevel (1+), unitOffensiveScore, unitDefensiveScore, "
+     "unitRangedOffence, unitRangedDefence, unitMagicDefence, unitMaxShield/unitShield. "
+     "unitMaxManpower = 100 × level; unitMaxWeapons = 100 × level.",
+     ""),
+
+    ("FULL PASS", "Unit Core", "Unit Attribute Calculation",
+     "unit.gd getUnitAttributes() + calculateGrossValues()",
+     "effectMultiplier = (manPower% + weapons%) / 2; "
+     "artillery uses weapons% only. "
+     "meleePenalty = 0.5 for muskets (half melee), 1.0 for sabers. "
+     "offScore = level × weaponOffence × meleePenalty × effectMultiplier.",
+     ""),
+
+    ("FULL PASS", "Unit Core", "Weapon / Ore / Armor Integration",
+     "unit.gd calculateWeaponsOresArmor()",
+     "Pulls stats from Weapon, Ore, Armor nodes; copies their embedded milMods into "
+     "unit.militaryModifierList. Shield from ore.oreMaxShield × unitLevel.",
+     ""),
+
+    ("FULL PASS", "Unit Core", "Damage Reception (takeLosses)",
+     "unit.gd takeLosses(type, amount)",
+     "Melee: blocked = amount × unitDefensiveScore; shield absorbs first; rest hits manpower. "
+     "Ranged: same with unitRangedDefence. "
+     "Magic: blocked = amount × unitMagicDefence; no shield absorption.",
+     ""),
+
+    ("FULL PASS", "Unit Core", "Manpower Refill",
+     "unit.gd refillManpower(RR)",
+     "Adds armyReinforceRate to currentManpower each turn, capped at max. "
+     "Requires parentCountry.TotalManpower > 0 (checked in army.onTurnEnd).",
+     ""),
+
+    ("FULL PASS", "Unit Core", "Combat Effectiveness",
+     "unit.gd get_combat_effectiveness()",
+     "Returns 0.0–1.0. Sabers: manpower% only. Others: (manpower% + weapons%) / 2.",
+     ""),
+
+    # ── COMBAT ─────────────────────────────────────────────────────────────────
+    ("FULL PASS", "Combat", "Battle Class",
+     "battle.gd",
+     "Instantiated by army.calculateBattle(). Snapshots both armies' manpower/shield. "
+     "Calculates projected damage immediately for display. Player clicks Attack to apply.",
+     ""),
+
+    ("FULL PASS", "Combat", "Melee Damage Calculation",
+     "battle.gd _calculate_melee_damage()",
+     "raw_attack = attacker.armyPunch. "
+     "block_ratio = defender.armyBlock / unit_count (capped 0–0.9). "
+     "net_to_defender = raw_attack × (1 − block_ratio). "
+     "Shield absorbs first, remainder hits manpower. "
+     "Defender counter-attacks simultaneously with same formula.",
+     "Saber charge manpower cost applied to attacker on top of counter damage."),
+
+    ("FULL PASS", "Combat", "Ranged Damage Calculation",
+     "battle.gd _calculate_ranged_damage()",
+     "effective_launch = sum of get_effective_ranged_offence() (0 if reloading). "
+     "ranged_block_ratio = defender.armyDefence / unit_count (capped 0–0.9). "
+     "Defender can counter-fire if they have ready ranged units. "
+     "Pure artillery attackers have no defensive counter.",
+     ""),
+
+    ("FULL PASS", "Combat", "Shield System",
+     "unit.gd + battle.gd",
+     "unitMaxShield = unitLevel × ore.oreMaxShield. "
+     "Shield absorbs damage before manpower in both melee and ranged. "
+     "restore_shield() resets shield to max at start of new engagement.",
+     "Magic damage bypasses shield (no shield absorption in takeLosses magic branch)."),
+
+    ("FULL PASS", "Combat", "Saber Charge Cost",
+     "battle.gd _apply_charge_costs(), unit.gd apply_charge_cost()",
+     "Each saber unit pays chargeManpowerCost × currentManpower on every melee attack. "
+     "Cutlass/Cavalry Saber/Light Saber/Heavy Saber: 10% manpower cost per charge.",
+     ""),
+
+    ("FULL PASS", "Combat", "Retreat System",
+     "army.gd calculateAttackerResults / calculateDefenderResults",
+     "Retreat triggers at < 25% manpower ratio. Sets inRetreat = true. "
+     "deleteMode = true when manpower hits 0.",
+     "inRetreat flag is set but no retreat path execution logic is wired. "
+     "deleteMode set but army removal from world tile not automated."),
+
+    ("FULL PASS", "Combat", "Morale Multiplier",
+     "army.gd surveySelf()",
+     "mm = 1.0 + (commander.morale / 100) × 0.25. "
+     "At morale 100: ×1.25 to armyPunch and armyDefence. "
+     "At morale 0: ×1.0 (no penalty). Commander morale range: 0–100.",
+     "Negative morale not modeled (army just gets no bonus). "
+     "governor.morale range actually −20 to +10 via update_loyalty()… "
+     "the 0–100 scale in surveySelf appears to use loyalty, not a separate morale stat."),
+
+    ("FIRST PASS", "Combat", "Weapon Mods — Embedded Effects (Stubs)",
+     "weapon.gd + unit.gd calculateMilMods()",
+     "VolleyFire (Brown Bess), RapidFire (Lever Repeater), AreaDamage (Field Gun+), "
+     "CavalryMorale (Cavalry Saber), HeavyCharge (Heavy Saber), "
+     "Siege/Mortar (Mortar): all declared, added to weaponMilMods[], "
+     "but calculateMilMods() has no case for any of them. Pass stubs only.",
+     "Effects all need implementation in calculateMilMods or battle.gd."),
+
+    ("FIRST PASS", "Combat", "Armor Mods — Formation Effects (Stubs)",
+     "armor.gd + unit.gd calculateMilMods()",
+     "DrillFormation (Continental), LineFormation (Redcoat), "
+     "ShockTroop (Heavy Infantry), Skirmish (Light Infantry), "
+     "MinutemanSpirit (Minuteman): all declared as 'handled at army level' "
+     "but no army-level check exists.",
+     "All formation bonuses need army-level logic in battle.gd or army.gd."),
+
+    ("FIRST PASS", "Combat", "Siege Score",
+     "army.gd surveySelf(), tile.gd get_siege_difficulty()",
+     "armySiegeScore = unitCount × 0.1 × tile.get_siege_difficulty(). "
+     "tile.get_siege_difficulty() returns value based on tile buildings/fortifications.",
+     "Siege score calculated but never read in battle.gd. "
+     "No siege-phase battle type implemented."),
+
+    ("FIRST DRAFT", "Combat", "Terrain Combat Bonuses (36 new mods)",
+     "mil_mod.gd, unit.gd calculateMilMods()",
+     "All 36 new commander mil mods (Woodsman, Swamp Legs, Hill Runner, Marine, "
+     "Entrenched, Guerrilla Tactics, etc.) are defined in mil_mod.gd with full descriptions. "
+     "NONE have cases in calculateMilMods() yet — they are data-complete but effect-dead.",
+     "Need: terrain check in calculateMilMods(); tile.terrain passed into army; "
+     "Marine: navalTileNeighbors melee logic; Entrenched: stationary turn counter."),
+
+    ("FIRST DRAFT", "Combat", "Marine Mechanic",
+     "mil_mod.gd (marineMod flag), tile.gd (navalTileNeighbors)",
+     "marineMod bool added to MilMod class. tile.navalTileNeighbors property exists "
+     "on tiles. Design: if army has Marine mod, allow melee attack into adjacent naval tiles.",
+     "No combat trigger checks marineMod. No UI to select naval tile as attack target. "
+     "Naval Supremacy (+5 damage on Marine attacks) also pending."),
+
+    ("FIRST DRAFT", "Combat", "Entrenched Mechanic",
+     "mil_mod.gd (entrenchMod flag)",
+     "entrenchMod bool added to MilMod class. Design: after 3 turns stationary, "
+     "all units get +5 def/level; bonus lost on movement.",
+     "No turn counter tracks stationary status per army. "
+     "No flag is set/cleared on movement. Nothing reads entrenchMod."),
+
+    ("IDEA", "Combat", "Zone of Control",
+     "(Ghost March mod hints)",
+     "Ghost March commander mod description says 'ignore enemy zone of control'. "
+     "No ZoC system exists in tile.gd or world.gd.",
+     "Would require: ZoC radius per army; movement penalty when entering ZoC tile."),
+
+    ("IDEA", "Combat", "Naval Combat",
+     "(Marine mod, navalTileNeighbors tile property)",
+     "Marine and Naval Supremacy mods imply a naval battle system. "
+     "tile.navalTileNeighbors exists. No Naval Army type or naval battle logic defined.",
+     ""),
+
+    ("IDEA", "Combat", "Formation System (Army-Level)",
+     "(DrillFormation, LineFormation, VolleyFire, ShockTroop mods)",
+     "Several weapon and armor mods reference formation bonuses "
+     "(bonus when adjacent to same-type units, bonus to ranged in line, etc.). "
+     "Completely unimplemented.",
+     ""),
+
+    ("IDEA", "Combat", "Unit Promotion / Experience",
+     "army.gd (averageExperience var)",
+     "averageExperience and armyLevel vars declared on Army. "
+     "armyAbility (recruit=100 to veteran=115) commented with 15% veteran bonus. "
+     "No experience gain logic exists anywhere.",
+     ""),
+
+    ("IDEA", "Combat", "Army Spell System",
+     "army.gd (armyCurse, armyCharm vars, commented-out spell section)",
+     "armyCurse/armyCharm vars declared. Commented-out code shows "
+     "apply_spell()/tick_spell()/has_active_spell() design. Never implemented.",
+     ""),
+
+    # ── WEAPONS ────────────────────────────────────────────────────────────────
+    ("FULL PASS", "Weapons", "Saber Class (4 types)",
+     "weapon.gd",
+     "Cutlass (L1, +3/+2), Cavalry Saber (L2, +5/+3), "
+     "Light Saber (L3, +7/+4), Heavy Saber (L4, +9/+5). "
+     "reloadTurns = 0; no ammo; chargeManpowerCost = 10% per charge. "
+     "All have SaberCharge mod; Cavalry Saber adds CavalryMorale; Heavy Saber adds HeavyCharge.",
+     ""),
+
+    ("FULL PASS", "Weapons", "Musket Class (4 types)",
+     "weapon.gd",
+     "Flintlock (L1, ranged +4, reload 2), Brown Bess (L2, ranged +6, reload 2), "
+     "Percussion Cap (L3, ranged +8, reload 1), Lever Repeater (L4, ranged +10, no reload). "
+     "All have Bayonet (limited melee); Lever burns 2 ammo/level.",
+     ""),
+
+    ("FULL PASS", "Weapons", "Artillery Class (4 types)",
+     "weapon.gd",
+     "Falconet (L1, ranged +12, reload 3, ammo 3/level), "
+     "Field Gun (L2, ranged +18, reload 3), Howitzer (L3, ranged +25, reload 2), "
+     "Mortar (L4, ranged +35, reload 2, ammo 5/level + Siege mod). "
+     "No melee at all. CannonBlast on all; AreaDamage on L2+.",
+     ""),
+
+    ("FULL PASS", "Weapons", "Reload System",
+     "unit.gd + battle.gd",
+     "reloadCounter counts down to 0 (ready). start_reload() sets counter = reloadTurns. "
+     "tick_reload() decrements counter each round. "
+     "GunCrewEfficiency armor mod reduces reloadTurns by 1 (min 0) at start_reload(). "
+     "get_effective_ranged_offence() returns 0 if reloading.",
+     "Reload only checked in ranged combat. Melee rounds don't tick reload."),
+
+    ("FIRST PASS", "Weapons", "Legacy Weapon Class (12 types)",
+     "weapon.gd",
+     "Atlatl, Club, Double Axe, Flail, Longsword, Mace, Machete, Macuahuitl, "
+     "Pike, Shortsword, Tomahawk, Spear. Kept for DODK compatibility. "
+     "No weaponClass specialization (all 'Legacy'). AtlatlPierce and ClubBleed mods applied.",
+     "Cost calculation in surveySelf uses legacy names only. New Saber/Musket/Artillery names "
+     "not in the cost match block → army shows 0 weapons cost for all new weapons."),
+
+    # ── ARMOR ──────────────────────────────────────────────────────────────────
+    ("FULL PASS", "Armor", "Uniform Class (8 types)",
+     "armor.gd",
+     "Continental (M15/R20/S10 + DrillFormation), Redcoat (M20/R15/S10 + LineFormation), "
+     "Militia (M10/R10/S5), Light Infantry (M10/R30/S10 + Skirmish), "
+     "Heavy Infantry (M35/R10/S10 + ShockTroop), Cavalry (M25/R5/S15 + MountedCharge + CavalryMorale), "
+     "Artillery Corps (M5/R5/S20 + GunCrewEfficiency), Minuteman (M12/R18/S8 + MinutemanSpirit). "
+     "M/R/S = melee/ranged/spell block %.",
+     ""),
+
+    ("FIRST PASS", "Armor", "Legacy Armor Class (11 types)",
+     "armor.gd",
+     "Canine, Cast, Chain, Archer, Plate, Padded, Scout, Scale, Shell, Point, Feline, Otter. "
+     "Kept for DODK compatibility. Chain and Shell legacy armors have embedded mods.",
+     ""),
+
+    # ── MIL MODS ───────────────────────────────────────────────────────────────
+    ("FULL PASS", "Mil Mods", "Mil Mod Class & Pipeline",
+     "mil_mod.gd, governor.gd, army.gd, unit.gd",
+     "MilMod node with milModType, milModResource, disabled bool, "
+     "infantryMod/rangedMod/siegeMod/commanderMod/civilianMod/resourceMod/marineMod/entrenchMod/terrainMod bools. "
+     "Flow: governor.addMilMod() → govMilModsLvl1/2/3 → army.commanderCheck() → "
+     "unit.addMilMod() → unit.militaryModifierList → calculateMilMods().",
+     "addMilMod in governor.gd does NOT call buildSelf() — only milModType is set, "
+     "all boolean flags remain false on programmatic mods. "
+     "calculateMilMods has inverted disabled check (see Known Bugs)."),
+
+    ("FULL PASS", "Mil Mods", "Resource Disable System",
+     "army.gd surveySelf(), mil_mod.gd disableMilModType()",
+     "surveySelf() calls enableMilModType('All') on all units first (reset), "
+     "then disableMilModType(resource) for each depleted resource. "
+     "Any mod with matching milModResource gets disabled = true.",
+     "Due to inverted check bug, disabled mods actually DO apply and enabled mods DON'T."),
+
+    ("FULL PASS", "Mil Mods", "Commander Mod Tiers",
+     "governor.gd addMilMod(), army.gd commanderCheck()",
+     "Levels encoded: 123 = all 3 tiers, 23 = tiers 2+3, 3 = tier 3 only. "
+     "commanderCheck() selects commanderModifiers1/2/3 array based on governorLevel. "
+     "VP commanders (isVicePresident = true) get all mods doubled.",
+     ""),
+
+    ("FULL PASS", "Mil Mods", "Archetype Mod Assignment",
+     "world.gd _apply_archetype_mods()",
+     "Each of 25 archetypes receives 4 mods: 2 at T1(123), 1 at T2(23), 1 at T3(3). "
+     "Called immediately after governorLevel = 1 in generateBarracksCommanders().",
+     ""),
+
+    # ── COMMANDER ──────────────────────────────────────────────────────────────
+    ("FULL PASS", "Commander", "Governor Class",
+     "governor.gd",
+     "governorType (name), governorLevel 1–3, governorArchetypeId (ARC_01–25 or CA_ARC_01+), "
+     "loyalty −20 to +10, morale 0–100, isVicePresident bool, questComplete bool. "
+     "govMilModsLvl1/2/3 arrays hold tier-tiered mods.",
+     ""),
+
+    ("FULL PASS", "Commander", "Named Historical Governors",
+     "governor.gd buildSelf()",
+     "Ualani Carlisle (Visionary×123, Champion of the Sun×23, Healer×3), "
+     "Benjamin Tallmadge (Translator×123). "
+     "Patrick Henry, Abigail Adams, Thomas Paine, Joseph Warren, Daniel Shays, "
+     "Phillis Wheatley, Francis Asbury also defined.",
+     ""),
+
+    ("FULL PASS", "Commander", "Procedural Commander Generation",
+     "world.gd generateBarracksCommanders()",
+     "Runs on game start. For each player barracks tile: picks archetype by terrain match, "
+     "picks name pool by cultural affinity, generates name, "
+     "calls _apply_archetype_mods(), registers War Room arc, auto-assigns to tile army.",
+     ""),
+
+    ("FULL PASS", "Commander", "Commander Arc Objectives",
+     "WarRoomPanel.gd registerCommanderArc(), _get_commander_objective()",
+     "Each commander gets 3 objectives tied to archetype. "
+     "15 condition types: kill_count, liberate_tiles, tile_corruption_below, "
+     "tile_buildings_count, build_in_home_tile, home_tile_corruption_below, "
+     "home_tile_moral_decay_below, resource_threshold, liberate_tiles_in_state, "
+     "home_tile_has_building, liberate_any_with_building, liberate_state_count, + terrain types.",
+     ""),
+
+    ("FULL PASS", "Commander", "Commander Turn-Count Progression",
+     "world.gd _commander_turns dict",
+     "Tracks turns_served per governor. CMD_MERIT fires at 5 turns (level 1), "
+     "CMD_RECOGNITION at 20 turns (level 2), CMD_THANKS at 50 turns (level 3). "
+     "promote_commander outcome bumps governorLevel and calls stationedArmy.updateArmyUI().",
+     ""),
+
+    ("FULL PASS", "Commander", "Commander Narrative Arc Events",
+     "data/events.csv, data/event_triggers.csv",
+     "ARC_01_FIRST through ARC_25_FIRST: fire when objective 1 is met. "
+     "ARC_01_DONE through ARC_25_DONE: fire when objective 3 is met. "
+     "50 events total; 48 triggers (TRIG_036–083) wired in event_triggers.csv.",
+     ""),
+
+    # ── MOVEMENT ───────────────────────────────────────────────────────────────
+    ("FULL PASS", "Movement", "Movement Point System",
+     "army.gd, tile.gd get_move_cost()",
+     "maxMovementPoints = 3 per army per turn. "
+     "Terrain base costs: Metro/Fort/Suburbs/Farmlands = 1; "
+     "Woods/Foothills/Wetlands = 2. "
+     "Road level reduces cost (max(1, base − road_level)). "
+     "Metro acts as road_level 2. Points restored to max each turn.",
+     ""),
+
+    ("FULL PASS", "Movement", "Winter Movement Penalty",
+     "tile.gd get_move_cost(), army.armyTags",
+     "Winter amplification: factor = 1.0 + (1.0 − get_winter_army_modifier()) × 1.0. "
+     "Applied when winterScore > 0 and army lacks 'Cold Weather' tag. "
+     "Cold/Harsh/Blizzard zones increase tile entry cost significantly.",
+     ""),
+
+    ("FIRST DRAFT", "Movement", "Pathfinding",
+     "army.gd pathLine, targetTile",
+     "pathLine and targetTile vars declared on Army. "
+     "Description says 'builds a path from inTile to targetTile'. "
+     "No pathfinding algorithm is visible in army.gd.",
+     "Actual pathfinding logic likely in world.gd or path_control.gd."),
+
+    ("IDEA", "Movement", "Night Raider / Ghost March (movement mods)",
+     "mil_mod.gd Night Raider, Ghost March",
+     "Night Raider: 'move and attack same turn without penalty'. "
+     "Ghost March: 'ignore enemy zone of control'. "
+     "Neither movement penalty nor ZoC system exists to modify.",
+     ""),
+
+    ("IDEA", "Movement", "The Long March (+2 MP mod)",
+     "mil_mod.gd The Long March",
+     "'+ 2 Movement Points; full movement may be used before attacking'. "
+     "No code reads this mod and adds to maxMovementPoints.",
+     ""),
+
+    # ── WEATHER ────────────────────────────────────────────────────────────────
+    ("FULL PASS", "Weather", "Winter Score System",
+     "tile.gd winterScore",
+     "winterScore int per tile. Range: −80 (extreme hurricane) to 80+ (blizzard). "
+     "Categories: Extreme Hurricane ≤−80, Hurricane ≤−60, Storm Prone ≤−20, "
+     "Mild −20 to 20, Cold 20–60, Harsh 60–80, Blizzard ≥80.",
+     ""),
+
+    ("FULL PASS", "Weather", "Winter Army Supply Drain",
+     "world.gd _apply_winter_army_drain()",
+     "Runs months 11–2. modifier 1.0 = 0 food drain, 0.85 (cold) = 3 food, "
+     "0.65 (harsh) = 7 food. Tropical tiles (winterScore ≤ 0) exempt. "
+     "Cold Weather armyTag exempts army.",
+     ""),
+
+    ("FULL PASS", "Weather", "Seasonal Eco Modifiers",
+     "tile.gd _apply_winter_eco_modifier()",
+     "Applies tileEcoModifier entries based on winterScore category. "
+     "Summer/Winter season labels applied to tile.season var.",
+     ""),
+
+    ("FIRST DRAFT", "Weather", "Hurricane / Storm Events",
+     "tile.gd is_hurricane_territory(), is_storm_prone()",
+     "Helper functions defined. Tile winter eco modifier for hurricane zones set. "
+     "No specific hurricane combat/movement events wired.",
+     ""),
+
+    ("IDEA", "Weather", "Weather Combat Effects",
+     "(design intent only)",
+     "No combat stat penalties from weather. "
+     "Rain/snow/fog could reduce ranged effectiveness or add to terrain mod costs. "
+     "Storm Prone tiles could have randomized penalties.",
+     ""),
+
+    # ── SPAWN ──────────────────────────────────────────────────────────────────
+    ("FULL PASS", "Spawn", "Army Spawn from Barracks",
+     "world.gd generateBarracksCommanders()",
+     "On game start, scans all player barracks tiles. "
+     "For each: picks archetype, generates commander, auto-assigns to tile and tile army.",
+     ""),
+
+    ("FULL PASS", "Spawn", "Unit Template Spawn",
+     "unit.gd buildSelf()",
+     "buildSelf(playerCountry, Type, Level, WeaponType, OreType, ArmorType, CurMan, CurWeapons). "
+     "Instantiates Weapon/Ore/Armor sub-nodes; calls getUnitAttributes().",
+     ""),
+
+    ("FULL PASS", "Spawn", "Canadian Army Generation",
+     "world.gd (generateBarracksCommanders companion section)",
+     "Parallel archetype table for Canadian tiles: CA_ARC_01–CA_ARC_10 with "
+     "French-Canadian name pools (NP_06) and terrain affinities.",
+     ""),
+
+    ("FIRST PASS", "Spawn", "Army Template from CSV",
+     "army_database.gd",
+     "army_templates CSV supplies ArmyName, country, tile, armyMods (pipe-delimited tags). "
+     "armyTags populated from armyMods column.",
+     ""),
+
+    # ── SPECIAL ────────────────────────────────────────────────────────────────
+    ("FULL PASS", "Special", "Vice President Army Bonus",
+     "army.gd addUnitCommander()",
+     "isVicePresident governors (Ualani Carlisle) get ALL their mods doubled — "
+     "govMilModsLvl1/2/3 appended twice into commanderModifiers arrays.",
+     ""),
+
+    ("FIRST PASS", "Special", "Barracks Max Unit Level",
+     "army.gd calculateMaxUnitLevel()",
+     "maxUnitLevel = barracks building level in tile.tileBuildingsList. "
+     "Higher barracks level allows higher-tier units.",
+     "maxUnitLevel calculated but nothing enforces it during unit recruitment."),
+
+    ("FIRST DRAFT", "Special", "Double Shot / Double Cannonade",
+     "mil_mod.gd",
+     "Double Shot (T2): 'siege fires twice per round — second at 50% power'. "
+     "Double Cannonade (T3): 'siege fires twice AND +3 attack on all shots'. "
+     "No second-shot loop in battle.gd ranged calculation.",
+     ""),
+
+    ("FIRST DRAFT", "Special", "Terrain Defensive Bonuses (new mods)",
+     "mil_mod.gd (terrainMod, terrainType flags)",
+     "terrainMod bool + terrainType String added to MilMod. "
+     "Woodsman/Swamp Legs/Hill Runner/Street Tough/Farmhand all set these flags. "
+     "No code in calculateMilMods() or battle.gd reads terrainType or applies bonus.",
+     "Needs: army.inTile.terrain passed to calculateMilMods(); "
+     "match block entries for each terrain mod type."),
+
+    ("IDEA", "Special", "Supply Lines",
+     "(army cost vars hint at it)",
+     "armyFoodCost/armyWeaponsCost accumulated in surveySelf(). "
+     "Country resources depleted by these costs is not fully automated per turn.",
+     ""),
+]
+
+
+def build_systems_sheet(wb):
+    ws = wb.create_sheet("Systems Overview")
+    ws.row_dimensions[1].height = 28
+
+    COLS = [
+        ("STATUS",       13),
+        ("CATEGORY",     14),
+        ("SYSTEM",       30),
+        ("KEY FILE(S)",  30),
+        ("DESCRIPTION",  62),
+        ("GAPS / NOTES", 44),
+    ]
+    for ci, (h, w) in enumerate(COLS, 1):
+        hcell(ws, 1, ci, h, w)
+
+    current_cat = None
+    row = 2
+    for (status, cat, name, files, desc, notes) in SYSTEMS:
+        if cat != current_cat:
+            divider(ws, row, len(COLS), cat)
+            row += 1
+            current_cat = cat
+
+        sbg = STATUS_COLORS.get(status, "FFFFFF")
+        sfg = STATUS_FG.get(status, NORMAL_FG)
+        cbg = CAT_COLORS.get(cat, "FFFFFF")
+
+        pcell(ws, row, 1, status, bg=sbg,  fg=sfg,    bold=True, align="center")
+        pcell(ws, row, 2, cat,    bg=cbg)
+        pcell(ws, row, 3, name,   bg=cbg,  bold=True)
+        pcell(ws, row, 4, files,  bg=cbg)
+        pcell(ws, row, 5, desc,   bg="FAFAFA")
+        pcell(ws, row, 6, notes,  bg="FFFBE6")
+        ws.row_dimensions[row].height = 44
+        row += 1
+
+    ws.freeze_panes = "A2"
+
+
+# ── SHEET 2: MIL MODS ─────────────────────────────────────────────────────────
+# tier_label, category, mod_type, type_flags, description, resource, notes
+
+MIL_MODS = [
+    # ── TIER 1 COMMANDER MODS ──────────────────────────────────────────────────
+    ("T1 (123)", "Commander/Infantry", "Woodsman",
+     "infantryMod, terrainMod", "Farmlands", "+2 Attack +2 Defense per level in Woods terrain",
+     "FIRST DRAFT — terrainType set; effect not in calculateMilMods"),
+    ("T1 (123)", "Commander/Infantry", "Swamp Legs",
+     "infantryMod, terrainMod", "Wetlands", "+2 Attack +2 Defense per level in Wetlands terrain",
+     "FIRST DRAFT — terrainType set; effect not in calculateMilMods"),
+    ("T1 (123)", "Commander/Infantry", "Hill Runner",
+     "infantryMod, terrainMod", "Foothills", "+2 Attack +2 Defense per level in Foothills terrain",
+     "FIRST DRAFT — terrainType set; effect not in calculateMilMods"),
+    ("T1 (123)", "Commander/Infantry", "Street Tough",
+     "infantryMod, terrainMod", "Metro/Suburbs", "+2 Attack per level in Metro or Suburbs terrain",
+     "FIRST DRAFT — terrainType set; effect not in calculateMilMods"),
+    ("T1 (123)", "Commander/Infantry", "Farmhand",
+     "infantryMod, terrainMod", "Farmlands", "+1 Attack per level in Farmlands terrain",
+     "FIRST DRAFT — terrainType set; effect not in calculateMilMods"),
+    ("T1 (123)", "Commander/Infantry", "Saber Drill",
+     "infantryMod", "—", "+3 Attack per level",
+     "FIRST DRAFT — defined; no case in calculateMilMods"),
+    ("T1 (123)", "Commander/Ranged", "Marksman",
+     "rangedMod", "—", "+2 Ranged Attack per level",
+     "FIRST DRAFT — defined; no case in calculateMilMods"),
+    ("T1 (123)", "Commander/Infantry", "Steady Line",
+     "infantryMod", "—", "+3 Defense per level",
+     "FIRST DRAFT — defined; no case in calculateMilMods"),
+    ("T1 (123)", "Commander/Ranged", "Quick Reload",
+     "rangedMod", "—", "Reload reduced by 1 round (min 0)",
+     "FIRST DRAFT — defined; no case in calculateMilMods or start_reload"),
+    ("T1 (123)", "Commander/Siege", "Powder & Shot",
+     "siegeMod", "—", "+3 Siege Attack per level",
+     "FIRST DRAFT — defined; no case in calculateMilMods"),
+    ("T1 (123)", "Commander/All", "Fortified Position",
+     "commanderMod", "—", "All units +3 Defense per level in tiles with Barracks or Fortress",
+     "FIRST DRAFT — defined; no terrain/building check in calculateMilMods"),
+    ("T1 (123)", "Commander/All", "Coastal Watch",
+     "commanderMod", "—", "All units +2 Defense per level when adjacent to naval tiles",
+     "FIRST DRAFT — defined; no naval neighbor check in calculateMilMods"),
+
+    # ── TIER 2 COMMANDER MODS ──────────────────────────────────────────────────
+    ("T2 (23)", "Commander/Special", "Marine",
+     "commanderMod, marineMod", "—", "Army may launch melee attacks into adjacent naval tile neighbors",
+     "FIRST DRAFT — marineMod flag set; no combat trigger checks it"),
+    ("T2 (23)", "Commander/Infantry", "Guerrilla Tactics",
+     "infantryMod, terrainMod", "Woods/Wetlands", "+4 Attack +4 Defense per level in Woods or Wetlands",
+     "FIRST DRAFT — terrainType set; effect not in calculateMilMods"),
+    ("T2 (23)", "Commander/Siege", "Double Shot",
+     "siegeMod", "—", "Siege fires twice per round — second shot at 50% power",
+     "FIRST DRAFT — defined; no second-shot loop in battle.gd"),
+    ("T2 (23)", "Commander/Infantry", "Iron Bayonet",
+     "infantryMod", "—", "+5 Attack per level in first battle round",
+     "FIRST DRAFT — defined; no round-counter in battle.gd"),
+    ("T2 (23)", "Commander/Ranged", "Sharpshooter",
+     "rangedMod", "—", "Ranged attacks ignore 2 enemy Defense per level",
+     "FIRST DRAFT — defined; no armor-pierce logic in _calculate_ranged_damage"),
+    ("T2 (23)", "Commander/Tile", "Corrupted Ground",
+     "commanderMod", "—", "Army presence reduces tile corruption by 1 per turn",
+     "FIRST DRAFT — defined; no per-turn tile.corruption modifier hooked to army"),
+    ("T2 (23)", "Commander/All", "Rallying Voice",
+     "commanderMod", "—", "Morale loss reduced; rout threshold lowered to 15%",
+     "FIRST DRAFT — defined; retreat threshold hardcoded at 25% in army.gd"),
+    ("T2 (23)", "Commander/All", "Night Raider",
+     "commanderMod", "—", "Army may move and attack same turn without penalty",
+     "IDEA — no day/night cycle; movement-attack penalty doesn't exist yet"),
+    ("T2 (23)", "Commander/Infantry", "Flanking Drill",
+     "infantryMod", "—", "+3 Attack per level when fighting in a contested tile",
+     "FIRST DRAFT — defined; no contested-tile check in battle.gd"),
+    ("T2 (23)", "Commander/All", "Vanguard",
+     "commanderMod", "—", "All units +4 Attack per level on first engagement in a fresh tile",
+     "FIRST DRAFT — defined; no first-engagement tracker per tile"),
+    ("T2 (23)", "Commander/Siege", "Siege Line",
+     "siegeMod", "—", "Siege attacks against fortified tiles suffer no defensive penalty",
+     "FIRST DRAFT — defined; no fortification check in _calculate_ranged_damage"),
+    ("T2 (23)", "Commander/Tile", "Cleaner",
+     "commanderMod", "—", "Army presence reduces tile moral decay by 1 per turn",
+     "FIRST DRAFT — defined; no per-turn tileMoralDecay modifier hooked to army"),
+
+    # ── TIER 3 COMMANDER MODS ──────────────────────────────────────────────────
+    ("T3 (3)", "Commander/Special", "Entrenched",
+     "commanderMod, entrenchMod", "—", "After 3 stationary turns, all units +5 Defense/level — lost on movement",
+     "FIRST DRAFT — entrenchMod flag set; no stationary turn counter anywhere"),
+    ("T3 (3)", "Commander/All", "Continental Line",
+     "commanderMod", "—", "All units +2 Attack +2 Defense per level permanently",
+     "FIRST DRAFT — defined; no case in calculateMilMods"),
+    ("T3 (3)", "Commander/Infantry", "Last Stand",
+     "infantryMod", "—", "Units below 25% manpower gain +6 Attack per level",
+     "FIRST DRAFT — defined; no manpower% check in calculateMilMods"),
+    ("T3 (3)", "Commander/All", "Terror",
+     "commanderMod", "—", "Enemy loses 10 Morale at start of each battle round",
+     "IDEA — no round-start morale tick in battle.gd"),
+    ("T3 (3)", "Commander/All", "Iron Wall",
+     "commanderMod", "—", "+8 Defense per level when defending the commander's home tile",
+     "FIRST DRAFT — defined; no home-tile check in battle.gd"),
+    ("T3 (3)", "Commander/All", "Rampart",
+     "commanderMod", "—", "+5 Defense per level in any Fortress tile",
+     "FIRST DRAFT — defined; no fortress-tile check in calculateMilMods"),
+    ("T3 (3)", "Commander/Special", "Naval Supremacy",
+     "commanderMod, marineMod", "—", "Marine melee attacks deal +5 additional damage per level",
+     "FIRST DRAFT — requires Marine mechanic to be wired first"),
+    ("T3 (3)", "Commander/All", "Ghost March",
+     "commanderMod", "—", "Army ignores enemy zone of control",
+     "IDEA — no ZoC system exists"),
+    ("T3 (3)", "Commander/All", "Undaunted",
+     "commanderMod", "—", "Ignore the first retreat check each battle",
+     "FIRST DRAFT — retreat check hardcoded in army.gd; no first-check skip logic"),
+    ("T3 (3)", "Commander/Siege", "Double Cannonade",
+     "siegeMod", "—", "Siege fires twice per round AND +3 Attack on all shots",
+     "FIRST DRAFT — no second-shot loop in battle.gd"),
+    ("T3 (3)", "Commander/All", "Liberator's Will",
+     "commanderMod", "—", "After liberating a tile: +15% manpower, commander +2 loyalty",
+     "FIRST DRAFT — defined; no post-liberation hook reads this mod"),
+    ("T3 (3)", "Commander/All", "The Long March",
+     "commanderMod", "—", "+2 Movement Points; full movement usable before attacking",
+     "IDEA — no code reads this mod and adds to maxMovementPoints"),
+
+    # ── LEGACY RESOURCE MODS ───────────────────────────────────────────────────
+    ("Resource", "Resource/Infantry", "ClubBleed",
+     "infantryMod", "Weapons", "CLUB: +2 Attack +1 Defense per level; costs Weapons",
+     "FIRST PASS — in calculateMilMods() but inverted disabled check prevents it firing"),
+    ("Resource", "Resource/Ranged", "AtlatlPierce",
+     "rangedMod", "Weapons", "ATLATL: +1 Attack +2 Defense per level; costs Weapons",
+     "FIRST PASS — in calculateMilMods() but inverted disabled check prevents it firing"),
+    ("Resource", "Resource", "Wood",
+     "resourceMod", "Wood", "+1 Attack per level; costs Wood",
+     "FIRST PASS — in buildSelf but no case in calculateMilMods"),
+    ("Resource", "Resource", "Copper",
+     "resourceMod", "Metal", "+2 Attack per level (+magic defense); costs Metal",
+     "FIRST PASS — Copper adds magic defense in calculateMilMods (inverted check bug)"),
+    ("Resource", "Resource", "Iron",
+     "resourceMod", "Metal", "+3 Attack per level; costs Metal ×3",
+     "FIRST PASS — defined in buildSelf, no case in calculateMilMods"),
+    ("Resource", "Resource", "Gold",
+     "resourceMod", "Metal+Gold", "+2 Attack per level (+magic defense); costs Metal+Gold",
+     "FIRST PASS — Gold adds magic defense in calculateMilMods (inverted check bug)"),
+    ("Resource", "Resource", "Floodstone",
+     "resourceMod", "Metal+Magic", "+3 Attack per level; costs Metal+Magic",
+     "FIRST PASS — defined in buildSelf, no case in calculateMilMods"),
+    ("Resource", "Country/Infantry", "Berserkers",
+     "infantryMod", "Harmony", "+3 Attack per level, −2 Harmony per level",
+     "FIRST PASS — defined in buildSelf, no case in calculateMilMods"),
+
+    # ── ORIGINAL COMMANDER MODS ────────────────────────────────────────────────
+    ("Legacy", "Commander", "Visionary",
+     "commanderMod", "None", "+3 Attack per level, +10% speed",
+     "FIRST PASS — defined, no case in calculateMilMods; Ualani Carlisle has this"),
+    ("Legacy", "Commander", "Champion of the Sun",
+     "commanderMod", "None", "+1 Attack per level, +10% speed (daytime)",
+     "FIRST PASS — defined, no case in calculateMilMods; daytime check unimplemented"),
+    ("Legacy", "Commander", "Healer",
+     "commanderMod", "None", "+10 reinforce rate",
+     "FIRST PASS — defined, no case in calculateMilMods; no reinforce rate modifier hooked"),
+    ("Legacy", "Commander", "Chain (armor)",
+     "commanderMod", "Weapons", "+5% Melee, +40% Ranged, +5% Spell block",
+     "FIRST PASS — Chain adds unitRangedOffence in calculateMilMods (inverted check bug)"),
+    ("Legacy", "Commander", "Shell (armor)",
+     "commanderMod", "Weapons", "+50% Spell block",
+     "FIRST PASS — defined, no direct effect in calculateMilMods"),
+
+    # ── WEAPON-EMBEDDED MODS ───────────────────────────────────────────────────
+    ("Weapon", "Saber", "SaberCharge",
+     "(weapon mod)", "—", "Enables saber charge: attacker pays 10% manpower to strike",
+     "FULL PASS — charge cost applied in battle.gd _apply_charge_costs()"),
+    ("Weapon", "Saber", "CavalryMorale",
+     "(weapon mod)", "—", "Bonus vs infantry morale on charge",
+     "IDEA — declared, never read anywhere"),
+    ("Weapon", "Saber", "HeavyCharge",
+     "(weapon mod)", "—", "Extra punch damage on Heavy Saber charge",
+     "IDEA — declared, never read anywhere"),
+    ("Weapon", "Musket", "Bayonet",
+     "(weapon mod)", "—", "Musket unit can melee (limited effectiveness, 50% penalty)",
+     "FULL PASS — can_charge_melee() returns true for Musket; 0.5 penalty in calculateGrossValues"),
+    ("Weapon", "Musket", "VolleyFire",
+     "(weapon mod)", "—", "Bonus when multiple musket units fire simultaneously",
+     "IDEA — declared on Brown Bess, never read in battle.gd"),
+    ("Weapon", "Musket", "RapidFire",
+     "(weapon mod)", "—", "Lever Repeater fires every round without reload",
+     "FIRST PASS — already handled by reloadTurns = 0 on weapon; mod redundant"),
+    ("Weapon", "Artillery", "CannonBlast",
+     "(weapon mod)", "—", "Artillery ranged attack",
+     "FIRST PASS — all artillery can fire ranged via can_fire_ranged(); mod declared 'handled in battle.gd' but no special branch"),
+    ("Weapon", "Artillery", "AreaDamage",
+     "(weapon mod)", "—", "Hits multiple units (Field Gun, Howitzer, Mortar)",
+     "IDEA — declared, never read in battle.gd; all ranged attacks currently single-target"),
+    ("Weapon", "Artillery", "Siege (Mortar)",
+     "(weapon mod)", "—", "Bonus vs fortified tiles",
+     "IDEA — declared on Mortar, never read in battle.gd"),
+
+    # ── ARMOR-EMBEDDED MODS ────────────────────────────────────────────────────
+    ("Armor", "Uniform", "DrillFormation",
+     "(armor mod)", "—", "Continental: bonus when adjacent to other Continental units",
+     "IDEA — declared on Continental armor, 'handled at army level', no army-level check"),
+    ("Armor", "Uniform", "LineFormation",
+     "(armor mod)", "—", "Redcoat: bonus to ranged when in line formation",
+     "IDEA — declared on Redcoat armor, 'handled at army level', no army-level check"),
+    ("Armor", "Uniform", "Skirmish",
+     "(armor mod)", "—", "Light Infantry: can move and fire same turn",
+     "IDEA — declared on Light Infantry, 'handled at army level', no movement-fire logic"),
+    ("Armor", "Uniform", "ShockTroop",
+     "(armor mod)", "—", "Heavy Infantry: bonus damage on first melee attack",
+     "FIRST PASS — declared 'handled in battle.gd first strike bonus'; no first-round check in battle.gd"),
+    ("Armor", "Uniform", "MountedCharge",
+     "(armor mod)", "—", "Cavalry: amplifies saber charge damage by 20%",
+     "FIRST PASS — case in calculateMilMods() adds 20% to offScore IF saber; inverted disabled check prevents firing"),
+    ("Armor", "Uniform", "GunCrewEfficiency",
+     "(armor mod)", "—", "Artillery Corps: reduces reload by 1 turn",
+     "FULL PASS — checked in unit.gd start_reload() directly by milModType string; bypasses disabled check bug"),
+    ("Armor", "Uniform", "MinutemanSpirit",
+     "(armor mod)", "—", "Minuteman: bonus morale in home territory",
+     "IDEA — declared on Minuteman, never read anywhere"),
+    ("Armor", "Civilian", "Translator",
+     "civilianMod", "Science", "Enable reading of ancient writings",
+     "CIVILIAN — not a combat mod"),
+    ("Armor", "Civilian", "Seeder",
+     "civilianMod", "Food", "Change agricultural output of tile",
+     "CIVILIAN — not a combat mod"),
+]
+
+
+def build_milmods_sheet(wb):
+    ws = wb.create_sheet("Mil Mods")
+    ws.row_dimensions[1].height = 28
+
+    COLS = [
+        ("TIER",         12),
+        ("CATEGORY",     20),
+        ("MOD TYPE",     22),
+        ("FLAGS",        28),
+        ("RESOURCE",     14),
+        ("EFFECT",       50),
+        ("STATUS / NOTES", 46),
+    ]
+    for ci, (h, w) in enumerate(COLS, 1):
+        hcell(ws, 1, ci, h, w)
+
+    current_tier = None
+    row = 2
+    for (tier, cat, mod_type, flags, resource, effect, notes) in MIL_MODS:
+        if tier != current_tier:
+            tier_bg = {
+                "T1 (123)": "2E5C8A",
+                "T2 (23)":  "7A5C1E",
+                "T3 (3)":   "8A2E2E",
+                "Resource": "5A5A5A",
+                "Legacy":   "3A5A3A",
+                "Weapon":   "2E6A5A",
+                "Armor":    "5A2E6A",
+            }.get(tier, "2F4F6F")
+            divider(ws, row, len(COLS), tier + " MODS", bg=tier_bg)
+            row += 1
+            current_tier = tier
+
+        tbg = TIER_COLORS.get(tier, "FFFFFF")
+        # Derive status color from notes
+        if notes.startswith("FULL PASS"):
+            sbg = STATUS_COLORS["FULL PASS"]
+            sfg = STATUS_FG["FULL PASS"]
+        elif notes.startswith("FIRST PASS"):
+            sbg = STATUS_COLORS["FIRST PASS"]
+            sfg = STATUS_FG["FIRST PASS"]
+        elif notes.startswith("FIRST DRAFT"):
+            sbg = STATUS_COLORS["FIRST DRAFT"]
+            sfg = STATUS_FG["FIRST DRAFT"]
+        elif notes.startswith("IDEA"):
+            sbg = STATUS_COLORS["IDEA"]
+            sfg = STATUS_FG["IDEA"]
+        elif notes.startswith("CIVILIAN"):
+            sbg = "EDD6F7"
+            sfg = "3A1A6A"
+        else:
+            sbg = "FFFFFF"
+            sfg = NORMAL_FG
+
+        pcell(ws, row, 1, tier,      bg=tbg, bold=True, align="center")
+        pcell(ws, row, 2, cat,       bg=tbg)
+        pcell(ws, row, 3, mod_type,  bg=tbg, bold=True)
+        pcell(ws, row, 4, flags,     bg="FAFAFA")
+        pcell(ws, row, 5, resource,  bg="FAFAFA", align="center")
+        pcell(ws, row, 6, effect,    bg="FAFAFA")
+        pcell(ws, row, 7, notes,     bg=sbg, fg=sfg)
+        ws.row_dimensions[row].height = 36
+        row += 1
+
+    ws.freeze_panes = "A2"
+
+
+# ── SHEET 3: WEAPONS ──────────────────────────────────────────────────────────
+# class, type, level, melee_off, melee_def, ranged_off, ranged_def, reload, ammo/level, charge_cost, weapon_mods, notes
+
+WEAPONS = [
+    # Sabers
+    ("Saber", "Cutlass",        1,  3,  2,  0,  0,  0,  0, "10%", "SaberCharge",                     "Basic melee. FULL PASS."),
+    ("Saber", "Cavalry Saber",  2,  5,  3,  0,  0,  0,  0, "10%", "SaberCharge, CavalryMorale",       "CavalryMorale unimplemented. FIRST PASS."),
+    ("Saber", "Light Saber",    3,  7,  4,  0,  0,  0,  0, "10%", "SaberCharge",                     "FULL PASS."),
+    ("Saber", "Heavy Saber",    4,  9,  5,  0,  0,  0,  0, "10%", "SaberCharge, HeavyCharge",        "HeavyCharge unimplemented. FIRST PASS."),
+    # Muskets
+    ("Musket", "Flintlock",     1,  1,  1,  4,  1,  2,  1, "—",  "Bayonet",                          "Bayonet melee at 50% penalty. FULL PASS."),
+    ("Musket", "Brown Bess",    2,  2,  1,  6,  1,  2,  1, "—",  "Bayonet, VolleyFire",              "VolleyFire unimplemented. FIRST PASS."),
+    ("Musket", "Percussion Cap",3,  2,  2,  8,  2,  1,  1, "—",  "Bayonet",                          "Reload 1 (faster). FULL PASS."),
+    ("Musket", "Lever Repeater",4,  3,  2, 10,  2,  0,  2, "—",  "Bayonet, RapidFire",              "No reload (fires every round). Burns 2 ammo. FULL PASS."),
+    # Artillery
+    ("Artillery", "Falconet",   1,  0,  0, 12,  0,  3,  3, "—",  "CannonBlast",                     "No melee. FIRST PASS."),
+    ("Artillery", "Field Gun",  2,  0,  0, 18,  0,  3,  3, "—",  "CannonBlast, AreaDamage",          "AreaDamage unimplemented. FIRST PASS."),
+    ("Artillery", "Howitzer",   3,  0,  0, 25,  0,  2,  4, "—",  "CannonBlast, AreaDamage",          "FIRST PASS."),
+    ("Artillery", "Mortar",     4,  0,  0, 35,  0,  2,  5, "—",  "CannonBlast, AreaDamage, Siege",   "Siege unimplemented. 5 ammo/level. FIRST PASS."),
+    # Legacy
+    ("Legacy", "Atlatl",        1,  0,  0,  2,  2,  0,  0, "—",  "AtlatlPierce",                    "DODK compat."),
+    ("Legacy", "Club",          1,  2,  2,  0,  0,  0,  0, "—",  "ClubBleed",                       "DODK compat."),
+    ("Legacy", "Double Axe",    1,  4,  0,  0,  0,  0,  0, "—",  "—",                                "DODK compat."),
+    ("Legacy", "Flail",         1,  1,  2,  0,  1,  0,  0, "—",  "—",                                "DODK compat."),
+    ("Legacy", "Longsword",     1,  3,  0,  0,  1,  0,  0, "—",  "—",                                "DODK compat."),
+    ("Legacy", "Mace",          1,  2,  1,  0,  1,  0,  0, "—",  "—",                                "DODK compat."),
+    ("Legacy", "Machete",       1,  2,  0,  0,  2,  0,  0, "—",  "—",                                "DODK compat."),
+    ("Legacy", "Macuahuitl",    1,  3,  1,  0,  0,  0,  0, "—",  "—",                                "DODK compat."),
+    ("Legacy", "Pike",          1,  1,  3,  0,  0,  0,  0, "—",  "—",                                "DODK compat."),
+    ("Legacy", "Shortsword",    1,  0,  2,  0,  2,  0,  0, "—",  "—",                                "DODK compat."),
+    ("Legacy", "Tomahawk",      1,  1,  0,  3,  0,  0,  0, "—",  "—",                                "DODK compat."),
+    ("Legacy", "Spear",         1,  1,  1,  1,  1,  0,  0, "—",  "—",                                "DODK compat."),
+]
+
+
+def build_weapons_sheet(wb):
+    ws = wb.create_sheet("Weapons")
+    ws.row_dimensions[1].height = 28
+
+    COLS = [
+        ("CLASS",       12),
+        ("NAME",        18),
+        ("LEVEL",        7),
+        ("MELEE ATK",    9),
+        ("MELEE DEF",    9),
+        ("RANGED ATK",   9),
+        ("RANGED DEF",   9),
+        ("RELOAD",       8),
+        ("AMMO/LVL",     9),
+        ("CHARGE COST", 11),
+        ("WEAPON MODS", 36),
+        ("NOTES",       36),
+    ]
+    for ci, (h, w) in enumerate(COLS, 1):
+        hcell(ws, 1, ci, h, w)
+
+    row = 2
+    current_cls = None
+    for (cls, name, level, m_atk, m_def, r_atk, r_def, reload, ammo, charge, mods, notes) in WEAPONS:
+        if cls != current_cls:
+            cls_bg = {"Saber": "2E5C8A", "Musket": "5A3A1E", "Artillery": "8A2E2E", "Legacy": "5A5A5A"}.get(cls, "2F4F6F")
+            divider(ws, row, len(COLS), cls + " CLASS", bg=cls_bg)
+            row += 1
+            current_cls = cls
+
+        cls_colors = {"Saber": "D6E4F7", "Musket": "FFF3CC", "Artillery": "FCE0D6", "Legacy": "DCDCDC"}
+        bg = cls_colors.get(cls, "FAFAFA")
+
+        pcell(ws, row,  1, cls,    bg=bg, bold=True, align="center")
+        pcell(ws, row,  2, name,   bg=bg, bold=True)
+        pcell(ws, row,  3, level,  bg=bg, align="center")
+        pcell(ws, row,  4, m_atk,  bg=bg, align="center")
+        pcell(ws, row,  5, m_def,  bg=bg, align="center")
+        pcell(ws, row,  6, r_atk,  bg=bg, align="center")
+        pcell(ws, row,  7, r_def,  bg=bg, align="center")
+        pcell(ws, row,  8, reload, bg=bg, align="center")
+        pcell(ws, row,  9, ammo,   bg=bg, align="center")
+        pcell(ws, row, 10, charge, bg=bg, align="center")
+        pcell(ws, row, 11, mods,   bg="FAFAFA")
+        pcell(ws, row, 12, notes,  bg="FFFBE6")
+        ws.row_dimensions[row].height = 28
+        row += 1
+
+    ws.freeze_panes = "A2"
+
+
+# ── SHEET 4: ARMOR & UNIFORMS ─────────────────────────────────────────────────
+
+ARMORS = [
+    # Uniforms
+    ("Uniform", "Continental",     15, 20, 10, 10, "DrillFormation",           "Balanced all-round. Formation bonus unimplemented. FIRST PASS."),
+    ("Uniform", "Redcoat",         20, 15, 10, 10, "LineFormation",            "Strong melee. Line bonus unimplemented. FIRST PASS."),
+    ("Uniform", "Militia",         10, 10,  5,  5, "—",                        "Cheap, basic. No mods. FULL PASS."),
+    ("Uniform", "Light Infantry",  10, 30, 10, 15, "Skirmish",                 "Strong ranged defense. Skirmish unimplemented. FIRST PASS."),
+    ("Uniform", "Heavy Infantry",  35, 10, 10,  8, "ShockTroop",               "Strong melee block. ShockTroop unimplemented. FIRST PASS."),
+    ("Uniform", "Cavalry",         25,  5, 15,  5, "MountedCharge, CavalryMorale", "Both mods blocked by disabled check bug. FIRST PASS."),
+    ("Uniform", "Artillery Corps",  5,  5, 20, 20, "GunCrewEfficiency",        "GunCrewEfficiency WORKS (bypasses disabled check). FULL PASS."),
+    ("Uniform", "Minuteman",       12, 18,  8,  8, "MinutemanSpirit",          "MinutemanSpirit unimplemented. FIRST PASS."),
+    # Legacy
+    ("Legacy", "Canine",           15,  5, 30,  1, "—",                        "DODK compat."),
+    ("Legacy", "Cast",             15, 10, 25, 20, "—",                        "DODK compat."),
+    ("Legacy", "Chain",             5, 40,  5, 15, "Chain (weapon mod)",        "Chain mod adds to rangedOffence (inverted bug). DODK compat."),
+    ("Legacy", "Archer",            0, 50,  0,  1, "—",                        "DODK compat."),
+    ("Legacy", "Plate",            50,  0,  0,  1, "—",                        "DODK compat."),
+    ("Legacy", "Padded",           10, 30, 10,  1, "—",                        "DODK compat."),
+    ("Legacy", "Scout",            16, 16, 16, 90, "—",                        "DODK compat."),
+    ("Legacy", "Scale",            28,  8, 14,  6, "Scale (ore mod — +7 shield/level)", "DODK compat."),
+    ("Legacy", "Shell",             0,  0, 50,  2, "Shell (weapon mod)",        "DODK compat."),
+    ("Legacy", "Point",            25, 25,  0, 55, "—",                        "DODK compat."),
+    ("Legacy", "Feline",           15,  5, 30,  1, "—",                        "DODK compat."),
+    ("Legacy", "Otter",            15,  5, 30,  1, "—",                        "DODK compat."),
+]
+
+
+def build_armors_sheet(wb):
+    ws = wb.create_sheet("Armor & Uniforms")
+    ws.row_dimensions[1].height = 28
+
+    COLS = [
+        ("CLASS",         10),
+        ("NAME",          18),
+        ("MELEE BLOCK %", 13),
+        ("RANGED BLOCK %",13),
+        ("SPELL BLOCK %", 12),
+        ("WEAPONS/LVL",   12),
+        ("EMBEDDED MODS", 36),
+        ("NOTES",         40),
+    ]
+    for ci, (h, w) in enumerate(COLS, 1):
+        hcell(ws, 1, ci, h, w)
+
+    row = 2
+    current_cls = None
+    for (cls, name, m_blk, r_blk, s_blk, wpn_lvl, mods, notes) in ARMORS:
+        if cls != current_cls:
+            cls_bg = {"Uniform": "2E5C3A", "Legacy": "5A5A5A"}.get(cls, "2F4F6F")
+            divider(ws, row, len(COLS), cls, bg=cls_bg)
+            row += 1
+            current_cls = cls
+
+        bg = "D6F0D6" if cls == "Uniform" else "DCDCDC"
+        pcell(ws, row, 1, cls,      bg=bg, bold=True, align="center")
+        pcell(ws, row, 2, name,     bg=bg, bold=True)
+        pcell(ws, row, 3, m_blk,    bg=bg, align="center")
+        pcell(ws, row, 4, r_blk,    bg=bg, align="center")
+        pcell(ws, row, 5, s_blk,    bg=bg, align="center")
+        pcell(ws, row, 6, wpn_lvl,  bg=bg, align="center")
+        pcell(ws, row, 7, mods,     bg="FAFAFA")
+        pcell(ws, row, 8, notes,    bg="FFFBE6")
+        ws.row_dimensions[row].height = 28
+        row += 1
+
+    ws.freeze_panes = "A2"
+
+
+# ── SHEET 5: ARCHETYPES ───────────────────────────────────────────────────────
+# id, name, position, terrain, t1_mod1, t1_mod2, t2_mod, t3_mod, narrative hook
+
+ARCHETYPES = [
+    ("ARC_01","Wetlands Fisher",      "SCOUT",      "Wetlands",
+     "Swamp Legs",       "Coastal Watch",    "Marine",           "Naval Supremacy",
+     "Fish the inlets, fight the tides; knows every marsh and cove"),
+    ("ARC_02","Appalachian Miner",    "ENGINEER",   "Foothills",
+     "Hill Runner",      "Powder & Shot",    "Siege Line",       "Rampart",
+     "Blasting rock face taught them how to blow walls too"),
+    ("ARC_03","Ivy League Dropout",   "SCHOLAR",    "Metro",
+     "Steady Line",      "Street Tough",     "Flanking Drill",   "Continental Line",
+     "Book-learned and street-fought; theory meets cobblestones"),
+    ("ARC_04","Seminole Fighter",     "WARRIOR",    "Wetlands / Farmlands",
+     "Swamp Legs",       "Saber Drill",      "Guerrilla Tactics","Last Stand",
+     "Fought the swamps before the British. Will fight them again."),
+    ("ARC_05","Green Mountain Farmer","FARMER",     "Foothills / Farmlands",
+     "Farmhand",         "Hill Runner",      "Corrupted Ground", "Liberator's Will",
+     "The land is theirs by deed and by rifle"),
+    ("ARC_06","Chesapeake Shipwright","ENGINEER",   "Wetlands",
+     "Coastal Watch",    "Powder & Shot",    "Double Shot",      "Double Cannonade",
+     "Built the ships, now mans the guns"),
+    ("ARC_07","Loyalist Turncoat",    "SPY",        "Metro / Suburbs",
+     "Street Tough",     "Marksman",         "Night Raider",     "Ghost March",
+     "Knows the enemy's plans because they used to write them"),
+    ("ARC_08","Tobacco Belt Drifter", "SCOUT",      "Farmlands",
+     "Farmhand",         "Quick Reload",     "Corrupted Ground", "The Long March",
+     "Covered a thousand miles on foot; a thousand more to go"),
+    ("ARC_09","War Widow",            "DIPLOMAT",   "Suburbs / Metro",
+     "Steady Line",      "Fortified Position","Rallying Voice",  "Undaunted",
+     "Lost everything once; will not lose again"),
+    ("ARC_10","Indigenous Scout",     "SCOUT",      "Woods / Wetlands",
+     "Woodsman",         "Swamp Legs",       "Guerrilla Tactics","Ghost March",
+     "The forest is a home, not an obstacle"),
+    ("ARC_11","Boston Rabble-Rouser", "ORATOR",     "Metro",
+     "Street Tough",     "Saber Drill",      "Rallying Voice",   "Terror",
+     "Their voice is a weapon; their fists the punctuation"),
+    ("ARC_12","Continental Surgeon",  "HEALER",     "Farmlands / Foothills",
+     "Steady Line",      "Fortified Position","Cleaner",         "Liberator's Will",
+     "Saves the wounded so they can fight again tomorrow"),
+    ("ARC_13","Nantucket Sailor",     "ADMIRAL",    "Wetlands",
+     "Coastal Watch",    "Marksman",         "Marine",           "Naval Supremacy",
+     "Home is a deck; the shore is just waiting for wind"),
+    ("ARC_14","Frontier Preacher",    "ORATOR",     "Woods / Foothills",
+     "Woodsman",         "Hill Runner",      "Rallying Voice",   "Undaunted",
+     "God and country; in that order"),
+    ("ARC_15","DC Bureaucrat",        "BUREAUCRAT", "Metro",
+     "Fortified Position","Street Tough",   "Flanking Drill",    "Iron Wall",
+     "Knows every regulation and which ones to ignore"),
+    ("ARC_16","Rust Belt Steelworker","ENGINEER",   "Suburbs",
+     "Powder & Shot",    "Fortified Position","Siege Line",      "Double Cannonade",
+     "Built the walls, knows where they crack"),
+    ("ARC_17","Plantation Deserter",  "SOLDIER",    "Farmlands",
+     "Farmhand",         "Saber Drill",      "Guerrilla Tactics","Last Stand",
+     "Left the plantation at midnight; never looked back"),
+    ("ARC_18","Swamp Witch",          "MAGE",       "Wetlands",
+     "Swamp Legs",       "Coastal Watch",    "Cleaner",          "Terror",
+     "The bayou has its own army and she commands it"),
+    ("ARC_19","Caribbean Privateer",  "ADMIRAL",    "Wetlands / Suburbs",
+     "Coastal Watch",    "Saber Drill",      "Marine",           "Double Cannonade",
+     "No flag but profit; for now, the Republic pays better"),
+    ("ARC_20","Hawaiian Refugee",     "DIPLOMAT",   "Wetlands / Metro",
+     "Farmhand",         "Coastal Watch",    "Marine",           "Naval Supremacy",
+     "Crossed the Pacific once. The Atlantic is nothing."),
+    ("ARC_21","Border Mercenary",     "SOLDIER",    "Suburbs / Farmlands",
+     "Hill Runner",      "Saber Drill",      "Iron Bayonet",     "Last Stand",
+     "Fought for whoever paid; now fighting for something real"),
+    ("ARC_22","Acadian Forest Ranger","SCOUT",      "Woods / Wetlands",
+     "Woodsman",         "Quick Reload",     "Guerrilla Tactics","Ghost March",
+     "The British burned their home; the forest remembers"),
+    ("ARC_23","Gettysburg Descendant","SOLDIER",    "Farmlands / Foothills",
+     "Steady Line",      "Saber Drill",      "Iron Bayonet",     "Entrenched",
+     "A family name written in battlefield soil"),
+    ("ARC_24","LGBTQ+ Organizer",     "DIPLOMAT",   "Metro / Suburbs",
+     "Street Tough",     "Steady Line",      "Rallying Voice",   "Continental Line",
+     "Built coalitions the old guard said were impossible"),
+    ("ARC_25","Carnival Barker",      "ORATOR",     "Wetlands / Suburbs",
+     "Street Tough",     "Marksman",         "Night Raider",     "The Long March",
+     "Every performance is a battle; every crowd a campaign"),
+]
+
+
+def build_archetypes_sheet(wb):
+    ws = wb.create_sheet("Archetypes")
+    ws.row_dimensions[1].height = 28
+
+    COLS = [
+        ("ID",           8),
+        ("ARCHETYPE",   26),
+        ("POSITION",    13),
+        ("TERRAIN",     22),
+        ("T1 MOD A",    20),
+        ("T1 MOD B",    20),
+        ("T2 MOD",      20),
+        ("T3 MOD",      20),
+        ("NARRATIVE HOOK", 52),
+    ]
+    for ci, (h, w) in enumerate(COLS, 1):
+        hcell(ws, 1, ci, h, w)
+
+    row = 2
+    for arc in ARCHETYPES:
+        (arc_id, name, pos, terrain, t1a, t1b, t2, t3, hook) = arc
+
+        pcell(ws, row, 1, arc_id,  bg="D6E4F7", bold=True, align="center")
+        pcell(ws, row, 2, name,    bg="D6E4F7", bold=True)
+        pcell(ws, row, 3, pos,     bg="FFF3CC", align="center")
+        pcell(ws, row, 4, terrain, bg="D6F0D6")
+        pcell(ws, row, 5, t1a,     bg="D6E4F7")
+        pcell(ws, row, 6, t1b,     bg="D6E4F7")
+        pcell(ws, row, 7, t2,      bg="FFF3CC")
+        pcell(ws, row, 8, t3,      bg="FCE0D6")
+        pcell(ws, row, 9, hook,    bg="FAFAFA")
+        ws.row_dimensions[row].height = 32
+        row += 1
+
+    ws.freeze_panes = "A2"
+
+
+# ── SHEET 6: BATTLE MECHANICS ─────────────────────────────────────────────────
+# section, formula/rule, status, notes
+
+BATTLE_MECHANICS = [
+    # ── STAT PIPELINE ──────────────────────────────────────────────────────────
+    ("Stat Pipeline", "Unit base stats",
+     "FULL PASS",
+     "offScore = level × weaponOffence × meleePenalty × effectMultiplier. "
+     "effectMultiplier = (man% + wpn%) / 2, or wpn% only for artillery.",
+     ""),
+    ("Stat Pipeline", "Effect multiplier",
+     "FULL PASS",
+     "Both manpower and weapons must be adequate for full effect. "
+     "Unit at 50% manpower + 100% weapons = 75% effectiveness (except artillery).",
+     ""),
+    ("Stat Pipeline", "Melee penalty",
+     "FULL PASS",
+     "Muskets fight at 50% offensive score in melee (weapon.get_melee_penalty() = 0.5). "
+     "Sabers at 100%. Artillery cannot melee at all.",
+     ""),
+    ("Stat Pipeline", "Commander morale multiplier",
+     "FULL PASS",
+     "mm = 1.0 + (commander.morale / 100) × 0.25. Applied to armyPunch and armyDefence. "
+     "Range: ×1.0 (morale 0) to ×1.25 (morale 100).",
+     "governor.loyalty range is −20 to +10, not 0–100. Morale input to formula may be loyalty × some factor. Needs clarification."),
+
+    # ── MELEE ROUND ────────────────────────────────────────────────────────────
+    ("Melee Round", "Base attack",
+     "FULL PASS",
+     "raw_attack = attacker.armyPunch (sum of all unit offensiveScores).",
+     ""),
+    ("Melee Round", "Block reduction",
+     "FULL PASS",
+     "block_ratio = clamp(armyBlock / unitCount, 0.0, 0.9). "
+     "net_damage = raw_attack × (1 − block_ratio).",
+     "Max 90% block cap prevents total immunity."),
+    ("Melee Round", "Shield absorption",
+     "FULL PASS",
+     "Shield absorbs before manpower. defenderShieldLoss = min(shield, net_damage). "
+     "remainder = net_damage − shieldLoss → applied to manpower.",
+     ""),
+    ("Melee Round", "Saber charge cost",
+     "FULL PASS",
+     "Each saber unit pays 10% of its currentManpower on every melee attack. "
+     "Cost applied in battle.gd _apply_charge_costs() after battle resolves.",
+     ""),
+    ("Melee Round", "Simultaneous counter",
+     "FULL PASS",
+     "Defender counter-attacks simultaneously in melee. "
+     "Same formula: defender.armyPunch × (1 − attacker.block_ratio).",
+     ""),
+
+    # ── RANGED ROUND ───────────────────────────────────────────────────────────
+    ("Ranged Round", "Effective launch",
+     "FULL PASS",
+     "effective_launch = sum of get_effective_ranged_offence() per unit. "
+     "Returns 0 for reloading units, full unitRangedOffence if ready.",
+     ""),
+    ("Ranged Round", "Ranged block",
+     "FULL PASS",
+     "ranged_block_ratio = clamp(armyDefence / unitCount, 0.0, 0.9). "
+     "Same shield-then-manpower absorption as melee.",
+     ""),
+    ("Ranged Round", "Ranged counter",
+     "FULL PASS",
+     "Defender may return fire if they have ready ranged units. "
+     "Pure artillery attackers receive no defensive counter (can't melee, no counter).",
+     "Artillery special case comment in code but not fully enforced."),
+    ("Ranged Round", "Reload",
+     "FULL PASS",
+     "After firing: unit.start_reload() sets reloadCounter = reloadTurns. "
+     "GunCrewEfficiency reduces reloadTurns by 1 at start_reload(). "
+     "tick_reload() called each round. Unit fires again when reloadCounter reaches 0.",
+     "Reload only ticks during ranged battle rounds. Melee rounds do not advance reload."),
+
+    # ── MORALE & RETREAT ───────────────────────────────────────────────────────
+    ("Morale & Retreat", "Retreat threshold",
+     "FULL PASS",
+     "Retreat triggers at manpowerInArmy / maxManpower < 0.25 (25%). "
+     "inRetreat = true; army loses control.",
+     "Rallying Voice mod claims to reduce this to 15% — not implemented."),
+    ("Morale & Retreat", "Army destruction",
+     "FULL PASS",
+     "deleteMode = true when manpowerInArmy ≤ 0.",
+     "deleteMode set but no automated removal from world tile."),
+    ("Morale & Retreat", "Retreat execution",
+     "FIRST DRAFT",
+     "inRetreat + retreatTarget vars declared. "
+     "No pathfinding back to home tile logic exists.",
+     ""),
+
+    # ── SIEGE ──────────────────────────────────────────────────────────────────
+    ("Siege", "Siege score",
+     "FIRST DRAFT",
+     "armySiegeScore = unitCount × 0.1 × tile.get_siege_difficulty(). "
+     "tile.get_siege_difficulty() calculates based on tile buildings.",
+     "Siege score never read in battle.gd. No siege battle type implemented."),
+    ("Siege", "Fortification defense",
+     "FIRST DRAFT",
+     "Siege Line mod designed to bypass fortification penalties. "
+     "No fortification penalty currently exists in _calculate_ranged_damage.",
+     ""),
+
+    # ── BATTLE UI ──────────────────────────────────────────────────────────────
+    ("Battle UI", "Projected damage display",
+     "FULL PASS",
+     "Battle UI shows current manpower bars and projected post-battle values "
+     "for both armies before player clicks Attack.",
+     ""),
+    ("Battle UI", "Reload indicator",
+     "FULL PASS",
+     "In ranged mode, UI shows '(N reloading)' suffix on attacker's launch stat.",
+     ""),
+    ("Battle UI", "Battle type display",
+     "FULL PASS",
+     "Melee shows: Shield / Punch / Block% for each side. "
+     "Ranged shows: Shield / Launch / Defence% for each side.",
+     ""),
+]
+
+
+def build_battle_sheet(wb):
+    ws = wb.create_sheet("Battle Mechanics")
+    ws.row_dimensions[1].height = 28
+
+    COLS = [
+        ("SECTION",         16),
+        ("MECHANIC",        28),
+        ("STATUS",          13),
+        ("FORMULA / RULE",  58),
+        ("GAPS / NOTES",    40),
+    ]
+    for ci, (h, w) in enumerate(COLS, 1):
+        hcell(ws, 1, ci, h, w)
+
+    row = 2
+    current_sec = None
+    for (sec, mech, status, rule, notes) in BATTLE_MECHANICS:
+        if sec != current_sec:
+            divider(ws, row, len(COLS), sec)
+            row += 1
+            current_sec = sec
+
+        sbg = STATUS_COLORS.get(status, "FFFFFF")
+        sfg = STATUS_FG.get(status, NORMAL_FG)
+
+        pcell(ws, row, 1, sec,    bg="EEF2F7")
+        pcell(ws, row, 2, mech,   bg="EEF2F7", bold=True)
+        pcell(ws, row, 3, status, bg=sbg, fg=sfg, bold=True, align="center")
+        pcell(ws, row, 4, rule,   bg="FAFAFA")
+        pcell(ws, row, 5, notes,  bg="FFFBE6")
+        ws.row_dimensions[row].height = 42
+        row += 1
+
+    ws.freeze_panes = "A2"
+
+
+# ── SHEET 7: KNOWN BUGS ───────────────────────────────────────────────────────
+
+BUGS = [
+    ("CRITICAL", "calculateMilMods() inverted disabled check",
+     "unit.gd line 156",
+     "Condition is `if MilMod.disabled != false` which equals `if false` (always false). "
+     "NO mod effects in calculateMilMods() ever apply. "
+     "Stat-boosting mods (ClubBleed, Copper, MountedCharge, etc.) are completely dead.",
+     "Change to `if MilMod.disabled == false` or `if not MilMod.disabled`."),
+
+    ("CRITICAL", "addMilMod() skips buildSelf()",
+     "governor.gd line 161-163",
+     "governor.addMilMod(type, levels) creates MilMod.new() and sets only milModType. "
+     "buildSelf() is commented out. All boolean flags (infantryMod, rangedMod, marineMod, "
+     "entrenchMod, terrainMod, etc.) remain false on all programmatic governor mods. "
+     "UI filtering and any flag-based checks will always fail.",
+     "Uncomment `newMM.buildSelf(type)` in addMilMod(). "
+     "Note: buildSelf() accesses $Sprite2D scene children — must guard with is_inside_tree() "
+     "or split data init from UI init."),
+
+    ("HIGH", "Retreat flag set but never executed",
+     "army.gd calculateAttackerResults / calculateDefenderResults",
+     "inRetreat = true is set at 25% manpower. No pathfinding or movement logic "
+     "acts on this flag. Army continues to accept player commands while retreating.",
+     "Implement retreat path back to homeTile; disable player control while inRetreat."),
+
+    ("HIGH", "deleteMode set but army not removed",
+     "army.gd calculateAttackerResults / calculateDefenderResults",
+     "deleteMode = true when manpower hits 0. No code in world.gd or tile.gd "
+     "removes the army from the scene tree, tile.stationedArmy, or country.countryArmyList.",
+     "Add post-battle check in world.gd: if army.deleteMode, remove from tile and country."),
+
+    ("MEDIUM", "Weapon cost matching uses legacy names only",
+     "army.gd surveySelf() lines 357-365",
+     "The match block that calculates armyWeaponsCost uses old weapon names "
+     "(Spear, Club, Atlatl etc). No case handles Cutlass, Flintlock, Field Gun, etc. "
+     "New weapon armies show 0 weapons cost.",
+     "Add Saber/Musket/Artillery weapon cost cases to the match block."),
+
+    ("MEDIUM", "morale vs loyalty confusion in armyPunch multiplier",
+     "army.gd surveySelf() line 371",
+     "Code uses `commander.morale` but governor.gd has `loyalty` (−20 to +10) "
+     "and the morale var may be a separate 0-100 field not clearly initialized. "
+     "If morale is always 0, the multiplier is always 1.0 (no bonus ever).",
+     "Audit governor morale initialization; confirm formula uses correct field."),
+
+    ("MEDIUM", "commanderCheck() adds mods to units on every updateArmyUI call",
+     "army.gd commanderCheck()",
+     "commanderCheck() appends mods to each unit via Unit.addMilMod(MilMod) on every call. "
+     "Units clear militaryModifierList in getUnitAttributes() via removeMilMod, "
+     "but commanderCheck runs AFTER getUnitAttributes in the chain — units accumulate "
+     "duplicate mods if updateArmyUI is called multiple times in quick succession.",
+     "Verify that getUnitAttributes() fully clears militaryModifierList before "
+     "commanderCheck runs. Audit the call order in updateArmyUI()."),
+
+    ("LOW", "GunCrewEfficiency is the only mod that bypasses the disabled check",
+     "unit.gd start_reload() line 220-223",
+     "GunCrewEfficiency is checked via a separate milModType string comparison in start_reload(), "
+     "bypassing the broken calculateMilMods() disabled check. This is the only mod that "
+     "actually works. All other mod effects are dead until the disabled check is fixed.",
+     "After fixing the disabled check, ensure GunCrewEfficiency is not double-applied."),
+
+    ("LOW", "armyShield vs armyMaxShield display inconsistency",
+     "army.gd updateFinalTotals()",
+     "updateFinalTotals() passes armyShield for both current and max values in armyCostUI3. "
+     "Should pass (armyShield, armyMaxShield) to show depletion.",
+     "Change: armyCostUI3.updateSelf(armyShield, armyMaxShield)"),
+]
+
+
+def build_bugs_sheet(wb):
+    ws = wb.create_sheet("Known Bugs")
+    ws.row_dimensions[1].height = 28
+
+    COLS = [
+        ("SEVERITY",   12),
+        ("BUG",        34),
+        ("LOCATION",   28),
+        ("DESCRIPTION",58),
+        ("SUGGESTED FIX", 46),
+    ]
+    for ci, (h, w) in enumerate(COLS, 1):
+        hcell(ws, 1, ci, h, w)
+
+    SEV_COLORS = {
+        "CRITICAL": ("FF0000", "FFFFFF"),
+        "HIGH":     ("FF6B35", "FFFFFF"),
+        "MEDIUM":   ("FFEB9C", "7A5A00"),
+        "LOW":      ("D6E4F7", "1A3A6A"),
+    }
+
+    row = 2
+    for (sev, bug, loc, desc, fix) in BUGS:
+        sbg, sfg = SEV_COLORS.get(sev, ("FFFFFF", NORMAL_FG))
+        pcell(ws, row, 1, sev,  bg=sbg, fg=sfg, bold=True, align="center")
+        pcell(ws, row, 2, bug,  bg="FAFAFA", bold=True)
+        pcell(ws, row, 3, loc,  bg="FAFAFA")
+        pcell(ws, row, 4, desc, bg="FAFAFA")
+        pcell(ws, row, 5, fix,  bg="FFFBE6")
+        ws.row_dimensions[row].height = 54
+        row += 1
+
+    ws.freeze_panes = "A2"
+
+
+# ── MAIN ──────────────────────────────────────────────────────────────────────
+
+def main():
+    wb = openpyxl.Workbook()
+    wb.remove(wb.active)  # remove default empty sheet
+
+    build_systems_sheet(wb)
+    build_milmods_sheet(wb)
+    build_weapons_sheet(wb)
+    build_armors_sheet(wb)
+    build_archetypes_sheet(wb)
+    build_battle_sheet(wb)
+    build_bugs_sheet(wb)
+
+    wb.save(OUT_PATH)
+    print(f"Saved {OUT_PATH}")
+    print(f"  Sheet 1 — Systems Overview:  {len(SYSTEMS)} entries")
+    print(f"  Sheet 2 — Mil Mods:          {len(MIL_MODS)} mods")
+    print(f"  Sheet 3 — Weapons:           {len(WEAPONS)} weapon types")
+    print(f"  Sheet 4 — Armor & Uniforms:  {len(ARMORS)} armor types")
+    print(f"  Sheet 5 — Archetypes:        {len(ARCHETYPES)} archetypes")
+    print(f"  Sheet 6 — Battle Mechanics:  {len(BATTLE_MECHANICS)} mechanics")
+    print(f"  Sheet 7 — Known Bugs:        {len(BUGS)} bugs")
+
+
+if __name__ == "__main__":
+    main()
