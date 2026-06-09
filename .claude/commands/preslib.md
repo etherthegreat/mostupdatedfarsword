@@ -1,0 +1,1 @@
+Run `python3 scripts/build_preslib_masterdoc.py` from the repo root to regenerate the Presidential Library masterdoc spreadsheet, then send the updated `preslib_masterdoc.xlsx` file to the user with a one-line summary: total gallery entries (broken down by content flag + art status), total records entries (real vs stub categories), total journal types tracked.
