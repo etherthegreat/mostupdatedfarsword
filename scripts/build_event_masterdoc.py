@@ -1058,6 +1058,53 @@ EVENTS = [
     ]
 ] + [
 
+    # ── COMMANDER ARCS ───────────────────────────────────────────────────────────
+    # 25 archetypes × 2 events each (FIRST + DONE).
+    # FIRST fires when objective 1 completes via evaluate_commander_triggers.
+    # DONE fires when objective 3 completes; grants morale + archetype resource.
+] + [
+    item
+    for arc_id, arc_name, done_resource in [
+        ("ARC_01","Wetlands Fisher","food"),
+        ("ARC_02","Appalachian Miner","metal"),
+        ("ARC_03","Ivy League Dropout","gold"),
+        ("ARC_04","Seminole Fighter","manpower"),
+        ("ARC_05","Green Mountain Farmer","food"),
+        ("ARC_06","Chesapeake Shipwright","wood"),
+        ("ARC_07","Loyalist Turncoat","gold"),
+        ("ARC_08","Tobacco Belt Drifter","food"),
+        ("ARC_09","War Widow","gold"),
+        ("ARC_10","Indigenous Scout","wood"),
+        ("ARC_11","Boston Rabble-Rouser","culture"),
+        ("ARC_12","Continental Surgeon","food"),
+        ("ARC_13","Nantucket Sailor","gold"),
+        ("ARC_14","Frontier Preacher","culture"),
+        ("ARC_15","DC Bureaucrat","gold"),
+        ("ARC_16","Rust Belt Steelworker","metal"),
+        ("ARC_17","Plantation Deserter","food"),
+        ("ARC_18","Swamp Witch","magic"),
+        ("ARC_19","Caribbean Privateer","gold"),
+        ("ARC_20","Hawaiian Refugee","culture"),
+        ("ARC_21","Border Mercenary","weapons"),
+        ("ARC_22","Acadian Forest Ranger","wood"),
+        ("ARC_23","Gettysburg Descendant","manpower"),
+        ("ARC_24","LGBTQ+ Organizer","culture"),
+        ("ARC_25","Carnival Barker","gold"),
+    ]
+    for item in [
+        ("Commander", f"{arc_name}", f"{arc_id}_FIRST",
+         f"[COMMANDER_NAME] — {arc_name.upper()} FIRST OBJECTIVE",
+         "Milestone 1", "—", f"{arc_id}_DONE",
+         "FIRST PASS", "", "Not Started", "NO", "", "0",
+         f"Fires when {arc_id} completes objective 1; BTN1: nothing"),
+        ("Commander", f"{arc_name}", f"{arc_id}_DONE",
+         f"[COMMANDER_NAME] — {arc_name.upper()} ARC COMPLETE",
+         "Resolution", f"{arc_id}_FIRST", "—",
+         "FIRST PASS", "", "Not Started", "NO", "", "0",
+         f"Fires when {arc_id} completes all 3 objectives; BTN1: morale+20, BTN2: {done_resource}"),
+    ]
+] + [
+
     ("VP Arc","VP Arc","VP_LEGACY",
      "THE VICE PRESIDENT LEAVES A NOTE — [COMMANDER_NAME] HAS SOMETHING TO SAY",
      "Followup","VP_FIRST_MEETING (turn 96+)","—",

@@ -86,6 +86,7 @@ func registerCommanderArc(gov: governor, assignedTile) -> void:
 		"archetype_name": archetype.get("archetype_name", ""),
 		"home_tile": assignedTile,
 		"home_terrain": home_terrain,
+		"home_tile_building_start": _count_building_levels_in(assignedTile) if assignedTile != null else 0,
 		"objectives": _build_commander_objectives(archetype, home_terrain),
 		"objectives_complete": [false, false, false],
 		"arc_active": true,
@@ -372,6 +373,63 @@ func _evaluate_commander_condition(obj: Dictionary,
 			var required = obj.get("condition_value", "5").to_int()
 			return (currentTurn - start_turn) >= required
 
+		"build_in_home_tile":
+			var home_tile = arcData.get("home_tile")
+			if home_tile == null:
+				return false
+			var required = obj.get("condition_value", "2").to_int()
+			var bstart   = arcData.get("home_tile_building_start", 0)
+			return (_count_building_levels_in(home_tile) - bstart) >= required
+
+		"home_tile_corruption_below":
+			var home_tile = arcData.get("home_tile")
+			if home_tile == null:
+				return false
+			return home_tile.corruption <= obj.get("condition_value", "20").to_int()
+
+		"home_tile_moral_decay_below":
+			var home_tile = arcData.get("home_tile")
+			if home_tile == null:
+				return false
+			return home_tile.tileMoralDecay <= obj.get("condition_value", "20").to_int()
+
+		"resource_threshold":
+			var resource = obj.get("condition_value", "gold")
+			var amount   = obj.get("condition_amount", "50").to_float()
+			return _get_resource_amount(resource) >= amount
+
+		"liberate_tiles_in_state":
+			var state_code = obj.get("condition_state", "")
+			var required   = obj.get("condition_value", "2").to_int()
+			var count: int = 0
+			for tile in playerCountryNode.OwnedTileList:
+				if tile.tileContinent.begins_with(state_code):
+					count += 1
+			return count >= required
+
+		"home_tile_has_building":
+			var home_tile = arcData.get("home_tile")
+			if home_tile == null:
+				return false
+			var bname    = obj.get("condition_value", "").to_lower()
+			var req_lvl  = obj.get("condition_amount", "1").to_int()
+			return home_tile.buildings.get(bname, 0) >= req_lvl
+
+		"liberate_any_with_building":
+			var bname   = obj.get("condition_value", "").to_lower()
+			var req_lvl = obj.get("condition_amount", "1").to_int()
+			for tile in playerCountryNode.OwnedTileList:
+				if tile.buildings.get(bname, 0) >= req_lvl:
+					return true
+			return false
+
+		"liberate_state_count":
+			var required = obj.get("condition_value", "3").to_int()
+			var states: Dictionary = {}
+			for tile in playerCountryNode.OwnedTileList:
+				states[tile.tileContinent] = true
+			return states.size() >= required
+
 		_:
 			return false
 
@@ -450,51 +508,151 @@ func _get_commander_objective(arc_id: String, num: int, home_terrain: String = "
 					"obj_index": 2,
 				}
 
+		"ARC_02":  # Appalachian Miner
+			match num:
+				1: return {"label":"Liberate a Foothills tile","condition_type":"liberate_tile_terrain","condition_value":"Foothills","condition_state":"","obj_index":0}
+				2: return {"label":"Build 2 new levels in your home tile","condition_type":"build_in_home_tile","condition_value":"2","obj_index":1}
+				3: return {"label":"Drive corruption in your home tile below 20","condition_type":"home_tile_corruption_below","condition_value":"20","obj_index":2}
+
+		"ARC_03":  # Ivy League Dropout
+			match num:
+				1: return {"label":"Liberate any Metro tile","condition_type":"liberate_tile_terrain","condition_value":"Metro","condition_state":"","obj_index":0}
+				2: return {"label":"Survive 10 turns active","condition_type":"turns_survived","condition_value":"10","obj_index":1}
+				3: return {"label":"Accumulate 200 gold in national treasury","condition_type":"resource_threshold","condition_value":"gold","condition_amount":"200","obj_index":2}
+
+		"ARC_04":  # Seminole Fighter
+			match num:
+				1: return {"label":"Liberate a Wetlands tile","condition_type":"liberate_tile_terrain","condition_value":"Wetlands","condition_state":"","obj_index":0}
+				2: return {"label":"Hold that Wetlands tile for 8 turns","condition_type":"hold_tile_turns","condition_value":"8","terrain":"Wetlands","obj_index":1}
+				3: return {"label":"Station in a liberated Wetlands tile personally","condition_type":"commander_present_in_tile","condition_value":"Wetlands","obj_index":2}
+
+		"ARC_05":  # Green Mountain Farmer
+			match num:
+				1: return {"label":"Liberate a Farmlands tile","condition_type":"liberate_tile_terrain","condition_value":"Farmlands","condition_state":"","obj_index":0}
+				2: return {"label":"Ensure your home tile has a Farm","condition_type":"home_tile_has_building","condition_value":"farm","condition_amount":"1","obj_index":1}
+				3: return {"label":"Stockpile 150 food nationally","condition_type":"resource_threshold","condition_value":"food","condition_amount":"150","obj_index":2}
+
+		"ARC_06":  # Chesapeake Shipwright
+			match num:
+				1: return {"label":"Liberate any tile with a Dock","condition_type":"liberate_any_with_building","condition_value":"dock","condition_amount":"1","obj_index":0}
+				2: return {"label":"Build 2 new levels in your home tile","condition_type":"build_in_home_tile","condition_value":"2","obj_index":1}
+				3: return {"label":"Station in a coastal Wetlands tile","condition_type":"commander_present_in_tile","condition_value":"Wetlands","obj_index":2}
+
+		"ARC_07":  # Loyalist Turncoat
+			match num:
+				1: return {"label":"Prove loyalty: survive 5 turns active","condition_type":"turns_survived","condition_value":"5","obj_index":0}
+				2: return {"label":"Help liberate a Metro tile","condition_type":"liberate_tile_terrain","condition_value":"Metro","condition_state":"","obj_index":1}
+				3: return {"label":"Drive Crown corruption in your home tile below 15","condition_type":"home_tile_corruption_below","condition_value":"15","obj_index":2}
+
+		"ARC_08":  # Tobacco Belt Drifter
+			match num:
+				1: return {"label":"Liberate a Farmlands tile","condition_type":"liberate_tile_terrain","condition_value":"Farmlands","condition_state":"","obj_index":0}
+				2: return {"label":"Hold that Farmlands tile for 6 turns","condition_type":"hold_tile_turns","condition_value":"6","terrain":"Farmlands","obj_index":1}
+				3: return {"label":"Bring morale decay in your home tile below 20","condition_type":"home_tile_moral_decay_below","condition_value":"20","obj_index":2}
+
 		"ARC_09":  # War Widow
 			match num:
-				1: return {
-					"label": "Liberate any major city tile (Metro terrain)",
-					"condition_type": "liberate_tile_terrain",
-					"condition_value": "Metro",
-					"condition_state": "",
-					"obj_index": 0,
-				}
-				2: return {
-					"label": "Survive 8 turns without retreating",
-					"condition_type": "turns_survived",
-					"condition_value": "8",
-					"obj_index": 1,
-				}
-				3: return {
-					"label": "Hold the liberated city for 5 turns",
-					"condition_type": "hold_tile_turns",
-					"condition_value": "5",
-					"terrain": "Metro",
-					"obj_index": 2,
-				}
+				1: return {"label":"Liberate any major city tile (Metro terrain)","condition_type":"liberate_tile_terrain","condition_value":"Metro","condition_state":"","obj_index":0}
+				2: return {"label":"Survive 8 turns without retreating","condition_type":"turns_survived","condition_value":"8","obj_index":1}
+				3: return {"label":"Hold the liberated city for 5 turns","condition_type":"hold_tile_turns","condition_value":"5","terrain":"Metro","obj_index":2}
+
+		"ARC_10":  # Indigenous Scout
+			match num:
+				1: return {"label":"Liberate a Woods tile","condition_type":"liberate_tile_terrain","condition_value":"Woods","condition_state":"","obj_index":0}
+				2: return {"label":"Hold that Woods tile for 5 turns","condition_type":"hold_tile_turns","condition_value":"5","terrain":"Woods","obj_index":1}
+				3: return {"label":"Station in a liberated Woods tile","condition_type":"commander_present_in_tile","condition_value":"Woods","obj_index":2}
+
+		"ARC_11":  # Boston Rabble-Rouser
+			match num:
+				1: return {"label":"Liberate a Metro tile","condition_type":"liberate_tile_terrain","condition_value":"Metro","condition_state":"","obj_index":0}
+				2: return {"label":"Rally 100 culture nationally","condition_type":"resource_threshold","condition_value":"culture","condition_amount":"100","obj_index":1}
+				3: return {"label":"Bring morale decay in home tile below 25","condition_type":"home_tile_moral_decay_below","condition_value":"25","obj_index":2}
+
+		"ARC_12":  # Continental Surgeon
+			match num:
+				1: return {"label":"Drive corruption in your home tile below 20","condition_type":"home_tile_corruption_below","condition_value":"20","obj_index":0}
+				2: return {"label":"Build national food supply to 100","condition_type":"resource_threshold","condition_value":"food","condition_amount":"100","obj_index":1}
+				3: return {"label":"Build 2 new levels in your home tile","condition_type":"build_in_home_tile","condition_value":"2","obj_index":2}
+
+		"ARC_13":  # Nantucket Sailor
+			match num:
+				1: return {"label":"Liberate any tile with a Dock","condition_type":"liberate_any_with_building","condition_value":"dock","condition_amount":"1","obj_index":0}
+				2: return {"label":"Hold a Wetlands tile for 5 turns","condition_type":"hold_tile_turns","condition_value":"5","terrain":"Wetlands","obj_index":1}
+				3: return {"label":"Station in a Wetlands tile personally","condition_type":"commander_present_in_tile","condition_value":"Wetlands","obj_index":2}
+
+		"ARC_14":  # Frontier Preacher
+			match num:
+				1: return {"label":"Liberate a Woods tile","condition_type":"liberate_tile_terrain","condition_value":"Woods","condition_state":"","obj_index":0}
+				2: return {"label":"Bring morale decay in home tile below 20","condition_type":"home_tile_moral_decay_below","condition_value":"20","obj_index":1}
+				3: return {"label":"Inspire 80 culture nationally","condition_type":"resource_threshold","condition_value":"culture","condition_amount":"80","obj_index":2}
+
+		"ARC_15":  # DC Bureaucrat
+			match num:
+				1: return {"label":"Liberate a Metro tile","condition_type":"liberate_tile_terrain","condition_value":"Metro","condition_state":"","obj_index":0}
+				2: return {"label":"Build 3 new levels in your home tile","condition_type":"build_in_home_tile","condition_value":"3","obj_index":1}
+				3: return {"label":"Drive corruption in home tile below 10","condition_type":"home_tile_corruption_below","condition_value":"10","obj_index":2}
+
+		"ARC_16":  # Rust Belt Steelworker
+			match num:
+				1: return {"label":"Liberate a Suburbs tile","condition_type":"liberate_tile_terrain","condition_value":"Suburbs","condition_state":"","obj_index":0}
+				2: return {"label":"Build 3 new levels in your home tile","condition_type":"build_in_home_tile","condition_value":"3","obj_index":1}
+				3: return {"label":"Ensure your home tile has a Forge","condition_type":"home_tile_has_building","condition_value":"forge","condition_amount":"1","obj_index":2}
+
+		"ARC_17":  # Plantation Deserter
+			match num:
+				1: return {"label":"Liberate a Farmlands tile","condition_type":"liberate_tile_terrain","condition_value":"Farmlands","condition_state":"","obj_index":0}
+				2: return {"label":"Hold that Farmlands tile for 6 turns","condition_type":"hold_tile_turns","condition_value":"6","terrain":"Farmlands","obj_index":1}
+				3: return {"label":"Bring morale decay in home tile below 20","condition_type":"home_tile_moral_decay_below","condition_value":"20","obj_index":2}
+
+		"ARC_18":  # Swamp Witch
+			match num:
+				1: return {"label":"Liberate a Wetlands tile","condition_type":"liberate_tile_terrain","condition_value":"Wetlands","condition_state":"","obj_index":0}
+				2: return {"label":"Purge corruption in home tile below 10","condition_type":"home_tile_corruption_below","condition_value":"10","obj_index":1}
+				3: return {"label":"Station in a Wetlands tile personally","condition_type":"commander_present_in_tile","condition_value":"Wetlands","obj_index":2}
+
+		"ARC_19":  # Caribbean Privateer
+			match num:
+				1: return {"label":"Seize a port: liberate any tile with a Dock","condition_type":"liberate_any_with_building","condition_value":"dock","condition_amount":"1","obj_index":0}
+				2: return {"label":"Accumulate 150 gold in national stockpiles","condition_type":"resource_threshold","condition_value":"gold","condition_amount":"150","obj_index":1}
+				3: return {"label":"Station in a Wetlands tile personally","condition_type":"commander_present_in_tile","condition_value":"Wetlands","obj_index":2}
 
 		"ARC_20":  # Hawaiian Refugee
 			match num:
-				1: return {
-					"label": "Liberate any 3 tiles (any terrain, any region)",
-					"condition_type": "liberate_tile_count",
-					"condition_value": "3",
-					"obj_index": 0,
-				}
-				2: return {
-					"label": "Liberate a tile with a Monument building",
-					"condition_type": "liberate_tile_with_feature",
-					"condition_value": "monument",
-					"obj_index": 1,
-				}
-				3: return {
-					"label": "Designate a home tile (assign commander to any liberated tile)",
-					"condition_type": "commander_present_in_tile",
-					"condition_value": "",
-					"obj_index": 2,
-				}
+				1: return {"label":"Liberate any 3 tiles (any terrain, any region)","condition_type":"liberate_tile_count","condition_value":"3","obj_index":0}
+				2: return {"label":"Liberate a tile with a Monument building","condition_type":"liberate_tile_with_feature","condition_value":"monument","obj_index":1}
+				3: return {"label":"Designate a home tile (assign commander to any liberated tile)","condition_type":"commander_present_in_tile","condition_value":"","obj_index":2}
 
-	# Generic terrain-based objectives for archetypes not individually scripted
+		"ARC_21":  # Border Mercenary
+			match num:
+				1: return {"label":"Liberate a Suburbs tile","condition_type":"liberate_tile_terrain","condition_value":"Suburbs","condition_state":"","obj_index":0}
+				2: return {"label":"Hold that Suburbs tile for 8 turns","condition_type":"hold_tile_turns","condition_value":"8","terrain":"Suburbs","obj_index":1}
+				3: return {"label":"Put 50 weapons in the national stockpile","condition_type":"resource_threshold","condition_value":"weapons","condition_amount":"50","obj_index":2}
+
+		"ARC_22":  # Acadian Forest Ranger
+			match num:
+				1: return {"label":"Liberate a Woods tile","condition_type":"liberate_tile_terrain","condition_value":"Woods","condition_state":"","obj_index":0}
+				2: return {"label":"Hold that Woods tile for 5 turns","condition_type":"hold_tile_turns","condition_value":"5","terrain":"Woods","obj_index":1}
+				3: return {"label":"Station in a liberated Woods tile","condition_type":"commander_present_in_tile","condition_value":"Woods","obj_index":2}
+
+		"ARC_23":  # Gettysburg Descendant
+			match num:
+				1: return {"label":"Liberate Gettysburg (tile 11)","condition_type":"liberate_specific_tile","condition_value":"11","obj_index":0}
+				2: return {"label":"Hold Gettysburg for 5 turns","condition_type":"hold_tile_turns","condition_value":"5","terrain":"Foothills","obj_index":1}
+				3: return {"label":"Survive the full campaign: 15 turns active","condition_type":"turns_survived","condition_value":"15","obj_index":2}
+
+		"ARC_24":  # LGBTQ+ Organizer
+			match num:
+				1: return {"label":"Liberate a Metro tile","condition_type":"liberate_tile_terrain","condition_value":"Metro","condition_state":"","obj_index":0}
+				2: return {"label":"Build national culture to 120","condition_type":"resource_threshold","condition_value":"culture","condition_amount":"120","obj_index":1}
+				3: return {"label":"Liberate tiles in 3 distinct states","condition_type":"liberate_state_count","condition_value":"3","obj_index":2}
+
+		"ARC_25":  # Carnival Barker
+			match num:
+				1: return {"label":"Help liberate 5 tiles total","condition_type":"liberate_tile_count","condition_value":"5","obj_index":0}
+				2: return {"label":"Put 100 gold in the national coffers","condition_type":"resource_threshold","condition_value":"gold","condition_amount":"100","obj_index":1}
+				3: return {"label":"Station at any liberated tile","condition_type":"commander_present_in_tile","condition_value":"","obj_index":2}
+
+	# Generic fallback (should never hit for ARC_01–25)
 	return _get_generic_objective(home_terrain, num)
 
 
