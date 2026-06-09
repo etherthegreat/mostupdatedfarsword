@@ -3903,8 +3903,271 @@ const _ARCHETYPE_FLAVOR: Dictionary = {
 }
 
 func _on_commander_fallen(commander, army_name: String, tile) -> void:
+	# Priority 1: head of state death → game over (Ualani for USA)
+	if commander.isLeader:
+		_handle_president_death(commander, army_name, tile)
+		return
+	# Priority 2: VP death → special funeral + succession flow
+	if commander.isVicePresident:
+		_handle_vp_death(commander, army_name, tile)
+		return
+	# Standard commander death memo
 	var data: Dictionary = _build_commander_death_memo(commander, army_name, tile)
 	_create_dynamic_event(data, tile)
+
+
+func _handle_president_death(commander, army_name: String, tile) -> void:
+	var name: String = commander.governorType if commander.governorType != "" else "the President"
+	print("[GAME OVER] President ", name, " has been killed.")
+	var data: Dictionary = {
+		"event_id":    "DYNAMIC_PRESIDENT_DEATH",
+		"event_type":  "standard",
+		"country_cid": "USA",
+		"headline":    "THE PRESIDENT IS DEAD",
+		"short_desc":  "Continental War Office  ·  Emergency Communiqué  ·  Most Urgent",
+		"long_desc":   (
+			name + " is gone.\n\n"
+			+ "The commanding officer of the " + army_name
+			+ " — President of the United States, "
+			+ "first among the Republic's defenders — has fallen in battle.\n\n"
+			+ "There are no words adequate to this moment.\n\n"
+			+ "God save what we have built.\n\n"
+			+ "— Continental War Office"
+		),
+		"buttons": [
+			{
+				"button_id":         "acknowledge_president_death",
+				"button_text":       "God save the Republic.",
+				"button_type":       "standard",
+				"outcome_type":      "none",
+				"outcome_value":     "",
+				"outcome_amount":    0,
+				"next_event_id":     "",
+				"prerequisite_flag": "",
+			}
+		],
+	}
+	# TODO: call _trigger_game_over() here once game over screen exists
+	_create_dynamic_event(data, tile)
+
+
+func _handle_vp_death(commander, army_name: String, tile) -> void:
+	var death_data: Dictionary = _build_vp_death_memo(commander, army_name, tile)
+	var death_event = eventScene.instantiate()
+	death_event.build_from_data(death_data, tile, playerCountryNode)
+	# On dismiss → fire the funeral event
+	death_event.eventButtonPressed.connect(
+		func(_bid, _eid, _ec, _ot, _ov, _oa): _fire_vp_funeral(commander)
+	)
+	death_event.tileEventButtonPressed.connect(
+		func(_bid, _eid, _ec, _ot, _ov, _oa, _t): _fire_vp_funeral(commander)
+	)
+	$CanvasLayer/EventControl/EventContainer.add_child(death_event)
+
+
+func _fire_vp_funeral(old_vp) -> void:
+	var funeral_data: Dictionary = _build_vp_funeral_data(old_vp)
+	var funeral_event = eventScene.instantiate()
+	funeral_event.build_from_data(funeral_data, null, playerCountryNode)
+	# On dismiss → open VP succession picker
+	funeral_event.eventButtonPressed.connect(
+		func(_bid, _eid, _ec, _ot, _ov, _oa): _open_vp_picker()
+	)
+	$CanvasLayer/EventControl/EventContainer.add_child(funeral_event)
+
+
+func _build_vp_death_memo(commander, army_name: String, tile) -> Dictionary:
+	var name: String   = commander.governorType if commander.governorType != "" else "the Vice President"
+	var level: int     = clampi(commander.governorLevel, 1, 3)
+	var rank: String   = _COMMANDER_RANKS.get(level, "Captain")
+	var tile_name: String = (" near " + tile.tileName) if (tile != null and tile.tileName != "") else " in the field"
+	return {
+		"event_id":    "DYNAMIC_VP_DEATH",
+		"event_type":  "standard",
+		"country_cid": "USA",
+		"headline":    "THE VICE PRESIDENT HAS FALLEN — " + name.to_upper(),
+		"short_desc":  "Continental War Office  ·  Official Casualty Record  ·  Urgent",
+		"long_desc":   (
+			"It is with the deepest grief that this office records the death of "
+			+ name + ", Vice President of the United States and "
+			+ rank + " of the " + army_name + tile_name + ".\n\n"
+			+ "The Vice President gave their life in service to this Republic. "
+			+ "They carried the burden of office into the field and did not retreat.\n\n"
+			+ "The nation mourns. The office stands vacant.\n\n"
+			+ "A state funeral will be arranged.\n\n"
+			+ "— War Office, Continental Army"
+		),
+		"buttons": [
+			{
+				"button_id":         "acknowledge_vp_death",
+				"button_text":       "The Republic mourns.",
+				"button_type":       "standard",
+				"outcome_type":      "none",
+				"outcome_value":     "",
+				"outcome_amount":    0,
+				"next_event_id":     "",
+				"prerequisite_flag": "",
+			}
+		],
+	}
+
+
+func _build_vp_funeral_data(old_vp) -> Dictionary:
+	var name: String = old_vp.governorType if old_vp.governorType != "" else "the Vice President"
+	return {
+		"event_id":    "DYNAMIC_VP_FUNERAL",
+		"event_type":  "standard",
+		"country_cid": "USA",
+		"headline":    "STATE FUNERAL — " + name.to_upper(),
+		"short_desc":  "The nation pauses to honor its fallen Vice President.",
+		"long_desc":   (
+			"The body of " + name + " was carried through the capital in solemn procession.\n\n"
+			+ "Citizens lined the road. Cannons fired a salute. "
+			+ "The flag was lowered to half-staff across all Continental territories.\n\n"
+			+ "The eulogy was short. The grief was not.\n\n"
+			+ "The office of Vice President now stands open. "
+			+ "The Republic requires a successor.\n\n"
+			+ "— Continental Government, State Record"
+		),
+		"buttons": [
+			{
+				"button_id":         "appoint_new_vp",
+				"button_text":       "Appoint the New Vice President.",
+				"button_type":       "standard",
+				"outcome_type":      "none",
+				"outcome_value":     "",
+				"outcome_amount":    0,
+				"next_event_id":     "",
+				"prerequisite_flag": "",
+			}
+		],
+	}
+
+
+func _open_vp_picker() -> void:
+	# Remove any stale picker
+	var existing = $CanvasLayer.get_node_or_null("VPPickerOverlay")
+	if existing:
+		existing.queue_free()
+	var existing_panel = $CanvasLayer.get_node_or_null("VPPickerPanel")
+	if existing_panel:
+		existing_panel.queue_free()
+
+	# Dark overlay behind the panel
+	var overlay = ColorRect.new()
+	overlay.name = "VPPickerOverlay"
+	overlay.color = Color(0.0, 0.0, 0.0, 0.62)
+	overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	$CanvasLayer.add_child(overlay)
+
+	# Centered panel container
+	var panel = PanelContainer.new()
+	panel.name = "VPPickerPanel"
+	panel.anchor_left   = 0.25
+	panel.anchor_top    = 0.08
+	panel.anchor_right  = 0.75
+	panel.anchor_bottom = 0.92
+	panel.grow_horizontal = Control.GROW_DIRECTION_BOTH
+	panel.grow_vertical   = Control.GROW_DIRECTION_BOTH
+	$CanvasLayer.add_child(panel)
+
+	var vbox = VBoxContainer.new()
+	vbox.add_theme_constant_override("separation", 10)
+	panel.add_child(vbox)
+
+	# Title
+	var lbl_title = Label.new()
+	lbl_title.text = "SELECT NEW VICE PRESIDENT"
+	lbl_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	lbl_title.add_theme_font_size_override("font_size", 18)
+	vbox.add_child(lbl_title)
+
+	var lbl_sub = Label.new()
+	lbl_sub.text = (
+		"The office of Vice President stands vacant.\n"
+		+ "Choose a governor to serve the Republic."
+	)
+	lbl_sub.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	lbl_sub.autowrap_mode = TextServer.AUTOWRAP_WORD_ONLY
+	vbox.add_child(lbl_sub)
+
+	vbox.add_child(HSeparator.new())
+
+	var scroll = ScrollContainer.new()
+	scroll.custom_minimum_size = Vector2(0, 320)
+	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	vbox.add_child(scroll)
+
+	var list = VBoxContainer.new()
+	list.add_theme_constant_override("separation", 6)
+	scroll.add_child(list)
+
+	# Populate eligible governors
+	var eligible: int = 0
+	for gov in playerCountryNode.unlockedGovernors:
+		if gov.isLeader or gov.isVicePresident:
+			continue
+		var rank_str: String = _COMMANDER_RANKS.get(gov.governorLevel, "Officer")
+		var btn = Button.new()
+		btn.text = "%-28s  —  %s" % [gov.governorType, rank_str]
+		btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		btn.pressed.connect(_on_vp_governor_selected.bind(gov, overlay, panel))
+		list.add_child(btn)
+		eligible += 1
+
+	if eligible == 0:
+		var lbl_none = Label.new()
+		lbl_none.text = "No eligible governors available at this time."
+		lbl_none.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		list.add_child(lbl_none)
+
+
+func _on_vp_governor_selected(new_vp, overlay: ColorRect, panel: PanelContainer) -> void:
+	# Clear old VP tag from all governors
+	for gov in playerCountryNode.unlockedGovernors:
+		if gov.isVicePresident:
+			gov.isVicePresident = false
+
+	# Appoint new VP and update world tracking vars
+	new_vp.isVicePresident = true
+	_vp_governor = new_vp
+	_vp_faction  = VP_FACTION_MAP.get(new_vp.governorType, "")
+	print("[VP Succession] New Vice President: ", new_vp.governorType,
+		  " | Faction: ", _vp_faction)
+
+	# Close picker UI
+	overlay.queue_free()
+	panel.queue_free()
+
+	# Fire appointment announcement
+	var rank_str: String = _COMMANDER_RANKS.get(new_vp.governorLevel, "Officer")
+	var name: String = new_vp.governorType
+	var announce_data: Dictionary = {
+		"event_id":    "DYNAMIC_VP_APPOINTED",
+		"event_type":  "standard",
+		"country_cid": "USA",
+		"headline":    "NEW VICE PRESIDENT — " + name.to_upper(),
+		"short_desc":  "Continental Government  ·  Official Appointment Record",
+		"long_desc":   (
+			name + " has accepted the office of Vice President of the United States.\n\n"
+			+ "They take the oath upon the graves of those who served before them.\n\n"
+			+ "The Republic endures. The work continues.\n\n"
+			+ "— Continental Government, Official Record"
+		),
+		"buttons": [
+			{
+				"button_id":         "acknowledge_vp_appointed",
+				"button_text":       "Long live the Republic.",
+				"button_type":       "standard",
+				"outcome_type":      "none",
+				"outcome_value":     "",
+				"outcome_amount":    0,
+				"next_event_id":     "",
+				"prerequisite_flag": "",
+			}
+		],
+	}
+	_create_dynamic_event(announce_data)
 
 func _build_commander_death_memo(commander, army_name: String, tile) -> Dictionary:
 	var level: int     = commander.governorLevel if commander.governorLevel >= 1 else 1
