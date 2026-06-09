@@ -67,6 +67,28 @@ const PROTECTOR_SUMMON_TURNS: Dictionary = {
 	"PROT_17": 90
 }
 
+# Maps each USA protector to their home tile number.
+# These tiles get a Tower built and the protector assigned as wizard when the player agrees.
+const USA_PROT_TILES: Dictionary = {
+	"PROT_01":  46,   # Mothman               — Harper's Ferry, WV (Appalachian Minerals)
+	"PROT_02":  23,   # Jersey Devil          — Lakewood, NJ (Pine Barrens wetlands)
+	"PROT_03": 145,   # Bigfoot               — Asheville, NC (Blue Ridge Highlands)
+	"PROT_04": 139,   # Thunderbird           — Buffalo, NY (Niagara / Great Lakes storms)
+	"PROT_05":  17,   # Headless Horseman     — Peekskill, NY (Hudson Valley)
+	"PROT_06":  37,   # Chessie               — Baltimore, MD (Chesapeake Shipyards)
+	"PROT_07": 165,   # Bell Witch            — Nashville, TN
+	"PROT_08":  65,   # Old Ironsides         — Boston, MA (Charlestown Navy Yard)
+	"PROT_09":   1,   # Valley Forge Guardian — Valley Forge, PA
+	"PROT_10":  42,   # Snallygaster          — Frederick, MD
+	"PROT_11":  61,   # Paul Revere           — Lexington, MA (Lexington Cry)
+	"PROT_12":   2,   # Liberty Bell          — Philadelphia, PA (Liberty Bell)
+	"PROT_13":  80,   # Green Mountain Ghost  — Montpelier, VT (Green Mountains)
+	"PROT_14":  11,   # Mount Rushmore        — Gettysburg, PA (monument landmark)
+	"PROT_15": 177,   # Skunk Ape             — Gainesville, FL (Wetlands)
+	"PROT_16":  71,   # Eternal Minuteman     — Springfield, MA (Gun Valley / Armory)
+	"PROT_17": 188,   # Lincoln's Ghost       — Washington, DC (White House)
+}
+
 # ── CANADIAN PROTECTORS ───────────────────────────────────────────────────────
 # Eight creatures from Algonquin, Mi'kmaq, and French-Canadian folklore.
 # Each anchored to a specific CA-owned tile.  Fire as dispatches from Jessica
@@ -1355,6 +1377,71 @@ func _on_protector_summoned(origin_tile, protector_name: String, protector_id: S
 		print("[Protectors] Presidential Power unlocked: ", spell_name)
 
 
+# Called when any protector AGREE event button sets a "*_agreed" flag.
+# Builds a Tower at the protector's home tile (if none exists), assigns the protector
+# as that tile's wizard, and grants the associated Presidential Power spell.
+func _on_protector_agreed(agreed_flag: String) -> void:
+	# "prot_01_agreed" → "PROT_01",  "ca_prot_01_agreed" → "CA_PROT_01"
+	var pid: String = agreed_flag.replace("_agreed", "").to_upper()
+	var prot_name: String = _protector_id_to_name(pid)
+
+	var home_tile = _get_ca_prot_tile(pid) if pid.begins_with("CA_") else _get_prot_tile(pid)
+
+	if home_tile != null:
+		# Build a Tower at the home tile if one doesn't exist yet
+		var has_tower: bool = false
+		for b in home_tile.tileBuildingsList:
+			if b.buildingType == "Tower":
+				has_tower = true
+				break
+		if not has_tower:
+			home_tile.addBuilding("Tower", 1)
+
+		# Assign the protector as the tile's wizard so the tower produces their school's magic
+		var school: String = _protector_id_to_school(pid)
+		home_tile.addWizard(prot_name, school)
+		print("[Protectors] ", prot_name, " (", school, ") bound to tower at tile ",
+			  home_tile.tileNumber, " — ", home_tile.tileName)
+	else:
+		push_warning("[Protectors] No home tile mapped for " + pid)
+
+	# Unlock the Presidential Power spell associated with this protector
+	var spell_name: String = _protector_id_to_spell(pid)
+	if spell_name != "":
+		playerCountryNode.addSpellToSpellbook(spell_name, 1, 0)
+		print("[Protectors] Presidential Power unlocked: ", spell_name)
+
+
+func _protector_id_to_name(pid: String) -> String:
+	match pid:
+		"PROT_01": return "Mothman"
+		"PROT_02": return "Jersey Devil"
+		"PROT_03": return "Bigfoot"
+		"PROT_04": return "Thunderbird"
+		"PROT_05": return "Headless Horseman"
+		"PROT_06": return "Chessie"
+		"PROT_07": return "Bell Witch"
+		"PROT_08": return "Old Ironsides"
+		"PROT_09": return "Valley Forge Guardian"
+		"PROT_10": return "Snallygaster"
+		"PROT_11": return "Paul Revere"
+		"PROT_12": return "Liberty Bell"
+		"PROT_13": return "Green Mountain Ghost"
+		"PROT_14": return "Mount Rushmore"
+		"PROT_15": return "Skunk Ape"
+		"PROT_16": return "Eternal Minuteman"
+		"PROT_17": return "Lincoln's Ghost"
+		"CA_PROT_01": return "Le Wendigo"
+		"CA_PROT_02": return "Le Loup-Garou"
+		"CA_PROT_03": return "Les Feux Follets"
+		"CA_PROT_04": return "Mishepeshu"
+		"CA_PROT_05": return "La Corriveau"
+		"CA_PROT_06": return "Le Carcajou"
+		"CA_PROT_07": return "La Chasse-Galerie"
+		"CA_PROT_08": return "Le Gougou"
+	return pid
+
+
 func _protector_id_to_school(pid: String) -> String:
 	match pid:
 		"PROT_01", "PROT_02", "PROT_03", "PROT_10", "PROT_15": return "cryptid"
@@ -1401,6 +1488,9 @@ func _on_event_button_pressed(button_id: String, event_id: String,
 		event_country: String, outcome_type: String,
 		outcome_value: String, outcome_amount: int) -> void:
 	executeOutcome(outcome_type, outcome_value, outcome_amount, null)
+	if outcome_type == "set_flag" and outcome_value.ends_with("_agreed") \
+			and (outcome_value.begins_with("prot_") or outcome_value.begins_with("ca_prot_")):
+		_on_protector_agreed(outcome_value)
 	var btn = EventDatabase.get_button(button_id)
 	var next_id = btn.get("next_event_id", "")
 	if next_id != "":
@@ -1410,6 +1500,9 @@ func _on_tile_event_button_pressed(button_id: String, event_id: String,
 		event_country: String, outcome_type: String,
 		outcome_value: String, outcome_amount: int, tile: Tile) -> void:
 	executeOutcome(outcome_type, outcome_value, outcome_amount, tile)
+	if outcome_type == "set_flag" and outcome_value.ends_with("_agreed") \
+			and (outcome_value.begins_with("prot_") or outcome_value.begins_with("ca_prot_")):
+		_on_protector_agreed(outcome_value)
 	var btn = EventDatabase.get_button(button_id)
 	var next_id = btn.get("next_event_id", "")
 	if next_id != "":
@@ -3014,6 +3107,16 @@ func _is_ca_prot_wild(pid: String) -> bool:
 
 func _get_ca_prot_tile(pid: String):
 	var tile_num: int = CA_PROT_TILES.get(pid, 0)
+	if tile_num == 0:
+		return null
+	for tile in $TileController.get_children():
+		if tile.tileNumber == tile_num:
+			return tile
+	return null
+
+
+func _get_prot_tile(pid: String):
+	var tile_num: int = USA_PROT_TILES.get(pid, 0)
 	if tile_num == 0:
 		return null
 	for tile in $TileController.get_children():
