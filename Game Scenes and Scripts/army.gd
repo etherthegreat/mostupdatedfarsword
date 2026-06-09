@@ -185,8 +185,8 @@ func onTurnEnd():
 			print("unitREFILL", Unit.unitCurrentManpower, parentCountry.armyReinforceRate)
 	if unit_mods_changed:
 		surveySelf()
-	# Corruption disease check
-	if inTile != null and inTile.corruption > 0:
+	# Corruption disease check (Park Ranger grants immunity)
+	if inTile != null and inTile.corruption > 0 and not _army_has_active_mod("Park Ranger"):
 		if randf() * 100.0 < float(inTile.corruption):
 			apply_status("Diseased", 2)
 	updateArmyUI()
@@ -202,6 +202,13 @@ func apply_status(type: String, duration: int) -> void:
 	armyStatusEffects.append({type = type, turnsLeft = duration})
 	surveySelf()
 	_apply_status_flags()
+
+func _army_has_active_mod(mod_name: String) -> bool:
+	for unit in unitsList:
+		for mm in unit.militaryModifierList:
+			if mm.milModType == mod_name and not mm.disabled:
+				return true
+	return false
 
 func _has_status(type: String) -> bool:
 	for s in armyStatusEffects:

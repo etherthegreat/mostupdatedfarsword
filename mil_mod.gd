@@ -700,6 +700,12 @@ func buildSelf(Type):
 			milModDescription = str("This unit sets trap lines through the wilderness, generating +2 food and +1 trade per turn.")
 			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
 			milModResource = "Food"
+		"Park Ranger":
+			civilianMod = true
+			toolMod = true
+			milModDescription = str("[i]Knows every trail, every hazard, every bad thing in the dirt:[/i][color=green] Army is immune to corruption-based disease[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
 		# ── NEGATIVE STATUS EFFECTS ──────────────────────────────────────────────
 		"Stunned":
 			isNegative = true
