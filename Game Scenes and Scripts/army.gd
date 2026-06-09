@@ -478,6 +478,7 @@ func surveySelf():
 			# prevents units from replenishing armor
 		Unit.currentTerrain  = inTile.terrain if inTile != null else ""
 		Unit.currentStorm   = inTile.stormType if (inTile != null and inTile.stormActive) else ""
+		Unit.currentState   = inTile.tileContinent if inTile != null else ""
 		Unit.armyDemoralized = _has_status("Demoralized")
 		Unit.calculateMilMods()
 		armyPunch += Unit.unitOffensiveScore

@@ -51,6 +51,7 @@ var militaryModifierList: Array = []
 
 var currentTerrain: String = ""   # set from inTile.terrain before calculateMilMods()
 var currentStorm: String = ""     # set from inTile.stormType when inTile.stormActive
+var currentState: String = ""     # set from inTile.tileContinent before calculateMilMods()
 var armyDemoralized: bool = false # set from army before calculateMilMods(); skips all mods
 
 const milModScene = preload("res://mil_mod.tscn")
@@ -367,6 +368,10 @@ func calculateMilMods() -> void:
 					pass  # first-shot bonus handled in battle.gd
 				"HardeeDisc":
 					pass  # formation bonus handled at army level
+			# State guard: culturalMod entries with a state target get +2 attack/defence per level
+			if MilMod.culturalMod and MilMod.culturalState != "" and currentState == MilMod.culturalState:
+				unitOffensiveScore += (2 * unitLevel)
+				unitDefensiveScore += (2 * unitLevel)
 
 
 # ============================================================

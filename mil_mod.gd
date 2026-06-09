@@ -716,6 +716,190 @@ func buildSelf(Type):
 			milModDescription = str("[i]History is watching. Keep up.:[/i][color=green] +3 movement points per turn, for the rest of the game[/color]")
 			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
 			milModResource = "None"
+		# ── STATE / PROVINCIAL GUARD MODS ───────────────────────────────────────
+		# Each grants +2 attack and +2 defence per level when in a matching state tile.
+		"Pennsylvania Guard":
+			culturalMod = true
+			culturalState = "PA"
+			commanderMod = true
+			milModDescription = str("[i]Home soil, home rules:[/i][color=green] +2 Attack, +2 Defence per Level in Pennsylvania tiles[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Virginia Guard":
+			culturalMod = true
+			culturalState = "VA"
+			commanderMod = true
+			milModDescription = str("[i]Home soil, home rules:[/i][color=green] +2 Attack, +2 Defence per Level in Virginia tiles[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"New York Guard":
+			culturalMod = true
+			culturalState = "NY"
+			commanderMod = true
+			milModDescription = str("[i]Home soil, home rules:[/i][color=green] +2 Attack, +2 Defence per Level in New York tiles[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Massachusetts Guard":
+			culturalMod = true
+			culturalState = "MA"
+			commanderMod = true
+			milModDescription = str("[i]Home soil, home rules:[/i][color=green] +2 Attack, +2 Defence per Level in Massachusetts tiles[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Maryland Guard":
+			culturalMod = true
+			culturalState = "MD"
+			commanderMod = true
+			milModDescription = str("[i]Home soil, home rules:[/i][color=green] +2 Attack, +2 Defence per Level in Maryland tiles[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"North Carolina Guard":
+			culturalMod = true
+			culturalState = "NC"
+			commanderMod = true
+			milModDescription = str("[i]Home soil, home rules:[/i][color=green] +2 Attack, +2 Defence per Level in North Carolina tiles[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"South Carolina Guard":
+			culturalMod = true
+			culturalState = "SC"
+			commanderMod = true
+			milModDescription = str("[i]Home soil, home rules:[/i][color=green] +2 Attack, +2 Defence per Level in South Carolina tiles[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Georgia Guard":
+			culturalMod = true
+			culturalState = "GA"
+			commanderMod = true
+			milModDescription = str("[i]Home soil, home rules:[/i][color=green] +2 Attack, +2 Defence per Level in Georgia tiles[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Connecticut Guard":
+			culturalMod = true
+			culturalState = "CT"
+			commanderMod = true
+			milModDescription = str("[i]Home soil, home rules:[/i][color=green] +2 Attack, +2 Defence per Level in Connecticut tiles[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"New Jersey Guard":
+			culturalMod = true
+			culturalState = "NJ"
+			commanderMod = true
+			milModDescription = str("[i]Home soil, home rules:[/i][color=green] +2 Attack, +2 Defence per Level in New Jersey tiles[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Delaware Guard":
+			culturalMod = true
+			culturalState = "DE"
+			commanderMod = true
+			milModDescription = str("[i]Home soil, home rules:[/i][color=green] +2 Attack, +2 Defence per Level in Delaware tiles[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"New Hampshire Guard":
+			culturalMod = true
+			culturalState = "NH"
+			commanderMod = true
+			milModDescription = str("[i]Home soil, home rules:[/i][color=green] +2 Attack, +2 Defence per Level in New Hampshire tiles[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Rhode Island Guard":
+			culturalMod = true
+			culturalState = "RI"
+			commanderMod = true
+			milModDescription = str("[i]Home soil, home rules:[/i][color=green] +2 Attack, +2 Defence per Level in Rhode Island tiles[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Vermont Guard":
+			culturalMod = true
+			culturalState = "VT"
+			commanderMod = true
+			milModDescription = str("[i]Home soil, home rules:[/i][color=green] +2 Attack, +2 Defence per Level in Vermont tiles[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Maine Guard":
+			culturalMod = true
+			culturalState = "ME"
+			commanderMod = true
+			milModDescription = str("[i]Home soil, home rules:[/i][color=green] +2 Attack, +2 Defence per Level in Maine tiles[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Tennessee Guard":
+			culturalMod = true
+			culturalState = "TN"
+			commanderMod = true
+			milModDescription = str("[i]Home soil, home rules:[/i][color=green] +2 Attack, +2 Defence per Level in Tennessee tiles[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Alabama Guard":
+			culturalMod = true
+			culturalState = "AL"
+			commanderMod = true
+			milModDescription = str("[i]Home soil, home rules:[/i][color=green] +2 Attack, +2 Defence per Level in Alabama tiles[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Florida Guard":
+			culturalMod = true
+			culturalState = "FL"
+			commanderMod = true
+			milModDescription = str("[i]Home soil, home rules:[/i][color=green] +2 Attack, +2 Defence per Level in Florida tiles[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"West Virginia Guard":
+			culturalMod = true
+			culturalState = "WV"
+			commanderMod = true
+			milModDescription = str("[i]Home soil, home rules:[/i][color=green] +2 Attack, +2 Defence per Level in West Virginia tiles[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"DC Guard":
+			culturalMod = true
+			culturalState = "DC"
+			commanderMod = true
+			milModDescription = str("[i]Home soil, home rules:[/i][color=green] +2 Attack, +2 Defence per Level in Washington DC tiles[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Quebec Guard":
+			culturalMod = true
+			culturalState = "CA - QB"
+			commanderMod = true
+			milModDescription = str("[i]Home soil, home rules:[/i][color=green] +2 Attack, +2 Defence per Level in Quebec tiles[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Ontario Guard":
+			culturalMod = true
+			culturalState = "CA - OT"
+			commanderMod = true
+			milModDescription = str("[i]Home soil, home rules:[/i][color=green] +2 Attack, +2 Defence per Level in Ontario tiles[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Nova Scotia Guard":
+			culturalMod = true
+			culturalState = "CA - NS"
+			commanderMod = true
+			milModDescription = str("[i]Home soil, home rules:[/i][color=green] +2 Attack, +2 Defence per Level in Nova Scotia tiles[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"New Brunswick Guard":
+			culturalMod = true
+			culturalState = "CA - NB"
+			commanderMod = true
+			milModDescription = str("[i]Home soil, home rules:[/i][color=green] +2 Attack, +2 Defence per Level in New Brunswick tiles[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Prince Edward Island Guard":
+			culturalMod = true
+			culturalState = "CA - PEI"
+			commanderMod = true
+			milModDescription = str("[i]Home soil, home rules:[/i][color=green] +2 Attack, +2 Defence per Level in Prince Edward Island tiles[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Bahamas Guard":
+			culturalMod = true
+			culturalState = "BA"
+			commanderMod = true
+			milModDescription = str("[i]Home soil, home rules:[/i][color=green] +2 Attack, +2 Defence per Level in Bahamas tiles[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
 		# ── NEGATIVE STATUS EFFECTS ──────────────────────────────────────────────
 		"Stunned":
 			isNegative = true
