@@ -18,15 +18,143 @@ extends Control
 # ============================================================
 
 const GALLERY_CATALOG := [
-	# Add entries as { "event_id": "...", "title": "...", "hint": "...",
-	#                   "art_path": "res://...", "flavor": "..." }
-	# These are populated by the dev as adult events are written.
-	# Example (placeholder):
-	# { "event_id": "ualani_mark_lewd_01",
-	#   "title":    "A Quiet Evening in Vermont",
-	#   "hint":     "Complete the Mark Penoit arc",
-	#   "art_path": "",
-	#   "flavor":   "Some things transcend politics." },
+	# ── WHITE HOUSE SECRETS (sensual / explicit) ───────────────────────────
+	{
+		"event_id": "WH_SECRET_01",
+		"title":    "The New Year, Privately",
+		"hint":     "Ualani must be in Washington DC when the new year turns",
+		"art_path": "",   # TODO: set art path when asset is ready
+		"flavor":   "No ceremony. No camera. No country to perform for.",
+	},
+	{
+		"event_id": "WH_SECRET_07",
+		"title":    "Independence Day — Hers",
+		"hint":     "Ualani must be in Washington DC on the Fourth of July",
+		"art_path": "",
+		"flavor":   "The founding documents were written by people who did not mean her. She means them anyway.",
+	},
+	{
+		"event_id": "WH_SECRET_10",
+		"title":    "A Letter from Jessica",
+		"hint":     "Reach the Alliance stage with Canada (Ualani in Washington DC)",
+		"art_path": "",
+		"flavor":   "Not a diplomatic dispatch. A personal one.",
+	},
+	{
+		"event_id": "WH_SECRET_12",
+		"title":    "Christmas in Washington",
+		"hint":     "Ualani must be in Washington DC in winter",
+		"art_path": "",
+		"flavor":   "She is from Hawaii. This is not Christmas as she knows it.",
+	},
+	# ── UALANI PERSONAL EVENTS (sensual — Full option) ─────────────────────
+	{
+		"event_id": "UALANI_AMBUSH_01",
+		"title":    "The Counteroffensive Briefing",
+		"hint":     "Hold a tile against a Crown ambush with Ualani present",
+		"art_path": "",
+		"flavor":   "Ualani was already there. The Crown did not know that.",
+	},
+	{
+		"event_id": "UALANI_DIGNITARY_01",
+		"title":    "The Full Presidential Reception",
+		"hint":     "Host a diplomatic reception at a liberated courthouse tile",
+		"art_path": "",
+		"flavor":   "The courthouse has never looked this good.",
+	},
+	{
+		"event_id": "UALANI_MEMORIAL_01",
+		"title":    "The Presidential Address",
+		"hint":     "Visit a memorial tile with Ualani",
+		"art_path": "",
+		"flavor":   "The ground has history. The President has remarks.",
+	},
+	{
+		"event_id": "UALANI_WOUNDED_01",
+		"title":    "The Field Hospital Visit",
+		"hint":     "Ualani visits a field hospital after a battle",
+		"art_path": "",
+		"flavor":   "She knew their names. That is not an expression.",
+	},
+	{
+		"event_id": "UALANI_WINTER_01",
+		"title":    "The Winter March",
+		"hint":     "March an army through a cold terrain tile in winter",
+		"art_path": "",
+		"flavor":   "Washington did it once. The precedent is established.",
+	},
+	{
+		"event_id": "UALANI_FORGE_01",
+		"title":    "The Surprise Inspection",
+		"hint":     "Own a Level 2+ Forge with a garrison present",
+		"art_path": "",
+		"flavor":   "Production numbers were good. The President made them better.",
+	},
+	{
+		"event_id": "UALANI_CULPER_01",
+		"title":    "The Culper Meeting",
+		"hint":     "Activate the Culper Ring intelligence network",
+		"art_path": "",
+		"flavor":   "The message arrived with no signature. She knew who sent it.",
+	},
+	{
+		"event_id": "UALANI_CULPER_BRIEF_01",
+		"title":    "Intelligence Confirmed",
+		"hint":     "Receive a confirmed intelligence brief from the Culper Ring",
+		"art_path": "",
+		"flavor":   "The asset delivered. The map is different now.",
+	},
+	{
+		"event_id": "UALANI_ALLIANCE_01",
+		"title":    "The Alliance Council",
+		"hint":     "Meet with a Commander who holds two or more objectives",
+		"art_path": "",
+		"flavor":   "An alliance was discussed. The discussion went well.",
+	},
+	{
+		"event_id": "UALANI_FRONTIER_01",
+		"title":    "The Frontier Walk",
+		"hint":     "Establish presence at a border tile adjacent to Canada",
+		"art_path": "",
+		"flavor":   "The northern edge of the Republic. She walked it.",
+	},
+	# ── COMMANDER THANKS (explicit) ────────────────────────────────────────
+	{
+		"event_id": "CMD_THANKS",
+		"title":    "A Personal Presidential Visit",
+		"hint":     "A Commander completes their full arc at maximum loyalty",
+		"art_path": "",
+		"flavor":   "The President doesn't visit everyone. She visited them.",
+	},
+	# ── PROTECTOR ARCS (kinky) ─────────────────────────────────────────────
+	{
+		"event_id": "PROT_01_SUMMON",
+		"title":    "Mothman Approaches",
+		"hint":     "Begin the Mothman protector arc (Harper's Ferry region)",
+		"art_path": "",
+		"flavor":   "A presence in the dark.",
+	},
+	{
+		"event_id": "PROT_01_AGREE",
+		"title":    "The Harper's Ferry Accord",
+		"hint":     "Complete the Mothman protector arc and accept the alliance",
+		"art_path": "",
+		"flavor":   "The agreement required no words. The words came anyway.",
+	},
+	{
+		"event_id": "PROT_14_SUMMON",
+		"title":    "Rushmore Awakens",
+		"hint":     "Begin the Mount Rushmore protector arc (Gettysburg region)",
+		"art_path": "",
+		"flavor":   "All four have arrived and they are already arguing.",
+	},
+	{
+		"event_id": "PROT_14_AGREE",
+		"title":    "The Presidential Council",
+		"hint":     "Complete the Mount Rushmore protector arc and accept the endorsement",
+		"art_path": "",
+		"flavor":   "They came to a vote. The vote was unanimous. Lincoln broke the tie.",
+	},
 ]
 
 var _tile_scene = preload("res://GalleryTile.tscn")

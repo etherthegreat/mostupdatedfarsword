@@ -4505,8 +4505,8 @@ func _library_on_event_fired(event_id: String) -> void:
 		return
 
 	# Gallery unlock — fire when content-flagged event is shown for first time
-	var content_flag: String = event.get("content_flag", "")
-	if content_flag != "":
+	var content_flag: String = event.get("content_flag", "").strip()
+	if content_flag != "" and content_flag != "false":
 		var flag_active := false
 		match content_flag:
 			"sensual":  flag_active = LibraryData.get_setting("content_sensual",  false)
@@ -4516,9 +4516,29 @@ func _library_on_event_fired(event_id: String) -> void:
 			LibraryData.unlock_gallery(event_id)
 
 	# Journal entry — major Ualani or historical events
+	# event_type values come directly from events.csv
 	var event_type: String = event.get("event_type", "")
-	if event_type in ["ualani", "major_history", "protector", "war", "peace",
-					   "election", "white_house_secret"]:
+	const JOURNAL_TYPES := [
+		"ualani_event",          # Ualani personal arc events
+		"white_house_secret",    # White House holiday intimacy events
+		"vp_event",              # VP relationship arc
+		"protector_agree",       # USA protector agreements
+		"ca_protector_agree",    # Canadian protector agreements
+		"war_declaration",       # UK declares war
+		"war_buildup",           # Pre-war intelligence
+		"peace",                 # Peace treaties
+		"election_season",       # Election campaigns
+		"election_night_win",    # Ualani wins re-election
+		"election_night_lose",   # Ualani loses
+		"city_liberated",        # Major city liberated
+		"city_lost",             # Major city lost to enemy
+		"state_liberated",       # Full state liberated
+		"collapse",              # Republic collapse event
+		"secession",             # State secession
+		"reintegration",         # State reintegration
+		"commander_complete",    # Commander arc completion
+	]
+	if event_type in JOURNAL_TYPES:
 		LibraryData.add_journal_entry(
 			event_id,
 			currentWorldTurn,
@@ -4529,12 +4549,19 @@ func _library_on_event_fired(event_id: String) -> void:
 
 func _journal_classification(event_type: String) -> String:
 	match event_type:
-		"ualani":              return "EYES ONLY"
-		"white_house_secret":  return "EYES ONLY"
-		"protector":           return "TOP SECRET"
-		"war", "peace":        return "SECRET"
-		"election":            return "CONFIDENTIAL"
-		_:                     return "DECLASSIFIED"
+		"ualani_event":                          return "EYES ONLY"
+		"white_house_secret":                    return "EYES ONLY"
+		"vp_event":                              return "EYES ONLY"
+		"protector_agree", "ca_protector_agree": return "TOP SECRET"
+		"war_declaration", "war_buildup":        return "SECRET"
+		"peace":                                 return "SECRET"
+		"collapse", "secession":                 return "SECRET"
+		"election_season", "election_night_win",\
+		"election_night_lose":                   return "CONFIDENTIAL"
+		"city_lost", "state_liberated",\
+		"city_liberated", "reintegration":       return "CONFIDENTIAL"
+		"commander_complete":                    return "DECLASSIFIED"
+		_:                                       return "DECLASSIFIED"
 
 # WORLD.GD ADDITIONS
 # Add to existing save/load functions

@@ -423,6 +423,26 @@ func _register_all() -> void:
 		"The Wendigo of the northern forests is not a story parents tell children. It is a warning parents tell each other.",
 		"CA_PROT_03")
 
+	_add_mystery("CA_PROT_04", "Protectors",
+		"The Ojibwe speak of a great lynx that controls the deep water. It has not been seen since the last winter that killed everyone who saw it.",
+		"CA_PROT_04")
+
+	_add_mystery("CA_PROT_05", "Protectors",
+		"In the villages near Québec City, they remember a woman who was executed. They do not say she stayed dead.",
+		"CA_PROT_05")
+
+	_add_mystery("CA_PROT_06", "Protectors",
+		"The wolverine of Moncton is not an animal. The trappers learned this. The trappers are gone now.",
+		"CA_PROT_06")
+
+	_add_mystery("CA_PROT_07", "Protectors",
+		"The flying canoe that travels the river at night does not appear on maps. The men inside it have been paddling for a very long time.",
+		"CA_PROT_07")
+
+	_add_mystery("CA_PROT_08", "Protectors",
+		"In the bay, where the Chaleur meets the ocean, fishermen sometimes see a light beneath the water. They go home. They do not explain why.",
+		"CA_PROT_08")
+
 	# ── LORE & HISTORY ───────────────────────────────────────────────────────
 	_add("lore_first_war", "Lore & History", "The First British Reconquest War",
 		"In 1782, following the unexpected death of King George III, the British Parliament authorized a full military reconquest of the former colonies. What followed was the First Reconquest War — a brutal, satirical, and deeply inconvenient reminder that revolution is easier the second time.\n\nPresident Ualani Carlisle, barely a year into her term, faced the full weight of the British Empire with a standing army, a treasury of questionable depth, and the most politically functional cabinet in American history.",
