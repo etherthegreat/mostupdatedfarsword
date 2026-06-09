@@ -154,9 +154,26 @@ func updateArmyUI(): #call whenever attacked, or just whenever the player opens 
 	updateFinalTotals()
 	pass
 
+func _commander_movement_bonus() -> int:
+	if commander == null:
+		return 0
+	var mods: Array
+	match commander.governorLevel:
+		1: mods = commander.govMilModsLvl1
+		2: mods = commander.govMilModsLvl2
+		3: mods = commander.govMilModsLvl3
+		_: mods = commander.govMilModsLvl1
+	var bonus: int = 0
+	for mm in mods:
+		if not mm.disabled:
+			match mm.milModType:
+				"President":       bonus += 3
+				"Election Season": bonus += 3
+	return bonus
+
 func onTurnEnd():
 	# Restore full movement points at the start of each new turn
-	currentMovementPoints = maxMovementPoints
+	currentMovementPoints = maxMovementPoints + _commander_movement_bonus()
 	# Reset per-turn flags (re-derived below from active statuses)
 	attackBlocked = false
 	reinforcementBlocked = false

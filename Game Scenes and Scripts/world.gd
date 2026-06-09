@@ -2855,7 +2855,15 @@ func _check_election_season() -> void:
 		return
 	_start_cooldown("ELECTION_SEASON", 999)
 	createNewEvent("ELECTION_SEASON", null)
+	_grant_election_season_mods()
 	print("[Election] Election season event fired on turn ", currentWorldTurn)
+
+func _grant_election_season_mods() -> void:
+	# Give Election Season mod to Ualani and the current VP (the ticket)
+	for gov in playerCountryNode.unlockedGovernors:
+		if gov.governorType == "Ualani Carlisle" or gov.isVicePresident:
+			gov.addMilMod("Election Season", 123)
+			print("[Election] Election Season mod granted to ", gov.governorType)
 
 
 func _check_end_game() -> void:

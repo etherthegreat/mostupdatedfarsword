@@ -706,6 +706,16 @@ func buildSelf(Type):
 			milModDescription = str("[i]Knows every trail, every hazard, every bad thing in the dirt:[/i][color=green] Army is immune to corruption-based disease[/color]")
 			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
 			milModResource = "None"
+		"President":
+			commanderMod = true
+			milModDescription = str("[i]The Republic moves when she moves:[/i][color=green] +3 movement points per turn[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Election Season":
+			commanderMod = true
+			milModDescription = str("[i]History is watching. Keep up.:[/i][color=green] +3 movement points per turn, for the rest of the game[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
 		# ── NEGATIVE STATUS EFFECTS ──────────────────────────────────────────────
 		"Stunned":
 			isNegative = true

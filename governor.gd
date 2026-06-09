@@ -88,6 +88,8 @@ func buildSelf(gT, gL):
 			governorFaction = "Federal"
 			loyalty = 20.0  # Absolute personal loyalty — this is her Republic
 			questComplete = true  # Her loyalty is uncapped from the start
+			isLeader = true
+			addMilMod("President", 123)
 
 		"Benjamin Tallmadge":
 			governorTexture = load("res://art assets/Placeholder Art/character/4-22-Ikra-Colors - Copy.png")
