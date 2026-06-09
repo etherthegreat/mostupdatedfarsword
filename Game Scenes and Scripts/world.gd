@@ -237,6 +237,135 @@ func newGameBuild(CID, gameLang):
 # a procedural governor is built using a terrain-matched archetype and a name
 # drawn from the appropriate cultural name pool.  The governor is added to the
 # player's unlocked pool AND registered in the War Room as a CommanderArcEntry.
+func _apply_archetype_mods(gov: governor, arc_id: String) -> void:
+	match arc_id:
+		"ARC_01":
+			gov.addMilMod("Swamp Legs",       123)
+			gov.addMilMod("Coastal Watch",    123)
+			gov.addMilMod("Marine",            23)
+			gov.addMilMod("Naval Supremacy",    3)
+		"ARC_02":
+			gov.addMilMod("Hill Runner",      123)
+			gov.addMilMod("Powder & Shot",    123)
+			gov.addMilMod("Siege Line",        23)
+			gov.addMilMod("Rampart",            3)
+		"ARC_03":
+			gov.addMilMod("Steady Line",      123)
+			gov.addMilMod("Street Tough",     123)
+			gov.addMilMod("Flanking Drill",    23)
+			gov.addMilMod("Continental Line",   3)
+		"ARC_04":
+			gov.addMilMod("Swamp Legs",       123)
+			gov.addMilMod("Saber Drill",      123)
+			gov.addMilMod("Guerrilla Tactics", 23)
+			gov.addMilMod("Last Stand",         3)
+		"ARC_05":
+			gov.addMilMod("Farmhand",         123)
+			gov.addMilMod("Hill Runner",      123)
+			gov.addMilMod("Corrupted Ground",  23)
+			gov.addMilMod("Liberator's Will",   3)
+		"ARC_06":
+			gov.addMilMod("Coastal Watch",    123)
+			gov.addMilMod("Powder & Shot",    123)
+			gov.addMilMod("Double Shot",       23)
+			gov.addMilMod("Double Cannonade",   3)
+		"ARC_07":
+			gov.addMilMod("Street Tough",     123)
+			gov.addMilMod("Marksman",         123)
+			gov.addMilMod("Night Raider",      23)
+			gov.addMilMod("Ghost March",        3)
+		"ARC_08":
+			gov.addMilMod("Farmhand",         123)
+			gov.addMilMod("Quick Reload",     123)
+			gov.addMilMod("Corrupted Ground",  23)
+			gov.addMilMod("The Long March",     3)
+		"ARC_09":
+			gov.addMilMod("Steady Line",      123)
+			gov.addMilMod("Fortified Position",123)
+			gov.addMilMod("Rallying Voice",    23)
+			gov.addMilMod("Undaunted",          3)
+		"ARC_10":
+			gov.addMilMod("Woodsman",         123)
+			gov.addMilMod("Swamp Legs",       123)
+			gov.addMilMod("Guerrilla Tactics", 23)
+			gov.addMilMod("Ghost March",        3)
+		"ARC_11":
+			gov.addMilMod("Street Tough",     123)
+			gov.addMilMod("Saber Drill",      123)
+			gov.addMilMod("Rallying Voice",    23)
+			gov.addMilMod("Terror",             3)
+		"ARC_12":
+			gov.addMilMod("Steady Line",      123)
+			gov.addMilMod("Fortified Position",123)
+			gov.addMilMod("Cleaner",           23)
+			gov.addMilMod("Liberator's Will",   3)
+		"ARC_13":
+			gov.addMilMod("Coastal Watch",    123)
+			gov.addMilMod("Marksman",         123)
+			gov.addMilMod("Marine",            23)
+			gov.addMilMod("Naval Supremacy",    3)
+		"ARC_14":
+			gov.addMilMod("Woodsman",         123)
+			gov.addMilMod("Hill Runner",      123)
+			gov.addMilMod("Rallying Voice",    23)
+			gov.addMilMod("Undaunted",          3)
+		"ARC_15":
+			gov.addMilMod("Fortified Position",123)
+			gov.addMilMod("Street Tough",     123)
+			gov.addMilMod("Flanking Drill",    23)
+			gov.addMilMod("Iron Wall",          3)
+		"ARC_16":
+			gov.addMilMod("Powder & Shot",    123)
+			gov.addMilMod("Fortified Position",123)
+			gov.addMilMod("Siege Line",        23)
+			gov.addMilMod("Double Cannonade",   3)
+		"ARC_17":
+			gov.addMilMod("Farmhand",         123)
+			gov.addMilMod("Saber Drill",      123)
+			gov.addMilMod("Guerrilla Tactics", 23)
+			gov.addMilMod("Last Stand",         3)
+		"ARC_18":
+			gov.addMilMod("Swamp Legs",       123)
+			gov.addMilMod("Coastal Watch",    123)
+			gov.addMilMod("Cleaner",           23)
+			gov.addMilMod("Terror",             3)
+		"ARC_19":
+			gov.addMilMod("Coastal Watch",    123)
+			gov.addMilMod("Saber Drill",      123)
+			gov.addMilMod("Marine",            23)
+			gov.addMilMod("Double Cannonade",   3)
+		"ARC_20":
+			gov.addMilMod("Farmhand",         123)
+			gov.addMilMod("Coastal Watch",    123)
+			gov.addMilMod("Marine",            23)
+			gov.addMilMod("Naval Supremacy",    3)
+		"ARC_21":
+			gov.addMilMod("Hill Runner",      123)
+			gov.addMilMod("Saber Drill",      123)
+			gov.addMilMod("Iron Bayonet",      23)
+			gov.addMilMod("Last Stand",         3)
+		"ARC_22":
+			gov.addMilMod("Woodsman",         123)
+			gov.addMilMod("Quick Reload",     123)
+			gov.addMilMod("Guerrilla Tactics", 23)
+			gov.addMilMod("Ghost March",        3)
+		"ARC_23":
+			gov.addMilMod("Steady Line",      123)
+			gov.addMilMod("Saber Drill",      123)
+			gov.addMilMod("Iron Bayonet",      23)
+			gov.addMilMod("Entrenched",         3)
+		"ARC_24":
+			gov.addMilMod("Street Tough",     123)
+			gov.addMilMod("Steady Line",      123)
+			gov.addMilMod("Rallying Voice",    23)
+			gov.addMilMod("Continental Line",   3)
+		"ARC_25":
+			gov.addMilMod("Street Tough",     123)
+			gov.addMilMod("Marksman",         123)
+			gov.addMilMod("Night Raider",      23)
+			gov.addMilMod("The Long March",     3)
+
+
 func generateBarracksCommanders() -> void:
 	# ── Archetype table ──────────────────────────────────────────────────────
 	# terrain: which tile terrains can produce this archetype
@@ -407,6 +536,7 @@ func generateBarracksCommanders() -> void:
 		new_gov.governorArchetypeId = chosen["id"]       # archetype for War Room matching
 		new_gov.governorPosition   = chosen["position"]  # role title (SCOUT, ORATOR, …)
 		new_gov.governorLevel      = 1
+		_apply_archetype_mods(new_gov, chosen["id"])
 		new_gov.governorDescription = \
 			"A " + chosen["name"] + " who answered the revolution's call from " + tile.tileName + "."
 		new_gov.governorBiography  = \
@@ -1321,6 +1451,8 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 					tile.tileGovernor.questComplete = true
 				print("[Commander] Promoted ", tile.tileGovernor.governorType,
 					" to level ", tile.tileGovernor.governorLevel)
+				if tile.stationedArmy != null:
+					tile.stationedArmy.updateArmyUI()
 		"tile_liberation":
 			if tile != null:
 				tile.record_conquest("USA")

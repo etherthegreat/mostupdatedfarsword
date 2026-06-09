@@ -21,6 +21,11 @@ var resourceMod: bool
 
 var milModResource: String
 
+var marineMod: bool
+var entrenchMod: bool
+var terrainMod: bool
+var terrainType: String
+
 var disabled: bool
 
 var newArea2D: Area2D
@@ -35,6 +40,10 @@ func buildSelf(Type):
 	resourceMod = false
 	commanderMod = false
 	civilianMod = false
+	marineMod = false
+	entrenchMod = false
+	terrainMod = false
+	terrainType = ""
 	#$Sprite2D/InfoPanel.visible = false
 	match milModType:
 		#COUNTRY MILMODS
@@ -166,6 +175,204 @@ func buildSelf(Type):
 			milModDescription = str("[i]This Unit wears a fully-enclose shell, block [i]:[color= green] + 50% Spell[/color], damage")
 			milModTexture = load("res://art assets/ModifierIcons/milMods/green cross.png")
 			milModResource = "Weapons"
+		# ── TIER 1 MIL MODS ───────────────────────────────────────────────────
+		"Woodsman":
+			infantryMod = true
+			terrainMod = true
+			terrainType = "Woods"
+			milModDescription = str("[i]Trained in forest fighting:[/i][color= green] +2 Attack, +2 Defense per Level in Woods terrain[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"Swamp Legs":
+			infantryMod = true
+			terrainMod = true
+			terrainType = "Wetlands"
+			milModDescription = str("[i]At home in the marshes:[/i][color= green] +2 Attack, +2 Defense per Level in Wetlands terrain[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"Hill Runner":
+			infantryMod = true
+			terrainMod = true
+			terrainType = "Foothills"
+			milModDescription = str("[i]Born on high ground:[/i][color= green] +2 Attack, +2 Defense per Level in Foothills terrain[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"Street Tough":
+			infantryMod = true
+			terrainMod = true
+			terrainType = "Metro"
+			milModDescription = str("[i]Raised fighting in alleyways:[/i][color= green] +2 Attack per Level in Metro or Suburbs terrain[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"Farmhand":
+			infantryMod = true
+			terrainMod = true
+			terrainType = "Farmlands"
+			milModDescription = str("[i]Knows every row of every field:[/i][color= green] +1 Attack per Level in Farmlands terrain[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Saber Drill":
+			infantryMod = true
+			milModDescription = str("[i]Relentless close-combat drilling:[/i][color= green] +3 Attack per Level[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"Marksman":
+			rangedMod = true
+			milModDescription = str("[i]Trained to shoot straight and true:[/i][color= green] +2 Ranged Attack per Level[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"Steady Line":
+			infantryMod = true
+			milModDescription = str("[i]Hold the line at all costs:[/i][color= green] +3 Defense per Level[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/green cross.png")
+			milModResource = "None"
+		"Quick Reload":
+			rangedMod = true
+			milModDescription = str("[i]Powder and ball, faster than any rival:[/i][color= green] Reload reduced by 1 round[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"Powder & Shot":
+			siegeMod = true
+			milModDescription = str("[i]The cannons never run dry:[/i][color= green] +3 Siege Attack per Level[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"Fortified Position":
+			commanderMod = true
+			milModDescription = str("[i]The fortifications hold the line:[/i][color= green] All units +3 Defense per Level in tiles with Barracks or Fortress[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/green cross.png")
+			milModResource = "None"
+		"Coastal Watch":
+			commanderMod = true
+			milModDescription = str("[i]Eyes on every inlet and estuary:[/i][color= green] All units +2 Defense per Level when adjacent to naval tiles[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		# ── TIER 2 MIL MODS ───────────────────────────────────────────────────
+		"Marine":
+			commanderMod = true
+			marineMod = true
+			milModDescription = str("[i]Land and sea are one battlefield:[/i][color= green] Army may launch melee attacks into adjacent naval tile neighbors[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Guerrilla Tactics":
+			infantryMod = true
+			terrainMod = true
+			terrainType = "Woods"
+			milModDescription = str("[i]Strike fast, vanish faster:[/i][color= green] +4 Attack, +4 Defense per Level in Woods or Wetlands terrain[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"Double Shot":
+			siegeMod = true
+			milModDescription = str("[i]Load two rounds before the smoke clears:[/i][color= green] Siege fires twice per round — second shot at 50% power[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"Iron Bayonet":
+			infantryMod = true
+			milModDescription = str("[i]The first charge carries iron conviction:[/i][color= green] +5 Attack per Level in first battle round[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"Sharpshooter":
+			rangedMod = true
+			milModDescription = str("[i]No cover is safe from this unit's aim:[/i][color= green] Ranged attacks ignore 2 enemy Defense per Level[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"Corrupted Ground":
+			commanderMod = true
+			milModDescription = str("[i]This army cleanses the land they march through:[/i][color= green] Army presence reduces tile corruption by 1 per turn[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/green cross.png")
+			milModResource = "None"
+		"Rallying Voice":
+			commanderMod = true
+			milModDescription = str("[i]No soldier routs while the commander still stands:[/i][color= green] Morale loss reduced; rout threshold lowered to 15%[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/green cross.png")
+			milModResource = "None"
+		"Night Raider":
+			commanderMod = true
+			milModDescription = str("[i]Strike under cover of darkness:[/i][color= green] Army may move and attack in the same turn without penalty[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"Flanking Drill":
+			infantryMod = true
+			milModDescription = str("[i]Always find the open flank:[/i][color= green] +3 Attack per Level when fighting in a contested tile[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"Vanguard":
+			commanderMod = true
+			milModDescription = str("[i]The first into the breach:[/i][color= green] All units +4 Attack per Level on first engagement in a fresh tile[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Siege Line":
+			siegeMod = true
+			milModDescription = str("[i]Walls and ramparts are merely delays:[/i][color= green] Siege attacks against fortified tiles suffer no defensive penalty[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"Cleaner":
+			commanderMod = true
+			milModDescription = str("[i]Order restored, one tile at a time:[/i][color= green] Army presence reduces tile moral decay by 1 per turn[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/green cross.png")
+			milModResource = "None"
+		# ── TIER 3 MIL MODS ───────────────────────────────────────────────────
+		"Entrenched":
+			commanderMod = true
+			entrenchMod = true
+			milModDescription = str("[i]This ground is ours to keep:[/i][color= green] After 3 stationary turns, all units gain +5 Defense per Level — lost on movement[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/green cross.png")
+			milModResource = "None"
+		"Continental Line":
+			commanderMod = true
+			milModDescription = str("[i]The pride of the revolution, standing firm:[/i][color= green] All units +2 Attack, +2 Defense per Level permanently[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/green cross.png")
+			milModResource = "None"
+		"Last Stand":
+			infantryMod = true
+			milModDescription = str("[i]With nothing left to lose, they fight like lions:[/i][color= green] Units below 25% manpower gain +6 Attack per Level[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"Terror":
+			commanderMod = true
+			milModDescription = str("[i]The enemy trembles before this army's name:[/i][color= green] Enemy loses 10 Morale at the start of each battle round[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"Iron Wall":
+			commanderMod = true
+			milModDescription = str("[i]No invader passes this line:[/i][color= green] +8 Defense per Level when defending the commander's home tile[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/green cross.png")
+			milModResource = "None"
+		"Rampart":
+			commanderMod = true
+			milModDescription = str("[i]Every stone in this fortress knows their name:[/i][color= green] +5 Defense per Level in any Fortress tile[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/green cross.png")
+			milModResource = "None"
+		"Naval Supremacy":
+			commanderMod = true
+			marineMod = true
+			milModDescription = str("[i]The sea bows to this army's will:[/i][color= green] Marine melee attacks deal +5 additional damage per Level[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Ghost March":
+			commanderMod = true
+			milModDescription = str("[i]They pass through the enemy's reach like smoke:[/i][color= green] Army ignores enemy zone of control[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"Undaunted":
+			commanderMod = true
+			milModDescription = str("[i]Fear has no purchase on this army:[/i][color= green] Ignore the first retreat check each battle[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/green cross.png")
+			milModResource = "None"
+		"Double Cannonade":
+			siegeMod = true
+			milModDescription = str("[i]Two volleys where any lesser battery gives one:[/i][color= green] Siege fires twice per round AND +3 Attack per Level on all shots[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"Liberator's Will":
+			commanderMod = true
+			milModDescription = str("[i]Every liberated tile fuels the fire:[/i][color= green] After liberating a tile, +15% manpower and commander gains +2 Loyalty[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"The Long March":
+			commanderMod = true
+			milModDescription = str("[i]Miles are nothing to those who've marched through hell:[/i][color= green] +2 Movement Points; full movement may be used before attacking[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
 	$Sprite2D/InfoPanel/MilModNameLabel.text = str(milModType)
 	$Sprite2D/InfoPanel/MilModDescriptionLabel.text = str(milModDescription)
 	$Sprite2D.texture = milModTexture
