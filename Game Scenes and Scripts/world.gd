@@ -851,7 +851,8 @@ func spawnNewGameCountries(CID: String) -> void:
 		if countryCID == playerCountry:
 			newCountry.Player = true
 			playerCountryNode = newCountry
- 
+			newCountry.commanderFallen.connect(_on_commander_fallen)
+
 		else:
 			newCountry.Player = false
  
@@ -3858,6 +3859,110 @@ func _determine_storm_type(tile: Tile) -> String:
 			return "Thunderstorm"
 		else:
 			return "Nor'easter"
+
+
+# ── COMMANDER DEATH MEMO ─────────────────────────────────────────────────────
+# Fires when a player army with a named commander is destroyed.
+# Generates a short, sad, bureaucratic casualty notice dynamically —
+# no CSV entry required.  Uses build_from_data() on the event scene.
+
+# Revolution-era rank by governor level
+const _COMMANDER_RANKS: Dictionary = {
+	1: "Captain",
+	2: "Major",
+	3: "Colonel",
+}
+
+# Archetype flavor sentence — one line per archetype
+const _ARCHETYPE_FLAVOR: Dictionary = {
+	"ARC_01": "A scout who knew every marsh, cove, and tidal crossing on the eastern seaboard.",
+	"ARC_02": "An engineer who turned knowledge of stone and powder into devastating artillery precision.",
+	"ARC_03": "A tactician who traded the lecture hall for the battlefield without regret.",
+	"ARC_04": "A warrior who fought this land's invaders long before the revolution had a name.",
+	"ARC_05": "A farmer who took up the rifle when the crown came for their land.",
+	"ARC_06": "A shipwright who built the guns that now fall silent.",
+	"ARC_07": "A spy who knew the enemy's plans because they once wrote them.",
+	"ARC_08": "A drifter who covered a thousand miles on foot and asked nothing in return.",
+	"ARC_09": "A leader who had already lost everything once and refused to lose again.",
+	"ARC_10": "A scout for whom the forest was home, not obstacle.",
+	"ARC_11": "An orator whose voice was a weapon — now silenced.",
+	"ARC_12": "A healer who saved the wounded so they could fight tomorrow. Today there is no tomorrow.",
+	"ARC_13": "A sailor who called no shore home. The sea will remember.",
+	"ARC_14": "A preacher who put God and country above all else, in that order.",
+	"ARC_15": "An administrator who knew every regulation — and which ones to ignore for the Republic.",
+	"ARC_16": "An engineer who built the walls and knew exactly where they would crack.",
+	"ARC_17": "A soldier who left at midnight and never looked back. They had come too far to stop.",
+	"ARC_18": "A commander of the bayou itself. The swamp mourns with us.",
+	"ARC_19": "A privateer who flew no flag but profit. In the end, they fought for something real.",
+	"ARC_20": "A soldier who crossed the Pacific once. The Atlantic was nothing. Neither was death.",
+	"ARC_21": "A mercenary who fought for whoever paid — until they found something worth fighting for.",
+	"ARC_22": "A ranger whose home the British burned. The forest will remember what they gave.",
+	"ARC_23": "A soldier whose family name was written in battlefield soil. It is written there again.",
+	"ARC_24": "An organizer who built coalitions the old guard called impossible. They proved them wrong until the last.",
+	"ARC_25": "An orator who treated every battle as a performance. The curtain has fallen.",
+}
+
+func _on_commander_fallen(commander, army_name: String, tile) -> void:
+	var data: Dictionary = _build_commander_death_memo(commander, army_name, tile)
+	_create_dynamic_event(data, tile)
+
+func _build_commander_death_memo(commander, army_name: String, tile) -> Dictionary:
+	var level: int     = commander.governorLevel if commander.governorLevel >= 1 else 1
+	var rank: String   = _COMMANDER_RANKS.get(level, "Captain")
+	var name: String   = commander.governorType if commander.governorType else "Unknown"
+	var arc_id: String = commander.governorArchetypeId if commander.governorArchetypeId != "" else "ARC_01"
+	var flavor: String = _ARCHETYPE_FLAVOR.get(arc_id,
+		"A patriot who gave everything for the Republic.")
+
+	var tile_name: String = ""
+	if tile != null and tile.tileName != "":
+		tile_name = " near " + tile.tileName
+	else:
+		tile_name = " in the field"
+
+	var headline: String = "NOTICE OF CASUALTY — %s %s" % [rank.to_upper(), name.to_upper()]
+
+	var short_desc: String = (
+		"Continental War Office  ·  Official Field Record  ·  Urgent"
+	)
+
+	var long_desc: String = (
+		"It is the unfortunate duty of this office to record the loss in action of "
+		+ rank + " " + name + ", commanding officer of the " + army_name + tile_name + ".\n\n"
+		+ flavor + "\n\n"
+		+ "Their unit was overwhelmed and destroyed. "
+		+ rank + " " + name + " fell with their men.\n\n"
+		+ "The Republic does not forget its dead.\n\n"
+		+ "— War Office, Continental Army"
+	)
+
+	return {
+		"event_id":    "DYNAMIC_COMMANDER_DEATH",
+		"event_type":  "standard",
+		"country_cid": "USA",
+		"headline":    headline,
+		"short_desc":  short_desc,
+		"long_desc":   long_desc,
+		"buttons": [
+			{
+				"button_id":      "acknowledge",
+				"button_text":    "The Republic endures.",
+				"button_type":    "standard",
+				"outcome_type":   "none",
+				"outcome_value":  "",
+				"outcome_amount": 0,
+				"next_event_id":  "",
+				"prerequisite_flag": "",
+			}
+		],
+	}
+
+func _create_dynamic_event(data: Dictionary, tile = null) -> void:
+	var newEvent = eventScene.instantiate()
+	newEvent.build_from_data(data, tile, playerCountryNode)
+	newEvent.eventButtonPressed.connect(_on_event_button_pressed)
+	newEvent.tileEventButtonPressed.connect(_on_tile_event_button_pressed)
+	$CanvasLayer/EventControl/EventContainer.add_child(newEvent)
 
 
 #======

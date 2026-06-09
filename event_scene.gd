@@ -12,6 +12,22 @@ signal eventButtonPressed
 signal tileEventButtonPressed
 
 
+func build_from_data(data: Dictionary, tile = null, player = null) -> void:
+	target_tile    = tile
+	player_country = player
+	event_id       = data.get("event_id", "DYNAMIC")
+	event_type     = data.get("event_type", "standard")
+	event_country  = data.get("country_cid", "GEN")
+	event_data     = data
+	button_data    = data.get("buttons", [])
+
+	$EventPanel/EventNameLabel.text             = data.get("headline",   "")
+	$EventPanel/EventShortDescriptionLabel.text = data.get("short_desc", "")
+	$EventPanel/EventLongDescriptionLabel.text  = data.get("long_desc",  "")
+
+	_build_buttons()
+
+
 func build_from_csv(eid: String, tile = null, player = null) -> void:
 	event_id       = eid
 	target_tile    = tile

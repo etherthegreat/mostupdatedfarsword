@@ -532,7 +532,11 @@ func addArmy(Name, TileNumber, icon = null, tags: Array = []):
 	countryArmyList.append(armyInstance)
 	pass
 
+signal commanderFallen(commander, army_name: String, tile)
+
 func _on_army_destroyed(army: Army) -> void:
+	if army.commander != null:
+		emit_signal("commanderFallen", army.commander, army.ArmyName, army.inTile)
 	countryArmyList.erase(army)
 	if army.inTile != null:
 		army.inTile.stationedArmy = null
