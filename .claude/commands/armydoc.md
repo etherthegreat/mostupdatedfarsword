@@ -1,0 +1,1 @@
+Run `python3 scripts/build_army_masterdoc.py` from the repo root to regenerate the army masterdoc spreadsheet, then send the updated `army_masterdoc.xlsx` file to the user with a one-line summary of the counts (systems by status, total mil mods, archetypes, known bugs).
