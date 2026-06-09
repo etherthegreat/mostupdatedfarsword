@@ -1599,6 +1599,16 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 			playerCountryNode.presidentialClaim = clampf(
 				playerCountryNode.presidentialClaim + 1.0, -10.0, 10.0)
 			print("[George Peace] Rejected — presidentialClaim +1")
+		"cast_protector_buff":
+			# outcome_value = protector buff name (e.g. "Mothman Presence")
+			# outcome_amount = magic cost per turn (sustain cost)
+			# tile context = apply to the stationed army in that tile
+			if tile != null and tile.stationedArmy != null:
+				tile.stationedArmy.apply_status(outcome_value, 9999, outcome_amount)
+				print("[Protector] ", outcome_value, " cast on army at ", tile.tileName,
+					" — ", outcome_amount, " magic/turn")
+			else:
+				push_warning("cast_protector_buff: no army at tile " + str(tile))
 		"nothing":
 			pass
 		_:

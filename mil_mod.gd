@@ -900,6 +900,133 @@ func buildSelf(Type):
 			milModDescription = str("[i]Home soil, home rules:[/i][color=green] +2 Attack, +2 Defence per Level in Bahamas tiles[/color]")
 			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
 			milModResource = "None"
+		# ── PROTECTOR BUFFS ──────────────────────────────────────────────────────
+		# Applied via magic (cast_protector_buff outcome). Drain magic each turn.
+		"Mothman Presence":
+			commanderMod = true
+			milModDescription = str("[i]It has been watching for decades. Now it watches for you.:[/i][color=green] +20 Ranged Attack, +15 Ranged Defence[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Jersey Devil's Fury":
+			commanderMod = true
+			milModDescription = str("[i]Born wrong, fights right. Absolutely territorial.:[/i][color=green] +25 Attack, +10 Ranged, +10 Block[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Bigfoot's Solidarity":
+			commanderMod = true
+			milModDescription = str("[i]Eleven counties of footprints. Solidarity through presence.:[/i][color=green] +30 Block, +15 Attack[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Thunderbird's Sovereignty":
+			commanderMod = true
+			milModDescription = str("[i]Ancient skies reclaiming what was taken.:[/i][color=green] +25 Ranged Attack, +10 Melee Attack[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Headless Terror":
+			commanderMod = true
+			milModDescription = str("[i]Can't aim. Compensates with enthusiasm. Enemies flee on contact.:[/i][color=green] +20 Attack, +10 Block; attackers become Terrified[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Chessie's Blessing":
+			commanderMod = true
+			milModDescription = str("[i]The Chesapeake remembers who protected her.:[/i][color=green] +20 Block, +15 Ranged Defence[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Bell Witch's Harassment":
+			commanderMod = true
+			milModDescription = str("[i]She operates on her own terms. Psychological pressure is her weapon.:[/i][color=green] +15 Attack, +20 Defence; attackers become Demoralized[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Old Ironsides' Hull":
+			commanderMod = true
+			milModDescription = str("[i]Unsinkable. Refuses retirement. Has eaten admirals.:[/i][color=green] +30 Shield, +20 Block[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Valley Forge's Will":
+			commanderMod = true
+			milModDescription = str("[i]Not Washington. The army itself. Frozen, starved, stayed.:[/i][color=green] +10 Attack, +25 Block, +20 Defence[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Snallygaster's Claim":
+			commanderMod = true
+			milModDescription = str("[i]Half-reptile, half-bird, entirely done with your presence.:[/i][color=green] +20 Attack, +10 Ranged, +10 Block[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Paul Revere's Ride":
+			commanderMod = true
+			milModDescription = str("[i]Agitated. Fast. Loud. One more ride.:[/i][color=green] +15 Ranged, +10 Attack, +3 Movement[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Liberty Bell's Resonance":
+			commanderMod = true
+			milModDescription = str("[i]Cracked. Resonant. The crack is a feature.:[/i][color=green] +25 Block, +15 Ranged Defence[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Green Mountain Haunting":
+			commanderMod = true
+			milModDescription = str("[i]Invisible. Productive. Haunting as a form of caretaking.:[/i][color=green] +20 Block, +15 Ranged Defence[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Presidential Decree":
+			commanderMod = true
+			milModDescription = str("[i]Four presidents arguing. Washington chairs. Roosevelt interrupts.:[/i][color=green] +20 Attack, +20 Block, +15 Ranged, +15 Defence[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Skunk Ape's Domain":
+			commanderMod = true
+			milModDescription = str("[i]Massive. Fragrant. Passionate about swamp sovereignty.:[/i][color=green] +20 Attack, +15 Block[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Eternal Vigilance":
+			commanderMod = true
+			milModDescription = str("[i]Ready. Always. The first shot echoes still.:[/i][color=green] +25 Block, +10 Attack[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Lincoln's Mandate":
+			commanderMod = true
+			milModDescription = str("[i]2am wisdom. Unfinished business. The arc bends toward justice.:[/i][color=green] +15 Attack, +15 Block, +15 Ranged, +10 Defence[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Le Wendigo's Hunger":
+			commanderMod = true
+			milModDescription = str("[i]The hunger is not metaphorical.:[/i][color=green] +30 Melee Attack[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Loup-Garou's Frenzy":
+			commanderMod = true
+			milModDescription = str("[i]The moon is always full enough.:[/i][color=green] +25 Attack, +15 Block, +10 Defence[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Feux Follets' Misdirection":
+			commanderMod = true
+			milModDescription = str("[i]Follow the lights. Or don't. They'll find you anyway.:[/i][color=green] +25 Ranged Defence, +15 Block[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Mishepeshu's Depths":
+			commanderMod = true
+			milModDescription = str("[i]The water panther guards what the water touches.:[/i][color=green] +20 Block, +20 Ranged Defence[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"La Corriveau's Cage":
+			commanderMod = true
+			milModDescription = str("[i]She was executed. She did not agree with the verdict.:[/i][color=green] +20 Ranged, +15 Attack[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Le Carcajou's Tenacity":
+			commanderMod = true
+			milModDescription = str("[i]The wolverine does not stop. It is not familiar with stopping.:[/i][color=green] +20 Attack, +15 Block, +10 Defence[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"La Chasse-Galerie":
+			commanderMod = true
+			milModDescription = str("[i]The flying canoe goes where canoes should not go.:[/i][color=green] +15 Attack, +15 Ranged, +4 Movement[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Le Gougou's Terror":
+			commanderMod = true
+			milModDescription = str("[i]The Gougou makes a sound. No one describes it twice.:[/i][color=green] +15 Attack, +20 Defence; attackers become Terrified for 3 turns[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
 		# ── NEGATIVE STATUS EFFECTS ──────────────────────────────────────────────
 		"Stunned":
 			isNegative = true

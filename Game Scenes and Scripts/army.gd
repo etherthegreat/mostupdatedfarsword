@@ -209,14 +209,15 @@ func onTurnEnd():
 	updateArmyUI()
 	pass
 
-func apply_status(type: String, duration: int) -> void:
+func apply_status(type: String, duration: int, magic_cost: int = 0) -> void:
 	for s in armyStatusEffects:
 		if s.type == type:
 			s.turnsLeft = max(s.turnsLeft, duration)
+			s.magicCostPerTurn = magic_cost
 			surveySelf()
 			_apply_status_flags()
 			return
-	armyStatusEffects.append({type = type, turnsLeft = duration})
+	armyStatusEffects.append({type = type, turnsLeft = duration, magicCostPerTurn = magic_cost})
 	surveySelf()
 	_apply_status_flags()
 
@@ -236,6 +237,16 @@ func _has_status(type: String) -> bool:
 func _tick_status_effects() -> void:
 	var to_remove: Array = []
 	for s in armyStatusEffects:
+		# Magic upkeep: sustained protector buffs drain magic each turn
+		var magic_cost: int = s.get("magicCostPerTurn", 0)
+		if magic_cost > 0:
+			if parentCountry != null and parentCountry.TotalMagic >= magic_cost:
+				parentCountry.TotalMagic -= magic_cost
+			else:
+				to_remove.append(s)
+				continue
+			# Sustained effects don't expire naturally — only when magic runs dry
+			continue
 		match s.type:
 			"Burning":
 				calculateDefenderResults("fire", 5 * max(1, unitCount))
@@ -297,6 +308,91 @@ func _apply_status_effects_to_stats() -> void:
 				armyBlock = int(float(armyBlock) * 0.3)
 			"Mutinous":
 				armyPunch = int(float(armyPunch) * 0.6)
+			# ── USA PROTECTOR BUFFS ──────────────────────────────────────────────
+			"Mothman Presence":
+				armyLaunch  += 20
+				armyDefence += 15
+			"Jersey Devil's Fury":
+				armyPunch  += 25
+				armyLaunch += 10
+				armyBlock  += 10
+			"Bigfoot's Solidarity":
+				armyBlock  += 30
+				armyPunch  += 15
+			"Thunderbird's Sovereignty":
+				armyLaunch += 25
+				armyPunch  += 10
+			"Headless Terror":
+				armyPunch  += 20
+				armyBlock  += 10
+			"Chessie's Blessing":
+				armyBlock   += 20
+				armyDefence += 15
+			"Bell Witch's Harassment":
+				armyPunch   += 15
+				armyDefence += 20
+			"Old Ironsides' Hull":
+				armyShield += 30
+				armyBlock  += 20
+			"Valley Forge's Will":
+				armyPunch   += 10
+				armyBlock   += 25
+				armyDefence += 20
+			"Snallygaster's Claim":
+				armyPunch  += 20
+				armyLaunch += 10
+				armyBlock  += 10
+			"Paul Revere's Ride":
+				armyLaunch += 15
+				armyPunch  += 10
+			"Liberty Bell's Resonance":
+				armyBlock   += 25
+				armyDefence += 15
+			"Green Mountain Haunting":
+				armyBlock   += 20
+				armyDefence += 15
+			"Presidential Decree":
+				armyPunch   += 20
+				armyBlock   += 20
+				armyLaunch  += 15
+				armyDefence += 15
+			"Skunk Ape's Domain":
+				armyPunch += 20
+				armyBlock += 15
+			"Eternal Vigilance":
+				armyBlock  += 25
+				armyPunch  += 10
+			"Lincoln's Mandate":
+				armyPunch   += 15
+				armyBlock   += 15
+				armyLaunch  += 15
+				armyDefence += 10
+			# ── CANADIAN PROTECTOR BUFFS ─────────────────────────────────────────
+			"Le Wendigo's Hunger":
+				armyPunch += 30
+			"Loup-Garou's Frenzy":
+				armyPunch   += 25
+				armyBlock   += 15
+				armyDefence += 10
+			"Feux Follets' Misdirection":
+				armyDefence += 25
+				armyBlock   += 15
+			"Mishepeshu's Depths":
+				armyBlock   += 20
+				armyDefence += 20
+			"La Corriveau's Cage":
+				armyLaunch += 20
+				armyPunch  += 15
+			"Le Carcajou's Tenacity":
+				armyPunch   += 20
+				armyBlock   += 15
+				armyDefence += 10
+			"La Chasse-Galerie":
+				armyPunch  += 15
+				armyLaunch += 15
+			"Le Gougou's Terror":
+				armyPunch   += 15
+				armyDefence += 20
 
 func _apply_status_flags() -> void:
 	for s in armyStatusEffects:
@@ -314,6 +410,10 @@ func _apply_status_flags() -> void:
 				currentMovementPoints = min(currentMovementPoints, 1)
 			"Bogged Down":
 				currentMovementPoints = 0
+			"Paul Revere's Ride":
+				currentMovementPoints += 3
+			"La Chasse-Galerie":
+				currentMovementPoints += 4
 
 func addUnitToArmy(unitToAdd):
 	unitsList.append(unitToAdd)

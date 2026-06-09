@@ -290,6 +290,14 @@ func _apply_combat_status_effects() -> void:
 		if float(attackerManpowerLoss) / attackerCurrentManpower >= 0.4:
 			attacker.apply_status("Routed", 2)
 
+	# Protector buffs that retaliate against attackers
+	if defender._has_status("Bell Witch's Harassment"):
+		attacker.apply_status("Demoralized", 2)
+	if defender._has_status("Headless Terror"):
+		attacker.apply_status("Terrified", 2)
+	if defender._has_status("Le Gougou's Terror"):
+		attacker.apply_status("Terrified", 3)
+
 	# Weapon-based status effects applied to the defender
 	for unit in attacker.unitsList:
 		if unit.unitWeapon == null:
