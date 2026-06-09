@@ -26,6 +26,12 @@ var entrenchMod: bool
 var terrainMod: bool
 var terrainType: String
 
+var toolMod: bool
+var stormMod: bool
+var stormType: String        # storm type this mod counters ("Fog", "Blizzard", etc.)
+var culturalMod: bool
+var culturalState: String    # state code this mod is exclusive to (e.g. "TN", "VA")
+
 var disabled: bool
 
 var newArea2D: Area2D
@@ -44,6 +50,11 @@ func buildSelf(Type):
 	entrenchMod = false
 	terrainMod = false
 	terrainType = ""
+	toolMod = false
+	stormMod = false
+	stormType = ""
+	culturalMod = false
+	culturalState = ""
 	#$Sprite2D/InfoPanel.visible = false
 	match milModType:
 		#COUNTRY MILMODS
@@ -373,11 +384,324 @@ func buildSelf(Type):
 			milModDescription = str("[i]Miles are nothing to those who've marched through hell:[/i][color= green] +2 Movement Points; full movement may be used before attacking[/color]")
 			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
 			milModResource = "None"
-	$Sprite2D/InfoPanel/MilModNameLabel.text = str(milModType)
-	$Sprite2D/InfoPanel/MilModDescriptionLabel.text = str(milModDescription)
-	$Sprite2D.texture = milModTexture
-	newArea2D = $Area2D
-	newCollissionArea2D = $Area2D/CollisionShape2D
+		# ── MYTHIC WEAPON MODS ────────────────────────────────────────────────────
+		"BatSweep":
+			infantryMod = true
+			milModDescription = str("[i]A swing for the fences:[/i][color= green] +10% attack; first hit ignores shields[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"TridentPierce":
+			rangedMod = true
+			marineMod = true
+			milModDescription = str("[i]Sea god's mercy:[/i][color= green] Pierces shields; +3 attack per level near naval tiles[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"MythicAtlatl":
+			rangedMod = true
+			milModDescription = str("[i]The ancient art, perfected:[/i][color= green] +2 ranged per level; critical hits stun target 1 turn[/color]")
+			milModTexture = load("res://art assets/Placeholder Art/UI Art/resources/atlatlreallysmall.png")
+			milModResource = "None"
+		"SharpShot":
+			rangedMod = true
+			milModDescription = str("[i]No cover can save them:[/i][color= green] Ignores 4 enemy defense per level; terrain cover ignored[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"PirateVolley":
+			rangedMod = true
+			milModDescription = str("[i]Blackbeard fires twice, and smiles:[/i][color= green] Fires twice per ranged round; +5 enemy morale terror[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"CylinderFire":
+			rangedMod = true
+			milModDescription = str("[i]Six shots, then speed-loader:[/i][color= green] No reload for first 3 shots; 2-turn reload thereafter[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"RocketBarrage":
+			siegeMod = true
+			milModDescription = str("[i]Light the fuse and run:[/i][color= green] Massive area damage; leaves fire modifier on tile for 2 turns[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"TrebuchetLaunch":
+			siegeMod = true
+			milModDescription = str("[i]Physics applied to stone:[/i][color= green] +50% siege damage vs Fortress tiles; stuns defenders 1 round[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/green cross.png")
+			milModResource = "None"
+		"AerialBombing":
+			siegeMod = true
+			commanderMod = true
+			milModDescription = str("[i]Death from above — the future is now:[/i][color= green] Ignores all ground defensive bonuses; terrifies enemy[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		# ── UNIFORM MODS ──────────────────────────────────────────────────────────
+		"QuickDraw":
+			infantryMod = true
+			milModDescription = str("[i]First shot wins the duel:[/i][color= green] First ranged attack each battle deals +5 bonus damage[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"HardeeDisc":
+			infantryMod = true
+			milModDescription = str("[i]Dress right, dress — hold the line:[/i][color= green] +3 defense per level when an adjacent friendly unit is present[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/green cross.png")
+			milModResource = "None"
+		# ── STORM COUNTER MODS ────────────────────────────────────────────────────
+		"Fog-Born":
+			commanderMod = true
+			stormMod = true
+			stormType = "Fog"
+			milModDescription = str("[i]The fog is their home:[/i][color= green] +5 attack per level in Fog storm tiles[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"Storm Rider":
+			commanderMod = true
+			stormMod = true
+			stormType = "Any"
+			milModDescription = str("[i]Storms are just weather to this army:[/i][color= green] Movement not reduced by any active storm[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Thunder Proof":
+			commanderMod = true
+			stormMod = true
+			stormType = "Thunderstorm"
+			milModDescription = str("[i]Thunder cannot shake what iron resolve has hardened:[/i][color= green] Immune to Thunderstorm morale penalty[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/green cross.png")
+			milModResource = "None"
+		"Blizzard March":
+			commanderMod = true
+			stormMod = true
+			stormType = "Blizzard"
+			milModDescription = str("[i]Valley Forge was just training:[/i][color= green] No movement or supply penalty in Blizzard tiles[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/green cross.png")
+			milModResource = "None"
+		"Hurricane Eyes":
+			commanderMod = true
+			stormMod = true
+			stormType = "Hurricane"
+			milModDescription = str("[i]In the eye, nothing is calmer:[/i][color= green] +5 attack per level in Hurricane storm tiles[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"Tornado Dancer":
+			commanderMod = true
+			stormMod = true
+			stormType = "Tornado"
+			milModDescription = str("[i]Move with it, not against it:[/i][color= green] Army ignores Tornado scatter and manpower drain effects[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"Nor'easter Veteran":
+			commanderMod = true
+			stormMod = true
+			stormType = "Nor'easter"
+			milModDescription = str("[i]Born in nor'easter country:[/i][color= green] +3 defense per level in Nor'easter tiles[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/green cross.png")
+			milModResource = "None"
+		"Rain Reader":
+			rangedMod = true
+			stormMod = true
+			stormType = "Thunderstorm"
+			milModDescription = str("[i]Reads the rain like a map:[/i][color= green] +3 ranged attack per level during Thunderstorm[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"White Out Walker":
+			infantryMod = true
+			stormMod = true
+			stormType = "Blizzard"
+			milModDescription = str("[i]The white-out is their invisibility cloak:[/i][color= green] +3 attack per level during Blizzard[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"Storm Chaser":
+			commanderMod = true
+			stormMod = true
+			stormType = "Any"
+			milModDescription = str("[i]Follows the tempest, never behind it:[/i][color= green] +1 movement point in any active storm tile[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Lightning Rod":
+			siegeMod = true
+			stormMod = true
+			stormType = "Thunderstorm"
+			milModDescription = str("[i]Harness the lightning, aim the cannon:[/i][color= green] Artillery units ignore storm ranged accuracy penalty[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"Eye of the Storm":
+			commanderMod = true
+			stormMod = true
+			stormType = "Any"
+			milModDescription = str("[i]Calm inside the chaos:[/i][color= green] +4 attack, +4 defense per level while any storm is active in tile[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		# ── CULTURAL / STATE-SPECIFIC MODS ────────────────────────────────────────
+		"Country Musician":
+			commanderMod = true
+			culturalMod = true
+			culturalState = "TN"
+			milModDescription = str("[i]Tennessee born and bred — a song for every march:[/i][color= green] +3 morale; +2 attack per level in Farmlands[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Virginia Gentry":
+			commanderMod = true
+			culturalMod = true
+			culturalState = "VA"
+			milModDescription = str("[i]The Virginia cavalry tradition runs deep:[/i][color= green] +3 ranged defense per level[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/green cross.png")
+			milModResource = "None"
+		"Minuteman's Pride":
+			commanderMod = true
+			culturalMod = true
+			culturalState = "MA"
+			milModDescription = str("[i]The shot heard 'round the world started here:[/i][color= green] +5 attack per level in the first 3 battle rounds[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"Quaker Steel":
+			commanderMod = true
+			culturalMod = true
+			culturalState = "PA"
+			milModDescription = str("[i]Peaceful people, formidable defenders:[/i][color= green] +2 defense per level; -1 attack per level[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/green cross.png")
+			milModResource = "None"
+		"Georgia Peach":
+			infantryMod = true
+			culturalMod = true
+			culturalState = "GA"
+			milModDescription = str("[i]Georgia grit runs deeper than the red clay:[/i][color= green] +3 food efficiency; +1 ranged per level[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Backcountry Rider":
+			infantryMod = true
+			terrainMod = true
+			terrainType = "Woods"
+			culturalMod = true
+			culturalState = "SC"
+			milModDescription = str("[i]The Carolina backcountry bred this fighter:[/i][color= green] +4 attack per level in Woods terrain[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"Harbor Watch":
+			commanderMod = true
+			marineMod = true
+			culturalMod = true
+			culturalState = "NY"
+			milModDescription = str("[i]New York never sleeps, and neither does its harbor guard:[/i][color= green] +3 attack per level near naval tiles[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Chesapeake Sailor":
+			commanderMod = true
+			marineMod = true
+			culturalMod = true
+			culturalState = "MD"
+			milModDescription = str("[i]Grew up on the bay, fights like it:[/i][color= green] +2 melee per level; Marine melee attack enabled[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Frontier Marksman":
+			rangedMod = true
+			terrainMod = true
+			terrainType = "Foothills"
+			culturalMod = true
+			culturalState = "KY"
+			milModDescription = str("[i]Kentucky long rifle, mountain-born aim:[/i][color= green] +4 ranged per level in Foothills terrain[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"River Runner":
+			commanderMod = true
+			culturalMod = true
+			culturalState = "OH"
+			milModDescription = str("[i]Ohio's rivers are roads to those who know them:[/i][color= green] +2 movement points; +2 attack per level near water tiles[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Everglades Tracker":
+			infantryMod = true
+			terrainMod = true
+			terrainType = "Wetlands"
+			culturalMod = true
+			culturalState = "FL"
+			milModDescription = str("[i]The swamp doesn't slow what the swamp raised:[/i][color= green] +4 attack and defense per level in Wetlands[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"Bayou Warrior":
+			infantryMod = true
+			terrainMod = true
+			terrainType = "Wetlands"
+			culturalMod = true
+			culturalState = "LA"
+			milModDescription = str("[i]The bayou forged a different kind of soldier:[/i][color= green] +5 attack per level in Wetlands terrain[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		# ── TOOL MODS (expanded civilian capability list) ─────────────────────────
+		"Cartographer":
+			civilianMod = true
+			toolMod = true
+			milModDescription = str("This unit maps explored tiles, revealing terrain bonuses and hidden resources.")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "Science"
+		"Herbalist":
+			civilianMod = true
+			toolMod = true
+			milModDescription = str("This unit gathers medicinal herbs, healing +5 manpower per turn in the tile.")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/green cross.png")
+			milModResource = "Food"
+		"Engineer":
+			civilianMod = true
+			toolMod = true
+			milModDescription = str("This unit builds roads and improves existing structures faster than standard workers.")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "Wood"
+		"Blacksmith":
+			civilianMod = true
+			toolMod = true
+			milModDescription = str("This unit reduces weapon upkeep costs by 1 per level per turn for stationed armies.")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "Metal"
+		"Physician":
+			civilianMod = true
+			toolMod = true
+			milModDescription = str("This unit provides advanced medical care, restoring +10 manpower per turn to armies in the tile.")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/green cross.png")
+			milModResource = "Food"
+		"Merchant":
+			civilianMod = true
+			toolMod = true
+			milModDescription = str("This unit conducts trade, generating +3 gold per turn for the treasury.")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "Gold"
+		"Preacher":
+			civilianMod = true
+			toolMod = true
+			milModDescription = str("This unit delivers sermons that raise tile governor loyalty by +5 per turn.")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "Influence"
+		"Architect":
+			civilianMod = true
+			toolMod = true
+			milModDescription = str("This unit designs buildings more efficiently, reducing construction costs by 15%.")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "Wood"
+		"Hunter":
+			civilianMod = true
+			toolMod = true
+			milModDescription = str("This unit hunts game in the surrounding wilderness, generating +5 food per turn.")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/green cross.png")
+			milModResource = "Food"
+		"Fisherman":
+			civilianMod = true
+			toolMod = true
+			milModDescription = str("This unit fishes from rivers or coastlines, generating +3 food per turn near water tiles.")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/green cross.png")
+			milModResource = "Food"
+		"Surveyor":
+			civilianMod = true
+			toolMod = true
+			milModDescription = str("This unit surveys the land, revealing terrain bonuses of all adjacent tiles.")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "Science"
+		"Trapper":
+			civilianMod = true
+			toolMod = true
+			milModDescription = str("This unit sets trap lines through the wilderness, generating +2 food and +1 trade per turn.")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "Food"
+	if has_node("Sprite2D"):
+		$Sprite2D/InfoPanel/MilModNameLabel.text = str(milModType)
+		$Sprite2D/InfoPanel/MilModDescriptionLabel.text = str(milModDescription)
+		$Sprite2D.texture = milModTexture
+		newArea2D = $Area2D
+		newCollissionArea2D = $Area2D/CollisionShape2D
 	#print("Area2D", newArea2D, "newCollisionarea2d", newCollissionArea2D)
 	pass
 

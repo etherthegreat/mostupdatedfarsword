@@ -120,6 +120,26 @@ func updateSelf(newType: String) -> void:
 			armorImage = load("res://art assets/finishedAssets/Weapons/Padded.png") if ResourceLoader.exists("res://art assets/finishedAssets/Weapons/Padded.png") else null
 			addWeaponMod("MinutemanSpirit")  # bonus morale in home territory
 
+		"Tombstone Cap":
+			# Frontier hat — quick-draw specialists, fast on first strike
+			armorClass       = "Uniform"
+			armorMeleeBlock  = 10
+			armorRangedBlock = 20
+			armorSpellBlock  = 5
+			armorWeaponsPerLevel = 12
+			armorImage = load("res://art assets/finishedAssets/Weapons/Scout.png") if ResourceLoader.exists("res://art assets/finishedAssets/Weapons/Scout.png") else null
+			addWeaponMod("QuickDraw")
+
+		"Hardee Hat":
+			# Civil War era dress hat — parade discipline, steady in formation
+			armorClass       = "Uniform"
+			armorMeleeBlock  = 15
+			armorRangedBlock = 25
+			armorSpellBlock  = 10
+			armorWeaponsPerLevel = 10
+			armorImage = load("res://art assets/finishedAssets/Weapons/Plate.png") if ResourceLoader.exists("res://art assets/finishedAssets/Weapons/Plate.png") else null
+			addWeaponMod("HardeeDisc")
+
 
 		# ============================================================
 		# LEGACY ARMORS — kept for DODK compatibility

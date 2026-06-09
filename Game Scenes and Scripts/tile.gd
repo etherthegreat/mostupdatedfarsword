@@ -42,6 +42,14 @@ var disabled_buildings: Dictionary = {}   # buildingType → turns_remaining unt
 var buildings: Dictionary = {}         # {"barracks": 3, "farm": 1, "dock": 2}
 var tileSpecialFeatures: Array = []    # ["Gettysburg Memorial", "Appalachian Minerals"]
 var winterScore: int = 0
+# ── STORM SYSTEM ──────────────────────────────────────────────────────────────
+# Storms spawn on a tile, spread to TileNeighbors for their duration, then clear.
+# Type is determined by winterScore + terrain at spawn time.
+var stormActive: bool = false
+var stormType: String = ""       # "Fog" | "Thunderstorm" | "Blizzard" | "Nor'easter" | "Hurricane" | "Tornado"
+var stormDuration: int = 0       # turns remaining (2–6 set at spawn)
+var stormIntensity: int = 1      # 1=light  2=medium  3=severe
+var stormOriginId: String = ""   # shared ID across all tiles in the same storm cluster
 # Road infrastructure — built by construction worker civilians (Pickaxe tool)
 # 0 = no road, 1 = dirt road (−1 move cost), 2 = post road (−2), 3 = king's highway (−3, min 1)
 var road_level: int = 0

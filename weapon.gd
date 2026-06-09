@@ -275,6 +275,128 @@ func updateSelf(newType: String) -> void:
 			rangedOffensiveIncrease += 1
 			rangedDefensiveIncrease += 1
 			weaponImage = load("res://art assets/finishedAssets/Weapons/Spear.png")
+
+
+		# ============================================================
+		# MYTHIC WEAPONS — Easter egg items, unlocked through events only
+		# Cannot be built or purchased — must be found or granted via events
+		# ============================================================
+		"Baseball Bat":
+			weaponClass              = "Mythic"
+			weaponLevel              = 1
+			weaponOffensiveIncrease  = 6
+			weaponDefensiveIncrease  = 3
+			rangedOffensiveIncrease  = 0
+			rangedDefensiveIncrease  = 0
+			reloadTurns              = 0
+			weaponsPerLevel          = 0
+			chargeManpowerCost       = 0.05
+			weaponImage = load("res://art assets/finishedAssets/Weapons/Club.png")
+			addWeaponMod("BatSweep")
+
+		"Trident":
+			weaponClass              = "Mythic"
+			weaponLevel              = 2
+			weaponOffensiveIncrease  = 8
+			weaponDefensiveIncrease  = 5
+			rangedOffensiveIncrease  = 4
+			rangedDefensiveIncrease  = 0
+			reloadTurns              = 1
+			weaponsPerLevel          = 1
+			chargeManpowerCost       = 0.05
+			weaponImage = load("res://art assets/finishedAssets/Weapons/Spear.png")
+			addWeaponMod("TridentPierce")
+
+		"Mythic Atlatl":
+			weaponClass              = "Mythic"
+			weaponLevel              = 2
+			weaponOffensiveIncrease  = 3
+			weaponDefensiveIncrease  = 2
+			rangedOffensiveIncrease  = 10
+			rangedDefensiveIncrease  = 3
+			reloadTurns              = 1
+			weaponsPerLevel          = 1
+			chargeManpowerCost       = 0.0
+			weaponImage = load("res://art assets/finishedAssets/Weapons/atlatl.png")
+			addWeaponMod("MythicAtlatl")
+
+		"Sharps Carbine":
+			weaponClass              = "Mythic"
+			weaponLevel              = 3
+			weaponOffensiveIncrease  = 2
+			weaponDefensiveIncrease  = 2
+			rangedOffensiveIncrease  = 14
+			rangedDefensiveIncrease  = 2
+			reloadTurns              = 1
+			weaponsPerLevel          = 1
+			chargeManpowerCost       = 0.0
+			weaponImage = load("res://art assets/finishedAssets/Weapons/Spear.png")
+			addWeaponMod("SharpShot")
+
+		"Blackbeard's Pistols":
+			weaponClass              = "Mythic"
+			weaponLevel              = 2
+			weaponOffensiveIncrease  = 5
+			weaponDefensiveIncrease  = 2
+			rangedOffensiveIncrease  = 8
+			rangedDefensiveIncrease  = 0
+			reloadTurns              = 2
+			weaponsPerLevel          = 2
+			chargeManpowerCost       = 0.05
+			weaponImage = load("res://art assets/finishedAssets/Weapons/Spear.png")
+			addWeaponMod("PirateVolley")
+
+		"Colt Revolver":
+			weaponClass              = "Mythic"
+			weaponLevel              = 3
+			weaponOffensiveIncrease  = 3
+			weaponDefensiveIncrease  = 2
+			rangedOffensiveIncrease  = 12
+			rangedDefensiveIncrease  = 1
+			reloadTurns              = 0
+			weaponsPerLevel          = 1
+			chargeManpowerCost       = 0.0
+			weaponImage = load("res://art assets/finishedAssets/Weapons/Spear.png")
+			addWeaponMod("CylinderFire")
+
+		"Rocket Artillery":
+			weaponClass              = "Mythic"
+			weaponLevel              = 4
+			weaponOffensiveIncrease  = 0
+			weaponDefensiveIncrease  = 0
+			rangedOffensiveIncrease  = 45
+			rangedDefensiveIncrease  = 0
+			reloadTurns              = 3
+			weaponsPerLevel          = 6
+			chargeManpowerCost       = 0.0
+			weaponImage = load("res://art assets/finishedAssets/Weapons/Club.png")
+			addWeaponMod("RocketBarrage")
+
+		"Trebuchet":
+			weaponClass              = "Mythic"
+			weaponLevel              = 3
+			weaponOffensiveIncrease  = 0
+			weaponDefensiveIncrease  = 2
+			rangedOffensiveIncrease  = 30
+			rangedDefensiveIncrease  = 0
+			reloadTurns              = 4
+			weaponsPerLevel          = 4
+			chargeManpowerCost       = 0.0
+			weaponImage = load("res://art assets/finishedAssets/Weapons/Club.png")
+			addWeaponMod("TrebuchetLaunch")
+
+		"Wright Flyer":
+			weaponClass              = "Mythic"
+			weaponLevel              = 4
+			weaponOffensiveIncrease  = 0
+			weaponDefensiveIncrease  = 5
+			rangedOffensiveIncrease  = 20
+			rangedDefensiveIncrease  = 10
+			reloadTurns              = 2
+			weaponsPerLevel          = 3
+			chargeManpowerCost       = 0.0
+			weaponImage = load("res://art assets/finishedAssets/Weapons/Spear.png")
+			addWeaponMod("AerialBombing")
  
  
 func addWeaponMod(modType: String) -> void:
@@ -290,10 +412,16 @@ func is_musket() -> bool:
  
 func is_artillery() -> bool:
 	return weaponClass == "Artillery"
- 
+
+func is_mythic() -> bool:
+	return weaponClass == "Mythic"
+
 func can_melee() -> bool:
-	# Artillery cannot melee at all
-	return weaponClass != "Artillery"
+	if weaponClass == "Artillery":
+		return false
+	if weaponType == "Rocket Artillery" or weaponType == "Wright Flyer":
+		return false
+	return true
  
 func get_melee_penalty() -> float:
 	# Muskets are less effective in melee than sabers

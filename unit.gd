@@ -49,6 +49,9 @@ var reloadCounter: int = 0  # counts down to 0 before unit can fire ranged
 
 var militaryModifierList: Array = []
 
+var currentTerrain: String = ""   # set from inTile.terrain before calculateMilMods()
+var currentStorm: String = ""     # set from inTile.stormType when inTile.stormActive
+
 const milModScene = preload("res://mil_mod.tscn")
 const weaponScene = preload("res://weapon.tscn")
 const oreScene    = preload("res://ore.tscn")
@@ -153,7 +156,7 @@ func calculateMilMods() -> void:
 	if militaryModifierList == null:
 		return
 	for MilMod in militaryModifierList:
-		if MilMod.disabled != false:
+		if not MilMod.disabled:
 			match MilMod.milModType:
 				"AtlatlPierce":
 					unitRangedOffence *= 1.05
@@ -170,22 +173,197 @@ func calculateMilMods() -> void:
 				"Cast":
 					unitOffensiveScore += unitLevel
 				"SaberCharge":
-					pass  # handled in battle.gd charge calculation
+					pass  # handled in battle.gd
 				"Bayonet":
-					pass  # handled in unit can_melee() check
+					pass  # handled in unit can_melee()
 				"CannonBlast":
-					pass  # handled in battle.gd ranged calculation
+					pass  # handled in battle.gd
 				"MountedCharge":
 					if unitWeapon.is_saber():
-						unitOffensiveScore *= 1.2  # 20% bonus when cavalry + saber
+						unitOffensiveScore *= 1.2
 				"GunCrewEfficiency":
-					pass  # handled in battle.gd reload calculation
+					pass  # handled in battle.gd
 				"ShockTroop":
-					pass  # handled in battle.gd first strike bonus
+					pass  # handled in battle.gd
 				"DrillFormation":
 					pass  # handled at army level
 				"LineFormation":
 					pass  # handled at army level
+				# ── Tier 1 mods ──────────────────────────────────────────────
+				"Woodsman":
+					if currentTerrain == "Woods":
+						unitOffensiveScore += (2 * unitLevel)
+						unitDefensiveScore += (2 * unitLevel)
+				"Swamp Legs":
+					if currentTerrain == "Wetlands":
+						unitOffensiveScore += (2 * unitLevel)
+						unitDefensiveScore += (2 * unitLevel)
+				"Hill Runner":
+					if currentTerrain == "Foothills":
+						unitOffensiveScore += (2 * unitLevel)
+						unitDefensiveScore += (2 * unitLevel)
+				"Street Tough":
+					if currentTerrain == "Metro" or currentTerrain == "Suburbs":
+						unitOffensiveScore += (2 * unitLevel)
+				"Farmhand":
+					if currentTerrain == "Farmlands":
+						unitOffensiveScore += (1 * unitLevel)
+				"Saber Drill":
+					unitOffensiveScore += (3 * unitLevel)
+				"Marksman":
+					unitRangedOffence += (2 * unitLevel)
+				"Steady Line":
+					unitDefensiveScore += (3 * unitLevel)
+				"Quick Reload":
+					pass  # handled in start_reload()
+				"Powder & Shot":
+					unitRangedOffence += (3 * unitLevel)
+				"Fortified Position":
+					pass  # handled at army level (needs building check)
+				"Coastal Watch":
+					pass  # handled at army level (needs neighbor check)
+				# ── Tier 2 mods ──────────────────────────────────────────────
+				"Marine":
+					pass  # handled at army level
+				"Guerrilla Tactics":
+					if currentTerrain == "Woods" or currentTerrain == "Wetlands":
+						unitOffensiveScore += (4 * unitLevel)
+						unitDefensiveScore += (4 * unitLevel)
+				"Double Shot":
+					pass  # handled in battle.gd
+				"Iron Bayonet":
+					pass  # handled in battle.gd first-round check
+				"Sharpshooter":
+					unitRangedOffence += (2 * unitLevel)  # base bonus; penetration handled in battle.gd
+				"Corrupted Ground":
+					pass  # handled in tile/world logic
+				"Rallying Voice":
+					pass  # handled in army morale logic
+				"Night Raider":
+					pass  # handled at army movement level
+				"Flanking Drill":
+					pass  # handled in battle.gd contested-tile check
+				"Vanguard":
+					pass  # handled in battle.gd first-engagement check
+				"Siege Line":
+					pass  # handled in battle.gd siege calculation
+				"Cleaner":
+					pass  # handled in tile/world logic
+				# ── Tier 3 mods ──────────────────────────────────────────────
+				"Entrenched":
+					pass  # handled at army level (stationary turn counter)
+				"Continental Line":
+					unitOffensiveScore += (2 * unitLevel)
+					unitDefensiveScore += (2 * unitLevel)
+				"Last Stand":
+					if float(unitCurrentManpower) / float(max(1, unitMaxManpower)) < 0.25:
+						unitOffensiveScore += (6 * unitLevel)
+				"Terror":
+					pass  # handled in battle.gd morale drain
+				"Iron Wall":
+					pass  # handled at army level (home-tile check)
+				"Rampart":
+					pass  # handled at army level (fortress-tile check)
+				"Naval Supremacy":
+					pass  # handled at army level
+				"Ghost March":
+					pass  # handled at army movement level
+				"Undaunted":
+					pass  # handled in army death logic
+				"Double Cannonade":
+					pass  # handled in battle.gd
+				"Liberator's Will":
+					pass  # handled in world.gd conquest logic
+				"The Long March":
+					pass  # handled in army movement logic
+				# ── Storm counter mods ────────────────────────────────────────
+				"Fog-Born":
+					if currentStorm == "Fog":
+						unitOffensiveScore += (5 * unitLevel)
+				"Storm Rider":
+					pass  # movement exemption handled at army level
+				"Thunder Proof":
+					pass  # morale immunity handled at army level
+				"Blizzard March":
+					pass  # movement/supply exemption handled at army level
+				"Hurricane Eyes":
+					if currentStorm == "Hurricane":
+						unitOffensiveScore += (5 * unitLevel)
+				"Tornado Dancer":
+					pass  # scatter immunity handled at army level
+				"Nor'easter Veteran":
+					if currentStorm == "Nor'easter":
+						unitDefensiveScore += (3 * unitLevel)
+				"Rain Reader":
+					if currentStorm == "Thunderstorm":
+						unitRangedOffence += (3 * unitLevel)
+				"White Out Walker":
+					if currentStorm == "Blizzard":
+						unitOffensiveScore += (3 * unitLevel)
+				"Storm Chaser":
+					pass  # movement bonus handled at army level
+				"Lightning Rod":
+					pass  # artillery accuracy exemption handled in battle.gd
+				"Eye of the Storm":
+					if currentStorm != "":
+						unitOffensiveScore += (4 * unitLevel)
+						unitDefensiveScore += (4 * unitLevel)
+				# ── Cultural mods ─────────────────────────────────────────────
+				"Country Musician":
+					if currentTerrain == "Farmlands":
+						unitOffensiveScore += (2 * unitLevel)
+				"Backcountry Rider":
+					if currentTerrain == "Woods":
+						unitOffensiveScore += (4 * unitLevel)
+				"Frontier Marksman":
+					if currentTerrain == "Foothills":
+						unitRangedOffence += (4 * unitLevel)
+				"Everglades Tracker":
+					if currentTerrain == "Wetlands":
+						unitOffensiveScore += (4 * unitLevel)
+						unitDefensiveScore += (4 * unitLevel)
+				"Bayou Warrior":
+					if currentTerrain == "Wetlands":
+						unitOffensiveScore += (5 * unitLevel)
+				"Virginia Gentry":
+					unitRangedDefence += (3 * unitLevel)
+				"Minuteman's Pride":
+					pass  # first-3-round bonus handled in battle.gd
+				"Quaker Steel":
+					unitDefensiveScore += (2 * unitLevel)
+					unitOffensiveScore -= (1 * unitLevel)
+				"Georgia Peach":
+					unitRangedOffence += (1 * unitLevel)
+				"Harbor Watch":
+					pass  # near-naval bonus handled at army level
+				"Chesapeake Sailor":
+					unitOffensiveScore += (2 * unitLevel)
+				"River Runner":
+					pass  # movement + near-water bonus handled at army level
+				# ── Mythic weapon mods ────────────────────────────────────────
+				"BatSweep":
+					unitOffensiveScore *= 1.10
+				"TridentPierce":
+					unitRangedOffence += (2 * unitLevel)
+				"MythicAtlatl":
+					unitRangedOffence += (2 * unitLevel)
+				"SharpShot":
+					unitRangedOffence += (4 * unitLevel)
+				"PirateVolley":
+					pass  # double-fire handled in battle.gd
+				"CylinderFire":
+					pass  # reload logic handled in start_reload()
+				"RocketBarrage":
+					unitRangedOffence += (5 * unitLevel)
+				"TrebuchetLaunch":
+					pass  # siege bonus handled in battle.gd
+				"AerialBombing":
+					unitRangedOffence += (3 * unitLevel)
+				# ── Uniform mods ──────────────────────────────────────────────
+				"QuickDraw":
+					pass  # first-shot bonus handled in battle.gd
+				"HardeeDisc":
+					pass  # formation bonus handled at army level
 
 
 # ============================================================

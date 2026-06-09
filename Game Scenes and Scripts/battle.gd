@@ -150,9 +150,24 @@ func _calculate_ranged_damage() -> void:
 		attackerShieldLoss   = 0
 		attackerManpowerLoss = 0
 
-	# ── Artillery special: no melee counter if attacker is pure artillery ──
-	# If ONLY artillery units in attacker, they take full counter damage
-	# (they have no defensive melee score at all)
+	# ── Double Shot / Double Cannonade second volley ────────────────────────
+	if _army_has_siege_mod(attacker, "Double Shot") or _army_has_siege_mod(attacker, "Double Cannonade"):
+		var second_multiplier: float = 0.5  # Double Shot fires at half power
+		var second_bonus: float = 0.0
+		if _army_has_siege_mod(attacker, "Double Cannonade"):
+			second_multiplier = 1.0
+			second_bonus = float(_count_artillery(attacker)) * 3.0
+		var second_launch: float = 0.0
+		for unit in attacker.unitsList:
+			if unit.unitWeapon != null and unit.unitWeapon.is_artillery():
+				second_launch += unit.get_effective_ranged_offence() * second_multiplier
+		second_launch += second_bonus
+		if second_launch > 0.0:
+			var second_net: float = second_launch * (1.0 - ranged_block_ratio)
+			var remaining_shield: float = max(0.0, defenderCurrentShield - float(defenderShieldLoss))
+			var second_shield_hit: int = int(min(remaining_shield, second_net))
+			defenderShieldLoss   += second_shield_hit
+			defenderManpowerLoss += int(second_net - float(second_shield_hit))
 
 	# ── Projected values ────────────────────────────────────
 	projectedDefenderManpower = max(0.0, defenderCurrentManpower - float(defenderManpowerLoss))
@@ -237,6 +252,20 @@ func _apply_charge_costs() -> void:
 		if unit.unitWeapon != null and unit.unitWeapon.is_saber():
 			unit.apply_charge_cost()
 
+
+func _army_has_siege_mod(army: Army, mod_name: String) -> bool:
+	for unit in army.unitsList:
+		for mm in unit.militaryModifierList:
+			if mm.milModType == mod_name and not mm.disabled:
+				return true
+	return false
+
+func _count_artillery(army: Army) -> int:
+	var count: int = 0
+	for unit in army.unitsList:
+		if unit.unitWeapon != null and unit.unitWeapon.is_artillery():
+			count += 1
+	return count
 
 func _on_attack_button_pressed() -> void:
 	applyBattleResults()

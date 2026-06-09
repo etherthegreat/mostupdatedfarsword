@@ -3706,6 +3706,7 @@ func _on_next_turn_pressed() -> void:
 	currentWorldTurn += 1
 	_advance_fortnight()
 	_apply_winter_army_drain()
+	_tick_storms()
 	evaluateDateEvents()
 	for Tile in $TileController.get_children():
 		Tile.tick_conquest_timer()
@@ -3779,6 +3780,85 @@ func _apply_winter_army_drain() -> void:
 		total_drain += drain
 	if total_drain > 0:
 		playerCountryNode.TotalFood = max(0, playerCountryNode.TotalFood - total_drain)
+
+# ── STORM SYSTEM ─────────────────────────────────────────────────────────────
+# Storms spawn on a random tile each turn (chance: 3%).
+# A spawn determines type from tile.winterScore and terrain, then
+# spreads the storm to all TileNeighbors of the origin tile for a
+# duration of 2–6 turns.  Each tick decrements duration; when it
+# reaches 0 the storm clears from all tiles in that cluster.
+
+func _tick_storms() -> void:
+	# Chance to spawn a new storm this turn
+	if randf() < 0.03:
+		var tiles = $TileController.get_children()
+		if tiles.size() > 0:
+			var origin: Tile = tiles[randi() % tiles.size()]
+			_spawn_storm(origin)
+
+	# Decrement all active storms and clear expired ones
+	for tile in $TileController.get_children():
+		if tile.stormActive:
+			tile.stormDuration -= 1
+			if tile.stormDuration <= 0:
+				tile.stormActive    = false
+				tile.stormType      = ""
+				tile.stormIntensity = 1
+				tile.stormOriginId  = ""
+
+func _spawn_storm(origin: Tile) -> void:
+	var storm_type: String = _determine_storm_type(origin)
+	var duration: int = randi_range(2, 6)
+	var intensity: int = randi_range(1, 3)
+	var storm_id: String = str(origin.tileNumber) + "_" + str(currentWorldTurn)
+
+	# Stamp origin tile
+	origin.stormActive    = true
+	origin.stormType      = storm_type
+	origin.stormDuration  = duration
+	origin.stormIntensity = intensity
+	origin.stormOriginId  = storm_id
+
+	# Spread to all neighbors
+	_spread_storm(origin, storm_id, storm_type, duration, intensity)
+	print("[Storm] ", storm_type, " spawned at tile ", origin.tileNumber,
+		  " — intensity ", intensity, ", duration ", duration, " turns.")
+
+func _spread_storm(origin: Tile, storm_id: String, storm_type: String,
+				   duration: int, intensity: int) -> void:
+	for neighbor in origin.TileNeighbors:
+		if neighbor == null:
+			continue
+		# Don't overwrite a stronger or longer storm already present
+		if neighbor.stormActive and neighbor.stormDuration >= duration:
+			continue
+		neighbor.stormActive    = true
+		neighbor.stormType      = storm_type
+		neighbor.stormDuration  = duration
+		neighbor.stormIntensity = intensity
+		neighbor.stormOriginId  = storm_id
+
+func _determine_storm_type(tile: Tile) -> String:
+	# winterScore < 0 = tropical  →  hurricane or thunderstorm
+	# winterScore 0-3 = temperate  →  thunderstorm, fog, nor'easter
+	# winterScore 4+  = cold       →  blizzard, nor'easter
+	# Tornado can appear in Farmlands or Foothills regardless of season
+	if tile.terrain == "Farmlands" or tile.terrain == "Foothills":
+		if randf() < 0.15:
+			return "Tornado"
+	if tile.winterScore < 0:
+		return "Hurricane" if randf() < 0.5 else "Thunderstorm"
+	elif tile.winterScore >= 4:
+		return "Blizzard" if randf() < 0.6 else "Nor'easter"
+	else:
+		var roll: float = randf()
+		if roll < 0.33:
+			return "Fog"
+		elif roll < 0.66:
+			return "Thunderstorm"
+		else:
+			return "Nor'easter"
+
 
 #======
 #saving functionality

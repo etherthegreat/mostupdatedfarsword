@@ -61,6 +61,9 @@ TIER_COLORS = {
     "Legacy":   "DCDCDC",
     "Civilian": "EDD6F7",
     "Resource": "F5E6D6",
+    "Storm":    "D6E8F7",
+    "Cultural": "F7EDD6",
+    "Tool":     "D6F7E8",
 }
 
 thin = Side(style="thin", color="AAAAAA")
@@ -231,12 +234,14 @@ SYSTEMS = [
      "Cutlass/Cavalry Saber/Light Saber/Heavy Saber: 10% manpower cost per charge.",
      ""),
 
-    ("FULL PASS", "Combat", "Retreat System",
-     "army.gd calculateAttackerResults / calculateDefenderResults",
-     "Retreat triggers at < 25% manpower ratio. Sets inRetreat = true. "
-     "deleteMode = true when manpower hits 0.",
-     "inRetreat flag is set but no retreat path execution logic is wired. "
-     "deleteMode set but army removal from world tile not automated."),
+    ("FULL PASS", "Combat", "Civ-Style Army Death",
+     "army.gd armyDestroyed signal, country.gd _on_army_destroyed()",
+     "When manpowerInArmy ≤ 0, army emits signal armyDestroyed(self). "
+     "country.gd connects handler in addArmy(): erases army from countryArmyList, "
+     "nulls tile.stationedArmy, calls army.queue_free(). "
+     "No retreat system — armies simply die at 0 manpower.",
+     "inRetreat and retreatTarget vars still declared but no longer emitted. "
+     "May clean up later."),
 
     ("FULL PASS", "Combat", "Morale Multiplier",
      "army.gd surveySelf()",
@@ -270,13 +275,15 @@ SYSTEMS = [
      "Siege score calculated but never read in battle.gd. "
      "No siege-phase battle type implemented."),
 
-    ("FIRST DRAFT", "Combat", "Terrain Combat Bonuses (36 new mods)",
-     "mil_mod.gd, unit.gd calculateMilMods()",
-     "All 36 new commander mil mods (Woodsman, Swamp Legs, Hill Runner, Marine, "
-     "Entrenched, Guerrilla Tactics, etc.) are defined in mil_mod.gd with full descriptions. "
-     "NONE have cases in calculateMilMods() yet — they are data-complete but effect-dead.",
-     "Need: terrain check in calculateMilMods(); tile.terrain passed into army; "
-     "Marine: navalTileNeighbors melee logic; Entrenched: stationary turn counter."),
+    ("FIRST PASS", "Combat", "Terrain Combat Bonuses (36 commander mods)",
+     "mil_mod.gd, unit.gd calculateMilMods(), army.gd surveySelf()",
+     "All 36 commander mil mods have cases in calculateMilMods(). "
+     "surveySelf() sets unit.currentTerrain = inTile.terrain and unit.currentStorm before calling calculateMilMods(). "
+     "Woodsman, Swamp Legs, Hill Runner, Street Tough, Farmhand, Guerrilla Tactics, "
+     "Backcountry Rider, Frontier Marksman, Everglades Tracker, Bayou Warrior all apply terrain bonuses. "
+     "Continental Line, Last Stand, Saber Drill, Marksman, Steady Line apply directly. "
+     "Marine, Entrenched, Night Raider, Iron Wall etc. still flagged IDEA pending subsystems.",
+     "Marine: navalTileNeighbors melee logic still needed. Entrenched: stationary turn counter still needed."),
 
     ("FIRST DRAFT", "Combat", "Marine Mechanic",
      "mil_mod.gd (marineMod flag), tile.gd (navalTileNeighbors)",
@@ -515,17 +522,24 @@ SYSTEMS = [
      "Summer/Winter season labels applied to tile.season var.",
      ""),
 
-    ("FIRST DRAFT", "Weather", "Hurricane / Storm Events",
-     "tile.gd is_hurricane_territory(), is_storm_prone()",
-     "Helper functions defined. Tile winter eco modifier for hurricane zones set. "
-     "No specific hurricane combat/movement events wired.",
-     ""),
+    ("FIRST PASS", "Weather", "Storm Event System",
+     "tile.gd (storm vars), world.gd (_tick_storms, _spawn_storm, _spread_storm, _determine_storm_type)",
+     "Storms spawn each turn at 3% chance on a random tile. "
+     "Storm type determined by tile.winterScore + terrain (Tornado in Farmlands/Foothills, "
+     "Hurricane/Thunderstorm in tropics, Blizzard/Nor'easter in cold zones, Fog/Thunderstorm/Nor'easter in temperate). "
+     "Storm spreads to all TileNeighbors; duration 2–6 turns, intensity 1–3. "
+     "_tick_storms() decrements duration each turn and clears expired storms. "
+     "tile.stormActive, stormType, stormDuration, stormIntensity, stormOriginId properties on Tile.",
+     "Storm combat effects (morale, movement penalties, supply) are NOT yet applied. "
+     "Only the 12 storm counter mods in calculateMilMods read currentStorm for bonuses."),
 
-    ("IDEA", "Weather", "Weather Combat Effects",
-     "(design intent only)",
-     "No combat stat penalties from weather. "
-     "Rain/snow/fog could reduce ranged effectiveness or add to terrain mod costs. "
-     "Storm Prone tiles could have randomized penalties.",
+    ("FIRST PASS", "Weather", "Storm Counter Mods (12 mods)",
+     "mil_mod.gd, unit.gd calculateMilMods()",
+     "12 storm counter mil mods: Fog-Born, Storm Rider, Thunder Proof, Blizzard March, "
+     "Hurricane Eyes, Tornado Dancer, Nor'easter Veteran, Rain Reader, White Out Walker, "
+     "Storm Chaser, Lightning Rod, Eye of the Storm. "
+     "All have stormMod=true and stormType set. Direct stat bonuses read currentStorm in calculateMilMods(). "
+     "Movement/immunity effects flagged IDEA pending army-level storm checks.",
      ""),
 
     # ── SPAWN ──────────────────────────────────────────────────────────────────
@@ -566,12 +580,13 @@ SYSTEMS = [
      "Higher barracks level allows higher-tier units.",
      "maxUnitLevel calculated but nothing enforces it during unit recruitment."),
 
-    ("FIRST DRAFT", "Special", "Double Shot / Double Cannonade",
-     "mil_mod.gd",
-     "Double Shot (T2): 'siege fires twice per round — second at 50% power'. "
-     "Double Cannonade (T3): 'siege fires twice AND +3 attack on all shots'. "
-     "No second-shot loop in battle.gd ranged calculation.",
-     ""),
+    ("FIRST PASS", "Special", "Double Shot / Double Cannonade",
+     "battle.gd _calculate_ranged_damage()",
+     "Double Shot (T2): second volley at 50% power for all artillery units. "
+     "Double Cannonade (T3): second volley at 100% power + 3 bonus per artillery unit. "
+     "Detected via _army_has_siege_mod(). Second shot calculates against remaining shield "
+     "after first shot, then adds to defenderManpowerLoss.",
+     "Second shot only uses artillery units' ranged offence (not muskets/sabers)."),
 
     ("FIRST DRAFT", "Special", "Terrain Defensive Bonuses (new mods)",
      "mil_mod.gd (terrainMod, terrainType flags)",
@@ -580,6 +595,43 @@ SYSTEMS = [
      "No code in calculateMilMods() or battle.gd reads terrainType or applies bonus.",
      "Needs: army.inTile.terrain passed to calculateMilMods(); "
      "match block entries for each terrain mod type."),
+
+    ("FIRST PASS", "Special", "Mythic Weapons (9 Easter Egg)",
+     "weapon.gd",
+     "9 Mythic-class weapons unlockable only via events: Baseball Bat, Trident, Mythic Atlatl, "
+     "Sharps Carbine, Blackbeard's Pistols, Colt Revolver, Rocket Artillery, Trebuchet, Wright Flyer. "
+     "All have Mythic-class embedded mods defined in mil_mod.gd. is_mythic() helper added to Weapon class. "
+     "can_melee() excludes Rocket Artillery and Wright Flyer.",
+     "Mythic mod effects partially stubbed (PirateVolley, CylinderFire, TrebuchetLaunch, etc. "
+     "need battle.gd cases). RocketBarrage/AerialBombing tile effects not yet implemented."),
+
+    ("FIRST PASS", "Special", "Cultural / State-Specific Mods (12 mods)",
+     "mil_mod.gd, governor.gd",
+     "12 state-exclusive cultural mods: Country Musician (TN), Virginia Gentry (VA), "
+     "Minuteman's Pride (MA), Quaker Steel (PA), Georgia Peach (GA), Backcountry Rider (SC), "
+     "Harbor Watch (NY), Chesapeake Sailor (MD), Frontier Marksman (KY), River Runner (OH), "
+     "Everglades Tracker (FL), Bayou Warrior (LA). "
+     "All have culturalMod=true and culturalState set. "
+     "Stat bonuses apply via calculateMilMods(). Gate enforcement (only correct-state governors can have it) "
+     "is handled at assignment time (event or archetype assignment — not auto-enforced in code).",
+     "No code auto-prevents wrong-state governors from having cultural mods. "
+     "Must be assigned correctly at event/archetype assignment time."),
+
+    ("FIRST PASS", "Special", "Tool Mods (12 expanded civilian mods)",
+     "mil_mod.gd",
+     "12 new civilian tool mods: Cartographer, Herbalist, Engineer, Blacksmith, Physician, "
+     "Merchant, Preacher, Architect, Hunter, Fisherman, Surveyor, Trapper. "
+     "All have toolMod=true flag. Effects described in milModDescription. "
+     "Added alongside existing civilian mods (Wooden Tools, Metal Tools, etc.).",
+     "All tool mod gameplay effects are IDEA tier — no per-turn hooks wired to any of them yet."),
+
+    ("FIRST PASS", "Special", "New Uniforms: Tombstone Cap + Hardee Hat",
+     "armor.gd",
+     "Tombstone Cap: Uniform class, M10/R20/S5, QuickDraw mod (+5 first ranged attack/battle). "
+     "Hardee Hat: Uniform class, M15/R25/S10, HardeeDisc mod (+3 DEF/level adjacent friendly). "
+     "Both mods defined in mil_mod.gd.",
+     "QuickDraw and HardeeDisc effects are FIRST DRAFT — mods defined but "
+     "first-attack tracking and adjacent-unit checks not yet in battle.gd/army.gd."),
 
     ("IDEA", "Special", "Supply Lines",
      "(army cost vars hint at it)",
@@ -818,6 +870,120 @@ MIL_MODS = [
      "(weapon mod)", "—", "Bonus vs fortified tiles",
      "IDEA — declared on Mortar, never read in battle.gd"),
 
+    # ── STORM COUNTER MODS ─────────────────────────────────────────────────────
+    ("Storm", "Storm/Commander", "Fog-Born",
+     "commanderMod, stormMod", "Fog", "+5 attack per level in Fog storm tiles",
+     "FIRST DRAFT — stormMod flag + stormType set; calculateMilMods reads currentStorm"),
+    ("Storm", "Storm/Commander", "Storm Rider",
+     "commanderMod, stormMod", "Any", "Movement not reduced by any active storm",
+     "IDEA — movement exemption needs army-level storm check"),
+    ("Storm", "Storm/Commander", "Thunder Proof",
+     "commanderMod, stormMod", "Thunderstorm", "Immune to Thunderstorm morale penalty",
+     "IDEA — morale immunity needs army-level check"),
+    ("Storm", "Storm/Commander", "Blizzard March",
+     "commanderMod, stormMod", "Blizzard", "No movement or supply penalty in Blizzard tiles",
+     "IDEA — supply/movement exemption needs army-level check"),
+    ("Storm", "Storm/Commander", "Hurricane Eyes",
+     "commanderMod, stormMod", "Hurricane", "+5 attack per level in Hurricane storm tiles",
+     "FIRST DRAFT — reads currentStorm in calculateMilMods"),
+    ("Storm", "Storm/Commander", "Tornado Dancer",
+     "commanderMod, stormMod", "Tornado", "Army ignores Tornado scatter and manpower drain",
+     "IDEA — Tornado scatter effect not yet implemented"),
+    ("Storm", "Storm/Commander", "Nor'easter Veteran",
+     "commanderMod, stormMod", "Nor'easter", "+3 defense per level in Nor'easter tiles",
+     "FIRST DRAFT — reads currentStorm in calculateMilMods"),
+    ("Storm", "Storm/Ranged", "Rain Reader",
+     "rangedMod, stormMod", "Thunderstorm", "+3 ranged attack per level during Thunderstorm",
+     "FIRST DRAFT — reads currentStorm in calculateMilMods"),
+    ("Storm", "Storm/Infantry", "White Out Walker",
+     "infantryMod, stormMod", "Blizzard", "+3 attack per level during Blizzard",
+     "FIRST DRAFT — reads currentStorm in calculateMilMods"),
+    ("Storm", "Storm/Commander", "Storm Chaser",
+     "commanderMod, stormMod", "Any", "+1 movement point in any active storm tile",
+     "IDEA — movement bonus needs army-level check"),
+    ("Storm", "Storm/Siege", "Lightning Rod",
+     "siegeMod, stormMod", "Thunderstorm", "Artillery units ignore storm ranged accuracy penalty",
+     "IDEA — storm accuracy penalty not yet implemented"),
+    ("Storm", "Storm/Commander", "Eye of the Storm",
+     "commanderMod, stormMod", "Any", "+4 attack +4 defense per level while storm is active",
+     "FIRST DRAFT — reads currentStorm != '' in calculateMilMods"),
+
+    # ── CULTURAL / STATE-SPECIFIC MODS ─────────────────────────────────────────
+    ("Cultural", "Cultural/TN", "Country Musician",
+     "commanderMod, culturalMod", "TN only", "+3 morale; +2 ATK/level in Farmlands. Tennessee governors only.",
+     "FIRST DRAFT — culturalState='TN'; terrain check in calculateMilMods"),
+    ("Cultural", "Cultural/VA", "Virginia Gentry",
+     "commanderMod, culturalMod", "VA only", "+3 ranged defense per level. Virginia governors only.",
+     "FIRST DRAFT — culturalState='VA'; calculateMilMods applies ranged def bonus"),
+    ("Cultural", "Cultural/MA", "Minuteman's Pride",
+     "commanderMod, culturalMod", "MA only", "+5 ATK/level first 3 battle rounds. Massachusetts governors only.",
+     "IDEA — first-round tracking not yet in battle.gd"),
+    ("Cultural", "Cultural/PA", "Quaker Steel",
+     "commanderMod, culturalMod", "PA only", "+2 DEF −1 ATK per level. Pennsylvania governors only.",
+     "FIRST DRAFT — calculateMilMods applies both bonuses"),
+    ("Cultural", "Cultural/GA", "Georgia Peach",
+     "infantryMod, culturalMod", "GA only", "+3 food efficiency; +1 ranged/level. Georgia governors only.",
+     "FIRST DRAFT — ranged bonus in calculateMilMods; food handled separately"),
+    ("Cultural", "Cultural/SC", "Backcountry Rider",
+     "infantryMod, terrainMod, culturalMod", "SC only + Woods", "+4 ATK/level in Woods. Carolina governors only.",
+     "FIRST DRAFT — terrain + cultural flags; calculateMilMods checks currentTerrain"),
+    ("Cultural", "Cultural/NY", "Harbor Watch",
+     "commanderMod, marineMod, culturalMod", "NY only", "+3 ATK/level near naval tiles. New York governors only.",
+     "IDEA — near-naval check not in calculateMilMods yet"),
+    ("Cultural", "Cultural/MD", "Chesapeake Sailor",
+     "commanderMod, marineMod, culturalMod", "MD only", "+2 melee/level + Marine ability. Maryland governors only.",
+     "FIRST DRAFT — melee bonus in calculateMilMods; Marine handled at army level"),
+    ("Cultural", "Cultural/KY", "Frontier Marksman",
+     "rangedMod, terrainMod, culturalMod", "KY only + Foothills", "+4 ranged/level in Foothills. Kentucky governors only.",
+     "FIRST DRAFT — terrain + cultural flags; calculateMilMods checks currentTerrain"),
+    ("Cultural", "Cultural/OH", "River Runner",
+     "commanderMod, culturalMod", "OH only", "+2 movement; +2 ATK near water. Ohio governors only.",
+     "IDEA — movement bonus and near-water check not yet wired"),
+    ("Cultural", "Cultural/FL", "Everglades Tracker",
+     "infantryMod, terrainMod, culturalMod", "FL only + Wetlands", "+4 ATK+DEF/level in Wetlands. Florida governors only.",
+     "FIRST DRAFT — terrain check in calculateMilMods"),
+    ("Cultural", "Cultural/LA", "Bayou Warrior",
+     "infantryMod, terrainMod, culturalMod", "LA only + Wetlands", "+5 ATK/level in Wetlands. Louisiana governors only.",
+     "FIRST DRAFT — terrain check in calculateMilMods"),
+
+    # ── TOOL MODS (expanded civilian list) ─────────────────────────────────────
+    ("Tool", "Civilian/Tool", "Cartographer",
+     "civilianMod, toolMod", "Science", "Maps explored tiles, revealing terrain bonuses and hidden resources.",
+     "IDEA — reveal logic not yet wired"),
+    ("Tool", "Civilian/Tool", "Herbalist",
+     "civilianMod, toolMod", "Food", "+5 manpower per turn in tile.",
+     "IDEA — per-turn heal not yet wired"),
+    ("Tool", "Civilian/Tool", "Engineer",
+     "civilianMod, toolMod", "Wood", "Builds roads and improves structures faster.",
+     "IDEA — build speed modifier not yet wired"),
+    ("Tool", "Civilian/Tool", "Blacksmith",
+     "civilianMod, toolMod", "Metal", "Reduces weapon upkeep by 1/level/turn for stationed armies.",
+     "IDEA — weapon cost reduction not yet wired"),
+    ("Tool", "Civilian/Tool", "Physician",
+     "civilianMod, toolMod", "Food", "+10 manpower per turn to armies in tile.",
+     "IDEA — army heal not yet wired"),
+    ("Tool", "Civilian/Tool", "Merchant",
+     "civilianMod, toolMod", "Gold", "+3 gold per turn.",
+     "IDEA — gold generation not yet wired"),
+    ("Tool", "Civilian/Tool", "Preacher",
+     "civilianMod, toolMod", "Influence", "+5 loyalty/turn for tile governor.",
+     "IDEA — loyalty tick not yet wired"),
+    ("Tool", "Civilian/Tool", "Architect",
+     "civilianMod, toolMod", "Wood", "Reduces building costs by 15%.",
+     "IDEA — cost reduction not yet wired"),
+    ("Tool", "Civilian/Tool", "Hunter",
+     "civilianMod, toolMod", "Food", "+5 food per turn.",
+     "IDEA — food generation not yet wired"),
+    ("Tool", "Civilian/Tool", "Fisherman",
+     "civilianMod, toolMod", "Food", "+3 food per turn near water tiles.",
+     "IDEA — water-adjacency food not yet wired"),
+    ("Tool", "Civilian/Tool", "Surveyor",
+     "civilianMod, toolMod", "Science", "Reveals terrain bonuses of adjacent tiles.",
+     "IDEA — reveal logic not yet wired"),
+    ("Tool", "Civilian/Tool", "Trapper",
+     "civilianMod, toolMod", "Food", "+2 food +1 trade per turn.",
+     "IDEA — trade/food generation not yet wired"),
+
     # ── ARMOR-EMBEDDED MODS ────────────────────────────────────────────────────
     ("Armor", "Uniform", "DrillFormation",
      "(armor mod)", "—", "Continental: bonus when adjacent to other Continental units",
@@ -877,6 +1043,9 @@ def build_milmods_sheet(wb):
                 "Legacy":   "3A5A3A",
                 "Weapon":   "2E6A5A",
                 "Armor":    "5A2E6A",
+                "Storm":    "1A4A6A",
+                "Cultural": "6A4A1A",
+                "Tool":     "1A6A4A",
             }.get(tier, "2F4F6F")
             divider(ws, row, len(COLS), tier + " MODS", bg=tier_bg)
             row += 1
@@ -948,6 +1117,16 @@ WEAPONS = [
     ("Legacy", "Shortsword",    1,  0,  2,  0,  2,  0,  0, "—",  "—",                                "DODK compat."),
     ("Legacy", "Tomahawk",      1,  1,  0,  3,  0,  0,  0, "—",  "—",                                "DODK compat."),
     ("Legacy", "Spear",         1,  1,  1,  1,  1,  0,  0, "—",  "—",                                "DODK compat."),
+    # Mythic — Easter egg event-unlockable weapons
+    ("Mythic", "Baseball Bat",        1,  6,  3,  0,  0,  0,  0, "5%",  "BatSweep",         "Unlocked via events only. +10% ATK; first hit ignores shields."),
+    ("Mythic", "Trident",             2,  8,  5,  4,  0,  1,  1, "5%",  "TridentPierce",    "Throwable; pierces shields; +3 ATK near naval tiles."),
+    ("Mythic", "Mythic Atlatl",       2,  3,  2, 10,  3,  1,  1, "—",   "MythicAtlatl",     "Upgraded Atlatl; +2 ranged/level; stuns on crit."),
+    ("Mythic", "Sharps Carbine",      3,  2,  2, 14,  2,  1,  1, "—",   "SharpShot",        "Civil War sniper rifle; ignores 4 DEF/level; terrain cover ignored."),
+    ("Mythic", "Blackbeard's Pistols",2,  5,  2,  8,  0,  2,  2, "5%",  "PirateVolley",     "Dual pistols; fires twice per round; +5 terror morale."),
+    ("Mythic", "Colt Revolver",       3,  3,  2, 12,  1,  0,  1, "—",   "CylinderFire",     "6-shot cylinder; no reload for 3 turns then 2-turn reload."),
+    ("Mythic", "Rocket Artillery",    4,  0,  0, 45,  0,  3,  6, "—",   "RocketBarrage",    "Massive AoE; leaves fire modifier on tile 2 turns."),
+    ("Mythic", "Trebuchet",           3,  0,  2, 30,  0,  4,  4, "—",   "TrebuchetLaunch",  "+50% vs Fortress; stuns defenders 1 round."),
+    ("Mythic", "Wright Flyer",        4,  0,  5, 20, 10,  2,  3, "—",   "AerialBombing",    "Ignores all ground defense bonuses; terrifies enemy."),
 ]
 
 
@@ -976,12 +1155,12 @@ def build_weapons_sheet(wb):
     current_cls = None
     for (cls, name, level, m_atk, m_def, r_atk, r_def, reload, ammo, charge, mods, notes) in WEAPONS:
         if cls != current_cls:
-            cls_bg = {"Saber": "2E5C8A", "Musket": "5A3A1E", "Artillery": "8A2E2E", "Legacy": "5A5A5A"}.get(cls, "2F4F6F")
+            cls_bg = {"Saber": "2E5C8A", "Musket": "5A3A1E", "Artillery": "8A2E2E", "Legacy": "5A5A5A", "Mythic": "6A1A6A"}.get(cls, "2F4F6F")
             divider(ws, row, len(COLS), cls + " CLASS", bg=cls_bg)
             row += 1
             current_cls = cls
 
-        cls_colors = {"Saber": "D6E4F7", "Musket": "FFF3CC", "Artillery": "FCE0D6", "Legacy": "DCDCDC"}
+        cls_colors = {"Saber": "D6E4F7", "Musket": "FFF3CC", "Artillery": "FCE0D6", "Legacy": "DCDCDC", "Mythic": "F5D6F7"}
         bg = cls_colors.get(cls, "FAFAFA")
 
         pcell(ws, row,  1, cls,    bg=bg, bold=True, align="center")
@@ -1014,6 +1193,8 @@ ARMORS = [
     ("Uniform", "Cavalry",         25,  5, 15,  5, "MountedCharge, CavalryMorale", "Both mods blocked by disabled check bug. FIRST PASS."),
     ("Uniform", "Artillery Corps",  5,  5, 20, 20, "GunCrewEfficiency",        "GunCrewEfficiency WORKS (bypasses disabled check). FULL PASS."),
     ("Uniform", "Minuteman",       12, 18,  8,  8, "MinutemanSpirit",          "MinutemanSpirit unimplemented. FIRST PASS."),
+    ("Uniform", "Tombstone Cap",   10, 20,  5, 12, "QuickDraw",               "Frontier hat; first ranged attack each battle +5 bonus damage. FIRST DRAFT."),
+    ("Uniform", "Hardee Hat",      15, 25, 10, 10, "HardeeDisc",              "Civil War dress hat; +3 DEF/level when adjacent friendly unit present. FIRST DRAFT."),
     # Legacy
     ("Legacy", "Canine",           15,  5, 30,  1, "—",                        "DODK compat."),
     ("Legacy", "Cast",             15, 10, 25, 20, "—",                        "DODK compat."),
@@ -1265,20 +1446,26 @@ BATTLE_MECHANICS = [
      "tick_reload() called each round. Unit fires again when reloadCounter reaches 0.",
      "Reload only ticks during ranged battle rounds. Melee rounds do not advance reload."),
 
-    # ── MORALE & RETREAT ───────────────────────────────────────────────────────
-    ("Morale & Retreat", "Retreat threshold",
+    # ── MORALE & ARMY DEATH ────────────────────────────────────────────────────
+    ("Army Death", "Civ-style army destruction",
      "FULL PASS",
-     "Retreat triggers at manpowerInArmy / maxManpower < 0.25 (25%). "
-     "inRetreat = true; army loses control.",
-     "Rallying Voice mod claims to reduce this to 15% — not implemented."),
-    ("Morale & Retreat", "Army destruction",
-     "FULL PASS",
-     "deleteMode = true when manpowerInArmy ≤ 0.",
-     "deleteMode set but no automated removal from world tile."),
-    ("Morale & Retreat", "Retreat execution",
-     "FIRST DRAFT",
-     "inRetreat + retreatTarget vars declared. "
-     "No pathfinding back to home tile logic exists.",
+     "When manpowerInArmy ≤ 0 after battle, army emits signal armyDestroyed(self). "
+     "country._on_army_destroyed() erases from countryArmyList, nulls tile.stationedArmy, queue_free(). "
+     "No retreat system — armies die in place, instantly.",
+     "inRetreat/retreatTarget vars still declared on Army but no longer emitted."),
+
+    # ── DOUBLE SHOT ───────────────────────────────────────────────────────────
+    ("Double Shot", "Second volley (Double Shot T2)",
+     "FIRST PASS",
+     "After normal ranged calculation, _army_has_siege_mod() checks for Double Shot. "
+     "second_multiplier = 0.5 (50% power). Loops artillery units only. "
+     "Second net applied to remaining shield then to manpower.",
+     "Only applies to artillery weapon class, not muskets."),
+    ("Double Shot", "Second volley (Double Cannonade T3)",
+     "FIRST PASS",
+     "Same as Double Shot but second_multiplier = 1.0 (full power). "
+     "Additional second_bonus = artillery unit count × 3. "
+     "Overrides Double Shot if both mods somehow present.",
      ""),
 
     # ── SIEGE ──────────────────────────────────────────────────────────────────
@@ -1350,34 +1537,26 @@ def build_battle_sheet(wb):
 # ── SHEET 7: KNOWN BUGS ───────────────────────────────────────────────────────
 
 BUGS = [
-    ("CRITICAL", "calculateMilMods() inverted disabled check",
-     "unit.gd line 156",
-     "Condition is `if MilMod.disabled != false` which equals `if false` (always false). "
-     "NO mod effects in calculateMilMods() ever apply. "
-     "Stat-boosting mods (ClubBleed, Copper, MountedCharge, etc.) are completely dead.",
-     "Change to `if MilMod.disabled == false` or `if not MilMod.disabled`."),
+    ("RESOLVED", "calculateMilMods() inverted disabled check",
+     "unit.gd",
+     "FIXED: Changed `if MilMod.disabled != false` to `if not MilMod.disabled`. "
+     "All mod effects in calculateMilMods() now apply correctly when mods are enabled.",
+     "RESOLVED — all terrain, storm, stat, and special mods now active."),
 
-    ("CRITICAL", "addMilMod() skips buildSelf()",
-     "governor.gd line 161-163",
-     "governor.addMilMod(type, levels) creates MilMod.new() and sets only milModType. "
-     "buildSelf() is commented out. All boolean flags (infantryMod, rangedMod, marineMod, "
-     "entrenchMod, terrainMod, etc.) remain false on all programmatic governor mods. "
-     "UI filtering and any flag-based checks will always fail.",
-     "Uncomment `newMM.buildSelf(type)` in addMilMod(). "
-     "Note: buildSelf() accesses $Sprite2D scene children — must guard with is_inside_tree() "
-     "or split data init from UI init."),
+    ("RESOLVED", "addMilMod() skips buildSelf()",
+     "governor.gd + mil_mod.gd",
+     "FIXED: Added `if has_node('Sprite2D'):` guard to last 5 lines of buildSelf() "
+     "so MilMod.new() instances (no scene children) can call buildSelf() safely. "
+     "Uncommented `newMM.buildSelf(type)` in governor.gd addMilMod().",
+     "RESOLVED — all governor mil mods now have proper flags set."),
 
-    ("HIGH", "Retreat flag set but never executed",
-     "army.gd calculateAttackerResults / calculateDefenderResults",
-     "inRetreat = true is set at 25% manpower. No pathfinding or movement logic "
-     "acts on this flag. Army continues to accept player commands while retreating.",
-     "Implement retreat path back to homeTile; disable player control while inRetreat."),
-
-    ("HIGH", "deleteMode set but army not removed",
-     "army.gd calculateAttackerResults / calculateDefenderResults",
-     "deleteMode = true when manpower hits 0. No code in world.gd or tile.gd "
-     "removes the army from the scene tree, tile.stationedArmy, or country.countryArmyList.",
-     "Add post-battle check in world.gd: if army.deleteMode, remove from tile and country."),
+    ("RESOLVED", "deleteMode + inRetreat: army not removed on death",
+     "army.gd + country.gd",
+     "FIXED: Replaced deleteMode/inRetreat with `signal armyDestroyed`. "
+     "Emitted when manpowerInArmy ≤ 0 in calculateAttackerResults/calculateDefenderResults. "
+     "country.gd addArmy() connects signal to _on_army_destroyed() which erases from "
+     "countryArmyList, nulls tile.stationedArmy, and calls queue_free().",
+     "RESOLVED — Civ-style army death fully wired."),
 
     ("MEDIUM", "Weapon cost matching uses legacy names only",
      "army.gd surveySelf() lines 357-365",
@@ -1436,6 +1615,7 @@ def build_bugs_sheet(wb):
         "HIGH":     ("FF6B35", "FFFFFF"),
         "MEDIUM":   ("FFEB9C", "7A5A00"),
         "LOW":      ("D6E4F7", "1A3A6A"),
+        "RESOLVED": ("00B050", "FFFFFF"),
     }
 
     row = 2

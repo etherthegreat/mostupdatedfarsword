@@ -528,8 +528,16 @@ func addArmy(Name, TileNumber, icon = null, tags: Array = []):
 		if Tile.tileNumber == TileNumber:
 			Tile.addStationedArmy(armyInstance)
 			armyInstance.inTile = Tile
+	armyInstance.armyDestroyed.connect(_on_army_destroyed)
 	countryArmyList.append(armyInstance)
 	pass
+
+func _on_army_destroyed(army: Army) -> void:
+	countryArmyList.erase(army)
+	if army.inTile != null:
+		army.inTile.stationedArmy = null
+	army.queue_free()
+
 var factionScene = load("res://faction.tscn")
 func addFaction(Name: String, Loyalty: int, factionLeader: String) -> void:
 	# If no leader provided, create a placeholder so faction.visualizeSelf() doesn't crash

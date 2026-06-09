@@ -112,6 +112,8 @@ var enemy: bool #for any non-playable country
 
 var deleteMode: bool
 
+signal armyDestroyed
+
 func buildSelf(Name, countryNode, TileNumber, icon):
 	#print("wowo so cool")
 	$VBoxContainer/BannerControl/BannerSprite.texture = icon
@@ -327,6 +329,8 @@ func surveySelf():
 		if parentCountry.TotalMetal <= 0:
 			Unit.disableMilModType("Metal")
 			# prevents units from replenishing armor
+		Unit.currentTerrain = inTile.terrain if inTile != null else ""
+		Unit.currentStorm  = inTile.stormType if (inTile != null and inTile.stormActive) else ""
 		Unit.calculateMilMods()
 		armyPunch += Unit.unitOffensiveScore
 		armyBlock += Unit.unitDefensiveScore
@@ -448,23 +452,17 @@ func calculateBattle(armyPath, type, attacker, defenderAPF, lastSelectedPathPoin
 	pass
 
 func calculateAttackerResults(type: String, manpowerLossAmount: int) -> void:
-	# Called when attacker takes counter-damage from defender
 	if manpowerLossAmount <= 0:
 		return
 	var damagePerUnit = int(manpowerLossAmount / max(1, unitCount))
 	for Unit in unitsList:
 		Unit.takeLosses(type, float(damagePerUnit))
-	# Also tick reload for all units (ranged combat round passed)
 	if type == "ranged":
 		for Unit in unitsList:
 			Unit.tick_reload()
 	surveySelf()
-	# Check retreat threshold (25% manpower)
 	if manpowerInArmy <= 0:
-		deleteMode = true
-	elif float(manpowerInArmy) / float(max(1, maxManpower)) < 0.25:
-		inRetreat = true
-		print(ArmyName, " is retreating! Manpower: ", manpowerInArmy, "/", maxManpower)
+		emit_signal("armyDestroyed", self)
 
 func calculateDefenderResults(type: String, manpowerLossAmount: int) -> void:
 	if manpowerLossAmount <= 0:
@@ -474,10 +472,7 @@ func calculateDefenderResults(type: String, manpowerLossAmount: int) -> void:
 		Unit.takeLosses(type, float(damagePerUnit))
 	surveySelf()
 	if manpowerInArmy <= 0:
-		deleteMode = true
-	elif float(manpowerInArmy) / float(max(1, maxManpower)) < 0.25:
-		inRetreat = true
-		print(ArmyName, " is retreating! Manpower: ", manpowerInArmy, "/", maxManpower)
+		emit_signal("armyDestroyed", self)
 
 var bannerButtonScene= load("res://banner_button.tscn")
 

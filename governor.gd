@@ -160,7 +160,7 @@ func update_loyalty(claim: float) -> void:
 func addMilMod(type, levels):
 	var newMM = MilMod.new()
 	newMM.milModType = type
-	#newMM.buildSelf(type)
+	newMM.buildSelf(type)
 	match levels:
 		123:
 			govMilModsLvl1.append(newMM)
