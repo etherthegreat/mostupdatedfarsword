@@ -1411,6 +1411,19 @@ func _on_protector_agreed(agreed_flag: String) -> void:
 		playerCountryNode.addSpellToSpellbook(spell_name, 1, 0)
 		print("[Protectors] Presidential Power unlocked: ", spell_name)
 
+	# Reveal this protector's Records entry globally
+	if get_node_or_null("/root/LibraryData"):
+		LibraryData.discover_entry(pid)
+		LibraryData.add_journal_entry(
+			pid + "_agreed",
+			currentWorldTurn,
+			prot_name + " — Alliance Confirmed",
+			"After [i]" + str(currentWorldTurn) + "[/i] turns, the accord was reached.\n\n"
+			+ prot_name + " has agreed to serve as guardian of the Republic. "
+			+ "A Tower has been raised at their home. The Presidential spell has been granted.",
+			"EYES ONLY"
+		)
+
 
 func _protector_id_to_name(pid: String) -> String:
 	match pid:
@@ -1483,6 +1496,7 @@ func createNewEvent(event_id: String, tile = null) -> void:
 	newEvent.tileEventButtonPressed.connect(_on_tile_event_button_pressed)
 	$CanvasLayer/EventControl/EventContainer.add_child(newEvent)
 	EventDatabase.mark_event_fired(event_id, currentWorldTurn)
+	_library_on_event_fired(event_id)
 
 func _on_event_button_pressed(button_id: String, event_id: String,
 		event_country: String, outcome_type: String,
@@ -4480,6 +4494,47 @@ func save_army_states_to_file(aliveCountriesList: Array) -> void:
 	else:
 		push_error("ArmyDatabase: Could not write army save file.")
 
+
+# ── Presidential Library hooks ────────────────────────────────────────────────
+
+func _library_on_event_fired(event_id: String) -> void:
+	if not get_node_or_null("/root/LibraryData"):
+		return
+	var event := EventDatabase.get_event(event_id)
+	if event.is_empty():
+		return
+
+	# Gallery unlock — fire when content-flagged event is shown for first time
+	var content_flag: String = event.get("content_flag", "")
+	if content_flag != "":
+		var flag_active := false
+		match content_flag:
+			"sensual":  flag_active = LibraryData.get_setting("content_sensual",  false)
+			"explicit": flag_active = LibraryData.get_setting("content_explicit", false)
+			"kinky":    flag_active = LibraryData.get_setting("content_kinky",    false)
+		if flag_active:
+			LibraryData.unlock_gallery(event_id)
+
+	# Journal entry — major Ualani or historical events
+	var event_type: String = event.get("event_type", "")
+	if event_type in ["ualani", "major_history", "protector", "war", "peace",
+					   "election", "white_house_secret"]:
+		LibraryData.add_journal_entry(
+			event_id,
+			currentWorldTurn,
+			event.get("headline", event_id),
+			event.get("long_desc", event.get("short_desc", "")),
+			_journal_classification(event_type)
+		)
+
+func _journal_classification(event_type: String) -> String:
+	match event_type:
+		"ualani":              return "EYES ONLY"
+		"white_house_secret":  return "EYES ONLY"
+		"protector":           return "TOP SECRET"
+		"war", "peace":        return "SECRET"
+		"election":            return "CONFIDENTIAL"
+		_:                     return "DECLASSIFIED"
 
 # WORLD.GD ADDITIONS
 # Add to existing save/load functions

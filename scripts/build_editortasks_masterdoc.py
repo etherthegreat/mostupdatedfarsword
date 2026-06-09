@@ -300,6 +300,214 @@ TASKS = [
         "added_in":    "Sound effects planning (sound_masterdoc)",
         "priority":    "MEDIUM",
     },
+
+    # ── MAIN MENU ─────────────────────────────────────────────────────────────
+    {
+        "id":          "MENU-001",
+        "status":      "OPEN",
+        "scene":       "main_menu.tscn",
+        "category":    "Layout/UI",
+        "description": "Rebuild main_menu.tscn: add VideoStreamPlayer background + 5-button left panel",
+        "detail":      (
+            "See SCENE STRUCTURE comment in main_menu.gd for the full node tree.\n\n"
+            "1. Add a VideoStreamPlayer node (full screen, autoplay=true).\n"
+            "   Set stream to your menu .ogv file.\n"
+            "2. Add LeftPanel (Panel, ~360px wide, left-anchored, translucent dark).\n"
+            "3. Inside LeftPanel add LogoSprite + ButtonsVBox (VBoxContainer).\n"
+            "4. In ButtonsVBox add 5 buttons: NewGameButton, ContinueButton, "
+            "LibraryButton, SettingsButton, ExitButton.\n"
+            "5. Add SaveInfoLabel (Label, italic, small) as child of ContinueButton.\n"
+            "6. Add VersionLabel at the bottom of LeftPanel.\n"
+            "7. Wire all button pressed signals to main_menu.gd handlers.\n"
+            "8. Move existing LanguageSelection / GridContainer nodes to stay as children.\n"
+            "9. Instance PresidentialLibraryPanel.tscn and SettingsPanel.tscn as children "
+            "(both hidden by default)."
+        ),
+        "added_in":    "Main Menu rebuild",
+        "priority":    "HIGH",
+    },
+    {
+        "id":          "MENU-002",
+        "status":      "OPEN",
+        "scene":       "PresidentialLibraryPanel.tscn",
+        "category":    "New Scene",
+        "description": "Create PresidentialLibraryPanel.tscn: full-screen dark overlay with 3-tab panel",
+        "detail":      (
+            "See SCENE STRUCTURE comment in PresidentialLibraryPanel.gd.\n\n"
+            "1. Root: Control (full screen).\n"
+            "2. Add DarkOverlay (ColorRect, full screen, rgba 0,0,0,0.88).\n"
+            "3. Add LibraryContainer (Panel, ~1200x800, centered).\n"
+            "4. Inside LibraryContainer:\n"
+            "   - SealSprite (TextureRect, presidential seal art, top-center)\n"
+            "   - TitleLabel: 'PRESIDENTIAL LIBRARY' (bold, large)\n"
+            "   - TabContainer with 3 tabs named: GALLERY / RECORDS / JOURNAL\n"
+            "   - CloseButton (top-right)\n"
+            "5. Inside each tab Control, instance the matching tab .tscn:\n"
+            "   - GALLERY → GalleryTab.tscn\n"
+            "   - RECORDS → RecordsTab.tscn\n"
+            "   - JOURNAL → JournalTab.tscn\n"
+            "6. Wire CloseButton → _on_close_button_pressed().\n"
+            "7. Assign PresidentialLibraryPanel.gd as script."
+        ),
+        "added_in":    "Main Menu rebuild",
+        "priority":    "HIGH",
+    },
+    {
+        "id":          "MENU-003",
+        "status":      "OPEN",
+        "scene":       "GalleryTab.tscn",
+        "category":    "New Scene",
+        "description": "Create GalleryTab.tscn: 4-column grid + lightbox overlay",
+        "detail":      (
+            "See SCENE STRUCTURE comment in GalleryTab.gd.\n\n"
+            "1. Root: Control.\n"
+            "2. Add ScrollContainer → GalleryGrid (GridContainer, columns=4, "
+            "h_separation=8, v_separation=8).\n"
+            "3. Add Lightbox (Control, full screen, hidden):\n"
+            "   - DarkBG (ColorRect, rgba 0,0,0,0.9)\n"
+            "   - FullArtRect (TextureRect, large centered, expand_mode=fit)\n"
+            "   - LightboxTitle (Label, bold, bottom center)\n"
+            "   - LightboxFlavor (Label, italic, smaller)\n"
+            "   - PrevButton ('<', left edge), NextButton ('>', right edge)\n"
+            "   - CloseButton ('✕', top-right)\n"
+            "4. Wire all lightbox buttons to GalleryTab.gd handlers.\n"
+            "5. Assign GalleryTab.gd as script."
+        ),
+        "added_in":    "Main Menu rebuild",
+        "priority":    "HIGH",
+    },
+    {
+        "id":          "MENU-004",
+        "status":      "OPEN",
+        "scene":       "GalleryTile.tscn",
+        "category":    "New Scene",
+        "description": "Create GalleryTile.tscn: individual gallery entry tile (locked/unlocked states)",
+        "detail":      (
+            "See SCENE STRUCTURE comment in GalleryTile.gd.\n\n"
+            "1. Root: Control (custom_minimum_size 160x200).\n"
+            "2. Add Panel (NinePatchRect or Panel).\n"
+            "3. Inside Panel:\n"
+            "   - ArtRect (TextureRect, expand/fill, top portion)\n"
+            "   - LockedOverlay (ColorRect, full size, rgba 0,0,0,0.85):\n"
+            "       + LockIcon (TextureRect, 32x32, centered)\n"
+            "       + LockedTitle (Label, '???', bottom center)\n"
+            "   - UnlockedTitle (Label, bottom strip, visible when unlocked)\n"
+            "   - HoverHint (PanelContainer, hidden by default):\n"
+            "       + HintLabel (Label, autowrap)\n"
+            "4. Add Area2D or mouse_entered/exited signals to root Control.\n"
+            "5. Wire mouse_entered → _on_mouse_entered(), mouse_exited → _on_mouse_exited().\n"
+            "6. Wire gui_input → _on_gui_input().\n"
+            "7. Assign GalleryTile.gd as script."
+        ),
+        "added_in":    "Main Menu rebuild",
+        "priority":    "HIGH",
+    },
+    {
+        "id":          "MENU-005",
+        "status":      "OPEN",
+        "scene":       "RecordsTab.tscn",
+        "category":    "New Scene",
+        "description": "Create RecordsTab.tscn: category sidebar + entry panel (HSplitContainer)",
+        "detail":      (
+            "See SCENE STRUCTURE comment in RecordsTab.gd.\n\n"
+            "1. Root: Control.\n"
+            "2. HSplitContainer (~25% / 75% split):\n"
+            "   Left: CategoryScroll (ScrollContainer) → CategoryList (VBoxContainer)\n"
+            "   Right: ScrollContainer → EntryPanel (VBoxContainer, padding 12px):\n"
+            "     - EntryHeader (HBoxContainer):\n"
+            "         + EntryIcon (TextureRect, 64x64)\n"
+            "         + EntryMeta (VBoxContainer):\n"
+            "             EntryName (Label, bold, large)\n"
+            "             EntryCategory (Label, italic, smaller)\n"
+            "     - Divider (HSeparator)\n"
+            "     - EntryBody (RichTextLabel, bbcode=on, fit_content=true)\n"
+            "     - SeeAlsoBox (HBoxContainer, hidden when empty):\n"
+            "         + SeeAlsoLabel (Label, 'See also:')\n"
+            "         + SeeAlsoLinks (HBoxContainer)\n"
+            "3. Assign RecordsTab.gd as script."
+        ),
+        "added_in":    "Main Menu rebuild",
+        "priority":    "HIGH",
+    },
+    {
+        "id":          "MENU-006",
+        "status":      "OPEN",
+        "scene":       "JournalTab.tscn",
+        "category":    "New Scene",
+        "description": "Create JournalTab.tscn: entry list sidebar + memo document panel",
+        "detail":      (
+            "See SCENE STRUCTURE comment in JournalTab.gd.\n\n"
+            "1. Root: Control.\n"
+            "2. HSplitContainer (~30% / 70% split):\n"
+            "   Left: EntryListScroll (ScrollContainer) → EntryList (VBoxContainer)\n"
+            "   Right: MemoPanel (Panel, parchment/paper texture recommended):\n"
+            "     - ClassificationLabel (Label, bold caps, red color)\n"
+            "     - DateLabel (Label, italic, small)\n"
+            "     - SubjectLabel (Label, bold, 'RE: ...')\n"
+            "     - Divider (HSeparator)\n"
+            "     - MemoBody (RichTextLabel, bbcode=on, scroll_active=true)\n"
+            "3. Assign JournalTab.gd as script."
+        ),
+        "added_in":    "Main Menu rebuild",
+        "priority":    "HIGH",
+    },
+    {
+        "id":          "MENU-007",
+        "status":      "OPEN",
+        "scene":       "SettingsPanel.tscn",
+        "category":    "New Scene",
+        "description": "Create SettingsPanel.tscn: full-screen overlay with 6-category sidebar",
+        "detail":      (
+            "See SCENE STRUCTURE comment in SettingsPanel.gd.\n\n"
+            "1. Root: Control (full screen).\n"
+            "2. DarkOverlay (ColorRect, full screen, rgba 0,0,0,0.85).\n"
+            "3. SettingsContainer (Panel, ~900x700, centered):\n"
+            "   - TitleLabel: 'SETTINGS'\n"
+            "   - HSplitContainer:\n"
+            "       Left (SidebarScroll → SidebarList VBoxContainer, ~200px)\n"
+            "       Right (ContentScroll → ContentVBox VBoxContainer):\n"
+            "           AudioSection, DisplaySection, GameplaySection,\n"
+            "           AccessibilitySection, LanguageSection, DataSection\n"
+            "           (all VBoxContainers, hidden by default except first)\n"
+            "   - CloseButton\n"
+            "   - ResetConfirmDialog (ConfirmationDialog node)\n"
+            "4. Populate each Section with appropriate controls:\n"
+            "   Audio: 4 HSliders (Master/Music/SFX/Ambient) with labels\n"
+            "   Display: CheckButton (Fullscreen), OptionButton (Resolution), "
+            "HSlider (UI Scale)\n"
+            "   Gameplay: OptionButton (Autosave), CheckButton (Tooltips), "
+            "OptionButton (Notif Speed)\n"
+            "   Accessibility: OptionButton (Text Size), OptionButton (Colorblind), "
+            "CheckButton (High Contrast)\n"
+            "   Language: Existing flag-picker GridContainer\n"
+            "   Data: Label (description), Button ('RESET GAME DATA', red tint)\n"
+            "5. Wire all controls to SettingsPanel.gd handlers.\n"
+            "6. Wire CloseButton → _on_close_button_pressed().\n"
+            "7. Wire ResetConfirmDialog confirmed → _on_reset_confirmed().\n"
+            "8. Wire DataSection reset button → _on_reset_data_pressed().\n"
+            "9. Assign SettingsPanel.gd as script."
+        ),
+        "added_in":    "Main Menu rebuild",
+        "priority":    "HIGH",
+    },
+    {
+        "id":          "MENU-008",
+        "status":      "OPEN",
+        "scene":       "Project Settings → AutoLoad",
+        "category":    "Game Flow",
+        "description": "Register LibraryData and RecordsDatabase as AutoLoads",
+        "detail":      (
+            "1. Open Project → Project Settings → AutoLoad tab.\n"
+            "2. Add LibraryData.gd with node name 'LibraryData'.\n"
+            "3. Add RecordsDatabase.gd with node name 'RecordsDatabase'.\n"
+            "4. Ensure LibraryData loads BEFORE RecordsDatabase in the list "
+            "(LibraryData must be ready first since RecordsDatabase reads it for discovery state).\n"
+            "5. The existing Settings.gd autoload should remain — LibraryData.gd "
+            "syncs to it automatically."
+        ),
+        "added_in":    "Main Menu rebuild",
+        "priority":    "HIGH",
+    },
 ]
 
 

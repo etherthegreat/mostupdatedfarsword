@@ -1,67 +1,147 @@
 extends Control
+# ============================================================
+# SCENE STRUCTURE (build in Godot editor):
+#
+# main_menu (Control, full screen)
+# ├── VideoStreamPlayer   (full screen, autoplay=true, loop=true,
+# │                        stream = res://art assets/<your_menu>.ogv)
+# ├── LeftPanel           (Panel, translucent dark ~360px wide, left-anchored)
+# │   ├── LogoSprite      (TextureRect, game logo, top of panel)
+# │   ├── ButtonsVBox     (VBoxContainer, fills below logo)
+# │   │   ├── NewGameButton      (Button, "NEW GAME")
+# │   │   ├── ContinueButton     (Button, "CONTINUE")
+# │   │   │   └── SaveInfoLabel  (Label, italic small, shows turn/season,
+# │   │   │                       hidden when no save)
+# │   │   ├── LibraryButton      (Button, "PRESIDENTIAL LIBRARY")
+# │   │   ├── SettingsButton     (Button, "SETTINGS")
+# │   │   └── ExitButton         (Button, "EXIT")
+# │   └── VersionLabel    (Label, version string, bottom of panel)
+# ├── LanguageSelection   (Control, shown first-run, full overlay)
+# │   └── GridContainer   (flag buttons for language pick)
+# ├── PresidentialLibraryPanel  (instance PresidentialLibraryPanel.tscn,
+# │                              hidden by default)
+# └── SettingsPanel             (instance SettingsPanel.tscn,
+#                                hidden by default)
+# ============================================================
 
-const settingsPath = "user://settings.txt"
-var gameLanguage: String
+const AUTOSAVE_PATH  := "user://autosave.json"
+const SETTINGS_PATH  := "user://settings.txt"   # legacy path kept for compat
 
-var masterVolume: String
+var _game_language: String = "eng"
 
-var screenResolution: String
-var colorBlindAccessibility: bool
+func _ready() -> void:
+	_check_language()
+	_check_continue_button()
 
-var settings: Dictionary = {
-}
+# ── language (first-run) ──────────────────────────────────────────────────────
+func _check_language() -> void:
+	var lang := LibraryData.get_setting("language", "")
+	if lang == "":
+		# No language set yet — check legacy settings.txt
+		if FileAccess.file_exists(SETTINGS_PATH):
+			var f := FileAccess.open(SETTINGS_PATH, FileAccess.READ)
+			if f:
+				var data = f.get_var()
+				if data is Dictionary and data.has("gameLanguage"):
+					lang = data["gameLanguage"]
+					LibraryData.set_setting("language", lang)
+					f.close()
 
-
-func _ready():
-	language()
-	pass
-
-func language():
-	if FileAccess.file_exists(settingsPath):
-		var file = FileAccess.open(settingsPath, FileAccess.READ)
-		#screenResolution = file.get_var(screenResolution)
-		settings = file.get_var()
-		gameLanguage = settings["gameLanguage"]
-		buildMainMenu()
+	if lang == "":
+		_show_language_picker()
 	else:
-		askForLanguage()
-	pass
+		_game_language = lang
+		_hide_language_picker()
 
-func askForLanguage():
-	$LanguageSelection.visible = true
-	$GridContainer.visible = true
-	pass
+func _show_language_picker() -> void:
+	var ls := get_node_or_null("LanguageSelection")
+	var gc := get_node_or_null("GridContainer")
+	if ls: ls.visible = true
+	if gc: gc.visible = true
 
-func buildMainMenu():
-	if FileAccess.file_exists(settingsPath):
-		var file = FileAccess.open(settingsPath, FileAccess.READ)
-		settings = file.get_var()
-	else:
-		settings = {
-			#"screenResolution": "1920 x 1080", # screenResolution
-			#"colorBlindAccessibility": false, #coloblind
-			"gameLanguage": gameLanguage
-			#"masterVolume": 100 #masterVolume
-		}
-		var file = FileAccess.open(settingsPath, FileAccess.WRITE_READ)
-		file.store_var(settings)
-		file.close()
-		print("file didn't exist but does now, ", settings)
-	loadLocBall(gameLanguage)
-	pass
+func _hide_language_picker() -> void:
+	var ls := get_node_or_null("LanguageSelection")
+	var gc := get_node_or_null("GridContainer")
+	if ls: ls.visible = false
+	if gc: gc.visible = false
 
-func loadLocBall(gL):
-	
-	pass
+# ── continue button ───────────────────────────────────────────────────────────
+func _check_continue_button() -> void:
+	var btn       = get_node_or_null("LeftPanel/ButtonsVBox/ContinueButton")
+	var info_lbl  = get_node_or_null("LeftPanel/ButtonsVBox/ContinueButton/SaveInfoLabel")
+	if not btn:
+		return
 
+	var save_exists := FileAccess.file_exists(AUTOSAVE_PATH)
+	btn.disabled = not save_exists
+	if info_lbl:
+		if save_exists:
+			info_lbl.text    = _read_save_summary()
+			info_lbl.visible = true
+		else:
+			info_lbl.text    = "No save found"
+			info_lbl.visible = true
+
+func _read_save_summary() -> String:
+	var f := FileAccess.open(AUTOSAVE_PATH, FileAccess.READ)
+	if not f:
+		return ""
+	var result := JSON.parse_string(f.get_as_text())
+	f.close()
+	if not result is Dictionary:
+		return ""
+	var turn   := int(result.get("turn", 0))
+	var season := _season_name(turn)
+	var year   := 1782 + (turn / 4)
+	return "%s %d  ·  Turn %d" % [season, year, turn]
+
+func _season_name(turn: int) -> String:
+	return ["Spring", "Summer", "Autumn", "Winter"][turn % 4]
+
+# ── button handlers ───────────────────────────────────────────────────────────
 func _on_new_game_button_pressed() -> void:
-	get_tree().change_scene_to_file("res://Menu Scenes and Scripts/new_game_selection.tscn")
-	pass # Replace with function body.
+	get_tree().change_scene_to_file(
+		"res://Menu Scenes and Scripts/new_game_selection.tscn")
 
+func _on_continue_button_pressed() -> void:
+	if not FileAccess.file_exists(AUTOSAVE_PATH):
+		return
+	get_tree().change_scene_to_file(
+		"res://Game Scenes and Scripts/world.tscn")
 
+func _on_library_button_pressed() -> void:
+	var panel := get_node_or_null("PresidentialLibraryPanel")
+	if panel and panel.has_method("open_library"):
+		panel.open_library("RECORDS")
+
+func _on_settings_button_pressed() -> void:
+	var panel := get_node_or_null("SettingsPanel")
+	if panel:
+		panel.visible = true
+		if panel.has_method("populate_from_settings"):
+			panel.populate_from_settings()
+
+func _on_exit_button_pressed() -> void:
+	get_tree().quit()
+
+# ── language selection (legacy + new) ─────────────────────────────────────────
 func _on_english_button_pressed() -> void:
-	$LanguageSelection.visible = false
-	$GridContainer.visible = false
-	gameLanguage = "eng"
-	buildMainMenu()
-	pass # Replace with function body.
+	_confirm_language("eng")
+
+func _on_spanish_button_pressed() -> void:
+	_confirm_language("esp")
+
+func _on_french_button_pressed() -> void:
+	_confirm_language("fra")
+
+func _confirm_language(lang_code: String) -> void:
+	_game_language = lang_code
+	LibraryData.set_setting("language", lang_code)
+	# Write legacy settings.txt for world.gd compatibility
+	var data := {"gameLanguage": lang_code}
+	var f := FileAccess.open(SETTINGS_PATH, FileAccess.WRITE_READ)
+	if f:
+		f.store_var(data)
+		f.close()
+	_hide_language_picker()
+	_check_continue_button()
