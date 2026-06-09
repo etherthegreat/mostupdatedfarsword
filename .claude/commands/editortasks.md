@@ -1,0 +1,1 @@
+Run `python3 scripts/build_editortasks_masterdoc.py` from the repo root to regenerate the editor tasks spreadsheet, then send the updated `editortasks_masterdoc.xlsx` file to the user with a one-line summary: total tasks, how many are OPEN, how many are DONE.
