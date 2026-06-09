@@ -40,40 +40,60 @@ func updateSelf():
 			"Tree of Life":
 				newBB.buildSelf("Tree of Life", $religionData.treeOfLifeIcon, $religionData.treeOfLifeBWIcon, false, 160, "Trees are everything and everywhere and make perfect indoctrination imagery for dummies.", $religionData.border1)
 			"Tower Control":
-				newBB.buildSelf("Tower Control", $religionData.towerControlIcon, $religionData.towerControlBWIcon, false, 250, "The wizards have implemented strict mind control, including the removal of faith from society.", $religionData.border1)
+				newBB.buildSelf("Tower Control", $religionData.towerControlIcon, $religionData.towerControlBWIcon, false, 250, "The scholars have implemented strict controls over mystical practice, channeling all spiritual energy through state-sanctioned channels.", $religionData.border1)
 			"Nature Sanctuaries":
-				newBB.buildSelf("Nature Sanctuaries", $religionData.natureSanctuariesIcon, $religionData.natureSanctuariesIconBW, false, 100, "By harmonizing our churches with the local environments, we can fight the demon king's corruption from our churches.", $religionData.border1)
+				newBB.buildSelf("Nature Sanctuaries", $religionData.natureSanctuariesIcon, $religionData.natureSanctuariesIconBW, false, 100, "By harmonizing our churches with the natural world, we commune with the divine through unspoiled wilderness.", $religionData.border1)
 			"Conservative Orthodoxy":
-				newBB.buildSelf("Conservative Orthodoxy", $religionData.conservativeOrthodoxyIcon, $religionData.conservativeOrthodoxyIconBW, false, 200, "Our Churches do not rely on modern revelation - all of our doctrine was divine and will always be divine.", $religionData.border1)
+				newBB.buildSelf("Conservative Orthodoxy", $religionData.conservativeOrthodoxyIcon, $religionData.conservativeOrthodoxyIconBW, false, 200, "Our Church does not rely on modern revelation — all doctrine was divine at its founding and shall remain unchanged.", $religionData.border1)
 			"Sanctioned Cadaver Research":
-				newBB.buildSelf("Sanctioned Cadaver Research", $religionData.sanctionedCadaverResearchIcon, $religionData.sanctionedCadaverResearchIconBW, false, 200, "Our faith will not interfere with the necessary scientific pursuit of medicine.", $religionData.border1)
+				newBB.buildSelf("Sanctioned Cadaver Research", $religionData.sanctionedCadaverResearchIcon, $religionData.sanctionedCadaverResearchIconBW, false, 200, "Our faith will not obstruct the necessary scientific pursuit of medicine and natural philosophy.", $religionData.border1)
 			"Temple Height Restrictions":
-				newBB.buildSelf("Temple Height Restrictions", $religionData.templeHeightLawsIcon, $religionData.templeHeightLawsIconBW, false, 120, "Our faith decrees no building will be taller than our temples in any tiles.", $religionData.border1)
+				newBB.buildSelf("Temple Height Restrictions", $religionData.templeHeightLawsIcon, $religionData.templeHeightLawsIconBW, false, 120, "Our faith decrees no building shall surpass the height of our temples in any settlement.", $religionData.border1)
 		$BeliefPanel/DoctrineScrollContainer/DoctrineContainer.add_child(newBB)
 		newBB.LabelClicked.connect(purchasePanel)
 	for String in player.availableGods:
 		var newBB = beliefButt.instantiate()
 		match String:
-			"Benaxtara":
-				newBB.buildSelf("Benaxtara", $religionData.benaxtaraIcon, $religionData.benaxtaraBWIcon, false, 160, "The Great Sleeping Snake of the North - it is believed that once Benaxtara is awoken from their slumber, they will consume the entire universe.", $religionData.border4)
-			"Tyla-Dyn":
-				newBB.buildSelf("Tyla-Dyn", $religionData.tylaDinIcon, $religionData.tylaDinIconBW, false, 300, "The great gregarious reveler, the provider of wine, of good times, and of fortune.", $religionData.border5)
-			"Fa Enepo":
-				newBB.buildSelf("Fa Enepo", $religionData.faEnepoIcon, $religionData.faEnepoIconBW, false, 200, "The void wandered, the great summoner, and the rider of the infinite cosmos.", $religionData.border3)
-			"Bibwey":
-				newBB.buildSelf("Bibwey", $religionData.bibweyIcon, $religionData.bibweyBWIcon, false, 130, "The nightly intruder, the master of dreams, the forbidden hypnotist.  Bibwey knows the minds of all.", $religionData.border3)
-			"Dilnith-Amen":
-				newBB.buildSelf("Dilnith-Amen", $religionData.dilnithAmenIcon, $religionData.dilnithAmenIconBW, false, 185, "The Enlightened One, the great Meditator.  Dilnith Amen figured out the secrets to enlightenment before the Demon King arrived.", $religionData.border2)
-			"Ornil-Ra":
-				newBB.buildSelf("Ornil-Ra", $religionData.ornilRaIcon, $religionData.ornilRaIconBW, false, 280, "The great destroyer and the great provider.  The inciter of cycles, of change, of chaos.", $religionData.border4)
-			"Vibian Karik":
-				newBB.buildSelf("Vibian Karik", $religionData.vibianKarikIcon, $religionData.vibianKarikIconBW, false, 100, "The Great Mother Goddess of the Sea, Vibian Protects Sailors and the moon?", $religionData.border5)
-			"Venodam":
-				newBB.buildSelf("Venodam", $religionData.venodamIcon, $religionData.venodamIconBW, false, 90, "The Father God of the Sky, Sky Daddy!", $religionData.border5)
-			"Jerriwix":
-				newBB.buildSelf("Jerriwix", $religionData.jerriwixIcon, $religionData.jerriwixIconBW, false, 135, "The mysterious guide of the Spirit plane, whether Jerriwix eats you or not is up to their hunger levels in the moment of passing through.", $religionData.border3)
-			"Qalin Ling & Tyrus":
-				newBB.buildSelf("Qalin Ling & Tyrus", $religionData.qalinLingIcon, $religionData.qalinLingIconBW, false, 200, "Qalin Ling, the last Pheonix, rides atop the head of Tyrus, the last leviathan.  Together they hold the final two eggs of their species on a nest, waiting for the demon king to die to let them hatch.", $religionData.border4)
+			"George Washington":
+				newBB.buildSelf("George Washington", $religionData.washingtonIcon, $religionData.washingtonBWIcon, false, 200, "The Father of the Nation — or at least the one who showed up on time and didn't embezzle the treasury. Washington inspires military discipline and civic virtue, demanding excellence from every farm, forge, and frontier outpost.", $religionData.border2)
+			"Benjamin Franklin":
+				newBB.buildSelf("Benjamin Franklin", $religionData.franklinIcon, $religionData.franklinBWIcon, false, 150, "Scientist, diplomat, printer, rogue, and the only Founding Father to appear on a hundred dollar bill despite never being president. Franklin's restless curiosity boosts Libraries and Workshops — he never met an idea he couldn't improve.", $religionData.border3)
+			"Abigail Adams":
+				newBB.buildSelf("Abigail Adams", $religionData.abigailAdamsIcon, $religionData.abigailAdamsBWIcon, false, 120, "She told John to 'remember the ladies' and he absolutely did not listen. Nevertheless, Abigail's sharp political mind inspires dissent, scholarship, and the particular American art of telling power what it doesn't want to hear.", $religionData.border1)
+			"Alexander Hamilton":
+				newBB.buildSelf("Alexander Hamilton", $religionData.hamiltonIcon, $religionData.hamiltonBWIcon, false, 180, "The immigrant orphan who built America's financial system through sheer will and an inability to let anything go. Hamilton's patronage boosts Banks, Workshops, and any structure that turns ambition into wealth.", $religionData.border5)
+			"Phillis Wheatley":
+				newBB.buildSelf("Phillis Wheatley", $religionData.phillisWheatleyIcon, $religionData.phillisWheatleyBWIcon, false, 100, "The first enslaved African American to publish a book of poetry in the colonies — she proved that genius laughs at chains. Wheatley's patronage inspires Libraries and Temples wherever her memory is honored.", $religionData.border1)
+			"Thomas Jefferson":
+				newBB.buildSelf("Thomas Jefferson", $religionData.jeffersonIcon, $religionData.jeffersonBWIcon, false, 220, "A man of infinite contradiction who wrote that all men are created equal and then went home to his plantation. Jefferson's patronage is powerful but complicated: Libraries and Farms flourish, but Harmony costs extra. History contains multitudes.", $religionData.border4)
+			"Abraham Lincoln":
+				newBB.buildSelf("Abraham Lincoln", $religionData.lincolnIcon, $religionData.lincolnBWIcon, false, 250, "The rail-splitter who held the Union together with sheer stubbornness and a magnificent beard. Lincoln's patronage represents sacrifice and reconstruction — the long, costly work of living up to your nation's founding documents.", $religionData.border2)
+			"Harriet Tubman":
+				newBB.buildSelf("Harriet Tubman", $religionData.tubmanIcon, $religionData.tubmanBWIcon, false, 200, "Conductor of the Underground Railroad, spy for the Union Army, and the most dangerous person any tyrant could encounter. Tubman's patronage grants military bonuses and increases Manpower — freedom, it turns out, is a combat advantage.", $religionData.border4)
+			"Frederick Douglass":
+				newBB.buildSelf("Frederick Douglass", $religionData.douglassIcon, $religionData.douglassBWIcon, false, 180, "Escaped slavery and spent the rest of his life explaining to anyone who would listen why that was a bad system, using words so precise they still cut. Douglass's patronage elevates Libraries, Courthouses, and the uncomfortable power of truth.", $religionData.border3)
+			"Sitting Bull":
+				newBB.buildSelf("Sitting Bull", $religionData.sittingBullIcon, $religionData.sittingBullBWIcon, false, 200, "Hunkpapa Lakota war chief, holy man, and the figure who outlasted Custer. Sitting Bull's patronage honors the land itself — Nature Sanctuaries flourish, and buildings in wooded and river territories produce bonus resources.", $religionData.border5)
+			"Sojourner Truth":
+				newBB.buildSelf("Sojourner Truth", $religionData.sojournerTruthIcon, $religionData.sojournerTruthBWIcon, false, 130, "Ain't I a woman? She asked the question that exposed every hypocrite in the room. Truth's patronage uplifts Farms and Temples, and her presence grants a Harmony bonus to every province with diverse population.", $religionData.border1)
+			"Chief Joseph":
+				newBB.buildSelf("Chief Joseph", $religionData.chiefJosephIcon, $religionData.chiefJosephBWIcon, false, 150, "I will fight no more forever. Chief Joseph's dignity in impossible circumstance became a testament to resilience and the cost of empire. His patronage grants unusual bonuses to Courthouses and morale in occupied territories.", $religionData.border2)
+			"Theodore Roosevelt":
+				newBB.buildSelf("Theodore Roosevelt", $religionData.teddyRooseveltIcon, $religionData.teddyRooseveltBWIcon, false, 180, "BULLY! The cowboy president who busted trusts and invented conservation because he loved shooting things too much to let them go extinct. Roosevelt's patronage boosts Mines, Camps, and Barracks — the great strenuous life.", $religionData.border4)
+			"Susan B. Anthony":
+				newBB.buildSelf("Susan B. Anthony", $religionData.susanBAnthonyIcon, $religionData.susanBAnthonyBWIcon, false, 120, "Voted illegally in 1872, was arrested, and turned her trial into a lecture on democracy they never forgot. Anthony's patronage rewards civic action — Courthouses and Libraries thrive, and Mandate generation increases across all provinces.", $religionData.border1)
+			"Ida B. Wells":
+				newBB.buildSelf("Ida B. Wells", $religionData.idaBWellsIcon, $religionData.idaBWellsBWIcon, false, 140, "Investigative journalist who documented injustice when no one else would print it. Wells's patronage powers Libraries — the pen sharper than the sword, and considerably more damning.", $religionData.border3)
+			"Eleanor Roosevelt":
+				newBB.buildSelf("Eleanor Roosevelt", $religionData.eleanorRooseveltIcon, $religionData.eleanorRooseveltBWIcon, false, 200, "First Lady, diplomat, United Nations architect, and the only person FDR was afraid of. Eleanor's patronage rewards empathy in governance — social-tier buildings generate exceptional returns.", $religionData.border5)
+			"Martin Luther King Jr.":
+				newBB.buildSelf("Martin Luther King Jr.", $religionData.martinLutherKingIcon, $religionData.martinLutherKingBWIcon, false, 280, "The dream is expensive. King's patronage is the most powerful in the game and the most demanding — Harmony bonuses across all provinces, but only so long as your laws reflect justice. The moment they don't, expect consequences.", $religionData.border2)
+			"Cesar Chavez":
+				newBB.buildSelf("Cesar Chavez", $religionData.cesarChavezIcon, $religionData.cesarChavezBWIcon, false, 160, "Si se puede. Chavez organized farm workers when it was genuinely dangerous to do so, building a movement from sheer solidarity. His patronage supercharges Farms and grants Manpower bonuses proportional to how many labor laws your nation has passed.", $religionData.border4)
+			"Jimmy Carter":
+				newBB.buildSelf("Jimmy Carter", $religionData.jimmyCarterIcon, $religionData.jimmyCarterBWIcon, false, 120, "The peanut farmer who brokered peace between Egypt and Israel, then went home and built houses for the poor. Carter's patronage rewards humility — quiet, persistent bonuses to everything, nothing flashy, compounding forever.", $religionData.border1)
+			"Dolores Huerta":
+				newBB.buildSelf("Dolores Huerta", $religionData.doloresHuertaIcon, $religionData.doloresHuertaBWIcon, false, 140, "Co-founder of the United Farm Workers and proof that 'no' is not an acceptable final answer. Huerta's patronage amplifies Cesar Chavez's farm bonuses if both are selected, and adds exceptional Harmony in provinces with mixed labor.", $religionData.border3)
 		$BeliefPanel/GodsScrollContainer/GodsContainer.add_child(newBB)
 		newBB.LabelClicked.connect(purchasePanel)
 	if $BeliefPanel/purchasedBeliefsGrid.get_children() != null:
@@ -104,35 +124,55 @@ func buildPD(type):
 		"Tree of Life":
 			newPD.buildSelf("Tree of Life", $religionData.treeOfLifeIcon, "Trees are everything and everywhere and make perfect indoctrination imagery for dummies.", true, $religionData.border1)
 		"Tower Control":
-			newPD.buildSelf("Tower Control", $religionData.towerControlIcon, "The wizards have implemented strict mind control, including the removal of faith from society.", true, $religionData.border1)
+			newPD.buildSelf("Tower Control", $religionData.towerControlIcon, "The scholars have implemented strict controls over mystical practice, channeling all spiritual energy through state-sanctioned channels.", true, $religionData.border1)
 		"Nature Sanctuaries":
-			newPD.buildSelf("Nature Sanctuaries", $religionData.natureSanctuariesIcon, "By harmonizing our churches with the local environments, we can fight the demon king's corruption from our churches.", true, $religionData.border1)
+			newPD.buildSelf("Nature Sanctuaries", $religionData.natureSanctuariesIcon, "By harmonizing our churches with the natural world, we commune with the divine through unspoiled wilderness.", true, $religionData.border1)
 		"Conservative Orthodoxy":
-			newPD.buildSelf("Conservative Orthodoxy", $religionData.conservativeOrthodoxyIcon, "Our Churches do not rely on modern revelation - all of our doctrine was divine and will always be divine.", true, $religionData.border1)
+			newPD.buildSelf("Conservative Orthodoxy", $religionData.conservativeOrthodoxyIcon, "Our Church does not rely on modern revelation — all doctrine was divine at its founding and shall remain unchanged.", true, $religionData.border1)
 		"Sanctioned Cadaver Research":
-			newPD.buildSelf("Sanctioned Cadaver Research", $religionData.sanctionedCadaverResearchIcon, "Our faith will not interfere with the necessary scientific pursuit of medicine.", true, $religionData.border1)
+			newPD.buildSelf("Sanctioned Cadaver Research", $religionData.sanctionedCadaverResearchIcon, "Our faith will not obstruct the necessary scientific pursuit of medicine and natural philosophy.", true, $religionData.border1)
 		"Temple Height Restrictions":
-			newPD.buildSelf("Temple Height Restrictions", $religionData.templeHeightLawsIcon, "Our faith decrees no building will be taller than our temples in any tiles.", true, $religionData.border1)
-		"Benaxtara":
-			newPD.buildSelf("Benaxtara", $religionData.benaxtaraIcon, "The Great Sleeping Snake of the North - it is believed that once Benaxtara is awoken from their slumber, they will consume the entire universe.", false,  $religionData.border4)
-		"Tyla-Dyn":
-			newPD.buildSelf("Tyla-Dyn", $religionData.tylaDinIcon, "The great gregarious reveler, the provider of wine, of good times, and of fortune.", false,  $religionData.border5)
-		"Fa Enepo":
-			newPD.buildSelf("Fa Enepo", $religionData.faEnepoIcon, "The void wandered, the great summoner, and the rider of the infinite cosmos.", false,  $religionData.border3)
-		"Bibwey":
-			newPD.buildSelf("Bibwey", $religionData.bibweyIcon, "The nightly intruder, the master of dreams, the forbidden hypnotist.  Bibwey knows the minds of all.", false, $religionData.border3)
-		"Dilnith-Amen":
-			newPD.buildSelf("Dilnith-Amen", $religionData.dilnithAmenIcon, "The Enlightened One, the great Meditator.  Dilnith Amen figured out the secrets to enlightenment before the Demon King arrived.", false,  $religionData.border2)
-		"Ornil-Ra":
-			newPD.buildSelf("Ornil-Ra", $religionData.ornilRaIcon, "The great destroyer and the great provider.  The inciter of cycles, of change, of chaos.", false,  $religionData.border4)
-		"Vibian Karik":
-			newPD.buildSelf("Vibian Karik", $religionData.vibianKarikIcon, "The Great Mother Goddess of the Sea, Vibian Protects Sailors and the moon?", false, $religionData.border5)
-		"Venodam":
-			newPD.buildSelf("Venodam", $religionData.venodamIcon, "The Father God of the Sky, Sky Daddy!", false, $religionData.border5)
-		"Jerriwix":
-			newPD.buildSelf("Jerriwix", $religionData.jerriwixIcon, "The mysterious guide of the Spirit plane, whether Jerriwix eats you or not is up to their hunger levels in the moment of passing through.", false, $religionData.border3)
-		"Qalin Ling & Tyrus":
-			newPD.buildSelf("Qalin Ling & Tyrus", $religionData.qalinLingIcon, "Qalin Ling, the last Pheonix, rides atop the head of Tyrus, the last leviathan.  Together they hold the final two eggs of their species on a nest, waiting for the demon king to die to let them hatch.", false, $religionData.border4)
+			newPD.buildSelf("Temple Height Restrictions", $religionData.templeHeightLawsIcon, "Our faith decrees no building shall surpass the height of our temples in any settlement.", true, $religionData.border1)
+		"George Washington":
+			newPD.buildSelf("George Washington", $religionData.washingtonIcon, "The Father of the Nation — military discipline and civic virtue demand excellence from every farm, forge, and frontier outpost.", false, $religionData.border2)
+		"Benjamin Franklin":
+			newPD.buildSelf("Benjamin Franklin", $religionData.franklinIcon, "Scientist, diplomat, printer, rogue. Franklin's restless curiosity boosts Libraries and Workshops — he never met an idea he couldn't improve.", false, $religionData.border3)
+		"Abigail Adams":
+			newPD.buildSelf("Abigail Adams", $religionData.abigailAdamsIcon, "She told John to 'remember the ladies' and he absolutely did not listen. Abigail inspires dissent, scholarship, and telling power what it doesn't want to hear.", false, $religionData.border1)
+		"Alexander Hamilton":
+			newPD.buildSelf("Alexander Hamilton", $religionData.hamiltonIcon, "The immigrant orphan who built America's financial system through sheer will. Hamilton's patronage boosts Banks, Workshops, and any structure that turns ambition into wealth.", false, $religionData.border5)
+		"Phillis Wheatley":
+			newPD.buildSelf("Phillis Wheatley", $religionData.phillisWheatleyIcon, "The first enslaved African American to publish a book of poetry in the colonies. Genius laughs at chains — Libraries and Temples thrive wherever her memory is honored.", false, $religionData.border1)
+		"Thomas Jefferson":
+			newPD.buildSelf("Thomas Jefferson", $religionData.jeffersonIcon, "A man of infinite contradiction. Libraries and Farms flourish, but Harmony costs extra. History contains multitudes.", false, $religionData.border4)
+		"Abraham Lincoln":
+			newPD.buildSelf("Abraham Lincoln", $religionData.lincolnIcon, "The rail-splitter who held the Union together with sheer stubbornness. Lincoln's patronage represents sacrifice and the long, costly work of living up to your founding documents.", false, $religionData.border2)
+		"Harriet Tubman":
+			newPD.buildSelf("Harriet Tubman", $religionData.tubmanIcon, "Conductor of the Underground Railroad, spy for the Union Army. Tubman's patronage grants military bonuses and increases Manpower — freedom is a combat advantage.", false, $religionData.border4)
+		"Frederick Douglass":
+			newPD.buildSelf("Frederick Douglass", $religionData.douglassIcon, "Words so precise they still cut. Douglass's patronage elevates Libraries, Courthouses, and the uncomfortable power of truth.", false, $religionData.border3)
+		"Sitting Bull":
+			newPD.buildSelf("Sitting Bull", $religionData.sittingBullIcon, "Hunkpapa Lakota war chief and holy man. Nature Sanctuaries flourish, and buildings in wooded and river territories produce bonus resources.", false, $religionData.border5)
+		"Sojourner Truth":
+			newPD.buildSelf("Sojourner Truth", $religionData.sojournerTruthIcon, "Ain't I a woman? She asked the question that exposed every hypocrite in the room. Uplifts Farms and Temples, Harmony bonus in diverse provinces.", false, $religionData.border1)
+		"Chief Joseph":
+			newPD.buildSelf("Chief Joseph", $religionData.chiefJosephIcon, "I will fight no more forever. Dignity in impossible circumstance. Unusual bonuses to Courthouses and morale in occupied territories.", false, $religionData.border2)
+		"Theodore Roosevelt":
+			newPD.buildSelf("Theodore Roosevelt", $religionData.teddyRooseveltIcon, "BULLY! Conservation because he loved shooting things too much to let them go extinct. Boosts Mines, Camps, and Barracks — the great strenuous life.", false, $religionData.border4)
+		"Susan B. Anthony":
+			newPD.buildSelf("Susan B. Anthony", $religionData.susanBAnthonyIcon, "Voted illegally in 1872 and turned her trial into a lecture. Courthouses and Libraries thrive, Mandate generation increases across all provinces.", false, $religionData.border1)
+		"Ida B. Wells":
+			newPD.buildSelf("Ida B. Wells", $religionData.idaBWellsIcon, "Documented injustice when no one else would print it. The pen sharper than the sword, and considerably more damning. Powers Libraries.", false, $religionData.border3)
+		"Eleanor Roosevelt":
+			newPD.buildSelf("Eleanor Roosevelt", $religionData.eleanorRooseveltIcon, "First Lady, diplomat, UN architect, and the only person FDR was afraid of. Social-tier buildings generate exceptional returns.", false, $religionData.border5)
+		"Martin Luther King Jr.":
+			newPD.buildSelf("Martin Luther King Jr.", $religionData.martinLutherKingIcon, "The dream is expensive. Maximum Harmony bonuses — but only so long as your laws reflect justice. The moment they don't, expect consequences.", false, $religionData.border2)
+		"Cesar Chavez":
+			newPD.buildSelf("Cesar Chavez", $religionData.cesarChavezIcon, "Si se puede. Supercharges Farms and grants Manpower bonuses proportional to how many labor laws your nation has passed.", false, $religionData.border4)
+		"Jimmy Carter":
+			newPD.buildSelf("Jimmy Carter", $religionData.jimmyCarterIcon, "The peanut farmer who brokered peace and then went home and built houses for the poor. Quiet, persistent bonuses to everything, nothing flashy, compounding forever.", false, $religionData.border1)
+		"Dolores Huerta":
+			newPD.buildSelf("Dolores Huerta", $religionData.doloresHuertaIcon, "Co-founder of the United Farm Workers. Amplifies Cesar Chavez's farm bonuses if both are selected. Exceptional Harmony in provinces with mixed labor.", false, $religionData.border3)
 	match newPD.doctrineType:
 		true:
 			$BeliefPanel/purchasedBeliefsGrid.add_child(newPD)

@@ -29,24 +29,44 @@ func buildBelief(type):
 			faithBelief = false
 		"Temple Height Restrictions":
 			faithBelief = false
-		"Benaxtara":
+		"George Washington":
 			faithBelief = true
-		"Tyla-Dyn":
+		"Benjamin Franklin":
 			faithBelief = true
-		"Bibwey":
+		"Abigail Adams":
 			faithBelief = true
-		"Dilnith-Amen":
+		"Alexander Hamilton":
 			faithBelief = true
-		"Ornil-Ra":
+		"Phillis Wheatley":
 			faithBelief = true
-		"Fa Enepo":
+		"Thomas Jefferson":
 			faithBelief = true
-		"Vibian Karik":
+		"Abraham Lincoln":
 			faithBelief = true
-		"Venodam":
+		"Harriet Tubman":
 			faithBelief = true
-		"Jerriwix":
+		"Frederick Douglass":
 			faithBelief = true
-		"Qalin Ling":
+		"Sitting Bull":
+			faithBelief = true
+		"Sojourner Truth":
+			faithBelief = true
+		"Chief Joseph":
+			faithBelief = true
+		"Theodore Roosevelt":
+			faithBelief = true
+		"Susan B. Anthony":
+			faithBelief = true
+		"Ida B. Wells":
+			faithBelief = true
+		"Eleanor Roosevelt":
+			faithBelief = true
+		"Martin Luther King Jr.":
+			faithBelief = true
+		"Cesar Chavez":
+			faithBelief = true
+		"Jimmy Carter":
+			faithBelief = true
+		"Dolores Huerta":
 			faithBelief = true
 	pass
