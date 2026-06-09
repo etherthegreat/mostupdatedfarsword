@@ -185,6 +185,10 @@ func onTurnEnd():
 			print("unitREFILL", Unit.unitCurrentManpower, parentCountry.armyReinforceRate)
 	if unit_mods_changed:
 		surveySelf()
+	# Corruption disease check
+	if inTile != null and inTile.corruption > 0:
+		if randf() * 100.0 < float(inTile.corruption):
+			apply_status("Diseased", 2)
 	updateArmyUI()
 	pass
 
