@@ -224,7 +224,7 @@ func calculateMilMods() -> void:
 					pass  # handled at army level (needs neighbor check)
 				# ── Tier 2 mods ──────────────────────────────────────────────
 				"Marine":
-					pass  # handled at army level
+					pass  # handled in battle.gd (_army_marine_bonus)
 				"Guerrilla Tactics":
 					if currentTerrain == "Woods" or currentTerrain == "Wetlands":
 						unitOffensiveScore += (4 * unitLevel)

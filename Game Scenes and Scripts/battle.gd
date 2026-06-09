@@ -83,7 +83,7 @@ func _calculate_projected_damage() -> void:
 func _calculate_melee_damage() -> void:
 	# ── Attacker hits defender ──────────────────────────────
 	# Raw melee damage from attacker's punch score
-	var raw_attack = float(attacker.armyPunch)
+	var raw_attack = float(attacker.armyPunch) + _army_marine_bonus(attacker)
 
 	# Apply saber charge cost preview (attacker loses some manpower charging)
 	var attacker_charge_loss: float = 0.0
@@ -266,6 +266,26 @@ func _count_artillery(army: Army) -> int:
 		if unit.unitWeapon != null and unit.unitWeapon.is_artillery():
 			count += 1
 	return count
+
+func _count_naval_neighbors(army: Army) -> int:
+	if army.inTile == null:
+		return 0
+	var count: int = 0
+	for neighbor in army.inTile.TileNeighbors:
+		if neighbor.ocean or neighbor.coastal:
+			count += 1
+	return count
+
+func _army_marine_bonus(army: Army) -> float:
+	if _count_naval_neighbors(army) == 0:
+		return 0.0
+	var bonus: float = 0.0
+	for unit in army.unitsList:
+		for mm in unit.militaryModifierList:
+			if mm.milModType == "Marine" and not mm.disabled:
+				bonus += 5.0 * float(unit.unitLevel)
+				break
+	return bonus
 
 func _on_attack_button_pressed() -> void:
 	applyBattleResults()
