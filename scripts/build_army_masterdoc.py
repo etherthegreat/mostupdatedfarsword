@@ -50,20 +50,25 @@ CAT_COLORS = {
     "Weather":         "DCDCDC",
     "Spawn":           "D6F5EA",
     "Special":         "F5E6D6",
+    "Status Effects":  "FFEBEE",
 }
 
 TIER_COLORS = {
-    "T1 (123)": "D6E4F7",
-    "T2 (23)":  "FFF3CC",
-    "T3 (3)":   "FCE0D6",
-    "Weapon":   "D6F0D6",
-    "Armor":    "FDEBD0",
-    "Legacy":   "DCDCDC",
-    "Civilian": "EDD6F7",
-    "Resource": "F5E6D6",
-    "Storm":    "D6E8F7",
-    "Cultural": "F7EDD6",
-    "Tool":     "D6F7E8",
+    "T1 (123)":    "D6E4F7",
+    "T2 (23)":     "FFF3CC",
+    "T3 (3)":      "FCE0D6",
+    "Weapon":      "D6F0D6",
+    "Armor":       "FDEBD0",
+    "Legacy":      "DCDCDC",
+    "Civilian":    "EDD6F7",
+    "Resource":    "F5E6D6",
+    "Storm":       "D6E8F7",
+    "Cultural":    "F7EDD6",
+    "Tool":        "D6F7E8",
+    "Special":     "F0E6F7",
+    "State Guard": "E8F5E9",
+    "Protector":   "FFF8E1",
+    "Negative":    "FFEBEE",
 }
 
 thin = Side(style="thin", color="AAAAAA")
@@ -285,12 +290,15 @@ SYSTEMS = [
      "Marine, Entrenched, Night Raider, Iron Wall etc. still flagged IDEA pending subsystems.",
      "Marine: navalTileNeighbors melee logic still needed. Entrenched: stationary turn counter still needed."),
 
-    ("FIRST DRAFT", "Combat", "Marine Mechanic",
-     "mil_mod.gd (marineMod flag), tile.gd (navalTileNeighbors)",
-     "marineMod bool added to MilMod class. tile.navalTileNeighbors property exists "
-     "on tiles. Design: if army has Marine mod, allow melee attack into adjacent naval tiles.",
-     "No combat trigger checks marineMod. No UI to select naval tile as attack target. "
-     "Naval Supremacy (+5 damage on Marine attacks) also pending."),
+    ("FIRST PASS", "Combat", "Marine Mechanic",
+     "mil_mod.gd (marineMod), world.gd meleePressed(), path_point_button.gd navalPathPoints",
+     "Army with Marine mod may melee-attack into adjacent navalPathPoints (occupied PPBs). "
+     "_army_has_active_marine() checks units for enabled Marine mod. "
+     "meleePressed() loops all inTile.navalPathPoints and builds melee battles on occupied ones. "
+     "path_point_button.buildSelf() populates navalPathPoints from navalPathPointsEXP array. "
+     "Naval Supremacy mod adds +5×unitLevel to raw_attack in _calculate_melee_damage().",
+     "PPBs must be pre-wired in editor navalPathPointsEXP. No separate naval-target UI; "
+     "naval attacks triggered from same melee button as land attacks."),
 
     ("FIRST DRAFT", "Combat", "Entrenched Mechanic",
      "mil_mod.gd (entrenchMod flag)",
@@ -638,6 +646,80 @@ SYSTEMS = [
      "armyFoodCost/armyWeaponsCost accumulated in surveySelf(). "
      "Country resources depleted by these costs is not fully automated per turn.",
      ""),
+
+    # ── STATUS EFFECTS ─────────────────────────────────────────────────────────
+    ("FULL PASS", "Mil Mods", "Army Status Effect System",
+     "army.gd armyStatusEffects, apply_status(), _tick_status_effects()",
+     "armyStatusEffects: Array of dicts {type, turnsLeft, magicCostPerTurn}. "
+     "apply_status(type, duration, magic_cost=0): refresh/replace existing. "
+     "_tick_status_effects() on onTurnEnd: drains magic for protector buffs (self-removes at 0); "
+     "DoT for Burning (5×unitCount/turn) and Diseased/Quarantined (3×/1× unitCount/turn); "
+     "ticks turnsLeft and removes expired. "
+     "_apply_status_effects_to_stats(): called from surveySelf(); applies all 22 debuff "
+     "and 25 protector buff stat modifiers to army scores. "
+     "_apply_status_flags(): sets attackBlocked, reinforcementBlocked, movement from statuses.",
+     "No UI widget to display active status effects on army panel."),
+
+    ("FULL PASS", "Combat", "Combat Status Effects",
+     "battle.gd _apply_combat_status_effects()",
+     "Called from applyBattleResults() before deleteBattles signal. "
+     "Rout: >40% manpower lost in one battle → Routed 2 turns. "
+     "Weapon-based: Baseball Bat→Shaken 1t, Trident→Terrified 2t, Mythic Atlatl→Stunned 1t, "
+     "Sharps Carbine→Blinded 1t, Blackbeard's Pistols→Terrified 2t, Colt Revolver→Shaken 1t, "
+     "Rocket Artillery→Burning 2t+Suppressed 1t, Trebuchet→Stunned 1t (ranged only), "
+     "Wright Flyer→Suppressed 1t. "
+     "Protector retaliations: Bell Witch's Harassment→Demoralize attacker 2t, "
+     "Headless Terror→Terrify attacker 2t, Le Gougou's Terror→Terrify attacker 3t.",
+     "Weapon statuses apply on every attack (no crit condition)."),
+
+    ("FULL PASS", "Mil Mods", "State Guard Mod System",
+     "mil_mod.gd, unit.gd calculateMilMods(), army.gd surveySelf()",
+     "26 state/provincial guard mods (Pennsylvania Guard → Bahamas Guard). "
+     "Each has culturalMod=true and culturalState=state code (PA, VA, NY, etc.). "
+     "Generic post-match handler in calculateMilMods(): "
+     "if MilMod.culturalMod and MilMod.culturalState != '' and currentState == MilMod.culturalState: "
+     "+2 attack +2 defence per level in any tile of that state. "
+     "surveySelf() sets unit.currentState = inTile.tileContinent before calculateMilMods().",
+     "tileContinent value must match culturalState codes exactly. "
+     "No gate prevents wrong-state governors from having guard mods."),
+
+    ("FIRST PASS", "Mil Mods", "Protector Buff Casting",
+     "world.gd executeOutcome(), army.gd apply_status(), _tick_status_effects()",
+     "25 protector buff statuses (Mothman Presence, Bell Witch's Harassment, etc.) "
+     "applied as army status effects via magic upkeep. "
+     "executeOutcome() 'cast_protector_buff' case: tile.stationedArmy.apply_status(name, 9999, cost). "
+     "turnsLeft=9999 (infinite) but drains parentCountry.TotalMagic each tick. "
+     "Self-removes when magic < magicCostPerTurn. "
+     "_apply_status_effects_to_stats() applies buff bonuses to armyPunch/Launch/Block/Defence/Shield.",
+     "Wiring 'cast_protector_buff' to specific event outcomes still needed per protector. "
+     "No UI shows active protector buffs or magic upkeep cost."),
+
+    ("FULL PASS", "Special", "Corruption Disease Check",
+     "army.gd onTurnEnd()",
+     "On each turn end: if inTile.tileCorrution > 0, army has tileCorrution% chance to gain "
+     "Diseased status for 2 turns. Park Ranger mod (civilianMod, toolMod) grants immunity. "
+     "Disease check: randf() < float(inTile.tileCorrution) / 100.0.",
+     "Spelling 'tileCorrution' matches the in-game variable name."),
+
+    ("FULL PASS", "Special", "President + Election Season Movement",
+     "governor.gd, army.gd _commander_movement_bonus(), world.gd _grant_election_season_mods()",
+     "Ualani Carlisle has President mod (commanderMod, +3 movement). "
+     "_commander_movement_bonus() sums +3 for President and +3 for Election Season "
+     "from govMilModsLvl1/2/3 arrays. Applied in onTurnEnd(): "
+     "currentMovementPoints = maxMovementPoints + bonus (before _apply_status_flags() clamping). "
+     "_check_election_season() calls _grant_election_season_mods() → grants Election Season "
+     "to Ualani and any governor where isVicePresident = true.",
+     "Election Season is permanent once granted. Commander must be in an army for bonus to apply."),
+
+    ("FIRST PASS", "Weather", "Storm Status Debuffs",
+     "world.gd _apply_storm_debuffs(), _apply_storm_status_to_army()",
+     "Applied at turn start via _on_next_turn_pressed() after _tick_storms(). "
+     "Thunderstorm/Hurricane → Waterlogged 2 turns (−20% melee+ranged). "
+     "Blizzard/Nor'easter → Frostbitten 2 turns (−30% melee+ranged). "
+     "Fog → Blinded 1 turn (ranged halved). "
+     "Tornado → Bogged Down 1t (no move) + Shaken 1t (block halved).",
+     "Armies moving INTO storm tiles mid-turn don't get debuff until next turn start. "
+     "Storm debuffs use same apply_status() refresh/replace logic."),
 ]
 
 
@@ -724,8 +806,8 @@ MIL_MODS = [
 
     # ── TIER 2 COMMANDER MODS ──────────────────────────────────────────────────
     ("T2 (23)", "Commander/Special", "Marine",
-     "commanderMod, marineMod", "—", "Army may launch melee attacks into adjacent naval tile neighbors",
-     "FIRST DRAFT — marineMod flag set; no combat trigger checks it"),
+     "commanderMod, marineMod", "—", "Army may launch melee attacks into adjacent navalPathPoints (occupied PPBs)",
+     "FIRST PASS — _army_has_active_marine() wired; meleePressed() loops navalPathPoints for targets"),
     ("T2 (23)", "Commander/Infantry", "Guerrilla Tactics",
      "infantryMod, terrainMod", "Woods/Wetlands", "+4 Attack +4 Defense per level in Woods or Wetlands",
      "FIRST DRAFT — terrainType set; effect not in calculateMilMods"),
@@ -780,8 +862,8 @@ MIL_MODS = [
      "commanderMod", "—", "+5 Defense per level in any Fortress tile",
      "FIRST DRAFT — defined; no fortress-tile check in calculateMilMods"),
     ("T3 (3)", "Commander/Special", "Naval Supremacy",
-     "commanderMod, marineMod", "—", "Marine melee attacks deal +5 additional damage per level",
-     "FIRST DRAFT — requires Marine mechanic to be wired first"),
+     "commanderMod, marineMod", "—", "Marine melee attacks deal +5 additional damage per unit level",
+     "FIRST PASS — _army_naval_supremacy_bonus() in battle.gd adds +5×unitLevel to raw_attack in melee"),
     ("T3 (3)", "Commander/All", "Ghost March",
      "commanderMod", "—", "Army ignores enemy zone of control",
      "IDEA — no ZoC system exists"),
@@ -1012,6 +1094,244 @@ MIL_MODS = [
     ("Armor", "Civilian", "Seeder",
      "civilianMod", "Food", "Change agricultural output of tile",
      "CIVILIAN — not a combat mod"),
+
+    # ── SPECIAL COMMANDER / CIVILIAN MODS ──────────────────────────────────────
+    ("Special", "Civilian/Tool", "Park Ranger",
+     "civilianMod, toolMod", "None", "Immunity to corruption-based disease on turn end.",
+     "FULL PASS — corruption disease check in army.gd onTurnEnd() skips armies whose commander has Park Ranger"),
+    ("Special", "Commander/Movement", "President",
+     "commanderMod", "None", "+3 movement points per turn. Ualani Carlisle only.",
+     "FULL PASS — _commander_movement_bonus() sums +3; applied before status flag clamping in onTurnEnd()"),
+    ("Special", "Commander/Movement", "Election Season",
+     "commanderMod", "None", "+3 movement points per turn; granted to Ualani and active VP during election season.",
+     "FULL PASS — _grant_election_season_mods() called by _check_election_season(); permanent once granted"),
+
+    # ── STATE / PROVINCIAL GUARD MODS ──────────────────────────────────────────
+    ("State Guard", "State/PA", "Pennsylvania Guard",
+     "commanderMod, culturalMod", "PA tiles", "+2 Attack +2 Defence per level in Pennsylvania tiles",
+     "FULL PASS — generic culturalMod handler in calculateMilMods(); culturalState='PA'"),
+    ("State Guard", "State/VA", "Virginia Guard",
+     "commanderMod, culturalMod", "VA tiles", "+2 Attack +2 Defence per level in Virginia tiles",
+     "FULL PASS — culturalState='VA'"),
+    ("State Guard", "State/NY", "New York Guard",
+     "commanderMod, culturalMod", "NY tiles", "+2 Attack +2 Defence per level in New York tiles",
+     "FULL PASS — culturalState='NY'"),
+    ("State Guard", "State/MA", "Massachusetts Guard",
+     "commanderMod, culturalMod", "MA tiles", "+2 Attack +2 Defence per level in Massachusetts tiles",
+     "FULL PASS — culturalState='MA'"),
+    ("State Guard", "State/MD", "Maryland Guard",
+     "commanderMod, culturalMod", "MD tiles", "+2 Attack +2 Defence per level in Maryland tiles",
+     "FULL PASS — culturalState='MD'"),
+    ("State Guard", "State/NC", "North Carolina Guard",
+     "commanderMod, culturalMod", "NC tiles", "+2 Attack +2 Defence per level in North Carolina tiles",
+     "FULL PASS — culturalState='NC'"),
+    ("State Guard", "State/SC", "South Carolina Guard",
+     "commanderMod, culturalMod", "SC tiles", "+2 Attack +2 Defence per level in South Carolina tiles",
+     "FULL PASS — culturalState='SC'"),
+    ("State Guard", "State/GA", "Georgia Guard",
+     "commanderMod, culturalMod", "GA tiles", "+2 Attack +2 Defence per level in Georgia tiles",
+     "FULL PASS — culturalState='GA'"),
+    ("State Guard", "State/CT", "Connecticut Guard",
+     "commanderMod, culturalMod", "CT tiles", "+2 Attack +2 Defence per level in Connecticut tiles",
+     "FULL PASS — culturalState='CT'"),
+    ("State Guard", "State/NJ", "New Jersey Guard",
+     "commanderMod, culturalMod", "NJ tiles", "+2 Attack +2 Defence per level in New Jersey tiles",
+     "FULL PASS — culturalState='NJ'"),
+    ("State Guard", "State/DE", "Delaware Guard",
+     "commanderMod, culturalMod", "DE tiles", "+2 Attack +2 Defence per level in Delaware tiles",
+     "FULL PASS — culturalState='DE'"),
+    ("State Guard", "State/NH", "New Hampshire Guard",
+     "commanderMod, culturalMod", "NH tiles", "+2 Attack +2 Defence per level in New Hampshire tiles",
+     "FULL PASS — culturalState='NH'"),
+    ("State Guard", "State/RI", "Rhode Island Guard",
+     "commanderMod, culturalMod", "RI tiles", "+2 Attack +2 Defence per level in Rhode Island tiles",
+     "FULL PASS — culturalState='RI'"),
+    ("State Guard", "State/VT", "Vermont Guard",
+     "commanderMod, culturalMod", "VT tiles", "+2 Attack +2 Defence per level in Vermont tiles",
+     "FULL PASS — culturalState='VT'"),
+    ("State Guard", "State/ME", "Maine Guard",
+     "commanderMod, culturalMod", "ME tiles", "+2 Attack +2 Defence per level in Maine tiles",
+     "FULL PASS — culturalState='ME'"),
+    ("State Guard", "State/TN", "Tennessee Guard",
+     "commanderMod, culturalMod", "TN tiles", "+2 Attack +2 Defence per level in Tennessee tiles",
+     "FULL PASS — culturalState='TN'"),
+    ("State Guard", "State/AL", "Alabama Guard",
+     "commanderMod, culturalMod", "AL tiles", "+2 Attack +2 Defence per level in Alabama tiles",
+     "FULL PASS — culturalState='AL'"),
+    ("State Guard", "State/FL", "Florida Guard",
+     "commanderMod, culturalMod", "FL tiles", "+2 Attack +2 Defence per level in Florida tiles",
+     "FULL PASS — culturalState='FL'"),
+    ("State Guard", "State/WV", "West Virginia Guard",
+     "commanderMod, culturalMod", "WV tiles", "+2 Attack +2 Defence per level in West Virginia tiles",
+     "FULL PASS — culturalState='WV'"),
+    ("State Guard", "State/DC", "DC Guard",
+     "commanderMod, culturalMod", "DC tiles", "+2 Attack +2 Defence per level in DC tiles",
+     "FULL PASS — culturalState='DC'"),
+    ("State Guard", "Canadian/QB", "Quebec Guard",
+     "commanderMod, culturalMod", "CA-QB tiles", "+2 Attack +2 Defence per level in Quebec tiles",
+     "FULL PASS — culturalState='CA - QB'"),
+    ("State Guard", "Canadian/OT", "Ontario Guard",
+     "commanderMod, culturalMod", "CA-OT tiles", "+2 Attack +2 Defence per level in Ontario tiles",
+     "FULL PASS — culturalState='CA - OT'"),
+    ("State Guard", "Canadian/NS", "Nova Scotia Guard",
+     "commanderMod, culturalMod", "CA-NS tiles", "+2 Attack +2 Defence per level in Nova Scotia tiles",
+     "FULL PASS — culturalState='CA - NS'"),
+    ("State Guard", "Canadian/NB", "New Brunswick Guard",
+     "commanderMod, culturalMod", "CA-NB tiles", "+2 Attack +2 Defence per level in New Brunswick tiles",
+     "FULL PASS — culturalState='CA - NB'"),
+    ("State Guard", "Canadian/PEI", "Prince Edward Island Guard",
+     "commanderMod, culturalMod", "CA-PEI tiles", "+2 Attack +2 Defence per level in PEI tiles",
+     "FULL PASS — culturalState='CA - PEI'"),
+    ("State Guard", "Bahamas/BA", "Bahamas Guard",
+     "commanderMod, culturalMod", "BA tiles", "+2 Attack +2 Defence per level in Bahamas tiles",
+     "FULL PASS — culturalState='BA'"),
+
+    # ── PROTECTOR BUFF MODS (USA) ───────────────────────────────────────────────
+    ("Protector", "Protector/USA", "Mothman Presence",
+     "commanderMod", "Magic upkeep", "+20 Ranged Attack, +15 Ranged Defence while active",
+     "FIRST PASS — stats applied in _apply_status_effects_to_stats(); magic upkeep in _tick_status_effects()"),
+    ("Protector", "Protector/USA", "Jersey Devil's Fury",
+     "commanderMod", "Magic upkeep", "+25 Melee Attack, +10 Ranged, +10 Block while active",
+     "FIRST PASS — stats applied in _apply_status_effects_to_stats()"),
+    ("Protector", "Protector/USA", "Bigfoot's Solidarity",
+     "commanderMod", "Magic upkeep", "+30 Block, +15 Melee Attack while active",
+     "FIRST PASS — stats applied in _apply_status_effects_to_stats()"),
+    ("Protector", "Protector/USA", "Thunderbird's Sovereignty",
+     "commanderMod", "Magic upkeep", "+25 Ranged Attack, +10 Melee Attack while active",
+     "FIRST PASS — stats applied in _apply_status_effects_to_stats()"),
+    ("Protector", "Protector/USA", "Headless Terror",
+     "commanderMod", "Magic upkeep", "+20 Attack, +10 Block; attackers become Terrified 2t while active",
+     "FIRST PASS — retaliation in _apply_combat_status_effects(); stat bonus in surveySelf()"),
+    ("Protector", "Protector/USA", "Chessie's Blessing",
+     "commanderMod", "Magic upkeep", "+20 Block, +15 Ranged Defence while active",
+     "FIRST PASS — stats applied in _apply_status_effects_to_stats()"),
+    ("Protector", "Protector/USA", "Bell Witch's Harassment",
+     "commanderMod", "Magic upkeep", "+15 Attack, +20 Defence; attackers become Demoralized 2t while active",
+     "FIRST PASS — retaliation in _apply_combat_status_effects(); stat bonus in surveySelf()"),
+    ("Protector", "Protector/USA", "Old Ironsides' Hull",
+     "commanderMod", "Magic upkeep", "+30 Shield, +20 Block while active",
+     "FIRST PASS — stats applied in _apply_status_effects_to_stats()"),
+    ("Protector", "Protector/USA", "Valley Forge's Will",
+     "commanderMod", "Magic upkeep", "+10 Attack, +25 Block, +20 Defence while active",
+     "FIRST PASS — stats applied in _apply_status_effects_to_stats()"),
+    ("Protector", "Protector/USA", "Snallygaster's Claim",
+     "commanderMod", "Magic upkeep", "+20 Attack, +10 Ranged, +10 Block while active",
+     "FIRST PASS — stats applied in _apply_status_effects_to_stats()"),
+    ("Protector", "Protector/USA", "Paul Revere's Ride",
+     "commanderMod", "Magic upkeep", "+15 Ranged, +10 Attack, +3 Movement while active",
+     "FIRST PASS — movement via _apply_status_flags(); stats in _apply_status_effects_to_stats()"),
+    ("Protector", "Protector/USA", "Liberty Bell's Resonance",
+     "commanderMod", "Magic upkeep", "+25 Block, +15 Ranged Defence while active",
+     "FIRST PASS — stats applied in _apply_status_effects_to_stats()"),
+    ("Protector", "Protector/USA", "Green Mountain Haunting",
+     "commanderMod", "Magic upkeep", "+20 Block, +15 Ranged Defence while active",
+     "FIRST PASS — stats applied in _apply_status_effects_to_stats()"),
+    ("Protector", "Protector/USA", "Presidential Decree",
+     "commanderMod", "Magic upkeep", "+20 Attack, +20 Block, +15 Ranged, +15 Defence while active",
+     "FIRST PASS — stats applied in _apply_status_effects_to_stats()"),
+    ("Protector", "Protector/USA", "Skunk Ape's Domain",
+     "commanderMod", "Magic upkeep", "+20 Attack, +15 Block while active",
+     "FIRST PASS — stats applied in _apply_status_effects_to_stats()"),
+    ("Protector", "Protector/USA", "Eternal Vigilance",
+     "commanderMod", "Magic upkeep", "+25 Block, +10 Attack while active",
+     "FIRST PASS — stats applied in _apply_status_effects_to_stats()"),
+    ("Protector", "Protector/USA", "Lincoln's Mandate",
+     "commanderMod", "Magic upkeep", "+15 Attack, +15 Block, +15 Ranged, +10 Defence while active",
+     "FIRST PASS — stats applied in _apply_status_effects_to_stats()"),
+
+    # ── PROTECTOR BUFF MODS (CANADIAN) ─────────────────────────────────────────
+    ("Protector", "Protector/CA", "Le Wendigo's Hunger",
+     "commanderMod", "Magic upkeep", "+30 Melee Attack while active",
+     "FIRST PASS — stats applied in _apply_status_effects_to_stats()"),
+    ("Protector", "Protector/CA", "Loup-Garou's Frenzy",
+     "commanderMod", "Magic upkeep", "+25 Attack, +15 Block, +10 Defence while active",
+     "FIRST PASS — stats applied in _apply_status_effects_to_stats()"),
+    ("Protector", "Protector/CA", "Feux Follets' Misdirection",
+     "commanderMod", "Magic upkeep", "+25 Ranged Defence, +15 Block while active",
+     "FIRST PASS — stats applied in _apply_status_effects_to_stats()"),
+    ("Protector", "Protector/CA", "Mishepeshu's Depths",
+     "commanderMod", "Magic upkeep", "+20 Block, +20 Ranged Defence while active",
+     "FIRST PASS — stats applied in _apply_status_effects_to_stats()"),
+    ("Protector", "Protector/CA", "La Corriveau's Cage",
+     "commanderMod", "Magic upkeep", "+20 Ranged Attack, +15 Melee Attack while active",
+     "FIRST PASS — stats applied in _apply_status_effects_to_stats()"),
+    ("Protector", "Protector/CA", "Le Carcajou's Tenacity",
+     "commanderMod", "Magic upkeep", "+20 Attack, +15 Block, +10 Defence while active",
+     "FIRST PASS — stats applied in _apply_status_effects_to_stats()"),
+    ("Protector", "Protector/CA", "La Chasse-Galerie",
+     "commanderMod", "Magic upkeep", "+15 Attack, +15 Ranged, +4 Movement while active",
+     "FIRST PASS — movement via _apply_status_flags(); stats in _apply_status_effects_to_stats()"),
+    ("Protector", "Protector/CA", "Le Gougou's Terror",
+     "commanderMod", "Magic upkeep", "+15 Attack, +20 Defence; attackers become Terrified 3t while active",
+     "FIRST PASS — retaliation in _apply_combat_status_effects(); stat bonus in surveySelf()"),
+
+    # ── NEGATIVE STATUS EFFECTS ─────────────────────────────────────────────────
+    ("Negative", "Negative/Combat", "Stunned",
+     "isNegative", "—", "Cannot make melee attacks this turn",
+     "FULL PASS — attackBlocked set in _apply_status_flags(); meleePressed() checks attackBlocked"),
+    ("Negative", "Negative/Combat", "Suppressed",
+     "isNegative", "—", "Cannot fire ranged attacks this turn",
+     "FULL PASS — attackBlocked set in _apply_status_flags(); rangedPressed() checks attackBlocked"),
+    ("Negative", "Negative/Combat", "Shaken",
+     "isNegative", "—", "Melee block halved",
+     "FULL PASS — armyBlock ×0.5 in _apply_status_effects_to_stats()"),
+    ("Negative", "Negative/Combat", "Terrified",
+     "isNegative", "—", "Melee attack −50%, melee block −30%",
+     "FULL PASS — armyPunch ×0.5, armyBlock ×0.7 in _apply_status_effects_to_stats()"),
+    ("Negative", "Negative/Combat", "Routed",
+     "isNegative", "—", "Cannot attack; melee attack zeroed; ranged defence halved",
+     "FULL PASS — attackBlocked in flags; armyPunch=0, armyDefence ×0.5 in stats; triggered by >40% loss in battle"),
+    ("Negative", "Negative/DoT", "Burning",
+     "isNegative", "—", "Loses 5×unitCount manpower per turn (DoT)",
+     "FULL PASS — DoT applied in _tick_status_effects(); triggered by Rocket Artillery weapon"),
+    ("Negative", "Negative/Combat", "Blinded",
+     "isNegative", "—", "Ranged attack and ranged defence halved",
+     "FULL PASS — armyLaunch ×0.5, armyDefence ×0.5 in _apply_status_effects_to_stats()"),
+    ("Negative", "Negative/Magic", "Hexed",
+     "isNegative", "—", "Magic defence eliminated (armyMagicDefense = 0)",
+     "FULL PASS — armyMagicDefense=0 in _apply_status_effects_to_stats()"),
+    ("Negative", "Negative/DoT", "Diseased",
+     "isNegative", "—", "Loses 3×unitCount manpower per turn (DoT); caused by tile corruption chance",
+     "FULL PASS — DoT in _tick_status_effects(); corruption check in onTurnEnd(); Park Ranger immunity"),
+    ("Negative", "Negative/Storm", "Waterlogged",
+     "isNegative, stormMod", "Storm: Thunderstorm/Hurricane", "Melee and ranged attack −20%",
+     "FULL PASS — applied by _apply_storm_debuffs(); armyPunch/armyLaunch ×0.8 in stats"),
+    ("Negative", "Negative/Storm", "Frostbitten",
+     "isNegative, stormMod", "Storm: Blizzard/Nor'easter", "Melee and ranged attack −30%",
+     "FULL PASS — applied by _apply_storm_debuffs(); armyPunch/armyLaunch ×0.7 in stats"),
+    ("Negative", "Negative/Combat", "Demoralized",
+     "isNegative", "—", "Melee −20%, block −20%, all mil mods disabled (calculateMilMods skipped)",
+     "FULL PASS — armyDemoralized flag set in surveySelf(); calculateMilMods() early return if set"),
+    ("Negative", "Negative/Movement", "Exhausted",
+     "isNegative", "—", "Movement reduced to 1 this turn",
+     "FULL PASS — currentMovementPoints clamped to max(1,val) in _apply_status_flags()"),
+    ("Negative", "Negative/Movement", "Bogged Down",
+     "isNegative", "—", "Cannot move this turn (movement = 0)",
+     "FULL PASS — currentMovementPoints = 0 in _apply_status_flags(); triggered by Tornado storm"),
+    ("Negative", "Negative/Combat", "Pacified",
+     "isNegative", "—", "Cannot initiate attacks this turn",
+     "FULL PASS — attackBlocked in _apply_status_flags()"),
+    ("Negative", "Negative/Supply", "Supply Cut",
+     "isNegative", "—", "Cannot reinforce or resupply this turn",
+     "FULL PASS — reinforcementBlocked in _apply_status_flags(); onTurnEnd() skips refill if set"),
+    ("Negative", "Negative/DoT", "Quarantined",
+     "isNegative", "—", "No reinforcement; loses 1×unitCount manpower per turn",
+     "FULL PASS — reinforcementBlocked in flags; light DoT in _tick_status_effects()"),
+    ("Negative", "Negative/Funny", "Seduced",
+     "isNegative", "—", "Commander distracted: melee zeroed; cannot attack",
+     "FULL PASS — armyPunch=0; attackBlocked in _apply_status_effects_to_stats() / _apply_status_flags()"),
+    ("Negative", "Negative/Funny", "Starstruck",
+     "isNegative", "—", "All stats −30% (armyPunch/Launch/Block/Defence ×0.7)",
+     "FULL PASS — all four scores scaled in _apply_status_effects_to_stats()"),
+    ("Negative", "Negative/Funny", "Hangover",
+     "isNegative", "—", "All stats −50% (armyPunch/Launch/Block/Defence ×0.5)",
+     "FULL PASS — all four scores scaled in _apply_status_effects_to_stats()"),
+    ("Negative", "Negative/Funny", "Love-Struck",
+     "isNegative", "—", "Melee −70%, block −70%; cannot attack",
+     "FULL PASS — armyPunch ×0.3, armyBlock ×0.3; attackBlocked in stats/flags"),
+    ("Negative", "Negative/Funny", "Mutinous",
+     "isNegative", "—", "Melee −40%; 50% chance army refuses orders each turn",
+     "FULL PASS — armyPunch ×0.6; 50% random attackBlocked in _apply_status_flags()"),
 ]
 
 
@@ -1036,16 +1356,20 @@ def build_milmods_sheet(wb):
     for (tier, cat, mod_type, flags, resource, effect, notes) in MIL_MODS:
         if tier != current_tier:
             tier_bg = {
-                "T1 (123)": "2E5C8A",
-                "T2 (23)":  "7A5C1E",
-                "T3 (3)":   "8A2E2E",
-                "Resource": "5A5A5A",
-                "Legacy":   "3A5A3A",
-                "Weapon":   "2E6A5A",
-                "Armor":    "5A2E6A",
-                "Storm":    "1A4A6A",
-                "Cultural": "6A4A1A",
-                "Tool":     "1A6A4A",
+                "T1 (123)":    "2E5C8A",
+                "T2 (23)":     "7A5C1E",
+                "T3 (3)":      "8A2E2E",
+                "Resource":    "5A5A5A",
+                "Legacy":      "3A5A3A",
+                "Weapon":      "2E6A5A",
+                "Armor":       "5A2E6A",
+                "Storm":       "1A4A6A",
+                "Cultural":    "6A4A1A",
+                "Tool":        "1A6A4A",
+                "Special":     "5A1A7A",
+                "State Guard": "1A6A3A",
+                "Protector":   "7A5A00",
+                "Negative":    "8A1A1A",
             }.get(tier, "2F4F6F")
             divider(ws, row, len(COLS), tier + " MODS", bg=tier_bg)
             row += 1
