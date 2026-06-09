@@ -3460,12 +3460,22 @@ func meleePressed(armyPath, thisArmy) -> void:
 	if lastSelectedPathPoint != null:
 		for pathPointButton in lastSelectedPathPoint.neighborPathPoints:
 			pathPointButton.calculateBattle(armyPath, "melee", thisArmy, lastSelectedPathPoint)
+		if _army_has_active_marine(thisArmy):
+			for pathPointButton in lastSelectedPathPoint.navalPathPoints:
+				pathPointButton.calculateBattle(armyPath, "melee", thisArmy, lastSelectedPathPoint)
 	#set all apfs that are not neighbors to 'disabled' which makes them unclickable
 	#set the world to 'melee attack calc' bool
 	#if an apf is hovered over while in melee attack calc, build a battle and display results
 	#if an apf is clicked while in melee attack calc, enact the battle and add damage/results
-	
+
 	pass # Replace with function body.
+
+func _army_has_active_marine(army: Army) -> bool:
+	for unit in army.unitsList:
+		for mm in unit.militaryModifierList:
+			if mm.milModType == "Marine" and not mm.disabled:
+				return true
+	return false
 
 func rangedPressed(armyPath, thisArmy) -> void:
 	if lastSelectedPathPoint != null:

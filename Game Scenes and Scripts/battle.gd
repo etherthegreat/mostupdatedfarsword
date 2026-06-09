@@ -83,7 +83,7 @@ func _calculate_projected_damage() -> void:
 func _calculate_melee_damage() -> void:
 	# ── Attacker hits defender ──────────────────────────────
 	# Raw melee damage from attacker's punch score
-	var raw_attack = float(attacker.armyPunch) + _army_marine_bonus(attacker)
+	var raw_attack = float(attacker.armyPunch) + _army_naval_supremacy_bonus(attacker)
 
 	# Apply saber charge cost preview (attacker loses some manpower charging)
 	var attacker_charge_loss: float = 0.0
@@ -267,22 +267,14 @@ func _count_artillery(army: Army) -> int:
 			count += 1
 	return count
 
-func _count_naval_neighbors(army: Army) -> int:
+func _army_naval_supremacy_bonus(army: Army) -> float:
+	# "Naval Supremacy" mod: +5 melee damage per unit level when attacking from a naval PPB
 	if army.inTile == null:
-		return 0
-	var count: int = 0
-	for neighbor in army.inTile.TileNeighbors:
-		if neighbor.ocean or neighbor.coastal:
-			count += 1
-	return count
-
-func _army_marine_bonus(army: Army) -> float:
-	if _count_naval_neighbors(army) == 0:
 		return 0.0
 	var bonus: float = 0.0
 	for unit in army.unitsList:
 		for mm in unit.militaryModifierList:
-			if mm.milModType == "Marine" and not mm.disabled:
+			if mm.milModType == "Naval Supremacy" and not mm.disabled:
 				bonus += 5.0 * float(unit.unitLevel)
 				break
 	return bonus

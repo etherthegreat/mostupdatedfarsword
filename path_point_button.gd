@@ -23,6 +23,8 @@ var discoveredByPlayer: bool
 func buildSelf():
 	for NodePath in neighborPathPointsEXP:
 		neighborPathPoints.append(get_node(NodePath))
+	for NodePath in navalPathPointsEXP:
+		navalPathPoints.append(get_node(NodePath))
 	ppbTile = ppbTileEXP
 	pass
 
