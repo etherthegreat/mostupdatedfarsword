@@ -3457,6 +3457,8 @@ func _on_path_control_show_army_info(key) -> void:
 #this is where the battles for melee are calculated
 var calculateMelee: bool
 func meleePressed(armyPath, thisArmy) -> void:
+	if thisArmy.attackBlocked:
+		return
 	if lastSelectedPathPoint != null:
 		for pathPointButton in lastSelectedPathPoint.neighborPathPoints:
 			pathPointButton.calculateBattle(armyPath, "melee", thisArmy, lastSelectedPathPoint)
@@ -3478,6 +3480,8 @@ func _army_has_active_marine(army: Army) -> bool:
 	return false
 
 func rangedPressed(armyPath, thisArmy) -> void:
+	if thisArmy.attackBlocked:
+		return
 	if lastSelectedPathPoint != null:
 		for pathPointButton in lastSelectedPathPoint.neighborPathPoints:
 			pathPointButton.calculateBattle(armyPath, "ranged", thisArmy, lastSelectedPathPoint)
@@ -3718,6 +3722,7 @@ func _on_next_turn_pressed() -> void:
 	_advance_fortnight()
 	_apply_winter_army_drain()
 	_tick_storms()
+	_apply_storm_debuffs()
 	evaluateDateEvents()
 	for Tile in $TileController.get_children():
 		Tile.tick_conquest_timer()
@@ -3848,6 +3853,24 @@ func _spread_storm(origin: Tile, storm_id: String, storm_type: String,
 		neighbor.stormDuration  = duration
 		neighbor.stormIntensity = intensity
 		neighbor.stormOriginId  = storm_id
+
+func _apply_storm_debuffs() -> void:
+	for country in aliveCountriesList:
+		for army in country.countryArmyList:
+			if army.inTile != null and army.inTile.stormActive:
+				_apply_storm_status_to_army(army, army.inTile.stormType)
+
+func _apply_storm_status_to_army(army: Army, storm_type: String) -> void:
+	match storm_type:
+		"Thunderstorm", "Hurricane":
+			army.apply_status("Waterlogged", 1)
+		"Blizzard", "Nor'easter":
+			army.apply_status("Frostbitten", 2)
+		"Fog":
+			army.apply_status("Blinded", 1)
+		"Tornado":
+			army.apply_status("Bogged Down", 1)
+			army.apply_status("Shaken", 1)
 
 func _determine_storm_type(tile: Tile) -> String:
 	# winterScore < 0 = tropical  →  hurricane or thunderstorm

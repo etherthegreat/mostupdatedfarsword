@@ -82,6 +82,11 @@ var sabotageTimer: int = 0        # turns remaining before sabotage clears
 var reconDebuffed: bool = false   # enemy spy Reconnaissance — reduces armyDefence in battle
 var reconDebuffTimer: int = 0     # turns remaining before recon debuff clears
 
+# ── STATUS EFFECTS ─────────────────────────────────────────────────────────────
+var armyStatusEffects: Array = []   # Array of {type: String, turnsLeft: int}
+var attackBlocked: bool = false     # set by Routed/Pacified/Seduced/Love-Struck/Mutinous
+var reinforcementBlocked: bool = false  # set by Supply Cut/Quarantined
+
 var armySiegeScore: float
 
 #spawning and tiles
@@ -152,7 +157,10 @@ func updateArmyUI(): #call whenever attacked, or just whenever the player opens 
 func onTurnEnd():
 	# Restore full movement points at the start of each new turn
 	currentMovementPoints = maxMovementPoints
-	# Tick down spy effect timers
+	# Reset per-turn flags (re-derived below from active statuses)
+	attackBlocked = false
+	reinforcementBlocked = false
+	# Tick spy effect timers
 	if sabotageTimer > 0:
 		sabotageTimer -= 1
 		if sabotageTimer <= 0:
@@ -161,12 +169,123 @@ func onTurnEnd():
 		reconDebuffTimer -= 1
 		if reconDebuffTimer <= 0:
 			reconDebuffed = false
-	if parentCountry.TotalManpower > 0:
+	# Tick per-unit temporary mods
+	var unit_mods_changed: bool = false
+	for Unit in unitsList:
+		if Unit.tick_temp_mods():
+			unit_mods_changed = true
+	# Tick army-level status effects (DoT, decrement, removal)
+	_tick_status_effects()
+	# Apply movement reductions and re-derive blocked flags from remaining statuses
+	_apply_status_flags()
+	# Reinforce only if not supply-cut or quarantined
+	if not reinforcementBlocked and parentCountry.TotalManpower > 0:
 		for Unit in unitsList:
 			Unit.refillManpower(parentCountry.armyReinforceRate)
 			print("unitREFILL", Unit.unitCurrentManpower, parentCountry.armyReinforceRate)
+	if unit_mods_changed:
+		surveySelf()
 	updateArmyUI()
 	pass
+
+func apply_status(type: String, duration: int) -> void:
+	for s in armyStatusEffects:
+		if s.type == type:
+			s.turnsLeft = max(s.turnsLeft, duration)
+			surveySelf()
+			_apply_status_flags()
+			return
+	armyStatusEffects.append({type = type, turnsLeft = duration})
+	surveySelf()
+	_apply_status_flags()
+
+func _has_status(type: String) -> bool:
+	for s in armyStatusEffects:
+		if s.type == type:
+			return true
+	return false
+
+func _tick_status_effects() -> void:
+	var to_remove: Array = []
+	for s in armyStatusEffects:
+		match s.type:
+			"Burning":
+				calculateDefenderResults("fire", 5 * max(1, unitCount))
+			"Diseased":
+				calculateDefenderResults("disease", 3 * max(1, unitCount))
+			"Quarantined":
+				calculateDefenderResults("disease", max(1, unitCount))
+		s.turnsLeft -= 1
+		if s.turnsLeft <= 0:
+			to_remove.append(s)
+	for s in to_remove:
+		armyStatusEffects.erase(s)
+	if to_remove.size() > 0:
+		surveySelf()
+
+func _apply_status_effects_to_stats() -> void:
+	for s in armyStatusEffects:
+		match s.type:
+			"Stunned":
+				armyPunch = 0
+			"Suppressed":
+				armyLaunch = 0
+			"Shaken":
+				armyBlock = int(float(armyBlock) * 0.5)
+			"Terrified":
+				armyPunch = int(float(armyPunch) * 0.5)
+				armyBlock = int(float(armyBlock) * 0.7)
+			"Routed":
+				armyPunch = 0
+				armyDefence = int(float(armyDefence) * 0.5)
+			"Blinded":
+				armyLaunch = int(float(armyLaunch) * 0.5)
+				armyDefence = int(float(armyDefence) * 0.5)
+			"Hexed":
+				armyMagicDefense = 0
+			"Demoralized":
+				armyPunch = int(float(armyPunch) * 0.8)
+				armyBlock = int(float(armyBlock) * 0.8)
+			"Waterlogged":
+				armyPunch  = int(float(armyPunch)  * 0.8)
+				armyLaunch = int(float(armyLaunch) * 0.8)
+			"Frostbitten":
+				armyPunch  = int(float(armyPunch)  * 0.7)
+				armyLaunch = int(float(armyLaunch) * 0.7)
+			"Seduced":
+				armyPunch = 0
+			"Starstruck":
+				armyPunch   = int(float(armyPunch)   * 0.7)
+				armyLaunch  = int(float(armyLaunch)  * 0.7)
+				armyBlock   = int(float(armyBlock)   * 0.7)
+				armyDefence = int(float(armyDefence) * 0.7)
+			"Hangover":
+				armyPunch   = int(float(armyPunch)   * 0.5)
+				armyLaunch  = int(float(armyLaunch)  * 0.5)
+				armyBlock   = int(float(armyBlock)   * 0.5)
+				armyDefence = int(float(armyDefence) * 0.5)
+			"Love-Struck":
+				armyPunch = int(float(armyPunch) * 0.3)
+				armyBlock = int(float(armyBlock) * 0.3)
+			"Mutinous":
+				armyPunch = int(float(armyPunch) * 0.6)
+
+func _apply_status_flags() -> void:
+	for s in armyStatusEffects:
+		match s.type:
+			"Routed", "Pacified", "Seduced", "Love-Struck":
+				attackBlocked = true
+			"Stunned":
+				attackBlocked = true
+			"Supply Cut", "Quarantined":
+				reinforcementBlocked = true
+			"Mutinous":
+				if randf() < 0.5:
+					attackBlocked = true
+			"Exhausted":
+				currentMovementPoints = min(currentMovementPoints, 1)
+			"Bogged Down":
+				currentMovementPoints = 0
 
 func addUnitToArmy(unitToAdd):
 	unitsList.append(unitToAdd)
@@ -329,8 +448,9 @@ func surveySelf():
 		if parentCountry.TotalMetal <= 0:
 			Unit.disableMilModType("Metal")
 			# prevents units from replenishing armor
-		Unit.currentTerrain = inTile.terrain if inTile != null else ""
-		Unit.currentStorm  = inTile.stormType if (inTile != null and inTile.stormActive) else ""
+		Unit.currentTerrain  = inTile.terrain if inTile != null else ""
+		Unit.currentStorm   = inTile.stormType if (inTile != null and inTile.stormActive) else ""
+		Unit.armyDemoralized = _has_status("Demoralized")
 		Unit.calculateMilMods()
 		armyPunch += Unit.unitOffensiveScore
 		armyBlock += Unit.unitDefensiveScore
@@ -375,6 +495,7 @@ func surveySelf():
 		var mm: float = 1.0 + (float(commander.morale) / 100.0) * 0.25
 		armyPunch   = int(float(armyPunch)   * mm)
 		armyDefence = int(float(armyDefence) * mm)
+	_apply_status_effects_to_stats()
 	pass
 
 func calculateMaxUnitLevel():

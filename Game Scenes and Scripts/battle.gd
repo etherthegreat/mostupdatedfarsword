@@ -234,6 +234,8 @@ func applyBattleResults() -> void:
 	if battleType == "melee":
 		_apply_charge_costs()
 
+	_apply_combat_status_effects()
+
 	emit_signal("deleteBattles")
 
 
@@ -278,6 +280,41 @@ func _army_naval_supremacy_bonus(army: Army) -> float:
 				bonus += 5.0 * float(unit.unitLevel)
 				break
 	return bonus
+
+func _apply_combat_status_effects() -> void:
+	# Rout check: >40% manpower lost in one battle
+	if defenderCurrentManpower > 0:
+		if float(defenderManpowerLoss) / defenderCurrentManpower >= 0.4:
+			defender.apply_status("Routed", 2)
+	if attackerCurrentManpower > 0:
+		if float(attackerManpowerLoss) / attackerCurrentManpower >= 0.4:
+			attacker.apply_status("Routed", 2)
+
+	# Weapon-based status effects applied to the defender
+	for unit in attacker.unitsList:
+		if unit.unitWeapon == null:
+			continue
+		match unit.unitWeapon.weaponType:
+			"Baseball Bat":
+				defender.apply_status("Shaken", 1)
+			"Trident":
+				defender.apply_status("Terrified", 2)
+			"Mythic Atlatl":
+				defender.apply_status("Stunned", 1)
+			"Sharps Carbine":
+				defender.apply_status("Blinded", 1)
+			"Blackbeard's Pistols":
+				defender.apply_status("Terrified", 2)
+			"Colt Revolver":
+				defender.apply_status("Shaken", 1)
+			"Rocket Artillery":
+				defender.apply_status("Burning", 2)
+				defender.apply_status("Suppressed", 1)
+			"Trebuchet":
+				if battleType == "ranged":
+					defender.apply_status("Stunned", 1)
+			"Wright Flyer":
+				defender.apply_status("Suppressed", 1)
 
 func _on_attack_button_pressed() -> void:
 	applyBattleResults()

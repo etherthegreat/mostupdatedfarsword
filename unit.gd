@@ -51,6 +51,7 @@ var militaryModifierList: Array = []
 
 var currentTerrain: String = ""   # set from inTile.terrain before calculateMilMods()
 var currentStorm: String = ""     # set from inTile.stormType when inTile.stormActive
+var armyDemoralized: bool = false # set from army before calculateMilMods(); skips all mods
 
 const milModScene = preload("res://mil_mod.tscn")
 const weaponScene = preload("res://weapon.tscn")
@@ -154,6 +155,8 @@ func calculateGrossValues() -> void:
 
 func calculateMilMods() -> void:
 	if militaryModifierList == null:
+		return
+	if armyDemoralized:
 		return
 	for MilMod in militaryModifierList:
 		if not MilMod.disabled:
@@ -524,3 +527,18 @@ func changeArmor(Type: String) -> void:
 
 func changeOre(Type: String) -> void:
 	unitOre.updateSelf(Type)
+
+func tick_temp_mods() -> bool:
+	var changed: bool = false
+	var to_remove: Array = []
+	for mm in militaryModifierList:
+		if mm.turnsRemaining == -1:
+			continue
+		mm.turnsRemaining -= 1
+		if mm.turnsRemaining <= 0:
+			to_remove.append(mm)
+			changed = true
+	for mm in to_remove:
+		mm.queue_free()
+		militaryModifierList.erase(mm)
+	return changed

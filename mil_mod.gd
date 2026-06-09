@@ -33,6 +33,8 @@ var culturalMod: bool
 var culturalState: String    # state code this mod is exclusive to (e.g. "TN", "VA")
 
 var disabled: bool
+var turnsRemaining: int = -1   # -1 = permanent; ≥1 = turns left; removed at 0
+var isNegative: bool = false
 
 var newArea2D: Area2D
 var newCollissionArea2D: CollisionShape2D
@@ -55,6 +57,8 @@ func buildSelf(Type):
 	stormType = ""
 	culturalMod = false
 	culturalState = ""
+	turnsRemaining = -1
+	isNegative     = false
 	#$Sprite2D/InfoPanel.visible = false
 	match milModType:
 		#COUNTRY MILMODS
@@ -696,6 +700,121 @@ func buildSelf(Type):
 			milModDescription = str("This unit sets trap lines through the wilderness, generating +2 food and +1 trade per turn.")
 			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
 			milModResource = "Food"
+		# ── NEGATIVE STATUS EFFECTS ──────────────────────────────────────────────
+		"Stunned":
+			isNegative = true
+			milModDescription = "[i]Dazed and unable to act:[/i][color=red] Cannot make melee attacks this turn[/color]"
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Suppressed":
+			isNegative = true
+			milModDescription = "[i]Pinned under fire:[/i][color=red] Cannot fire ranged attacks this turn[/color]"
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Shaken":
+			isNegative = true
+			milModDescription = "[i]Formation broken:[/i][color=red] Melee block halved[/color]"
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Terrified":
+			isNegative = true
+			milModDescription = "[i]Frozen in fear:[/i][color=red] Melee attack −50%, melee block −30%[/color]"
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Routed":
+			isNegative = true
+			milModDescription = "[i]Fleeing the field:[/i][color=red] Cannot attack; melee attack zeroed; ranged defence halved[/color]"
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Burning":
+			isNegative = true
+			milModDescription = "[i]The ranks are on fire:[/i][color=red] Loses manpower each turn[/color]"
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Blinded":
+			isNegative = true
+			milModDescription = "[i]Can't see a thing:[/i][color=red] Ranged attack and ranged defence halved[/color]"
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Hexed":
+			isNegative = true
+			milModDescription = "[i]Cursed by dark magic:[/i][color=red] Magic defence eliminated[/color]"
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Diseased":
+			isNegative = true
+			milModDescription = "[i]Plague has struck the ranks:[/i][color=red] Loses manpower each turn[/color]"
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Waterlogged":
+			isNegative = true
+			stormMod = true
+			stormType = "Thunderstorm"
+			milModDescription = "[i]Soaked to the bone:[/i][color=red] Melee and ranged attack −20%[/color]"
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Frostbitten":
+			isNegative = true
+			stormMod = true
+			stormType = "Blizzard"
+			milModDescription = "[i]Fingers too cold to hold a weapon:[/i][color=red] Melee and ranged attack −30%[/color]"
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Demoralized":
+			isNegative = true
+			milModDescription = "[i]Spirit broken:[/i][color=red] Melee attack −20%, block −20%, all mil mods disabled[/color]"
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Exhausted":
+			isNegative = true
+			milModDescription = "[i]Worn out from the march:[/i][color=red] Movement reduced to 1 this turn[/color]"
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Bogged Down":
+			isNegative = true
+			milModDescription = "[i]Stuck fast:[/i][color=red] Cannot move this turn[/color]"
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Pacified":
+			isNegative = true
+			milModDescription = "[i]Ordered to stand down:[/i][color=red] Cannot initiate attacks this turn[/color]"
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Supply Cut":
+			isNegative = true
+			milModDescription = "[i]Supplies intercepted:[/i][color=red] Cannot reinforce or resupply[/color]"
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Quarantined":
+			isNegative = true
+			milModDescription = "[i]Plague quarantine in effect:[/i][color=red] No reinforcement; manpower drains each turn[/color]"
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Seduced":
+			isNegative = true
+			milModDescription = "[i]The commander has found better things to do:[/i][color=red] Melee zeroed; cannot attack[/color]"
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Starstruck":
+			isNegative = true
+			milModDescription = "[i]Encountered a celebrity. Requested autograph. Please advise.:[/i][color=red] All stats −30%[/color]"
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Hangover":
+			isNegative = true
+			milModDescription = "[i]Someone opened the wrong cask.:[/i][color=red] All stats −50%[/color]"
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Love-Struck":
+			isNegative = true
+			milModDescription = "[i]Cupid's arrow strikes without warning.:[/i][color=red] Melee attack −70%, block −70%; cannot attack[/color]"
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"Mutinous":
+			isNegative = true
+			milModDescription = "[i]The ranks are restless.:[/i][color=red] Melee attack −40%; 50% chance army refuses orders each turn[/color]"
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
 	if has_node("Sprite2D"):
 		$Sprite2D/InfoPanel/MilModNameLabel.text = str(milModType)
 		$Sprite2D/InfoPanel/MilModDescriptionLabel.text = str(milModDescription)
