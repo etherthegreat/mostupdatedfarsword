@@ -117,6 +117,315 @@ var boatsDic: Dictionary     # new Boats resource dictionary
 var corruptionDic: Dictionary
 
 signal towerBuilding
+
+# Applies building output bonuses based on the assigned governor's archetype position.
+# Covers all 18 building types and all canonical positions from both named and procedural governors.
+# Automatically writes Dic entries for any resource that changes so the tile info panel can show it.
+func _apply_governor_archetype_bonus(bType: String) -> void:
+	if tile.tileGovernor == null:
+		return
+	var pos: String = tile.tileGovernor.governorPosition
+	var lvl: int    = tile.tileGovernor.governorLevel
+
+	var f0   := foodPerLevel;     var d0   := dollarsPerLevel
+	var w0   := woodPerLevel;     var m0   := metalPerLevel
+	var mg0  := magicPerLevel;    var sc0  := sciencePerLevel
+	var cu0  := culturePerLevel;  var mn0  := mandatePerLevel
+	var hp0  := happinessPerLevel; var mp0  := manpowerPerLevel
+	var inf0 := influencePerLevel; var wp0  := weaponsPerLevel
+	var bt0  := boatsPerLevel
+
+	match bType:
+		"Farm":
+			match pos:
+				"FARMER":
+					match lvl:
+						1: foodPerLevel += 1
+						2: foodPerLevel += 2; woodPerLevel += 1
+						3: foodPerLevel += 3; woodPerLevel += 2; dollarsPerLevel += 1
+				"SCOUT":
+					match lvl:
+						1: foodPerLevel += 1
+						2: foodPerLevel += 2; manpowerPerLevel += 50
+						3: foodPerLevel += 3; manpowerPerLevel += 100
+				"HEALER":
+					match lvl:
+						2: foodPerLevel += 1
+						3: foodPerLevel += 2; happinessPerLevel += 1
+				"WARRIOR":
+					manpowerPerLevel += 100 * lvl
+				"ORATOR", "HERALD", "CIRCUIT PREACHER":
+					match lvl:
+						2: culturePerLevel += 1
+						3: culturePerLevel += 2; mandatePerLevel += 1
+		"Granary":
+			match pos:
+				"FARMER":
+					match lvl:
+						1: foodPerLevel += 1
+						2: foodPerLevel += 2; mandatePerLevel += 1
+						3: foodPerLevel += 3; mandatePerLevel += 2; happinessPerLevel += 1
+				"BUREAUCRAT", "DEPUTY GOVERNOR":
+					match lvl:
+						1: mandatePerLevel += 1
+						2: mandatePerLevel += 2; influencePerLevel += 1
+						3: mandatePerLevel += 3; influencePerLevel += 2
+				"HEALER":
+					match lvl:
+						2: foodPerLevel += 1
+						3: foodPerLevel += 2; happinessPerLevel += 1
+		"Mine":
+			match pos:
+				"ENGINEER":
+					match lvl:
+						1: metalPerLevel += 1
+						2: metalPerLevel += 2; dollarsPerLevel += 1
+						3: metalPerLevel += 3; dollarsPerLevel += 2; woodPerLevel += 1
+				"WARRIOR":
+					match lvl:
+						1: metalPerLevel += 1
+						2: metalPerLevel += 2; dollarsPerLevel += 1
+						3: metalPerLevel += 3; dollarsPerLevel += 1; weaponsPerLevel += 1
+				"SOLDIER":
+					match lvl:
+						2: metalPerLevel += 1
+						3: metalPerLevel += 2; dollarsPerLevel += 1
+		"Temple":
+			match pos:
+				"ORATOR", "HERALD", "CIRCUIT PREACHER":
+					match lvl:
+						1: culturePerLevel += 1
+						2: culturePerLevel += 2; happinessPerLevel += 1
+						3: culturePerLevel += 3; happinessPerLevel += 2; mandatePerLevel += 1
+				"DIPLOMAT":
+					match lvl:
+						2: culturePerLevel += 1; happinessPerLevel += 1
+						3: culturePerLevel += 2; happinessPerLevel += 2; mandatePerLevel += 1
+				"MAGE":
+					match lvl:
+						2: magicPerLevel += 1; culturePerLevel += 1
+						3: magicPerLevel += 2; culturePerLevel += 2; mandatePerLevel += 1
+		"Camp":
+			match pos:
+				"SCOUT":
+					match lvl:
+						1: woodPerLevel += 2
+						2: woodPerLevel += 3; foodPerLevel += 1
+						3: woodPerLevel += 4; foodPerLevel += 2; culturePerLevel += 1
+				"ENGINEER":
+					match lvl:
+						1: woodPerLevel += 1
+						2: woodPerLevel += 2; metalPerLevel += 1
+						3: woodPerLevel += 3; metalPerLevel += 2
+				"FARMER":
+					match lvl:
+						2: foodPerLevel += 1; woodPerLevel += 1
+						3: foodPerLevel += 2; woodPerLevel += 2; culturePerLevel += 1
+		"Tower":
+			match pos:
+				"MAGE":
+					match lvl:
+						1: magicPerLevel += 1
+						2: magicPerLevel += 2; sciencePerLevel += 1
+						3: magicPerLevel += 3; sciencePerLevel += 2; culturePerLevel += 1
+				"SCHOLAR":
+					match lvl:
+						1: sciencePerLevel += 1; magicPerLevel += 1
+						2: sciencePerLevel += 2; magicPerLevel += 1
+						3: sciencePerLevel += 3; magicPerLevel += 2; culturePerLevel += 1
+				"SPY", "SPYMASTER":
+					match lvl:
+						2: sciencePerLevel += 1; magicPerLevel += 1
+						3: sciencePerLevel += 2; magicPerLevel += 1; culturePerLevel += 1
+		"Library":
+			match pos:
+				"SCHOLAR":
+					match lvl:
+						1: sciencePerLevel += 1
+						2: sciencePerLevel += 2; magicPerLevel += 1
+						3: sciencePerLevel += 3; magicPerLevel += 2; culturePerLevel += 1
+				"MAGE":
+					match lvl:
+						1: magicPerLevel += 1; sciencePerLevel += 1
+						2: magicPerLevel += 2; sciencePerLevel += 1
+						3: magicPerLevel += 3; sciencePerLevel += 2; culturePerLevel += 1
+				"BUREAUCRAT":
+					match lvl:
+						1: sciencePerLevel += 1
+						2: sciencePerLevel += 2; mandatePerLevel += 1
+						3: sciencePerLevel += 3; mandatePerLevel += 2; influencePerLevel += 1
+				"SPY", "SPYMASTER":
+					match lvl:
+						2: sciencePerLevel += 1; influencePerLevel += 1
+						3: sciencePerLevel += 2; influencePerLevel += 2; mandatePerLevel += 1
+		"Workshop", "Market":
+			match pos:
+				"ENGINEER":
+					match lvl:
+						1: dollarsPerLevel += 1
+						2: dollarsPerLevel += 2; culturePerLevel += 1
+						3: dollarsPerLevel += 3; culturePerLevel += 2; mandatePerLevel += 1
+				"SOLDIER":
+					match lvl:
+						2: dollarsPerLevel += 1
+						3: dollarsPerLevel += 2; manpowerPerLevel += 100
+				"WARRIOR":
+					match lvl:
+						2: dollarsPerLevel += 1; weaponsPerLevel += 1
+						3: dollarsPerLevel += 2; weaponsPerLevel += 2
+		"Bath":
+			match pos:
+				"HEALER":
+					match lvl:
+						1: happinessPerLevel += 1; corruptionLossPerLevel += 1
+						2: happinessPerLevel += 2; corruptionLossPerLevel += 2
+						3: happinessPerLevel += 3; corruptionLossPerLevel += 3; culturePerLevel += 1
+				"DIPLOMAT":
+					match lvl:
+						2: happinessPerLevel += 1; culturePerLevel += 1
+						3: happinessPerLevel += 2; culturePerLevel += 2; mandatePerLevel += 1
+		"Faire":
+			match pos:
+				"ORATOR", "HERALD":
+					match lvl:
+						1: happinessPerLevel += 1
+						2: happinessPerLevel += 2; culturePerLevel += 1
+						3: happinessPerLevel += 3; culturePerLevel += 2; dollarsPerLevel += 1
+				"DIPLOMAT":
+					match lvl:
+						2: happinessPerLevel += 1; dollarsPerLevel += 1
+						3: happinessPerLevel += 2; dollarsPerLevel += 2; culturePerLevel += 1
+				"WARRIOR":
+					match lvl:
+						1: manpowerPerLevel += 100
+						2: manpowerPerLevel += 200; weaponsPerLevel += 1
+						3: manpowerPerLevel += 300; weaponsPerLevel += 2; culturePerLevel += 1
+		"Forge":
+			match pos:
+				"ENGINEER":
+					match lvl:
+						1: weaponsPerLevel += 1
+						2: weaponsPerLevel += 2
+						3: weaponsPerLevel += 3; dollarsPerLevel += 1
+				"WARRIOR":
+					weaponsPerLevel   += lvl
+					metalCostPerLevel += lvl
+				"SOLDIER":
+					match lvl:
+						1: weaponsPerLevel += 1; manpowerPerLevel += 100
+						2: weaponsPerLevel += 2; manpowerPerLevel += 200
+						3: weaponsPerLevel += 3; manpowerPerLevel += 300
+		"Barracks":
+			match pos:
+				"WARRIOR":
+					match lvl:
+						1: manpowerPerLevel += 200
+						2: manpowerPerLevel += 400; weaponsPerLevel += 1
+						3: manpowerPerLevel += 600; weaponsPerLevel += 2
+				"SOLDIER":
+					match lvl:
+						1: manpowerPerLevel += 150; mandatePerLevel += 1
+						2: manpowerPerLevel += 300; mandatePerLevel += 2
+						3: manpowerPerLevel += 450; mandatePerLevel += 3; influencePerLevel += 1
+				"SCOUT":
+					match lvl:
+						1: manpowerPerLevel += 100
+						2: manpowerPerLevel += 200; foodPerLevel += 1
+						3: manpowerPerLevel += 300; foodPerLevel += 2
+				"ENGINEER":
+					match lvl:
+						2: manpowerPerLevel += 200; defensivenessPerLevel += 1
+						3: manpowerPerLevel += 400; defensivenessPerLevel += 2
+		"Dock":
+			match pos:
+				"ADMIRAL":
+					match lvl:
+						1: boatsPerLevel += 1
+						2: boatsPerLevel += 2; dollarsPerLevel += 1
+						3: boatsPerLevel += 3; dollarsPerLevel += 2; manpowerPerLevel += 100
+				"ENGINEER":
+					match lvl:
+						2: boatsPerLevel += 1; woodPerLevel += 1
+						3: boatsPerLevel += 2; woodPerLevel += 2
+				"SCOUT":
+					match lvl:
+						2: woodPerLevel += 1
+						3: woodPerLevel += 2; boatsPerLevel += 1
+		"Courthouse":
+			match pos:
+				"BUREAUCRAT", "DEPUTY GOVERNOR":
+					match lvl:
+						1: mandatePerLevel += 1
+						2: mandatePerLevel += 2; influencePerLevel += 1
+						3: mandatePerLevel += 3; influencePerLevel += 2; happinessPerLevel += 1
+				"DIPLOMAT":
+					match lvl:
+						2: mandatePerLevel += 1; influencePerLevel += 1
+						3: mandatePerLevel += 2; influencePerLevel += 2; culturePerLevel += 1
+				"ORATOR":
+					match lvl:
+						1: mandatePerLevel += 1
+						2: mandatePerLevel += 2; culturePerLevel += 1
+						3: mandatePerLevel += 3; culturePerLevel += 2; happinessPerLevel += 1
+				"SPY", "SPYMASTER":
+					match lvl:
+						2: mandatePerLevel += 1; influencePerLevel += 1
+						3: mandatePerLevel += 2; influencePerLevel += 2; sciencePerLevel += 1
+		"Monument":
+			match pos:
+				"ORATOR", "HERALD", "CIRCUIT PREACHER":
+					match lvl:
+						1: culturePerLevel += 1
+						2: culturePerLevel += 2; mandatePerLevel += 1
+						3: culturePerLevel += 3; mandatePerLevel += 2; happinessPerLevel += 1
+				"DIPLOMAT":
+					match lvl:
+						2: culturePerLevel += 1; happinessPerLevel += 1
+						3: culturePerLevel += 2; happinessPerLevel += 2; mandatePerLevel += 1
+		"Fortress":
+			match pos:
+				"WARRIOR", "SOLDIER":
+					match lvl:
+						1: defensivenessPerLevel += 1
+						2: defensivenessPerLevel += 2; mandatePerLevel += 1
+						3: defensivenessPerLevel += 3; mandatePerLevel += 2; manpowerPerLevel += 100
+				"ENGINEER":
+					match lvl:
+						1: defensivenessPerLevel += 1
+						2: defensivenessPerLevel += 2; manpowerPerLevel += 100
+						3: defensivenessPerLevel += 3; manpowerPerLevel += 200
+		"Resort":
+			match pos:
+				"HEALER":
+					match lvl:
+						1: happinessPerLevel += 1
+						2: happinessPerLevel += 2; corruptionLossPerLevel += 1
+						3: happinessPerLevel += 3; corruptionLossPerLevel += 2; culturePerLevel += 1
+				"DIPLOMAT":
+					match lvl:
+						2: happinessPerLevel += 1; dollarsPerLevel += 1
+						3: happinessPerLevel += 2; dollarsPerLevel += 2
+				"ORATOR":
+					match lvl:
+						2: happinessPerLevel += 1; culturePerLevel += 1
+						3: happinessPerLevel += 2; culturePerLevel += 2; dollarsPerLevel += 1
+
+	# Write Dic entries for every resource that changed so the tile info panel can show the breakdown
+	var label := "Governor Bonus (" + tile.tileGovernor.governorType + ")"
+	if foodPerLevel      != f0:   foodDic[label]      = (foodPerLevel      - f0)   * buildingLevel
+	if dollarsPerLevel   != d0:   dollarsDic[label]   = (dollarsPerLevel   - d0)   * buildingLevel
+	if woodPerLevel      != w0:   woodDic[label]      = (woodPerLevel      - w0)   * buildingLevel
+	if metalPerLevel     != m0:   metalDic[label]     = (metalPerLevel     - m0)   * buildingLevel
+	if magicPerLevel     != mg0:  magicDic[label]     = (magicPerLevel     - mg0)  * buildingLevel
+	if sciencePerLevel   != sc0:  scienceDic[label]   = (sciencePerLevel   - sc0)  * buildingLevel
+	if culturePerLevel   != cu0:  cultureDic[label]   = (culturePerLevel   - cu0)  * buildingLevel
+	if mandatePerLevel   != mn0:  mandateDic[label]   = (mandatePerLevel   - mn0)  * buildingLevel
+	if happinessPerLevel != hp0:  happinessDic[label] = (happinessPerLevel - hp0)  * buildingLevel
+	if manpowerPerLevel  != mp0:  manpowerDic[label]  = (manpowerPerLevel  - mp0)  * buildingLevel
+	if influencePerLevel != inf0: influenceDic[label] = (influencePerLevel - inf0) * buildingLevel
+	if weaponsPerLevel   != wp0:  weaponsDic[label]   = (weaponsPerLevel   - wp0)  * buildingLevel
+	if boatsPerLevel     != bt0:  boatsDic[label]     = (boatsPerLevel     - bt0)  * buildingLevel
+
 func buildBuilding():
 	match buildingType:
 		"Farm":
@@ -375,38 +684,7 @@ func matchPlayerUnlockables(playerCountryNode):
 				if law.lawType == "Colonial Trade Act":
 					dollarsPerLevel += 1
 					dollarsDic["Enacted Law: Mercantilism"] = (1 * buildingLevel)
-			if tile.tileGovernor != null:
-				match tile.tileGovernor.governorPosition:
-					"BREWER":
-						match tile.tileGovernor.governorLevel:
-							1:
-								dollarsPerLevel += 1
-							2:
-								dollarsPerLevel += 2
-								culturePerLevel += 1
-							3: 
-								dollarsPerLevel += 3
-								culturePerLevel += 2
-								mandatePerLevel += 1
-					"FARMER":
-						match tile.tileGovernor.governorLevel:
-							1:
-								foodPerLevel += 1
-							2:
-								foodPerLevel += 2
-								woodPerLevel += 1
-							3: 
-								foodPerLevel += 3
-								woodPerLevel += 2
-								dollarsPerLevel += 1
-					"RECRUITER":
-						match tile.tileGovernor.governorLevel:
-							1:
-								manpowerPerLevel += 10
-							2:
-								manpowerPerLevel += 20
-							3: 
-								manpowerPerLevel += 30
+			_apply_governor_archetype_bonus("Farm")
 			for tradition in playerCountry.unlockedTraditions:
 				if tradition.traditionType == "Plain Folk Virtues":
 					culturePerLevel += 1
@@ -499,24 +777,12 @@ func matchPlayerUnlockables(playerCountryNode):
 				for belief in playerCountry.selectedBeliefs:
 					if belief.beliefType == "Providence's Order":
 						mandatePerLevel += 1
-				if tile.tileGovernor != null:
-					match tile.tileGovernor.governorPosition:
-						"ADMINISTRATOR":
-							match tile.tileGovernor.governorLevel:
-								1:
-									foodPerLevel += 1
-								2:
-									foodPerLevel += 2
-									mandatePerLevel += 1
-								3: 
-									foodPerLevel += 3
-									mandatePerLevel += 2
-									happinessPerLevel += 1
 				if tile.tileSpell != null:
 					match tile.tileSpell.spellType:
 						"Celebration":
 							mandatePerLevel += 1
 							magicCostPerLevel += 4
+			_apply_governor_archetype_bonus("Granary")
 		"Mine":
 			var geoResource = tile.geologicResource if tile.geologicResource != null else ""
 			match geoResource:
@@ -558,25 +824,7 @@ func matchPlayerUnlockables(playerCountryNode):
 					dollarsCostPerLevel +=1
 					happinessCostPerLevel +=1
 					metalPerLevel += 2
-			if tile.tileGovernor != null:
-				match tile.tileGovernor.governorPosition:
-					"MINER":
-						match tile.tileGovernor.governorLevel:
-							1: 
-								metalPerLevel += 1
-							2: 
-								metalPerLevel += 2
-								dollarsPerLevel += 1
-							3: 
-								metalPerLevel += 3
-								dollarsPerLevel += 2
-								woodPerLevel += 1
-					"BUILDER":
-						match tile.tileGovernor.governorLevel:
-							2: 
-								metalPerLevel += 1
-							3:
-								metalPerLevel += 2
+			_apply_governor_archetype_bonus("Mine")
 			for tradition in playerCountry.unlockedTraditions:
 				if tradition.traditionType == "Appalachian Heritage":
 					culturePerLevel += 1
@@ -637,30 +885,7 @@ func matchPlayerUnlockables(playerCountryNode):
 					happinessPerLevel +=1
 				if law.lawType == "Parish Records":
 					culturePerLevel +=1
-			if tile.tileGovernor != null:
-				match tile.tileGovernor.governorPosition:
-					"NUN":
-						match tile.tileGovernor.governorLevel:
-							1:
-								culturePerLevel += 1
-							2:
-								culturePerLevel += 2
-								foodPerLevel += 1
-							3:
-								culturePerLevel += 3
-								foodPerLevel += 2
-								culturePerLevel += 1
-					"BISHOP":
-						match tile.tileGovernor.governorLevel:
-							1: 
-								culturePerLevel += 1
-							2:
-								culturePerLevel += 2
-								happinessPerLevel += 1
-							3:
-								culturePerLevel += 3
-								happinessPerLevel += 2
-								mandatePerLevel += 1
+			_apply_governor_archetype_bonus("Temple")
 			for tradition in playerCountry.unlockedTraditions:
 				if tradition.traditionType == "Puritan Scholarship":
 					sciencePerLevel += 1
@@ -707,29 +932,7 @@ func matchPlayerUnlockables(playerCountryNode):
 					culturePerLevel +=1
 				if law.lawType == "Naval Stores Act":
 					dollarsPerLevel += 1
-			if tile.tileGovernor != null:
-				match tile.tileGovernor.governorPosition:
-					"FORESTER":
-						match tile.tileGovernor.governorLevel:
-							1:
-								woodPerLevel += 1
-							2:
-								woodPerLevel += 2
-								foodPerLevel += 1
-							3:
-								woodPerLevel += 3
-								foodPerLevel += 2
-								culturePerLevel += 1
-					"ADMIRAL":
-						match tile.tileGovernor.governorLevel:
-							2:
-								woodPerLevel += 1
-							3:
-								woodPerLevel += 2
-					"ARTISAN":
-						match tile.tileGovernor.governorLevel:
-							3:
-								culturePerLevel += 1
+			_apply_governor_archetype_bonus("Camp")
 			for tradition in playerCountry.unlockedTraditions:
 				if tradition.traditionType == "Frontier Scouts":
 					foodPerLevel += (1 * Governor.governorLevel)
@@ -791,30 +994,7 @@ func matchPlayerUnlockables(playerCountryNode):
 					sciencePerLevel +=1
 				if law.lawType == "Colonial Apprenticeship":
 					magicPerLevel += 2
-			if tile.tileGovernor != null:
-				match tile.tileGovernor.governorPosition:
-					"ASTROLOGER":
-						match tile.tileGovernor.governorLevel:
-							1:
-								magicPerLevel += 1
-							2:
-								magicPerLevel += 2
-								sciencePerLevel += 1
-							3:
-								magicPerLevel += 3
-								sciencePerLevel += 2
-								culturePerLevel += 1
-					"MYSTIC":
-						match tile.tileGovernor.governorLevel:
-							1:
-								culturePerLevel += 1
-							2:
-								culturePerLevel += 2
-								magicPerLevel += 1
-							3:
-								culturePerLevel += 3
-								magicPerLevel += 2
-								mandatePerLevel += 1
+			_apply_governor_archetype_bonus("Tower")
 			for tradition in playerCountry.unlockedTraditions:
 				if tradition.traditionType == "Natural Order Studies":
 					sciencePerLevel += 1
@@ -873,30 +1053,7 @@ func matchPlayerUnlockables(playerCountryNode):
 					influencePerLevel += 1
 				if law.lawType == "Free Press Act":
 					happinessPerLevel += 1
-			if tile.tileGovernor != null:
-				match tile.tileGovernor.governorPosition:
-					"SCHOLAR":
-						match tile.tileGovernor.governorLevel:
-							1:
-								sciencePerLevel += 1
-							2:
-								sciencePerLevel += 2
-								magicPerLevel += 1
-							3:
-								sciencePerLevel += 3
-								magicPerLevel += 2
-								culturePerLevel += 1
-					"INVENTOR":
-						match tile.tileGovernor.governorLevel:
-							1:
-								sciencePerLevel += 1
-							2:
-								sciencePerLevel += 2
-								dollarsPerLevel += 1
-							3:
-								sciencePerLevel += 3
-								dollarsPerLevel += 2
-								culturePerLevel += 1
+			_apply_governor_archetype_bonus("Library")
 			for tradition in playerCountry.unlockedTraditions:
 				if tradition.traditionType == "Republican Letters":
 					sciencePerLevel += 1
@@ -952,27 +1109,7 @@ func matchPlayerUnlockables(playerCountryNode):
 				if law.lawType == "Navigation Acts":
 					dollarsPerLevel += 1
 					mandateCostPerLevel += 2
-			if tile.tileGovernor != null:
-				match tile.tileGovernor.governorPosition:
-					"MINTER":
-						match tile.tileGovernor.governorLevel:
-							1:
-								dollarsPerLevel += 1
-							2:
-								dollarsPerLevel += 2
-								culturePerLevel += 1
-							3:
-								dollarsPerLevel += 3
-								culturePerLevel += 2
-								mandatePerLevel += 1
-					"BUILDER":
-						match tile.tileGovernor.governorLevel:
-							1:
-								dollarsPerLevel += 1
-							2:
-								dollarsPerLevel += 2
-							3:
-								dollarsPerLevel += 3
+			_apply_governor_archetype_bonus("Workshop")
 			for tradition in playerCountry.unlockedTraditions:
 				if tradition.traditionType == "Artisan Quarter":
 					culturePerLevel += 1
@@ -1013,25 +1150,7 @@ func matchPlayerUnlockables(playerCountryNode):
 				if law.lawType == "Town Meeting Rights":
 					influencePerLevel +=1
 					mandatePerLevel += 1
-			if tile.tileGovernor != null:
-				match tile.tileGovernor.governorPosition:
-					"MASSEUSE":
-						match tile.tileGovernor.governorLevel:
-							1:
-								culturePerLevel += 1
-							2:
-								culturePerLevel += 2
-								magicPerLevel += 1
-							3:
-								culturePerLevel += 3
-								magicPerLevel += 2
-								dollarsPerLevel += 1
-					"ARTISAN":
-						match tile.tileGovernor.governorLevel:
-							2:
-								dollarsPerLevel += 1
-							3:
-								dollarsPerLevel += 2
+			_apply_governor_archetype_bonus("Bath")
 			for tradition in playerCountry.unlockedTraditions:
 				if tradition.traditionType == "Public Well Customs":
 					mandatePerLevel += 1
@@ -1069,30 +1188,7 @@ func matchPlayerUnlockables(playerCountryNode):
 					culturePerLevel += 1
 				if law.lawType == "Muster Day Games":
 					manpowerPerLevel += 15
-			if tile.tileGovernor != null:
-				match tile.tileGovernor.governorPosition:
-					"TAMER":
-						match tile.tileGovernor.governorLevel:
-							1:
-								happinessPerLevel += 1
-							2:
-								happinessPerLevel += 2
-								culturePerLevel += 1
-							3:
-								happinessPerLevel += 3
-								culturePerLevel += 2
-								dollarsPerLevel += 1
-					"EXPLORER":
-						match tile.tileGovernor.governorLevel:
-							1:
-								manpowerPerLevel += 10
-							2:
-								manpowerPerLevel += 20
-								weaponsPerLevel += 1
-							3: 
-								manpowerPerLevel += 30
-								weaponsPerLevel += 2
-								culturePerLevel += 1
+			_apply_governor_archetype_bonus("Faire")
 			for tradition in playerCountry.unlockedTraditions:
 				if tradition.traditionType == "Colonial Cookbook":
 					culturePerLevel += 1
@@ -1145,25 +1241,7 @@ func matchPlayerUnlockables(playerCountryNode):
 				if law.lawType == "Scrap Metal Drive":
 					metalPerLevel += 1
 					dollarsPerLevel += 1
-			if tile.tileGovernor != null:
-				match tile.tileGovernor.governorPosition:
-					"BLACKSMITH":
-						weaponsPerLevel += (2 * Governor.governorLevel)
-						#corruption in this tile +(2 * Governor.governorLevel)
-						metalCostPerLevel += (2 * Governor.governorLevel)
-					"BLADEMASTER":
-						manpowerPerLevel += (250 * Governor.governorLevel)
-						weaponsPerLevel += (1 * Governor.governorLevel)
-						#corruption in this tile +(1 * Governor.governorLevel)
-						metalCostPerLevel += (1 * Governor.governorLevel)
-					"ARTISAN":
-						match tile.tileGovernor.governorLevel:
-							1:
-								weaponsPerLevel += 1
-							2:
-								weaponsPerLevel += 2
-							3:
-								weaponsPerLevel += 3
+			_apply_governor_archetype_bonus("Forge")
 			for tradition in playerCountry.unlockedTraditions:
 				if tradition.traditionType == "Iron Discipline":
 					weaponsPerLevel += 1
@@ -1205,18 +1283,7 @@ func matchPlayerUnlockables(playerCountryNode):
 					# Cash and land bounties to fill the ranks
 					manpowerPerLevel += 200
 					dollarsCostPerLevel += 2
-			if tile.tileGovernor != null:
-				match tile.tileGovernor.governorPosition:
-					"DRILL SERGEANT":
-						match tile.tileGovernor.governorLevel:
-							1: manpowerPerLevel += 200
-							2: manpowerPerLevel += 400; weaponsPerLevel += 1
-							3: manpowerPerLevel += 600; weaponsPerLevel += 2
-					"COLONEL":
-						match tile.tileGovernor.governorLevel:
-							1: manpowerPerLevel += 150; mandatePerLevel += 1
-							2: manpowerPerLevel += 300; mandatePerLevel += 2
-							3: manpowerPerLevel += 450; mandatePerLevel += 3; influencePerLevel += 1
+			_apply_governor_archetype_bonus("Barracks")
 			for tradition in playerCountry.unlockedTraditions:
 				if tradition.traditionType == "Minuteman Ready":
 					# Sixty seconds to muster — colonial militia tradition; benefits both farms and barracks
@@ -1256,6 +1323,7 @@ func matchPlayerUnlockables(playerCountryNode):
 					foodPerLevel += 1
 				if tradition.traditionType == "Artisan Quarter":
 					culturePerLevel += 1
+			_apply_governor_archetype_bonus("Market")
 		"Dock":
 			# Dock unlockables: traditions/techs/laws that boost naval output.
 			for Technology in playerCountry.unlockedTechnologies:
@@ -1271,6 +1339,7 @@ func matchPlayerUnlockables(playerCountryNode):
 				if tradition.traditionType == "Agrarian Bastions":
 					# Agrarian Bastions: docks can produce dollars from trade
 					dollarsPerLevel += 1
+			_apply_governor_archetype_bonus("Dock")
 		"Monument":
 			# Monument uses the same unlockable logic as Temple (both produce Culture).
 			for Technology in playerCountry.unlockedTechnologies:
@@ -1287,6 +1356,7 @@ func matchPlayerUnlockables(playerCountryNode):
 			for belief in playerCountry.selectedBeliefs:
 				if belief.beliefType == "Sacred Craft":
 					culturePerLevel += 1
+			_apply_governor_archetype_bonus("Monument")
 		"Resort":
 			# Resort produces Happiness — buffed by comfort/hospitality traditions.
 			for Technology in playerCountry.unlockedTechnologies:
@@ -1298,6 +1368,7 @@ func matchPlayerUnlockables(playerCountryNode):
 			for tradition in playerCountry.unlockedTraditions:
 				if tradition.traditionType == "Common Respite":
 					happinessPerLevel += 1
+			_apply_governor_archetype_bonus("Resort")
 		"Fortress":
 			# Fortress adds defensiveness; traditions can unlock food production.
 			for tradition in playerCountry.unlockedTraditions:
@@ -1312,6 +1383,7 @@ func matchPlayerUnlockables(playerCountryNode):
 			for law in playerCountry.lawsInConstitution:
 				if law.lawType == "Engineer Corps":
 					defensivenessPerLevel += 1
+			_apply_governor_archetype_bonus("Fortress")
 		"Courthouse":
 			# Courthouse produces Mandate — governance technologies, civic laws, and administrative traditions boost it.
 			for Technology in playerCountry.unlockedTechnologies:
@@ -1330,30 +1402,7 @@ func matchPlayerUnlockables(playerCountryNode):
 				if law.lawType == "Free Speech Act":
 					happinessPerLevel += 1
 					influencePerLevel += 1
-			if tile.tileGovernor != null:
-				match tile.tileGovernor.governorPosition:
-					"ADMINISTRATOR":
-						match tile.tileGovernor.governorLevel:
-							1:
-								mandatePerLevel += 1
-							2:
-								mandatePerLevel += 2
-								influencePerLevel += 1
-							3:
-								mandatePerLevel += 3
-								influencePerLevel += 2
-								happinessPerLevel += 1
-					"BISHOP":
-						match tile.tileGovernor.governorLevel:
-							1:
-								mandatePerLevel += 1
-							2:
-								mandatePerLevel += 2
-								culturePerLevel += 1
-							3:
-								mandatePerLevel += 3
-								culturePerLevel += 2
-								happinessPerLevel += 1
+			_apply_governor_archetype_bonus("Courthouse")
 			for tradition in playerCountry.unlockedTraditions:
 				if tradition.traditionType == "Continental Congress Ledgers":
 					mandatePerLevel += 1

@@ -18,7 +18,7 @@ func buildSelf(type, amount, dictionary):
 		$ManaLabel["theme_override_colors/font_color"] = Color.RED
 		$panelbackground.texture = load("res://art assets/finishedAssets/Panels/topbarresources/IMG_1546.PNG")
 	match type:
-		"Currency":
+		"Currency", "Dollars":
 			$ManaIcon.texture = load("res://art assets/finishedAssets/manaicons/currency.png")
 		"Food":
 			$ManaIcon.texture = load("res://art assets/finishedAssets/manaicons/fooda.png")
@@ -40,10 +40,12 @@ func buildSelf(type, amount, dictionary):
 			$ManaIcon.texture = load("res://art assets/finishedAssets/manaicons/Culture.png")
 		"Mandate":
 			$ManaIcon.texture = load("res://art assets/finishedAssets/manaicons/Mandate.png")
-		"Harmony":
+		"Harmony", "Happiness":
 			$ManaIcon.texture = load("res://art assets/finishedAssets/manaicons/Harmony.png")
 		"Influence":
 			$ManaIcon.texture = load("res://art assets/finishedAssets/manaicons/Influence 1.png")
+		"Boats":
+			$ManaIcon.texture = load("res://art assets/finishedAssets/manaicons/manpower.png")
 	for key in dictionary:
 		var newDic = dictionary[key]
 		for sub_key in newDic:

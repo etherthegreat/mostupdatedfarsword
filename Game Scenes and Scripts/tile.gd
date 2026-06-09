@@ -275,7 +275,19 @@ var spellCostToCast: int
 
 var tileDollarsTax: float
 var tileHappinessTax: float
-var tileFoodDic: Dictionary = {}
+var tileFoodDic:      Dictionary = {}
+var tileDollarsDic:   Dictionary = {}
+var tileWoodDic:      Dictionary = {}
+var tileMetalDic:     Dictionary = {}
+var tileMagicDic:     Dictionary = {}
+var tileCultureDic:   Dictionary = {}
+var tileWeaponsDic:   Dictionary = {}
+var tileScienceDic:   Dictionary = {}
+var tileMandateDic:   Dictionary = {}
+var tileHappinessDic: Dictionary = {}
+var tileManpowerDic:  Dictionary = {}
+var tileInfluenceDic: Dictionary = {}
+var tileBoatsDic:     Dictionary = {}
 
 var discoveryPoints: int = 0
 
@@ -581,11 +593,38 @@ func censusTile(playerCountryNode):
 		tileDollarsTax += building.dollarsTax
 		tileHappinessTax += building.happinessTax
 	_apply_output_reductions()
+	tileFoodDic.clear();      tileDollarsDic.clear();   tileWoodDic.clear()
+	tileMetalDic.clear();     tileMagicDic.clear();     tileCultureDic.clear()
+	tileWeaponsDic.clear();   tileScienceDic.clear();   tileMandateDic.clear()
+	tileHappinessDic.clear(); tileManpowerDic.clear();  tileInfluenceDic.clear()
+	tileBoatsDic.clear()
 	for building in tileBuildingsList:
-		if building.foodDic.is_empty() == false:
-			tileFoodDic[building.buildingType] = building.foodDic
-	if tileFoodDic.is_empty() == false:
-		emit_signal("censusComplete", "Food", buildingFoodOutput, tileFoodDic)
+		if not building.foodDic.is_empty():      tileFoodDic[building.buildingType]      = building.foodDic
+		if not building.dollarsDic.is_empty():   tileDollarsDic[building.buildingType]   = building.dollarsDic
+		if not building.woodDic.is_empty():      tileWoodDic[building.buildingType]      = building.woodDic
+		if not building.metalDic.is_empty():     tileMetalDic[building.buildingType]     = building.metalDic
+		if not building.magicDic.is_empty():     tileMagicDic[building.buildingType]     = building.magicDic
+		if not building.cultureDic.is_empty():   tileCultureDic[building.buildingType]   = building.cultureDic
+		if not building.weaponsDic.is_empty():   tileWeaponsDic[building.buildingType]   = building.weaponsDic
+		if not building.scienceDic.is_empty():   tileScienceDic[building.buildingType]   = building.scienceDic
+		if not building.mandateDic.is_empty():   tileMandateDic[building.buildingType]   = building.mandateDic
+		if not building.happinessDic.is_empty(): tileHappinessDic[building.buildingType] = building.happinessDic
+		if not building.manpowerDic.is_empty():  tileManpowerDic[building.buildingType]  = building.manpowerDic
+		if not building.influenceDic.is_empty(): tileInfluenceDic[building.buildingType] = building.influenceDic
+		if not building.boatsDic.is_empty():     tileBoatsDic[building.buildingType]     = building.boatsDic
+	if not tileFoodDic.is_empty():      emit_signal("censusComplete", "Food",      buildingFoodOutput,      tileFoodDic)
+	if not tileDollarsDic.is_empty():   emit_signal("censusComplete", "Dollars",   buildingDollarsOutput,   tileDollarsDic)
+	if not tileWoodDic.is_empty():      emit_signal("censusComplete", "Wood",      buildingWoodOutput,      tileWoodDic)
+	if not tileMetalDic.is_empty():     emit_signal("censusComplete", "Metal",     buildingMetalOutput,     tileMetalDic)
+	if not tileMagicDic.is_empty():     emit_signal("censusComplete", "Magic",     buildingMagicOutput,     tileMagicDic)
+	if not tileCultureDic.is_empty():   emit_signal("censusComplete", "Culture",   buildingCultureOutput,   tileCultureDic)
+	if not tileWeaponsDic.is_empty():   emit_signal("censusComplete", "Weapons",   buildingWeaponsOutput,   tileWeaponsDic)
+	if not tileScienceDic.is_empty():   emit_signal("censusComplete", "Science",   buildingScienceOutput,   tileScienceDic)
+	if not tileMandateDic.is_empty():   emit_signal("censusComplete", "Mandate",   buildingMandateOutput,   tileMandateDic)
+	if not tileHappinessDic.is_empty(): emit_signal("censusComplete", "Happiness", buildingHappinessOutput, tileHappinessDic)
+	if not tileManpowerDic.is_empty():  emit_signal("censusComplete", "Manpower",  buildingManpowerOutput,  tileManpowerDic)
+	if not tileInfluenceDic.is_empty(): emit_signal("censusComplete", "Influence", buildingInfluenceOutput, tileInfluenceDic)
+	if not tileBoatsDic.is_empty():     emit_signal("censusComplete", "Boats",     buildingBoatsOutput,     tileBoatsDic)
 
 
 func surveyTile(playerCountryNode):
