@@ -1424,7 +1424,164 @@ func matchPlayerUnlockables(playerCountryNode):
 						culturePerLevel += 2
 						mandatePerLevel += 5
 						magicCostPerLevel += 15
+		_apply_faction_bonuses(buildingType)
 	pass
+
+func _apply_faction_bonuses(bType: String) -> void:
+	if playerCountry == null:
+		return
+	for fac in playerCountry.countryFactionList:
+		match fac.factionName:
+			"Sons of Liberty":
+				if fac.factionLoyalty >= 30:
+					if bType == "Barracks":
+						manpowerPerLevel += 50
+						manpowerDic["Faction: Sons of Liberty (Militia Muster)"] = (50 * buildingLevel)
+				if fac.factionLoyalty >= 60:
+					if bType == "Market" or bType == "Workshop":
+						dollarsPerLevel += 1
+						dollarsDic["Faction: Sons of Liberty (Merchant Networks)"] = (1 * buildingLevel)
+				if fac.factionLoyalty >= 90:
+					if bType == "Dock":
+						weaponsPerLevel += 1
+						weaponsDic["Faction: Sons of Liberty (Letters of Marque)"] = (1 * buildingLevel)
+			"Continental Congress":
+				if fac.factionLoyalty >= 30:
+					if bType == "Courthouse":
+						mandatePerLevel += 1
+						mandateDic["Faction: Continental Congress (Articles of Confederation)"] = (1 * buildingLevel)
+				if fac.factionLoyalty >= 60:
+					if bType == "Monument":
+						influencePerLevel += 1
+						influenceDic["Faction: Continental Congress (Foreign Diplomacy)"] = (1 * buildingLevel)
+				if fac.factionLoyalty >= 90:
+					if bType == "Library":
+						sciencePerLevel += 1
+						scienceDic["Faction: Continental Congress (Constitutional Convention)"] = (1 * buildingLevel)
+			"Common Cause":
+				if fac.factionLoyalty >= 30:
+					if bType == "Farm":
+						foodPerLevel += 1
+						foodDic["Faction: Common Cause (Frontier Homesteads)"] = (1 * buildingLevel)
+				if fac.factionLoyalty >= 60:
+					if bType == "Bath" or bType == "Temple":
+						happinessPerLevel += 1
+						happinessDic["Faction: Common Cause (The People's Assembly)"] = (1 * buildingLevel)
+				if fac.factionLoyalty >= 90:
+					if bType == "Farm":
+						foodPerLevel += 1
+						foodDic["Faction: Common Cause (Land Reform)"] = (1 * buildingLevel)
+			"Abolitionist League":
+				if fac.factionLoyalty >= 60:
+					if bType == "Temple":
+						culturePerLevel += 1
+						cultureDic["Faction: Abolitionist League (Underground Railroad)"] = (1 * buildingLevel)
+				if fac.factionLoyalty >= 90:
+					if bType == "Temple":
+						happinessPerLevel += 1
+						happinessDic["Faction: Abolitionist League (Universal Emancipation)"] = (1 * buildingLevel)
+					if bType == "Courthouse":
+						mandatePerLevel += 1
+						mandateDic["Faction: Abolitionist League (Universal Emancipation)"] = (1 * buildingLevel)
+			"Free Workers Union":
+				if fac.factionLoyalty >= 30:
+					if bType == "Forge":
+						weaponsPerLevel += 1
+						weaponsDic["Faction: Free Workers Union (Guild Charters)"] = (1 * buildingLevel)
+					if bType == "Market" or bType == "Workshop":
+						dollarsPerLevel += 1
+						dollarsDic["Faction: Free Workers Union (Guild Charters)"] = (1 * buildingLevel)
+				if fac.factionLoyalty >= 60:
+					if bType == "Camp":
+						woodPerLevel += 1
+						woodDic["Faction: Free Workers Union (General Strike)"] = (1 * buildingLevel)
+					if bType == "Mine":
+						metalPerLevel += 1
+						metalDic["Faction: Free Workers Union (General Strike)"] = (1 * buildingLevel)
+				if fac.factionLoyalty >= 90:
+					if bType == "Farm":
+						foodPerLevel += 1
+						foodDic["Faction: Free Workers Union (Workers Commonwealth)"] = (1 * buildingLevel)
+					if bType == "Library":
+						sciencePerLevel += 1
+						scienceDic["Faction: Free Workers Union (Workers Commonwealth)"] = (1 * buildingLevel)
+			"French Habitants":
+				if fac.factionLoyalty >= 30:
+					if bType == "Temple":
+						culturePerLevel += 1
+						cultureDic["Faction: French Habitants (Quebec Act Recognition)"] = (1 * buildingLevel)
+				if fac.factionLoyalty >= 60:
+					if bType == "Farm":
+						foodPerLevel += 1
+						foodDic["Faction: French Habitants (Habitants Alliance)"] = (1 * buildingLevel)
+				if fac.factionLoyalty >= 90:
+					if bType == "Farm":
+						foodPerLevel += 1
+						foodDic["Faction: French Habitants (Republic of Quebec)"] = (1 * buildingLevel)
+					if bType == "Temple":
+						happinessPerLevel += 1
+						happinessDic["Faction: French Habitants (Republic of Quebec)"] = (1 * buildingLevel)
+			"Loyalist Settlers":
+				if fac.factionLoyalty >= 30:
+					if bType == "Courthouse":
+						mandatePerLevel += 1
+						mandateDic["Faction: Loyalist Settlers (Crown Defectors)"] = (1 * buildingLevel)
+				if fac.factionLoyalty >= 60:
+					if bType == "Barracks":
+						manpowerPerLevel += 50
+						manpowerDic["Faction: Loyalist Settlers (Pragmatic Compact)"] = (50 * buildingLevel)
+				if fac.factionLoyalty >= 90:
+					if bType == "Library":
+						sciencePerLevel += 1
+						scienceDic["Faction: Loyalist Settlers (New Republic Converts)"] = (1 * buildingLevel)
+					if bType == "Market" or bType == "Workshop":
+						dollarsPerLevel += 1
+						dollarsDic["Faction: Loyalist Settlers (New Republic Converts)"] = (1 * buildingLevel)
+			"Haudenosaunee Confederacy":
+				if fac.factionLoyalty >= 30:
+					if bType == "Camp":
+						woodPerLevel += 1
+						woodDic["Faction: Haudenosaunee Confederacy (Treaty of Friendship)"] = (1 * buildingLevel)
+				if fac.factionLoyalty >= 60:
+					if bType == "Camp":
+						weaponsPerLevel += 1
+						weaponsDic["Faction: Haudenosaunee Confederacy (Haudenosaunee Alliance)"] = (1 * buildingLevel)
+				if fac.factionLoyalty >= 90:
+					if bType == "Barracks":
+						manpowerPerLevel += 50
+						manpowerDic["Faction: Haudenosaunee Confederacy (Sovereign Partnership)"] = (50 * buildingLevel)
+			"Coureurs des Bois":
+				if fac.factionLoyalty >= 30:
+					if bType == "Camp":
+						woodPerLevel += 1
+						woodDic["Faction: Coureurs des Bois (Trade Routes)"] = (1 * buildingLevel)
+				if fac.factionLoyalty >= 60:
+					if bType == "Camp":
+						woodPerLevel += 1
+						woodDic["Faction: Coureurs des Bois (Frontier Network)"] = (1 * buildingLevel)
+					if bType == "Mine":
+						metalPerLevel += 1
+						metalDic["Faction: Coureurs des Bois (Frontier Network)"] = (1 * buildingLevel)
+				if fac.factionLoyalty >= 90:
+					if bType == "Camp":
+						weaponsPerLevel += 1
+						weaponsDic["Faction: Coureurs des Bois (Continental Reach)"] = (1 * buildingLevel)
+			"Maritime Patriots":
+				if fac.factionLoyalty >= 30:
+					if bType == "Dock":
+						boatsPerLevel += 1
+						boatsDic["Faction: Maritime Patriots (Port Alliance)"] = (1 * buildingLevel)
+				if fac.factionLoyalty >= 60:
+					if bType == "Market" or bType == "Workshop":
+						dollarsPerLevel += 1
+						dollarsDic["Faction: Maritime Patriots (Atlantic Commerce)"] = (1 * buildingLevel)
+					if bType == "Dock":
+						dollarsPerLevel += 1
+						dollarsDic["Faction: Maritime Patriots (Atlantic Commerce)"] = (1 * buildingLevel)
+				if fac.factionLoyalty >= 90:
+					if bType == "Dock":
+						boatsPerLevel += 1
+						boatsDic["Faction: Maritime Patriots (Maritime Union)"] = (1 * buildingLevel)
 
 var dollarsTax: float
 var happinessTax: float

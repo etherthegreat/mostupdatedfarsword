@@ -128,13 +128,113 @@ func matchFactionRewards():
 			var FR_texture2 = preload("res://art assets/ModifierIcons/milMods/portal.png")
 			addFactionReward(
 				"General Strike",
-				"Workers in occupied territory refuse to work for the Crown. Corruption increases in all UK tiles by 10.",
+				"Workers in occupied territory refuse to work for the Crown. Camps and Mines produce more raw materials.",
 				FR_texture2, 2
 			)
 			var FR_texture3 = preload("res://art assets/ModifierIcons/milMods/purple vines.png")
 			addFactionReward(
 				"Workers Commonwealth",
-				"The most radical vision of the new republic. All production buildings output +2 of their primary resource.",
+				"The most radical vision of the new republic. Farms and Libraries produce more food and science.",
+				FR_texture3, 3
+			)
+
+		"French Habitants":
+			var FR_texture1 = preload("res://art assets/ModifierIcons/milMods/green cross.png")
+			addFactionReward(
+				"Quebec Act Recognition",
+				"The habitants demand recognition of their language, religion, and laws. Temples produce more culture.",
+				FR_texture1, 1
+			)
+			var FR_texture2 = preload("res://art assets/ModifierIcons/milMods/portal.png")
+			addFactionReward(
+				"Habitants Alliance",
+				"The farming communities pledge full support. Farm yields increase and a new governor joins the cause.",
+				FR_texture2, 2
+			)
+			var FR_texture3 = preload("res://art assets/ModifierIcons/milMods/purple vines.png")
+			addFactionReward(
+				"Republic of Quebec",
+				"Quebec declares itself a free republic in solidarity with the American cause. Farm and Temple output surge.",
+				FR_texture3, 3
+			)
+
+		"Loyalist Settlers":
+			var FR_texture1 = preload("res://art assets/ModifierIcons/milMods/green cross.png")
+			addFactionReward(
+				"Crown Defectors",
+				"Former Crown loyalists switch sides. Courthouse mandate increases and a defensive law is enacted.",
+				FR_texture1, 1
+			)
+			var FR_texture2 = preload("res://art assets/ModifierIcons/milMods/portal.png")
+			addFactionReward(
+				"Pragmatic Compact",
+				"The settlers strike a practical deal. British-trained officers defect and barracks output surges.",
+				FR_texture2, 2
+			)
+			var FR_texture3 = preload("res://art assets/ModifierIcons/milMods/purple vines.png")
+			addFactionReward(
+				"New Republic Converts",
+				"The settlers fully embrace the new republic. Trade and governance laws are enacted.",
+				FR_texture3, 3
+			)
+
+		"Haudenosaunee Confederacy":
+			var FR_texture1 = preload("res://art assets/ModifierIcons/milMods/green cross.png")
+			addFactionReward(
+				"Treaty of Friendship",
+				"A treaty of mutual respect is signed. Woodland camps produce more lumber.",
+				FR_texture1, 1
+			)
+			var FR_texture2 = preload("res://art assets/ModifierIcons/milMods/portal.png")
+			addFactionReward(
+				"Haudenosaunee Alliance",
+				"The Confederacy shares military knowledge. Camps produce weapons alongside lumber.",
+				FR_texture2, 2
+			)
+			var FR_texture3 = preload("res://art assets/ModifierIcons/milMods/purple vines.png")
+			addFactionReward(
+				"Sovereign Partnership",
+				"Full partnership between the nations. Barracks are reinforced and citizenship laws are enacted.",
+				FR_texture3, 3
+			)
+
+		"Coureurs des Bois":
+			var FR_texture1 = preload("res://art assets/ModifierIcons/milMods/green cross.png")
+			addFactionReward(
+				"Trade Routes",
+				"The woodsmen open their trade networks. Camps produce more lumber throughout the territory.",
+				FR_texture1, 1
+			)
+			var FR_texture2 = preload("res://art assets/ModifierIcons/milMods/portal.png")
+			addFactionReward(
+				"Frontier Network",
+				"The forest network expands. A veteran guide joins your governors and camp production doubles.",
+				FR_texture2, 2
+			)
+			var FR_texture3 = preload("res://art assets/ModifierIcons/milMods/purple vines.png")
+			addFactionReward(
+				"Continental Reach",
+				"The network stretches from Quebec to the Mississippi. Camps now supply weapons alongside raw materials.",
+				FR_texture3, 3
+			)
+
+		"Maritime Patriots":
+			var FR_texture1 = preload("res://art assets/ModifierIcons/milMods/green cross.png")
+			addFactionReward(
+				"Port Alliance",
+				"Maritime communities pledge their harbors. Dock output increases.",
+				FR_texture1, 1
+			)
+			var FR_texture2 = preload("res://art assets/ModifierIcons/milMods/portal.png")
+			addFactionReward(
+				"Atlantic Commerce",
+				"Trade routes along the Atlantic coast are secured. Markets and docks generate more gold.",
+				FR_texture2, 2
+			)
+			var FR_texture3 = preload("res://art assets/ModifierIcons/milMods/purple vines.png")
+			addFactionReward(
+				"Maritime Union",
+				"All maritime provinces unite under a single trade charter. Dock output surges.",
 				FR_texture3, 3
 			)
 	pass
@@ -172,14 +272,15 @@ func _on_progress_bar_area_2d_mouse_exited() -> void:
 
 func upgradeFaction(amount):
 	factionLoyalty += amount
-	match factionLoyalty:
-		30:
-			factionReward1.rewardUnlocked()
-		60:
-			factionReward2.rewardUnlocked()
-		90:
-			factionReward3.rewardUnlocked()
-			factionLoyalty
+	if factionLoyalty >= 30 and factionReward1 != null and not factionReward1.factionRewardActivated:
+		factionReward1.rewardUnlocked()
+		factionReward1.factionRewardActivated = true
+	if factionLoyalty >= 60 and factionReward2 != null and not factionReward2.factionRewardActivated:
+		factionReward2.rewardUnlocked()
+		factionReward2.factionRewardActivated = true
+	if factionLoyalty >= 90 and factionReward3 != null and not factionReward3.factionRewardActivated:
+		factionReward3.rewardUnlocked()
+		factionReward3.factionRewardActivated = true
 	visualizeSelf()
 	pass
 

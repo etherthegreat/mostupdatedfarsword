@@ -1264,10 +1264,46 @@ RECORDS_DATA = [
      "Legitimate governmental power derived from the consent of the governed. The founding documents wrote it down. The muskets at Concord enforced it. The elections every four years renew it. Constitutional authority is the republic's most important technology — and the hardest to maintain.\n\nUnlocks: Barracks Upgrade · Courthouse Upgrade",
      "",False,"FIRST PASS","",""),
 
-    # ── FACTIONS (STUB) ───────────────────────────────────────────────────────
-    ("Factions","_stub_factions","— stub —","Regular",
-     "Factions entries not yet written. Add them to RecordsDatabase.gd.",
-     "",False,"STUB","Needs entries written.",""),
+    # ── FACTIONS ──────────────────────────────────────────────────────────────
+    ("Factions","fac_sons_of_liberty","Sons of Liberty","Regular",
+     "Led by Patrick Henry, the Sons of Liberty are the revolutionary vanguard — the men who lit the fire before anyone else was ready. They believe the republic is won at the barrel of a musket and maintained by the vigilance of armed citizens.\n\nT1 Militia Muster (loyalty 30): Armed Peasantry + Homeland Defense laws; Barracks +50 manpower.\nT2 Merchant Networks (loyalty 60): Navigation Acts law; Markets and Workshops +1 gold.\nT3 Letters of Marque (loyalty 90): Calico Jack joins your governors; Docks produce weapons.",
+     "",False,"FIRST PASS","","law_armed_peasantry|law_homeland_defense|law_navigation_acts"),
+
+    ("Factions","fac_continental_congress","Continental Congress","Regular",
+     "Led by Abigail Adams, the Continental Congress believes the republic must be built on institutions — law, consent, legitimacy. They are the architects.\n\nT1 Articles of Confederation (loyalty 30): Local Elections + Democratic Mandate laws; Courthouses +1 mandate.\nT2 Foreign Diplomacy (loyalty 60): Monuments +1 influence.\nT3 Constitutional Convention (loyalty 90): Democratic Mandate law; Libraries +1 science.",
+     "",False,"FIRST PASS","","law_local_elections|law_democratic_mandate"),
+
+    ("Factions","fac_common_cause","Common Cause","Regular",
+     "Led by Daniel Shays, Common Cause is the faction of the ordinary settler — the farmer, the homesteader, the person who fought a war and came home to find a debt collector.\n\nT1 Frontier Homesteads (loyalty 30): Armed Peasantry law; Farms +1 food.\nT2 The People's Assembly (loyalty 60): Universal Citizenship law; Baths and Temples +1 happiness.\nT3 Land Reform (loyalty 90): Farms +1 additional food.",
+     "",False,"FIRST PASS","","law_armed_peasantry|law_universal_citizenship"),
+
+    ("Factions","fac_abolitionist_league","Abolitionist League","Regular",
+     "Led by Mercy Otis Warren, the Abolitionist League holds that no republic worthy of the name can tolerate slavery.\n\nT1 Freedom Papers (loyalty 30): Universal Citizenship + Disability Care laws.\nT2 Underground Railroad (loyalty 60): Phillis Wheatley joins your governors; Temples +1 culture.\nT3 Universal Emancipation (loyalty 90): Democratic Mandate law; Temples +1 happiness, Courthouses +1 mandate.",
+     "",False,"FIRST PASS","","law_universal_citizenship|law_disability_care|law_democratic_mandate"),
+
+    ("Factions","fac_free_workers_union","Free Workers Union","Regular",
+     "Led by Thomas Paine, the Free Workers Union represents artisans, dockworkers, and the laboring poor.\n\nT1 Guild Charters (loyalty 30): Forges +1 weapons, Markets and Workshops +1 gold.\nT2 General Strike (loyalty 60): Disability Care law; Camps +1 wood, Mines +1 metal.\nT3 Workers Commonwealth (loyalty 90): Universal Citizenship law; Farms +1 food, Libraries +1 science.",
+     "",False,"FIRST PASS","","law_disability_care|law_universal_citizenship"),
+
+    ("Factions","fac_french_habitants","French Habitants","Regular",
+     "The French-speaking farming communities of Quebec are cautious allies. They want their language, their faith, and their legal traditions respected.\n\nT1 Quebec Act Recognition (loyalty 30): Local Elections law; Temples +1 culture.\nT2 Habitants Alliance (loyalty 60): Pierre Renard joins your governors; Farms +1 food.\nT3 Republic of Quebec (loyalty 90): Universal Citizenship + Democratic Mandate laws; Farms +1 additional food, Temples +1 happiness.",
+     "",False,"FIRST PASS","","law_local_elections|law_universal_citizenship|law_democratic_mandate"),
+
+    ("Factions","fac_loyalist_settlers","Loyalist Settlers","Regular",
+     "Former Crown loyalists who decided the republic is the safer bet. They bring British administrative competence and, occasionally, British guilt.\n\nT1 Crown Defectors (loyalty 30): Homeland Defense law; Courthouses +1 mandate.\nT2 Pragmatic Compact (loyalty 60): Benjamin Tallmadge joins at level 2; Barracks +50 manpower.\nT3 New Republic Converts (loyalty 90): Navigation Acts + Democratic Mandate laws; Libraries +1 science, Markets and Workshops +1 gold.",
+     "",False,"FIRST PASS","","law_homeland_defense|law_navigation_acts|law_democratic_mandate"),
+
+    ("Factions","fac_haudenosaunee_confederacy","Haudenosaunee Confederacy","Regular",
+     "The Six Nations have governed this land by confederation for centuries. They want sovereignty, respect, and a treaty that is actually honored.\n\nT1 Treaty of Friendship (loyalty 30): Universal Citizenship law; Camps +1 wood.\nT2 Haudenosaunee Alliance (loyalty 60): Camps +1 weapons.\nT3 Sovereign Partnership (loyalty 90): Universal Citizenship + Disability Care laws; Barracks +50 manpower.",
+     "",False,"FIRST PASS","","law_universal_citizenship|law_disability_care"),
+
+    ("Factions","fac_coureurs_des_bois","Coureurs des Bois","Regular",
+     "The woodsmen who mapped the continent before any government claimed it. Their loyalty is earned slowly and kept carefully. When they commit to a cause, the forest moves with them.\n\nT1 Trade Routes (loyalty 30): Camps +1 wood.\nT2 Frontier Network (loyalty 60): Louis Tremblant joins your governors; Camps +2 wood total, Mines +1 metal.\nT3 Continental Reach (loyalty 90): Camps +1 weapons.",
+     "",False,"FIRST PASS","",""),
+
+    ("Factions","fac_maritime_patriots","Maritime Patriots","Regular",
+     "The fishing and trading communities of the Atlantic coast — Nova Scotia, New Brunswick, Prince Edward Island. The republic offers them something the Crown never did: a charter that treats them as citizens instead of subjects.\n\nT1 Port Alliance (loyalty 30): Docks +1 boats.\nT2 Atlantic Commerce (loyalty 60): Navigation Acts law; Markets, Workshops, and Docks +1 gold.\nT3 Maritime Union (loyalty 90): Docks +1 additional boats.",
+     "",False,"FIRST PASS","","law_navigation_acts"),
 
     # ── ARMY UNITS (STUB) ─────────────────────────────────────────────────────
     ("Army Units","_stub_army","— stub —","Regular",

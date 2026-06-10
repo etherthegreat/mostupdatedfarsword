@@ -395,16 +395,82 @@ func assignTower():
 
 func createFactionReward(rewardType):
 	match rewardType:
-		"Local Elections":
-			addGovernmentLaw("Local Elections")
-			addGovernmentLaw("Democratic Mandate")
-		"Equality Starts Here":
-			addGovernmentLaw("Universal Citizenship")
-			addGovernmentLaw("Disability Care")
-			addGovernorToGovernorPool("Wello Jenni-Tur", 1)
-		"Citizen Militias":
+		# Sons of Liberty
+		"Militia Muster":
 			addGovernmentLaw("Armed Peasantry")
 			addGovernmentLaw("Homeland Defense")
+		"Merchant Networks":
+			addGovernmentLaw("Navigation Acts")
+		"Letters of Marque":
+			addGovernorToGovernorPool("Calico Jack", 1)
+		# Continental Congress
+		"Articles of Confederation":
+			addGovernmentLaw("Local Elections")
+			addGovernmentLaw("Democratic Mandate")
+		"Foreign Diplomacy":
+			pass
+		"Constitutional Convention":
+			addGovernmentLaw("Democratic Mandate")
+		# Common Cause
+		"Frontier Homesteads":
+			addGovernmentLaw("Armed Peasantry")
+		"The People's Assembly":
+			addGovernmentLaw("Universal Citizenship")
+		"Land Reform":
+			pass
+		# Abolitionist League
+		"Freedom Papers":
+			addGovernmentLaw("Universal Citizenship")
+			addGovernmentLaw("Disability Care")
+		"Underground Railroad":
+			addGovernorToGovernorPool("Phillis Wheatley", 1)
+		"Universal Emancipation":
+			addGovernmentLaw("Democratic Mandate")
+		# Free Workers Union
+		"Guild Charters":
+			pass
+		"General Strike":
+			addGovernmentLaw("Disability Care")
+		"Workers Commonwealth":
+			addGovernmentLaw("Universal Citizenship")
+		# French Habitants
+		"Quebec Act Recognition":
+			addGovernmentLaw("Local Elections")
+		"Habitants Alliance":
+			addGovernorToGovernorPool("Pierre Renard", 1)
+		"Republic of Quebec":
+			addGovernmentLaw("Universal Citizenship")
+			addGovernmentLaw("Democratic Mandate")
+		# Loyalist Settlers
+		"Crown Defectors":
+			addGovernmentLaw("Homeland Defense")
+		"Pragmatic Compact":
+			addGovernorToGovernorPool("Benjamin Tallmadge", 2)
+		"New Republic Converts":
+			addGovernmentLaw("Navigation Acts")
+			addGovernmentLaw("Democratic Mandate")
+		# Haudenosaunee Confederacy
+		"Treaty of Friendship":
+			addGovernmentLaw("Universal Citizenship")
+		"Haudenosaunee Alliance":
+			pass
+		"Sovereign Partnership":
+			addGovernmentLaw("Universal Citizenship")
+			addGovernmentLaw("Disability Care")
+		# Coureurs des Bois
+		"Trade Routes":
+			pass
+		"Frontier Network":
+			addGovernorToGovernorPool("Louis Tremblant", 1)
+		"Continental Reach":
+			pass
+		# Maritime Patriots
+		"Port Alliance":
+			pass
+		"Atlantic Commerce":
+			addGovernmentLaw("Navigation Acts")
+		"Maritime Union":
+			pass
 	pass
 
 func addGovernorToGovernorPool(governorType, governorLevel):

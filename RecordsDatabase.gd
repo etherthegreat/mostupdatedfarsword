@@ -1020,6 +1020,47 @@ func _register_all() -> void:
 	_add("milmod_mutinous", "Military Modifiers", "Mutinous",
 		"The ranks are restless: Melee attack -40%; 50% chance army refuses orders each turn.")
 
+	# ── FACTIONS ─────────────────────────────────────────────────────────────
+	_add("fac_sons_of_liberty", "Factions", "Sons of Liberty",
+		"Led by Patrick Henry, the Sons of Liberty are the revolutionary vanguard — the men who lit the fire before anyone else was ready. They believe the republic is won at the barrel of a musket and maintained by the vigilance of armed citizens. Every free man a soldier. Every farm a fortress.\n\nReach 30 loyalty to unlock Militia Muster (Armed Peasantry + Homeland Defense laws; Barracks +50 manpower).\nReach 60 to unlock Merchant Networks (Navigation Acts; Markets and Workshops +1 gold).\nReach 90 to unlock Letters of Marque (Calico Jack joins your governors; Docks produce weapons).",
+		{"see_also": ["law_armed_peasantry", "law_homeland_defense", "law_navigation_acts"]})
+
+	_add("fac_continental_congress", "Factions", "Continental Congress",
+		"Led by Abigail Adams, the Continental Congress believes the republic must be built on institutions — law, consent, legitimacy. They are the architects. While others fight, they write constitutions.\n\nReach 30 loyalty to unlock Articles of Confederation (Local Elections + Democratic Mandate laws; Courthouses +1 mandate).\nReach 60 to unlock Foreign Diplomacy (Monuments +1 influence).\nReach 90 to unlock Constitutional Convention (Democratic Mandate law; Libraries +1 science).",
+		{"see_also": ["law_local_elections", "law_democratic_mandate"]})
+
+	_add("fac_common_cause", "Factions", "Common Cause",
+		"Led by Daniel Shays, Common Cause is the faction of the ordinary settler — the farmer, the homesteader, the person who fought a war and came home to find a debt collector. They want land, fairness, and a government that remembers who actually won the revolution.\n\nReach 30 loyalty to unlock Frontier Homesteads (Armed Peasantry law; Farms +1 food).\nReach 60 to unlock The People's Assembly (Universal Citizenship law; Baths and Temples +1 happiness).\nReach 90 to unlock Land Reform (Farms +1 additional food).",
+		{"see_also": ["law_armed_peasantry", "law_universal_citizenship"]})
+
+	_add("fac_abolitionist_league", "Factions", "Abolitionist League",
+		"Led by Mercy Otis Warren, the Abolitionist League holds that no republic worthy of the name can tolerate slavery. They are the conscience of the revolution — often uncomfortable, always right, and entirely unwilling to wait.\n\nReach 30 loyalty to unlock Freedom Papers (Universal Citizenship + Disability Care laws).\nReach 60 to unlock Underground Railroad (Phillis Wheatley joins your governors; Temples +1 culture).\nReach 90 to unlock Universal Emancipation (Democratic Mandate law; Temples +1 happiness, Courthouses +1 mandate).",
+		{"see_also": ["law_universal_citizenship", "law_disability_care", "law_democratic_mandate"]})
+
+	_add("fac_free_workers_union", "Factions", "Free Workers Union",
+		"Led by Thomas Paine, the Free Workers Union represents artisans, dockworkers, and the laboring poor. They want the republic to mean something for the people who built it with their hands, not just the people who signed the papers.\n\nReach 30 loyalty to unlock Guild Charters (Forges +1 weapons, Markets and Workshops +1 gold).\nReach 60 to unlock General Strike (Disability Care law; Camps +1 wood, Mines +1 metal).\nReach 90 to unlock Workers Commonwealth (Universal Citizenship law; Farms +1 food, Libraries +1 science).",
+		{"see_also": ["law_disability_care", "law_universal_citizenship"]})
+
+	_add("fac_french_habitants", "Factions", "French Habitants",
+		"The French-speaking farming communities of Quebec are cautious allies. They want their language, their faith, and their legal traditions respected. Give them that, and they will give you a revolution that runs on wheat.\n\nReach 30 loyalty to unlock Quebec Act Recognition (Local Elections law; Temples +1 culture).\nReach 60 to unlock Habitants Alliance (Pierre Renard joins your governors; Farms +1 food).\nReach 90 to unlock Republic of Quebec (Universal Citizenship + Democratic Mandate laws; Farms +1 additional food, Temples +1 happiness).",
+		{"see_also": ["law_local_elections", "law_universal_citizenship", "law_democratic_mandate"]})
+
+	_add("fac_loyalist_settlers", "Factions", "Loyalist Settlers",
+		"Not everyone in Canada welcomed the Crown's rule — but they waited to see which way the wind blew. The Loyalist Settlers are pragmatists who have decided the republic is the safer bet. They bring with them British administrative competence and, occasionally, British guilt.\n\nReach 30 loyalty to unlock Crown Defectors (Homeland Defense law; Courthouses +1 mandate).\nReach 60 to unlock Pragmatic Compact (Benjamin Tallmadge joins your governors at level 2; Barracks +50 manpower).\nReach 90 to unlock New Republic Converts (Navigation Acts + Democratic Mandate laws; Libraries +1 science, Markets and Workshops +1 gold).",
+		{"see_also": ["law_homeland_defense", "law_navigation_acts", "law_democratic_mandate"]})
+
+	_add("fac_haudenosaunee_confederacy", "Factions", "Haudenosaunee Confederacy",
+		"The Haudenosaunee — the Six Nations — have governed this land by confederation for centuries. They have no interest in replacing one empire with another. What they want is sovereignty, respect, and a treaty that is actually honored.\n\nReach 30 loyalty to unlock Treaty of Friendship (Universal Citizenship law; Camps +1 wood).\nReach 60 to unlock Haudenosaunee Alliance (Camps +1 weapons).\nReach 90 to unlock Sovereign Partnership (Universal Citizenship + Disability Care laws; Barracks +50 manpower).",
+		{"see_also": ["law_universal_citizenship", "law_disability_care"]})
+
+	_add("fac_coureurs_des_bois", "Factions", "Coureurs des Bois",
+		"The woodsmen who mapped the continent before any government claimed it. They trade in furs, information, and silence. Their loyalty is earned slowly and kept carefully. When they commit to a cause, the forest moves with them.\n\nReach 30 loyalty to unlock Trade Routes (Camps +1 wood).\nReach 60 to unlock Frontier Network (Louis Tremblant joins your governors; Camps +2 wood total, Mines +1 metal).\nReach 90 to unlock Continental Reach (Camps +1 weapons).",
+		{"see_also": []})
+
+	_add("fac_maritime_patriots", "Factions", "Maritime Patriots",
+		"The fishing and trading communities of the Atlantic coast — Nova Scotia, New Brunswick, Prince Edward Island. They have always lived by the sea and by their own rules. The republic offers them something the Crown never did: a charter that treats them as citizens instead of subjects.\n\nReach 30 loyalty to unlock Port Alliance (Docks +1 boats).\nReach 60 to unlock Atlantic Commerce (Navigation Acts law; Markets, Workshops, and Docks +1 gold).\nReach 90 to unlock Maritime Union (Docks +1 additional boats).",
+		{"see_also": ["law_navigation_acts"]})
+
 	# ── PROTECTORS (mystery until agree) ─────────────────────────────────────
 	_add_mystery("PROT_01", "Protectors",
 		"Something moves in the mountain passes of West Virginia at night. Old miners refuse to speak its name.",
