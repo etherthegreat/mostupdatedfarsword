@@ -20,6 +20,8 @@ const CATEGORIES: Array[String] = [
 	"Laws & Edicts",
 	"Technologies",
 	"Factions",
+	"Faiths & Doctrines",
+	"American Icons",
 	"Army Units",
 	"Magic Schools & Spells",
 	"Protectors",
@@ -97,6 +99,10 @@ func _register_all() -> void:
 	_add("sys_factions", "Game Systems", "Factions",
 		"Factions are political, military, or social groups with their own agendas. Each faction has a Loyalty score toward the player. High loyalty unlocks faction events and bonuses. Low loyalty causes crises, defections, and armed opposition. Factions are tracked in the Faction Panel.",
 		{"icon_path": ""})
+
+	_add("sys_reason_providence", "Game Systems", "Reason ↔ Providence",
+		"The Reason ↔ Providence axis measures whether your republic leans toward civic rationalism (Icons) or formal religious doctrine (Doctrines). It is tracked as churchLevel, a value from -3 to +3.\n\nchurchLevel = (Doctrines purchased) − (Icons purchased), clamped to ±3.\n\nPositive = Providence (more Doctrines). Negative = Reason (more Icons). Zero = Balanced.\n\nTemple output per level by axis position:\n  Providence III (+3): +1 Gold\n  Providence II (+2): +1 Gold, +1 Mandate\n  Providence I (+1): +1 Culture, +1 Gold, +1 Mandate\n  Balanced (0): +1 Culture, +1 Gold, +1 Mandate, +1 Happiness\n  Reason I (-1): +1 Culture, +1 Gold, +1 Happiness\n  Reason II (-2): +1 Culture, +1 Happiness\n  Reason III (-3): +1 Culture\n\nThe axis is visible in the Belief Panel. Purchase Doctrines to move toward Providence; purchase Icons to move toward Reason.",
+		{"icon_path": "", "see_also": ["bld_temple"]})
 
 	_add("sys_spells", "Game Systems", "Magic & Spells",
 		"Spells are unlocked through the Spellbook panel. Each spell belongs to a Magic School (Fire, Ice, Nature, Shadow, Light, Storm). Towers produce magic income. Wizards assigned to tiles amplify that tile's magical output and may cast defensive or offensive spells each turn.",
@@ -258,8 +264,8 @@ func _register_all() -> void:
 		{"icon_path": ""})
 
 	_add("bld_temple",    "Buildings", "Temple",
-		"Produces Faith and Happiness. Reduces corruption. HEALER archetype governors amplify temple output. Required for religious law access.",
-		{"icon_path": ""})
+		"Produces Culture, Gold, Mandate, and Happiness depending on your position on the Reason ↔ Providence axis. Reduces corruption. HEALER and CIRCUIT PREACHER governors amplify temple output. Required for religious law access. See 'Reason ↔ Providence' in Game Systems for the full output table.",
+		{"icon_path": "", "see_also": ["sys_reason_providence"]})
 
 	_add("bld_bath",      "Buildings", "Bath",
 		"Generates Happiness and reduces corruption. Level 2+ Baths also produce Culture. Required for certain HEALER governor assignments.",
@@ -1161,6 +1167,132 @@ func _register_all() -> void:
 	_add_mystery("CA_PROT_08", "Protectors",
 		"In the bay, where the Chaleur meets the ocean, fishermen sometimes see a light beneath the water. They go home. They do not explain why.",
 		"CA_PROT_08")
+
+	# ── FAITHS & DOCTRINES ───────────────────────────────────────────────────
+	_add("doc_healing_waters", "Faiths & Doctrines", "Healing Waters",
+		"Fresh water is scarce, and those who control it speak with the voice of the divine. Healing Waters doctrine channels spiritual energy through sacred springs and river sanctuaries — wherever clean water flows, the faithful gather.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_temple"]})
+
+	_add("doc_standing_stones", "Faiths & Doctrines", "Standing Stones",
+		"Monuments older than memory mark the sacred geography of the land. Standing Stones doctrine holds that the divine is written in stone and landscape — worship is not conducted in buildings but at the sites where earth remembers.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence"]})
+
+	_add("doc_valued_idolatry", "Faiths & Doctrines", "Valued Idolatry",
+		"Gold and silver speak the language of the divine. Valued Idolatry holds that material wealth is spiritual proof — that a god honored with precious artifacts is a god who rewards in kind. Temples become treasuries of faith.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_temple"]})
+
+	_add("doc_sacred_groves", "Faiths & Doctrines", "Sacred Groves",
+		"The oldest temples are not buildings. Sacred Groves doctrine returns worship to the forest — to the places where light falls in columns and the wind carries messages the clergy cannot translate. These groves are protected, maintained, and politically significant.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "ter_forest"]})
+
+	_add("doc_midsummer_celebrations", "Faiths & Doctrines", "Midsummer Celebrations",
+		"When the year reaches its peak, the republic celebrates together. Midsummer Celebrations doctrine treats collective seasonal ritual as spiritual infrastructure — if the people party together, they believe together, and a people who believe together are harder to break apart.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence"]})
+
+	_add("doc_tree_of_life", "Faiths & Doctrines", "Tree of Life",
+		"The sacred tree stands at the center of the world. Tree of Life doctrine is the oldest theology in the catalogue — cosmological, pervasive, and remarkably durable. Every culture has a tree. This is the doctrine that says the tree is real.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence"]})
+
+	_add("doc_tower_control", "Faiths & Doctrines", "Tower Control",
+		"Not all mystic practice is safe or sanctioned. Tower Control doctrine implements state oversight of spiritual energy — all arcane and religious activity is channeled through licensed institutions. The scholars call it regulation. The clergy call it something else.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_tower"]})
+
+	_add("doc_nature_sanctuaries", "Faiths & Doctrines", "Nature Sanctuaries",
+		"The divine is best approached through undisturbed wilderness. Nature Sanctuaries doctrine designates portions of the republic's territory as sacred preserves — off-limits to development, available to pilgrims, and deeply inconvenient to anyone who wanted to build a mine there.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "ter_forest", "ter_taiga"]})
+
+	_add("doc_conservative_orthodoxy", "Faiths & Doctrines", "Conservative Orthodoxy",
+		"The founding documents of faith are complete. Conservative Orthodoxy holds that all divine revelation occurred at the moment of founding — that the church's role is preservation, not interpretation. No new prophets. No revised doctrine. What was written stands.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence"]})
+
+	_add("doc_sanctioned_cadaver_research", "Faiths & Doctrines", "Sanctioned Cadaver Research",
+		"Faith and medicine need not be enemies. Sanctioned Cadaver Research doctrine authorizes the church to permit — or at least not prohibit — the scientific study of the human body for medical advancement. It is a compromise born of necessity and smells faintly of formaldehyde.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "res_science"]})
+
+	_add("doc_temple_height_restrictions", "Faiths & Doctrines", "Temple Height Restrictions",
+		"No building may exceed the height of a temple in any settlement. Temple Height Restrictions doctrine is less about faith and more about spatial politics — a formal assertion that spiritual authority occupies more of the skyline than commerce or government.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_temple"]})
+
+	# ── AMERICAN ICONS ───────────────────────────────────────────────────────
+	_add("icon_george_washington", "American Icons", "George Washington",
+		"The Father of the Nation — the commander-in-chief who actually showed up, won, and then voluntarily left. Washington's patronage demands excellence from military and civic institutions alike. An Icon of the republic — not a doctrine, but a presence.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_barracks"]})
+
+	_add("icon_benjamin_franklin", "American Icons", "Benjamin Franklin",
+		"Scientist, diplomat, printer, and the founding father most likely to have been enjoyable at a party. Franklin's patronage boosts Libraries and Workshops — innovation over reverence.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_library"]})
+
+	_add("icon_abigail_adams", "American Icons", "Abigail Adams",
+		"She told John to 'remember the ladies' and he absolutely did not. Nevertheless, Abigail's mind was sharper than any of theirs. Her patronage inspires dissent, scholarship, and the American art of telling power what it doesn't want to hear.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence"]})
+
+	_add("icon_alexander_hamilton", "American Icons", "Alexander Hamilton",
+		"Built America's financial architecture through sheer will and a legendary inability to let anything go. Hamilton's patronage boosts Banks, Workshops, and every structure that converts ambition into revenue.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_market"]})
+
+	_add("icon_phillis_wheatley", "American Icons", "Phillis Wheatley",
+		"The first enslaved African American to publish a book of poetry in the colonies — she proved that genius laughs at chains. Wheatley's patronage inspires Libraries and Temples wherever her memory is honored.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_library", "bld_temple"]})
+
+	_add("icon_thomas_jefferson", "American Icons", "Thomas Jefferson",
+		"Wrote that all men are created equal and then went home to his plantation. Jefferson's patronage is powerful but complicated — Libraries and Farms flourish, but Harmony costs extra. History contains multitudes.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_library", "bld_farm"]})
+
+	_add("icon_abraham_lincoln", "American Icons", "Abraham Lincoln",
+		"The rail-splitter who held the Union together with sheer stubbornness and a magnificent beard. Lincoln's patronage represents sacrifice and reconstruction — the long, costly work of living up to founding documents.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence"]})
+
+	_add("icon_harriet_tubman", "American Icons", "Harriet Tubman",
+		"Conductor of the Underground Railroad, spy for the Union Army, and the most dangerous person any tyrant could encounter. Tubman's patronage grants military bonuses and increases Manpower — freedom is a combat advantage.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_barracks"]})
+
+	_add("icon_frederick_douglass", "American Icons", "Frederick Douglass",
+		"Escaped slavery and spent the rest of his life explaining to anyone who would listen why that was a bad system, using words so precise they still cut. Douglass's patronage elevates Libraries, Courthouses, and the uncomfortable power of truth.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_library"]})
+
+	_add("icon_sitting_bull", "American Icons", "Sitting Bull",
+		"Hunkpapa Lakota war chief, holy man, and the figure who outlasted Custer. Sitting Bull's patronage honors the land itself — Nature Sanctuaries flourish and buildings in wooded and river territories produce bonus resources.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "doc_nature_sanctuaries", "ter_forest"]})
+
+	_add("icon_sojourner_truth", "American Icons", "Sojourner Truth",
+		"Ain't I a woman? She asked the question that exposed every hypocrite in the room. Truth's patronage uplifts Farms and Temples, and grants a Harmony bonus to every province with diverse population.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_temple", "bld_farm"]})
+
+	_add("icon_chief_joseph", "American Icons", "Chief Joseph",
+		"I will fight no more forever. Chief Joseph's dignity in impossible circumstance became a testament to resilience and the cost of empire. His patronage grants unusual bonuses to Courthouses and morale in occupied territories.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence"]})
+
+	_add("icon_theodore_roosevelt", "American Icons", "Theodore Roosevelt",
+		"BULLY! The cowboy president who busted trusts and invented conservation because he loved shooting things too much to let them go extinct. Roosevelt's patronage boosts Mines, Camps, and Barracks — the great strenuous life.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_mine", "bld_camp", "bld_barracks"]})
+
+	_add("icon_susan_b_anthony", "American Icons", "Susan B. Anthony",
+		"Voted illegally in 1872, was arrested, and turned her trial into a lecture on democracy they never forgot. Anthony's patronage rewards civic action — Courthouses and Libraries thrive, and Mandate generation increases across all provinces.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_library"]})
+
+	_add("icon_ida_b_wells", "American Icons", "Ida B. Wells",
+		"Investigative journalist who documented injustice when no one else would print it. Wells's patronage powers Libraries — the pen sharper than the sword, and considerably more damning.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_library"]})
+
+	_add("icon_eleanor_roosevelt", "American Icons", "Eleanor Roosevelt",
+		"First Lady, diplomat, United Nations architect, and the only person FDR was afraid of. Eleanor's patronage rewards empathy in governance — social-tier buildings generate exceptional returns.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence"]})
+
+	_add("icon_mlk", "American Icons", "Martin Luther King Jr.",
+		"The dream is expensive. King's patronage is the most powerful in the game and the most demanding — Harmony bonuses across all provinces, but only so long as your laws reflect justice. The moment they don't, expect consequences.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence"]})
+
+	_add("icon_cesar_chavez", "American Icons", "Cesar Chavez",
+		"Si se puede. Chavez organized farm workers when it was genuinely dangerous to do so, building a movement from sheer solidarity. His patronage supercharges Farms and grants Manpower bonuses proportional to how many labor laws your nation has passed.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_farm"]})
+
+	_add("icon_jimmy_carter", "American Icons", "Jimmy Carter",
+		"The peanut farmer who brokered peace between Egypt and Israel, then went home and built houses for the poor. Carter's patronage rewards humility — quiet, persistent bonuses to everything, nothing flashy, compounding forever.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence"]})
+
+	_add("icon_dolores_huerta", "American Icons", "Dolores Huerta",
+		"Co-founder of the United Farm Workers and proof that 'no' is not an acceptable final answer. Huerta's patronage amplifies Cesar Chavez's farm bonuses if both are selected, and adds exceptional Harmony in provinces with mixed labor.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "icon_cesar_chavez", "bld_farm"]})
 
 	# ── LORE & HISTORY ───────────────────────────────────────────────────────
 	_add("lore_first_war", "Lore & History", "The First British Reconquest War",

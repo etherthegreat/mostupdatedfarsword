@@ -16,10 +16,9 @@ func updateSelf():
 	$BeliefPanel/PurchasePanel.visible = false
 	pendingBelief = ""
 	pendingCost = 0
-	if $BeliefPanel/GodsScrollContainer/GodsContainer.get_children!=null:
-		for beliefButton in $BeliefPanel/GodsScrollContainer/GodsContainer.get_children():
-			$BeliefPanel/GodsScrollContainer/GodsContainer.remove_child(beliefButton)
-			beliefButton.queue_free()
+	for beliefButton in $BeliefPanel/GodsScrollContainer/GodsContainer.get_children():
+		$BeliefPanel/GodsScrollContainer/GodsContainer.remove_child(beliefButton)
+		beliefButton.queue_free()
 	if $BeliefPanel/DoctrineScrollContainer/DoctrineContainer.get_children() != null:
 		for beliefButton in $BeliefPanel/DoctrineScrollContainer/DoctrineContainer.get_children():
 			$BeliefPanel/DoctrineScrollContainer/DoctrineContainer.remove_child(beliefButton)
@@ -181,7 +180,7 @@ func buildPD(type):
 	newPD.purchasedDoctrineHover.connect(pdPanelUpdate)
 	newPD.pdExited.connect(closePurchasePanel)
 	pass
-	
+
 func closePurchasePanel():
 	$BeliefPanel/PurchasePanel.visible = false
 	pass
@@ -218,7 +217,7 @@ func purchasePanel(bbName, bbCost, bbImage, beliefDesc, beliefBorder):
 func _on_belief_button_mouse_entered() -> void:
 	if $BeliefInfoPanel.visible == false:
 		$BeliefInfoPanel.visible = true
-	
+
 	pass # Replace with function body.
 
 func _on_belief_button_mouse_exited() -> void:
@@ -227,31 +226,36 @@ func _on_belief_button_mouse_exited() -> void:
 	pass # Replace with function body.
 
 func _process(delta: float) -> void:
-	if $BeliefPanel/DoctrineScrollContainer/DoctrineContainer.get_children != null:
-		for beliefButton in $BeliefPanel/DoctrineScrollContainer/DoctrineContainer.get_children():
-			if beliefButton.bbPurchased != true:
-				if beliefButton.bbCost <= player.TotalCulture:
-					beliefButton.makePurchaseable()
-				else:
-					beliefButton.cantAfford()
+	for beliefButton in $BeliefPanel/DoctrineScrollContainer/DoctrineContainer.get_children():
+		if beliefButton.bbPurchased != true:
+			if beliefButton.bbCost <= player.TotalCulture:
+				beliefButton.makePurchaseable()
 			else:
-				beliefButton.purchased()
-	if $BeliefPanel/GodsScrollContainer/GodsContainer.get_children != null:
-		for beliefButton in $BeliefPanel/GodsScrollContainer/GodsContainer.get_children():
-			if beliefButton.bbPurchased != true:
-				if beliefButton.bbCost <= player.TotalCulture:
-					beliefButton.makePurchaseable()
-				else:
-					beliefButton.cantAfford()
+				beliefButton.cantAfford()
+		else:
+			beliefButton.purchased()
+	for beliefButton in $BeliefPanel/GodsScrollContainer/GodsContainer.get_children():
+		if beliefButton.bbPurchased != true:
+			if beliefButton.bbCost <= player.TotalCulture:
+				beliefButton.makePurchaseable()
 			else:
-				beliefButton.purchased()
+				beliefButton.cantAfford()
+		else:
+			beliefButton.purchased()
 	if pendingBelief != "" && pendingCost != 0:
 		if player.TotalCulture >= pendingCost:
 			$BeliefPanel/PurchasePanel/PurchaseButton.disabled = false
 		else:
 			$BeliefPanel/PurchasePanel/PurchaseButton.disabled = true
 	if self.visible == true:
-		$BeliefPanel/testLabel.text = str(player.churchLevel)
+		match player.churchLevel:
+			3:  $BeliefPanel/testLabel.text = "Providence III"
+			2:  $BeliefPanel/testLabel.text = "Providence II"
+			1:  $BeliefPanel/testLabel.text = "Providence I"
+			0:  $BeliefPanel/testLabel.text = "Balanced"
+			-1: $BeliefPanel/testLabel.text = "Reason I"
+			-2: $BeliefPanel/testLabel.text = "Reason II"
+			-3: $BeliefPanel/testLabel.text = "Reason III"
 		matchFaithPointsIcons()
 	pass
 
@@ -325,105 +329,84 @@ func matchFaithPointsIcons():
 	pass
 
 
+# ── Reason side (more Icons than Doctrines → negative churchLevel) ──────────
+
 func _on_faith_1_area_2d_mouse_entered() -> void:
 	$FaithPoints/FaithPointsInfoPanel/FaithPointsInfoSprite/RichTextLabel.clear()
-	$FaithPoints/FaithPointsInfoPanel/FaithPointsInfoSprite/RichTextLabel.append_text("[b]Zealous Communion: Pantheon Level 2
-
-All temples provide [color= Green] +3[/color] [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/faith.png[/img][color=white] Faith[/color], [color= Green] +2[/color] [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/food.png[/img][color=pink] Food[/color], and [color= green] +1[/color] [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/wood.png[/img][color=brown] Wood[/color]
-
-Unlocks Unit Ability: [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/divinity big.png[img] [color=purple] Big LaBIIA")
+	$FaithPoints/FaithPointsInfoPanel/FaithPointsInfoSprite/RichTextLabel.append_text(
+		"[b]Reason I — The Enlightened Republic[/b]\n\nCivic patronage begins to guide the republic. Icon veneration exceeds doctrinal study by one degree.\n\n[b]Temple output per level:[/b]\n[color=Green]+1[/color] Culture\n[color=Green]+1[/color] Gold\n[color=Green]+1[/color] Happiness"
+	)
 	$FaithPoints/FaithPointsInfoPanel.visible = true
-	pass # Replace with function body.
 
 func _on_faith_1_area_2d_mouse_exited() -> void:
 	$FaithPoints/FaithPointsInfoPanel.visible = false
-	pass # Replace with function body.
+
 
 func _on_faith_2_area_2d_mouse_entered() -> void:
 	$FaithPoints/FaithPointsInfoPanel/FaithPointsInfoSprite/RichTextLabel.clear()
-	$FaithPoints/FaithPointsInfoPanel/FaithPointsInfoSprite/RichTextLabel.append_text("[b]Zealous Communion: Pantheon Level 2
-
-All temples provide [color= Green] +3[/color] [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/faith.png[/img][color=white] Faith[/color], [color= Green] +2[/color] [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/food.png[/img][color=pink] Food[/color], and [color= green] +1[/color] [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/wood.png[/img][color=brown] Wood[/color]
-
-Unlocks Unit Ability: [img]res://art assets/Placeholder Art/sword.png[img] [color=purple] Divine Charge")
+	$FaithPoints/FaithPointsInfoPanel/FaithPointsInfoSprite/RichTextLabel.append_text(
+		"[b]Reason II — The Civic Republic[/b]\n\nThe republic leans toward secular civic values. Icons dominate the public imagination over formal doctrine.\n\n[b]Temple output per level:[/b]\n[color=Green]+1[/color] Culture\n[color=Green]+1[/color] Happiness"
+	)
 	$FaithPoints/FaithPointsInfoPanel.visible = true
-	pass # Replace with function body.
 
 func _on_faith_2_area_2d_mouse_exited() -> void:
 	$FaithPoints/FaithPointsInfoPanel.visible = false
-	pass # Replace with function body.
+
 
 func _on_faith_3_area_2d_mouse_entered() -> void:
 	$FaithPoints/FaithPointsInfoPanel/FaithPointsInfoSprite/RichTextLabel.clear()
-	$FaithPoints/FaithPointsInfoPanel/FaithPointsInfoSprite/RichTextLabel.append_text("[b]Zealous Communion: Pantheon Level 2
-
-All temples provide [color= Green] +3[/color] [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/faith.png[/img][color=white] Faith[/color], [color= Green] +2[/color] [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/food.png[/img][color=pink] Food[/color], and [color= green] +1[/color] [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/wood.png[/img][color=brown] Wood[/color]
-
-Unlocks Unit Ability: [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/food.png[img] [color=purple] Wiener Vacuum")
+	$FaithPoints/FaithPointsInfoPanel/FaithPointsInfoSprite/RichTextLabel.append_text(
+		"[b]Reason III — The Secular Republic[/b]\n\nThe republic has embraced civic reason entirely. Icons are cultural heritage; doctrine has no political role.\n\n[b]Temple output per level:[/b]\n[color=Green]+1[/color] Culture"
+	)
 	$FaithPoints/FaithPointsInfoPanel.visible = true
-	pass # Replace with function body.
 
 func _on_faith_3_area_2d_mouse_exited() -> void:
 	$FaithPoints/FaithPointsInfoPanel.visible = false
-	pass # Replace with function body.
 
+
+# ── Providence side (more Doctrines than Icons → positive churchLevel) ───────
 
 func _on_church_1_area_2d_mouse_entered() -> void:
 	$FaithPoints/ChurchPointsInfoPanel/ChurchPointsInfoSprite/RichTextLabel.clear()
-	$FaithPoints/ChurchPointsInfoPanel/ChurchPointsInfoSprite/RichTextLabel.append_text("[b]Zealous Communion: Church Level 1
-
-All temples provide [color= Green] +3[/color] [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/faith.png[/img][color=white] Faith[/color], [color= Green] +2[/color] [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/food.png[/img][color=pink] Food[/color], and [color= green] +1[/color] [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/wood.png[/img][color=brown] Wood[/color]
-
-Unlocks Unit Ability: [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/divinity big.png[img] [color=purple] Organized Faith")
+	$FaithPoints/ChurchPointsInfoPanel/ChurchPointsInfoSprite/RichTextLabel.append_text(
+		"[b]Providence I — The Faithful Republic[/b]\n\nFormal doctrine holds a modest lead over iconic devotion. The church counsels but does not command.\n\n[b]Temple output per level:[/b]\n[color=Green]+1[/color] Culture\n[color=Green]+1[/color] Gold\n[color=Green]+1[/color] Mandate"
+	)
 	$FaithPoints/ChurchPointsInfoPanel.visible = true
-	pass # Replace with function body.
 
 func _on_church_1_area_2d_mouse_exited() -> void:
 	$FaithPoints/ChurchPointsInfoPanel.visible = false
-	pass # Replace with function body.
+
 
 func _on_church_2_area_2d_mouse_entered() -> void:
 	$FaithPoints/ChurchPointsInfoPanel/ChurchPointsInfoSprite/RichTextLabel.clear()
-	$FaithPoints/ChurchPointsInfoPanel/ChurchPointsInfoSprite/RichTextLabel.append_text("[b]Zealous Communion: Church Level 2
-
-All temples provide [color= Green] +3[/color] [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/faith.png[/img][color=white] Faith[/color], [color= Green] +2[/color] [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/food.png[/img][color=pink] Food[/color], and [color= green] +1[/color] [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/wood.png[/img][color=brown] Wood[/color]
-
-Unlocks Unit Ability: [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/divinity big.png[img] [color=purple] Organized Priesthood")
+	$FaithPoints/ChurchPointsInfoPanel/ChurchPointsInfoSprite/RichTextLabel.append_text(
+		"[b]Providence II — The Devout Republic[/b]\n\nDoctrinal authority shapes public life. The church's legitimacy reinforces governmental mandate.\n\n[b]Temple output per level:[/b]\n[color=Green]+1[/color] Gold\n[color=Green]+1[/color] Mandate"
+	)
 	$FaithPoints/ChurchPointsInfoPanel.visible = true
-	pass # Replace with function body.
 
 func _on_church_2_area_2d_mouse_exited() -> void:
 	$FaithPoints/ChurchPointsInfoPanel.visible = false
-	pass # Replace with function body.
 
 
 func _on_church_3_area_2d_mouse_entered() -> void:
 	$FaithPoints/ChurchPointsInfoPanel/ChurchPointsInfoSprite/RichTextLabel.clear()
-	$FaithPoints/ChurchPointsInfoPanel/ChurchPointsInfoSprite/RichTextLabel.append_text("[b]Zealous Communion: Church Level 3
-
-All temples provide [color= Green] +3[/color] [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/faith.png[/img][color=white] Faith[/color], [color= Green] +2[/color] [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/food.png[/img][color=pink] Food[/color], and [color= green] +1[/color] [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/wood.png[/img][color=brown] Wood[/color]
-
-Unlocks Unit Ability: [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/divinity big.png[img] [color=purple] Organized Religion")
+	$FaithPoints/ChurchPointsInfoPanel/ChurchPointsInfoSprite/RichTextLabel.append_text(
+		"[b]Providence III — The Orthodox Republic[/b]\n\nThe republic is guided entirely by formal doctrine. Temples are centers of governance as much as worship.\n\n[b]Temple output per level:[/b]\n[color=Green]+1[/color] Gold"
+	)
 	$FaithPoints/ChurchPointsInfoPanel.visible = true
-	pass # Replace with function body.
-
 
 func _on_church_3_area_2d_mouse_exited() -> void:
 	$FaithPoints/ChurchPointsInfoPanel.visible = false
-	pass # Replace with function body.
 
+
+# ── Balance (Doctrines equal Icons → churchLevel 0) ─────────────────────────
 
 func _on_balance_area_2d_mouse_entered() -> void:
 	$FaithPoints/BalancePointsInfoPanel/BalancePointsInfoPanel/RichTextLabel.clear()
-	$FaithPoints/BalancePointsInfoPanel/BalancePointsInfoPanel/RichTextLabel.append_text("[b]Zealous Communion: Church Level 3
-
-All temples provide [color= Green] +3[/color] [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/faith.png[/img][color=white] Faith[/color], [color= Green] +2[/color] [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/food.png[/img][color=pink] Food[/color], and [color= green] +1[/color] [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/wood.png[/img][color=brown] Wood[/color]
-
-Unlocks Unit Ability: [img]res://art assets/Placeholder Art/UI Art/resources/Older Icons/divinity big.png[img] [color=purple] Perfectly Balanced")
+	$FaithPoints/BalancePointsInfoPanel/BalancePointsInfoPanel/RichTextLabel.append_text(
+		"[b]The Balanced Republic[/b]\n\nDoctrines and Icons are in equilibrium. Neither civic reason nor providential doctrine dominates — the republic draws strength from both traditions.\n\n[b]Temple output per level:[/b]\n[color=Green]+1[/color] Culture\n[color=Green]+1[/color] Gold\n[color=Green]+1[/color] Mandate\n[color=Green]+1[/color] Happiness"
+	)
 	$FaithPoints/BalancePointsInfoPanel.visible = true
-	pass # Replace with function body.
-
 
 func _on_balance_area_2d_mouse_exited() -> void:
 	$FaithPoints/BalancePointsInfoPanel.visible = false
-	pass # Replace with function body.

@@ -1225,7 +1225,7 @@ func calculateUniqueBuildingAttributes():
 		churchLevel = 3
 	elif beliefDifference >= -3 && beliefDifference <= -2:
 		churchLevel = -1
-	elif beliefDifference >= -5 && beliefDifference <= 4:
+	elif beliefDifference >= -5 && beliefDifference <= -4:
 		churchLevel = -2
 	elif beliefDifference <= -6:
 		churchLevel = -3  
