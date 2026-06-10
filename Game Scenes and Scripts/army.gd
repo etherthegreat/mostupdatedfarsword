@@ -38,6 +38,7 @@ var homeTile #each army must be built in a barracks, barracks gives +2 maxUnits 
 #army gets destroyed if homeTile changes hands
 var parentCountry: country #parent country, homeland
 var parentMilModifiers: Array = [] #list of national modifiers to armies
+var beliefMilMods: Array = []   # mil mods sourced from country beliefs / axis; cleared on update
 var parentWarEnemies: Array = [] #list of all enemies of the parent nation
 
 var commander: governor #create a character to lead the army, has traits that give the army modifiers
@@ -659,6 +660,55 @@ func addUnitCommander(newCommander):
 	print("MILMODS IN 1", commanderModifiers1)
 	#updateArmyUI()
 	pass
+
+func applyCountryBeliefMilMods() -> void:
+	# Clear previously-applied belief mods from all units before re-applying.
+	# Belief mods are tagged via beliefMilMods so we can track and remove them.
+	for Unit in unitsList:
+		for mm in beliefMilMods:
+			Unit.removeMilMod(mm)
+	beliefMilMods.clear()
+
+	if parentCountry == null:
+		return
+
+	# Collect which mod types to grant based on active beliefs and axis level.
+	var modsToGrant: Array[String] = []
+
+	for belief in parentCountry.selectedBeliefs:
+		match belief.beliefType:
+			"George Washington":
+				modsToGrant.append("Fortified Position")
+			"Harriet Tubman":
+				modsToGrant.append("Iron Bayonet")
+			"Abraham Lincoln":
+				modsToGrant.append("Continental Line")
+			"Theodore Roosevelt":
+				modsToGrant.append("Guerrilla Tactics")
+			"Frederick Douglass":
+				modsToGrant.append("Rallying Voice")
+			"Sitting Bull":
+				modsToGrant.append("Woodsman")
+			"Nature Sanctuaries":
+				modsToGrant.append("Woodsman")
+			"Tower Control":
+				modsToGrant.append("Vanguard")
+
+	# churchLevel ±3 axis grants
+	match parentCountry.churchLevel:
+		3:
+			modsToGrant.append("Entrenched")
+		-3:
+			modsToGrant.append("Sharpshooter")
+
+	# Instantiate and apply to all units.
+	var milModScene = preload("res://mil_mod.tscn")
+	for modType in modsToGrant:
+		var newMod = milModScene.instantiate()
+		newMod.buildSelf(modType)
+		beliefMilMods.append(newMod)
+		for Unit in unitsList:
+			Unit.addMilMod(newMod)
 
 func commanderCheck():
 	if commander != null:

@@ -702,11 +702,6 @@ func matchPlayerUnlockables(playerCountryNode):
 					"Gentle Rains":
 						foodPerLevel += 2
 						magicCostPerLevel += 5
-			for belief in playerCountry.selectedBeliefs:
-				if belief.beliefType == "Providence's Plenty":
-					foodPerLevel += 1
-				if belief.beliefType == "Great Awakening Faith":
-					culturePerLevel += 1
 			match tile.tileCrop:
 				"corn":
 					foodPerLevel += 2
@@ -773,9 +768,6 @@ func matchPlayerUnlockables(playerCountryNode):
 						mandateDic["Granary Technology Mandate Bonus"] = (1 * buildingLevel)
 				for tradition in playerCountry.unlockedTraditions:
 					if tradition.traditionType == "Continental Congress Ledgers":
-						mandatePerLevel += 1
-				for belief in playerCountry.selectedBeliefs:
-					if belief.beliefType == "Providence's Order":
 						mandatePerLevel += 1
 				if tile.tileSpell != null:
 					match tile.tileSpell.spellType:
@@ -844,37 +836,7 @@ func matchPlayerUnlockables(playerCountryNode):
 					"Replenishment":
 						metalPerLevel += 4
 						magicCostPerLevel += 12
-			for belief in playerCountry.selectedBeliefs:
-				if belief.beliefType == "Earth's Bounty":
-					metalPerLevel += 1
-				if belief.beliefType == "Silversmith Faith":
-					culturePerLevel += 1
 		"Temple":
-			faithChurchLevel = playerCountry.churchLevel
-			match faithChurchLevel:
-				0:
-					culturePerLevel += 1
-					dollarsPerLevel +=1
-					mandatePerLevel += 1
-					happinessPerLevel += 1
-				1:
-					culturePerLevel += 1
-					dollarsPerLevel +=1
-					mandatePerLevel +=1
-				2:
-					dollarsPerLevel +=1
-					mandatePerLevel +=1
-				3:
-					dollarsPerLevel +=1
-				-1:
-					culturePerLevel += 1
-					dollarsPerLevel +=1
-					happinessPerLevel +=1
-				-2:
-					culturePerLevel += 1
-					happinessPerLevel +=1
-				-3:
-					culturePerLevel += 1
 			for Technology in playerCountry.unlockedTechnologies:
 				if Technology.techName == "Carpenter's Guild":
 					woodCostPerLevel +=1
@@ -900,24 +862,11 @@ func matchPlayerUnlockables(playerCountryNode):
 						culturePerLevel += 2
 						mandatePerLevel += 5
 						magicCostPerLevel += 15
-			for belief in playerCountry.selectedBeliefs:
-				if belief.beliefType == "Sacred Craft":
-					culturePerLevel += 1
-				if belief.beliefType == "Pilgrims' Right":
-					influencePerLevel += 1
-				if belief.beliefType == "Charitable Table":
-					foodPerLevel += 2
-					dollarsCostPerLevel += 1
 			if tile.tileCrop == "cannabis":
 				# Brattleboro's spiritual community appreciates the temple
 				culturePerLevel += 1
 				cultureDic["Temple: Cannabis Crop Harmony"] = (1 * buildingLevel)
 		"Camp":
-			for belief in playerCountry.selectedBeliefs:
-				if belief.beliefType == "Hunter's Providence":
-					foodPerLevel += 1
-				if belief.beliefType == "Old Growth Reverence":
-					happinessPerLevel += 1
 			for Technology in playerCountry.unlockedTechnologies:
 				if Technology.techName == "Axe Grinding":
 					woodPerLevel +=2
@@ -973,14 +922,6 @@ func matchPlayerUnlockables(playerCountryNode):
 						metalPerLevel   += 1
 			else:
 				print("no assigned wizard to tile:", tile.tileNumber)
-			for belief in playerCountry.selectedBeliefs:
-				if belief.beliefType == "Ley Line Devotion":
-					magicPerLevel += 2
-				if belief.beliefType == "Natural Philosophy Faith":
-					culturePerLevel += 1
-					magicPerLevel += 1
-				if belief.beliefType == "Spirit Hunters":
-					manpowerPerLevel = 250
 			for Technology in playerCountry.unlockedTechnologies:
 				if Technology.techName == "Optician's Art":
 					magicPerLevel += 1
@@ -1029,13 +970,6 @@ func matchPlayerUnlockables(playerCountryNode):
 				magicDic["Tower: Gold Deposits"] = (1 * buildingLevel)
 			pass
 		"Library":
-			for belief in playerCountry.selectedBeliefs:
-				if belief.beliefType == "Enlightenment Reason":
-					sciencePerLevel += 2
-				if belief.beliefType == "Natural Theology":
-					sciencePerLevel += 1
-				if belief.beliefType == "Parish Archive":
-					culturePerLevel += 1
 			for Technology in playerCountry.unlockedTechnologies:
 				if Technology.techName == "Constitutional Studies":
 					sciencePerLevel += 1
@@ -1076,18 +1010,6 @@ func matchPlayerUnlockables(playerCountryNode):
 				sciencePerLevel += 1
 				scienceDic["Library: Gold Deposit Funding"] = (1 * buildingLevel)
 		"Workshop":
-			for belief in playerCountry.selectedBeliefs:
-				if belief.beliefType == "Craft Pride":
-					culturePerLevel += 1
-					mandatePerLevel += 1
-					metalCostPerLevel += 2
-				if belief.beliefType == "Merchant's Blessing":
-					dollarsPerLevel += 2
-					metalCostPerLevel += 1
-				if belief.beliefType == "Idle Hands Doctrine":
-					culturePerLevel += 2
-					woodCostPerLevel += 1
-					foodCostPerLevel += 1
 			for Technology in playerCountry.unlockedTechnologies:
 				if Technology.techName == "Land Bank":
 					dollarsPerLevel += 2
@@ -1129,13 +1051,6 @@ func matchPlayerUnlockables(playerCountryNode):
 						happinessCostPerLevel += 1
 						magicCostPerLevel += 7
 		"Bath":
-			for belief in playerCountry.selectedBeliefs:
-				if belief.beliefType == "Sacred Spring":
-					culturePerLevel += 1
-					corruptionLossPerLevel -= 1
-				if belief.beliefType == "Civic Order Faith":
-					corruptionLossPerLevel -= 1
-					mandatePerLevel += 1
 			for Technology in playerCountry.unlockedTechnologies:
 				if Technology.techName == "Aqueduct Construction":
 					dollarsPerLevel += 1
@@ -1170,13 +1085,6 @@ func matchPlayerUnlockables(playerCountryNode):
 						culturePerLevel += 1
 						magicCostPerLevel += 6
 		"Faire":
-			for belief in playerCountry.selectedBeliefs:
-				if belief.beliefType == "Harvest Celebration":
-					culturePerLevel += 1
-					culturePerLevel += 1
-					foodCostPerLevel += 2
-				if belief.beliefType == "Public Celebration Mandate":
-					mandatePerLevel += 2
 			for Technology in playerCountry.unlockedTechnologies:
 				if Technology.techName == "Exhibition Hall":
 					culturePerLevel += 2
@@ -1207,14 +1115,6 @@ func matchPlayerUnlockables(playerCountryNode):
 						happinessPerLevel += 3
 						magicCostPerLevel +=7
 		"Forge":
-			for belief in playerCountry.selectedBeliefs:
-				if belief.beliefType == "Patriot's Iron":
-					culturePerLevel += 1
-					weaponsPerLevel += 1
-					metalCostPerLevel += 1
-				if belief.beliefType == "War Spirit":
-					weaponsPerLevel += 2
-					metalCostPerLevel += 2
 			for Technology in playerCountry.unlockedTechnologies:
 				if Technology.techName == "Blast Furnace":
 					weaponsPerLevel += 2
@@ -1295,14 +1195,6 @@ func matchPlayerUnlockables(playerCountryNode):
 		"Market":
 			# Market uses the same unlockable logic as Workshop (both produce Dollars).
 			# Any tradition/tech/law that would boost Workshop also boosts Market.
-			for belief in playerCountry.selectedBeliefs:
-				if belief.beliefType == "Merchant's Blessing":
-					dollarsPerLevel += 2
-					metalCostPerLevel += 1
-				if belief.beliefType == "Idle Hands Doctrine":
-					culturePerLevel += 2
-					woodCostPerLevel += 1
-					foodCostPerLevel += 1
 			for Technology in playerCountry.unlockedTechnologies:
 				if Technology.techName == "Land Bank":
 					dollarsPerLevel += 2
@@ -1341,7 +1233,7 @@ func matchPlayerUnlockables(playerCountryNode):
 					dollarsPerLevel += 1
 			_apply_governor_archetype_bonus("Dock")
 		"Monument":
-			# Monument uses the same unlockable logic as Temple (both produce Culture).
+			# Monument is the primary Reason↔Providence axis building.
 			for Technology in playerCountry.unlockedTechnologies:
 				if Technology.techName == "Classical Design":
 					woodCostPerLevel += 1
@@ -1353,10 +1245,50 @@ func matchPlayerUnlockables(playerCountryNode):
 			for tradition in playerCountry.unlockedTraditions:
 				if tradition.traditionType == "Puritan Scholarship":
 					sciencePerLevel += 1
-			for belief in playerCountry.selectedBeliefs:
-				if belief.beliefType == "Sacred Craft":
-					culturePerLevel += 1
 			_apply_governor_archetype_bonus("Monument")
+			var monAxLvl: int = playerCountry.churchLevel
+			match monAxLvl:
+				3:
+					dollarsPerLevel += 1
+					mandatePerLevel += 1
+					dollarsDic["Axis: Providence III"] = (1 * buildingLevel)
+					mandateDic["Axis: Providence III"] = (1 * buildingLevel)
+				2:
+					dollarsPerLevel += 1
+					mandatePerLevel += 1
+					dollarsDic["Axis: Providence II"] = (1 * buildingLevel)
+					mandateDic["Axis: Providence II"] = (1 * buildingLevel)
+				1:
+					culturePerLevel += 1
+					dollarsPerLevel += 1
+					mandatePerLevel += 1
+					cultureDic["Axis: Providence I"] = (1 * buildingLevel)
+					dollarsDic["Axis: Providence I"] = (1 * buildingLevel)
+					mandateDic["Axis: Providence I"] = (1 * buildingLevel)
+				0:
+					culturePerLevel += 1
+					dollarsPerLevel += 1
+					mandatePerLevel += 1
+					happinessPerLevel += 1
+					cultureDic["Axis: Balanced"] = (1 * buildingLevel)
+					dollarsDic["Axis: Balanced"] = (1 * buildingLevel)
+					mandateDic["Axis: Balanced"] = (1 * buildingLevel)
+					happinessDic["Axis: Balanced"] = (1 * buildingLevel)
+				-1:
+					culturePerLevel += 1
+					dollarsPerLevel += 1
+					happinessPerLevel += 1
+					cultureDic["Axis: Reason I"] = (1 * buildingLevel)
+					dollarsDic["Axis: Reason I"] = (1 * buildingLevel)
+					happinessDic["Axis: Reason I"] = (1 * buildingLevel)
+				-2:
+					culturePerLevel += 1
+					happinessPerLevel += 1
+					cultureDic["Axis: Reason II"] = (1 * buildingLevel)
+					happinessDic["Axis: Reason II"] = (1 * buildingLevel)
+				-3:
+					culturePerLevel += 1
+					cultureDic["Axis: Reason III"] = (1 * buildingLevel)
 		"Resort":
 			# Resort produces Happiness — buffed by comfort/hospitality traditions.
 			for Technology in playerCountry.unlockedTechnologies:
@@ -1408,13 +1340,6 @@ func matchPlayerUnlockables(playerCountryNode):
 					mandatePerLevel += 1
 				if tradition.traditionType == "Self-Made Man":
 					mandatePerLevel += 1
-			for belief in playerCountry.selectedBeliefs:
-				if belief.beliefType == "Civic Pride":
-					culturePerLevel += 1
-					mandatePerLevel += 1
-				if belief.beliefType == "Civic Order Faith":
-					corruptionLossPerLevel += 1
-					mandatePerLevel += 1
 			if tile.tileSpell != null:
 				match tile.tileSpell.spellType:
 					"Foresight":
@@ -1425,6 +1350,8 @@ func matchPlayerUnlockables(playerCountryNode):
 						mandatePerLevel += 5
 						magicCostPerLevel += 15
 		_apply_faction_bonuses(buildingType)
+	_apply_axis_bonuses(buildingType)
+	_apply_belief_bonuses(buildingType)
 	pass
 
 func _apply_faction_bonuses(bType: String) -> void:
@@ -1464,7 +1391,7 @@ func _apply_faction_bonuses(bType: String) -> void:
 						foodPerLevel += 1
 						foodDic["Faction: Common Cause (Frontier Homesteads)"] = (1 * buildingLevel)
 				if fac.factionLoyalty >= 60:
-					if bType == "Bath" or bType == "Temple":
+					if bType == "Resort" or bType == "Monument":
 						happinessPerLevel += 1
 						happinessDic["Faction: Common Cause (The People's Assembly)"] = (1 * buildingLevel)
 				if fac.factionLoyalty >= 90:
@@ -1473,11 +1400,11 @@ func _apply_faction_bonuses(bType: String) -> void:
 						foodDic["Faction: Common Cause (Land Reform)"] = (1 * buildingLevel)
 			"Abolitionist League":
 				if fac.factionLoyalty >= 60:
-					if bType == "Temple":
+					if bType == "Monument":
 						culturePerLevel += 1
 						cultureDic["Faction: Abolitionist League (Underground Railroad)"] = (1 * buildingLevel)
 				if fac.factionLoyalty >= 90:
-					if bType == "Temple":
+					if bType == "Monument":
 						happinessPerLevel += 1
 						happinessDic["Faction: Abolitionist League (Universal Emancipation)"] = (1 * buildingLevel)
 					if bType == "Courthouse":
@@ -1507,7 +1434,7 @@ func _apply_faction_bonuses(bType: String) -> void:
 						scienceDic["Faction: Free Workers Union (Workers Commonwealth)"] = (1 * buildingLevel)
 			"French Habitants":
 				if fac.factionLoyalty >= 30:
-					if bType == "Temple":
+					if bType == "Monument":
 						culturePerLevel += 1
 						cultureDic["Faction: French Habitants (Quebec Act Recognition)"] = (1 * buildingLevel)
 				if fac.factionLoyalty >= 60:
@@ -1518,7 +1445,7 @@ func _apply_faction_bonuses(bType: String) -> void:
 					if bType == "Farm":
 						foodPerLevel += 1
 						foodDic["Faction: French Habitants (Republic of Quebec)"] = (1 * buildingLevel)
-					if bType == "Temple":
+					if bType == "Monument":
 						happinessPerLevel += 1
 						happinessDic["Faction: French Habitants (Republic of Quebec)"] = (1 * buildingLevel)
 			"Loyalist Settlers":
@@ -1582,6 +1509,247 @@ func _apply_faction_bonuses(bType: String) -> void:
 					if bType == "Dock":
 						boatsPerLevel += 1
 						boatsDic["Faction: Maritime Patriots (Maritime Union)"] = (1 * buildingLevel)
+
+func _apply_axis_bonuses(bType: String) -> void:
+	if playerCountry == null:
+		return
+	var lvl: int = playerCountry.churchLevel
+	if lvl == 3:
+		match bType:
+			"Barracks":
+				manpowerPerLevel += 50
+				manpowerDic["Axis: Providence III (Martial Faith)"] = (50 * buildingLevel)
+			"Farm":
+				foodPerLevel += 1
+				foodDic["Axis: Providence III (Sacred Harvest)"] = (1 * buildingLevel)
+			"Fortress":
+				defensivenessPerLevel += 1
+				# no dic for defensiveness — matches existing pattern
+			"Courthouse":
+				mandatePerLevel += 1
+				mandateDic["Axis: Providence III (Divine Law)"] = (1 * buildingLevel)
+	elif lvl == -3:
+		match bType:
+			"Library":
+				sciencePerLevel += 1
+				culturePerLevel += 1
+				scienceDic["Axis: Reason III (Secular Learning)"] = (1 * buildingLevel)
+				cultureDic["Axis: Reason III (Secular Learning)"] = (1 * buildingLevel)
+			"Market":
+				dollarsPerLevel += 1
+				dollarsDic["Axis: Reason III (Free Commerce)"] = (1 * buildingLevel)
+			"Resort":
+				happinessPerLevel += 1
+				happinessDic["Axis: Reason III (Civic Pleasure)"] = (1 * buildingLevel)
+			"Courthouse":
+				mandatePerLevel += 1
+				mandateDic["Axis: Reason III (Secular Law)"] = (1 * buildingLevel)
+
+
+func _apply_belief_bonuses(bType: String) -> void:
+	if playerCountry == null:
+		return
+	for belief in playerCountry.selectedBeliefs:
+		match belief.beliefType:
+			# ── Doctrines (→ Providence) ────────────────────────────────────────
+			"Healing Waters":
+				if bType == "Resort":
+					happinessPerLevel += 1
+					happinessDic["Doctrine: Healing Waters"] = (1 * buildingLevel)
+				if bType == "Monument":
+					culturePerLevel += 1
+					cultureDic["Doctrine: Healing Waters"] = (1 * buildingLevel)
+			"Standing Stones":
+				if bType == "Monument":
+					mandatePerLevel += 1
+					mandateDic["Doctrine: Standing Stones"] = (1 * buildingLevel)
+			"Valued Idolatry":
+				if bType == "Market":
+					dollarsPerLevel += 1
+					dollarsDic["Doctrine: Valued Idolatry"] = (1 * buildingLevel)
+				if bType == "Mine":
+					metalPerLevel += 1
+					metalDic["Doctrine: Valued Idolatry"] = (1 * buildingLevel)
+			"Sacred Groves":
+				if bType == "Camp":
+					woodPerLevel += 1
+					woodDic["Doctrine: Sacred Groves"] = (1 * buildingLevel)
+			"Midsummer Celebrations":
+				if bType == "Theater" or bType == "Faire":
+					culturePerLevel += 1
+					cultureDic["Doctrine: Midsummer Celebrations"] = (1 * buildingLevel)
+				if bType == "Resort":
+					happinessPerLevel += 1
+					happinessDic["Doctrine: Midsummer Celebrations"] = (1 * buildingLevel)
+			"Tree of Life":
+				if bType == "Farm":
+					foodPerLevel += 1
+					foodDic["Doctrine: Tree of Life"] = (1 * buildingLevel)
+				if bType == "Camp":
+					woodPerLevel += 1
+					woodDic["Doctrine: Tree of Life"] = (1 * buildingLevel)
+			"Tower Control":
+				if bType == "Tower":
+					magicPerLevel += 1
+					magicDic["Doctrine: Tower Control"] = (1 * buildingLevel)
+				if bType == "Library":
+					sciencePerLevel += 1
+					scienceDic["Doctrine: Tower Control"] = (1 * buildingLevel)
+			"Nature Sanctuaries":
+				if bType == "Camp":
+					woodPerLevel += 1
+					woodDic["Doctrine: Nature Sanctuaries"] = (1 * buildingLevel)
+				if bType == "Barracks":
+					manpowerPerLevel += 50
+					manpowerDic["Doctrine: Nature Sanctuaries"] = (50 * buildingLevel)
+			"Conservative Orthodoxy":
+				if bType == "Monument":
+					mandatePerLevel += 1
+					mandateDic["Doctrine: Conservative Orthodoxy"] = (1 * buildingLevel)
+				if bType == "Courthouse":
+					mandatePerLevel += 1
+					mandateDic["Doctrine: Conservative Orthodoxy"] = (1 * buildingLevel)
+			"Sanctioned Cadaver Research":
+				if bType == "Library":
+					sciencePerLevel += 1
+					scienceDic["Doctrine: Sanctioned Cadaver Research"] = (1 * buildingLevel)
+			"Temple Height Restrictions":
+				if bType == "Monument":
+					culturePerLevel += 1
+					mandatePerLevel += 1
+					cultureDic["Doctrine: Temple Height Restrictions"] = (1 * buildingLevel)
+					mandateDic["Doctrine: Temple Height Restrictions"] = (1 * buildingLevel)
+			# ── Icons (→ Reason) ─────────────────────────────────────────────────
+			"George Washington":
+				if bType == "Barracks":
+					manpowerPerLevel += 50
+					weaponsPerLevel += 1
+					manpowerDic["Icon: George Washington"] = (50 * buildingLevel)
+					weaponsDic["Icon: George Washington"] = (1 * buildingLevel)
+			"Benjamin Franklin":
+				if bType == "Library":
+					sciencePerLevel += 1
+					scienceDic["Icon: Benjamin Franklin"] = (1 * buildingLevel)
+				if bType == "Workshop":
+					dollarsPerLevel += 1
+					dollarsDic["Icon: Benjamin Franklin"] = (1 * buildingLevel)
+			"Abigail Adams":
+				if bType == "Library":
+					culturePerLevel += 1
+					cultureDic["Icon: Abigail Adams"] = (1 * buildingLevel)
+				if bType == "Courthouse":
+					mandatePerLevel += 1
+					mandateDic["Icon: Abigail Adams"] = (1 * buildingLevel)
+			"Alexander Hamilton":
+				if bType == "Market" or bType == "Workshop":
+					dollarsPerLevel += 1
+					dollarsDic["Icon: Alexander Hamilton"] = (1 * buildingLevel)
+			"Phillis Wheatley":
+				if bType == "Library":
+					culturePerLevel += 1
+					cultureDic["Icon: Phillis Wheatley"] = (1 * buildingLevel)
+				if bType == "Monument":
+					culturePerLevel += 1
+					cultureDic["Icon: Phillis Wheatley"] = (1 * buildingLevel)
+			"Thomas Jefferson":
+				if bType == "Farm":
+					foodPerLevel += 1
+					foodDic["Icon: Thomas Jefferson"] = (1 * buildingLevel)
+				if bType == "Library":
+					sciencePerLevel += 1
+					scienceDic["Icon: Thomas Jefferson"] = (1 * buildingLevel)
+			"Abraham Lincoln":
+				if bType == "Barracks":
+					manpowerPerLevel += 50
+					manpowerDic["Icon: Abraham Lincoln"] = (50 * buildingLevel)
+				if bType == "Courthouse":
+					mandatePerLevel += 1
+					mandateDic["Icon: Abraham Lincoln"] = (1 * buildingLevel)
+			"Harriet Tubman":
+				if bType == "Barracks":
+					manpowerPerLevel += 50
+					weaponsPerLevel += 1
+					manpowerDic["Icon: Harriet Tubman"] = (50 * buildingLevel)
+					weaponsDic["Icon: Harriet Tubman"] = (1 * buildingLevel)
+			"Frederick Douglass":
+				if bType == "Library":
+					culturePerLevel += 1
+					cultureDic["Icon: Frederick Douglass"] = (1 * buildingLevel)
+				if bType == "Courthouse":
+					mandatePerLevel += 1
+					mandateDic["Icon: Frederick Douglass"] = (1 * buildingLevel)
+			"Sitting Bull":
+				if bType == "Camp":
+					woodPerLevel += 1
+					foodPerLevel += 1
+					woodDic["Icon: Sitting Bull"] = (1 * buildingLevel)
+					foodDic["Icon: Sitting Bull"] = (1 * buildingLevel)
+			"Sojourner Truth":
+				if bType == "Farm":
+					foodPerLevel += 1
+					foodDic["Icon: Sojourner Truth"] = (1 * buildingLevel)
+				if bType == "Monument":
+					culturePerLevel += 1
+					cultureDic["Icon: Sojourner Truth"] = (1 * buildingLevel)
+			"Chief Joseph":
+				if bType == "Courthouse":
+					mandatePerLevel += 1
+					mandateDic["Icon: Chief Joseph"] = (1 * buildingLevel)
+			"Theodore Roosevelt":
+				if bType == "Mine":
+					metalPerLevel += 1
+					metalDic["Icon: Theodore Roosevelt"] = (1 * buildingLevel)
+				if bType == "Camp":
+					woodPerLevel += 1
+					woodDic["Icon: Theodore Roosevelt"] = (1 * buildingLevel)
+				if bType == "Barracks":
+					manpowerPerLevel += 50
+					manpowerDic["Icon: Theodore Roosevelt"] = (50 * buildingLevel)
+			"Susan B. Anthony":
+				if bType == "Courthouse":
+					mandatePerLevel += 1
+					mandateDic["Icon: Susan B. Anthony"] = (1 * buildingLevel)
+				if bType == "Monument":
+					culturePerLevel += 1
+					cultureDic["Icon: Susan B. Anthony"] = (1 * buildingLevel)
+			"Ida B. Wells":
+				if bType == "Library":
+					culturePerLevel += 1
+					cultureDic["Icon: Ida B. Wells"] = (1 * buildingLevel)
+			"Eleanor Roosevelt":
+				if bType == "Resort":
+					happinessPerLevel += 1
+					happinessDic["Icon: Eleanor Roosevelt"] = (1 * buildingLevel)
+				if bType == "Monument":
+					culturePerLevel += 1
+					cultureDic["Icon: Eleanor Roosevelt"] = (1 * buildingLevel)
+			"Martin Luther King Jr.":
+				if bType == "Monument":
+					culturePerLevel += 1
+					mandatePerLevel += 1
+					cultureDic["Icon: Martin Luther King Jr."] = (1 * buildingLevel)
+					mandateDic["Icon: Martin Luther King Jr."] = (1 * buildingLevel)
+				if bType == "Courthouse":
+					mandatePerLevel += 1
+					mandateDic["Icon: Martin Luther King Jr."] = (1 * buildingLevel)
+			"Cesar Chavez":
+				if bType == "Farm":
+					foodPerLevel += 1
+					foodDic["Icon: Cesar Chavez"] = (1 * buildingLevel)
+				if bType == "Barracks":
+					manpowerPerLevel += 50
+					manpowerDic["Icon: Cesar Chavez"] = (50 * buildingLevel)
+			"Jimmy Carter":
+				if bType == "Farm":
+					foodPerLevel += 1
+					foodDic["Icon: Jimmy Carter"] = (1 * buildingLevel)
+				if bType == "Resort":
+					happinessPerLevel += 1
+					happinessDic["Icon: Jimmy Carter"] = (1 * buildingLevel)
+			"Dolores Huerta":
+				if bType == "Farm":
+					foodPerLevel += 1
+					foodDic["Icon: Dolores Huerta"] = (1 * buildingLevel)
 
 var dollarsTax: float
 var happinessTax: float

@@ -3723,11 +3723,14 @@ func giveSpellInfo(type, spellBranch):
 	pass
 
 func _on_belief_control_purchased_belief(beliefName, beliefCost) -> void:
-	#print(beliefName, beliefCost, "WORLD SIGNALRECEIVED")
 	playerCountryNode.addReligiousBelief(beliefName)
 	playerCountryNode.payBill("faith", beliefCost)
 	$CanvasLayer/BeliefControl.updateSelf()
-	pass # Replace with function body.
+	# Refresh belief mil mods on all player armies when beliefs change.
+	for army in playerCountryNode.countryArmyList:
+		if army.parentCountry == playerCountryNode:
+			army.applyCountryBeliefMilMods()
+	pass
 
 
 func _on_government_control_slider_changed(amount, type) -> void:
