@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '{\"systemMessage\": \"Flavordoc reminder: if you added any flavor content this session (laws, beliefs, doctrines, icons, factions, events, mil mods, governors, or protectors for USA or Canada), update the data arrays in scripts/build_flavordoc.py, then run: python3 scripts/build_flavordoc.py, and commit both files.\"}'",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}
