@@ -116,7 +116,7 @@ func buildSelf(gT, gL):
 			governorFaction = "Common Cause"
 			loyalty = 5.0
 
-		"Jessica Commanda":
+		"Jessica Commanda Odjick":
 			governorTexture = load("res://art assets/Placeholder Art/character/4-22-Ikra-Colors - Copy.png")
 			governorDescription = "The colony belongs to no crown. The land remembers who tended it long before London drew a line."
 			governorBiography = "Algonquin leader and the voice the Continental Republic actually needs to hear. Commanda grew up on the waterways between territories London calls borders and her people call home. She speaks three languages and none of them are asking permission. She came to Ottawa not as a supplicant but as the only person in the room who has been right about every British promise for forty years. The Governor's Council objected to her presence at the table. The Governor's Council is no longer at the table."

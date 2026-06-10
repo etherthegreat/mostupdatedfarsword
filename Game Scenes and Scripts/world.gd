@@ -714,11 +714,11 @@ func generateBarracksCommanders() -> void:
 	var portrait_placeholder: Texture = load(
 		"res://art assets/Placeholder Art/character/4-22-Ikra-Colors - Copy.png")
 
-	# ── Spawn player leader — Ualani (USA) or Jessica Commanda (CA) ──────────
+	# ── Spawn player leader — Ualani (USA) or Jessica Commanda Odjick (CA) ──────────
 	if playerCountry == "CA":
-		# Jessica Commanda in Ottawa (tile 201)
+		# Jessica Commanda Odjick in Ottawa (tile 201)
 		var jessica: governor = governor.new()
-		jessica.buildSelf("Jessica Commanda", 3)
+		jessica.buildSelf("Jessica Commanda Odjick", 3)
 		playerCountryNode.unlockedGovernors.append(jessica)
 		for tile in $TileController.get_children():
 			if tile.tileNumber == 201 and tile.tileOwner == playerCountry:
@@ -995,9 +995,9 @@ func _generate_ai_barracks_commanders(country_node: country) -> void:
 		},
 	}
 
-	# ── Spawn Jessica Commanda (leader) at Ottawa, tile 201 ──────────────────
+	# ── Spawn Jessica Commanda Odjick (leader) at Ottawa, tile 201 ──────────────────
 	var jessica: governor = governor.new()
-	jessica.buildSelf("Jessica Commanda", 3)
+	jessica.buildSelf("Jessica Commanda Odjick", 3)
 	country_node.unlockedGovernors.append(jessica)
 	country_node.NatLeader = jessica
 	for tile in $TileController.get_children():
@@ -1005,7 +1005,7 @@ func _generate_ai_barracks_commanders(country_node: country) -> void:
 			tile.tileGovernor       = jessica
 			tile.filledGovernorSlot = true
 			jessica.hired           = true
-			print("[CA Leaders] Jessica Commanda stationed at Ottawa (tile 201).")
+			print("[CA Leaders] Jessica Commanda Odjick stationed at Ottawa (tile 201).")
 			break
 	if not jessica.hired:
 		print("[CA Leaders] Ottawa not CA-owned at start — Jessica added to pool unassigned.")
@@ -2278,15 +2278,15 @@ func checkCaCollapseCondition() -> void:
 		print("[CA Collapse] Ottawa has fallen. Triggering CA_COLLAPSE_01.")
 		createNewEvent("CA_COLLAPSE_01")
 		return
-	# Jessica Commanda must still be alive (in unlockedGovernors)
+	# Jessica Commanda Odjick must still be alive (in unlockedGovernors)
 	var jessica_alive: bool = false
 	for gov in playerCountryNode.unlockedGovernors:
-		if gov.governorType == "Jessica Commanda":
+		if gov.governorType == "Jessica Commanda Odjick":
 			jessica_alive = true
 			break
 	if not jessica_alive:
 		_ca_collapsed = true
-		print("[CA Collapse] Jessica Commanda has fallen. Triggering CA_COLLAPSE_JESSICA.")
+		print("[CA Collapse] Jessica Commanda Odjick has fallen. Triggering CA_COLLAPSE_JESSICA.")
 		createNewEvent("CA_COLLAPSE_JESSICA")
 
 
@@ -2808,7 +2808,7 @@ func _find_jessica_tile() -> Tile:
 	for tile in playerCountryNode.OwnedTileList:
 		if tile.tileGovernor == null:
 			continue
-		if tile.tileGovernor.governorType != "Jessica Commanda":
+		if tile.tileGovernor.governorType != "Jessica Commanda Odjick":
 			continue
 		if tile.stationedArmy != null and tile.stationedArmy.parentCountry == playerCountryNode:
 			return tile
@@ -3868,7 +3868,7 @@ func _check_ca_protectors() -> void:
 
 
 func _check_ca_own_protectors() -> void:
-	# Main CA protector summons when playing as Canada — Jessica Commanda summons them.
+	# Main CA protector summons when playing as Canada — Jessica Commanda Odjick summons them.
 	# No alliance gate; these are Canada's own mythological affairs.
 	for pid in CA_PROT_IDS:
 		if not _is_ca_prot_wild(pid):
