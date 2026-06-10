@@ -3,11 +3,20 @@
 pick_ethertask.py — Pull one unfinished content item from all masterdocs.
 Prints a single focused task card (one event, one art, one text).
 
-Run:  python3 scripts/pick_ethertask.py
-      python3 scripts/pick_ethertask.py --seed 42
+Run:  python3 scripts/pick_ethertask.py          # show current task (or pick one)
+      python3 scripts/pick_ethertask.py --next    # mark current done, pick next
+      python3 scripts/pick_ethertask.py --seed 42 # force a specific seed (picks new)
+
+State:  data/current_ethertask.json  — persists the active task between runs.
+        The task is shown on every /ethertask call until it is marked complete
+        in its source data (status → FULL PASS/FULL COMPLETION).  At that point
+        the next call auto-advances to the next task.
 """
-import sys, os, importlib.util, random
+import sys, os, json, importlib.util, random
 from datetime import date
+
+STATE_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                          "data", "current_ethertask.json")
 
 ROOT    = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SCR_DIR = os.path.join(ROOT, "scripts")
@@ -225,25 +234,71 @@ def collect():
     return tasks
 
 
+def _load_state():
+    try:
+        with open(STATE_PATH) as f:
+            return json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return None
+
+
+def _save_state(task):
+    with open(STATE_PATH, "w") as f:
+        json.dump({"id": task["id"], "source": task["source"]}, f, indent=2)
+
+
+def _clear_state():
+    try:
+        os.remove(STATE_PATH)
+    except FileNotFoundError:
+        pass
+
+
+def _find_task(tasks, task_id, source):
+    for t in tasks:
+        if t["id"] == task_id and t["source"] == source:
+            return t
+    return None
+
+
 def main():
     tasks = collect()
+    force_next = "--next" in sys.argv
+    force_seed = "--seed" in sys.argv
 
     if not tasks:
+        _clear_state()
         print("🎉  ALL CONTENT IS FULL PASS — nothing left to finish!")
         return
 
-    # Seed: day-of-year by default; --seed N overrides
-    if "--seed" in sys.argv:
-        try:
-            seed_val = int(sys.argv[sys.argv.index("--seed") + 1])
-        except (IndexError, ValueError):
-            seed_val = int(date.today().strftime("%Y%j"))
-    else:
-        seed_val = int(date.today().strftime("%Y%j"))
+    # ── Determine the active task ─────────────────────────────────────────────
+    state = _load_state()
+    t = None
+    continuing = False
 
-    rng = random.Random(seed_val)
-    weights = [t["w"] for t in tasks]
-    t = rng.choices(tasks, weights=weights, k=1)[0]
+    if not force_next and not force_seed and state:
+        # Try to find the stored task in the current unfinished pool
+        t = _find_task(tasks, state["id"], state["source"])
+        if t:
+            continuing = True
+        # If not found, it was completed — fall through to pick a new one
+
+    if t is None:
+        # Pick a new task
+        if force_seed:
+            try:
+                seed_val = int(sys.argv[sys.argv.index("--seed") + 1])
+            except (IndexError, ValueError):
+                seed_val = int(date.today().strftime("%Y%j"))
+        else:
+            seed_val = int(date.today().strftime("%Y%j"))
+
+        rng = random.Random(seed_val)
+        weights = [t["w"] for t in tasks]
+        t = rng.choices(tasks, weights=weights, k=1)[0]
+        _save_state(t)
+
+    seed_val = int(date.today().strftime("%Y%j"))
 
     # ── CARD ──────────────────────────────────────────────────────────────────
     W    = 62
@@ -253,8 +308,10 @@ def main():
     needs_art = t["art_status"] not in ("N/A", "Done", "Integrated")
     flag_str  = f"  [{t['flag'].upper()}]" if t["flag"] else ""
 
+    mode_str = "CONTINUING" if continuing else "NEW TASK"
+
     print(rule)
-    print(f"  ETHER TASK  ·  {date.today().strftime('%B %d, %Y')}")
+    print(f"  ETHER TASK  ·  {mode_str}  ·  {date.today().strftime('%B %d, %Y')}")
     print(rule)
     print(f"  SOURCE   {t['source']}")
     print(f"  ID       {t['id']}")
@@ -298,7 +355,12 @@ def main():
 
     print(rule)
     remaining = len(tasks)
-    print(f"  Tasks in pool: {remaining}  ·  seed {seed_val}  ·  use --seed N for another")
+    if continuing:
+        print(f"  Tasks in pool: {remaining}  ·  This task is ACTIVE until marked complete.")
+        print(f"  Complete it, update status in source, then run:  python3 scripts/pick_ethertask.py")
+        print(f"  To skip ahead without completing:  pick_ethertask.py --next")
+    else:
+        print(f"  Tasks in pool: {remaining}  ·  seed {seed_val}  ·  use --seed N for another")
     print(rule)
 
 
