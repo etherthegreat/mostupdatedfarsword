@@ -99,7 +99,7 @@ const USA_PROT_TILES: Dictionary = {
 # ── CANADIAN PROTECTORS ───────────────────────────────────────────────────────
 # Eight creatures from Algonquin, Mi'kmaq, and French-Canadian folklore.
 # Each anchored to a specific CA-owned tile.  Fire as dispatches from Jessica
-# Clear-Water to President Carlisle regardless of alliance status.
+# Commanda to President Carlisle regardless of alliance status.
 const CA_PROT_IDS: Array = [
 	"CA_PROT_01", "CA_PROT_02", "CA_PROT_03", "CA_PROT_04",
 	"CA_PROT_05", "CA_PROT_06", "CA_PROT_07", "CA_PROT_08"
@@ -417,6 +417,124 @@ func _apply_archetype_mods(gov: governor, arc_id: String) -> void:
 			gov.addMilMod("Marksman",         123)
 			gov.addMilMod("Night Raider",      23)
 			gov.addMilMod("The Long March",     3)
+		# ── USA TRIBAL ARCHETYPES ─────────────────────────────────────────────
+		"ARC_NA_01": # Mohawk War Captain
+			gov.addMilMod("Woodsman",          123)
+			gov.addMilMod("Guerrilla Tactics", 123)
+			gov.addMilMod("Iron Bayonet",       23)
+			gov.addMilMod("Last Stand",           3)
+		"ARC_NA_02": # Oneida Alliance Scout
+			gov.addMilMod("Woodsman",          123)
+			gov.addMilMod("Quick Reload",      123)
+			gov.addMilMod("Night Raider",       23)
+			gov.addMilMod("Ghost March",          3)
+		"ARC_NA_03": # Wampanoag Mariner
+			gov.addMilMod("Coastal Watch",     123)
+			gov.addMilMod("Marine",            123)
+			gov.addMilMod("Swamp Legs",         23)
+			gov.addMilMod("Naval Supremacy",      3)
+		"ARC_NA_04": # Lenape Guide
+			gov.addMilMod("Steady Line",       123)
+			gov.addMilMod("Farmhand",          123)
+			gov.addMilMod("Rallying Voice",     23)
+			gov.addMilMod("Continental Line",     3)
+		"ARC_NA_05": # Abenaki Tracker
+			gov.addMilMod("Woodsman",          123)
+			gov.addMilMod("Quick Reload",      123)
+			gov.addMilMod("Guerrilla Tactics",  23)
+			gov.addMilMod("Ghost March",          3)
+		"ARC_NA_06": # Cherokee Rifleman
+			gov.addMilMod("Hill Runner",       123)
+			gov.addMilMod("Marksman",          123)
+			gov.addMilMod("Quick Reload",       23)
+			gov.addMilMod("Ghost March",          3)
+		"ARC_NA_07": # Muscogee Creek Warrior
+			gov.addMilMod("Swamp Legs",        123)
+			gov.addMilMod("Saber Drill",       123)
+			gov.addMilMod("Guerrilla Tactics",  23)
+			gov.addMilMod("Last Stand",           3)
+		"ARC_NA_08": # Shawnee Runner
+			gov.addMilMod("Woodsman",          123)
+			gov.addMilMod("Hill Runner",       123)
+			gov.addMilMod("Night Raider",       23)
+			gov.addMilMod("Ghost March",          3)
+		"ARC_NA_09": # Seneca War Chief
+			gov.addMilMod("Woodsman",          123)
+			gov.addMilMod("Saber Drill",       123)
+			gov.addMilMod("Iron Bayonet",       23)
+			gov.addMilMod("Entrenched",           3)
+		"ARC_NA_10": # Catawba Rifleman
+			gov.addMilMod("Hill Runner",       123)
+			gov.addMilMod("Marksman",          123)
+			gov.addMilMod("Steady Line",        23)
+			gov.addMilMod("Continental Line",     3)
+		# ── CANADIAN ARCHETYPES ───────────────────────────────────────────────
+		"CA_ARC_01": # Coureur des Bois
+			gov.addMilMod("Woodsman",          123)
+			gov.addMilMod("Quick Reload",      123)
+			gov.addMilMod("Guerrilla Tactics",  23)
+			gov.addMilMod("Ghost March",          3)
+		"CA_ARC_02": # Voyageur
+			gov.addMilMod("Coastal Watch",     123)
+			gov.addMilMod("Farmhand",          123)
+			gov.addMilMod("Rallying Voice",     23)
+			gov.addMilMod("The Long March",       3)
+		"CA_ARC_03": # Mi'kmaq Raider
+			gov.addMilMod("Coastal Watch",     123)
+			gov.addMilMod("Swamp Legs",        123)
+			gov.addMilMod("Guerrilla Tactics",  23)
+			gov.addMilMod("Ghost March",          3)
+		"CA_ARC_04": # Loyalist Farmer
+			gov.addMilMod("Farmhand",          123)
+			gov.addMilMod("Steady Line",       123)
+			gov.addMilMod("Fortified Position", 23)
+			gov.addMilMod("Entrenched",           3)
+		"CA_ARC_05": # Montreal Merchant
+			gov.addMilMod("Street Tough",      123)
+			gov.addMilMod("Steady Line",       123)
+			gov.addMilMod("Rallying Voice",     23)
+			gov.addMilMod("Continental Line",     3)
+		"CA_ARC_06": # Habitant Militia
+			gov.addMilMod("Farmhand",          123)
+			gov.addMilMod("Saber Drill",       123)
+			gov.addMilMod("Guerrilla Tactics",  23)
+			gov.addMilMod("Last Stand",           3)
+		"CA_ARC_07": # Anglican Officer
+			gov.addMilMod("Steady Line",       123)
+			gov.addMilMod("Fortified Position",123)
+			gov.addMilMod("Iron Bayonet",       23)
+			gov.addMilMod("Iron Wall",            3)
+		"CA_ARC_08": # Haudenosaunee Diplomat
+			gov.addMilMod("Steady Line",       123)
+			gov.addMilMod("Woodsman",          123)
+			gov.addMilMod("Rallying Voice",     23)
+			gov.addMilMod("Continental Line",     3)
+		"CA_ARC_09": # Acadian Fisherman
+			gov.addMilMod("Coastal Watch",     123)
+			gov.addMilMod("Quick Reload",      123)
+			gov.addMilMod("Swamp Legs",         23)
+			gov.addMilMod("Ghost March",          3)
+		"CA_ARC_10": # Lumber Camp Foreman
+			gov.addMilMod("Woodsman",          123)
+			gov.addMilMod("Powder & Shot",     123)
+			gov.addMilMod("Siege Line",         23)
+			gov.addMilMod("Entrenched",           3)
+		# ── CANADIAN TRIBAL ARCHETYPES ────────────────────────────────────────
+		"CA_ARC_NA_01": # Algonquin River Guide
+			gov.addMilMod("Woodsman",          123)
+			gov.addMilMod("Quick Reload",      123)
+			gov.addMilMod("Guerrilla Tactics",  23)
+			gov.addMilMod("Ghost March",          3)
+		"CA_ARC_NA_02": # Haudenosaunee Confederacy Envoy
+			gov.addMilMod("Steady Line",       123)
+			gov.addMilMod("Woodsman",          123)
+			gov.addMilMod("Rallying Voice",     23)
+			gov.addMilMod("Continental Line",     3)
+		"CA_ARC_NA_03": # Cree Hunter
+			gov.addMilMod("Woodsman",          123)
+			gov.addMilMod("Quick Reload",      123)
+			gov.addMilMod("Night Raider",       23)
+			gov.addMilMod("Guerrilla Tactics",    3)
 
 
 func generateBarracksCommanders() -> void:
@@ -434,7 +552,27 @@ func generateBarracksCommanders() -> void:
 		{"id":"ARC_07","name":"Loyalist Turncoat",     "position":"SPY",        "terrain":["Metro","Suburbs"],        "pools":["NP_01","NP_02"]},
 		{"id":"ARC_08","name":"Tobacco Belt Drifter",  "position":"SCOUT",      "terrain":["Farmlands"],              "pools":["NP_03","NP_04"]},
 		{"id":"ARC_09","name":"War Widow",             "position":"DIPLOMAT",   "terrain":["Suburbs","Metro"],        "pools":["NP_01","NP_04","NP_09"]},
-		{"id":"ARC_10","name":"Indigenous Scout",      "position":"SCOUT",      "terrain":["Woods","Wetlands"],       "pools":["NP_07"]},
+		# ── TRIBAL ARCHETYPES — USA (replace generic ARC_10) ────────────────────
+		{"id":"ARC_NA_01","name":"Mohawk War Captain",          "position":"WARRIOR",   "terrain":["Woods","Foothills"],
+		 "regions":["NY","VT","NH","MA","PA"],        "pools":["NP_NA_01"]},
+		{"id":"ARC_NA_02","name":"Oneida Alliance Scout",       "position":"SCOUT",     "terrain":["Woods","Wetlands"],
+		 "regions":["NY","PA","VT"],                  "pools":["NP_NA_01"]},
+		{"id":"ARC_NA_03","name":"Wampanoag Mariner",           "position":"ADMIRAL",   "terrain":["Wetlands"],
+		 "regions":["MA","RI","CT","NH"],             "pools":["NP_NA_02"]},
+		{"id":"ARC_NA_04","name":"Lenape Guide",                "position":"DIPLOMAT",  "terrain":["Woods","Farmlands"],
+		 "regions":["NJ","PA","DE","NY","MD"],        "pools":["NP_NA_03"]},
+		{"id":"ARC_NA_05","name":"Abenaki Tracker",             "position":"SCOUT",     "terrain":["Woods","Foothills","Wetlands"],
+		 "regions":["VT","NH","MA","ME"],             "pools":["NP_NA_04"]},
+		{"id":"ARC_NA_06","name":"Cherokee Rifleman",           "position":"SOLDIER",   "terrain":["Foothills","Woods"],
+		 "regions":["TN","NC","GA","VA","SC"],        "pools":["NP_NA_05"]},
+		{"id":"ARC_NA_07","name":"Muscogee Creek Warrior",      "position":"WARRIOR",   "terrain":["Wetlands","Farmlands"],
+		 "regions":["GA","AL","FL","MS"],             "pools":["NP_NA_06"]},
+		{"id":"ARC_NA_08","name":"Shawnee Runner",              "position":"SCOUT",     "terrain":["Woods","Foothills"],
+		 "regions":["WV","OH","KY","PA","IN"],        "pools":["NP_NA_07"]},
+		{"id":"ARC_NA_09","name":"Seneca War Chief",            "position":"WARRIOR",   "terrain":["Woods","Foothills"],
+		 "regions":["NY","PA"],                       "pools":["NP_NA_01"]},
+		{"id":"ARC_NA_10","name":"Catawba Rifleman",            "position":"SOLDIER",   "terrain":["Foothills","Farmlands"],
+		 "regions":["NC","SC","VA"],                  "pools":["NP_NA_08"]},
 		{"id":"ARC_11","name":"Boston Rabble-Rouser",  "position":"ORATOR",     "terrain":["Metro"],                  "pools":["NP_01","NP_09"]},
 		{"id":"ARC_12","name":"Continental Surgeon",   "position":"HEALER",     "terrain":["Farmlands","Foothills"],  "pools":["NP_01","NP_02"]},
 		{"id":"ARC_13","name":"Nantucket Sailor",      "position":"ADMIRAL",    "terrain":["Wetlands"],               "pools":["NP_01"]},
@@ -514,26 +652,83 @@ func generateBarracksCommanders() -> void:
 			"nb": ["Sable","Rael","Aron","Sol","Lev"],
 			"l":  ["Goldstein","Rosenberg","Weiss","Katz","Schwartz","Blum","Stein","Levy","Cohen","Bernstein"],
 		},
+		# ── NATION-SPECIFIC INDIGENOUS POOLS ─────────────────────────────────
+		# Haudenosaunee (Mohawk / Oneida / Seneca — shared pool)
+		"NP_NA_01": {
+			"m":  ["Thayendanegea","Skenandoa","Oronhyatekha","Red Jacket","Cornplanter","Handsome Lake","Big Tree","Farmer's Brother","Complanter","Young King"],
+			"f":  ["Degonwadonti","Konwatsi","Owandah","Molly","Sarah","Mary","Annie","Clara","Lydia","Catherine"],
+			"nb": ["Rotiyaner","Kanien","Wahta","Ohsweken","Kasennakoha","Ranienras","Ionkwaritons"],
+			"l":  ["Brant","Oakes","Hill","Lazore","Swamp","Herne","Jock","Deer","Montour","Thompson"],
+		},
+		# Wampanoag (Massachusetts coast / southern New England)
+		"NP_NA_02": {
+			"m":  ["Massasoit","Metacom","Tisquantum","Wamsutta","Tuspaquin","Annawan","Corbitant","Hobomock","Akkompoin","Nanepashemet"],
+			"f":  ["Weetamoo","Awashonks","Amie","Abiah","Patience","Hope","Mercy","Hannah","Priscilla","Nessutan"],
+			"nb": ["Aquinnah","Noepe","Pocasset","Mashpee","Wonkham","Chappaquiddick"],
+			"l":  ["Peters","Coombs","Pocknett","Vanderhoop","Haskins","Attaquin","Oakley","Macy","Hendricks","Belain"],
+		},
+		# Lenape / Delaware (New Jersey, Pennsylvania, Delaware, Maryland)
+		"NP_NA_03": {
+			"m":  ["Teedyuscung","Shingas","Tamend","Gelelemend","Hopocan","Buckongahelas","Netawatwees","Pisquetomen","Custaloga","Pachgantschihilas"],
+			"f":  ["Hannah","Mary","Sarah","Lydia","Rachel","Elizabeth","Amie","Rebekah","Abigail","Martha"],
+			"nb": ["Unami","Minsi","Munsee","Lenape","Scheyichbi","Monsey"],
+			"l":  ["Killbuck","Anderson","Halfmoon","Journeycake","Conner","Johns","Thompson","Delaware","Gale","Pratt"],
+		},
+		# Abenaki (Vermont, New Hampshire, Maine — Western Abenaki homeland)
+		"NP_NA_04": {
+			"m":  ["Assacumbuit","Nescambiouit","Paugus","Kancamagus","Natanis","Sabatis","Wattanummon","Molsem","Atecouando","Loron"],
+			"f":  ["Singing Bird","Natawammet","Pesando","Nolka","Tahmount","Wahwa","Marie","Abbe","Molian","Cecile"],
+			"nb": ["Wabanaki","Penobscot","Passamaquoddy","Kennebec","Sokoki","Pigwacket"],
+			"l":  ["Obomsawin","Benedict","Bruchac","Watso","Swallow","Neptune","Levi","Lampman","Bowman","Nolette"],
+		},
+		# Cherokee (Tennessee, Carolina, Georgia, Virginia)
+		"NP_NA_05": {
+			"m":  ["Sequoyah","Attakullakulla","Oconostota","Doublehead","Pathkiller","Outacite","Cunne Shote","Tistoe","Dragging Canoe","Emmet"],
+			"f":  ["Nanyehi","Wurteh","Betsy","Mary","Sally","Caty","Nellie","Polly","Tsiyu","Quatsy"],
+			"nb": ["Tsalagi","Aniyunwiya","Atali","Unega","Wahya","Uwetsi"],
+			"l":  ["Ward","Ross","Ridge","Hicks","Vann","Fields","Adair","Watie","Bushyhead","Rogers"],
+		},
+		# Muscogee / Creek (Georgia, Alabama, Florida, Mississippi)
+		"NP_NA_06": {
+			"m":  ["Menawa","Hopoithle Miko","Efau Hadjo","Kinache","Tuskenugge","Bowlegs","Cusseta","Coweta","Tuckabatchee","Factor"],
+			"f":  ["Coosapanaakeesa","Sehoy","Mary","Nancy","Polly","Sally","Betsy","Molly","Sophia","Lydia"],
+			"nb": ["Muscogee","Hitchiti","Yuchi","Eufaula","Atasi","Tuckabatchee"],
+			"l":  ["McGillivray","McIntosh","Harjo","Fixico","Grayson","Perryman","Tiger","Checote","Factor","Deer"],
+		},
+		# Shawnee (West Virginia, Ohio, Kentucky, Pennsylvania)
+		"NP_NA_07": {
+			"m":  ["Hokolesqua","Weyapiersenwah","Catahecassa","Pucksinwah","Tenskwatawa","Chiksika","Nimwha","Moluntha","Kispoko","Tecumseh"],
+			"f":  ["Nonhelema","Methoataske","Tecumapease","Peshewah","Wabete","Fanny","Hannah","Mary","Polly","Sarah"],
+			"nb": ["Maykujay","Pekowi","Chillicothe","Thawegila","Kispoko","Mekoche"],
+			"l":  ["Black","Blue","White","Logan","Spicer","Gray","King","Reed","Ward","Cloud"],
+		},
+		# Catawba (North Carolina, South Carolina, Virginia)
+		"NP_NA_08": {
+			"m":  ["Hagler","Nopkehe","New River","John Frow","George Canty","Thomas Spratt","James Patterson","William Harris","John George","Billy Brown"],
+			"f":  ["Sally","Jane","Margaret","Hannah","Nancy","Betsy","Mary","Polly","Cathey","Susan"],
+			"nb": ["Catawba","Iswa","Esaw","Waxhaw","Sugaree","Wateree"],
+			"l":  ["Harris","Blue","Brown","Canty","Morrison","Patterson","Sanders","Wahoo","Williams","Gordon"],
+		},
 	}
 
 	var portrait_placeholder: Texture = load(
 		"res://art assets/Placeholder Art/character/4-22-Ikra-Colors - Copy.png")
 
-	# ── Spawn player leader — Ualani (USA) or Jessica Clear-Water (CA) ──────────
+	# ── Spawn player leader — Ualani (USA) or Jessica Commanda (CA) ──────────
 	if playerCountry == "CA":
-		# Jessica Clear-Water in Ottawa (tile 201)
+		# Jessica Commanda in Ottawa (tile 201)
 		var jessica: governor = governor.new()
-		jessica.buildSelf("Jessica Clear-Water", 3)
+		jessica.buildSelf("Jessica Commanda", 3)
 		playerCountryNode.unlockedGovernors.append(jessica)
 		for tile in $TileController.get_children():
 			if tile.tileNumber == 201 and tile.tileOwner == playerCountry:
 				tile.tileGovernor       = jessica
 				tile.filledGovernorSlot = true
 				jessica.hired           = true
-				print("[Commanders] PM Clear-Water stationed in Ottawa (tile 201).")
+				print("[Commanders] PM Commanda stationed in Ottawa (tile 201).")
 				break
 		if not jessica.hired:
-			print("[Commanders] Ottawa not player-owned at start — Clear-Water added to pool unassigned.")
+			print("[Commanders] Ottawa not player-owned at start — Commanda added to pool unassigned.")
 		# Mark Penoit in Quebec City (tile 123) as Deputy Governor
 		var penoit: governor = governor.new()
 		penoit.buildSelf("Mark Penoit", 2)
@@ -576,13 +771,21 @@ func generateBarracksCommanders() -> void:
 		if tile.filledGovernorSlot:
 			continue
 
-		# ── Pick archetype ────────────────────────────────────────────────
+		# ── Pick archetype (terrain + optional region filter) ────────────────
 		var candidates: Array = []
 		for arch in ARCHETYPES:
-			if tile.terrain in arch["terrain"]:
+			var terrain_ok: bool = tile.terrain in arch["terrain"]
+			var regions: Array = arch.get("regions", [])
+			var region_ok: bool = regions.is_empty() or tile.tileContinent in regions
+			if terrain_ok and region_ok:
 				candidates.append(arch)
 		if candidates.is_empty():
-			candidates = ARCHETYPES          # any archetype if terrain has no match
+			# Fallback: terrain only, ignore region constraint
+			for arch in ARCHETYPES:
+				if tile.terrain in arch["terrain"]:
+					candidates.append(arch)
+		if candidates.is_empty():
+			candidates = ARCHETYPES
 		var chosen: Dictionary = candidates[randi() % candidates.size()]
 
 		# ── Pick name pool ────────────────────────────────────────────────
@@ -729,16 +932,19 @@ func spawnStartingArmies() -> void:
 # the War Room (player-only UI) and does NOT spawn Ualani.
 func _generate_ai_barracks_commanders(country_node: country) -> void:
 	var CA_ARCHETYPES := [
-		{"id":"CA_ARC_01","name":"Coureur des Bois",    "position":"SCOUT",     "terrain":["Woods","Wetlands"],       "pools":["NP_06"]},
-		{"id":"CA_ARC_02","name":"Voyageur",             "position":"DIPLOMAT",  "terrain":["Wetlands"],               "pools":["NP_06"]},
-		{"id":"CA_ARC_03","name":"Mi'kmaq Tracker",      "position":"SCOUT",     "terrain":["Woods","Wetlands"],       "pools":["NP_07"]},
-		{"id":"CA_ARC_04","name":"Loyalist Farmer",      "position":"FARMER",    "terrain":["Farmlands","Foothills"],  "pools":["NP_01","NP_02"]},
-		{"id":"CA_ARC_05","name":"Montreal Merchant",    "position":"DIPLOMAT",  "terrain":["Metro"],                  "pools":["NP_06","NP_01"]},
-		{"id":"CA_ARC_06","name":"Habitant Militia",     "position":"SOLDIER",   "terrain":["Farmlands"],              "pools":["NP_06"]},
-		{"id":"CA_ARC_07","name":"Anglican Officer",     "position":"SOLDIER",   "terrain":["Suburbs","Metro"],        "pools":["NP_01","NP_02"]},
-		{"id":"CA_ARC_08","name":"Iroquois Warrior",     "position":"WARRIOR",   "terrain":["Woods"],                  "pools":["NP_07"]},
-		{"id":"CA_ARC_09","name":"Acadian Fisherman",    "position":"SCOUT",     "terrain":["Wetlands","Foothills"],   "pools":["NP_06"]},
-		{"id":"CA_ARC_10","name":"Lumber Camp Foreman",  "position":"ENGINEER",  "terrain":["Woods","Foothills"],      "pools":["NP_01","NP_06"]},
+		{"id":"CA_ARC_01",    "name":"Coureur des Bois",            "position":"SCOUT",    "terrain":["Woods","Wetlands"],      "regions":["CA - OT","CA - QB"],                          "pools":["NP_06"]},
+		{"id":"CA_ARC_02",    "name":"Voyageur",                    "position":"DIPLOMAT", "terrain":["Wetlands"],              "regions":["CA - OT","CA - QB"],                          "pools":["NP_06"]},
+		{"id":"CA_ARC_03",    "name":"Mi'kmaq Raider",              "position":"WARRIOR",  "terrain":["Woods","Wetlands"],      "regions":["CA - NB","CA - NS","CA - PEI"],               "pools":["NP_NA_CA_03"]},
+		{"id":"CA_ARC_04",    "name":"Loyalist Farmer",             "position":"FARMER",   "terrain":["Farmlands","Foothills"], "regions":["CA - NB","CA - NS","CA - OT"],                "pools":["NP_01","NP_02"]},
+		{"id":"CA_ARC_05",    "name":"Montreal Merchant",           "position":"DIPLOMAT", "terrain":["Metro"],                 "regions":["CA - QB"],                                    "pools":["NP_06","NP_01"]},
+		{"id":"CA_ARC_06",    "name":"Habitant Militia",            "position":"SOLDIER",  "terrain":["Farmlands"],             "regions":["CA - QB"],                                    "pools":["NP_06"]},
+		{"id":"CA_ARC_07",    "name":"Anglican Officer",            "position":"SOLDIER",  "terrain":["Suburbs","Metro"],       "regions":["CA - OT","CA - NB","CA - NS"],                "pools":["NP_01","NP_02"]},
+		{"id":"CA_ARC_08",    "name":"Haudenosaunee Diplomat",      "position":"DIPLOMAT", "terrain":["Woods","Foothills"],     "regions":["CA - OT","CA - QB"],                          "pools":["NP_NA_01"]},
+		{"id":"CA_ARC_09",    "name":"Acadian Fisherman",           "position":"SCOUT",    "terrain":["Wetlands","Foothills"],  "regions":["CA - NB","CA - NS","CA - PEI"],               "pools":["NP_06"]},
+		{"id":"CA_ARC_10",    "name":"Lumber Camp Foreman",         "position":"ENGINEER", "terrain":["Woods","Foothills"],     "regions":["CA - OT","CA - QB","CA - NB"],                "pools":["NP_01","NP_06"]},
+		{"id":"CA_ARC_NA_01", "name":"Algonquin River Guide",       "position":"SCOUT",    "terrain":["Woods","Wetlands"],      "regions":["CA - OT","CA - QB"],                          "pools":["NP_NA_CA_01"]},
+		{"id":"CA_ARC_NA_02", "name":"Haudenosaunee Confederacy Envoy","position":"DIPLOMAT","terrain":["Foothills","Metro"],   "regions":["CA - OT"],                                    "pools":["NP_NA_01"]},
+		{"id":"CA_ARC_NA_03", "name":"Cree Hunter",                 "position":"WARRIOR",  "terrain":["Woods","Wetlands"],      "regions":["CA - OT"],                                    "pools":["NP_NA_CA_02"]},
 	]
 
 	var CA_NAME_POOLS := {
@@ -766,11 +972,32 @@ func _generate_ai_barracks_commanders(country_node: country) -> void:
 			"nb": ["River","Ash","Stone","Flint","Cedar","Birch","Sky"],
 			"l":  [""],
 		},
+		# Algonquin (Anishinaabe Algonquin) — attested Kitigan Zibi / Pikwakanagan community names
+		"NP_NA_CA_01": {
+			"m":  ["Kichi","Mitigomij","Anoki","Makwa","Bizhiw","Animikiins","Pagak","Waaboz"],
+			"f":  ["Waabishkizi","Ikwe","Ajijaak","Makoons","Zaagi","Miigizi","Nibiin","Giizhig"],
+			"nb": ["Cedar","River","Fog","Ash","Birch","Stone"],
+			"l":  ["Commanda","Decontie","Odjick","Ratt","Thusky","Jerome","Sarazin","Jocko"],
+		},
+		# Cree — attested Plains/Woodland Cree names and surnames
+		"NP_NA_CA_02": {
+			"m":  ["Mistahi","Asiniy","Kihiw","Mahihkan","Ocekos","Kinosew","Wapos","Piyesis"],
+			"f":  ["Iskwew","Nipin","Seepeetza","Wapan","Atim","Kisik","Nipiy","Miyo"],
+			"nb": ["Plains","Wind","Sky","Moss","Thorn","Willow"],
+			"l":  ["Custer","Swifthawk","Badger","Moostoos","Dreaver","Favel","Ahenakew","Sanderson"],
+		},
+		# Mi'kmaq — attested Mi'kmaw community names and surnames
+		"NP_NA_CA_03": {
+			"m":  ["Kluskap","Sipuk","Apistanewj","Kitpu","Wiksedaqan","Sulapk","Metawe","Elpit"],
+			"f":  ["Nukumi","Sipu","Wejkwapeniaq","Tepkunset","Mimkej","Aplikinej","Kespukwitk","Lnu"],
+			"nb": ["Tide","Shore","Fog","Birch","Spruce","Eel"],
+			"l":  ["Bernard","Gould","Denny","Francis","Googoo","Joe","Julian","Marshall","Paul","Sock"],
+		},
 	}
 
-	# ── Spawn Jessica Clear-Water (leader) at Ottawa, tile 201 ──────────────────
+	# ── Spawn Jessica Commanda (leader) at Ottawa, tile 201 ──────────────────
 	var jessica: governor = governor.new()
-	jessica.buildSelf("Jessica Clear-Water", 3)
+	jessica.buildSelf("Jessica Commanda", 3)
 	country_node.unlockedGovernors.append(jessica)
 	country_node.NatLeader = jessica
 	for tile in $TileController.get_children():
@@ -778,7 +1005,7 @@ func _generate_ai_barracks_commanders(country_node: country) -> void:
 			tile.tileGovernor       = jessica
 			tile.filledGovernorSlot = true
 			jessica.hired           = true
-			print("[CA Leaders] Jessica Clear-Water stationed at Ottawa (tile 201).")
+			print("[CA Leaders] Jessica Commanda stationed at Ottawa (tile 201).")
 			break
 	if not jessica.hired:
 		print("[CA Leaders] Ottawa not CA-owned at start — Jessica added to pool unassigned.")
@@ -812,8 +1039,15 @@ func _generate_ai_barracks_commanders(country_node: country) -> void:
 
 		var candidates: Array = []
 		for arch in CA_ARCHETYPES:
-			if tile.terrain in arch["terrain"]:
+			var terrain_ok: bool = tile.terrain in arch["terrain"]
+			var regions: Array = arch.get("regions", [])
+			var region_ok: bool = regions.is_empty() or tile.tileContinent in regions
+			if terrain_ok and region_ok:
 				candidates.append(arch)
+		if candidates.is_empty():
+			for arch in CA_ARCHETYPES:
+				if tile.terrain in arch["terrain"]:
+					candidates.append(arch)
 		if candidates.is_empty():
 			candidates = CA_ARCHETYPES
 		var chosen_arch: Dictionary = candidates[randi() % candidates.size()]
@@ -848,6 +1082,7 @@ func _generate_ai_barracks_commanders(country_node: country) -> void:
 		new_gov.governorArchetypeId = chosen_arch["id"]
 		new_gov.governorPosition    = chosen_arch["position"]
 		new_gov.governorLevel       = 1
+		_apply_archetype_mods(new_gov, chosen_arch["id"])
 		new_gov.governorDescription = \
 			"A " + chosen_arch["name"] + " from " + tile.tileName + "."
 		new_gov.governorBiography   = \
@@ -2043,15 +2278,15 @@ func checkCaCollapseCondition() -> void:
 		print("[CA Collapse] Ottawa has fallen. Triggering CA_COLLAPSE_01.")
 		createNewEvent("CA_COLLAPSE_01")
 		return
-	# Jessica Clear-Water must still be alive (in unlockedGovernors)
+	# Jessica Commanda must still be alive (in unlockedGovernors)
 	var jessica_alive: bool = false
 	for gov in playerCountryNode.unlockedGovernors:
-		if gov.governorType == "Jessica Clear-Water":
+		if gov.governorType == "Jessica Commanda":
 			jessica_alive = true
 			break
 	if not jessica_alive:
 		_ca_collapsed = true
-		print("[CA Collapse] Jessica Clear-Water has fallen. Triggering CA_COLLAPSE_JESSICA.")
+		print("[CA Collapse] Jessica Commanda has fallen. Triggering CA_COLLAPSE_JESSICA.")
 		createNewEvent("CA_COLLAPSE_JESSICA")
 
 
@@ -2573,7 +2808,7 @@ func _find_jessica_tile() -> Tile:
 	for tile in playerCountryNode.OwnedTileList:
 		if tile.tileGovernor == null:
 			continue
-		if tile.tileGovernor.governorType != "Jessica Clear-Water":
+		if tile.tileGovernor.governorType != "Jessica Commanda":
 			continue
 		if tile.stationedArmy != null and tile.stationedArmy.parentCountry == playerCountryNode:
 			return tile
@@ -3633,7 +3868,7 @@ func _check_ca_protectors() -> void:
 
 
 func _check_ca_own_protectors() -> void:
-	# Main CA protector summons when playing as Canada — Jessica Clear-Water summons them.
+	# Main CA protector summons when playing as Canada — Jessica Commanda summons them.
 	# No alliance gate; these are Canada's own mythological affairs.
 	for pid in CA_PROT_IDS:
 		if not _is_ca_prot_wild(pid):

@@ -855,7 +855,7 @@ EVENTS = [
 
     # ── CANADIAN PROTECTORS ──────────────────────────────────────────────────
     # 8 creatures from Algonquin, Mi'kmaq, and French-Canadian folklore.
-    # Fire as dispatches from Jessica Clear-Water to Ualani Carlisle.
+    # Fire as dispatches from Jessica Commanda to Ualani Carlisle.
     # Turns 8–43, staggered at 5-turn intervals.
 
     # Le Wendigo
@@ -1448,7 +1448,7 @@ def add_legend_sheet(wb):
         "Ualani":         "Ualani Carlisle army presence events; personal storyline",
         "VP Arc":         "Vice President relationship arc; 9 events tied to the VP governor",
         "Canada":         "Canadian Alliance diplomatic arc + 3 peace events (PEACE_ALLIED_01, PEACE_USA_01, PEACE_CA_AI_01)",
-        "CA Protector":   "Jessica Clear-Water's 8 creature arcs; Algonquin, Mi'kmaq, French-Canadian folklore",
+        "CA Protector":   "Jessica Commanda's 8 creature arcs; Algonquin, Mi'kmaq, French-Canadian folklore",
         "Loyal Governor": "25 one-shot dispatch events, one per USA governor archetype; tile_yield resource×turns; 3% chance/turn at loyalty≥8",
         "White House":       "12 personal Ualani events (WH_SECRET_01–12); fires when she is stationed at DC (tile 188) during the matching calendar month; all sensual in tone; some have explicit BTN2",
         "Chalchiuhtotolin":  "5-event super-secret arc (CHALCH_SUMMON → Q1 → Q2 → Q3 → AGREE); fires only when Ualani is at Plymouth (tile 66) on Thanksgiving (month 11); quests: 3 farms, 150 food, 5 farms; reward: up to +220 food total",

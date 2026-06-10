@@ -176,7 +176,7 @@ FACTIONS = [
      "Former Crown loyalists who've accepted the new reality. Provide military discipline and naval expertise. Uneasy but reliable.",
      "FIRST DRAFT"),
 
-    ("CA", "Haudenosaunee Confederacy", "Jessica Clear-Water", "Equality",
+    ("CA", "Algonquin Nation", "Jessica Commanda", "Equality/Sovereignty",
      "Treaty of Friendship", "Haudenosaunee Alliance", "Sovereign Partnership",
      "Canadian Citizenship Act, Accessible Canada Act",
      "Indigenous sovereignty faction. The Confederacy has governed by consensus for centuries — the Republic would do well to learn from them. Key figure Joseph Brant occupies the NPC antagonist space.",
@@ -615,11 +615,11 @@ GOVERNORS = [
     ("CA", "NPC_03", "Governor Carleton",     "NPC Faction Leader", "French Habitants",  "Order (Crown)",
      "British governor of Quebec who implemented the Quebec Act. Now a reluctant figure in a republic that's absorbed his colony. Complicated but not irredeemable.",
      "FIRST DRAFT"),
-    ("CA", "NPC_08", "Jessica Clear-Water",   "Named Governor", "Haudenosaunee Confederacy","Equality",
-     "Haudenosaunee representative and diplomat. Bridges Indigenous governance traditions with Continental political structures. Key voice for sovereignty events.",
+    ("CA", "NPC_08", "Jessica Commanda",      "Named Governor (PM)", "Algonquin Nation",  "Equality/Sovereignty",
+     "Algonquin Prime Minister and diplomat. Carries the governance traditions of the Kitigan Zibi and Pikwakanagan into Continental politics. Named after William Commanda. Key voice for Indigenous sovereignty, treaty rights, and the future shape of the Canadian republic.",
      "FIRST DRAFT"),
-    ("CA", "NPC_09", "Mark Penoit",           "Named Governor", "French Habitants",      "Equality/Freedom",
-     "Québécois local leader navigating between French heritage, Crown legacy, and Continental alliance. Events around language rights and provincial autonomy.",
+    ("CA", "NPC_09", "Marc Penoit",           "Named Governor", "French Habitants",      "Equality/Freedom",
+     "Québécois local leader navigating between French heritage, Crown legacy, and Continental alliance. Events around language rights, provincial autonomy, and what it means to be Canadien in a republic.",
      "FIRST DRAFT"),
 ]
 

@@ -306,7 +306,7 @@ CA_PROT_08_A_BTN2,CA_PROT_08_AGREE,What Jessica Told You About the Gougou's Real
 GEORGE_PEACE_BTN1,GEORGE_PEACE_01,Accept His Majesty's Terms — The War Ends Here,standard,george_peace_accept,,0,,,,,
 GEORGE_PEACE_BTN2,GEORGE_PEACE_01,Decline — The Republic Does Not Negotiate on the Crown's Schedule,standard,george_peace_reject,,0,,,,,
 PEACE_ALLIED_BTN1,PEACE_ALLIED_01,Sign the Treaty — The Crown Departs the Continent,standard,set_flag,peace_allied_signed,0,,,,,
-PEACE_ALLIED_BTN2,PEACE_ALLIED_01,The Night After the Peace Was Signed — Ualani Carlisle and Jessica Clear-Water Celebrate Alone,sensual,set_flag,peace_allied_signed,0,,,,,
+PEACE_ALLIED_BTN2,PEACE_ALLIED_01,The Night After the Peace Was Signed — Ualani Carlisle and Jessica Commanda Celebrate Alone,sensual,set_flag,peace_allied_signed,0,,,,,
 PEACE_USA_BTN1,PEACE_USA_01,Sign the Treaty — The Republic Stands,standard,set_flag,peace_usa_signed,0,,,,,
 PEACE_USA_BTN2,PEACE_USA_01,Ualani Carlisle Marks the End of the War in Her Own Way — Alone in the President's Office at Dawn,sensual,set_flag,peace_usa_signed,0,,,,,
 PEACE_CA_BTN1,PEACE_CA_AI_01,Forward the Dispatch to Washington — Canada Has Made Its Choice,standard,set_flag,peace_ca_signed,0,,,,,

@@ -147,7 +147,7 @@ func setupAllProtectors(allTiles: Array, country_id: String = "") -> void:
 		var name: String = row.get("protector_name", pid)
 		var leader_label: String
 		if playerCountryID == "CA":
-			leader_label = "Station the Republican Army with Jessica Clear-Water in " + origin_name
+			leader_label = "Station the Republican Army with Jessica Commanda in " + origin_name
 		else:
 			leader_label = "Station the APF with Ualani Carlisle in " + origin_name
 		var prayers: Array = [

@@ -47,7 +47,7 @@ func updateInfoPanel():
 		"CA":
 			$CountryInfoPanel/InfoPanel/CountryArt.texture = load("res://art assets/AmericanRevolutionArt/tempArt/Screenshot (2028).png")
 			$CountryInfoPanel/InfoPanel/LeaderArt.texture = load("res://art assets/AmericanRevolutionArt/tempArt/starfire_again.jpg")
-			$CountryInfoPanel/InfoPanel/DescriptionLabel.text = "The Republic of Canada is the last country in North America to have withstood British conquest. With recent sightings on the border, will Jessica Clear-Water hold the line?"
+			$CountryInfoPanel/InfoPanel/DescriptionLabel.text = "The Republic of Canada is the last country in North America to have withstood British conquest. With recent sightings on the border, will Jessica Commanda hold the line?"
 			$CountryInfoPanel/CountrySelectionPanel/CountrySelectionLabel.text = "Selected Country: Republic of Canada"
 			pass
 	$PlayButton.disabled = false
