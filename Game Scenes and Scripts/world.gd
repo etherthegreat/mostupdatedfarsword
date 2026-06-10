@@ -417,6 +417,125 @@ func _apply_archetype_mods(gov: governor, arc_id: String) -> void:
 			gov.addMilMod("Marksman",         123)
 			gov.addMilMod("Night Raider",      23)
 			gov.addMilMod("The Long March",     3)
+		# ── NEW ENGLAND ────────────────────────────────────────────────────────
+		"ARC_26": # Boston Irish Dockworker
+			gov.addMilMod("Street Tough",     123)
+			gov.addMilMod("Quick Reload",     123)
+			gov.addMilMod("Iron Bayonet",      23)
+			gov.addMilMod("Last Stand",         3)
+		"ARC_27": # Cape Ann Fisherwoman
+			gov.addMilMod("Coastal Watch",    123)
+			gov.addMilMod("Marksman",         123)
+			gov.addMilMod("Marine",            23)
+			gov.addMilMod("Naval Supremacy",    3)
+		"ARC_28": # Yankee Tinkerer
+			gov.addMilMod("Fortified Position",123)
+			gov.addMilMod("Powder & Shot",    123)
+			gov.addMilMod("Double Shot",       23)
+			gov.addMilMod("Double Cannonade",   3)
+		# ── MID-ATLANTIC ───────────────────────────────────────────────────────
+		"ARC_29": # Tammany Ward Boss
+			gov.addMilMod("Street Tough",     123)
+			gov.addMilMod("Rallying Voice",   123)
+			gov.addMilMod("Cleaner",           23)
+			gov.addMilMod("Terror",             3)
+		"ARC_30": # Pennsylvania Dutch Braucher
+			gov.addMilMod("Farmhand",         123)
+			gov.addMilMod("Corrupted Ground", 123)
+			gov.addMilMod("Rallying Voice",    23)
+			gov.addMilMod("Undaunted",          3)
+		"ARC_31": # Hudson Valley Patroon
+			gov.addMilMod("Fortified Position",123)
+			gov.addMilMod("Steady Line",      123)
+			gov.addMilMod("Flanking Drill",    23)
+			gov.addMilMod("Iron Wall",          3)
+		# ── APPALACHIAN ────────────────────────────────────────────────────────
+		"ARC_32": # Scots-Irish Rifleman
+			gov.addMilMod("Hill Runner",      123)
+			gov.addMilMod("Marksman",         123)
+			gov.addMilMod("Guerrilla Tactics", 23)
+			gov.addMilMod("Ghost March",        3)
+		"ARC_33": # Appalachian Moonshiner
+			gov.addMilMod("Hill Runner",      123)
+			gov.addMilMod("Woodsman",         123)
+			gov.addMilMod("Night Raider",      23)
+			gov.addMilMod("Ghost March",        3)
+		"ARC_34": # Granny Witch
+			gov.addMilMod("Corrupted Ground", 123)
+			gov.addMilMod("Farmhand",         123)
+			gov.addMilMod("Rallying Voice",    23)
+			gov.addMilMod("Undaunted",          3)
+		# ── CHESAPEAKE / TIDEWATER ─────────────────────────────────────────────
+		"ARC_35": # Chesapeake Freedman Waterman
+			gov.addMilMod("Coastal Watch",    123)
+			gov.addMilMod("Swamp Legs",       123)
+			gov.addMilMod("Marine",            23)
+			gov.addMilMod("Naval Supremacy",    3)
+		"ARC_36": # Tidewater Gentlewoman
+			gov.addMilMod("Steady Line",      123)
+			gov.addMilMod("Rallying Voice",   123)
+			gov.addMilMod("Cleaner",           23)
+			gov.addMilMod("Continental Line",   3)
+		# ── GULLAH / AFRICAN AMERICAN ──────────────────────────────────────────
+		"ARC_37": # Gullah Sea Islander
+			gov.addMilMod("Swamp Legs",       123)
+			gov.addMilMod("Guerrilla Tactics",123)
+			gov.addMilMod("Night Raider",      23)
+			gov.addMilMod("Liberator's Will",   3)
+		"ARC_38": # Underground Railroad Conductor
+			gov.addMilMod("Woodsman",         123)
+			gov.addMilMod("Night Raider",     123)
+			gov.addMilMod("Ghost March",       23)
+			gov.addMilMod("The Long March",     3)
+		"ARC_39": # Great Migration Church Elder
+			gov.addMilMod("Street Tough",     123)
+			gov.addMilMod("Rallying Voice",   123)
+			gov.addMilMod("Cleaner",           23)
+			gov.addMilMod("Continental Line",   3)
+		# ── DEEP SOUTH ─────────────────────────────────────────────────────────
+		"ARC_40": # Deep South Sharecropper
+			gov.addMilMod("Farmhand",         123)
+			gov.addMilMod("Steady Line",      123)
+			gov.addMilMod("Flanking Drill",    23)
+			gov.addMilMod("Last Stand",         3)
+		"ARC_41": # Conjure Woman
+			gov.addMilMod("Swamp Legs",       123)
+			gov.addMilMod("Corrupted Ground", 123)
+			gov.addMilMod("Night Raider",      23)
+			gov.addMilMod("Terror",             3)
+		"ARC_42": # Florida Cracker Cowman
+			gov.addMilMod("Farmhand",         123)
+			gov.addMilMod("Hill Runner",      123)
+			gov.addMilMod("Guerrilla Tactics", 23)
+			gov.addMilMod("Ghost March",        3)
+		# ── INDUSTRIAL / URBAN ─────────────────────────────────────────────────
+		"ARC_43": # Rust Belt Union Organizer
+			gov.addMilMod("Street Tough",     123)
+			gov.addMilMod("Rallying Voice",   123)
+			gov.addMilMod("Flanking Drill",    23)
+			gov.addMilMod("Liberator's Will",   3)
+		"ARC_44": # Little Italy Neighborhood Captain
+			gov.addMilMod("Street Tough",     123)
+			gov.addMilMod("Steady Line",      123)
+			gov.addMilMod("Iron Bayonet",      23)
+			gov.addMilMod("Iron Wall",          3)
+		"ARC_45": # Lower East Side Organizer
+			gov.addMilMod("Street Tough",     123)
+			gov.addMilMod("Rallying Voice",   123)
+			gov.addMilMod("Cleaner",           23)
+			gov.addMilMod("Continental Line",   3)
+		# ── CARIBBEAN / ATLANTIC ───────────────────────────────────────────────
+		"ARC_46": # Bahamian Free Sailor
+			gov.addMilMod("Coastal Watch",    123)
+			gov.addMilMod("Swamp Legs",       123)
+			gov.addMilMod("Marine",            23)
+			gov.addMilMod("Naval Supremacy",    3)
+		# ── WASHINGTON DC ──────────────────────────────────────────────────────
+		"ARC_47": # DC Political Fixer
+			gov.addMilMod("Street Tough",     123)
+			gov.addMilMod("Fortified Position",123)
+			gov.addMilMod("Cleaner",           23)
+			gov.addMilMod("Terror",             3)
 		# ── USA TRIBAL ARCHETYPES ─────────────────────────────────────────────
 		"ARC_NA_01": # Mohawk War Captain
 			gov.addMilMod("Woodsman",          123)
@@ -544,14 +663,20 @@ func generateBarracksCommanders() -> void:
 	# position: governor role title
 	var ARCHETYPES := [
 		{"id":"ARC_01","name":"Wetlands Fisher",      "position":"SCOUT",      "terrain":["Wetlands"],               "pools":["NP_01","NP_04"]},
-		{"id":"ARC_02","name":"Appalachian Miner",     "position":"ENGINEER",   "terrain":["Foothills"],              "pools":["NP_03"]},
-		{"id":"ARC_03","name":"Ivy League Dropout",    "position":"SCHOLAR",    "terrain":["Metro"],                  "pools":["NP_01","NP_09","NP_10"]},
-		{"id":"ARC_04","name":"Seminole Fighter",      "position":"WARRIOR",    "terrain":["Wetlands","Farmlands"],   "pools":["NP_07"]},
-		{"id":"ARC_05","name":"Green Mountain Farmer", "position":"FARMER",     "terrain":["Foothills","Farmlands"],  "pools":["NP_01","NP_06"]},
-		{"id":"ARC_06","name":"Chesapeake Shipwright", "position":"ENGINEER",   "terrain":["Wetlands"],               "pools":["NP_01","NP_04"]},
-		{"id":"ARC_07","name":"Loyalist Turncoat",     "position":"SPY",        "terrain":["Metro","Suburbs"],        "pools":["NP_01","NP_02"]},
-		{"id":"ARC_08","name":"Tobacco Belt Drifter",  "position":"SCOUT",      "terrain":["Farmlands"],              "pools":["NP_03","NP_04"]},
-		{"id":"ARC_09","name":"War Widow",             "position":"DIPLOMAT",   "terrain":["Suburbs","Metro"],        "pools":["NP_01","NP_04","NP_09"]},
+		{"id":"ARC_02","name":"Appalachian Miner",     "position":"ENGINEER",  "terrain":["Foothills"],
+		 "regions":["WV","VA","PA","NC","TN"],           "pools":["NP_03"]},
+		{"id":"ARC_03","name":"Ivy League Dropout",    "position":"SCHOLAR",   "terrain":["Metro"],
+		 "regions":["MA","CT","RI","NY","NJ","PA"],      "pools":["NP_01","NP_09","NP_10"]},
+		{"id":"ARC_04","name":"Seminole Fighter",      "position":"WARRIOR",   "terrain":["Wetlands","Farmlands"],
+		 "regions":["FL","GA","AL","SC"],                "pools":["NP_07"]},
+		{"id":"ARC_05","name":"Green Mountain Farmer", "position":"FARMER",    "terrain":["Foothills","Farmlands"],
+		 "regions":["VT","NH","ME","MA","CT"],           "pools":["NP_01","NP_06"]},
+		{"id":"ARC_06","name":"Chesapeake Shipwright", "position":"ENGINEER",  "terrain":["Wetlands"],
+		 "regions":["MD","VA","DE","NC"],                "pools":["NP_01","NP_04"]},
+		{"id":"ARC_07","name":"Loyalist Turncoat",     "position":"SPY",       "terrain":["Metro","Suburbs"],        "pools":["NP_01","NP_02"]},
+		{"id":"ARC_08","name":"Tobacco Belt Drifter",  "position":"SCOUT",     "terrain":["Farmlands"],
+		 "regions":["VA","NC","MD","SC","GA"],           "pools":["NP_03","NP_04"]},
+		{"id":"ARC_09","name":"War Widow",             "position":"DIPLOMAT",  "terrain":["Suburbs","Metro"],        "pools":["NP_01","NP_04","NP_09"]},
 		# ── TRIBAL ARCHETYPES — USA (replace generic ARC_10) ────────────────────
 		{"id":"ARC_NA_01","name":"Mohawk War Captain",          "position":"WARRIOR",   "terrain":["Woods","Foothills"],
 		 "regions":["NY","VT","NH","MA","PA"],        "pools":["NP_NA_01"]},
@@ -573,21 +698,85 @@ func generateBarracksCommanders() -> void:
 		 "regions":["NY","PA"],                       "pools":["NP_NA_01"]},
 		{"id":"ARC_NA_10","name":"Catawba Rifleman",            "position":"SOLDIER",   "terrain":["Foothills","Farmlands"],
 		 "regions":["NC","SC","VA"],                  "pools":["NP_NA_08"]},
-		{"id":"ARC_11","name":"Boston Rabble-Rouser",  "position":"ORATOR",     "terrain":["Metro"],                  "pools":["NP_01","NP_09"]},
-		{"id":"ARC_12","name":"Continental Surgeon",   "position":"HEALER",     "terrain":["Farmlands","Foothills"],  "pools":["NP_01","NP_02"]},
-		{"id":"ARC_13","name":"Nantucket Sailor",      "position":"ADMIRAL",    "terrain":["Wetlands"],               "pools":["NP_01"]},
-		{"id":"ARC_14","name":"Frontier Preacher",     "position":"ORATOR",     "terrain":["Woods","Foothills"],      "pools":["NP_03"]},
-		{"id":"ARC_15","name":"DC Bureaucrat",         "position":"BUREAUCRAT", "terrain":["Metro"],                  "pools":["NP_01","NP_04"]},
-		{"id":"ARC_16","name":"Rust Belt Steelworker", "position":"ENGINEER",   "terrain":["Suburbs"],               "pools":["NP_02","NP_09"]},
-		{"id":"ARC_17","name":"Plantation Deserter",   "position":"SOLDIER",    "terrain":["Farmlands"],              "pools":["NP_04"]},
-		{"id":"ARC_18","name":"Swamp Witch",           "position":"MAGE",       "terrain":["Wetlands"],               "pools":["NP_04","NP_05"]},
-		{"id":"ARC_19","name":"Caribbean Privateer",   "position":"ADMIRAL",    "terrain":["Wetlands","Suburbs"],     "pools":["NP_05"]},
-		{"id":"ARC_20","name":"Hawaiian Refugee",      "position":"DIPLOMAT",   "terrain":["Wetlands","Metro"],       "pools":["NP_08"]},
-		{"id":"ARC_21","name":"Border Mercenary",      "position":"SOLDIER",    "terrain":["Suburbs","Farmlands"],    "pools":["NP_03","NP_05"]},
-		{"id":"ARC_22","name":"Acadian Forest Ranger", "position":"SCOUT",      "terrain":["Woods","Wetlands"],       "pools":["NP_06"]},
-		{"id":"ARC_23","name":"Gettysburg Descendant", "position":"SOLDIER",    "terrain":["Farmlands","Foothills"],  "pools":["NP_01","NP_04"]},
-		{"id":"ARC_24","name":"LGBTQ+ Organizer",      "position":"DIPLOMAT",   "terrain":["Metro","Suburbs"],        "pools":["NP_01","NP_04","NP_09"]},
-		{"id":"ARC_25","name":"Carnival Barker",       "position":"ORATOR",     "terrain":["Wetlands","Suburbs"],     "pools":["NP_03","NP_05"]},
+		{"id":"ARC_11","name":"Boston Rabble-Rouser",  "position":"ORATOR",    "terrain":["Metro"],
+		 "regions":["MA","RI","CT","NH","VT"],           "pools":["NP_01","NP_09"]},
+		{"id":"ARC_12","name":"Continental Surgeon",   "position":"HEALER",    "terrain":["Farmlands","Foothills"],  "pools":["NP_01","NP_02"]},
+		{"id":"ARC_13","name":"Nantucket Sailor",      "position":"ADMIRAL",   "terrain":["Wetlands"],
+		 "regions":["MA","ME","NH","RI","CT"],           "pools":["NP_01"]},
+		{"id":"ARC_14","name":"Frontier Preacher",     "position":"ORATOR",    "terrain":["Woods","Foothills"],
+		 "regions":["VA","WV","TN","NC","GA","SC","AL"], "pools":["NP_03"]},
+		{"id":"ARC_15","name":"DC Bureaucrat",         "position":"BUREAUCRAT","terrain":["Metro"],
+		 "regions":["DC","MD","VA"],                    "pools":["NP_01","NP_04"]},
+		{"id":"ARC_16","name":"Rust Belt Steelworker", "position":"ENGINEER",  "terrain":["Suburbs"],
+		 "regions":["PA","NJ","NY"],                    "pools":["NP_02","NP_09"]},
+		{"id":"ARC_17","name":"Plantation Deserter",   "position":"SOLDIER",   "terrain":["Farmlands"],
+		 "regions":["VA","NC","SC","GA","AL","FL","MD"], "pools":["NP_04"]},
+		{"id":"ARC_18","name":"Swamp Witch",           "position":"MAGE",      "terrain":["Wetlands"],
+		 "regions":["SC","GA","FL","AL","NC"],           "pools":["NP_04","NP_05"]},
+		{"id":"ARC_19","name":"Caribbean Privateer",   "position":"ADMIRAL",   "terrain":["Wetlands","Suburbs"],
+		 "regions":["FL","BA","SC","GA"],                "pools":["NP_05"]},
+		{"id":"ARC_20","name":"Hawaiian Refugee",      "position":"DIPLOMAT",  "terrain":["Wetlands","Metro"],       "pools":["NP_08"]},
+		{"id":"ARC_21","name":"Border Mercenary",      "position":"SOLDIER",   "terrain":["Suburbs","Farmlands"],    "pools":["NP_03","NP_05"]},
+		{"id":"ARC_22","name":"Acadian Forest Ranger", "position":"SCOUT",     "terrain":["Woods","Wetlands"],
+		 "regions":["ME","NH","VT","NY"],                "pools":["NP_06"]},
+		{"id":"ARC_23","name":"Gettysburg Descendant", "position":"SOLDIER",   "terrain":["Farmlands","Foothills"],
+		 "regions":["PA","MD","VA"],                     "pools":["NP_01","NP_04"]},
+		{"id":"ARC_24","name":"LGBTQ+ Organizer",      "position":"DIPLOMAT",  "terrain":["Metro","Suburbs"],
+		 "regions":["NY","MA","PA","DC","NJ","CT","RI","DE"],"pools":["NP_01","NP_04","NP_09"]},
+		{"id":"ARC_25","name":"Carnival Barker",       "position":"ORATOR",    "terrain":["Wetlands","Suburbs"],     "pools":["NP_03","NP_05"]},
+		# ── REGIONAL ARCHETYPES — NEW ENGLAND ──────────────────────────────────
+		{"id":"ARC_26","name":"Boston Irish Dockworker",      "position":"SOLDIER",  "terrain":["Metro"],
+		 "regions":["MA","NY","NJ"],                          "pools":["NP_09"]},
+		{"id":"ARC_27","name":"Cape Ann Fisherwoman",         "position":"SCOUT",    "terrain":["Wetlands"],
+		 "regions":["MA","ME","NH","RI"],                     "pools":["NP_01"]},
+		{"id":"ARC_28","name":"Yankee Tinkerer",              "position":"ENGINEER", "terrain":["Suburbs","Metro"],
+		 "regions":["MA","CT","RI","NH","VT"],                "pools":["NP_01"]},
+		# ── REGIONAL ARCHETYPES — MID-ATLANTIC ──────────────────────────────────
+		{"id":"ARC_29","name":"Tammany Ward Boss",            "position":"DIPLOMAT", "terrain":["Metro"],
+		 "regions":["NY","NJ"],                              "pools":["NP_01","NP_09"]},
+		{"id":"ARC_30","name":"Pennsylvania Dutch Braucher",  "position":"HEALER",   "terrain":["Farmlands"],
+		 "regions":["PA"],                                   "pools":["NP_02"]},
+		{"id":"ARC_31","name":"Hudson Valley Patroon",        "position":"DIPLOMAT", "terrain":["Farmlands"],
+		 "regions":["NY","NJ"],                              "pools":["NP_11"]},
+		# ── REGIONAL ARCHETYPES — APPALACHIAN ───────────────────────────────────
+		{"id":"ARC_32","name":"Scots-Irish Rifleman",         "position":"SOLDIER",  "terrain":["Foothills","Woods"],
+		 "regions":["VA","WV","PA","NC","TN"],                "pools":["NP_03"]},
+		{"id":"ARC_33","name":"Appalachian Moonshiner",       "position":"SCOUT",    "terrain":["Foothills","Woods"],
+		 "regions":["WV","VA","NC","TN","PA"],                "pools":["NP_03"]},
+		{"id":"ARC_34","name":"Granny Witch",                 "position":"MAGE",     "terrain":["Foothills","Woods"],
+		 "regions":["WV","VA","NC","TN"],                    "pools":["NP_03"]},
+		# ── REGIONAL ARCHETYPES — CHESAPEAKE / TIDEWATER ────────────────────────
+		{"id":"ARC_35","name":"Chesapeake Freedman Waterman", "position":"ADMIRAL",  "terrain":["Wetlands"],
+		 "regions":["MD","VA","DE"],                         "pools":["NP_04"]},
+		{"id":"ARC_36","name":"Tidewater Gentlewoman",        "position":"DIPLOMAT", "terrain":["Farmlands","Suburbs"],
+		 "regions":["VA","MD","NC"],                         "pools":["NP_01"]},
+		# ── REGIONAL ARCHETYPES — GULLAH / AFRICAN AMERICAN ─────────────────────
+		{"id":"ARC_37","name":"Gullah Sea Islander",          "position":"WARRIOR",  "terrain":["Wetlands","Farmlands"],
+		 "regions":["SC","GA"],                              "pools":["NP_13"]},
+		{"id":"ARC_38","name":"Underground Railroad Conductor","position":"SPY",     "terrain":["Farmlands","Suburbs"],
+		 "regions":["MD","PA","DE","VA","DC"],               "pools":["NP_04"]},
+		{"id":"ARC_39","name":"Great Migration Church Elder", "position":"ORATOR",   "terrain":["Metro","Suburbs"],
+		 "regions":["NY","PA","NJ","DC","MA"],               "pools":["NP_04"]},
+		# ── REGIONAL ARCHETYPES — DEEP SOUTH ────────────────────────────────────
+		{"id":"ARC_40","name":"Deep South Sharecropper",      "position":"FARMER",   "terrain":["Farmlands"],
+		 "regions":["SC","GA","AL","NC"],                    "pools":["NP_04"]},
+		{"id":"ARC_41","name":"Conjure Woman",                "position":"MAGE",     "terrain":["Wetlands"],
+		 "regions":["SC","GA","AL","FL","NC"],               "pools":["NP_04"]},
+		{"id":"ARC_42","name":"Florida Cracker Cowman",       "position":"SCOUT",    "terrain":["Farmlands","Foothills"],
+		 "regions":["FL","GA"],                              "pools":["NP_03"]},
+		# ── REGIONAL ARCHETYPES — INDUSTRIAL / URBAN ────────────────────────────
+		{"id":"ARC_43","name":"Rust Belt Union Organizer",    "position":"ORATOR",   "terrain":["Suburbs","Metro"],
+		 "regions":["PA","NJ","NY"],                         "pools":["NP_09","NP_02"]},
+		{"id":"ARC_44","name":"Little Italy Neighborhood Captain","position":"SOLDIER","terrain":["Metro","Suburbs"],
+		 "regions":["NY","NJ","PA"],                         "pools":["NP_12"]},
+		{"id":"ARC_45","name":"Lower East Side Organizer",    "position":"DIPLOMAT", "terrain":["Metro"],
+		 "regions":["NY","NJ","PA"],                         "pools":["NP_10"]},
+		# ── REGIONAL ARCHETYPES — CARIBBEAN / ATLANTIC ──────────────────────────
+		{"id":"ARC_46","name":"Bahamian Free Sailor",         "position":"ADMIRAL",  "terrain":["Wetlands"],
+		 "regions":["FL","BA","SC","GA"],                    "pools":["NP_05"]},
+		# ── REGIONAL ARCHETYPES — WASHINGTON DC ─────────────────────────────────
+		{"id":"ARC_47","name":"DC Political Fixer",           "position":"SPY",      "terrain":["Metro","Suburbs"],
+		 "regions":["DC","MD","VA"],                         "pools":["NP_01"]},
 	]
 
 	# ── Name pools (first-male, first-female, first-nb, last) ────────────────
@@ -651,6 +840,29 @@ func generateBarracksCommanders() -> void:
 			"f":  ["Miriam","Rebecca","Leah","Esther","Judith","Rachel","Deborah","Hannah","Sarah","Naomi"],
 			"nb": ["Sable","Rael","Aron","Sol","Lev"],
 			"l":  ["Goldstein","Rosenberg","Weiss","Katz","Schwartz","Blum","Stein","Levy","Cohen","Bernstein"],
+		},
+		# Dutch-American — Hudson Valley patroon families
+		"NP_11": {
+			"m":  ["Pieter","Hendrick","Cornelius","Dirck","Gerrit","Jan","Wouter","Jacobus","Claes","Barent"],
+			"f":  ["Margriet","Annetje","Catharina","Lysbeth","Tryntje","Hilletje","Aeltje","Jannetje","Cornelia","Geertruyd"],
+			"nb": ["Rik","Bram","Daan","Fien","Lou","Rens","Teun","Sien"],
+			"l":  ["Van Cortlandt","Schuyler","Van Rensselaer","Stuyvesant","Beekman","Van Wyck","De Peyster","Brinckerhoff","Vander Berg","Knickerbocker"],
+		},
+		# Italian-American — immigrant community surnames
+		"NP_12": {
+			"m":  ["Giuseppe","Antonio","Salvatore","Francesco","Carmelo","Vito","Enzo","Rocco","Luigi","Nunzio"],
+			"f":  ["Carmela","Rosaria","Concetta","Filomena","Assunta","Lucia","Giuseppina","Annunziata","Rosa","Nunzia"],
+			"nb": ["Nico","Santi","Neri","Luca","Fia","Gino","Tito","Mara"],
+			"l":  ["Ferrara","Conti","Rizzo","Esposito","Moretti","Lombardi","De Luca","Bruno","Mancini","Caruso"],
+		},
+		# Gullah/Geechee — West African day names + Sea Island surnames
+		# Kofi=Friday, Kwame=Saturday, Kojo=Monday, Kweku=Wednesday, Yaw=Thursday
+		# Akosua=Sunday, Abena=Tuesday, Ama=Saturday, Afia=Friday, Ekua=Wednesday
+		"NP_13": {
+			"m":  ["Kofi","Kwame","Kojo","Kweku","Yaw","Cudjoe","Quow","Cudjo","Quamino","Cuffee"],
+			"f":  ["Akosua","Abena","Ama","Afia","Ekua","Adwoa","Adjoa","Efua","Akua","Esi"],
+			"nb": ["Nana","Kwei","Aba","Osei","Addo","Bisa","Eno"],
+			"l":  ["Smalls","Heyward","Ravenel","Pinckney","Singleton","Brown","Rivers","Blake","Grant","Gullah"],
 		},
 		# ── NATION-SPECIFIC INDIGENOUS POOLS ─────────────────────────────────
 		# Haudenosaunee (Mohawk / Oneida / Seneca — shared pool)
@@ -884,6 +1096,17 @@ func spawnStartingArmies() -> void:
 		"ARC_21": "Border Company",      "ARC_22": "Forest Rangers",
 		"ARC_23": "Heritage Guard",      "ARC_24": "Solidarity Regiment",
 		"ARC_25": "Showmen's Rifles",
+		"ARC_26": "Harbor Wolves",       "ARC_27": "Gloucester Guard",
+		"ARC_28": "Clockwork Company",   "ARC_29": "Ward Rifles",
+		"ARC_30": "Hex Company",         "ARC_31": "River Gentry",
+		"ARC_32": "Long Rifle Company",  "ARC_33": "Hollow Runners",
+		"ARC_34": "Ridge Wardens",       "ARC_35": "Bay Freedmen",
+		"ARC_36": "Parlor Guard",        "ARC_37": "Sea Island Rangers",
+		"ARC_38": "North Star Company",  "ARC_39": "Cathedral Regiment",
+		"ARC_40": "Red Clay Rifles",     "ARC_41": "Root Brigade",
+		"ARC_42": "Scrub Riders",        "ARC_43": "Iron Hall Brigade",
+		"ARC_44": "Mulberry Street Guard","ARC_45": "Tenement Rifles",
+		"ARC_46": "Blue Water Raiders",  "ARC_47": "Capital Shadows",
 	}
 
 	var candidates: Array = []
