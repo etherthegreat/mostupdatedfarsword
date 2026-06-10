@@ -42,6 +42,8 @@ var _peace_dock_was_uk: Dictionary = {}  # tile_num → bool; tracks UK ownershi
 var _peace_last_freed_tile = null        # most-recently freed peace dock tile node
 var isCoopMode: bool = false             # true when both USA and CA are player-controlled
 var coopCountryNode: country = null      # second player's country in co-op mode
+var _player_turn_order: Array = []       # ordered CIDs of player-controlled countries
+var _turn_phase_index: int = 0           # which slot in _player_turn_order is active
 
 const CANADIAN_STATES = ["CA - QB", "CA - OT", "CA - NB", "CA - NS", "CA - PEI"]
 
@@ -255,6 +257,7 @@ func newGameBuild(CID, gameLang, isCoop: bool = false):
 	var coop_country_id: String = "COOP" if isCoopMode else playerCountry
 	$CanvasLayer/WarRoomPanel.setupAllProtectors($TileController.get_children(), coop_country_id)
 	_assign_vice_president()
+	_build_turn_order()
 	evaluateDateEvents()
 	#for country in aliveCountriesList:
 		#for Army in country.countryArmyList:
@@ -983,6 +986,95 @@ func connectCountrySignals():
 func updateBeliefControl():
 	$CanvasLayer/BeliefControl.updateSelf()
 	pass
+
+
+# ── TURN ORDER & PHASE SYSTEM ────────────────────────────────────────────────
+
+func _build_turn_order() -> void:
+	_player_turn_order.clear()
+	# USA always goes before CA in co-op; solo games have one entry.
+	if isCoopMode:
+		_player_turn_order.append("USA")
+		_player_turn_order.append("CA")
+	else:
+		_player_turn_order.append(playerCountry)
+	_turn_phase_index = 0
+	# playerCountryNode is already correct from newGameBuild; just update button text.
+	_update_turn_phase_ui()
+
+
+func _activate_player(cid: String) -> void:
+	for c in aliveCountriesList:
+		if c.CID == cid:
+			playerCountry     = cid
+			playerCountryNode = c
+			break
+	$CanvasLayer.assignPlayerNode(playerCountryNode)
+	$CanvasLayer/TechTree.buildSelf(playerCountryNode)
+	$CanvasLayer/BeliefControl.buildSelf(playerCountryNode)
+	$CanvasLayer/BuildingInfoPanel/buildingPanelPanel.player = playerCountryNode
+	$PathControl.connectPathPoints(playerCountryNode)
+	$CanvasLayer/WarRoomPanel.buildSelf(playerCountryNode)
+	var prot_filter: String = "COOP" if isCoopMode else playerCountry
+	$CanvasLayer/WarRoomPanel.setupAllProtectors($TileController.get_children(), prot_filter)
+	_update_turn_phase_ui()
+	print("[TurnOrder] Active player: ", playerCountry)
+
+
+func _update_turn_phase_ui() -> void:
+	var btn = $CanvasLayer/NextTurnControl/NextTurn
+	if _player_turn_order.is_empty():
+		btn.text = "Next Turn"
+		return
+	var active_cid: String = _player_turn_order[_turn_phase_index] if _turn_phase_index < _player_turn_order.size() else ""
+	match active_cid:
+		"USA":
+			btn.text = "End USA Turn" if isCoopMode else "Next Turn"
+		"CA":
+			btn.text = "End Canada Turn" if isCoopMode else "Next Turn"
+		_:
+			btn.text = "Next Turn"
+
+
+func _end_current_player_turn() -> void:
+	# Per-player end-of-turn processing for the currently active country
+	playerCountryNode.surveyResources()
+	for pathPointButton in $PathControl/PathPointsControl.get_children():
+		if pathPointButton.get_children() != null:
+			for civilianPathFollow in pathPointButton.get_children():
+				if civilianPathFollow.is_class("Button") != true:
+					civilianPathFollow.emitTileChange()
+	$CanvasLayer/SpellSchoolsControl.updateMagicAmounts(playerCountryNode)
+	$CanvasLayer/TechTree.investInTech(playerCountryNode.SPM)
+
+
+func _set_active_country_no_ui(cid: String) -> void:
+	for c in aliveCountriesList:
+		if c.CID == cid:
+			playerCountry     = cid
+			playerCountryNode = c
+			return
+
+
+func _resolve_ai_and_advance_round() -> void:
+	# All non-player countries take their AI turn
+	for c in aliveCountriesList:
+		if c.CID not in _player_turn_order:
+			c.calculateTurn()
+	$CanvasLayer/WarRoomPanel.checkObjectives($TileController.get_children(), currentWorldTurn)
+	currentWorldTurn += 1
+	_advance_fortnight()
+	_tick_storms()
+	_apply_storm_debuffs()
+	# Apply per-player effects and fire events without rebuilding the UI each time
+	for pcid in _player_turn_order:
+		_set_active_country_no_ui(pcid)
+		_apply_winter_army_drain()
+		evaluateDateEvents()
+	for tile in $TileController.get_children():
+		tile.tick_conquest_timer()
+	$CanvasLayer/TurnLabel.text = _format_game_date()
+	# playerCountry/Node now hold last player in order; caller calls _activate_player to restore
 
 
 func switchActivePlayer() -> void:
@@ -4223,31 +4315,20 @@ func tileSiegeWon(tile, oldCID: String, newCID: String) -> void:
 			print("[Memorial] UK occupied special feature tile: ", tile.tileName)
 
 func _on_next_turn_pressed() -> void:
-	playerCountryNode.surveyResources()
-	for pathPointButton in $PathControl/PathPointsControl.get_children():
-		if pathPointButton.get_children() != null:
-			#print(pathPointButton.get_children(), "DEBUG PATHPOINTBUTTONCHILDREN")
-			for civilianPathFollow in pathPointButton.get_children():
-				if civilianPathFollow.is_class("Button") != true:
-					civilianPathFollow.emitTileChange()
-	$CanvasLayer/SpellSchoolsControl.updateMagicAmounts(playerCountryNode)
-	for country in aliveCountriesList:
-		if country != playerCountryNode:
-			country.calculateTurn()
-	# Check War Room arc objectives (auto-detects completion, no player input needed)
-	$CanvasLayer/WarRoomPanel.checkObjectives(
-		$TileController.get_children(), currentWorldTurn)
-	$CanvasLayer/TechTree.investInTech(playerCountryNode.SPM)
-	currentWorldTurn += 1
-	_advance_fortnight()
-	_apply_winter_army_drain()
-	_tick_storms()
-	_apply_storm_debuffs()
-	evaluateDateEvents()
-	for Tile in $TileController.get_children():
-		Tile.tick_conquest_timer()
-	$CanvasLayer/TurnLabel.text = _format_game_date()
-	pass # Replace with function body.
+	# End this player's individual turn
+	_end_current_player_turn()
+
+	_turn_phase_index += 1
+
+	if _turn_phase_index < _player_turn_order.size():
+		# More player turns remain — switch to next player
+		_activate_player(_player_turn_order[_turn_phase_index])
+	else:
+		# All player turns done — run AI and advance the world
+		_turn_phase_index = 0
+		_resolve_ai_and_advance_round()
+		# Restore first player as active after round ends
+		_activate_player(_player_turn_order[0])
 
 # ── DATE SYSTEM ──────────────────────────────────────────────────────────────
 # Each turn represents one fortnight (14 days).
