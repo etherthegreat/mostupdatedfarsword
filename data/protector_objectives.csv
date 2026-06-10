@@ -16,3 +16,11 @@ PROT_14,Mount Rushmore,dynamic,0,,Metro,mandate,25,40,5
 PROT_15,Skunk Ape,dynamic,0,FL,Wetlands,food,15,25,2
 PROT_16,Eternal Minuteman,fixed,61,MA,Suburbs,manpower,30,50,3
 PROT_17,Lincoln's Ghost,fixed,188,DC,Metro,mandate,20,35,3
+CA_PROT_01,Le Wendigo,fixed,99,QC,Woods,food,20,35,3
+CA_PROT_02,Le Loup-Garou,fixed,105,QC,Woods,weapons,15,25,2
+CA_PROT_03,Les Feux Follets,fixed,194,NB,Wetlands,culture,15,25,2
+CA_PROT_04,Mishepeshu,fixed,131,ON,Wetlands,food,20,35,3
+CA_PROT_05,La Corriveau,fixed,106,QC,Woods,magic,15,30,2
+CA_PROT_06,Le Carcajou,fixed,193,NB,Woods,weapons,20,35,3
+CA_PROT_07,La Chasse-Galerie,fixed,128,ON,Woods,culture,25,40,3
+CA_PROT_08,Le Gougou,fixed,109,NB,Farmlands,food,20,30,2

@@ -29,14 +29,19 @@ var mapMode: String
 var displayCorruption: bool
 
 var _republic_collapsed: bool = false
+var _ca_collapsed: bool = false
 var _game_ended: bool = false
 var _mission_timers: Dictionary = {}   # flag_key → turns_remaining until expiry
 var _event_cooldowns: Dictionary = {}  # event_id → turns_remaining before can fire again
 var _commander_turns: Dictionary = {}  # "TileName:CommanderName" → turns_served
 var _vp_governor = null                # reference to the assigned Vice President governor
 var _vp_faction: String = ""           # game faction name belonging to the VP
+var _ca_vp_governor = null             # reference to Mark Penoit as CA Deputy Governor
+var _ca_vp_faction: String = ""        # faction of CA's Deputy Governor
 var _peace_dock_was_uk: Dictionary = {}  # tile_num → bool; tracks UK ownership flip per turn
 var _peace_last_freed_tile = null        # most-recently freed peace dock tile node
+var isCoopMode: bool = false             # true when both USA and CA are player-controlled
+var coopCountryNode: country = null      # second player's country in co-op mode
 
 const CANADIAN_STATES = ["CA - QB", "CA - OT", "CA - NB", "CA - NS", "CA - PEI"]
 
@@ -180,9 +185,10 @@ func updateMap():
 var currentWorldTurn: int = 0
 
 signal calculateSeason
-func newGameBuild(CID, gameLang):
+func newGameBuild(CID, gameLang, isCoop: bool = false):
 	currentWorldTurn = 1
 	worldCreation = true
+	isCoopMode = isCoop
 	gameLanguage = gameLang
 	var locBallUIWorld = locBallUIScene.instantiate()
 	locBallUIWorld.buildSelf("Game", gameLanguage)
@@ -246,7 +252,8 @@ func newGameBuild(CID, gameLang):
 			"CA":
 				_generate_ai_barracks_commanders(ai_country)
 				_spawn_ai_starting_armies(ai_country)
-	$CanvasLayer/WarRoomPanel.setupAllProtectors($TileController.get_children())
+	var coop_country_id: String = "COOP" if isCoopMode else playerCountry
+	$CanvasLayer/WarRoomPanel.setupAllProtectors($TileController.get_children(), coop_country_id)
 	_assign_vice_president()
 	evaluateDateEvents()
 	#for country in aliveCountriesList:
@@ -509,19 +516,49 @@ func generateBarracksCommanders() -> void:
 	var portrait_placeholder: Texture = load(
 		"res://art assets/Placeholder Art/character/4-22-Ikra-Colors - Copy.png")
 
-	# ── Spawn Ualani Carlisle FIRST, station her in Washington DC ────────────
-	var carlisle: governor = governor.new()
-	carlisle.buildSelf("Ualani Carlisle", 3)
-	playerCountryNode.unlockedGovernors.append(carlisle)
-	for tile in $TileController.get_children():
-		if tile.tileNumber == 188 and tile.tileOwner == playerCountry:
-			tile.tileGovernor       = carlisle
-			tile.filledGovernorSlot = true
-			carlisle.hired          = true
-			print("[Commanders] President Carlisle stationed in Washington DC (tile 188).")
-			break
-	if not carlisle.hired:
-		print("[Commanders] Washington DC not player-owned at start — Carlisle added to pool unassigned.")
+	# ── Spawn player leader — Ualani (USA) or Jessica Clear-Water (CA) ──────────
+	if playerCountry == "CA":
+		# Jessica Clear-Water in Ottawa (tile 201)
+		var jessica: governor = governor.new()
+		jessica.buildSelf("Jessica Clear-Water", 3)
+		playerCountryNode.unlockedGovernors.append(jessica)
+		for tile in $TileController.get_children():
+			if tile.tileNumber == 201 and tile.tileOwner == playerCountry:
+				tile.tileGovernor       = jessica
+				tile.filledGovernorSlot = true
+				jessica.hired           = true
+				print("[Commanders] PM Clear-Water stationed in Ottawa (tile 201).")
+				break
+		if not jessica.hired:
+			print("[Commanders] Ottawa not player-owned at start — Clear-Water added to pool unassigned.")
+		# Mark Penoit in Quebec City (tile 123) as Deputy Governor
+		var penoit: governor = governor.new()
+		penoit.buildSelf("Mark Penoit", 2)
+		playerCountryNode.unlockedGovernors.append(penoit)
+		for tile in $TileController.get_children():
+			if tile.tileNumber == 123 and tile.tileOwner == playerCountry:
+				if not tile.filledGovernorSlot:
+					tile.tileGovernor       = penoit
+					tile.filledGovernorSlot = true
+					penoit.hired            = true
+					print("[Commanders] Deputy Penoit stationed in Quebec City (tile 123).")
+					break
+		if not penoit.hired:
+			print("[Commanders] Quebec City not available — Penoit added to pool unassigned.")
+	else:
+		# Ualani Carlisle in Washington DC (tile 188)
+		var carlisle: governor = governor.new()
+		carlisle.buildSelf("Ualani Carlisle", 3)
+		playerCountryNode.unlockedGovernors.append(carlisle)
+		for tile in $TileController.get_children():
+			if tile.tileNumber == 188 and tile.tileOwner == playerCountry:
+				tile.tileGovernor       = carlisle
+				tile.filledGovernorSlot = true
+				carlisle.hired          = true
+				print("[Commanders] President Carlisle stationed in Washington DC (tile 188).")
+				break
+		if not carlisle.hired:
+			print("[Commanders] Washington DC not player-owned at start — Carlisle added to pool unassigned.")
 
 	var used_names: Dictionary = {}
 	var generated: int = 0
@@ -896,7 +933,11 @@ func spawnNewGameCountries(CID: String) -> void:
 			newCountry.Player = true
 			playerCountryNode = newCountry
 			newCountry.commanderFallen.connect(_on_commander_fallen)
-
+		elif isCoopMode and ((playerCountry == "USA" and countryCID == "CA") or
+				(playerCountry == "CA" and countryCID == "USA")):
+			newCountry.Player = true
+			coopCountryNode = newCountry
+			newCountry.commanderFallen.connect(_on_commander_fallen)
 		else:
 			newCountry.Player = false
  
@@ -942,6 +983,20 @@ func connectCountrySignals():
 func updateBeliefControl():
 	$CanvasLayer/BeliefControl.updateSelf()
 	pass
+
+
+func switchActivePlayer() -> void:
+	if not isCoopMode or coopCountryNode == null:
+		return
+	var temp = playerCountryNode
+	playerCountryNode = coopCountryNode
+	coopCountryNode   = temp
+	playerCountry     = playerCountryNode.CID
+	print("[Coop] Switched active player to: ", playerCountry)
+	updatePlayerUI()
+	$CanvasLayer/WarRoomPanel.buildSelf(playerCountryNode)
+	var coop_country_id: String = "COOP" if isCoopMode else playerCountry
+	$CanvasLayer/WarRoomPanel.setupAllProtectors($TileController.get_children(), coop_country_id)
 
 func updatePlayerUI():
 	$CanvasLayer.assignPlayerNode(playerCountryNode)
@@ -1749,6 +1804,7 @@ func evaluateDateEvents() -> void:
 	checkPendingMissions()
 	checkMissionExpiry()
 	checkCollapseCondition()
+	checkCaCollapseCondition()
 	checkStateSecessionConditions()
 	_calculate_presidential_claim()
 	_update_governor_loyalty()
@@ -1790,6 +1846,28 @@ func evaluateDateEvents() -> void:
 		_check_cmd_thanks()
 		_tick_election_pressure()
 		_check_stump_speech()
+		_check_election_season()
+	elif playerCountry == "CA" and not _ca_collapsed:
+		_check_war_events()
+		_check_usa_alliance_events()
+		_check_ca_own_protectors()
+		_check_loyal_governor_events()
+		_check_george_peace_offer()
+		_check_peace_conditions()
+		_check_harvest_crisis()
+		_check_harbor_threat()
+		_check_forge_threat()
+		_check_corruption_crisis()
+		_check_border_dispute()
+		_check_garrison_hunger()
+		_check_legitimacy_crisis()
+		_check_ca_vp_events()
+		_tick_wild_ca_protectors()
+		_tick_commander_turns()
+		_check_cmd_merit()
+		_check_cmd_recognition()
+		_check_cmd_thanks()
+		_tick_election_pressure()
 		_check_election_season()
 	_check_end_game()
 	var to_fire = EventDatabase.evaluate_date_triggers(currentWorldTurn, month)
@@ -1857,6 +1935,32 @@ func checkCollapseCondition() -> void:
 	_republic_collapsed = true
 	print("[Collapse] All American metros have fallen. Triggering COLLAPSE_01.")
 	createNewEvent("COLLAPSE_01")
+
+
+func checkCaCollapseCondition() -> void:
+	if playerCountry != "CA" or _ca_collapsed:
+		return
+	# Ottawa (tile 201) must still be held by Canada
+	var ottawa_held: bool = false
+	for tile in $TileController.get_children():
+		if tile.tileNumber == 201 and tile.tileOwner == "CA":
+			ottawa_held = true
+			break
+	if not ottawa_held:
+		_ca_collapsed = true
+		print("[CA Collapse] Ottawa has fallen. Triggering CA_COLLAPSE_01.")
+		createNewEvent("CA_COLLAPSE_01")
+		return
+	# Jessica Clear-Water must still be alive (in unlockedGovernors)
+	var jessica_alive: bool = false
+	for gov in playerCountryNode.unlockedGovernors:
+		if gov.governorType == "Jessica Clear-Water":
+			jessica_alive = true
+			break
+	if not jessica_alive:
+		_ca_collapsed = true
+		print("[CA Collapse] Jessica Clear-Water has fallen. Triggering CA_COLLAPSE_JESSICA.")
+		createNewEvent("CA_COLLAPSE_JESSICA")
 
 
 # ── PRESIDENTIAL CLAIM ───────────────────────────────────────────
@@ -2373,6 +2477,17 @@ func _find_ualani_tile() -> Tile:
 	return null
 
 
+func _find_jessica_tile() -> Tile:
+	for tile in playerCountryNode.OwnedTileList:
+		if tile.tileGovernor == null:
+			continue
+		if tile.tileGovernor.governorType != "Jessica Clear-Water":
+			continue
+		if tile.stationedArmy != null and tile.stationedArmy.parentCountry == playerCountryNode:
+			return tile
+	return null
+
+
 func _check_ualani_ambush() -> void:
 	if _event_on_cooldown("UALANI_AMBUSH_01"):
 		return
@@ -2776,6 +2891,202 @@ func _try_vp_legacy(vp_tile: Tile) -> bool:
 	return _fire_vp_event("VP_LEGACY", vp_tile)
 
 
+# ── CANADIAN PRESIDENT EVENTS (Mark Penoit as Deputy Governor) ──────────────
+
+func _ca_fire_vp_event(event_id: String, pm_tile) -> bool:
+	_start_cooldown(event_id, 999)
+	_start_cooldown("CA_PM_EVENTS", 13)
+	createNewEvent(event_id, pm_tile)
+	print("[CA PM] Event fired: ", event_id)
+	return true
+
+
+func _check_ca_vp_events() -> void:
+	if _ca_vp_governor == null:
+		return
+	if _event_on_cooldown("CA_PM_EVENTS"):
+		return
+	var pm_tile = _find_governor_tile(_ca_vp_governor)
+	if pm_tile == null:
+		return
+	if _try_ca_pm_first_meeting(pm_tile): return
+	if _try_ca_pm_doubt(pm_tile): return
+	if _try_ca_pm_sacrifice(pm_tile): return
+	if _try_ca_pm_pre_election(pm_tile): return
+	if _try_ca_pm_loyalty_test(pm_tile): return
+	if _try_ca_pm_counsel(pm_tile): return
+	if _try_ca_pm_battlefield(pm_tile): return
+	if _try_ca_pm_solidarity(pm_tile): return
+	if _try_ca_pm_legacy(pm_tile): return
+
+
+func _try_ca_pm_first_meeting(pm_tile) -> bool:
+	if _event_on_cooldown("CA_PM_FIRST_MEETING"):
+		return false
+	if currentWorldTurn < 5:
+		return false
+	return _ca_fire_vp_event("CA_PM_FIRST_MEETING", pm_tile)
+
+
+func _try_ca_pm_counsel(pm_tile) -> bool:
+	if _event_on_cooldown("CA_PM_COUNSEL"):
+		return false
+	if not playerCountryNode.CountryFlags.has("ca_pm_met"):
+		return false
+	if playerCountryNode.presidentialClaim >= -2.0:
+		return false
+	return _ca_fire_vp_event("CA_PM_COUNSEL", pm_tile)
+
+
+func _try_ca_pm_doubt(pm_tile) -> bool:
+	if _event_on_cooldown("CA_PM_DOUBT"):
+		return false
+	if not playerCountryNode.CountryFlags.has("ca_pm_met"):
+		return false
+	if pm_tile.tileMoralDecay < 30:
+		return false
+	return _ca_fire_vp_event("CA_PM_DOUBT", pm_tile)
+
+
+func _try_ca_pm_loyalty_test(pm_tile) -> bool:
+	if _event_on_cooldown("CA_PM_LOYALTY_TEST"):
+		return false
+	if not playerCountryNode.CountryFlags.has("ca_pm_met"):
+		return false
+	if _ca_vp_faction == "":
+		return false
+	for faction in playerCountryNode.countryFactionList:
+		if faction.factionName == _ca_vp_faction and faction.factionLoyalty < 20:
+			return _ca_fire_vp_event("CA_PM_LOYALTY_TEST", pm_tile)
+	return false
+
+
+func _try_ca_pm_battlefield(pm_tile) -> bool:
+	if _event_on_cooldown("CA_PM_BATTLEFIELD"):
+		return false
+	if not playerCountryNode.CountryFlags.has("ca_pm_met"):
+		return false
+	if not pm_tile.has_neighbor_owned_by("UK"):
+		return false
+	if pm_tile.stationedArmy == null:
+		return false
+	return _ca_fire_vp_event("CA_PM_BATTLEFIELD", pm_tile)
+
+
+func _try_ca_pm_pre_election(pm_tile) -> bool:
+	if _event_on_cooldown("CA_PM_PRE_ELECTION"):
+		return false
+	if currentWorldTurn < 88 or currentWorldTurn > 92:
+		return false
+	if not playerCountryNode.CountryFlags.has("ca_pm_met"):
+		return false
+	return _ca_fire_vp_event("CA_PM_PRE_ELECTION", pm_tile)
+
+
+func _try_ca_pm_sacrifice(pm_tile) -> bool:
+	if _event_on_cooldown("CA_PM_SACRIFICE"):
+		return false
+	if not playerCountryNode.CountryFlags.has("ca_pm_met"):
+		return false
+	if playerCountryNode.CountryFlags.has("ca_pm_resigned"):
+		return false
+	if pm_tile.electionPressure >= -20:
+		return false
+	return _ca_fire_vp_event("CA_PM_SACRIFICE", pm_tile)
+
+
+func _try_ca_pm_solidarity(pm_tile) -> bool:
+	if _event_on_cooldown("CA_PM_SOLIDARITY"):
+		return false
+	if not playerCountryNode.CountryFlags.has("ca_pm_met"):
+		return false
+	if _count_ca_agreed_protectors() < 3:
+		return false
+	return _ca_fire_vp_event("CA_PM_SOLIDARITY", pm_tile)
+
+
+func _try_ca_pm_legacy(pm_tile) -> bool:
+	if _event_on_cooldown("CA_PM_LEGACY"):
+		return false
+	if currentWorldTurn < 96:
+		return false
+	if not playerCountryNode.CountryFlags.has("ca_pm_met"):
+		return false
+	return _ca_fire_vp_event("CA_PM_LEGACY", pm_tile)
+
+
+func _count_ca_agreed_protectors() -> int:
+	var count: int = 0
+	for pid in CA_PROT_IDS:
+		if playerCountryNode.CountryFlags.has(pid.to_lower() + "_agreed"):
+			count += 1
+	return count
+
+
+# ── USA ALLIANCE EVENTS (Canada's perspective when playing as CA) ─────────────
+
+func _fire_usa_alliance_event(event_id: String) -> bool:
+	_start_cooldown(event_id, 999)
+	_start_cooldown("USA_ALLIANCE_EVENTS", 3)
+	createNewEvent(event_id, null)
+	print("[USA Alliance] Event fired: ", event_id)
+	return true
+
+
+func _check_usa_alliance_events() -> void:
+	if _event_on_cooldown("USA_ALLIANCE_EVENTS"):
+		return
+	if _try_usa_call(): return
+	if _try_usa_summit(): return
+	if _try_usa_alliance_signed(): return
+	if _try_ca_alone(): return
+
+
+func _try_usa_call() -> bool:
+	if _event_on_cooldown("USA_CALL_01"):
+		return false
+	if playerCountryNode.CountryFlags.has("usa_contact"):
+		return false
+	if currentWorldTurn < 8:
+		return false
+	if not (playerCountryNode.CountryFlags.has("uk_buildup_known") or
+			playerCountryNode.CountryFlags.has("uk_declared_war")):
+		return false
+	return _fire_usa_alliance_event("USA_CALL_01")
+
+
+func _try_usa_summit() -> bool:
+	if _event_on_cooldown("USA_SUMMIT_01"):
+		return false
+	if not playerCountryNode.CountryFlags.has("usa_contact"):
+		return false
+	if playerCountryNode.CountryFlags.has("ca_allied") or playerCountryNode.CountryFlags.has("usa_rejected"):
+		return false
+	if currentWorldTurn < 13:
+		return false
+	return _fire_usa_alliance_event("USA_SUMMIT_01")
+
+
+func _try_usa_alliance_signed() -> bool:
+	if _event_on_cooldown("USA_ALLIANCE_SIGNED"):
+		return false
+	if not playerCountryNode.CountryFlags.has("usa_summit_complete"):
+		return false
+	if playerCountryNode.CountryFlags.has("ca_allied"):
+		return false
+	return _fire_usa_alliance_event("USA_ALLIANCE_SIGNED")
+
+
+func _try_ca_alone() -> bool:
+	if _event_on_cooldown("CA_ALONE_01"):
+		return false
+	if not playerCountryNode.CountryFlags.has("usa_rejected"):
+		return false
+	if _event_on_cooldown("CA_ALONE_01"):
+		return false
+	return _fire_usa_alliance_event("CA_ALONE_01")
+
+
 # ── WAR DECLARATION & CANADIAN ALLIANCE ─────────────────────────
 
 func _fire_war_event(event_id: String) -> bool:
@@ -2928,6 +3239,9 @@ func _try_can_election_luck() -> bool:
 # ── VICE PRESIDENT & ELECTION SYSTEM ────────────────────────────
 
 func _assign_vice_president() -> void:
+	if playerCountry == "CA":
+		_assign_ca_vice_president()
+		return
 	var candidates: Array = []
 	for tile in playerCountryNode.OwnedTileList:
 		if tile.tileGovernor == null:
@@ -2945,6 +3259,28 @@ func _assign_vice_president() -> void:
 	_vp_faction = VP_FACTION_MAP.get(_vp_governor.governorType, "")
 	print("[VP] Assigned: ", _vp_governor.governorType,
 		" | Faction: ", _vp_faction)
+
+
+func _assign_ca_vice_president() -> void:
+	# Mark Penoit is the hardcoded Deputy Governor for Canada
+	for tile in playerCountryNode.OwnedTileList:
+		if tile.tileGovernor == null:
+			continue
+		var gov = tile.tileGovernor
+		if gov.governorType == "Mark Penoit":
+			_ca_vp_governor = gov
+			_ca_vp_faction  = "French Habitants"
+			gov.isVicePresident = true
+			print("[CA PM] Mark Penoit (at tile ", tile.tileName, ") assigned as Deputy Governor.")
+			return
+	# Fallback: search unlockedGovernors pool
+	for gov in playerCountryNode.unlockedGovernors:
+		if gov.governorType == "Mark Penoit":
+			_ca_vp_governor = gov
+			_ca_vp_faction  = "French Habitants"
+			gov.isVicePresident = true
+			print("[CA PM] Mark Penoit (unassigned) set as Deputy Governor.")
+			return
 
 
 func _election_pressure_total() -> int:
@@ -3008,7 +3344,7 @@ func _grant_election_season_mods() -> void:
 
 
 func _check_end_game() -> void:
-	if _game_ended or _republic_collapsed:
+	if _game_ended or _republic_collapsed or _ca_collapsed:
 		return
 	if currentWorldTurn < 100:
 		return
@@ -3183,7 +3519,8 @@ func _tick_wild_ca_protectors() -> void:
 
 
 func _check_ca_protectors() -> void:
-	# Don't fire if the Canadian arc was rejected (can_rejected ends Canada diplomacy)
+	# Fires CA protector summons from USA's perspective (diplomacy from Jessica to Ualani).
+	# Don't fire if the Canadian arc was rejected.
 	if playerCountryNode.CountryFlags.has("can_rejected"):
 		return
 	for pid in CA_PROT_IDS:
@@ -3199,6 +3536,26 @@ func _check_ca_protectors() -> void:
 		_start_cooldown(summon_id, 15)
 		createNewEvent(summon_id, prot_tile)
 		print("[CA Protector] SUMMON fired: ", summon_id,
+			  " at tile ", CA_PROT_TILES.get(pid, 0), " turn ", currentWorldTurn)
+		return
+
+
+func _check_ca_own_protectors() -> void:
+	# Main CA protector summons when playing as Canada — Jessica Clear-Water summons them.
+	# No alliance gate; these are Canada's own mythological affairs.
+	for pid in CA_PROT_IDS:
+		if not _is_ca_prot_wild(pid):
+			continue
+		var min_turn: int = CA_PROT_SUMMON_TURNS.get(pid, 999)
+		if currentWorldTurn < min_turn:
+			continue
+		var summon_id = pid + "_SUMMON"
+		if _event_on_cooldown(summon_id):
+			continue
+		var prot_tile = _get_ca_prot_tile(pid)
+		_start_cooldown(summon_id, 15)
+		createNewEvent(summon_id, prot_tile)
+		print("[CA Own Protector] SUMMON fired: ", summon_id,
 			  " at tile ", CA_PROT_TILES.get(pid, 0), " turn ", currentWorldTurn)
 		return
 

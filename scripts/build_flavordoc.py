@@ -661,6 +661,46 @@ VP_ARC = [
      "FIRST PASS"),
 ]
 
+# ── CA PRESIDENT ARC (Mark Penoit as Deputy Governor for Canada playthrough) ──
+CA_PM_ARC = [
+    ("CA_PM_FIRST_MEETING", "MARK PENOIT REQUESTS A WAR COUNCIL",
+     "Root (fires turn 5+, one-time)", "ca_pm_met flag set; gates all other CA_PM events",
+     "BTN1: Standard acknowledgment · BTN2: Diplomatic response",
+     "FIRST PASS"),
+    ("CA_PM_COUNSEL", "PENOIT COUNSELS RESTRAINT — OR POSSIBLY AGGRESSION",
+     "Branch (req: ca_pm_met, presidentialClaim < −2)", "Morale +10 or faction loyalty +10",
+     "BTN1: Accept counsel · BTN2: Defer (+10 French Habitants loyalty)",
+     "FIRST PASS"),
+    ("CA_PM_DOUBT", "PENOIT QUESTIONS THE MILITIA'S RESOLVE",
+     "Branch (req: ca_pm_met, tileMoralDecay > 30)", "Relationship-building event",
+     "BTN1: Reassure · BTN2: Share doubt (deepens relationship)",
+     "FIRST PASS"),
+    ("CA_PM_LOYALTY_TEST", "THE FRENCH HABITANTS DEMAND RECOGNITION",
+     "Branch (req: ca_pm_met, French Habitants loyalty < 20)", "Faction loyalty +15 or +5",
+     "BTN1: Full public statement (+15) · BTN2: Private assurance (+5)",
+     "FIRST PASS"),
+    ("CA_PM_BATTLEFIELD", "PENOIT AT THE FRONT — THE DEPUTY GOVERNOR IS NOT IN QUEBEC CITY",
+     "Branch (req: ca_pm_met, neighbor UK tile)", "Military event; Penoit acts autonomously",
+     "BTN1: Honor his initiative · BTN2: Formally reprimand",
+     "FIRST PASS"),
+    ("CA_PM_PRE_ELECTION", "PENOIT ADDRESSES THE DOMINION: THE ELECTION IS COMING",
+     "Branch (req: ca_pm_met, turns 88–92)", "Sets ca_pm_declined_candidacy or morale +20",
+     "BTN1: Accept withdrawal · BTN2: Convince him to run (+20 morale)",
+     "FIRST PASS"),
+    ("CA_PM_SACRIFICE", "PENOIT OFFERS HIS RESIGNATION",
+     "Branch (req: ca_pm_met, tile electionPressure < −20)", "French Habitants +10 or ca_pm_resigned",
+     "BTN1: Accept resignation (sets ca_pm_resigned) · BTN2: Refuse (+10 faction loyalty)",
+     "FIRST PASS"),
+    ("CA_PM_SOLIDARITY", "PENOIT AND THE PROTECTORS — THE DEPUTY GOVERNOR ACKNOWLEDGES THE CREATURES",
+     "Branch (req: ca_pm_met, 3+ CA protectors agreed)", "Relationship culmination; unlocks bonus",
+     "BTN1: Confirm everything · BTN2: Partial confirmation",
+     "FIRST PASS"),
+    ("CA_PM_LEGACY", "MARK PENOIT'S FINAL ASSESSMENT — THE DEPUTY GOVERNOR WRITES HIS HISTORY",
+     "Branch (req: ca_pm_met, turn 96+)", "Late-game narrative resolution",
+     "BTN1: Acknowledge the record · BTN2: Commission a formal history",
+     "FIRST PASS"),
+]
+
 # ── CA EVENTS ────────────────────────────────────────────────────────────────
 # category | id | headline | chain_pos | trigger/flag | effect | status
 
@@ -775,6 +815,38 @@ CA_EVENTS = [
      "Branch",   "Req: CA_PROT_08_SUMMON", "→ CA_PROT_08_AGREE", "FIRST PASS"),
     ("CA Protector — Le Gougou",           "CA_PROT_08_AGREE",  "THE GOUGOU FORMALLY GUARDS THE CHALEUR BAY FOR THE CONTINENTAL ALLIANCE",
      "Followup", "Req: CA_PROT_08_TAME",  "Protector ally secured",  "FIRST PASS"),
+
+    # ── CA Playthrough: Collapse & Loss Conditions ────────────────────────────
+    ("CA Collapse", "CA_COLLAPSE_01",
+     "OTTAWA HAS FALLEN", "Loss trigger (Ottawa tile lost to UK)",
+     "Sets _ca_collapsed flag", "Triggers game-over scene; narrative resolution",
+     "FIRST PASS"),
+    ("CA Collapse", "CA_COLLAPSE_JESSICA",
+     "JESSICA CLEAR-WATER HAS FALLEN", "Loss trigger (Jessica removed from unlockedGovernors)",
+     "Sets _ca_collapsed flag", "Triggers game-over scene; Penoit takes command narrative",
+     "FIRST PASS"),
+
+    # ── CA Playthrough: USA Alliance Arc (from Canada's perspective) ──────────
+    ("USA Alliance Arc", "USA_CALL_01",
+     "A DISPATCH FROM WASHINGTON — THE AMERICANS WANT TO TALK",
+     "Root (turn 8+, req: uk_buildup_known)", "Sets usa_contact flag; gates USA_SUMMIT_01",
+     "BTN1: Hear them out (→ USA_SUMMIT_01) · BTN2: Decline (sets usa_rejected → CA_ALONE_01)",
+     "FIRST PASS"),
+    ("USA Alliance Arc", "USA_SUMMIT_01",
+     "THE OTTAWA SUMMIT — JESSICA CLEAR-WATER MEETS THE AMERICAN DELEGATION",
+     "Branch (req: usa_contact, turn 13+)", "Sets usa_summit_complete flag",
+     "BTN1: Sign the accord (→ USA_ALLIANCE_SIGNED) · BTN2: Walk away (sets usa_rejected)",
+     "FIRST PASS"),
+    ("USA Alliance Arc", "USA_ALLIANCE_SIGNED",
+     "THE DOMINION-REPUBLIC ACCORD IS SIGNED",
+     "Branch (req: usa_summit_complete)", "Sets ca_allied flag; mirrors CAN_ALLIANCE_SIGNED from USA side",
+     "Narrative resolution; alliance milestone event",
+     "FIRST PASS"),
+    ("USA Alliance Arc", "CA_ALONE_01",
+     "CANADA STANDS ALONE — THE DOMINION DECLINES THE AMERICAN OFFER",
+     "Branch (req: usa_rejected flag)", "Canada fights without USA alliance",
+     "Narrative event; opens solo-play diplomatic tree",
+     "FIRST PASS"),
 ]
 
 
@@ -809,14 +881,15 @@ def build_overview(wb):
         return fp, p1, p2, id_
 
     rows = [
-        ("Factions",    FACTIONS,    9,  "USA: 5 factions · CA: 5 factions"),
-        ("Laws",        LAWS,        6,  "USA: 7 laws · CA: 7 laws"),
-        ("Doctrines",   DOCTRINES,   8,  "USA: 11 doctrines · CA: 11 doctrines"),
-        ("Icons",       ICONS,       7,  "USA: 20 icons · CA: 20 icons"),
-        ("Belief Mods", BELIEF_MODS, 5,  "6 icon mods · 2 doctrine mods · 2 axis mods · 1 Canadian"),
-        ("Governors",   GOVERNORS,   7,  "9 USA named governors · 3 CA named governors"),
-        ("VP Arc",      VP_ARC,      5,  "8 VP arc events"),
-        ("CA Events",   CA_EVENTS,   6,  "11 alliance arc · 24 CA protector events (8 protectors × 3)"),
+        ("Factions",      FACTIONS,    9,  "USA: 5 factions · CA: 5 factions"),
+        ("Laws",          LAWS,        6,  "USA: 7 laws · CA: 7 laws"),
+        ("Doctrines",     DOCTRINES,   8,  "USA: 11 doctrines · CA: 11 doctrines"),
+        ("Icons",         ICONS,       7,  "USA: 20 icons · CA: 20 icons"),
+        ("Belief Mods",   BELIEF_MODS, 5,  "6 icon mods · 2 doctrine mods · 2 axis mods · 1 Canadian"),
+        ("Governors",     GOVERNORS,   7,  "9 USA named governors · 3 CA named governors"),
+        ("VP Arc (USA)",  VP_ARC,      5,  "8 VP arc events — Ualani + elected VP"),
+        ("PM Arc (CA)",   CA_PM_ARC,   5,  "9 CA President arc events — Jessica + Mark Penoit"),
+        ("CA Events",     CA_EVENTS,   6,  "CA protectors (8×3) · alliance arc · collapse events · USA-CA alliance (CA side)"),
     ]
 
     alt = False
@@ -1141,14 +1214,15 @@ def main():
 
     total_entries = (len(FACTIONS) + len(LAWS) + len(DOCTRINES) +
                      len(ICONS) + len(BELIEF_MODS) + len(GOVERNORS) +
-                     len(VP_ARC) + len(CA_EVENTS))
+                     len(VP_ARC) + len(CA_PM_ARC) + len(CA_EVENTS))
     print(f"\n  Factions:    {len(FACTIONS):3d}  (USA: {sum(1 for f in FACTIONS if f[0]=='USA')}, CA: {sum(1 for f in FACTIONS if f[0]=='CA')})")
     print(f"  Laws:        {len(LAWS):3d}  (USA: {sum(1 for l in LAWS if l[0]=='USA')}, CA: {sum(1 for l in LAWS if l[0]=='CA')})")
     print(f"  Doctrines:   {len(DOCTRINES):3d}  (USA: {sum(1 for d in DOCTRINES if d[0]=='USA')}, CA: {sum(1 for d in DOCTRINES if d[0]=='CA')})")
     print(f"  Icons:       {len(ICONS):3d}  (USA: {sum(1 for i in ICONS if i[0]=='USA')}, CA: {sum(1 for i in ICONS if i[0]=='CA')})")
     print(f"  Belief Mods: {len(BELIEF_MODS):3d}")
     print(f"  Governors:   {len(GOVERNORS):3d}")
-    print(f"  VP Arc:      {len(VP_ARC):3d}")
+    print(f"  VP Arc:      {len(VP_ARC):3d}  (USA)")
+    print(f"  PM Arc:      {len(CA_PM_ARC):3d}  (CA)")
     print(f"  CA Events:   {len(CA_EVENTS):3d}")
     print(f"  ─────────────────")
     print(f"  TOTAL:       {total_entries:3d} flavor entries")

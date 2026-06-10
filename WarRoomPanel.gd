@@ -23,6 +23,7 @@
 extends Control
 
 var playerCountryNode: country
+var playerCountryID: String = "USA"
 var activeCommanderArcs: Array = []
 var activeProtectorArcs: Array = []
 
@@ -37,6 +38,7 @@ signal protectorSummoned(origin_tile, protector_name, protector_id)
 
 func buildSelf(playerNode: country) -> void:
 	playerCountryNode = playerNode
+	playerCountryID   = playerNode.CID if playerNode != null else "USA"
 	_populate_commander_tab()
 	_populate_presidential_tab()
 
@@ -109,12 +111,20 @@ func registerProtectorArc(protector_id: String) -> void:
 # ── FULL PROTECTOR SETUP (called from world.gd after the world is built) ─────
 # Reads protector_objectives.csv, resolves dynamic origins against the live tile
 # list, randomises resource thresholds, then fills activeProtectorArcs.
-func setupAllProtectors(allTiles: Array) -> void:
+func setupAllProtectors(allTiles: Array, country_id: String = "") -> void:
+	if country_id != "":
+		playerCountryID = country_id
 	activeProtectorArcs.clear()
 	var obj_rows = _load_protector_objectives()
 	for row in obj_rows:
 		var pid: String = row.get("protector_id", "")
 		if pid == "":
+			continue
+		# Filter by country: USA sees PROT_XX, CA sees CA_PROT_XX, coop sees all
+		var is_ca_prot: bool = pid.begins_with("CA_")
+		if playerCountryID == "USA" and is_ca_prot:
+			continue
+		if playerCountryID == "CA" and not is_ca_prot:
 			continue
 		# Skip if no summon event exists in the database
 		if EventDatabase.get_event(pid + "_SUMMON").is_empty():
@@ -135,6 +145,11 @@ func setupAllProtectors(allTiles: Array) -> void:
 		var resource: String = row.get("resource_type", "gold")
 		var dev_req: int = row.get("dev_levels", 3)
 		var name: String = row.get("protector_name", pid)
+		var leader_label: String
+		if playerCountryID == "CA":
+			leader_label = "Station the Republican Army with Jessica Clear-Water in " + origin_name
+		else:
+			leader_label = "Station the APF with Ualani Carlisle in " + origin_name
 		var prayers: Array = [
 			{
 				"label": "Accumulate " + str(threshold) + " " + resource +
@@ -150,7 +165,7 @@ func setupAllProtectors(allTiles: Array) -> void:
 				"levels": dev_req,
 			},
 			{
-				"label": "Station the APF with Ualani Carlisle in " + origin_name,
+				"label": leader_label,
 				"prayer_type": "ualani_in_origin",
 			},
 		]

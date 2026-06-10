@@ -3,6 +3,7 @@ extends Control
 const settingsPath = "user://settings.txt"
 
 var selectedCountry: String
+var isCoopMode: bool = false
 var settings: Dictionary = {}
 
 func _ready() -> void:
@@ -27,9 +28,13 @@ func _on_america_button_pressed() -> void:
 	pass # Replace with function body.
 
 func _on_canada_button_pressed() -> void:
-	selectedCountry = "CAN"
+	selectedCountry = "CA"
 	updateInfoPanel()
 	pass # Replace with function body.
+
+func _on_coop_button_toggled(toggled_on: bool) -> void:
+	isCoopMode = toggled_on
+	pass
 
 func updateInfoPanel():
 	match selectedCountry:
@@ -39,10 +44,10 @@ func updateInfoPanel():
 			$CountryInfoPanel/InfoPanel/DescriptionLabel.text = "USA IS UNDER ATTACK FUCK! LARKIN LOVE IS HOT!"
 			$CountryInfoPanel/CountrySelectionPanel/CountrySelectionLabel.text = "Selected Country: American Rebels"
 			pass
-		"CAN":
+		"CA":
 			$CountryInfoPanel/InfoPanel/CountryArt.texture = load("res://art assets/AmericanRevolutionArt/tempArt/Screenshot (2028).png")
 			$CountryInfoPanel/InfoPanel/LeaderArt.texture = load("res://art assets/AmericanRevolutionArt/tempArt/starfire_again.jpg")
-			$CountryInfoPanel/InfoPanel/DescriptionLabel.text = "The Republic of Canada is the last country in North America to have withstood British conquest.  With recent citings on the border, will they hold out?"
+			$CountryInfoPanel/InfoPanel/DescriptionLabel.text = "The Republic of Canada is the last country in North America to have withstood British conquest. With recent sightings on the border, will Jessica Clear-Water hold the line?"
 			$CountryInfoPanel/CountrySelectionPanel/CountrySelectionLabel.text = "Selected Country: Republic of Canada"
 			pass
 	$PlayButton.disabled = false
@@ -58,5 +63,5 @@ func _on_play_button_pressed() -> void:
 	var language = settings.gameLanguage
 	var newGame = newGameScene.instantiate()
 	add_child(newGame)
-	newGame.newGameBuild(selectedCountry, language)
+	newGame.newGameBuild(selectedCountry, language, isCoopMode)
 	pass # Replace with function body.

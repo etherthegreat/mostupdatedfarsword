@@ -129,7 +129,16 @@ offset_right = 242.0
 offset_bottom = 446.0
 autowrap_mode = 3
 
+[node name="CoopButton" type="CheckBox" parent="."]
+layout_mode = 0
+offset_left = 977.0
+offset_top = 520.0
+offset_right = 1132.0
+offset_bottom = 560.0
+text = "Co-Op Mode"
+
 [connection signal="pressed" from="ReturnButton" to="." method="_on_return_button_pressed"]
 [connection signal="pressed" from="PlayButton" to="." method="_on_play_button_pressed"]
 [connection signal="pressed" from="SelectionPanel/AmericaButton" to="." method="_on_america_button_pressed"]
 [connection signal="pressed" from="SelectionPanel/CanadaButton" to="." method="_on_canada_button_pressed"]
+[connection signal="toggled" from="CoopButton" to="." method="_on_coop_button_toggled"]
