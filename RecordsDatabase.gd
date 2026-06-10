@@ -342,6 +342,684 @@ func _register_all() -> void:
 		"Traveling ministers of faith. Boost Temple output significantly. Generate Faith across the region. Level 3 CIRCUIT PREACHER governors can suppress faction unrest through religious revival events.",
 		{"icon_path": ""})
 
+	# ── MILITARY MODIFIERS ──────────────────────────────────────────────────
+
+	# Country Modifiers
+
+	_add("milmod_berserkers", "Military Modifiers", "Berserkers",
+		"Warriors are expected to kill or die trying. +3 Attack per level, -2 Harmony per level.")
+
+	# Weapon Ore Modifiers
+
+	_add("milmod_club_bleed", "Military Modifiers", "ClubBleed",
+		"Club weapon mod. +2 Attack, +1 Defense per level. -1 Weapons per level.")
+
+	_add("milmod_atlatl_pierce", "Military Modifiers", "AtlatlPierce",
+		"Atlatl weapon mod. +1 Attack, +2 Defense per level. -1 Weapons per level.")
+
+	_add("milmod_ore_wood", "Military Modifiers", "Wood Weapons",
+		"Unit's weapons carved from wood. +1 Attack per level. -1 Wood per level.")
+
+	_add("milmod_ore_copper", "Military Modifiers", "Copper Weapons",
+		"Unit's weapons shaped by copper. +2 Attack per level. -1 Metal per level.")
+
+	_add("milmod_ore_iron", "Military Modifiers", "Iron Weapons",
+		"Unit's weapons forged from iron. +3 Attack per level. -3 Metal per level.")
+
+	_add("milmod_ore_gold", "Military Modifiers", "Gold Weapons",
+		"Unit's weapons built of gold. +2 Attack per level. -1 Metal, -3 Dollars per level.")
+
+	_add("milmod_ore_floodstone", "Military Modifiers", "Floodstone Weapons",
+		"Unit's weapons birthed from floodstone. +3 Attack per level. -2 Metal, -2 Magic per level.")
+
+	# Commander Modifiers
+
+	_add("milmod_visionary", "Military Modifiers", "Visionary",
+		"Commander mod. This unit's commander is a genius. +3 Attack per level, +10% movement speed.",
+		{"see_also": ["arc_spy"]})
+
+	_add("milmod_champion_sun", "Military Modifiers", "Champion of the Sun",
+		"Commander mod. While the sun is up, this unit will march. +1 Attack per level, +10% movement speed.")
+
+	_add("milmod_healer", "Military Modifiers", "Healer",
+		"Commander mod. This unit heals exceptionally fast. +10 reinforce rate.",
+		{"see_also": ["arc_healer", "bld_temple", "bld_bath"]})
+
+	# Civilian Modifiers
+
+	_add("milmod_translator", "Military Modifiers", "Translator",
+		"Civilian mod. Unit equipped with reference materials enabling translation of ancient writings. Generates Science.",
+		{"see_also": ["arc_scholar", "bld_library"]})
+
+	_add("milmod_seeder", "Military Modifiers", "Seeder",
+		"Civilian mod. Unit carries seeds enabling agricultural improvements on the tile. Generates Food.",
+		{"see_also": ["arc_farmer", "bld_farm"]})
+
+	# Tool Modifiers
+
+	_add("milmod_wooden_tools", "Military Modifiers", "Wooden Tools",
+		"Civilian mod. Unit carries basic wooden tools.")
+
+	_add("milmod_metal_tools", "Military Modifiers", "Metal Tools",
+		"Civilian mod. Unit carries metal tools.")
+
+	_add("milmod_steel_tools", "Military Modifiers", "Steel Tools",
+		"Civilian mod. Unit carries advanced steel tools.")
+
+	_add("milmod_constructor", "Military Modifiers", "Constructor",
+		"Civilian mod. Unit can build and upgrade structures faster.",
+		{"see_also": ["arc_engineer"]})
+
+	_add("milmod_adventurer", "Military Modifiers", "Adventurer",
+		"Civilian mod. Unit trained in exploring ruins, caves, and frontier territories.")
+
+	_add("milmod_scholar", "Military Modifiers", "Scholar",
+		"Civilian mod. Unit spreads literacy and builds library infrastructure.",
+		{"see_also": ["arc_scholar", "bld_library"]})
+
+	_add("milmod_entertainer", "Military Modifiers", "Entertainer",
+		"Civilian mod. Unit can entertain, soothe, and manage morale in its care.",
+		{"see_also": ["arc_diplomat", "arc_orator", "bld_theater"]})
+
+	_add("milmod_harvester", "Military Modifiers", "Harvester",
+		"Civilian mod. Unit manages crops, woodcutting, and rural land.",
+		{"see_also": ["arc_farmer", "bld_farm", "bld_camp"]})
+
+	_add("milmod_prospector", "Military Modifiers", "Prospector",
+		"Civilian mod. Unit trained in prospecting; can build mines and discover mineral deposits.",
+		{"see_also": ["arc_scout", "bld_mine"]})
+
+	_add("milmod_druid", "Military Modifiers", "Druid",
+		"Civilian mod. Trained in druidic arts; can clear corruption and commune with nature.",
+		{"see_also": ["arc_mage", "bld_tower"]})
+
+	_add("milmod_chain", "Military Modifiers", "Chain Armor",
+		"Unit wears chain armor. +5% Melee, +40% Ranged, +5% Spell damage block.")
+
+	_add("milmod_shell", "Military Modifiers", "Shell Armor",
+		"Unit wears a fully-enclosed shell. +50% Spell damage block.")
+
+	# Tier 1 Modifiers
+
+	_add("milmod_woodsman", "Military Modifiers", "Woodsman",
+		"Trained in forest fighting. +2 Attack, +2 Defense per level in Woods terrain.",
+		{"see_also": ["arc_scout", "ter_forest", "ter_taiga"]})
+
+	_add("milmod_swamp_legs", "Military Modifiers", "Swamp Legs",
+		"At home in the marshes. +2 Attack, +2 Defense per level in Wetlands terrain.",
+		{"see_also": ["ter_bog", "milmod_everglades_tracker", "milmod_bayou_warrior"]})
+
+	_add("milmod_hill_runner", "Military Modifiers", "Hill Runner",
+		"Born on high ground. +2 Attack, +2 Defense per level in Foothills terrain.",
+		{"see_also": ["ter_hills", "ter_mountaintop", "milmod_frontier_marksman"]})
+
+	_add("milmod_street_tough", "Military Modifiers", "Street Tough",
+		"Raised fighting in alleyways. +2 Attack per level in Metro or Suburbs terrain.")
+
+	_add("milmod_farmhand", "Military Modifiers", "Farmhand",
+		"Knows every row of every field. +1 Attack per level in Farmlands terrain.",
+		{"see_also": ["arc_farmer"]})
+
+	_add("milmod_saber_drill", "Military Modifiers", "Saber Drill",
+		"Relentless close-combat drilling. +3 Attack per level.",
+		{"see_also": ["arc_warrior"]})
+
+	_add("milmod_marksman", "Military Modifiers", "Marksman",
+		"Trained to shoot straight and true. +2 Ranged Attack per level.",
+		{"see_also": ["arc_scout", "milmod_sharpshooter"]})
+
+	_add("milmod_steady_line", "Military Modifiers", "Steady Line",
+		"Hold the line at all costs. +3 Defense per level.",
+		{"see_also": ["arc_soldier", "milmod_continental_line"]})
+
+	_add("milmod_quick_reload", "Military Modifiers", "Quick Reload",
+		"Powder and ball faster than any rival. Reload reduced by 1 round.",
+		{"see_also": ["arc_scout"]})
+
+	_add("milmod_powder_shot", "Military Modifiers", "Powder & Shot",
+		"The cannons never run dry. +3 Siege Attack per level.",
+		{"see_also": ["milmod_double_shot"]})
+
+	_add("milmod_fortified_position", "Military Modifiers", "Fortified Position",
+		"Commander mod. All units +3 Defense per level in tiles with Barracks or Fortress.",
+		{"see_also": ["arc_soldier", "bld_barracks"]})
+
+	_add("milmod_coastal_watch", "Military Modifiers", "Coastal Watch",
+		"Commander mod. All units +2 Defense per level when adjacent to naval tiles.",
+		{"see_also": ["arc_admiral", "bld_dock", "ter_cold_coast", "ter_warm_coast"]})
+
+	# Tier 2 Modifiers
+
+	_add("milmod_marine", "Military Modifiers", "Marine",
+		"Commander mod. Army may launch melee attacks into adjacent naval tile neighbors.",
+		{"see_also": ["arc_admiral", "bld_dock", "milmod_naval_supremacy"]})
+
+	_add("milmod_guerrilla", "Military Modifiers", "Guerrilla Tactics",
+		"+4 Attack, +4 Defense per level in Woods or Wetlands terrain.",
+		{"see_also": ["arc_scout", "ter_forest", "ter_bog", "milmod_woodsman"]})
+
+	_add("milmod_double_shot", "Military Modifiers", "Double Shot",
+		"Siege fires twice per round — second shot at 50% power.",
+		{"see_also": ["milmod_powder_shot", "milmod_double_cannonade"]})
+
+	_add("milmod_iron_bayonet", "Military Modifiers", "Iron Bayonet",
+		"+5 Attack per level in first battle round.",
+		{"see_also": ["arc_warrior"]})
+
+	_add("milmod_sharpshooter", "Military Modifiers", "Sharpshooter",
+		"Ranged attacks ignore 2 enemy Defense per level.",
+		{"see_also": ["arc_scout", "milmod_marksman"]})
+
+	_add("milmod_corrupted_ground", "Military Modifiers", "Corrupted Ground",
+		"Commander mod. Army presence reduces tile corruption by 1 per turn.",
+		{"see_also": ["arc_diplomat", "bld_bath", "bld_temple"]})
+
+	_add("milmod_rallying_voice", "Military Modifiers", "Rallying Voice",
+		"Commander mod. Morale loss reduced; rout threshold lowered to 15%.",
+		{"see_also": ["arc_diplomat"]})
+
+	_add("milmod_night_raider", "Military Modifiers", "Night Raider",
+		"Commander mod. Army may move and attack in the same turn without penalty.",
+		{"see_also": ["arc_spy"]})
+
+	_add("milmod_flanking_drill", "Military Modifiers", "Flanking Drill",
+		"+3 Attack per level when fighting in a contested tile.",
+		{"see_also": ["arc_warrior"]})
+
+	_add("milmod_vanguard", "Military Modifiers", "Vanguard",
+		"Commander mod. All units +4 Attack per level on first engagement in a fresh tile.")
+
+	_add("milmod_siege_line", "Military Modifiers", "Siege Line",
+		"Siege attacks against fortified tiles suffer no defensive penalty.",
+		{"see_also": ["bld_barracks"]})
+
+	_add("milmod_cleaner", "Military Modifiers", "Cleaner",
+		"Commander mod. Army presence reduces tile moral decay by 1 per turn.",
+		{"see_also": ["arc_diplomat", "bld_bath"]})
+
+	# Tier 3 Modifiers
+
+	_add("milmod_entrenched", "Military Modifiers", "Entrenched",
+		"Commander mod. After 3 stationary turns, all units gain +5 Defense per level. Lost on movement.",
+		{"see_also": ["bld_barracks"]})
+
+	_add("milmod_continental_line", "Military Modifiers", "Continental Line",
+		"Commander mod. All units +2 Attack, +2 Defense per level permanently.",
+		{"see_also": ["lore_first_war"]})
+
+	_add("milmod_last_stand", "Military Modifiers", "Last Stand",
+		"Units below 25% manpower gain +6 Attack per level.")
+
+	_add("milmod_terror", "Military Modifiers", "Terror",
+		"Commander mod. Enemy loses 10 Morale at start of each battle round.")
+
+	_add("milmod_iron_wall", "Military Modifiers", "Iron Wall",
+		"Commander mod. +8 Defense per level when defending the commander's home tile.",
+		{"see_also": ["arc_soldier"]})
+
+	_add("milmod_rampart", "Military Modifiers", "Rampart",
+		"Commander mod. +5 Defense per level in any Fortress tile.",
+		{"see_also": ["bld_barracks"]})
+
+	_add("milmod_naval_supremacy", "Military Modifiers", "Naval Supremacy",
+		"Commander mod. Marine melee attacks deal +5 additional damage per level.",
+		{"see_also": ["arc_admiral", "milmod_marine"]})
+
+	_add("milmod_ghost_march", "Military Modifiers", "Ghost March",
+		"Commander mod. Army ignores enemy zone of control.",
+		{"see_also": ["arc_spy", "arc_admiral"]})
+
+	_add("milmod_undaunted", "Military Modifiers", "Undaunted",
+		"Commander mod. Ignore the first retreat check each battle.")
+
+	_add("milmod_double_cannonade", "Military Modifiers", "Double Cannonade",
+		"Siege fires twice per round AND +3 Attack on all shots.",
+		{"see_also": ["milmod_double_shot"]})
+
+	_add("milmod_liberators_will", "Military Modifiers", "Liberator's Will",
+		"Commander mod. After liberating a tile, +15% manpower and commander gains +2 Loyalty.",
+		{"see_also": ["arc_diplomat"]})
+
+	_add("milmod_long_march", "Military Modifiers", "The Long March",
+		"Commander mod. +2 Movement Points; full movement may be used before attacking.")
+
+	_add("milmod_bat_sweep", "Military Modifiers", "BatSweep",
+		"Baseball Bat mythic mod. +10% attack; first hit ignores shields.")
+
+	_add("milmod_trident_pierce", "Military Modifiers", "TridentPierce",
+		"Trident mythic mod. Pierces shields; +3 attack per level near naval tiles.",
+		{"see_also": ["bld_dock"]})
+
+	# Mythic Weapon Modifiers
+
+	_add("milmod_mythic_atlatl", "Military Modifiers", "MythicAtlatl",
+		"Mythic Atlatl mod. +2 ranged per level; critical hits stun target 1 turn.")
+
+	_add("milmod_sharp_shot", "Military Modifiers", "SharpShot",
+		"Sharps Carbine mythic mod. Ignores 4 enemy defense per level; terrain cover ignored.")
+
+	_add("milmod_pirate_volley", "Military Modifiers", "PirateVolley",
+		"Blackbeard's Pistols mythic mod. Fires twice per ranged round; +5 enemy morale terror.")
+
+	_add("milmod_cylinder_fire", "Military Modifiers", "CylinderFire",
+		"Colt Revolver mythic mod. No reload for first 3 shots; 2-turn reload thereafter.")
+
+	_add("milmod_rocket_barrage", "Military Modifiers", "RocketBarrage",
+		"Rocket Artillery mythic mod. Massive area damage; leaves fire modifier on tile for 2 turns.")
+
+	_add("milmod_trebuchet_launch", "Military Modifiers", "TrebuchetLaunch",
+		"Trebuchet mythic mod. +50% siege damage vs Fortress tiles; stuns defenders 1 round.")
+
+	_add("milmod_aerial_bombing", "Military Modifiers", "AerialBombing",
+		"Wright Flyer mythic mod. Ignores all ground defensive bonuses; terrifies enemy.")
+
+	_add("milmod_quick_draw", "Military Modifiers", "QuickDraw",
+		"Tombstone Cap uniform mod. First ranged attack each battle deals +5 bonus damage.")
+
+	_add("milmod_hardee_disc", "Military Modifiers", "HardeeDisc",
+		"Hardee Hat uniform mod. +3 defense per level when an adjacent friendly unit is present.")
+
+	# Storm / Weather Modifiers
+
+	_add("milmod_fog_born", "Military Modifiers", "Fog-Born",
+		"Commander mod. +5 attack per level in Fog storm tiles.")
+
+	# Storm Counter Modifiers
+
+	_add("milmod_storm_rider", "Military Modifiers", "Storm Rider",
+		"Commander mod. Movement not reduced by any active storm.")
+
+	_add("milmod_thunder_proof", "Military Modifiers", "Thunder Proof",
+		"Commander mod. Immune to Thunderstorm morale penalty.")
+
+	_add("milmod_blizzard_march", "Military Modifiers", "Blizzard March",
+		"Commander mod. No movement or supply penalty in Blizzard tiles. Valley Forge was just training.",
+		{"see_also": ["ter_mountaintop_cold"]})
+
+	_add("milmod_hurricane_eyes", "Military Modifiers", "Hurricane Eyes",
+		"Commander mod. +5 attack per level in Hurricane storm tiles.",
+		{"see_also": ["ter_warm_coast"]})
+
+	_add("milmod_tornado_dancer", "Military Modifiers", "Tornado Dancer",
+		"Commander mod. Army ignores Tornado scatter and manpower drain effects.")
+
+	_add("milmod_norester_veteran", "Military Modifiers", "Nor'easter Veteran",
+		"Commander mod. +3 defense per level in Nor'easter tiles.",
+		{"see_also": ["ter_cold_coast"]})
+
+	_add("milmod_rain_reader", "Military Modifiers", "Rain Reader",
+		"Ranged mod. +3 ranged attack per level during Thunderstorm.")
+
+	_add("milmod_white_out_walker", "Military Modifiers", "White Out Walker",
+		"Infantry mod. +3 attack per level during Blizzard.",
+		{"see_also": ["ter_mountaintop_cold"]})
+
+	_add("milmod_storm_chaser", "Military Modifiers", "Storm Chaser",
+		"Commander mod. +1 movement point in any active storm tile.")
+
+	_add("milmod_lightning_rod", "Military Modifiers", "Lightning Rod",
+		"Siege mod. Artillery units ignore storm ranged accuracy penalty.")
+
+	_add("milmod_eye_of_storm", "Military Modifiers", "Eye of the Storm",
+		"Commander mod. +4 attack, +4 defense per level while any storm is active in tile.")
+
+	# Cultural / State-Specific Modifiers
+
+	_add("milmod_country_musician", "Military Modifiers", "Country Musician",
+		"Tennessee cultural mod. +3 morale; +2 attack per level in Farmlands.")
+
+	_add("milmod_virginia_gentry", "Military Modifiers", "Virginia Gentry",
+		"Virginia cultural mod. +3 ranged defense per level.")
+
+	_add("milmod_minutemans_pride", "Military Modifiers", "Minuteman's Pride",
+		"Massachusetts cultural mod. +5 attack per level in the first 3 battle rounds.",
+		{"see_also": ["lore_first_war"]})
+
+	_add("milmod_quaker_steel", "Military Modifiers", "Quaker Steel",
+		"Pennsylvania cultural mod. +2 defense per level, -1 attack per level.")
+
+	_add("milmod_georgia_peach", "Military Modifiers", "Georgia Peach",
+		"Georgia cultural mod. +3 food efficiency; +1 ranged per level.",
+		{"see_also": ["bld_farm"]})
+
+	_add("milmod_backcountry_rider", "Military Modifiers", "Backcountry Rider",
+		"South Carolina cultural mod. +4 attack per level in Woods terrain.",
+		{"see_also": ["ter_forest"]})
+
+	_add("milmod_harbor_watch", "Military Modifiers", "Harbor Watch",
+		"New York cultural/marine mod. +3 attack per level near naval tiles.",
+		{"see_also": ["bld_dock"]})
+
+	_add("milmod_chesapeake_sailor", "Military Modifiers", "Chesapeake Sailor",
+		"Maryland cultural/marine mod. +2 melee per level; Marine melee attack enabled.",
+		{"see_also": ["bld_dock"]})
+
+	_add("milmod_frontier_marksman", "Military Modifiers", "Frontier Marksman",
+		"Kentucky cultural mod. +4 ranged per level in Foothills terrain.",
+		{"see_also": ["ter_hills"]})
+
+	_add("milmod_river_runner", "Military Modifiers", "River Runner",
+		"Ohio cultural mod. +2 movement points; +2 attack per level near water tiles.",
+		{"see_also": ["ter_floodplains"]})
+
+	_add("milmod_everglades_tracker", "Military Modifiers", "Everglades Tracker",
+		"Florida cultural mod. +4 attack and defense per level in Wetlands.",
+		{"see_also": ["ter_bog"]})
+
+	_add("milmod_bayou_warrior", "Military Modifiers", "Bayou Warrior",
+		"Louisiana cultural mod. +5 attack per level in Wetlands terrain.",
+		{"see_also": ["ter_bog"]})
+
+	_add("milmod_cartographer", "Military Modifiers", "Cartographer",
+		"Civilian tool mod. Maps explored tiles, revealing terrain bonuses and hidden resources.",
+		{"see_also": ["arc_scout"]})
+
+	_add("milmod_herbalist", "Military Modifiers", "Herbalist",
+		"Civilian tool mod. Gathers medicinal herbs, healing +5 manpower per turn in the tile.",
+		{"see_also": ["arc_healer", "bld_temple"]})
+
+	_add("milmod_engineer_tool", "Military Modifiers", "Engineer",
+		"Civilian tool mod. Builds roads and improves structures faster than standard workers.",
+		{"see_also": ["arc_engineer", "bld_camp"]})
+
+	_add("milmod_blacksmith", "Military Modifiers", "Blacksmith",
+		"Civilian tool mod. Reduces weapon upkeep costs by 1 per level per turn for stationed armies.",
+		{"see_also": ["arc_engineer", "bld_forge"]})
+
+	_add("milmod_physician", "Military Modifiers", "Physician",
+		"Civilian tool mod. Provides advanced medical care, restoring +10 manpower per turn.",
+		{"see_also": ["arc_healer", "bld_bath"]})
+
+	_add("milmod_merchant", "Military Modifiers", "Merchant",
+		"Civilian tool mod. Conducts trade, generating +3 Dollars per turn.",
+		{"see_also": ["arc_diplomat", "bld_market"]})
+
+	_add("milmod_preacher", "Military Modifiers", "Preacher",
+		"Civilian tool mod. Delivers sermons raising tile governor loyalty by +5 per turn.",
+		{"see_also": ["arc_preacher", "bld_temple"]})
+
+	_add("milmod_architect", "Military Modifiers", "Architect",
+		"Civilian tool mod. Designs buildings more efficiently, reducing construction costs by 15%.",
+		{"see_also": ["arc_engineer"]})
+
+	_add("milmod_hunter", "Military Modifiers", "Hunter",
+		"Civilian tool mod. Hunts game in surrounding wilderness, generating +5 Food per turn.",
+		{"see_also": ["arc_scout", "ter_forest"]})
+
+	_add("milmod_fisherman", "Military Modifiers", "Fisherman",
+		"Civilian tool mod. Fishes from rivers or coastlines, generating +3 Food per turn near water tiles.",
+		{"see_also": ["arc_admiral", "ter_cold_coast", "ter_warm_coast"]})
+
+	_add("milmod_surveyor", "Military Modifiers", "Surveyor",
+		"Civilian tool mod. Surveys the land, revealing terrain bonuses of all adjacent tiles.",
+		{"see_also": ["arc_scout", "arc_engineer"]})
+
+	_add("milmod_trapper", "Military Modifiers", "Trapper",
+		"Civilian tool mod. Sets trap lines through wilderness, generating +2 Food and +1 trade per turn.",
+		{"see_also": ["arc_scout", "ter_forest", "ter_taiga"]})
+
+	_add("milmod_park_ranger", "Military Modifiers", "Park Ranger",
+		"Civilian tool mod. Army is immune to corruption-based disease.",
+		{"see_also": ["arc_scout", "ter_forest"]})
+
+	# Presidential Modifiers
+
+	_add("milmod_president", "Military Modifiers", "President",
+		"Commander mod. The Republic moves when she moves. +3 movement points per turn.")
+
+	_add("milmod_election_season", "Military Modifiers", "Election Season",
+		"Commander mod. History is watching. Keep up. +3 movement points per turn, for the rest of the game.")
+
+	# State Guard Modifiers
+
+	_add("milmod_pa_guard", "Military Modifiers", "Pennsylvania Guard",
+		"Home-soil bonus. +2 Attack, +2 Defence per level when fighting in Pennsylvania tiles.")
+
+	_add("milmod_va_guard", "Military Modifiers", "Virginia Guard",
+		"Home-soil bonus. +2 Attack, +2 Defence per level when fighting in Virginia tiles.")
+
+	_add("milmod_ny_guard", "Military Modifiers", "New York Guard",
+		"Home-soil bonus. +2 Attack, +2 Defence per level when fighting in New York tiles.")
+
+	_add("milmod_ma_guard", "Military Modifiers", "Massachusetts Guard",
+		"Home-soil bonus. +2 Attack, +2 Defence per level when fighting in Massachusetts tiles.")
+
+	_add("milmod_md_guard", "Military Modifiers", "Maryland Guard",
+		"Home-soil bonus. +2 Attack, +2 Defence per level when fighting in Maryland tiles.")
+
+	_add("milmod_nc_guard", "Military Modifiers", "North Carolina Guard",
+		"Home-soil bonus. +2 Attack, +2 Defence per level when fighting in North Carolina tiles.")
+
+	_add("milmod_sc_guard", "Military Modifiers", "South Carolina Guard",
+		"Home-soil bonus. +2 Attack, +2 Defence per level when fighting in South Carolina tiles.")
+
+	_add("milmod_ga_guard", "Military Modifiers", "Georgia Guard",
+		"Home-soil bonus. +2 Attack, +2 Defence per level when fighting in Georgia tiles.")
+
+	_add("milmod_ct_guard", "Military Modifiers", "Connecticut Guard",
+		"Home-soil bonus. +2 Attack, +2 Defence per level when fighting in Connecticut tiles.")
+
+	_add("milmod_nj_guard", "Military Modifiers", "New Jersey Guard",
+		"Home-soil bonus. +2 Attack, +2 Defence per level when fighting in New Jersey tiles.")
+
+	_add("milmod_de_guard", "Military Modifiers", "Delaware Guard",
+		"Home-soil bonus. +2 Attack, +2 Defence per level when fighting in Delaware tiles.")
+
+	_add("milmod_nh_guard", "Military Modifiers", "New Hampshire Guard",
+		"Home-soil bonus. +2 Attack, +2 Defence per level when fighting in New Hampshire tiles.")
+
+	_add("milmod_ri_guard", "Military Modifiers", "Rhode Island Guard",
+		"Home-soil bonus. +2 Attack, +2 Defence per level when fighting in Rhode Island tiles.")
+
+	_add("milmod_vt_guard", "Military Modifiers", "Vermont Guard",
+		"Home-soil bonus. +2 Attack, +2 Defence per level when fighting in Vermont tiles.")
+
+	_add("milmod_me_guard", "Military Modifiers", "Maine Guard",
+		"Home-soil bonus. +2 Attack, +2 Defence per level when fighting in Maine tiles.")
+
+	_add("milmod_tn_guard", "Military Modifiers", "Tennessee Guard",
+		"Home-soil bonus. +2 Attack, +2 Defence per level when fighting in Tennessee tiles.")
+
+	_add("milmod_al_guard", "Military Modifiers", "Alabama Guard",
+		"Home-soil bonus. +2 Attack, +2 Defence per level when fighting in Alabama tiles.")
+
+	_add("milmod_fl_guard", "Military Modifiers", "Florida Guard",
+		"Home-soil bonus. +2 Attack, +2 Defence per level when fighting in Florida tiles.")
+
+	_add("milmod_wv_guard", "Military Modifiers", "West Virginia Guard",
+		"Home-soil bonus. +2 Attack, +2 Defence per level when fighting in West Virginia tiles.")
+
+	_add("milmod_dc_guard", "Military Modifiers", "DC Guard",
+		"Home-soil bonus. +2 Attack, +2 Defence per level when fighting in Washington DC tiles.")
+
+	_add("milmod_ca_qb_guard", "Military Modifiers", "Quebec Guard",
+		"Home-soil bonus. +2 Attack, +2 Defence per level when fighting in Quebec tiles.")
+
+	_add("milmod_ca_ot_guard", "Military Modifiers", "Ontario Guard",
+		"Home-soil bonus. +2 Attack, +2 Defence per level when fighting in Ontario tiles.")
+
+	_add("milmod_ca_ns_guard", "Military Modifiers", "Nova Scotia Guard",
+		"Home-soil bonus. +2 Attack, +2 Defence per level when fighting in Nova Scotia tiles.")
+
+	_add("milmod_ca_nb_guard", "Military Modifiers", "New Brunswick Guard",
+		"Home-soil bonus. +2 Attack, +2 Defence per level when fighting in New Brunswick tiles.")
+
+	_add("milmod_ca_pei_guard", "Military Modifiers", "Prince Edward Island Guard",
+		"Home-soil bonus. +2 Attack, +2 Defence per level when fighting in Prince Edward Island tiles.")
+
+	_add("milmod_ba_guard", "Military Modifiers", "Bahamas Guard",
+		"Home-soil bonus. +2 Attack, +2 Defence per level when fighting in Bahamas tiles.")
+
+	# Protector Buff Modifiers
+
+	_add("milmod_mothman", "Military Modifiers", "Mothman Presence",
+		"Mothman Presence: +20 Ranged Attack, +15 Ranged Defence.",
+		{"see_also": ["PROT_01"]})
+
+	_add("milmod_jersey_devil", "Military Modifiers", "Jersey Devil's Fury",
+		"Jersey Devil's Fury: +25 Attack, +10 Ranged, +10 Block.",
+		{"see_also": ["PROT_02"]})
+
+	_add("milmod_bigfoot", "Military Modifiers", "Bigfoot's Solidarity",
+		"Bigfoot's Solidarity: +30 Block, +15 Attack.",
+		{"see_also": ["PROT_03"]})
+
+	_add("milmod_thunderbird", "Military Modifiers", "Thunderbird's Sovereignty",
+		"Thunderbird's Sovereignty: +25 Ranged Attack, +10 Melee Attack.",
+		{"see_also": ["PROT_04"]})
+
+	_add("milmod_headless", "Military Modifiers", "Headless Terror",
+		"Headless Terror: +20 Attack, +10 Block; attackers become Terrified.",
+		{"see_also": ["PROT_05"]})
+
+	_add("milmod_chessie", "Military Modifiers", "Chessie's Blessing",
+		"Chessie's Blessing: +20 Block, +15 Ranged Defence.",
+		{"see_also": ["PROT_06"]})
+
+	_add("milmod_bell_witch", "Military Modifiers", "Bell Witch's Harassment",
+		"Bell Witch's Harassment: +15 Attack, +20 Defence; attackers become Demoralized.",
+		{"see_also": ["PROT_07"]})
+
+	_add("milmod_old_ironsides", "Military Modifiers", "Old Ironsides' Hull",
+		"Old Ironsides' Hull: +30 Shield, +20 Block.",
+		{"see_also": ["PROT_08"]})
+
+	_add("milmod_valley_forge", "Military Modifiers", "Valley Forge's Will",
+		"Valley Forge's Will: +10 Attack, +25 Block, +20 Defence.",
+		{"see_also": ["PROT_09"]})
+
+	_add("milmod_snallygaster", "Military Modifiers", "Snallygaster's Claim",
+		"Snallygaster's Claim: +20 Attack, +10 Ranged, +10 Block.",
+		{"see_also": ["PROT_10"]})
+
+	_add("milmod_paul_revere", "Military Modifiers", "Paul Revere's Ride",
+		"Paul Revere's Ride: +15 Ranged, +10 Attack, +3 Movement.",
+		{"see_also": ["PROT_11"]})
+
+	_add("milmod_liberty_bell", "Military Modifiers", "Liberty Bell's Resonance",
+		"Liberty Bell's Resonance: +25 Block, +15 Ranged Defence.",
+		{"see_also": ["PROT_12"]})
+
+	_add("milmod_green_mountain", "Military Modifiers", "Green Mountain Haunting",
+		"Green Mountain Haunting: +20 Block, +15 Ranged Defence.",
+		{"see_also": ["PROT_13"]})
+
+	_add("milmod_presidential_decree", "Military Modifiers", "Presidential Decree",
+		"Presidential Decree: +20 Attack, +20 Block, +15 Ranged, +15 Defence.",
+		{"see_also": ["PROT_14"]})
+
+	_add("milmod_skunk_ape", "Military Modifiers", "Skunk Ape's Domain",
+		"Skunk Ape's Domain: +20 Attack, +15 Block.",
+		{"see_also": ["PROT_15"]})
+
+	_add("milmod_eternal_vigilance", "Military Modifiers", "Eternal Vigilance",
+		"Eternal Vigilance: +25 Block, +10 Attack.",
+		{"see_also": ["PROT_16"]})
+
+	_add("milmod_lincolns_mandate", "Military Modifiers", "Lincoln's Mandate",
+		"Lincoln's Mandate: +15 Attack, +15 Block, +15 Ranged, +10 Defence.",
+		{"see_also": ["PROT_17"]})
+
+	_add("milmod_wendigo", "Military Modifiers", "Le Wendigo's Hunger",
+		"Le Wendigo's Hunger: +30 Melee Attack.",
+		{"see_also": ["CA_PROT_03"]})
+
+	_add("milmod_loup_garou", "Military Modifiers", "Loup-Garou's Frenzy",
+		"Loup-Garou's Frenzy: +25 Attack, +15 Block, +10 Defence.",
+		{"see_also": ["CA_PROT_01"]})
+
+	_add("milmod_feux_follets", "Military Modifiers", "Feux Follets' Misdirection",
+		"Feux Follets' Misdirection: +25 Ranged Defence, +15 Block.",
+		{"see_also": ["CA_PROT_07"]})
+
+	_add("milmod_mishepeshu", "Military Modifiers", "Mishepeshu's Depths",
+		"Mishepeshu's Depths: +20 Block, +20 Ranged Defence.",
+		{"see_also": ["CA_PROT_04"]})
+
+	_add("milmod_la_corriveau", "Military Modifiers", "La Corriveau's Cage",
+		"La Corriveau's Cage: +20 Ranged, +15 Attack.",
+		{"see_also": ["CA_PROT_05"]})
+
+	_add("milmod_le_carcajou", "Military Modifiers", "Le Carcajou's Tenacity",
+		"Le Carcajou's Tenacity: +20 Attack, +15 Block, +10 Defence.",
+		{"see_also": ["CA_PROT_06"]})
+
+	_add("milmod_la_chasse_galerie", "Military Modifiers", "La Chasse-Galerie",
+		"La Chasse-Galerie: +15 Attack, +15 Ranged, +4 Movement.",
+		{"see_also": ["CA_PROT_07"]})
+
+	_add("milmod_le_gougou", "Military Modifiers", "Le Gougou's Terror",
+		"Le Gougou's Terror: +15 Attack, +20 Defence; attackers become Terrified for 3 turns.",
+		{"see_also": ["CA_PROT_08"]})
+
+	# Negative Status Effects
+
+	_add("milmod_stunned", "Military Modifiers", "Stunned",
+		"Dazed and unable to act: Cannot make melee attacks this turn.")
+
+	_add("milmod_suppressed", "Military Modifiers", "Suppressed",
+		"Pinned under fire: Cannot fire ranged attacks this turn.")
+
+	_add("milmod_shaken", "Military Modifiers", "Shaken",
+		"Formation broken: Melee block halved.")
+
+	_add("milmod_terrified", "Military Modifiers", "Terrified",
+		"Frozen in fear: Melee attack -50%, melee block -30%.")
+
+	_add("milmod_routed", "Military Modifiers", "Routed",
+		"Fleeing the field: Cannot attack; melee attack zeroed; ranged defence halved.")
+
+	_add("milmod_burning", "Military Modifiers", "Burning",
+		"The ranks are on fire: Loses manpower each turn.")
+
+	_add("milmod_blinded", "Military Modifiers", "Blinded",
+		"Can't see a thing: Ranged attack and ranged defence halved.")
+
+	_add("milmod_hexed", "Military Modifiers", "Hexed",
+		"Cursed by dark magic: Magic defence eliminated.")
+
+	_add("milmod_diseased", "Military Modifiers", "Diseased",
+		"Plague has struck the ranks: Loses manpower each turn.")
+
+	_add("milmod_waterlogged", "Military Modifiers", "Waterlogged",
+		"Soaked to the bone: Melee and ranged attack -20%.")
+
+	_add("milmod_frostbitten", "Military Modifiers", "Frostbitten",
+		"Fingers too cold to hold a weapon: Melee and ranged attack -30%.")
+
+	_add("milmod_demoralized", "Military Modifiers", "Demoralized",
+		"Spirit broken: Melee attack -20%, block -20%, all mil mods disabled.")
+
+	_add("milmod_exhausted", "Military Modifiers", "Exhausted",
+		"Worn out from the march: Movement reduced to 1 this turn.")
+
+	_add("milmod_bogged_down", "Military Modifiers", "Bogged Down",
+		"Stuck fast: Cannot move this turn.")
+
+	_add("milmod_pacified", "Military Modifiers", "Pacified",
+		"Ordered to stand down: Cannot initiate attacks this turn.")
+
+	_add("milmod_supply_cut", "Military Modifiers", "Supply Cut",
+		"Supplies intercepted: Cannot reinforce or resupply.")
+
+	_add("milmod_quarantined", "Military Modifiers", "Quarantined",
+		"Plague quarantine in effect: No reinforcement; manpower drains each turn.")
+
+	_add("milmod_seduced", "Military Modifiers", "Seduced",
+		"The commander has found better things to do: Melee zeroed; cannot attack.")
+
+	_add("milmod_starstruck", "Military Modifiers", "Starstruck",
+		"Encountered a celebrity. Requested autograph. Please advise: All stats -30%.")
+
+	_add("milmod_hangover", "Military Modifiers", "Hangover",
+		"Someone opened the wrong cask: All stats -50%.")
+
+	_add("milmod_love_struck", "Military Modifiers", "Love-Struck",
+		"Cupid's arrow strikes without warning: Melee attack -70%, block -70%; cannot attack.")
+
+	_add("milmod_mutinous", "Military Modifiers", "Mutinous",
+		"The ranks are restless: Melee attack -40%; 50% chance army refuses orders each turn.")
+
 	# ── PROTECTORS (mystery until agree) ─────────────────────────────────────
 	_add_mystery("PROT_01", "Protectors",
 		"Something moves in the mountain passes of West Virginia at night. Old miners refuse to speak its name.",
