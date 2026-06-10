@@ -164,7 +164,7 @@ FACTIONS = [
      "FIRST PASS"),
 
     # ── CA ───────────────────────────────────────────────────────────────────
-    ("CA", "French Habitants", "Mark Penoit / Pierre Renard (pool)", "Equality / Freedom",
+    ("CA", "French Habitants", "Marc Penoit / Pierre Renard (pool)", "Equality / Freedom",
      "Quebec Act Recognition", "Habitants Alliance", "Republic of Quebec",
      "Municipal Elections Act, Canadian Citizenship Act, Dominion Elections Act",
      "Quebec sovereignty faction. Governor Carleton is the NPC counterpart. Events around language rights, dual governance, and Francophone identity.",
@@ -661,7 +661,7 @@ VP_ARC = [
      "FIRST PASS"),
 ]
 
-# ── CA PRESIDENT ARC (Mark Penoit as Deputy Governor for Canada playthrough) ──
+# ── CA PRESIDENT ARC (Marc Penoit as Deputy Governor for Canada playthrough) ──
 CA_PM_ARC = [
     ("CA_PM_FIRST_MEETING", "MARK PENOIT REQUESTS A WAR COUNCIL",
      "Root (fires turn 5+, one-time)", "ca_pm_met flag set; gates all other CA_PM events",
@@ -888,7 +888,7 @@ def build_overview(wb):
         ("Belief Mods",   BELIEF_MODS, 5,  "6 icon mods · 2 doctrine mods · 2 axis mods · 1 Canadian"),
         ("Governors",     GOVERNORS,   7,  "9 USA named governors · 3 CA named governors"),
         ("VP Arc (USA)",  VP_ARC,      5,  "8 VP arc events — Ualani + elected VP"),
-        ("PM Arc (CA)",   CA_PM_ARC,   5,  "9 CA President arc events — Jessica + Mark Penoit"),
+        ("PM Arc (CA)",   CA_PM_ARC,   5,  "9 CA President arc events — Jessica + Marc Penoit"),
         ("CA Events",     CA_EVENTS,   6,  "CA protectors (8×3) · alliance arc · collapse events · USA-CA alliance (CA side)"),
     ]
 

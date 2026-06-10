@@ -36,7 +36,7 @@ var _event_cooldowns: Dictionary = {}  # event_id → turns_remaining before can
 var _commander_turns: Dictionary = {}  # "TileName:CommanderName" → turns_served
 var _vp_governor = null                # reference to the assigned Vice President governor
 var _vp_faction: String = ""           # game faction name belonging to the VP
-var _ca_vp_governor = null             # reference to Mark Penoit as CA Deputy Governor
+var _ca_vp_governor = null             # reference to Marc Penoit as CA Deputy Governor
 var _ca_vp_faction: String = ""        # faction of CA's Deputy Governor
 var _peace_dock_was_uk: Dictionary = {}  # tile_num → bool; tracks UK ownership flip per turn
 var _peace_last_freed_tile = null        # most-recently freed peace dock tile node
@@ -729,9 +729,9 @@ func generateBarracksCommanders() -> void:
 				break
 		if not jessica.hired:
 			print("[Commanders] Ottawa not player-owned at start — Commanda added to pool unassigned.")
-		# Mark Penoit in Quebec City (tile 123) as Deputy Governor
+		# Marc Penoit in Quebec City (tile 123) as Deputy Governor
 		var penoit: governor = governor.new()
-		penoit.buildSelf("Mark Penoit", 2)
+		penoit.buildSelf("Marc Penoit", 2)
 		playerCountryNode.unlockedGovernors.append(penoit)
 		for tile in $TileController.get_children():
 			if tile.tileNumber == 123 and tile.tileOwner == playerCountry:
@@ -1010,18 +1010,18 @@ func _generate_ai_barracks_commanders(country_node: country) -> void:
 	if not jessica.hired:
 		print("[CA Leaders] Ottawa not CA-owned at start — Jessica added to pool unassigned.")
 
-	# ── Spawn Mark Penoit (deputy/VP) at Saint-Georges, tile 99 ─────────────────
+	# ── Spawn Marc Penoit (deputy/VP) at Saint-Georges, tile 99 ─────────────────
 	# Montreal (tile 94) is UK-occupied at game start; Saint-Georges is the nearest
 	# CA-owned Quebec tile with a fortress (fortress:2, barracks:2).
 	var mark: governor = governor.new()
-	mark.buildSelf("Mark Penoit", 2)
+	mark.buildSelf("Marc Penoit", 2)
 	country_node.unlockedGovernors.append(mark)
 	for tile in $TileController.get_children():
 		if tile.tileNumber == 99 and tile.tileOwner == country_node.CID:
 			tile.tileGovernor       = mark
 			tile.filledGovernorSlot = true
 			mark.hired              = true
-			print("[CA Leaders] Mark Penoit stationed at Saint-Georges (tile 99).")
+			print("[CA Leaders] Marc Penoit stationed at Saint-Georges (tile 99).")
 			break
 	if not mark.hired:
 		print("[CA Leaders] Saint-Georges not CA-owned at start — Mark added to pool unassigned.")
@@ -3218,7 +3218,7 @@ func _try_vp_legacy(vp_tile: Tile) -> bool:
 	return _fire_vp_event("VP_LEGACY", vp_tile)
 
 
-# ── CANADIAN PRESIDENT EVENTS (Mark Penoit as Deputy Governor) ──────────────
+# ── CANADIAN PRESIDENT EVENTS (Marc Penoit as Deputy Governor) ──────────────
 
 func _ca_fire_vp_event(event_id: String, pm_tile) -> bool:
 	_start_cooldown(event_id, 999)
@@ -3589,24 +3589,24 @@ func _assign_vice_president() -> void:
 
 
 func _assign_ca_vice_president() -> void:
-	# Mark Penoit is the hardcoded Deputy Governor for Canada
+	# Marc Penoit is the hardcoded Deputy Governor for Canada
 	for tile in playerCountryNode.OwnedTileList:
 		if tile.tileGovernor == null:
 			continue
 		var gov = tile.tileGovernor
-		if gov.governorType == "Mark Penoit":
+		if gov.governorType == "Marc Penoit":
 			_ca_vp_governor = gov
 			_ca_vp_faction  = "French Habitants"
 			gov.isVicePresident = true
-			print("[CA PM] Mark Penoit (at tile ", tile.tileName, ") assigned as Deputy Governor.")
+			print("[CA PM] Marc Penoit (at tile ", tile.tileName, ") assigned as Deputy Governor.")
 			return
 	# Fallback: search unlockedGovernors pool
 	for gov in playerCountryNode.unlockedGovernors:
-		if gov.governorType == "Mark Penoit":
+		if gov.governorType == "Marc Penoit":
 			_ca_vp_governor = gov
 			_ca_vp_faction  = "French Habitants"
 			gov.isVicePresident = true
-			print("[CA PM] Mark Penoit (unassigned) set as Deputy Governor.")
+			print("[CA PM] Marc Penoit (unassigned) set as Deputy Governor.")
 			return
 
 

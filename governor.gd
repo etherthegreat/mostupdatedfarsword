@@ -126,7 +126,7 @@ func buildSelf(gT, gL):
 			questComplete = true
 			isLeader = true
 
-		"Mark Penoit":
+		"Marc Penoit":
 			governorTexture = load("res://art assets/Placeholder Art/character/4-22-Ikra-Colors - Copy.png")
 			governorDescription = "I did not march this far to hand the colony back to London in a different hat."
 			governorBiography = "Québécois militia commander and deputy to Clear-Water. Penoit spent two winters at the siege of Saint-Georges before the Continental Republic knew his name. Pragmatic where Clear-Water is principled, military where she is diplomatic, and entirely convinced that the French Habitants will only survive this war if someone is watching the eastern flank. He disagrees with the alliance about once a week. He never disagreed enough to leave."

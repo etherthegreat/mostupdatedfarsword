@@ -975,7 +975,7 @@ EVENTS = [
      "LA CHASSE-GALERIE: THE RIVER RUNS FOR THE REPUBLIC NOW",
      "Followup","CA_PROT_07_TAME","—",
      "FIRST PASS","","Not Started","NO","sensual option","0",
-     "Sets ca_prot_07_agreed; BTN2 sensual — Mark Penoit on the river"),
+     "Sets ca_prot_07_agreed; BTN2 sensual — Marc Penoit on the river"),
 
     # Le Gougou
     ("CA Protector","Le Gougou","CA_PROT_08_SUMMON",
