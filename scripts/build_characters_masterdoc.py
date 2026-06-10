@@ -9,9 +9,16 @@ Sheets:
   3. CANADIAN     — Canadian named governors and leaders
   4. NPC          — Non-playable named characters (event figures, antagonists, etc.)
   5. DESIGN NOTES — Art direction and consistency rules
-  6. UALANI MODEL — Full production bible: construction, palette, expressions,
-                    costume layers, scene-type direction (SFW → explicit)
-  7. JESSICA MODEL — Same production bible format for Jessica Commanda Odjick
+  6. UALANI MODEL — Full production bible: reference models, construction, palette,
+                    expressions, costume layers, scene-type direction (SFW → explicit),
+                    2026 formal wear
+  7. JESSICA MODEL — Same production bible format for Jessica Commanda Odjick,
+                    including braid research & cultural direction, reference models,
+                    2026 formal wear
+  8. MARC MODEL   — Full production bible for Marc Penoit (Deputy Governor,
+                    French Habitants), including reference models (Roy Dupuis),
+                    construction, palette, invariants, expressions, costume layers,
+                    SFW scene direction, 2026 formal wear (capote coat + ceinture fléchée)
 
 Status scale:
   FINAL     — physical + personality fully locked, art approved
@@ -746,6 +753,26 @@ UALANI_MODEL = {
         ("Lighting in explicit", "Warm, low. Same as sensual but deeper shadows. The skin highlights (#C89070) are prominent. The gold earrings catch the warm light — they are a visual anchor in every explicit scene, confirming identity at a glance."),
         ("Common errors to avoid", "1) Lightening skin tone in explicit scenes. 2) Making hair brown under warm light — it stays near-black even in candlelight. 3) Removing earrings. 4) Softening the shoulder/arm definition. 5) Giving her a passive or confused expression. 6) Europeanizing the nose. 7) Shortening the hair. 8) Adding anachronistic modern elements (nail polish, modern lingerie, contemporary hairstyles)."),
     ],
+
+    # ── REFERENCE MODELS ──────────────────────────────────────────────────────
+    "reference_models": [
+        ("PRIMARY: Nicole Scherzinger", "Hawaiian-Filipina performer. Father is Filipino from Batanes (northernmost Philippines — coastal fishing community). Mother is half-Native Hawaiian, half-Ukrainian, born Honolulu. This is functionally identical heritage to Ualani: Pacific Islander compound identity, Pacific cultural memory, Hawaiian birth and upbringing. Key physical reference: face structure (Filipino-Hawaiian blend of jaw and cheekbone), skin tone (exactly the warm medium-brown of the palette), dark black hair, almond eyes. Use Nicole Scherzinger from her late 20s forward for face reference — not early-career juvenilized versions."),
+        ("Secondary: Vanessa Hudgens", "Filipino-Irish American. Lighter than Nicole (Irish heritage dilutes the Filipino tone), but useful for the Pacific Islander almond eye shape and warm hair texture at high glamour register. Use for: expressions at formal events, how the face holds up in high-contrast theatrical lighting."),
+        ("Cultural specificity — Hawaiian", "Ualani's Hawaiian identity is not pan-Pacific. It is specifically Native Hawaiian — Kanaka Maoli heritage. Her skin tone and features reflect the Hawaiian-Filipino compound. Do not draw from mainland Asian-American references, or from Japanese, Korean, or Chinese facial structure. The nose is Hawaiian-Filipino: medium, rounded, authentic to that specific heritage."),
+        ("Cultural specificity — Filipina", "Her Filipina heritage is Lowland Filipino (Luzon). Tagalog-region features: the broader nose at base, the wide jaw, the warm skin undertone with yellow-olive depth. Not Ilocano (lighter, northern Philippines). Not Visayan (darker, southern Philippines). Luzon lowland is the correct reference."),
+        ("What to avoid", "Do not reference East Asian celebrities (Japanese, Korean) for Ualani's face — the features are Pacific Islander, not Northeast Asian. Do not reference South Asian (Indian/Pakistani) for the skin tone — Pacific Islander warm-brown is a distinct color temperature and face structure. These are not interchangeable."),
+    ],
+
+    # ── 2026 FORMAL CEREMONIAL WEAR ──────────────────────────────────────────
+    "formal_wear_2026": [
+        ("Occasion", "2026 formal state ceremony — the three national leaders of the Continental Defense Alliance. Ualani represents the American Federal Republic."),
+        ("Silhouette: Presidential Terno-Holokū", "A synthesis of two specific cultural garments. The holokū is the traditional Hawaiian women's floor-length fitted gown — this provides the base silhouette (floor-length, fitted bodice, slight train). The terno butterfly sleeves (Filipino formal wear: standing puffed arch at the shoulder, structurally upright) replace the standard sleeve. The result: a floor-length fitted gown carrying both Hawaiian and Filipino formal tradition simultaneously."),
+        ("Fabric and color", "Primary body: deep federal navy (#1C2E5C) — identical to her presidential uniform color. She has not changed palettes; she has changed the form. Bodice overlay: piña cloth panel — pineapple fiber fabric, sheer ivory-gold (#F0DFA0) luminous overlay on the chest and upper front. Piña cloth is the premiere Filipino formal textile; its placement at her heart is intentional."),
+        ("The terno butterfly sleeves", "The defining Filipino element. Standing butterfly sleeves at the shoulder — structured puffed arch that rises above and to the sides of the shoulder line. Not droopy or soft — architecturally vertical. Executed in the navy fabric with gold (#D4A017) trim at the upper arch edge. They read from across a room and match the gold earrings exactly."),
+        ("Hawaiian elements", "Kapa geometric border at the hem — traditional Hawaiian barkcloth-inspired geometric pattern in ivory-gold (#F0DFA0) along the floor edge. The border is narrow (6 inches) but runs the full circumference. Enough to be read as Hawaiian without being a costume."),
+        ("Hair in this scene", "Worn loose — belly-length minimum. The formality is in the garment; the hair is sovereignty. Gold earrings catch candlelight against the black hair. This is the presidential state: the garment is formal, the hair is free."),
+        ("Design notes for trio scene", "Against Jessica's forest green ribbon skirt and Marc's grey-blue capote coat, Ualani is the luminous element: the piña bodice catches light, the gold earrings anchor the face, the butterfly sleeves create a visual peak at her shoulders. She is the central light source of the three in dark ceremonial rooms."),
+    ],
 }
 
 JESSICA_MODEL = {
@@ -878,6 +905,156 @@ JESSICA_MODEL = {
         ("Contrast with Ualani", "In multi-character explicit scenes: Ualani is warm, muscular, gold earrings catching light. Jessica is cool, elongated, no jewelry, ribbon-work gone. They are visually distinct from a distance at every level. The contrast in body type (Ualani: athlete; Jessica: elongated lean) should be fully realized."),
         ("Common errors to avoid", "1) Shortening her proportions — she must remain the 8-head tall figure. 2) Softening or rounding the hip bones — they are angular and prominent. 3) Giving her ear jewelry — she never wears any. 4) Narrowing the nose. 5) Softening the cheekbones. 6) Making the breasts larger than canon. 7) Changing the hair to loose waves — it is straight. 8) Making her expression passive or confused — she is always present and choosing. 9) Lightening skin tone. 10) Shortening the hair below lower lumbar."),
     ],
+
+    # ── REFERENCE MODELS ──────────────────────────────────────────────────────
+    "reference_models": [
+        ("PRIMARY: Sarain Fox", "Anishinaabe (Ojibwe), filmmaker and activist. Born in the Great Lakes region — the exact cultural geography of the Anishinaabe nation. Key physical reference: tall, high cheekbones, the specific Anishinaabe face structure Jessica requires. The cheekbones read exactly as specified in the Construction section. Use for: diplomatic authority pose, how the face holds composure under pressure, the rare-but-real warmth when it emerges."),
+        ("Secondary: Devery Jacobs", "Mohawk (Kahnawake, near Montreal). Also Indigenous Canadian, from a nation in the broader Algonquin/Haudenosaunee geographical sphere. Slightly shorter and warmer-toned than Sarain Fox. Use for: expressions of dry satisfaction, the POLITICAL PRECISION face, contained amusement. Useful for Jessica in informal or private scenes."),
+        ("The Odjick surname", "Joshua Odjick is a real person from Kitigan Zibi Anishinabeg — the exact community Jessica is from. The surname being authentic to her specific nation is a deliberate grounding choice. When drawing Jessica, the cultural anchor is Kitigan Zibi: Algonquin River watershed, Quebec side of the Ottawa River, established community with continuous Indigenous residence. The name is not invented; it belongs there."),
+        ("Secondary reference: Joshua Odjick", "Artist and public figure from Kitigan Zibi Anishinabeg. While male, useful for understanding the specific face structure of Kitigan Zibi Algonquin people when building Jessica's face. The high cheekbones, strong jaw, and dark-warm eyes are consistent across the community."),
+        ("What to avoid", "Do not reference Métis celebrities as Anishinaabe references — different community, different features. Do not reference Plains Cree or Blackfoot for Algonquin bone structure — these are different tribal nations with different physical features. The Anishinaabe cheekbone structure (wide, high, prominent, tapering to defined jaw) is specific to this people and should not be blended with other Indigenous communities' features."),
+    ],
+
+    # ── BRAID RESEARCH & CULTURAL DIRECTION ──────────────────────────────────
+    "braid_research": [
+        ("Base style: single braid", "The single braid down the back is the foundational Anishinaabe women's hair style for daily and working contexts. Starting at the crown or nape, running straight down the back to the lower lumbar or below. Simple three-strand. This is Jessica's field and casual state in the game."),
+        ("Formal style: club braid", "For diplomatic and ceremonial contexts, the club braid. The single braid is completed to its full length, then folded back up on itself at approximately mid-back, and the doubled braid is bound with a beaded cloth wrap at the fold point. Beaded streamers (traditionally quillwork or beadwork) hang from the binding. The result: a braid that terminates at mid-back in a decorated vertical loop with streamers hanging 12–18 inches below the binding. This is Jessica's diplomatic hair state."),
+        ("Indigo ribbon in the formal braid", "In the 1780s–1790s timeline: French trade ribbons arrived in the Great Lakes and Ottawa River watershed in exactly this period. The indigo ribbon (#2E1760) threaded through Jessica's formal braid is historically authentic. French traders brought silk ribbons to Anishinaabe communities; ribbon-work clothing (ribbon skirts, ornamented garments) emerged from this cultural exchange. The ribbon in her braid is both historically grounded AND a readable diplomatic identity marker."),
+        ("Braid symbolism", "Anishinaabe teaching: individual strands are weak, braided together unbreakable — community strength through interdependence. The braid is not decorative for Jessica. It is a statement she wears to every negotiation. The fact that she braids it with a French trade ribbon in alliance-building scenes is the visual metaphor: three strands, unbreakable."),
+        ("Drawing the club braid — full scale", "In formal scenes: the braid is NOT hanging freely down the back. It is folded at mid-back and bound. From behind: a rectangle of dark hair at upper-mid-back, then the decorative binding (beaded cloth wrap — warm red #C84B18 with gold #D4A017 beadwork dots), then 2–4 narrow streamers hanging below the binding. The indigo ribbon runs through the braid at the fold point — visible as a flash of #2E1760 against the near-black hair."),
+        ("Drawing at pixel scale (120×120)", "At 120×120 pixels: the club braid reads as a short dark rectangle at upper-mid-back with a 1–2 pixel row of colored dots (beadwork binding), then 2–3 thin 1-pixel vertical lines hanging below (the streamers). The indigo ribbon is 1 pixel of #2E1760 at the braid fold. Achievable and distinctive at that scale."),
+        ("The loose hair state", "In field, travel, and informal scenes: the braid is undone. Hair falls loose, straight, lower-lumbar length. No ribbon. This state is Jessica without diplomatic armor — same person, different presentation. The contrast between the formal club braid and loose hair is a significant visual storytelling tool."),
+    ],
+
+    # ── 2026 FORMAL CEREMONIAL WEAR ──────────────────────────────────────────
+    "formal_wear_2026": [
+        ("Occasion", "2026 formal state ceremony — the three national leaders of the Continental Defense Alliance. Jessica represents the Algonquin Nation / Continental Republic of Canada."),
+        ("Base: Anishinaabe ribbon skirt", "A long, full ribbon skirt — ankle to floor length. Base fabric: forest green (#1C2A1C), heavy quality cloth. Four tiers of ribbon-work running horizontally around the skirt, each tier in a different color combination from the Algonquin palette (red #C84B18, ivory #F0E8DC, gold #D4A017, indigo #2E1760). The ribbons are sewn in alternating colors to create a horizontal band at each tier level. This is the contemporary ceremony skirt adapted to head-of-state formality."),
+        ("Upper body: structured jacket", "A structured blazer-cut jacket in forest green base, fitted to her frame. Algonquin floral beadwork (naturalistic florals — the Anishinaabe pattern tradition for ceremonial dress, not geometric) at the collar, cuffs, and in a vertical center-front panel. Beadwork colors: warm red, ivory, gold, deep blue — same palette as the ribbon-work. Reference: Lesley Hampton (Anishinaabe/Temagami First Nation, Toronto) for the contemporary structured Indigenous formal jacket aesthetic."),
+        ("Hair: club braid", "Formal club braid — folded and bound at mid-back with beaded cloth wrap, beaded streamers hanging. Indigo ribbon threaded through. This is her most formal hair presentation. It appears only in high-ceremony diplomatic contexts."),
+        ("Colors", "Forest green (#1C2A1C) base throughout jacket and skirt. Ribbon tiers in red (#C84B18), ivory (#F0E8DC), gold (#D4A017), indigo (#2E1760). Beadwork in same palette. Cool-earthy dominant palette with warm ribbon accents."),
+        ("No ear jewelry", "Consistent invariant — no ear jewelry. The beadwork collar does the work. She has never needed earrings to command a room."),
+        ("Design notes for trio scene", "Against Ualani's navy holokū with butterfly sleeves and Marc's grey-blue capote coat with ceinture fléchée, Jessica is the vertical green column: the ribbon tiers create horizontal visual rhythm that contrasts with Ualani's smooth silhouette; the club braid creates a back focal point; the beadwork jacket defines her upper body. She reads as rooted in the earth and contemporary simultaneously."),
+    ],
+}
+
+
+# ── MARC PENOIT MODEL ─────────────────────────────────────────────────────────
+
+MARC_MODEL = {
+    "name": "Marc Penoit",
+    "title": "DEPUTY GOVERNOR — French Habitants / Continental Republic of Canada",
+    "tab_color": "5C4033",
+
+    # ── REFERENCE MODELS ──────────────────────────────────────────────────────
+    "reference_models": [
+        ("PRIMARY: Roy Dupuis", "French-Canadian actor, raised Amos, Quebec (Abitibi-Témiscamingue region — same cultural and geographic territory as Marc's habitant background). Salt-and-pepper in later career. Naturally weathered face, strong jaw, practical build. Key work: Les Filles de Caleb, Séraphin: Un homme et son péché, La Femme Nikita (as Michael). Use: facial structure, salt-and-pepper coloring, the habitant-Québécois weathering. Dupuis conveys the 'man who has been through things and does not need to mention it' quality Marc requires."),
+        ("Cultural geography", "Amos, Quebec is in the Abitibi-Témiscamingue region — frontier territory, historically connected to the fur trade, mission communities, and winter isolation. This shapes Marc's face: not city-softened, not court-sculpted. A face that has been outside in Quebec winters for forty years."),
+        ("Secondary references", "Luc Picard (Quebec actor) for the military precision variant. Rémy Girard for the world-weariness variant when Marc has absorbed one alliance disagreement too many. These are edge cases — Dupuis is the center."),
+        ("What to avoid", "Do not reference French European (Parisian) actors — Marc is not Parisian. Do not reference English Canadian actors — he is Québécois. These distinctions matter in the face, posture, and presentation. He should look like someone from somewhere specific: the rural Québécois habitant tradition, not urban francophone Canada, not France."),
+    ],
+
+    # ── CONSTRUCTION ─────────────────────────────────────────────────────────
+    "construction": [
+        ("Body type", "Broad-shouldered, solid. Not tall-lean like Jessica — stocky in the French-Canadian habitant tradition. Carries muscle from actual field work, not from commanding at distance. He looks like he could carry the door if the door needed to be moved."),
+        ("Height", "5'10\" (178 cm). Medium-tall. Substantial without looming."),
+        ("Head height ratio", "7 heads tall. Naturalistic, grounded. Not idealized."),
+        ("Shoulder width", "Wide — 2.4 head-widths. This is his most dominant visual characteristic in a frame. The coat amplifies it further."),
+        ("Chest/torso", "Solid, deep chest. The body of a man who has moved things with it. Not a performance physique — functional mass. Slightly barrel-chested when bare."),
+        ("Face shape", "Square jaw, broad forehead. The habitant French-Canadian face: wide-set, not narrow. Strong nose, slightly wide at the bridge. Laugh lines from a face that has made difficult decisions while maintaining composure for thirty years."),
+        ("Eyes", "Medium warm brown. Slightly deep-set under a strong brow ridge. The eyes themselves are warm — the brow makes them read heavier than they are. When amused, the eyes crinkle; when angry, they go flat."),
+        ("Nose", "Prominent, straight-to-slightly-aquiline. The Dupuis nose: not small, not classically Roman, specifically Québécois-French. Width at base is substantial. Do not narrow it in any scene type."),
+        ("Mouth", "Wide mouth. The jaw is what you notice first, the mouth second. Set in a flat line when thinking. The smile, when present, is wide and genuine and slightly surprised-looking — like it ambushed him."),
+        ("Hair", "Short, practical. Salt-and-pepper — the salt is prominent, not just at temples. His hair went grey early and he has not concealed it. Cut by himself or someone in the field. No styling. Lies flat."),
+        ("Beard", "Trimmed dark beard going grey at the jaw and chin — the beard greys faster than the hair. Not long, not sculpted — military trim. He keeps it because it keeps the cold out."),
+        ("Hands", "Large, heavy, scarred. Working hands. Ink on them sometimes (he writes his own dispatches). Occasionally something worse, which he is matter-of-fact about."),
+        ("Skin tone", "Medium-warm, sun and wind weathered. Lighter base than Ualani or Jessica — French-Canadian Caucasian-descended, but weathered to a consistent outdoor tan. Base: #A07850, highlight: #C9A07A, midtone: #7A5A38, deep shadow: #503828."),
+    ],
+
+    # ── COLOR PALETTE ─────────────────────────────────────────────────────────
+    "palette": [
+        ("Skin — base",          "#A07850", "Medium warm tan — outdoor weathered"),
+        ("Skin — highlight",     "#C9A07A", "Brow ridge, nose bridge, cheekbone, shoulder top"),
+        ("Skin — midtone",       "#7A5A38", "Shadow side of face, neck"),
+        ("Skin — deep shadow",   "#503828", "Under jaw, under brow, inner arms"),
+        ("Hair",                 "#707070", "Salt-and-pepper grey — not white, not brown. Even mix."),
+        ("Hair — dark strands",  "#2A1A0A", "Remaining darker strands in the mix."),
+        ("Beard — base",         "#4A3A2A", "Dark brown beard base."),
+        ("Beard — grey",         "#9A8A7A", "Grey at jaw and chin. Prominent."),
+        ("Eyes",                 "#6B4A28", "Warm medium brown — not dark like Ualani/Jessica."),
+        ("Eye sclera",           "#F0E8DC", "Warm white."),
+        ("Coat — primary",       "#2A3A4A", "Dark grey-blue. The worn militia coat. NOT navy, NOT grey. Specific."),
+        ("Coat — worn areas",    "#3A4A5A", "Slightly faded version of coat color on high-wear areas."),
+        ("Coat repairs",         "#4A3A2A", "Slightly different grey-brown of repair patches — visible difference from coat base."),
+        ("Coat buttons",         "#C8A050", "Brass — aged, not polished."),
+        ("Ceinture fléchée",     "#8B1A1A", "Deep red dominant in the sash. Arrow chevron pattern."),
+        ("Sash — cream",         "#E8E0D0", "Cream-white in the arrow chevron."),
+        ("Sash — blue-grey",     "#5A6A7A", "Blue-grey third color in the pattern."),
+        ("Lips",                 "#7A5040", "Natural warm muted tone."),
+        ("Eyebrows",             "#3A2A1A", "Dark brown, slightly bushy. Getting some grey."),
+    ],
+
+    # ── INVARIANTS ───────────────────────────────────────────────────────────
+    "invariants": [
+        ("The coat", "PRESENT IN ALL FORMAL AND FIELD SCENES. The worn, repaired militia coat (#2A3A4A) is his visual signature. Four visible repairs minimum. The repairs are patches of slightly different material — visible but not decorative. If he has removed the coat for a scene, it is in the same frame: slung over a chair, held under arm, or draped over a surface. It does not disappear."),
+        ("Repair count", "MINIMUM FOUR VISIBLE REPAIRS on the coat in any scene where the coat is depicted. They must be visible, not suggested. They are part of the coat's texture and the story of the alliance."),
+        ("Ceinture fléchée", "The arrow-chevron sash appears in all formal and diplomatic scenes, worn over the coat at the waist, knotted at left hip with fringed ends hanging. In field scenes it may be absent. When present, the colors (deep red, cream-white, blue-grey) must be consistent. It is the cultural statement — the Québécois political identity made visible."),
+        ("Salt-and-pepper hair", "Consistently grey-forward. Cannot be depicted as younger or darker. He has not and would not conceal his grey."),
+        ("Beard presence", "Present in ALL scenes including undressed/explicit. The beard does not vanish. He has had it longer than he has had his rank."),
+        ("Body type", "Broad-shouldered, solid build in all scenes. He does not become lean or soft. In explicit scenes the barrel chest and wide shoulders remain. He is not a slim romantic lead."),
+        ("Age", "Early 40s presentation. Weathered. Not young. The face has been through things. Do not juvenilize in any scene type."),
+        ("Skin tone", "Weathered medium warm — outdoor-tanned, consistent. Do not lighten dramatically. Do not darken dramatically. He is weathered, not sun-scorched."),
+    ],
+
+    # ── EXPRESSION CHART ──────────────────────────────────────────────────────
+    "expressions": [
+        ("DEFAULT (attentive)",   "Flat, level, slightly heavy-lidded. He is paying close attention and it does not show. Jaw set. Not hostile — processing. He looks like a man with more information than he is currently sharing."),
+        ("TACTICAL",              "Eyes narrow slightly. The brow descends fractionally. He is calculating. This happens before he says something decisive. The jaw becomes more prominent as the muscles tighten."),
+        ("BLUNT",                 "Direct eye contact. Mouth opens — he is about to say something frank that someone probably needed to hear. No preface. No softening. He respects people enough not to cushion necessary truths."),
+        ("SARDONIC",              "One corner of mouth rises. The brow on that side lifts slightly. He has just observed something that confirms what he already knew about how people work, and he is not surprised. His professional-context equivalent of a smile."),
+        ("GENUINE LAUGH",         "Rare. Both corners of mouth lift, eyes crinkle fully, the laugh gets into his chest. He looks slightly surprised by it. Reserve for: Ualani saying something unexpectedly dry; Jessica making exactly the correct political move he was worried she wouldn't."),
+        ("DISAGREEMENT",          "Jaw set harder. Eyes stay direct. He does not look away when disagreeing. Mouth closes. The flat expression goes flatter. This is the face before 'je ne suis pas d'accord' said in a way that ends the subject."),
+        ("CONCERN (suppressed)",  "The brow lifts very slightly at center. Eyes widen 5%. Everything else stays still. He contains concern while acting on it."),
+        ("RESPECT",               "A very small nod. Eyes hold contact a beat longer than normal. The jaw relaxes slightly. Significant coming from him. He does not give it cheaply."),
+        ("SENSUAL INTEREST",      "Quieter than his tactical expression. The eyes do more than the face. Lids drop slightly. He becomes more still, not less. He has decided something and is not in a hurry."),
+        ("PLEASURE (sensual)",    "Eyes close partially. Brow relaxes fully — the first time the strategic tension leaves his face. Mouth opens slightly. Head may lower or turn. The stillness becomes weight rather than control."),
+        ("PLEASURE (explicit)",   "Brow raised at center, eyes closed or half-open. Jaw opens. The control expression is gone. He is present and audible."),
+        ("RELEASE / CLIMAX",      "Fully open expression — head drops forward or tilts back. Jaw drops. Eyes closed. The brow fully relaxed. Afterward: a slow long exhale, the jaw resets, the DEFAULT expression returns, but slower than usual."),
+    ],
+
+    # ── COSTUME LAYERS ────────────────────────────────────────────────────────
+    "costume_layers": [
+        ("LAYER 0 — FORMAL DIPLOMATIC", "The worn grey-blue coat over a clean wool shirt, ceinture fléchée at waist knotted left hip with fringed ends. Dark militia trousers. Good boots, worn but maintained. Hair and beard as standard. This is as formal as he gets. The four repairs are visible. He is himself in formal dress."),
+        ("LAYER 1 — FIELD COMMAND", "Coat on, no sash. Collar open. Practical belt for pistol and cartridge box. Same trousers. Coat collar turned up in field use. Sleeves may be rolled."),
+        ("LAYER 2 — WORKING", "Coat removed. Heavy wool shirt, grey-brown or dark blue-grey, practical. Belt or no belt. Sleeves rolled to forearm — the forearms are substantial. He looks more approachable in this state."),
+        ("LAYER 3 — INFORMAL", "Shirt only, untucked, loose. Sometimes sleeves pushed up. The first state where the breadth of his shoulders and chest is fully readable without the coat."),
+        ("LAYER 4 — UNDERSHIRT", "Linen undershirt. Loose, collarless. Short sleeves reveal the forearms."),
+        ("LAYER 5 — PARTIAL UNDRESS", "Shirt open or removed. Barrel chest and wide shoulders fully visible. Body hair present — consistent and natural for a man of his background and era. Beard always present. SFW: injury or practical context. SENSUAL/EXPLICIT: see relevant sections."),
+        ("LAYER 6 — BASE UNDERPINNINGS", "Colonial-era linen smallclothes. Then nothing."),
+        ("LAYER 7 — FULLY BARE", "Beard present. Body hair present. The solid build fully readable. He does not become a different body type. His explicit state is the same man without clothing."),
+    ],
+
+    # ── SCENE TYPE DIRECTION (SFW) ────────────────────────────────────────────
+    "scene_sfw": [
+        ("Portrait / card art",   "Bust or 3/4. Layer 0 or 1, coat present and four repairs visible. TACTICAL or DEFAULT expression. Hair and beard consistent. Background: winter birch forest, stone fortification, or plain dark. Lighting: cold-neutral with warm single source from left (firelight or torch) — catches the salt-and-pepper hair and coat repairs."),
+        ("Dialogue scene",        "Full figure or 3/4. Layer 1 or 2. He does not gesture dramatically — one hand may indicate something, the other stays still. BLUNT or DEFAULT expression. He is often listening as much as speaking."),
+        ("Council / alliance",    "Layer 0 with ceinture fléchée present. TACTICAL expression. He is watching the exits — literal and political. In alliance scenes with Ualani and Jessica, he is the solid visual anchor between them: broader, more earthbound, the coat repairs a reminder that this alliance cost something to build."),
+        ("Field / military",      "Layer 1. Pistol at belt. TACTICAL or BLUNT. His most natural context. Posture shifts in field scenes — slightly more forward-leaning, weight on both feet, ready to move at any moment."),
+        ("Alliance signing (CAN_ALLIANCE_SIGNED)", "Layer 0, ceinture fléchée present. His expression as he places his two-week addendum on the table: SARDONIC — he wrote it, he knows it's excessive, he wrote it anyway. The coat repairs should be visible. This is his formal moment."),
+        ("Private / off-duty",    "Layer 3. Hair as always. SARDONIC or — rarely — GENUINE LAUGH. Firelight. He is not a different person in private; he is the same person with slightly less jacket. This is actually when he talks most freely."),
+    ],
+
+    # ── 2026 FORMAL CEREMONIAL WEAR ──────────────────────────────────────────
+    "formal_wear_2026": [
+        ("Occasion", "2026 formal state ceremony — the three national leaders of the Continental Defense Alliance. Marc represents the French Habitants / Québécois contingent of the Canadian Republic."),
+        ("Base garment: modernized capote coat", "The capote is the traditional French-Canadian winter coat — blanket-cloth weight, structured, hooded when needed. The 2026 version is tailored as formal wear (dark grey-blue #2A3A4A) but keeps the weight and silhouette. Worn over a charcoal-navy suit. The coat reads as military and civil simultaneously — exactly Marc's dual role."),
+        ("The ceinture fléchée — THE cultural statement", "This is the centerpiece of his formal 2026 presentation. A full traditional arrow-chevron fingerweave sash, worn over the capote coat at the waist, knotted at left hip, fringed ends hanging to mid-thigh. Colors: deep red (#8B1A1A) dominant, cream-white (#E8E0D0) chevrons, blue-grey (#5A6A7A) border. The ceinture fléchée is to the Québécois Habitant what the indigo ribbon is to Jessica and what the gold earrings are to Ualani. It is the cultural identity marker, worn as political statement."),
+        ("The four repairs — still present", "The formal capote coat has four visible repairs. This version is NOT the worn militia coat — it is cut for ceremony. But the repairs are still there. He had the tailor keep them, with quality thread this time. They are visible. They represent what the alliance cost to build. He carries that cost formally."),
+        ("Colors", "Dark grey-blue (#2A3A4A) coat over charcoal-navy suit. Cream-white shirt. Ceinture fléchée in the three colors. Aged brass buttons (#C8A050) on coat. The ceinture fléchée is the only warm color element in the ensemble — it does all the cultural work."),
+        ("Hair and beard", "Unchanged from standard — salt-and-pepper, practical cut, trimmed beard. He did not grow it out or change anything for the ceremony. He looked like himself."),
+        ("Footwear", "Dark formal boots — quality leather, maintained. He does not own dress shoes."),
+        ("Design notes for trio scene", "Against Ualani's luminous navy holokū with gold butterfly sleeves and Jessica's forest green ribbon skirt column, Marc is the earthbound anchor: darker, broader, cooler palette, the ceinture fléchée the single warm note. In a trio composition: Ualani is the pinnacle, Jessica is the vertical line, Marc is the base. They are maximally visually distinct from a distance."),
+    ],
 }
 
 
@@ -926,14 +1103,22 @@ def _build_model_sheet(wb, model):
         row += 1  # spacer
 
     # ── Sections ──────────────────────────────────────────────────────────────
+    if model.get("reference_models"):
+        _section("REFERENCE MODELS",     "4A3060", "FFFFFF", model["reference_models"], col1_label="REFERENCE", col2_label="USAGE NOTES")
     _section("CONSTRUCTION",          "2E4057", "FFFFFF", model["construction"])
     _section("COLOR PALETTE",         "1A3A2A", "FFFFFF", [(row[0], f"{row[1]}  —  {row[2]}") for row in model["palette"]])
     _section("INVARIANTS",            "5C2020", "FFFFFF", model["invariants"], col1_label="RULE", col2_label="DESCRIPTION — ABSOLUTE, NO EXCEPTIONS")
     _section("EXPRESSION CHART",      "3A3A1A", "FFFFFF", model["expressions"], col1_label="EXPRESSION", col2_label="DIRECTION")
     _section("COSTUME LAYERS",        "2A2A4A", "FFFFFF", model["costume_layers"], col1_label="LAYER", col2_label="DESCRIPTION")
     _section("SCENE DIRECTION — SFW", "1A4A1A", "FFFFFF", model["scene_sfw"],     col1_label="SCENE TYPE",    col2_label="DIRECTION")
-    _section("SCENE DIRECTION — SENSUAL", "5C3A00", "FFFFFF", model["scene_sensual"], col1_label="ELEMENT", col2_label="DIRECTION")
-    _section("SCENE DIRECTION — EXPLICIT", "7A0000", "FFFFFF", model["scene_explicit"], col1_label="SCENE / RULE", col2_label="DIRECTION — FULL PRODUCTION SPEC")
+    if model.get("braid_research"):
+        _section("BRAID RESEARCH & CULTURAL DIRECTION", "2D6A4F", "FFFFFF", model["braid_research"], col1_label="ELEMENT", col2_label="DIRECTION")
+    if model.get("scene_sensual"):
+        _section("SCENE DIRECTION — SENSUAL", "5C3A00", "FFFFFF", model["scene_sensual"], col1_label="ELEMENT", col2_label="DIRECTION")
+    if model.get("scene_explicit"):
+        _section("SCENE DIRECTION — EXPLICIT", "7A0000", "FFFFFF", model["scene_explicit"], col1_label="SCENE / RULE", col2_label="DIRECTION — FULL PRODUCTION SPEC")
+    if model.get("formal_wear_2026"):
+        _section("2026 FORMAL CEREMONIAL WEAR", "5C4033", "FFFFFF", model["formal_wear_2026"], col1_label="ELEMENT", col2_label="DESIGN SPEC")
 
     _freeze(ws, "A3")
 
@@ -950,6 +1135,7 @@ def main():
     _build_design_notes(wb, DESIGN_NOTES)
     _build_model_sheet(wb, UALANI_MODEL)
     _build_model_sheet(wb, JESSICA_MODEL)
+    _build_model_sheet(wb, MARC_MODEL)
 
     wb.save(OUT_PATH)
     total = len(USA_CHARACTERS) + len(CANADIAN_CHARACTERS) + len(NPC_CHARACTERS)
@@ -957,7 +1143,7 @@ def main():
     print(f"Wrote {OUT_PATH}")
     print(f"  {total} total characters: {len(USA_CHARACTERS)} USA, {len(CANADIAN_CHARACTERS)} Canadian, {len(NPC_CHARACTERS)} NPC")
     print(f"  {designed}/{total} fully described  |  {total-designed} partial/stub")
-    print(f"  2 full model sheets: Ualani Carlisle, Jessica Commanda Odjick")
+    print(f"  3 full model sheets: Ualani Carlisle, Jessica Commanda Odjick, Marc Penoit")
 
 
 if __name__ == "__main__":
