@@ -288,7 +288,8 @@ func NewGameBuild() -> void:
 	# Starting laws
 	for law in data.get("startingLaws", []):
 		addGovernmentLaw(law)
- 
+	_initialize_purchasable_laws()
+
 	# Starting mil mods
 	for milMod in data.get("startingMilMods", []):
 		addMilMod(milMod)
@@ -671,7 +672,31 @@ func loadBeliefsList(listTitle):
 				availableGods.append(String)
 	pass
 
+const FACTION_GATED_LAWS: Array = [
+	"Democratic Mandate",
+	"Universal Citizenship",
+	"Disability Care",
+]
+
+func _initialize_purchasable_laws() -> void:
+	match CID:
+		"USA":
+			addGovernmentLaw("Armed Peasantry")
+			addGovernmentLaw("Navigation Acts")
+			addGovernmentLaw("Homeland Defense")
+			addGovernmentLaw("Local Elections")
+		"CA":
+			addGovernmentLaw("Homeland Defense")
+			addGovernmentLaw("Local Elections")
+			addGovernmentLaw("Armed Peasantry")
+
 func addGovernmentLaw(Name):
+	for existing in unlockedLaws:
+		if existing.lawType == Name:
+			return
+	for enacted in lawsInConstitution:
+		if enacted.lawType == Name:
+			return
 	var newLaw = law.new()
 	newLaw.lawType = Name
 	unlockedLaws.append(newLaw)

@@ -255,6 +255,27 @@ func newGameBuild(CID, gameLang):
 	pass
 
 # ── BARRACKS COMMANDER GENERATION ───────────────────────────────────────────
+# Assigns a governor to the faction with the fewest current members.
+# Skips if the governor already belongs to a valid faction in the list.
+func _assign_governor_to_faction(gov: governor) -> void:
+	if playerCountryNode == null or playerCountryNode.countryFactionList.is_empty():
+		return
+	for fac in playerCountryNode.countryFactionList:
+		if gov.governorFaction == fac.factionName:
+			return
+	var best_faction: String = ""
+	var best_count: int = 999
+	for fac in playerCountryNode.countryFactionList:
+		var count: int = 0
+		for g in playerCountryNode.unlockedGovernors:
+			if g.governorFaction == fac.factionName:
+				count += 1
+		if count < best_count:
+			best_count = count
+			best_faction = fac.factionName
+	if best_faction != "":
+		gov.governorFaction = best_faction
+
 # Scans every tile owned by the player at game start.  For each Barracks tile
 # a procedural governor is built using a terrain-matched archetype and a name
 # drawn from the appropriate cultural name pool.  The governor is added to the
@@ -569,6 +590,7 @@ func generateBarracksCommanders() -> void:
 
 		# Add to player's unlocked governor pool
 		playerCountryNode.unlockedGovernors.append(new_gov)
+		_assign_governor_to_faction(new_gov)
 
 		# Auto-assign as the tile's governor so they show up immediately
 		tile.tileGovernor      = new_gov
@@ -1559,6 +1581,8 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 					tile.tileGovernor.questComplete = true
 				print("[Commander] Promoted ", tile.tileGovernor.governorType,
 					" to level ", tile.tileGovernor.governorLevel)
+				if tile.tileGovernor.governorFaction != "":
+					playerCountryNode.changeFactionLoyalty(tile.tileGovernor.governorFaction, 1)
 				if tile.stationedArmy != null:
 					tile.stationedArmy.updateArmyUI()
 		"tile_liberation":
@@ -3413,6 +3437,7 @@ func _generate_and_assign_governor(tile: Tile) -> void:
 	new_gov.hired               = true
 	new_gov.loyalty             = float(randi_range(-6, 6))
 	playerCountryNode.unlockedGovernors.append(new_gov)
+	_assign_governor_to_faction(new_gov)
 	tile.tileGovernor      = new_gov
 	tile.filledGovernorSlot = true
 	$CanvasLayer/WarRoomPanel.registerCommanderArc(new_gov, tile)
