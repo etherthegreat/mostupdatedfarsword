@@ -678,17 +678,17 @@ func applyCountryBeliefMilMods() -> void:
 	for belief in parentCountry.selectedBeliefs:
 		match belief.beliefType:
 			"George Washington":
-				modsToGrant.append("Fortified Position")
+				modsToGrant.append("Crossing of the Delaware")
 			"Harriet Tubman":
-				modsToGrant.append("Iron Bayonet")
+				modsToGrant.append("Combahee River Raid")
 			"Abraham Lincoln":
-				modsToGrant.append("Continental Line")
+				modsToGrant.append("Emancipation Advance")
 			"Theodore Roosevelt":
-				modsToGrant.append("Guerrilla Tactics")
+				modsToGrant.append("Rough Rider's Charge")
 			"Frederick Douglass":
-				modsToGrant.append("Rallying Voice")
+				modsToGrant.append("North Star Address")
 			"Sitting Bull":
-				modsToGrant.append("Woodsman")
+				modsToGrant.append("Little Bighorn Ambush")
 			"Nature Sanctuaries":
 				modsToGrant.append("Woodsman")
 			"Tower Control":

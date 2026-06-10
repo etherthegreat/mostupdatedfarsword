@@ -1027,6 +1027,41 @@ func buildSelf(Type):
 			milModDescription = str("[i]The Gougou makes a sound. No one describes it twice.:[/i][color=green] +15 Attack, +20 Defence; attackers become Terrified for 3 turns[/color]")
 			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
 			milModResource = "None"
+		# ── ICON BELIEF MODS ─────────────────────────────────────────────────────
+		"Crossing of the Delaware":
+			commanderMod = true
+			milModDescription = str("[i]A midnight river, a freezing dawn, and the world changed:[/i][color= green] All units +3 Defense per Level in tiles with Barracks or Fortress[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/green cross.png")
+			milModResource = "None"
+		"Combahee River Raid":
+			infantryMod = true
+			milModDescription = str("[i]She led three gunboats and freed 700 souls — no hesitation:[/i][color= green] +5 Attack per Level in first battle round[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"Emancipation Advance":
+			commanderMod = true
+			milModDescription = str("[i]A nation divided cannot stand — but it can march:[/i][color= green] All units +2 Attack, +2 Defense per Level permanently[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/green cross.png")
+			milModResource = "None"
+		"Rough Rider's Charge":
+			infantryMod = true
+			terrainMod = true
+			terrainType = "Woods"
+			milModDescription = str("[i]San Juan Hill taken at a gallop — Bully!:[/i][color= green] +4 Attack, +4 Defense per Level in Woods or Wetlands terrain[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"North Star Address":
+			commanderMod = true
+			milModDescription = str("[i]Once he found his voice, nothing could silence it:[/i][color= green] Morale loss reduced; rout threshold lowered to 15%[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/green cross.png")
+			milModResource = "None"
+		"Little Bighorn Ambush":
+			infantryMod = true
+			terrainMod = true
+			terrainType = "Woods"
+			milModDescription = str("[i]He saw it in a vision before it happened — thousands of soldiers falling:[/i][color= green] +2 Attack, +2 Defense per Level in Woods terrain[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
 		# ── NEGATIVE STATUS EFFECTS ──────────────────────────────────────────────
 		"Stunned":
 			isNegative = true
