@@ -9,6 +9,9 @@ Sheets:
   3. CANADIAN     — Canadian named governors and leaders
   4. NPC          — Non-playable named characters (event figures, antagonists, etc.)
   5. DESIGN NOTES — Art direction and consistency rules
+  6. UALANI MODEL — Full production bible: construction, palette, expressions,
+                    costume layers, scene-type direction (SFW → explicit)
+  7. JESSICA MODEL — Same production bible format for Jessica Commanda Odjick
 
 Status scale:
   FINAL     — physical + personality fully locked, art approved
@@ -612,6 +615,329 @@ def _build_design_notes(wb, notes):
     _freeze(ws, "A2")
 
 
+# ── MODEL SHEET DATA ─────────────────────────────────────────────────────────
+#
+# Production bible format used by animation studios and game art teams.
+# Each section maps to a named block in the model sheet tab.
+# "Invariants" = rules that survive EVERY scene type, including explicit.
+# Scene ratings: SFW | SENSUAL | EXPLICIT
+#
+
+UALANI_MODEL = {
+    "name": "Ualani Carlisle",
+    "title": "PRESIDENT & COMMANDER — APF / Federal Republic",
+    "tab_color": "1F3864",
+
+    # ── CONSTRUCTION ─────────────────────────────────────────────────────────
+    "construction": [
+        ("Body type", "Athletic, medium-lean. Not lanky — she carries muscle from active command. Visible definition in shoulders, arms, and core without exaggeration. Think swimmer-soldier hybrid."),
+        ("Height", "5'7\" (170 cm). Medium-tall. Commands vertical presence without looming."),
+        ("Head height ratio", "7.5 heads tall. Slightly idealized but grounded. Not anime-elongated, not naturalistic-compressed."),
+        ("Shoulder width", "Wider than average for her height — 2.2 head-widths. This is the first visual cue of her military authority even out of uniform."),
+        ("Hip-to-waist ratio", "Moderate hourglass. Hips 1.15× shoulder width. Waist well-defined but not corseted."),
+        ("Leg length", "Long relative to torso. 4 heads from hip to floor. Gives the 'walks like she knows where she's going' silhouette."),
+        ("Face shape", "Oval with a slightly squared jaw — not soft, not sharp. Filipino jaw structure meeting Hawaiian broadness. Defined cheekbones, not extreme."),
+        ("Eyes", "Dark brown, almost black. Almond-shaped, slightly uptilted outer corner. Large but not oversized. The flat affect is in the lids — she rarely blinks fast."),
+        ("Nose", "Medium width, slightly rounded tip — Hawaiian-Filipino blend. Avoid making it narrow/Eurocentric. The nose shape is part of her ethnic authenticity."),
+        ("Mouth", "Full lips. Natural rest expression is a slight flat-line — not a frown, not a smile. Neutral authority. When she does smile it lands hard."),
+        ("Ears", "Standard, slightly small relative to face. ALWAYS show earrings — gold hoops, medium size, not chandelier not tiny."),
+        ("Hair construction", "Straight, fine-to-medium texture, very black (not dark brown — full black). No natural wave. Parted loosely near center. In loose mode: falls belly-length minimum, slight weight-pull visible at crown. In braid mode: single thick three-strand braid starts at nape, runs full length of back and past waist, tail tip at hip or lower."),
+        ("Hair volume", "NOT flat. The straight black hair has body from its own weight — slight outward curve as it falls past shoulder, then falls straight. The braid is thick (thumb-width at the nape, slightly thinning to fingertip-width at tail)."),
+        ("Hands", "Medium-large for her build. Capable hands. Not aristocratic. Short unpolished nails. The hands of someone who has handled weapons."),
+        ("Skin tone", "Warm medium-brown. Not golden, not red-brown — the specific warm brown of Hawaiian-Filipino Pacific Islander heritage. Hex reference: #8B5E3C warm undertone, lightest skin highlight #C8906A, deepest shadow #5C3320. Consistent across all lighting."),
+    ],
+
+    # ── COLOR PALETTE ─────────────────────────────────────────────────────────
+    "palette": [
+        ("Skin — base",         "#9B6B4A", "Primary skin tone, flat-lit areas"),
+        ("Skin — highlight",    "#C89070", "Brow ridge, nose bridge, shoulder, collarbone"),
+        ("Skin — midtone",      "#7A4F35", "Shadow side of face, underarms, stomach crease"),
+        ("Skin — deep shadow",  "#5C3320", "Under jaw, inner arms, between legs"),
+        ("Skin — warm accent",  "#C07040", "Cheek warmth, sun-caught shoulders, knuckles"),
+        ("Hair",                "#0A0A0A", "True near-black. Not dark brown. No highlights unless strong direct light (then #1A1A2A)."),
+        ("Hair highlight",      "#1C1C2E", "Only under direct overhead light source. Keep sparse."),
+        ("Eyes",                "#1A0D00", "Iris. Very dark warm brown. Pupil blends into iris at most scales."),
+        ("Eye sclera",          "#F5EDE0", "Warm white, not pure white. Cold sclera looks wrong on warm skin tones."),
+        ("Earrings",            "#D4A017", "Matte gold — not chrome, not brass. Hoop earrings, medium gauge."),
+        ("Uniform — primary",   "#1C2E5C", "Deep federal blue. Main body of presidential/field uniform."),
+        ("Uniform — secondary", "#D4A017", "Gold braid, buttons, rank insignia. Same gold as earrings."),
+        ("Uniform — lining",    "#0F1A3A", "Inside facing of coat, shadow areas of uniform."),
+        ("Lips",                "#7A3A2A", "Natural deep nude-brown. Not lipstick red. Consistent in all scenes."),
+        ("Eyebrows",            "#150800", "Full, slightly thick, natural arch. Same near-black as hair."),
+    ],
+
+    # ── INVARIANTS (never change regardless of scene) ─────────────────────────
+    "invariants": [
+        ("Gold hoop earrings", "PRESENT IN EVERY DEPICTION WITHOUT EXCEPTION. Both ears. Medium gold hoops, #D4A017. If a scene has her fully undressed, the earrings are still there. They are not removed. This is absolute."),
+        ("Hair length", "MINIMUM belly-button length in ALL scenes. Can be longer. Cannot be shorter. Even in bed/undressed scenes — hair is present at full length, loose or braided."),
+        ("Hair color", "True black (#0A0A0A). Never brown, never highlighted, never tied with anything that obscures its full length at rest."),
+        ("Skin tone", "Consistent warm medium-brown across all scene types. Do not lighten in explicit scenes (common error). Do not darken dramatically in shadow — keep undertone warm."),
+        ("Eye color", "Very dark warm brown. Not black irises, not hazel. The darkness is warm, not cold."),
+        ("Body type", "Athletic build maintained in ALL scenes. She does not become softer or curvier in explicit scenes. The shoulders are always present. The core definition is always present."),
+        ("Age", "Late 30s presentation. She is an experienced head of state. Do not juvenilize her facial features in explicit scenes (common error). The commanding face stays commanding."),
+        ("Facial expression authority", "Even in vulnerable/explicit scenes, her default expression has a baseline level of awareness — she is never passive. Ecstasy is an active expression for her, not a passive one."),
+        ("Nose authenticity", "Pacific Islander nose shape — do not Europeanize it in explicit scenes. This is a consistency error that destroys ethnic authenticity."),
+    ],
+
+    # ── EXPRESSION CHART ──────────────────────────────────────────────────────
+    "expressions": [
+        ("COMMAND (default)",    "Flat neutral. Lids slightly heavy. Jaw level. Mouth closed or barely parted. This is her baseline — reads as watchful authority, not blank."),
+        ("FOCUSED",              "Brows draw very slightly inward and downward — not furrowed, just closer. Eyes narrow 10%. The rest of the face stays still. This is her battle-plan face."),
+        ("DRY AMUSEMENT",        "One corner of mouth lifts 3mm. Eyes don't change. This is her laugh. It's not a smile — it's the acknowledgment that something was funny and she is not going to make a big deal of it."),
+        ("GENUINE SMILE",        "Rare. Cheeks lift, eyes crinkle, mouth opens to show upper teeth. When this hits, it's worth something because it's rare. Do not deploy it casually."),
+        ("ANGER (cold)",         "Brows descend without furrowing — flat and low. Eyes open wider. Mouth stays closed. She gets quieter when angry, not louder. This is the expression that precedes consequences."),
+        ("CONCERN",              "Brows rise slightly at inner corner only. Eyes soften — lids lift. Mouth stays neutral. She doesn't broadcast concern widely."),
+        ("PHYSICAL EFFORT",      "Jaw tightens. Brows pull together slightly. Lips press. Used in combat, exertion, field command. Neck tendons may be visible."),
+        ("SENSUAL INTEREST",     "Eyes soften, lids drop 15%. Lips part slightly. Chin drops fractionally — she looks up through lashes even at eye level. Not coy. Direct. Deliberate."),
+        ("PLEASURE (sensual)",   "Eyes close or half-close. Brow smooth. Lips part. Head may tilt slightly. Breathing visible through parted lips. Still has her baseline dignity — not slack-jawed."),
+        ("PLEASURE (explicit)",  "Eyes closed or rolled back slightly. Brows raised at center. Mouth open, teeth possibly visible. Chin raised. Hair disheveled but still present at full length. Even at peak she looks like she's in charge of what's happening."),
+        ("RELEASE / CLIMAX",     "Eyes fully closed, head thrown back slightly. Brows raised, forehead creased. Mouth fully open. This is the only moment her control expression fully leaves — brief. Then it returns."),
+    ],
+
+    # ── COSTUME LAYERS (head to toe, outer to inner) ─────────────────────────
+    "costume_layers": [
+        ("LAYER 0 — FULL FORMAL", "Presidential reception. Deep blue (#1C2E5C) long military coat with gold (#D4A017) braid at shoulders and cuffs. High collar. Rank insignia. Campaign medals left breast. Matching trousers, dark. Tall dress boots. Hair loose, full length, or formal braid. Earrings."),
+        ("LAYER 1 — FIELD COMMAND", "Same blue coat, sleeves rolled to forearm (forearms visible — draw them). Collar open one button. Medal bar removed or single ribbon only. Combat trousers tucked into field boots. Hair always braided in this state. Earrings. This is the most common scene state."),
+        ("LAYER 2 — INFORMAL AUTHORITY", "Blue military shirt (not coat), tucked. Gold stripe on collar only. Dark trousers. Boots or low boots. Hair loose. Earrings. Common in planning scenes, private meeting rooms."),
+        ("LAYER 3 — CIVILIAN (rare)", "Colonial-era quality clothing — she rarely fully abandons her role. Dark dress or high-waisted skirt and blouse, quality fabric, minimal color. Hair loose. Gold earrings. She does not disappear into civilian dress — she wears it like a costume."),
+        ("LAYER 4 — UNDERSHIRT", "Simple white linen shirt, collarless, slightly oversized. Loose at arms. Short sleeves or sleeveless. Tucked or untucked. The first 'off-duty' layer. Hair loose."),
+        ("LAYER 5 — BARE TORSO / PARTIAL UNDRESS", "SFW context: shows only in bathing or injury scenes, clinical framing. SENSUAL: deliberate, controlled — she is the one making choices. She wears a simple front-clasp brassiere or nothing depending on scene. EXPLICIT: see explicit section."),
+        ("LAYER 6 — UNDRESSED LOWER BODY", "Simple colonial-era underpinnings — loose linen drawers, then nothing. No anachronistic modern underwear unless style choice is deliberate for game tone. For full explicit: bare."),
+        ("LAYER 7 — FULLY BARE", "See explicit section. Invariants still apply. Earrings. Hair."),
+    ],
+
+    # ── SCENE TYPE DIRECTION ─────────────────────────────────────────────────
+    "scene_sfw": [
+        ("Portrait / card art",  "Bust or 3/4 shot. Layer 0 or 1. Face in COMMAND expression or slight DRY AMUSEMENT. Hair loose flowing or field braid. Gold earrings prominent — they catch light. Lighting: warm from one side, cool ambient fill. Slight atmospheric haze for depth. Background: flag, map, or plain dark."),
+        ("Dialogue scene",       "Standing or seated, Layer 1 or 2. Full figure visible. Expression ranges from FOCUSED to CONCERN depending on context. Both hands visible — she gestures minimally but precisely. Camera at character eye level, never looking down at her."),
+        ("Field/combat",         "Layer 1. PHYSICAL EFFORT or COMMAND expression. Hair always braided. Earrings caught by ambient light. Posture: center of gravity low, weight forward slightly. She is never passive in an action frame. Even standing still she looks like a coiled action."),
+        ("Map room / planning",  "Layer 2 or informal. Leaning over a table, hands on surface or holding something. FOCUSED expression. Light from map table or candles — shadows up from below, unusual lighting direction that suits her face structure. Slight shadow under brow ridge."),
+        ("Diplomatic reception", "Layer 0 full formal. Neutral-to-pleasant expression — controlled affect. She is reading the room. Eyes moving. Posture upright, hands at sides or clasped behind back. Not stiff — disciplined."),
+        ("Casual/off-duty",      "Layer 3 or 4. Rare scene type — should feel like a glimpse. Hair fully loose, belly length. Earrings. Expression: DRY AMUSEMENT or GENUINE SMILE (use the genuine smile sparingly — this is one of the few appropriate scenes). Light casual and warm."),
+        ("Injury / recovery",    "Layer 4 or partial 5. Clinical dignity — this is not sexualized. CONCERN or suppressed PHYSICAL EFFORT expression. Her body reads as a soldier's body: functional damage, not ornamental. Show the competence, not the vulnerability."),
+    ],
+
+    "scene_sensual": [
+        ("Rating definition",    "SENSUAL = charged but not explicit. Clothing displaced but key areas covered or at the edge. Physical proximity and tension visible. Designed to imply rather than show. Often more effective than explicit for character integrity."),
+        ("Entry state",          "Transition from Layer 2 or 3 into partial Layer 5. Shirt open but held or fallen to one side. Her agency is visible — she is not happening to. She is choosing. SENSUAL INTEREST expression."),
+        ("Framing rule",         "Camera stays at or above mid-torso in pure sensual framing. What the frame doesn't show is as important as what it does. Bare shoulder, collarbone, lower throat = highly effective. The earrings in this frame read as charged detail — use them."),
+        ("Hair in sensual",      "Loose and full-length. Slightly disheveled — not tidy formal braid. Some strands across shoulder or chest. The hair is a sensual element but not the centerpiece. It frames."),
+        ("Touch and proximity",  "Her hand on someone's jaw or neck reads as dominant. Someone's hands on her shoulders or at her waist reads as invitation accepted. She does not appear startled or passive in physical contact. She has decided this."),
+        ("Lighting",             "Warmer, lower contrast than SFW scenes. Single warm source (candle, fire, lamp) from side or below. Longer shadows. Skin highlights (#C89070) catch the warm light prominently — the warm medium-brown skin reads beautifully in warm light. Lean into it."),
+        ("Partial undress rules", "Brassiere or binding if present: simple linen, colonial-appropriate. Earrings always visible. Hair always present. Skin tone consistent — warm medium-brown, do not wash out in candlelight. Her torso shows the athletic muscle — do not omit the shoulder/arm definition in favor of a softer look."),
+        ("Expression in sensual", "SENSUAL INTEREST transitioning toward PLEASURE (sensual). The authority baseline remains — she is enjoying herself on her own terms. Not overwhelmed. Present and directive."),
+    ],
+
+    "scene_explicit": [
+        ("Rating definition",    "EXPLICIT = full nudity and/or explicit sexual content. Full production rules apply. All invariants are MANDATORY. This is not a different character — it is the same woman with the same face, same hair, same earrings."),
+        ("Body canon — full nude", "Athletic body with visible muscle definition: shoulder caps, bicep curve, oblique/core lines visible, quadriceps defined. Not bodybuilder extreme — functional athlete. She does not have the soft undifferentiated body of SFW 'cute' character design. Breasts: medium, natural hang, consistent with her build. Not exaggerated upward or outward. They sit naturally on a muscled chest — slight lateral outward angle when arms are raised. Nipples: medium, warm-toned (#9B5040). Consistent across scenes."),
+        ("Pubic area",           "Present and consistent. Not completely bare (anachronistic for era, and inconsistent with her character's un-curated presentation). Dark, trimmed naturally. Not elaborate. Colonial era authenticity matters."),
+        ("Explicit positions — her dominant/active role", "She is the initiating party in dominant scenes. Posture: upright, center of gravity controlled. Hands placed with intent. Face: PLEASURE expression that retains authority — her brows do not go fully passive. Eyes maintain direction. She looks AT what she is doing or AT who she is with."),
+        ("Explicit positions — her receptive role", "When receptive, she is still active — weight shifted, hands gripping, back arched with intention. She does not become a passive object. PLEASURE (explicit) or RELEASE expression. Even at RELEASE she is the main subject of the frame, not a prop."),
+        ("Oral — giving",        "Face: focused, deliberate. Eyes may be closed or upward. Not servile — purposeful. The authority in her posture must be maintained even in submissive-presenting positions. She owns the act."),
+        ("Oral — receiving",     "Head thrown back or tilted, PLEASURE or RELEASE expression. One hand in partner's hair or on their shoulder — she is directing even when receiving. Hair falls full-length around her."),
+        ("Penetrative — general", "All positions must maintain: hair visible and full-length (loose or disheveled braid), gold earrings visible or catching light, skin tone warm and consistent, body definition present. No position flattens her athleticism into softness."),
+        ("Penetrative — missionary/equivalent", "Her face always has access to the frame — do not obscure it. PLEASURE or RELEASE. Legs show the athletic build — inner thigh definition, not just soft shape."),
+        ("Penetrative — from behind", "Profile or 3/4 back view. Back muscles visible — she has a back, not just a back surface. Spine visible. Hair falls forward over shoulder or is swept aside. Earrings visible in profile. PLEASURE expression in whatever view of face is available."),
+        ("Penetrative — riding/dominant", "She is upright. Back straight or slightly arched. Both hands on partner's chest or shoulders. PLEASURE expression that is visibly directive — she sets the pace. This is her most 'in character' explicit position."),
+        ("Penetrative — against wall/furniture", "Layer 1 partially on — open coat, uniform displaced. She is not fully undressed. Partially clothed explicit is both more era-appropriate and more character-consistent. Boots may remain. Earrings must."),
+        ("Multiple partners",    "Her focal dominance is maintained regardless of partner count. She is never lost in the scene — she is the organizing presence. One partner at a time gets her full gaze."),
+        ("Post-scene state",     "Hair disheveled but still long. Earrings still present. Expression returning to baseline authority — the DRY AMUSEMENT or COMMAND returning. She does not look spent in an undignified way. She looks like someone who has concluded an engagement successfully."),
+        ("Lighting in explicit", "Warm, low. Same as sensual but deeper shadows. The skin highlights (#C89070) are prominent. The gold earrings catch the warm light — they are a visual anchor in every explicit scene, confirming identity at a glance."),
+        ("Common errors to avoid", "1) Lightening skin tone in explicit scenes. 2) Making hair brown under warm light — it stays near-black even in candlelight. 3) Removing earrings. 4) Softening the shoulder/arm definition. 5) Giving her a passive or confused expression. 6) Europeanizing the nose. 7) Shortening the hair. 8) Adding anachronistic modern elements (nail polish, modern lingerie, contemporary hairstyles)."),
+    ],
+}
+
+JESSICA_MODEL = {
+    "name": "Jessica Commanda Odjick",
+    "title": "PRIME MINISTER — Algonquin Nation / Continental Republic of Canada",
+    "tab_color": "2D6A4F",
+
+    # ── CONSTRUCTION ─────────────────────────────────────────────────────────
+    "construction": [
+        ("Body type", "Tall, lean-strong. Not visibly athletic in the soldier sense — her strength is posture and stillness. Long limbs. The kind of tall that fills a doorway with presence rather than size."),
+        ("Height", "5'9\" (175 cm). Noticeably tall, especially given her political context. This height is part of her visual authority."),
+        ("Head height ratio", "8 heads tall — the full idealized figure proportion. She is drawn to be imposing in a frame."),
+        ("Shoulder width", "Narrower than Ualani's but with straight horizontal line — carried shoulders, not hunched. 2.0 head-widths. The straightness is more striking than the width."),
+        ("Hip-to-waist ratio", "Lean hourglass. Less pronounced than Ualani. Her figure is elongated, not curvaceous. Hips 1.1× shoulder width."),
+        ("Leg length", "Long. 4.2 heads from hip to floor — more than standard idealized figure. The visual impression of someone who covers ground efficiently."),
+        ("Face shape", "Oval tending toward long — the elongation of her face matches her height. High, prominent cheekbones (Algonquin bone structure — wide across the cheekbone, tapering sharply to a defined jaw). The cheekbones are the defining feature of her face."),
+        ("Eyes", "Dark brown to near-black, almond-shaped, straight — not uptilted like Ualani's. Horizontal eye line. Heavy upper lids. The stillness in her expression comes from these eyes staying level and open without blinking often."),
+        ("Nose", "Distinctive Algonquin nose structure: straight bridge, slightly broader at base than a European nose, nostrils that flare slightly. Authentically Indigenous. Do not narrow this in any scene type."),
+        ("Mouth", "Medium-full lips, slightly narrower than Ualani's. The dominant expression is a flat closed line — not hostile, simply waiting. When she speaks, the mouth becomes very precise. When she smiles, it's with the full weight of her face behind it."),
+        ("Ears", "Partly hidden by hair in most states. When visible, plain — she does not wear ear jewelry. Her ornamentation is at the collar and cuffs."),
+        ("Hair construction", "Long, straight, very dark brown-black (slightly warmer than Ualani's — a hint of dark brown undertone is correct). Natural Algonquin/Anishinaabe texture: smooth, straight, fine. In loose mode: falls past mid-back, approximately to lower lumbar. In braid mode (formal): single braid threaded with indigo ribbon (#2E1760), starting at crown, running to mid-back. The braid is the formal state. The loose hair is the relaxed/field state."),
+        ("Hair ornamentation", "In formal braid: a single length of indigo ribbon (#2E1760) woven into the braid from root to tip. The ribbon is narrow (6mm), runs the full braid length. This is always present in formal/diplomatic scenes, always absent in field/combat scenes."),
+        ("Hands", "Long-fingered, elegant. The hands of someone who uses language as her primary tool. Nails short and clean. No nail color. The hands are often the most expressive part of her body in SFW scenes."),
+        ("Skin tone", "Medium-warm brown, slightly cooler undertone than Ualani — less orange-warm, more neutral-warm. Algonquin/Anishinaabe complexion. Base: #7A5238, highlight: #B07850, midtone: #5C3A22, deep shadow: #3D2210, warm accent #9A6040 (cheeks, hands)."),
+    ],
+
+    # ── COLOR PALETTE ─────────────────────────────────────────────────────────
+    "palette": [
+        ("Skin — base",         "#7A5238", "Primary skin tone, flat-lit areas"),
+        ("Skin — highlight",    "#B07850", "Cheekbone, brow ridge, nose bridge, collarbone"),
+        ("Skin — midtone",      "#5C3A22", "Shadow side of face, underarms"),
+        ("Skin — deep shadow",  "#3D2210", "Under jaw, under brows, inner arms"),
+        ("Skin — warm accent",  "#9A6040", "Cheek warmth, knuckles"),
+        ("Hair",                "#120800", "Very dark with warm brown undertone. Not full black like Ualani."),
+        ("Hair highlight",      "#2A1800", "Only in strong direct light. Very subtle."),
+        ("Eyes",                "#140800", "Very dark warm brown-black iris."),
+        ("Eye sclera",          "#F0E8DC", "Warm white. Slightly more warm than Ualani's due to cooler skin contrast."),
+        ("Ribbon (braid)",      "#2E1760", "Indigo — a specific deep blue-purple. NOT navy, NOT black. This color is invariant."),
+        ("Ribbon highlight",    "#4A2B96", "Sheen on ribbon silk in direct light."),
+        ("Ribbon-work embroidery", "#C84B18", "Dominant warm red in Algonquin floral ribbon-work at collar/cuffs."),
+        ("Ribbon-work accent 1","#D4A017", "Gold-yellow in ribbon-work geometric border."),
+        ("Ribbon-work accent 2","#2E6B3A", "Forest green in ribbon-work floral centers."),
+        ("Ribbon-work accent 3","#1F3090", "Deep blue in ribbon-work outer border."),
+        ("Diplomat coat",       "#1C2A1C", "Very dark forest green. The overcoat base color."),
+        ("Coat interior lining","#6B1414", "Deep burgundy lining visible at lapels — the only warm element on the coat."),
+        ("Lips",                "#6B3A28", "Natural dark nude-rose. Consistent across scenes."),
+        ("Eyebrows",            "#180A00", "Full, straight — not highly arched. Strong horizontal line."),
+    ],
+
+    # ── INVARIANTS ───────────────────────────────────────────────────────────
+    "invariants": [
+        ("Ribbon-work at collar/cuffs", "MANDATORY in all formal and diplomatic scenes. The geometric-floral Algonquin ribbon-work in warm red, gold, green, and blue appears at the collar edge and cuff edge of whatever she is wearing in those contexts. In undressed/explicit scenes, the garment is removed but the NEXT layer beneath may have a simpler version. This element is her signature of dual-world authority — it does not vanish."),
+        ("Indigo ribbon in formal braid", "When in braid mode, the indigo ribbon (#2E1760) is always threaded through. It cannot be a different color. It cannot be absent while she is braided. In loose-hair scenes, no ribbon is present."),
+        ("Cheekbone structure", "The high Algonquin cheekbones are the defining feature of her face and must remain prominent in all scene types, all lighting conditions, all expressions. Do not soften this structure in explicit scenes."),
+        ("Skin tone consistency", "Warm medium-brown, slightly cooler than Ualani. Do not lighten in explicit scenes. The specific tone is part of her Indigenous identity and must not be adjusted for 'softness' or 'glow'."),
+        ("Height", "She must read as tall relative to other characters in multi-character scenes. She is the tallest named female character."),
+        ("Hair length", "Lower lumbar minimum length. Can be longer. Cannot be shorter."),
+        ("Nose authenticity", "Algonquin nose structure. Do not narrow or Europeanize. This is as important as any other invariant."),
+        ("Age", "Late 30s. She is a mature political leader. Juvenile facial features in explicit scenes break her characterization completely."),
+        ("Eyes — directness", "She makes direct eye contact in every scene type including explicit. Her gaze does not go coy or soft. She looks at things — including the viewer — with full deliberate awareness."),
+        ("No ear jewelry", "She does not wear earrings or ear jewelry of any kind. This is a contrast with Ualani. Do not add ear jewelry to distinguish her from other characters in multi-character scenes — use the ribbon-work and face structure instead."),
+    ],
+
+    # ── EXPRESSION CHART ──────────────────────────────────────────────────────
+    "expressions": [
+        ("DEFAULT (waiting)",    "Still and level. Eyes open, level, unblinking. Mouth closed, horizontal. No tension in brow. This expression does not read as blank — it reads as a person who is receiving information and processing it before speaking. The room waits for her."),
+        ("CONSIDERING",          "The brow descends fractionally over one eye (usually right). The other eye stays level. This asymmetry means she has encountered something worth examining. Mouth stays closed."),
+        ("POLITICAL PRECISION",  "Lips part very slightly — she is about to speak. Eyes sharpen. The brow descends evenly, not furrowed but lowered. This is her 'I am about to say the exact right thing' face. It is followed by silence for one beat before she speaks."),
+        ("DISMISSAL",            "Chin rises fractionally. Eyes stay level but the lids lower slightly — not sleepy, imperial. The mouth corners pull back neutrally. This is the expression that ended the Governor's Council's participation."),
+        ("DRY SATISFACTION",     "The left corner of her mouth lifts 2mm. Not a smile — a notation. Her version of acknowledging that something went correctly."),
+        ("GENUINE WARMTH",       "Rare. Both corners of mouth lift evenly. Cheeks lift — the cheekbones become even more prominent. Eyes soften. This reads as completely transformative on a face that rarely deploys it. Reserve for Marc Penoit scenes of hard-won trust and moments of actual victory."),
+        ("CONCERN",              "Inner brow corners lift slightly. Eyes widen fractionally. Mouth stays closed. She does not broadcast concern — this is the smallest possible signal."),
+        ("ANGER",                "Flat and cold. Eyes open fully — wider than default. Brow descends entirely, evenly. Jaw sets. Mouth closes hard. She becomes more still when angry. The expression that precedes a sentence that will change how someone's week goes."),
+        ("SENSUAL INTEREST",     "The eyes do the work. Lids drop 20%. The gaze becomes focused rather than wide. Her chin drops fractionally — she looks up through her lashes even when at height. Mouth opens slightly, lips part. This is chosen, deliberate, unhurried."),
+        ("PLEASURE (sensual)",   "Eyes half-closed, gaze soft and inward. Brow smooth. Mouth open, breath visible. Head may tilt back or to side. Her long neck becomes prominent in this expression. Still. She processes pleasure with stillness, not movement."),
+        ("PLEASURE (explicit)",  "Eyes closed, brow lifted at center. Mouth open and active — this is the loudest her face gets. Head thrown back or pressed forward depending on position. The cheekbones catch side light beautifully in this expression. Her neck is long and exposed."),
+        ("RELEASE / CLIMAX",     "Full opening of expression — brows raised, eyes closed, mouth wide. The normally controlled face fully releases. This is the most readable moment of vulnerability she offers, and it should feel earned and significant for that reason."),
+    ],
+
+    # ── COSTUME LAYERS ────────────────────────────────────────────────────────
+    "costume_layers": [
+        ("LAYER 0 — FULL DIPLOMATIC FORMAL", "Dark forest green overcoat (#1C2A1C), floor-length or ankle-length, deep burgundy interior lining visible at open lapels. Algonquin ribbon-work at collar and cuffs (red/gold/green/blue geometric floral). Hair in formal braid with indigo ribbon. No ear jewelry. Severe, composed, absolutely authoritative."),
+        ("LAYER 1 — WORKING FORMAL", "Same coat, less volume — slightly shorter, more practical cut. Ribbon-work still present at collar/cuffs. Underneath: dark fitted shirt or tunic with some ribbon-work detail. Hair may be braid or loose depending on the scene energy. This is her most common state."),
+        ("LAYER 2 — FIELD / TRAVEL", "Coat removed. Dark fitted jacket or heavy shirt, simpler — ribbon-work detail only at collar, minimal. Practical trousers, good boots. Hair loose. No ribbon. She reads as active and direct in this state."),
+        ("LAYER 3 — INFORMAL", "Dark simple shirt, loose or tucked. No coat. Trousers. Hair loose, full length. The ribbon-work is absent. This is her 'not performing authority' state — she still has it, it just isn't costumed. This layer feels like a reveal."),
+        ("LAYER 4 — UNDERSHIRT", "Simple linen undershirt — slightly warm-toned, off-white or pale tan. Loose. Collarless. The first private layer. Hair fully loose, long."),
+        ("LAYER 5 — PARTIAL UNDRESS", "Undershirt open or removed. SFW: shown in injury or recovery context, not sexualized. SENSUAL: deliberate entry. Her torso is lean and long — defined but not muscular in the athletic-soldier way. The length of her torso and the prominence of her hip bones read differently than Ualani's build. Colonial-era underpinnings if present."),
+        ("LAYER 6 — BASE/UNDERPINNINGS", "Colonial linen or simple cloth. Loose. Then nothing."),
+        ("LAYER 7 — FULLY BARE", "See explicit section. No ear jewelry in any undressed scene — this is already the invariant for this character."),
+    ],
+
+    # ── SCENE TYPE DIRECTION ──────────────────────────────────────────────────
+    "scene_sfw": [
+        ("Portrait / card art",  "Bust or 3/4. Layer 0 or 1. DEFAULT or POLITICAL PRECISION expression. Formal braid with indigo ribbon. Ribbon-work visible at collar. Lighting: cool-neutral ambient with one warm directional source — this plays against her cooler skin tone and creates beautiful cheekbone contrast. Background: forest, waterway, or abstract dark with Algonquin geometric motif."),
+        ("Dialogue scene",       "Full figure, Layer 1 or 2. Expression depends on context — most commonly CONSIDERING or POLITICAL PRECISION. Her hands are often at rest at her sides or one hand raised to make a point, fingers precise. The long figure reads well in dialogue scenes — she takes up vertical space."),
+        ("Diplomatic/council",   "Layer 0 full formal. DISMISSAL or DEFAULT. She is the tallest person at the table and she knows it. Camera angle: slightly below eye level to emphasize her height and cheekbone structure from below."),
+        ("Field scene",          "Layer 2. Hair loose. DEFAULT or CONSIDERING. She is not a combat character — her field presence is intelligence gathering and authority projection, not fighting. She should be still in field scenes while others move."),
+        ("Alliance signing",     "This is the EtherTask scene (CAN_ALLIANCE_SIGNED). Layer 0 full formal. Next to Ualani (Layer 0) and Marc Penoit (his coat). The visual contrast: Ualani's gold earrings catching light, Jessica's ribbon-work at collar, Marc's worn coat. This trio should be visually distinctive from a distance."),
+        ("Private/informal",     "Layer 3 or 4. Hair fully loose. GENUINE WARMTH expression — one of its few appropriate uses. Candle or fire lighting. The cool skin tone reads warm in firelight. This is the rare 'she has allowed this moment' scene."),
+    ],
+
+    "scene_sensual": [
+        ("Rating definition",    "SENSUAL = charged implication. Clothing displaced, key areas at frame edge. Her agency is absolute — she permits, she decides, she chooses the moment."),
+        ("Entry state",          "Layer 2 to Layer 4 transition. Coat or jacket removed, undershirt loosened or open. The ribbon-work of the removed coat is OFF — she has stepped out of formal identity. This is significant. The long throat and collarbone are the focal sensual element at this stage."),
+        ("Her specific sensual register", "She is deliberate and unhurried. She does not respond to urgency — she sets pace. If there is a scene partner, she is the one who decided this was happening. SENSUAL INTEREST expression: eyes doing the work."),
+        ("The neck", "Her long neck is the primary sensual focus before and during undress. It is a significant visual element unique to her proportions — Ualani does not share this. Tilted head exposing the throat is her most vulnerable visual language and should be used with that weight."),
+        ("Hair",                 "Fully loose in sensual scenes. The length (lower lumbar) creates a visual curtain element — hair falling forward across one shoulder, or falling around her in a reclining position. No ribbon."),
+        ("Partial undress framing", "The long torso reads differently than Ualani's — narrower, longer. The hip bones become prominent at partial undress and are a characteristic element of her specific body. The lean build means the ribcage is visible under skin in some poses — authentic and specific to this character."),
+        ("Lighting",             "Cool ambient with one warm source. The cheekbones read dramatically under side lighting. Her cooler skin tone (#7A5238 base) takes warm light differently than Ualani — slightly more golden rather than orange. Firelight is excellent for this character."),
+        ("Expression",           "SENSUAL INTEREST transitioning to PLEASURE (sensual). The stillness of her default expression makes the opening of pleasure expression significantly charged — the contrast is the content."),
+    ],
+
+    "scene_explicit": [
+        ("Rating definition",    "EXPLICIT = full nudity and explicit sexual content. All invariants mandatory. No ear jewelry (already her standard). Ribbon-work gone (she has removed the formal layer). Indigo ribbon gone (braid would be loose). She is fully herself without armor."),
+        ("Body canon — full nude", "Lean and long. The opposite of soft curves — elongated lines, visible structure. Hip bones prominent and angular. Waist long. Ribcage structure visible under skin in extended/arched positions. Breasts: medium-small, natural shape consistent with lean build — sitting slightly wide and lateral on a flat chest wall. No exaggerated volume. Nipples: medium, warm-toned (#8A4030). Consistent. The overall impression: a body that moves with precision and economy, not one designed for soft display."),
+        ("Pubic area",           "Present and natural. Dark, consistent with natural hair color. Colonial-era authentic. Not manicured into a modern shape."),
+        ("Explicit positions — her dominant/active role", "She is deliberate and economical in movement. No excess motion. Her dominant posture: upright, weight controlled, pace fully hers. Hands — her long fingers are prominent and expressive in explicit scenes. Her face: PLEASURE expression that returns quickly to baseline — she does not stay at maximum expression for long. The control returning is part of her character."),
+        ("Explicit positions — her receptive role", "She receives attention with stillness. This is the defining feature of her receptive scenes — she is very still except for specific reactive moments (the PLEASURE or RELEASE expression). Her long body in a reclining or bent position is a different silhouette than Ualani's — the length is the visual content."),
+        ("The neck in explicit", "Her neck is the most important body element in explicit scenes after her face. Exposed throat — head thrown back, neck arched — is her primary body language of pleasure. Every explicit scene should have at least one moment where the long neck is fully visible and extended."),
+        ("Oral — giving",        "Face: eyes closed or partially open, expression focused and chosen. Her long fingers may be visible. Deliberate, unhurried, precise — she approaches this the way she approaches everything. Not servile."),
+        ("Oral — receiving",     "Head thrown fully back — neck extended, prominent. PLEASURE expression. One hand on partner's head or at her own thigh, fingers splayed. The hair falls loose around and behind her. This position most clearly shows her body's elongated proportions."),
+        ("Penetrative — general", "All positions maintain: hair loose and visible at full lower-lumbar length, no ear jewelry, skin tone consistent (#7A5238 base), cheekbone structure prominent in any face angle, long body proportions visible."),
+        ("Penetrative — missionary/equivalent", "The length of her body is the visual content — full figure visible to emphasize the elongated proportions. Her face always accessible to the frame. PLEASURE expression. Legs: long, straight line or wrapped, showing the 4.2-head leg proportion."),
+        ("Penetrative — from behind", "Her back is long and straight. The spine is visible as a line from neck to lumbar. Hair falls forward or to one side. The prominent hip bones visible in this position. PLEASURE expression in whatever face view is available — the neck is always relevant here."),
+        ("Penetrative — riding/dominant", "Her most character-consistent explicit position. Upright, back straight, weight fully controlled. The long torso creates a dramatic upright line. Hands on partner's chest or shoulders. PLEASURE expression with control — she sets the pace, she reads as knowing exactly what she is doing. The hip bones and long waist are prominent in this position."),
+        ("Penetrative — against wall/furniture", "Layer 1 or 2 partially displaced — coat against a surface, arms pinned or braced. The ribbon-work of the coat visible in the displaced clothing. This is the most charged visual contrast: the diplomatic symbols of her authority physically moved aside but still present in frame."),
+        ("Multiple partners",    "Her stillness as the organizing center of a scene. She is the axis around which things happen. Her gaze controls the scene even in receptive positions. She looks at each partner with full deliberate focus when directing them."),
+        ("Post-scene state",     "Hair loose and full, possibly more disheveled than sensual scenes — the long hair becomes a visual element in the aftermath. No ribbon. The POLITICAL PRECISION or DEFAULT expression returning to her face. She looks as if she has concluded something that went exactly as intended."),
+        ("Lighting",             "Cool ambient, single warm point source. The cheekbones are the light-catching feature — in warm light they glow at the highlight (#B07850). The long neck catches the warm source along one side while the other falls into cool shadow. This lighting setup is specific and beautiful for her face structure."),
+        ("Contrast with Ualani", "In multi-character explicit scenes: Ualani is warm, muscular, gold earrings catching light. Jessica is cool, elongated, no jewelry, ribbon-work gone. They are visually distinct from a distance at every level. The contrast in body type (Ualani: athlete; Jessica: elongated lean) should be fully realized."),
+        ("Common errors to avoid", "1) Shortening her proportions — she must remain the 8-head tall figure. 2) Softening or rounding the hip bones — they are angular and prominent. 3) Giving her ear jewelry — she never wears any. 4) Narrowing the nose. 5) Softening the cheekbones. 6) Making the breasts larger than canon. 7) Changing the hair to loose waves — it is straight. 8) Making her expression passive or confused — she is always present and choosing. 9) Lightening skin tone. 10) Shortening the hair below lower lumbar."),
+    ],
+}
+
+
+# ── MODEL SHEET BUILD FUNCTION ─────────────────────────────────────────────────
+
+def _build_model_sheet(wb, model):
+    name_short = model["name"].split()[0]  # "Ualani" or "Jessica"
+    ws = wb.create_sheet(f"{name_short.upper()} MODEL")
+    ws.sheet_view.showGridLines = False
+    ws.sheet_properties.tabColor = model["tab_color"]
+
+    # Column widths: section label | element | content
+    _set_col_widths(ws, [26, 28, 90])
+
+    row = 1
+
+    # ── Title block ────────────────────────────────────────────────────────────
+    ws.merge_cells(f"A{row}:C{row}")
+    _hdr(ws, row, 1, f"{model['name'].upper()} — PRODUCTION MODEL SHEET", model["tab_color"], "FFFFFF", bold=True, size=13)
+    row += 1
+    ws.merge_cells(f"A{row}:C{row}")
+    _hdr(ws, row, 1, model["title"], HDR_BG, "CCCCCC", bold=False, size=10)
+    row += 2
+
+    # ── Section renderer ──────────────────────────────────────────────────────
+    def _section(title, bg, fg, items, col1_label="ELEMENT", col2_label="SPECIFICATION"):
+        nonlocal row
+        ws.merge_cells(f"A{row}:C{row}")
+        t = ws.cell(row=row, column=1, value=f"▶  {title}")
+        t.font = Font(bold=True, color=fg, size=11, name="Calibri")
+        t.fill = _fill(bg)
+        t.border = _border()
+        t.alignment = Alignment(horizontal="left", vertical="center", wrap_text=False)
+        row += 1
+        _hdr(ws, row, 1, "SECTION", bg, fg, size=9)
+        _hdr(ws, row, 2, col1_label, bg, fg, size=9)
+        _hdr(ws, row, 3, col2_label, bg, fg, size=9)
+        row += 1
+        for i, (el, spec) in enumerate(items):
+            alt = ALT_BG if i % 2 == 0 else WHITE
+            _cell(ws, row, 1, title, bg=alt)
+            _cell(ws, row, 2, el, bg=alt, bold=True)
+            _cell(ws, row, 3, spec, bg=alt)
+            ws.row_dimensions[row].height = max(60, min(180, len(spec) // 2))
+            row += 1
+        row += 1  # spacer
+
+    # ── Sections ──────────────────────────────────────────────────────────────
+    _section("CONSTRUCTION",          "2E4057", "FFFFFF", model["construction"])
+    _section("COLOR PALETTE",         "1A3A2A", "FFFFFF", [(row[0], f"{row[1]}  —  {row[2]}") for row in model["palette"]])
+    _section("INVARIANTS",            "5C2020", "FFFFFF", model["invariants"], col1_label="RULE", col2_label="DESCRIPTION — ABSOLUTE, NO EXCEPTIONS")
+    _section("EXPRESSION CHART",      "3A3A1A", "FFFFFF", model["expressions"], col1_label="EXPRESSION", col2_label="DIRECTION")
+    _section("COSTUME LAYERS",        "2A2A4A", "FFFFFF", model["costume_layers"], col1_label="LAYER", col2_label="DESCRIPTION")
+    _section("SCENE DIRECTION — SFW", "1A4A1A", "FFFFFF", model["scene_sfw"],     col1_label="SCENE TYPE",    col2_label="DIRECTION")
+    _section("SCENE DIRECTION — SENSUAL", "5C3A00", "FFFFFF", model["scene_sensual"], col1_label="ELEMENT", col2_label="DIRECTION")
+    _section("SCENE DIRECTION — EXPLICIT", "7A0000", "FFFFFF", model["scene_explicit"], col1_label="SCENE / RULE", col2_label="DIRECTION — FULL PRODUCTION SPEC")
+
+    _freeze(ws, "A3")
+
+
 # ── MAIN ──────────────────────────────────────────────────────────────────────
 def main():
     wb = openpyxl.Workbook()
@@ -622,6 +948,8 @@ def main():
     _build_character_sheet(wb, "CANADIAN", CANADIAN_CHARACTERS, CA_BG, CA_FG)
     _build_character_sheet(wb, "NPC", NPC_CHARACTERS, NPC_BG, NPC_FG)
     _build_design_notes(wb, DESIGN_NOTES)
+    _build_model_sheet(wb, UALANI_MODEL)
+    _build_model_sheet(wb, JESSICA_MODEL)
 
     wb.save(OUT_PATH)
     total = len(USA_CHARACTERS) + len(CANADIAN_CHARACTERS) + len(NPC_CHARACTERS)
@@ -629,6 +957,7 @@ def main():
     print(f"Wrote {OUT_PATH}")
     print(f"  {total} total characters: {len(USA_CHARACTERS)} USA, {len(CANADIAN_CHARACTERS)} Canadian, {len(NPC_CHARACTERS)} NPC")
     print(f"  {designed}/{total} fully described  |  {total-designed} partial/stub")
+    print(f"  2 full model sheets: Ualani Carlisle, Jessica Commanda Odjick")
 
 
 if __name__ == "__main__":
