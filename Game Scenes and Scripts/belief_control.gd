@@ -26,28 +26,52 @@ func updateSelf():
 	for String in player.availableDocs:
 		var newBB = beliefButt.instantiate()
 		match String:
-			"Healing Waters":
-				newBB.buildSelf("Healing Waters", $religionData.healingWatersIcon, $religionData.healingWatersBWIcon, false, 100, "We utilize the few fresh water resources to motivate our followers.", $religionData.border1)
-			"Standing Stones":
-				newBB.buildSelf("Standing Stones", $religionData.standingStonesIcon, $religionData.standingStonesBWIcon, false, 120, "What's up, we are indeed the Standing Stones, the famous band from Farsword.", $religionData.border1)
-			"Valued Idolatry":
-				newBB.buildSelf("Valued Idolatry", $religionData.valuedIdolatryIcon, $religionData.valuedIdolatryBWIcon, false, 20, "Gold and Silver Artifacts are utilized to show how rich our God is.", $religionData.border1)
-			"Sacred Groves":
-				newBB.buildSelf("Sacred Groves", $religionData.sacredGrovesIcon, $religionData.sacredGrovesBWIcon, false, 70, "These Groves be sacred as fuck.", $religionData.border1)
-			"Midsummer Celebrations":
-				newBB.buildSelf("Midsummer Celebrations", $religionData.midsummerCelebrationsIcon, $religionData.midsummerCelebrationsBWIcon, false, 35, "By partying super hard, our people will feel way better about themselvs.", $religionData.border1)
-			"Tree of Life":
-				newBB.buildSelf("Tree of Life", $religionData.treeOfLifeIcon, $religionData.treeOfLifeBWIcon, false, 160, "Trees are everything and everywhere and make perfect indoctrination imagery for dummies.", $religionData.border1)
-			"Tower Control":
-				newBB.buildSelf("Tower Control", $religionData.towerControlIcon, $religionData.towerControlBWIcon, false, 250, "The scholars have implemented strict controls over mystical practice, channeling all spiritual energy through state-sanctioned channels.", $religionData.border1)
-			"Nature Sanctuaries":
-				newBB.buildSelf("Nature Sanctuaries", $religionData.natureSanctuariesIcon, $religionData.natureSanctuariesIconBW, false, 100, "By harmonizing our churches with the natural world, we commune with the divine through unspoiled wilderness.", $religionData.border1)
-			"Conservative Orthodoxy":
-				newBB.buildSelf("Conservative Orthodoxy", $religionData.conservativeOrthodoxyIcon, $religionData.conservativeOrthodoxyIconBW, false, 200, "Our Church does not rely on modern revelation — all doctrine was divine at its founding and shall remain unchanged.", $religionData.border1)
-			"Sanctioned Cadaver Research":
-				newBB.buildSelf("Sanctioned Cadaver Research", $religionData.sanctionedCadaverResearchIcon, $religionData.sanctionedCadaverResearchIconBW, false, 200, "Our faith will not obstruct the necessary scientific pursuit of medicine and natural philosophy.", $religionData.border1)
-			"Temple Height Restrictions":
-				newBB.buildSelf("Temple Height Restrictions", $religionData.templeHeightLawsIcon, $religionData.templeHeightLawsIconBW, false, 120, "Our faith decrees no building shall surpass the height of our temples in any settlement.", $religionData.border1)
+			# ── American Doctrines ───────────────────────────────────────────────
+			"Social Security Act":
+				newBB.buildSelf("Social Security Act", $religionData.healingWatersIcon, $religionData.healingWatersBWIcon, false, 100, "Signed in 1935, the Social Security Act established federal old-age pensions and unemployment insurance. A safety net woven from public obligation.", $religionData.border1)
+			"National Monument Act":
+				newBB.buildSelf("National Monument Act", $religionData.standingStonesIcon, $religionData.standingStonesBWIcon, false, 120, "The Antiquities Act gave the President authority to designate national monuments by executive proclamation. Sacred geography has never been more official.", $religionData.border1)
+			"Sherman Antitrust Act":
+				newBB.buildSelf("Sherman Antitrust Act", $religionData.valuedIdolatryIcon, $religionData.valuedIdolatryBWIcon, false, 20, "The first federal law to limit monopolies and cartels. Markets, like elections, require competition to be legitimate.", $religionData.border1)
+			"Lacey Wildlife Act":
+				newBB.buildSelf("Lacey Wildlife Act", $religionData.sacredGrovesIcon, $religionData.sacredGrovesBWIcon, false, 70, "The first federal wildlife protection law in the United States, prohibiting the trafficking of illegally taken fish, wildlife, and plants.", $religionData.border1)
+			"Federal Arts Endowment":
+				newBB.buildSelf("Federal Arts Endowment", $religionData.midsummerCelebrationsIcon, $religionData.midsummerCelebrationsBWIcon, false, 35, "Established in 1965, the National Endowment for the Arts made the federal government a patron of culture for the first time.", $religionData.border1)
+			"Homestead Act":
+				newBB.buildSelf("Homestead Act", $religionData.treeOfLifeIcon, $religionData.treeOfLifeBWIcon, false, 160, "Signed by Lincoln in 1862, the Homestead Act offered 160 acres of public land to any American willing to farm it for five years.", $religionData.border1)
+			"Defense Production Act":
+				newBB.buildSelf("Defense Production Act", $religionData.towerControlIcon, $religionData.towerControlBWIcon, false, 250, "Passed in 1950, the Defense Production Act gave the President sweeping authority to direct industrial production toward national security needs.", $religionData.border1)
+			"Wilderness Act":
+				newBB.buildSelf("Wilderness Act", $religionData.natureSanctuariesIcon, $religionData.natureSanctuariesIconBW, false, 100, "Signed in 1964, the Wilderness Act created a National Wilderness Preservation System — land where the hand of man shall not be felt.", $religionData.border1)
+			"First Amendment":
+				newBB.buildSelf("First Amendment", $religionData.conservativeOrthodoxyIcon, $religionData.conservativeOrthodoxyIconBW, false, 200, "Ratified in 1791, the First Amendment prohibits Congress from abridging freedom of speech, religion, the press, or assembly.", $religionData.border1)
+			"National Research Act":
+				newBB.buildSelf("National Research Act", $religionData.sanctionedCadaverResearchIcon, $religionData.sanctionedCadaverResearchIconBW, false, 200, "Passed in 1974 in the aftermath of the Tuskegee study, establishing the first federal framework for ethical oversight of biomedical research.", $religionData.border1)
+			"Height of Buildings Act":
+				newBB.buildSelf("Height of Buildings Act", $religionData.templeHeightLawsIcon, $religionData.templeHeightLawsIconBW, false, 120, "Enacted in 1910, the Height of Buildings Act permanently caps Washington D.C. buildings at 130 feet in deference to civic monuments.", $religionData.border1)
+			# ── Canadian Doctrines ───────────────────────────────────────────────
+			"Canada Wildlife Act":
+				newBB.buildSelf("Canada Wildlife Act", $religionData.sacredGrovesIcon, $religionData.sacredGrovesBWIcon, false, 70, "Enacted in 1973, the Canada Wildlife Act established the federal framework for wildlife research, conservation, and protection across the Dominion.", $religionData.border1)
+			"Canada Council for the Arts Act":
+				newBB.buildSelf("Canada Council for the Arts Act", $religionData.midsummerCelebrationsIcon, $religionData.midsummerCelebrationsBWIcon, false, 35, "Founded in 1957, the Canada Council for the Arts has funded Canadian literature, music, visual art, and performance for generations.", $religionData.border1)
+			"Dominion Lands Act":
+				newBB.buildSelf("Dominion Lands Act", $religionData.treeOfLifeIcon, $religionData.treeOfLifeBWIcon, false, 160, "Passed in 1872, the Dominion Lands Act opened the Canadian prairies to homestead settlement, offering 160-acre grants to settlers who would farm the land for three years.", $religionData.border1)
+			"Historic Sites and Monuments Act":
+				newBB.buildSelf("Historic Sites and Monuments Act", $religionData.standingStonesIcon, $religionData.standingStonesBWIcon, false, 120, "The Historic Sites and Monuments Act formalized federal commemoration of places, persons, and events significant to Canadian history.", $religionData.border1)
+			"Combines Investigation Act":
+				newBB.buildSelf("Combines Investigation Act", $religionData.valuedIdolatryIcon, $religionData.valuedIdolatryBWIcon, false, 20, "Canada's first competition law, enacted in 1889 — the Dominion regulated markets before it had a central bank.", $religionData.border1)
+			"Canada Health Act":
+				newBB.buildSelf("Canada Health Act", $religionData.healingWatersIcon, $religionData.healingWatersBWIcon, false, 100, "Passed in 1984, the Canada Health Act established universality, comprehensiveness, accessibility, portability, and public administration as the pillars of Canadian health care.", $religionData.border1)
+			"National Parks Act":
+				newBB.buildSelf("National Parks Act", $religionData.natureSanctuariesIcon, $religionData.natureSanctuariesIconBW, false, 100, "Canada's national parks system preserves wilderness for the benefit of all Canadians — 'for all time,' in the Act's own words.", $religionData.border1)
+			"Charter of Rights and Freedoms":
+				newBB.buildSelf("Charter of Rights and Freedoms", $religionData.conservativeOrthodoxyIcon, $religionData.conservativeOrthodoxyIconBW, false, 200, "Entrenched in the Constitution Act of 1982, the Charter guarantees fundamental rights to every person in Canada.", $religionData.border1)
+			"Medical Research Council Act":
+				newBB.buildSelf("Medical Research Council Act", $religionData.sanctionedCadaverResearchIcon, $religionData.sanctionedCadaverResearchIconBW, false, 200, "The Medical Research Council of Canada funded biomedical science across the country for three decades, building a tradition of publicly funded discovery.", $religionData.border1)
+			"National Building Code of Canada":
+				newBB.buildSelf("National Building Code of Canada", $religionData.templeHeightLawsIcon, $religionData.templeHeightLawsIconBW, false, 120, "First published in 1941, the National Building Code sets minimum standards for construction safety across Canada.", $religionData.border1)
+			"War Measures Act":
+				newBB.buildSelf("War Measures Act", $religionData.towerControlIcon, $religionData.towerControlBWIcon, false, 250, "Enacted in 1914 and invoked three times, the War Measures Act granted the Cabinet sweeping emergency powers. Celebrated as decisive and condemned as despotic.", $religionData.border1)
 		$BeliefPanel/DoctrineScrollContainer/DoctrineContainer.add_child(newBB)
 		newBB.LabelClicked.connect(purchasePanel)
 	for String in player.availableGods:
@@ -72,7 +96,7 @@ func updateSelf():
 			"Frederick Douglass":
 				newBB.buildSelf("Frederick Douglass", $religionData.douglassIcon, $religionData.douglassBWIcon, false, 180, "Escaped slavery and spent the rest of his life explaining to anyone who would listen why that was a bad system, using words so precise they still cut. Douglass's patronage elevates Libraries, Courthouses, and the uncomfortable power of truth.", $religionData.border3)
 			"Sitting Bull":
-				newBB.buildSelf("Sitting Bull", $religionData.sittingBullIcon, $religionData.sittingBullBWIcon, false, 200, "Hunkpapa Lakota war chief, holy man, and the figure who outlasted Custer. Sitting Bull's patronage honors the land itself — Nature Sanctuaries flourish, and buildings in wooded and river territories produce bonus resources.", $religionData.border5)
+				newBB.buildSelf("Sitting Bull", $religionData.sittingBullIcon, $religionData.sittingBullBWIcon, false, 200, "Hunkpapa Lakota war chief, holy man, and the figure who outlasted Custer. Sitting Bull's patronage honors the land itself — Wilderness Act flourishes, and buildings in wooded and river territories produce bonus resources.", $religionData.border5)
 			"Sojourner Truth":
 				newBB.buildSelf("Sojourner Truth", $religionData.sojournerTruthIcon, $religionData.sojournerTruthBWIcon, false, 130, "Ain't I a woman? She asked the question that exposed every hypocrite in the room. Truth's patronage uplifts Farms and Temples, and her presence grants a Harmony bonus to every province with diverse population.", $religionData.border1)
 			"Chief Joseph":
@@ -93,6 +117,47 @@ func updateSelf():
 				newBB.buildSelf("Jimmy Carter", $religionData.jimmyCarterIcon, $religionData.jimmyCarterBWIcon, false, 120, "The peanut farmer who brokered peace between Egypt and Israel, then went home and built houses for the poor. Carter's patronage rewards humility — quiet, persistent bonuses to everything, nothing flashy, compounding forever.", $religionData.border1)
 			"Dolores Huerta":
 				newBB.buildSelf("Dolores Huerta", $religionData.doloresHuertaIcon, $religionData.doloresHuertaBWIcon, false, 140, "Co-founder of the United Farm Workers and proof that 'no' is not an acceptable final answer. Huerta's patronage amplifies Cesar Chavez's farm bonuses if both are selected, and adds exceptional Harmony in provinces with mixed labor.", $religionData.border3)
+			# ── Canadian Icons ───────────────────────────────────────────────────
+			"John A. Macdonald":
+				newBB.buildSelf("John A. Macdonald", $religionData.macdonaldIcon, $religionData.macdonaldBWIcon, false, 200, "The Father of Confederation and first Prime Minister of Canada. Built the Dominion through coalition, compromise, and the transcontinental railway.", $religionData.border2)
+			"George-Étienne Cartier":
+				newBB.buildSelf("George-Étienne Cartier", $religionData.cartierIcon, $religionData.cartierBWIcon, false, 180, "Macdonald's indispensable partner who brought French Canada into Confederation. Without him, there is no Canada.", $religionData.border3)
+			"Wilfrid Laurier":
+				newBB.buildSelf("Wilfrid Laurier", $religionData.laurierIcon, $religionData.laurierBWIcon, false, 200, "Canada's first francophone Prime Minister, who declared the twentieth century to be Canada's. His optimism built a country.", $religionData.border1)
+			"Agnes Macphail":
+				newBB.buildSelf("Agnes Macphail", $religionData.macphailIcon, $religionData.macphailBWIcon, false, 120, "The first woman elected to the Canadian House of Commons in 1921. She was told repeatedly that she did not belong in Parliament. She disagreed, repeatedly.", $religionData.border1)
+			"Laura Secord":
+				newBB.buildSelf("Laura Secord", $religionData.lauraSecordIcon, $religionData.lauraSecordBWIcon, false, 160, "In June 1813, Laura Secord walked 19 miles through enemy lines to warn British forces of an impending attack. The garrison held.", $religionData.border4)
+			"Louis-Hippolyte LaFontaine":
+				newBB.buildSelf("Louis-Hippolyte LaFontaine", $religionData.laFontaineIcon, $religionData.laFontaineBWIcon, false, 150, "The architect of responsible government in the Canadas. He proved that self-government was possible without revolution.", $religionData.border5)
+			"Tommy Douglas":
+				newBB.buildSelf("Tommy Douglas", $religionData.tommyDouglasIcon, $religionData.tommyDouglasBWIcon, false, 250, "Premier of Saskatchewan and father of Canadian Medicare. He introduced single-payer health insurance over furious opposition. He won. Repeatedly.", $religionData.border2)
+			"Viola Desmond":
+				newBB.buildSelf("Viola Desmond", $religionData.violaDesmondIcon, $religionData.violaDesmondBWIcon, false, 170, "A Black Nova Scotia businesswoman whose refusal to leave a segregated cinema section in 1946 became a landmark in Canadian civil rights history.", $religionData.border4)
+			"Lester B. Pearson":
+				newBB.buildSelf("Lester B. Pearson", $religionData.pearsonIcon, $religionData.pearsonBWIcon, false, 220, "Nobel Peace Prize laureate and architect of UN peacekeeping. The Prime Minister who gave Canada the Maple Leaf flag, universal health care, and the Canada Pension Plan.", $religionData.border3)
+			"Louis Riel":
+				newBB.buildSelf("Louis Riel", $religionData.louisRielIcon, $religionData.louisRielBWIcon, false, 200, "Leader of two Métis resistances and founder of Manitoba. Hanged for treason in 1885. Now considered a Father of Confederation by the Manitoba legislature.", $religionData.border5)
+			"Emily Murphy":
+				newBB.buildSelf("Emily Murphy", $religionData.emilyMurphyIcon, $religionData.emilyMurphyBWIcon, false, 130, "The first female magistrate in the British Empire. Led the Famous Five in the Persons Case of 1929, establishing that women were legally 'persons'.", $religionData.border1)
+			"Nellie McClung":
+				newBB.buildSelf("Nellie McClung", $religionData.nellieMcClungIcon, $religionData.nellieMcClungBWIcon, false, 120, "Author, suffragist, and member of the Famous Five. One of the most effective political communicators in Canadian history.", $religionData.border2)
+			"Terry Fox":
+				newBB.buildSelf("Terry Fox", $religionData.terryFoxIcon, $religionData.terryFoxBWIcon, false, 180, "In 1980, Terry Fox ran 5,373 kilometres across Canada on a prosthetic leg to raise money for cancer research. His Marathon of Hope continues without him.", $religionData.border4)
+			"Chief Dan George":
+				newBB.buildSelf("Chief Dan George", $religionData.chiefDanGeorgeIcon, $religionData.chiefDanGeorgeBWIcon, false, 150, "Chief of the Tsleil-Waututh Nation and Academy Award-nominated actor who used both platforms to speak with dignity about Indigenous dispossession.", $religionData.border5)
+			"Buffy Sainte-Marie":
+				newBB.buildSelf("Buffy Sainte-Marie", $religionData.buffySaintMarieIcon, $religionData.buffySaintMarieBWIcon, false, 160, "Cree musician and activist whose songs reached audiences that political speeches never could. She was blacklisted by both governments. She kept singing.", $religionData.border3)
+			"David Suzuki":
+				newBB.buildSelf("David Suzuki", $religionData.davidSuzukiIcon, $religionData.davidSuzukiBWIcon, false, 140, "Geneticist, broadcaster, and Canada's most prominent environmental voice. Spent five decades translating science into public urgency.", $religionData.border1)
+			"Roméo Dallaire":
+				newBB.buildSelf("Roméo Dallaire", $religionData.romeoDallaireIcon, $religionData.romeoDallaireBWIcon, false, 200, "Force Commander of UNAMIR during the Rwandan genocide. He watched 800,000 people die while the world looked away. He spent the rest of his life arguing that it need not have happened.", $religionData.border2)
+			"Thérèse Casgrain":
+				newBB.buildSelf("Thérèse Casgrain", $religionData.thereseCasgrainIcon, $religionData.thereseCasgrainBWIcon, false, 120, "Quebec suffragist and social reformer who led the campaign for women's provincial voting rights in Quebec — finally granted in 1940.", $religionData.border4)
+			"Mary Two-Axe Earley":
+				newBB.buildSelf("Mary Two-Axe Earley", $religionData.maryTwoAxeEarleyIcon, $religionData.maryTwoAxeEarleyBWIcon, false, 130, "Mohawk activist who spent decades fighting the discriminatory clause of the Indian Act that stripped Indigenous women of their status. Bill C-31 corrected it in 1985.", $religionData.border5)
+			"Pierre Elliott Trudeau":
+				newBB.buildSelf("Pierre Elliott Trudeau", $religionData.pierreTrudeauIcon, $religionData.pierreTrudeauBWIcon, false, 230, "Philosopher and Prime Minister who gave Canada the Official Languages Act, the Charter of Rights and Freedoms, and the Constitution Act of 1982.", $religionData.border3)
 		$BeliefPanel/GodsScrollContainer/GodsContainer.add_child(newBB)
 		newBB.LabelClicked.connect(purchasePanel)
 	if $BeliefPanel/purchasedBeliefsGrid.get_children() != null:
@@ -110,28 +175,53 @@ func updateSelf():
 func buildPD(type):
 	var newPD = beliefPD.instantiate()
 	match type:
-		"Healing Waters":
-			newPD.buildSelf("Healing Waters", $religionData.healingWatersIcon, "We utilize the few fresh water resources to motivate our followers.", true, $religionData.border1)
-		"Standing Stones":
-			newPD.buildSelf("Standing Stones", $religionData.standingStonesIcon, "What's up, we are indeed the Standing Stones, the famous band from Farsword.", true,  $religionData.border1)
-		"Valued Idolatry":
-			newPD.buildSelf("Valued Idolatry", $religionData.valuedIdolatryIcon, "Gold and Silver Artifacts are utilized to show how rich our God is.", true, $religionData.border1)
-		"Sacred Groves":
-			newPD.buildSelf("Sacred Groves", $religionData.sacredGrovesIcon, "These Groves be sacred as fuck.", true, $religionData.border1)
-		"Midsummer Celebrations":
-			newPD.buildSelf("Midsummer Celebrations", $religionData.midsummerCelebrationsIcon, "By partying super hard, our people will feel way better about themselvs.", true, $religionData.border1)
-		"Tree of Life":
-			newPD.buildSelf("Tree of Life", $religionData.treeOfLifeIcon, "Trees are everything and everywhere and make perfect indoctrination imagery for dummies.", true, $religionData.border1)
-		"Tower Control":
-			newPD.buildSelf("Tower Control", $religionData.towerControlIcon, "The scholars have implemented strict controls over mystical practice, channeling all spiritual energy through state-sanctioned channels.", true, $religionData.border1)
-		"Nature Sanctuaries":
-			newPD.buildSelf("Nature Sanctuaries", $religionData.natureSanctuariesIcon, "By harmonizing our churches with the natural world, we commune with the divine through unspoiled wilderness.", true, $religionData.border1)
-		"Conservative Orthodoxy":
-			newPD.buildSelf("Conservative Orthodoxy", $religionData.conservativeOrthodoxyIcon, "Our Church does not rely on modern revelation — all doctrine was divine at its founding and shall remain unchanged.", true, $religionData.border1)
-		"Sanctioned Cadaver Research":
-			newPD.buildSelf("Sanctioned Cadaver Research", $religionData.sanctionedCadaverResearchIcon, "Our faith will not obstruct the necessary scientific pursuit of medicine and natural philosophy.", true, $religionData.border1)
-		"Temple Height Restrictions":
-			newPD.buildSelf("Temple Height Restrictions", $religionData.templeHeightLawsIcon, "Our faith decrees no building shall surpass the height of our temples in any settlement.", true, $religionData.border1)
+		# ── American Doctrines ───────────────────────────────────────────────────
+		"Social Security Act":
+			newPD.buildSelf("Social Security Act", $religionData.healingWatersIcon, "Signed in 1935, the Social Security Act established federal old-age pensions and unemployment insurance.", true, $religionData.border1)
+		"National Monument Act":
+			newPD.buildSelf("National Monument Act", $religionData.standingStonesIcon, "The Antiquities Act gave the President authority to designate national monuments. Sacred geography has never been more official.", true, $religionData.border1)
+		"Sherman Antitrust Act":
+			newPD.buildSelf("Sherman Antitrust Act", $religionData.valuedIdolatryIcon, "The first federal law to limit monopolies and cartels. Markets, like elections, require competition to be legitimate.", true, $religionData.border1)
+		"Lacey Wildlife Act":
+			newPD.buildSelf("Lacey Wildlife Act", $religionData.sacredGrovesIcon, "The first federal wildlife protection law in the United States, prohibiting the trafficking of illegally taken fish, wildlife, and plants.", true, $religionData.border1)
+		"Federal Arts Endowment":
+			newPD.buildSelf("Federal Arts Endowment", $religionData.midsummerCelebrationsIcon, "Established in 1965, the National Endowment for the Arts made the federal government a patron of culture for the first time.", true, $religionData.border1)
+		"Homestead Act":
+			newPD.buildSelf("Homestead Act", $religionData.treeOfLifeIcon, "Signed by Lincoln in 1862, the Homestead Act offered 160 acres of public land to any American willing to farm it for five years.", true, $religionData.border1)
+		"Defense Production Act":
+			newPD.buildSelf("Defense Production Act", $religionData.towerControlIcon, "Passed in 1950, the Defense Production Act gave the President sweeping authority to direct industrial production toward national security needs.", true, $religionData.border1)
+		"Wilderness Act":
+			newPD.buildSelf("Wilderness Act", $religionData.natureSanctuariesIcon, "Signed in 1964, the Wilderness Act created a National Wilderness Preservation System — land where the hand of man shall not be felt.", true, $religionData.border1)
+		"First Amendment":
+			newPD.buildSelf("First Amendment", $religionData.conservativeOrthodoxyIcon, "Ratified in 1791, the First Amendment prohibits Congress from abridging freedom of speech, religion, the press, or assembly.", true, $religionData.border1)
+		"National Research Act":
+			newPD.buildSelf("National Research Act", $religionData.sanctionedCadaverResearchIcon, "Passed in 1974, establishing the first federal framework for ethical oversight of biomedical research.", true, $religionData.border1)
+		"Height of Buildings Act":
+			newPD.buildSelf("Height of Buildings Act", $religionData.templeHeightLawsIcon, "Enacted in 1910, permanently caps Washington D.C. buildings at 130 feet in deference to civic monuments.", true, $religionData.border1)
+		# ── Canadian Doctrines ───────────────────────────────────────────────────
+		"Canada Wildlife Act":
+			newPD.buildSelf("Canada Wildlife Act", $religionData.sacredGrovesIcon, "Enacted in 1973, established the federal framework for wildlife research, conservation, and protection across the Dominion.", true, $religionData.border1)
+		"Canada Council for the Arts Act":
+			newPD.buildSelf("Canada Council for the Arts Act", $religionData.midsummerCelebrationsIcon, "Founded in 1957, the Canada Council for the Arts has funded Canadian literature, music, visual art, and performance for generations.", true, $religionData.border1)
+		"Dominion Lands Act":
+			newPD.buildSelf("Dominion Lands Act", $religionData.treeOfLifeIcon, "Passed in 1872, opened the Canadian prairies to homestead settlement with 160-acre grants for those willing to farm the land for three years.", true, $religionData.border1)
+		"Historic Sites and Monuments Act":
+			newPD.buildSelf("Historic Sites and Monuments Act", $religionData.standingStonesIcon, "Formalized federal commemoration of places, persons, and events significant to Canadian history. The law that decides what the Dominion chooses to remember.", true, $religionData.border1)
+		"Combines Investigation Act":
+			newPD.buildSelf("Combines Investigation Act", $religionData.valuedIdolatryIcon, "Canada's first competition law, enacted in 1889. The Dominion regulated markets before it had a central bank.", true, $religionData.border1)
+		"Canada Health Act":
+			newPD.buildSelf("Canada Health Act", $religionData.healingWatersIcon, "Passed in 1984, established universality, comprehensiveness, accessibility, portability, and public administration as the pillars of Canadian health care.", true, $religionData.border1)
+		"National Parks Act":
+			newPD.buildSelf("National Parks Act", $religionData.natureSanctuariesIcon, "Canada's national parks system preserves wilderness for the benefit of all Canadians — 'for all time,' in the Act's own words.", true, $religionData.border1)
+		"Charter of Rights and Freedoms":
+			newPD.buildSelf("Charter of Rights and Freedoms", $religionData.conservativeOrthodoxyIcon, "Entrenched in the Constitution Act of 1982, guarantees fundamental rights to every person in Canada.", true, $religionData.border1)
+		"Medical Research Council Act":
+			newPD.buildSelf("Medical Research Council Act", $religionData.sanctionedCadaverResearchIcon, "The Medical Research Council funded biomedical science across Canada for three decades, building a tradition of publicly funded discovery.", true, $religionData.border1)
+		"National Building Code of Canada":
+			newPD.buildSelf("National Building Code of Canada", $religionData.templeHeightLawsIcon, "First published in 1941, sets minimum standards for construction safety across Canada.", true, $religionData.border1)
+		"War Measures Act":
+			newPD.buildSelf("War Measures Act", $religionData.towerControlIcon, "Enacted in 1914 and invoked three times, granted the Cabinet sweeping emergency powers. Celebrated as decisive and condemned as despotic.", true, $religionData.border1)
+		# ── American Icons ───────────────────────────────────────────────────────
 		"George Washington":
 			newPD.buildSelf("George Washington", $religionData.washingtonIcon, "The Father of the Nation — military discipline and civic virtue demand excellence from every farm, forge, and frontier outpost.", false, $religionData.border2)
 		"Benjamin Franklin":
@@ -151,7 +241,7 @@ func buildPD(type):
 		"Frederick Douglass":
 			newPD.buildSelf("Frederick Douglass", $religionData.douglassIcon, "Words so precise they still cut. Douglass's patronage elevates Libraries, Courthouses, and the uncomfortable power of truth.", false, $religionData.border3)
 		"Sitting Bull":
-			newPD.buildSelf("Sitting Bull", $religionData.sittingBullIcon, "Hunkpapa Lakota war chief and holy man. Nature Sanctuaries flourish, and buildings in wooded and river territories produce bonus resources.", false, $religionData.border5)
+			newPD.buildSelf("Sitting Bull", $religionData.sittingBullIcon, "Hunkpapa Lakota war chief and holy man. Wilderness Act flourishes, and buildings in wooded and river territories produce bonus resources.", false, $religionData.border5)
 		"Sojourner Truth":
 			newPD.buildSelf("Sojourner Truth", $religionData.sojournerTruthIcon, "Ain't I a woman? She asked the question that exposed every hypocrite in the room. Uplifts Farms and Temples, Harmony bonus in diverse provinces.", false, $religionData.border1)
 		"Chief Joseph":
@@ -172,6 +262,47 @@ func buildPD(type):
 			newPD.buildSelf("Jimmy Carter", $religionData.jimmyCarterIcon, "The peanut farmer who brokered peace and then went home and built houses for the poor. Quiet, persistent bonuses to everything, nothing flashy, compounding forever.", false, $religionData.border1)
 		"Dolores Huerta":
 			newPD.buildSelf("Dolores Huerta", $religionData.doloresHuertaIcon, "Co-founder of the United Farm Workers. Amplifies Cesar Chavez's farm bonuses if both are selected. Exceptional Harmony in provinces with mixed labor.", false, $religionData.border3)
+		# ── Canadian Icons ───────────────────────────────────────────────────────
+		"John A. Macdonald":
+			newPD.buildSelf("John A. Macdonald", $religionData.macdonaldIcon, "Father of Confederation and first Prime Minister of Canada. Built the Dominion through coalition, compromise, and the transcontinental railway.", false, $religionData.border2)
+		"George-Étienne Cartier":
+			newPD.buildSelf("George-Étienne Cartier", $religionData.cartierIcon, "Macdonald's indispensable partner who brought French Canada into Confederation. Without him, there is no Canada.", false, $religionData.border3)
+		"Wilfrid Laurier":
+			newPD.buildSelf("Wilfrid Laurier", $religionData.laurierIcon, "Canada's first francophone Prime Minister. His optimism built a country; his compromises haunted it.", false, $religionData.border1)
+		"Agnes Macphail":
+			newPD.buildSelf("Agnes Macphail", $religionData.macphailIcon, "First woman elected to the Canadian House of Commons. She was told she didn't belong in Parliament. She disagreed, repeatedly.", false, $religionData.border1)
+		"Laura Secord":
+			newPD.buildSelf("Laura Secord", $religionData.lauraSecordIcon, "Walked 19 miles through enemy lines to warn British forces of an impending attack at Beaver Dams. The garrison held.", false, $religionData.border4)
+		"Louis-Hippolyte LaFontaine":
+			newPD.buildSelf("Louis-Hippolyte LaFontaine", $religionData.laFontaineIcon, "The architect of responsible government in the Canadas. Proved that self-government was possible without revolution.", false, $religionData.border5)
+		"Tommy Douglas":
+			newPD.buildSelf("Tommy Douglas", $religionData.tommyDouglasIcon, "Father of Canadian Medicare. Introduced single-payer health insurance over furious opposition. He won. Repeatedly.", false, $religionData.border2)
+		"Viola Desmond":
+			newPD.buildSelf("Viola Desmond", $religionData.violaDesmondIcon, "Her refusal to leave a segregated cinema section in 1946 became a landmark in Canadian civil rights history. She now appears on the ten-dollar bill.", false, $religionData.border4)
+		"Lester B. Pearson":
+			newPD.buildSelf("Lester B. Pearson", $religionData.pearsonIcon, "Nobel Peace Prize laureate and architect of UN peacekeeping. Gave Canada the Maple Leaf flag, universal health care, and the Canada Pension Plan.", false, $religionData.border3)
+		"Louis Riel":
+			newPD.buildSelf("Louis Riel", $religionData.louisRielIcon, "Leader of two Métis resistances and founder of Manitoba. Hanged for treason in 1885. Now considered a Father of Confederation by the Manitoba legislature.", false, $religionData.border5)
+		"Emily Murphy":
+			newPD.buildSelf("Emily Murphy", $religionData.emilyMurphyIcon, "First female magistrate in the British Empire. Led the Famous Five in the Persons Case of 1929, establishing that women were legally 'persons'.", false, $religionData.border1)
+		"Nellie McClung":
+			newPD.buildSelf("Nellie McClung", $religionData.nellieMcClungIcon, "Author, suffragist, and member of the Famous Five. One of the most effective political communicators in Canadian history.", false, $religionData.border2)
+		"Terry Fox":
+			newPD.buildSelf("Terry Fox", $religionData.terryFoxIcon, "Ran 5,373 kilometres across Canada on a prosthetic leg to raise money for cancer research. His Marathon of Hope continues without him.", false, $religionData.border4)
+		"Chief Dan George":
+			newPD.buildSelf("Chief Dan George", $religionData.chiefDanGeorgeIcon, "Chief of the Tsleil-Waututh Nation and actor who used both platforms to speak with dignity about Indigenous dispossession.", false, $religionData.border5)
+		"Buffy Sainte-Marie":
+			newPD.buildSelf("Buffy Sainte-Marie", $religionData.buffySaintMarieIcon, "Cree musician and activist whose songs reached audiences that political speeches never could. She was blacklisted by both governments. She kept singing.", false, $religionData.border3)
+		"David Suzuki":
+			newPD.buildSelf("David Suzuki", $religionData.davidSuzukiIcon, "Geneticist, broadcaster, and Canada's most prominent environmental voice. Five decades translating science into public urgency.", false, $religionData.border1)
+		"Roméo Dallaire":
+			newPD.buildSelf("Roméo Dallaire", $religionData.romeoDallaireIcon, "Force Commander of UNAMIR during the Rwandan genocide. He witnessed the worst of humanity and refused to stop fighting for peace.", false, $religionData.border2)
+		"Thérèse Casgrain":
+			newPD.buildSelf("Thérèse Casgrain", $religionData.thereseCasgrainIcon, "Quebec suffragist who led the campaign for women's provincial voting rights — finally granted in 1940. She accepted no timeline she had not agreed to.", false, $religionData.border4)
+		"Mary Two-Axe Earley":
+			newPD.buildSelf("Mary Two-Axe Earley", $religionData.maryTwoAxeEarleyIcon, "Mohawk activist who fought the discriminatory clause of the Indian Act stripping Indigenous women of status. Bill C-31 corrected it in 1985.", false, $religionData.border5)
+		"Pierre Elliott Trudeau":
+			newPD.buildSelf("Pierre Elliott Trudeau", $religionData.pierreTrudeauIcon, "Philosopher and Prime Minister who gave Canada the Official Languages Act, the Charter of Rights and Freedoms, and the Constitution Act of 1982.", false, $religionData.border3)
 	match newPD.doctrineType:
 		true:
 			$BeliefPanel/purchasedBeliefsGrid.add_child(newPD)

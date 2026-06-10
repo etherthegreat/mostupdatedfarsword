@@ -1028,7 +1028,7 @@ func matchPlayerUnlockables(playerCountryNode):
 					dollarsPerLevel += 2
 				if law.lawType == "Continental Engineers":
 					manpowerPerLevel += 300
-				if law.lawType == "Navigation Acts":
+				if law.lawType == "Merchant Marine Act":
 					dollarsPerLevel += 1
 					mandateCostPerLevel += 2
 			_apply_governor_archetype_bonus("Workshop")
@@ -1202,7 +1202,7 @@ func matchPlayerUnlockables(playerCountryNode):
 					dollarsPerLevel += 2
 					woodCostPerLevel += 2
 			for law in playerCountry.lawsInConstitution:
-				if law.lawType == "Navigation Acts":
+				if law.lawType == "Merchant Marine Act":
 					dollarsPerLevel += 1
 					mandateCostPerLevel += 2
 				if law.lawType == "Non-Importation Agreement":
@@ -1551,75 +1551,143 @@ func _apply_belief_bonuses(bType: String) -> void:
 		return
 	for belief in playerCountry.selectedBeliefs:
 		match belief.beliefType:
-			# ── Doctrines (→ Providence) ────────────────────────────────────────
-			"Healing Waters":
+			# ── American Doctrines (→ Providence) ──────────────────────────────────
+			"Social Security Act":
 				if bType == "Resort":
 					happinessPerLevel += 1
-					happinessDic["Doctrine: Healing Waters"] = (1 * buildingLevel)
+					happinessDic["Doctrine: Social Security Act"] = (1 * buildingLevel)
 				if bType == "Monument":
 					culturePerLevel += 1
-					cultureDic["Doctrine: Healing Waters"] = (1 * buildingLevel)
-			"Standing Stones":
+					cultureDic["Doctrine: Social Security Act"] = (1 * buildingLevel)
+			"National Monument Act":
 				if bType == "Monument":
 					mandatePerLevel += 1
-					mandateDic["Doctrine: Standing Stones"] = (1 * buildingLevel)
-			"Valued Idolatry":
+					mandateDic["Doctrine: National Monument Act"] = (1 * buildingLevel)
+			"Sherman Antitrust Act":
 				if bType == "Market":
 					dollarsPerLevel += 1
-					dollarsDic["Doctrine: Valued Idolatry"] = (1 * buildingLevel)
+					dollarsDic["Doctrine: Sherman Antitrust Act"] = (1 * buildingLevel)
 				if bType == "Mine":
 					metalPerLevel += 1
-					metalDic["Doctrine: Valued Idolatry"] = (1 * buildingLevel)
-			"Sacred Groves":
+					metalDic["Doctrine: Sherman Antitrust Act"] = (1 * buildingLevel)
+			"Lacey Wildlife Act":
 				if bType == "Camp":
 					woodPerLevel += 1
-					woodDic["Doctrine: Sacred Groves"] = (1 * buildingLevel)
-			"Midsummer Celebrations":
+					woodDic["Doctrine: Lacey Wildlife Act"] = (1 * buildingLevel)
+			"Federal Arts Endowment":
 				if bType == "Theater" or bType == "Faire":
 					culturePerLevel += 1
-					cultureDic["Doctrine: Midsummer Celebrations"] = (1 * buildingLevel)
+					cultureDic["Doctrine: Federal Arts Endowment"] = (1 * buildingLevel)
 				if bType == "Resort":
 					happinessPerLevel += 1
-					happinessDic["Doctrine: Midsummer Celebrations"] = (1 * buildingLevel)
-			"Tree of Life":
+					happinessDic["Doctrine: Federal Arts Endowment"] = (1 * buildingLevel)
+			"Homestead Act":
 				if bType == "Farm":
 					foodPerLevel += 1
-					foodDic["Doctrine: Tree of Life"] = (1 * buildingLevel)
+					foodDic["Doctrine: Homestead Act"] = (1 * buildingLevel)
 				if bType == "Camp":
 					woodPerLevel += 1
-					woodDic["Doctrine: Tree of Life"] = (1 * buildingLevel)
-			"Tower Control":
+					woodDic["Doctrine: Homestead Act"] = (1 * buildingLevel)
+			"Defense Production Act":
 				if bType == "Tower":
 					magicPerLevel += 1
-					magicDic["Doctrine: Tower Control"] = (1 * buildingLevel)
+					magicDic["Doctrine: Defense Production Act"] = (1 * buildingLevel)
 				if bType == "Library":
 					sciencePerLevel += 1
-					scienceDic["Doctrine: Tower Control"] = (1 * buildingLevel)
-			"Nature Sanctuaries":
+					scienceDic["Doctrine: Defense Production Act"] = (1 * buildingLevel)
+			"Wilderness Act":
 				if bType == "Camp":
 					woodPerLevel += 1
-					woodDic["Doctrine: Nature Sanctuaries"] = (1 * buildingLevel)
+					woodDic["Doctrine: Wilderness Act"] = (1 * buildingLevel)
 				if bType == "Barracks":
 					manpowerPerLevel += 50
-					manpowerDic["Doctrine: Nature Sanctuaries"] = (50 * buildingLevel)
-			"Conservative Orthodoxy":
+					manpowerDic["Doctrine: Wilderness Act"] = (50 * buildingLevel)
+			"First Amendment":
 				if bType == "Monument":
 					mandatePerLevel += 1
-					mandateDic["Doctrine: Conservative Orthodoxy"] = (1 * buildingLevel)
+					mandateDic["Doctrine: First Amendment"] = (1 * buildingLevel)
 				if bType == "Courthouse":
 					mandatePerLevel += 1
-					mandateDic["Doctrine: Conservative Orthodoxy"] = (1 * buildingLevel)
-			"Sanctioned Cadaver Research":
+					mandateDic["Doctrine: First Amendment"] = (1 * buildingLevel)
+			"National Research Act":
 				if bType == "Library":
 					sciencePerLevel += 1
-					scienceDic["Doctrine: Sanctioned Cadaver Research"] = (1 * buildingLevel)
-			"Temple Height Restrictions":
+					scienceDic["Doctrine: National Research Act"] = (1 * buildingLevel)
+			"Height of Buildings Act":
 				if bType == "Monument":
 					culturePerLevel += 1
 					mandatePerLevel += 1
-					cultureDic["Doctrine: Temple Height Restrictions"] = (1 * buildingLevel)
-					mandateDic["Doctrine: Temple Height Restrictions"] = (1 * buildingLevel)
-			# ── Icons (→ Reason) ─────────────────────────────────────────────────
+					cultureDic["Doctrine: Height of Buildings Act"] = (1 * buildingLevel)
+					mandateDic["Doctrine: Height of Buildings Act"] = (1 * buildingLevel)
+			# ── Canadian Doctrines (→ Providence) ───────────────────────────────
+			"Canada Wildlife Act":
+				if bType == "Camp":
+					woodPerLevel += 1
+					woodDic["Doctrine: Canada Wildlife Act"] = (1 * buildingLevel)
+			"Canada Council for the Arts Act":
+				if bType == "Theater" or bType == "Faire":
+					culturePerLevel += 1
+					cultureDic["Doctrine: Canada Council for the Arts Act"] = (1 * buildingLevel)
+				if bType == "Resort":
+					happinessPerLevel += 1
+					happinessDic["Doctrine: Canada Council for the Arts Act"] = (1 * buildingLevel)
+			"Dominion Lands Act":
+				if bType == "Farm":
+					foodPerLevel += 1
+					foodDic["Doctrine: Dominion Lands Act"] = (1 * buildingLevel)
+				if bType == "Camp":
+					woodPerLevel += 1
+					woodDic["Doctrine: Dominion Lands Act"] = (1 * buildingLevel)
+			"Historic Sites and Monuments Act":
+				if bType == "Monument":
+					mandatePerLevel += 1
+					mandateDic["Doctrine: Historic Sites and Monuments Act"] = (1 * buildingLevel)
+			"Combines Investigation Act":
+				if bType == "Market":
+					dollarsPerLevel += 1
+					dollarsDic["Doctrine: Combines Investigation Act"] = (1 * buildingLevel)
+				if bType == "Mine":
+					metalPerLevel += 1
+					metalDic["Doctrine: Combines Investigation Act"] = (1 * buildingLevel)
+			"Canada Health Act":
+				if bType == "Resort":
+					happinessPerLevel += 1
+					happinessDic["Doctrine: Canada Health Act"] = (1 * buildingLevel)
+				if bType == "Monument":
+					culturePerLevel += 1
+					cultureDic["Doctrine: Canada Health Act"] = (1 * buildingLevel)
+			"National Parks Act":
+				if bType == "Camp":
+					woodPerLevel += 1
+					woodDic["Doctrine: National Parks Act"] = (1 * buildingLevel)
+				if bType == "Barracks":
+					manpowerPerLevel += 50
+					manpowerDic["Doctrine: National Parks Act"] = (50 * buildingLevel)
+			"Charter of Rights and Freedoms":
+				if bType == "Monument":
+					mandatePerLevel += 1
+					mandateDic["Doctrine: Charter of Rights and Freedoms"] = (1 * buildingLevel)
+				if bType == "Courthouse":
+					mandatePerLevel += 1
+					mandateDic["Doctrine: Charter of Rights and Freedoms"] = (1 * buildingLevel)
+			"Medical Research Council Act":
+				if bType == "Library":
+					sciencePerLevel += 1
+					scienceDic["Doctrine: Medical Research Council Act"] = (1 * buildingLevel)
+			"National Building Code of Canada":
+				if bType == "Monument":
+					culturePerLevel += 1
+					mandatePerLevel += 1
+					cultureDic["Doctrine: National Building Code of Canada"] = (1 * buildingLevel)
+					mandateDic["Doctrine: National Building Code of Canada"] = (1 * buildingLevel)
+			"War Measures Act":
+				if bType == "Tower":
+					magicPerLevel += 1
+					magicDic["Doctrine: War Measures Act"] = (1 * buildingLevel)
+				if bType == "Library":
+					sciencePerLevel += 1
+					scienceDic["Doctrine: War Measures Act"] = (1 * buildingLevel)
+			# ── American Icons (→ Reason) ────────────────────────────────────────
 			"George Washington":
 				if bType == "Barracks":
 					manpowerPerLevel += 50
@@ -1750,6 +1818,141 @@ func _apply_belief_bonuses(bType: String) -> void:
 				if bType == "Farm":
 					foodPerLevel += 1
 					foodDic["Icon: Dolores Huerta"] = (1 * buildingLevel)
+			# ── Canadian Icons (→ Reason) ────────────────────────────────────────
+			"John A. Macdonald":
+				if bType == "Courthouse":
+					mandatePerLevel += 1
+					mandateDic["Icon: John A. Macdonald"] = (1 * buildingLevel)
+				if bType == "Monument":
+					culturePerLevel += 1
+					cultureDic["Icon: John A. Macdonald"] = (1 * buildingLevel)
+			"George-Étienne Cartier":
+				if bType == "Library":
+					culturePerLevel += 1
+					cultureDic["Icon: George-Étienne Cartier"] = (1 * buildingLevel)
+				if bType == "Courthouse":
+					mandatePerLevel += 1
+					mandateDic["Icon: George-Étienne Cartier"] = (1 * buildingLevel)
+			"Wilfrid Laurier":
+				if bType == "Market":
+					dollarsPerLevel += 1
+					dollarsDic["Icon: Wilfrid Laurier"] = (1 * buildingLevel)
+				if bType == "Monument":
+					culturePerLevel += 1
+					cultureDic["Icon: Wilfrid Laurier"] = (1 * buildingLevel)
+			"Agnes Macphail":
+				if bType == "Courthouse":
+					mandatePerLevel += 1
+					mandateDic["Icon: Agnes Macphail"] = (1 * buildingLevel)
+				if bType == "Library":
+					culturePerLevel += 1
+					cultureDic["Icon: Agnes Macphail"] = (1 * buildingLevel)
+			"Laura Secord":
+				if bType == "Barracks":
+					manpowerPerLevel += 50
+					weaponsPerLevel += 1
+					manpowerDic["Icon: Laura Secord"] = (50 * buildingLevel)
+					weaponsDic["Icon: Laura Secord"] = (1 * buildingLevel)
+			"Louis-Hippolyte LaFontaine":
+				if bType == "Courthouse":
+					mandatePerLevel += 2
+					mandateDic["Icon: Louis-Hippolyte LaFontaine"] = (2 * buildingLevel)
+			"Tommy Douglas":
+				if bType == "Resort":
+					happinessPerLevel += 1
+					happinessDic["Icon: Tommy Douglas"] = (1 * buildingLevel)
+				if bType == "Monument":
+					culturePerLevel += 1
+					cultureDic["Icon: Tommy Douglas"] = (1 * buildingLevel)
+			"Viola Desmond":
+				if bType == "Library":
+					culturePerLevel += 1
+					cultureDic["Icon: Viola Desmond"] = (1 * buildingLevel)
+				if bType == "Courthouse":
+					mandatePerLevel += 1
+					mandateDic["Icon: Viola Desmond"] = (1 * buildingLevel)
+			"Lester B. Pearson":
+				if bType == "Monument":
+					culturePerLevel += 1
+					mandatePerLevel += 1
+					cultureDic["Icon: Lester B. Pearson"] = (1 * buildingLevel)
+					mandateDic["Icon: Lester B. Pearson"] = (1 * buildingLevel)
+			"Louis Riel":
+				if bType == "Camp":
+					woodPerLevel += 1
+					woodDic["Icon: Louis Riel"] = (1 * buildingLevel)
+				if bType == "Farm":
+					foodPerLevel += 1
+					foodDic["Icon: Louis Riel"] = (1 * buildingLevel)
+			"Emily Murphy":
+				if bType == "Courthouse":
+					mandatePerLevel += 1
+					mandateDic["Icon: Emily Murphy"] = (1 * buildingLevel)
+				if bType == "Library":
+					culturePerLevel += 1
+					cultureDic["Icon: Emily Murphy"] = (1 * buildingLevel)
+			"Nellie McClung":
+				if bType == "Farm":
+					foodPerLevel += 1
+					foodDic["Icon: Nellie McClung"] = (1 * buildingLevel)
+				if bType == "Monument":
+					culturePerLevel += 1
+					cultureDic["Icon: Nellie McClung"] = (1 * buildingLevel)
+			"Terry Fox":
+				if bType == "Barracks":
+					manpowerPerLevel += 50
+					manpowerDic["Icon: Terry Fox"] = (50 * buildingLevel)
+				if bType == "Resort":
+					happinessPerLevel += 1
+					happinessDic["Icon: Terry Fox"] = (1 * buildingLevel)
+			"Chief Dan George":
+				if bType == "Camp":
+					woodPerLevel += 1
+					woodDic["Icon: Chief Dan George"] = (1 * buildingLevel)
+				if bType == "Library":
+					culturePerLevel += 1
+					cultureDic["Icon: Chief Dan George"] = (1 * buildingLevel)
+			"Buffy Sainte-Marie":
+				if bType == "Library":
+					culturePerLevel += 1
+					cultureDic["Icon: Buffy Sainte-Marie"] = (1 * buildingLevel)
+				if bType == "Monument":
+					culturePerLevel += 1
+					cultureDic["Icon: Buffy Sainte-Marie"] = (1 * buildingLevel)
+			"David Suzuki":
+				if bType == "Camp":
+					woodPerLevel += 1
+					woodDic["Icon: David Suzuki"] = (1 * buildingLevel)
+				if bType == "Farm":
+					foodPerLevel += 1
+					foodDic["Icon: David Suzuki"] = (1 * buildingLevel)
+			"Roméo Dallaire":
+				if bType == "Barracks":
+					manpowerPerLevel += 50
+					weaponsPerLevel += 1
+					manpowerDic["Icon: Roméo Dallaire"] = (50 * buildingLevel)
+					weaponsDic["Icon: Roméo Dallaire"] = (1 * buildingLevel)
+			"Thérèse Casgrain":
+				if bType == "Courthouse":
+					mandatePerLevel += 1
+					mandateDic["Icon: Thérèse Casgrain"] = (1 * buildingLevel)
+				if bType == "Library":
+					culturePerLevel += 1
+					cultureDic["Icon: Thérèse Casgrain"] = (1 * buildingLevel)
+			"Mary Two-Axe Earley":
+				if bType == "Courthouse":
+					mandatePerLevel += 1
+					mandateDic["Icon: Mary Two-Axe Earley"] = (1 * buildingLevel)
+				if bType == "Farm":
+					foodPerLevel += 1
+					foodDic["Icon: Mary Two-Axe Earley"] = (1 * buildingLevel)
+			"Pierre Elliott Trudeau":
+				if bType == "Monument":
+					culturePerLevel += 1
+					cultureDic["Icon: Pierre Elliott Trudeau"] = (1 * buildingLevel)
+				if bType == "Courthouse":
+					mandatePerLevel += 1
+					mandateDic["Icon: Pierre Elliott Trudeau"] = (1 * buildingLevel)
 
 var dollarsTax: float
 var happinessTax: float

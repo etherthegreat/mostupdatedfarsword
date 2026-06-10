@@ -274,10 +274,24 @@ func NewGameBuild() -> void:
 		addTechnologicalDiscovery(tech)
  
 	# Starting beliefs (load belief lists then add selected)
-	loadBeliefsList("GenericDoc1")
-	loadBeliefsList("GenericDoc2")
-	loadBeliefsList("GenericGods1")
-	loadBeliefsList("GenericGods2")
+	match CID:
+		"USA":
+			loadBeliefsList("GenericDoc1")
+			loadBeliefsList("GenericDoc2")
+			loadBeliefsList("PDTDoc1")
+			loadBeliefsList("GenericGods1")
+			loadBeliefsList("GenericGods2")
+		"CA":
+			loadBeliefsList("CADoc1")
+			loadBeliefsList("CADoc2")
+			loadBeliefsList("CADocSpecial")
+			loadBeliefsList("CAGods1")
+			loadBeliefsList("CAGods2")
+		_:
+			loadBeliefsList("GenericDoc1")
+			loadBeliefsList("GenericDoc2")
+			loadBeliefsList("GenericGods1")
+			loadBeliefsList("GenericGods2")
 	for belief in data.get("startingBeliefs", []):
 		addReligiousBelief(belief)
  
@@ -398,66 +412,66 @@ func createFactionReward(rewardType):
 	match rewardType:
 		# Sons of Liberty
 		"Militia Muster":
-			addGovernmentLaw("Armed Peasantry")
-			addGovernmentLaw("Homeland Defense")
+			addGovernmentLaw("Second Amendment")
+			addGovernmentLaw("National Security Act")
 		"Merchant Networks":
-			addGovernmentLaw("Navigation Acts")
+			addGovernmentLaw("Merchant Marine Act")
 		"Letters of Marque":
 			addGovernorToGovernorPool("Calico Jack", 1)
 		# Continental Congress
 		"Articles of Confederation":
-			addGovernmentLaw("Local Elections")
-			addGovernmentLaw("Democratic Mandate")
+			addGovernmentLaw("Municipal Reform Act")
+			addGovernmentLaw("Voting Rights Act")
 		"Foreign Diplomacy":
 			pass
 		"Constitutional Convention":
-			addGovernmentLaw("Democratic Mandate")
+			addGovernmentLaw("Voting Rights Act")
 		# Common Cause
 		"Frontier Homesteads":
-			addGovernmentLaw("Armed Peasantry")
+			addGovernmentLaw("Second Amendment")
 		"The People's Assembly":
-			addGovernmentLaw("Universal Citizenship")
+			addGovernmentLaw("Civil Rights Act")
 		"Land Reform":
 			pass
 		# Abolitionist League
 		"Freedom Papers":
-			addGovernmentLaw("Universal Citizenship")
-			addGovernmentLaw("Disability Care")
+			addGovernmentLaw("Civil Rights Act")
+			addGovernmentLaw("Americans with Disabilities Act")
 		"Underground Railroad":
 			addGovernorToGovernorPool("Phillis Wheatley", 1)
 		"Universal Emancipation":
-			addGovernmentLaw("Democratic Mandate")
+			addGovernmentLaw("Voting Rights Act")
 		# Free Workers Union
 		"Guild Charters":
 			pass
 		"General Strike":
-			addGovernmentLaw("Disability Care")
+			addGovernmentLaw("Americans with Disabilities Act")
 		"Workers Commonwealth":
-			addGovernmentLaw("Universal Citizenship")
+			addGovernmentLaw("Civil Rights Act")
 		# French Habitants
 		"Quebec Act Recognition":
-			addGovernmentLaw("Local Elections")
+			addGovernmentLaw("Municipal Elections Act")
 		"Habitants Alliance":
 			addGovernorToGovernorPool("Pierre Renard", 1)
 		"Republic of Quebec":
-			addGovernmentLaw("Universal Citizenship")
-			addGovernmentLaw("Democratic Mandate")
+			addGovernmentLaw("Canadian Citizenship Act")
+			addGovernmentLaw("Dominion Elections Act")
 		# Loyalist Settlers
 		"Crown Defectors":
-			addGovernmentLaw("Homeland Defense")
+			addGovernmentLaw("National Defence Act")
 		"Pragmatic Compact":
 			addGovernorToGovernorPool("Benjamin Tallmadge", 2)
 		"New Republic Converts":
-			addGovernmentLaw("Navigation Acts")
-			addGovernmentLaw("Democratic Mandate")
+			addGovernmentLaw("Canada Shipping Act")
+			addGovernmentLaw("Dominion Elections Act")
 		# Haudenosaunee Confederacy
 		"Treaty of Friendship":
-			addGovernmentLaw("Universal Citizenship")
+			addGovernmentLaw("Canadian Citizenship Act")
 		"Haudenosaunee Alliance":
 			pass
 		"Sovereign Partnership":
-			addGovernmentLaw("Universal Citizenship")
-			addGovernmentLaw("Disability Care")
+			addGovernmentLaw("Canadian Citizenship Act")
+			addGovernmentLaw("Accessible Canada Act")
 		# Coureurs des Bois
 		"Trade Routes":
 			pass
@@ -469,7 +483,7 @@ func createFactionReward(rewardType):
 		"Port Alliance":
 			pass
 		"Atlantic Commerce":
-			addGovernmentLaw("Navigation Acts")
+			addGovernmentLaw("Merchant Marine Act")
 		"Maritime Union":
 			pass
 	pass
@@ -670,25 +684,48 @@ func loadBeliefsList(listTitle):
 			var PDTGods1Array: Array = $religionData.PDTGods1
 			for String in PDTGods1Array:
 				availableGods.append(String)
+		"CADoc1":
+			var CADoc1Array: Array = $religionData.CADoc1
+			for String in CADoc1Array:
+				availableDocs.append(String)
+		"CADoc2":
+			var CADoc2Array: Array = $religionData.CADoc2
+			for String in CADoc2Array:
+				availableDocs.append(String)
+		"CADocSpecial":
+			var CADocSpecialArray: Array = $religionData.CADocSpecial
+			for String in CADocSpecialArray:
+				availableDocs.append(String)
+		"CAGods1":
+			var CAGods1Array: Array = $religionData.CAGods1
+			for String in CAGods1Array:
+				availableGods.append(String)
+		"CAGods2":
+			var CAGods2Array: Array = $religionData.CAGods2
+			for String in CAGods2Array:
+				availableGods.append(String)
 	pass
 
 const FACTION_GATED_LAWS: Array = [
-	"Democratic Mandate",
-	"Universal Citizenship",
-	"Disability Care",
+	"Voting Rights Act",
+	"Civil Rights Act",
+	"Americans with Disabilities Act",
+	"Dominion Elections Act",
+	"Canadian Citizenship Act",
+	"Accessible Canada Act",
 ]
 
 func _initialize_purchasable_laws() -> void:
 	match CID:
 		"USA":
-			addGovernmentLaw("Armed Peasantry")
-			addGovernmentLaw("Navigation Acts")
-			addGovernmentLaw("Homeland Defense")
-			addGovernmentLaw("Local Elections")
+			addGovernmentLaw("Second Amendment")
+			addGovernmentLaw("Merchant Marine Act")
+			addGovernmentLaw("National Security Act")
+			addGovernmentLaw("Municipal Reform Act")
 		"CA":
-			addGovernmentLaw("Homeland Defense")
-			addGovernmentLaw("Local Elections")
-			addGovernmentLaw("Armed Peasantry")
+			addGovernmentLaw("National Defence Act")
+			addGovernmentLaw("Municipal Elections Act")
+			addGovernmentLaw("Militia Act")
 
 func addGovernmentLaw(Name):
 	for existing in unlockedLaws:

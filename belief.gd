@@ -7,28 +7,53 @@ var faithBelief: bool
 
 func buildBelief(type):
 	match type:
-		"Healing Waters":
+		# ── American Doctrines ───────────────────────────────────────────────────
+		"Social Security Act":
 			faithBelief = false
-		"Standing Stones":
+		"National Monument Act":
 			faithBelief = false
-		"Sacred Groves":
+		"Lacey Wildlife Act":
 			faithBelief = false
-		"Valued Idolatry":
+		"Sherman Antitrust Act":
 			faithBelief = false
-		"Midsummer Celebrations":
+		"Federal Arts Endowment":
 			faithBelief = false
-		"Tree of Life":
+		"Homestead Act":
 			faithBelief = false
-		"Tower Control":
+		"Defense Production Act":
 			faithBelief = false
-		"Nature Sanctuaries":
+		"Wilderness Act":
 			faithBelief = false
-		"Conservative Orthodoxy":
+		"First Amendment":
 			faithBelief = false
-		"Sanctioned Cadaver Research":
+		"National Research Act":
 			faithBelief = false
-		"Temple Height Restrictions":
+		"Height of Buildings Act":
 			faithBelief = false
+		# ── Canadian Doctrines ───────────────────────────────────────────────────
+		"Canada Wildlife Act":
+			faithBelief = false
+		"Canada Council for the Arts Act":
+			faithBelief = false
+		"Dominion Lands Act":
+			faithBelief = false
+		"Historic Sites and Monuments Act":
+			faithBelief = false
+		"Combines Investigation Act":
+			faithBelief = false
+		"Canada Health Act":
+			faithBelief = false
+		"National Parks Act":
+			faithBelief = false
+		"Charter of Rights and Freedoms":
+			faithBelief = false
+		"Medical Research Council Act":
+			faithBelief = false
+		"National Building Code of Canada":
+			faithBelief = false
+		"War Measures Act":
+			faithBelief = false
+		# ── American Icons ───────────────────────────────────────────────────────
 		"George Washington":
 			faithBelief = true
 		"Benjamin Franklin":
@@ -68,5 +93,46 @@ func buildBelief(type):
 		"Jimmy Carter":
 			faithBelief = true
 		"Dolores Huerta":
+			faithBelief = true
+		# ── Canadian Icons ───────────────────────────────────────────────────────
+		"John A. Macdonald":
+			faithBelief = true
+		"George-Étienne Cartier":
+			faithBelief = true
+		"Wilfrid Laurier":
+			faithBelief = true
+		"Agnes Macphail":
+			faithBelief = true
+		"Laura Secord":
+			faithBelief = true
+		"Louis-Hippolyte LaFontaine":
+			faithBelief = true
+		"Tommy Douglas":
+			faithBelief = true
+		"Viola Desmond":
+			faithBelief = true
+		"Lester B. Pearson":
+			faithBelief = true
+		"Louis Riel":
+			faithBelief = true
+		"Emily Murphy":
+			faithBelief = true
+		"Nellie McClung":
+			faithBelief = true
+		"Terry Fox":
+			faithBelief = true
+		"Chief Dan George":
+			faithBelief = true
+		"Buffy Sainte-Marie":
+			faithBelief = true
+		"David Suzuki":
+			faithBelief = true
+		"Roméo Dallaire":
+			faithBelief = true
+		"Thérèse Casgrain":
+			faithBelief = true
+		"Mary Two-Axe Earley":
+			faithBelief = true
+		"Pierre Elliott Trudeau":
 			faithBelief = true
 	pass

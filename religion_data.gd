@@ -16,6 +16,12 @@ var PDTDoc2: Array = []
 var PDTGods1: Array = []
 var PDTGods2: Array = []
 
+var CADoc1: Array = []
+var CADoc2: Array = []
+var CADocSpecial: Array = []
+var CAGods1: Array = []
+var CAGods2: Array = []
+
 #visualIconsLoaded
 var sacredGrovesIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1150.JPG")
 var sacredGrovesBWIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1150 - Copy.JPG")
@@ -85,6 +91,50 @@ var jimmyCarterBWIcon: Texture = load("res://art assets/finishedAssets/religious
 var doloresHuertaIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1202.PNG")
 var doloresHuertaBWIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1202copy.PNG")
 
+# Canadian Icons — placeholder art (reuses American icon textures until portraits are commissioned)
+# CAGods1 — Founding Era (6 items): reuse IMG_1156–1161
+var macdonaldIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1156.JPG")
+var macdonaldBWIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1156 - Copy.JPG")
+var cartierIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1157.JPG")
+var cartierBWIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1157 - Copy.JPG")
+var laurierIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1158.JPG")
+var laurierBWIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1158 - Copy.JPG")
+var macphailIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1159.JPG")
+var macphailBWIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1159 - Copy.JPG")
+var lauraSecordIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1160.JPG")
+var lauraSecordBWIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1160 - Copy.JPG")
+var laFontaineIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1161.JPG")
+var laFontaineBWIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1161 - Copy.JPG")
+# CAGods2 — Modern Era (14 items): reuse IMG_1194, 1199, 1201, 1202 cycling
+var tommyDouglasIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1194.PNG")
+var tommyDouglasBWIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1194 - Copy.PNG")
+var violaDesmondIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1199.PNG")
+var violaDesmondBWIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1199 - Copy.PNG")
+var pearsonIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1201.PNG")
+var pearsonBWIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1201 - Copy.PNG")
+var louisRielIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1202.PNG")
+var louisRielBWIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1202copy.PNG")
+var emilyMurphyIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1194.PNG")
+var emilyMurphyBWIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1194 - Copy.PNG")
+var nellieMcClungIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1199.PNG")
+var nellieMcClungBWIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1199 - Copy.PNG")
+var terryFoxIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1201.PNG")
+var terryFoxBWIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1201 - Copy.PNG")
+var chiefDanGeorgeIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1202.PNG")
+var chiefDanGeorgeBWIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1202copy.PNG")
+var buffySaintMarieIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1194.PNG")
+var buffySaintMarieBWIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1194 - Copy.PNG")
+var davidSuzukiIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1199.PNG")
+var davidSuzukiBWIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1199 - Copy.PNG")
+var romeoDallaireIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1201.PNG")
+var romeoDallaireBWIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1201 - Copy.PNG")
+var thereseCasgrainIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1202.PNG")
+var thereseCasgrainBWIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1202copy.PNG")
+var maryTwoAxeEarleyIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1194.PNG")
+var maryTwoAxeEarleyBWIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1194 - Copy.PNG")
+var pierreTrudeauIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1199.PNG")
+var pierreTrudeauBWIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1199 - Copy.PNG")
+
 #borderSprites
 var border1 = load("res://art assets/finishedAssets/religiousIcons/IMG_1146.PNG")
 var border2 = load("res://art assets/finishedAssets/religiousIcons/IMG_1155.PNG")
@@ -93,9 +143,14 @@ var border4 = load("res://art assets/finishedAssets/religiousIcons/IMG_1153.PNG"
 var border5 = load("res://art assets/finishedAssets/religiousIcons/IMG_1152.PNG")
 
 func buildSelf():
-	genericDoc1 = ["Sacred Groves", "Midsummer Celebrations", "Tree of Life", "Standing Stones", "Valued Idolatry", "Healing Waters"]
-	PDTDoc1 = ["Tower Control"]
+	genericDoc1 = ["Lacey Wildlife Act", "Federal Arts Endowment", "Homestead Act", "National Monument Act", "Sherman Antitrust Act", "Social Security Act"]
+	PDTDoc1 = ["Defense Production Act"]
 	genericGods1 = ["George Washington", "Benjamin Franklin", "Abigail Adams", "Alexander Hamilton", "Phillis Wheatley", "Thomas Jefferson"]
-	genericDoc2 = ["Nature Sanctuaries", "Conservative Orthodoxy", "Sanctioned Cadaver Research", "Temple Height Restrictions"]
+	genericDoc2 = ["Wilderness Act", "First Amendment", "National Research Act", "Height of Buildings Act"]
 	genericGods2 = ["Abraham Lincoln", "Harriet Tubman", "Frederick Douglass", "Sitting Bull", "Sojourner Truth", "Chief Joseph", "Theodore Roosevelt", "Susan B. Anthony", "Ida B. Wells", "Eleanor Roosevelt", "Martin Luther King Jr.", "Cesar Chavez", "Jimmy Carter", "Dolores Huerta"]
+	CADoc1 = ["Canada Wildlife Act", "Canada Council for the Arts Act", "Dominion Lands Act", "Historic Sites and Monuments Act", "Combines Investigation Act", "Canada Health Act"]
+	CADoc2 = ["National Parks Act", "Charter of Rights and Freedoms", "Medical Research Council Act", "National Building Code of Canada"]
+	CADocSpecial = ["War Measures Act"]
+	CAGods1 = ["John A. Macdonald", "George-Étienne Cartier", "Wilfrid Laurier", "Agnes Macphail", "Laura Secord", "Louis-Hippolyte LaFontaine"]
+	CAGods2 = ["Tommy Douglas", "Viola Desmond", "Lester B. Pearson", "Louis Riel", "Emily Murphy", "Nellie McClung", "Terry Fox", "Chief Dan George", "Buffy Sainte-Marie", "David Suzuki", "Roméo Dallaire", "Thérèse Casgrain", "Mary Two-Axe Earley", "Pierre Elliott Trudeau"]
 	pass

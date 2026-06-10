@@ -1062,6 +1062,23 @@ func buildSelf(Type):
 			milModDescription = str("[i]He saw it in a vision before it happened — thousands of soldiers falling:[/i][color= green] +2 Attack, +2 Defense per Level in Woods terrain[/color]")
 			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
 			milModResource = "None"
+		"Beaverdams Dispatch":
+			commanderMod = true
+			milModDescription = str("[i]She walked 20 miles through enemy lines to warn the garrison — and they held:[/i][color= green] All units +3 Defense per Level in tiles with Barracks or Fortress[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/green cross.png")
+			milModResource = "None"
+		"Batoche's Stand":
+			infantryMod = true
+			terrainMod = true
+			terrainType = "Woods"
+			milModDescription = str("[i]The Métis held Batoche for days with hunting rifles and prayer:[/i][color= green] +2 Attack, +2 Defense per Level in Woods terrain[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"Peacekeeping Mandate":
+			commanderMod = true
+			milModDescription = str("[i]He witnessed the worst of humanity and refused to stop fighting for peace:[/i][color= green] Morale loss reduced; rout threshold lowered to 15%[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/green cross.png")
+			milModResource = "None"
 		# ── NEGATIVE STATUS EFFECTS ──────────────────────────────────────────────
 		"Stunned":
 			isNegative = true

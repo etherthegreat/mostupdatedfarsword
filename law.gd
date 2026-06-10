@@ -22,8 +22,9 @@ func buildSelf(newLawType, selected):
 	lawType = newLawType
 	lawSelected = selected
 	match lawType:
-		"Armed Peasantry":
-			lawDescription = "Citizen Militias will guard their homes with their lives.  All of our centers of government will be stocked with arms for the people to use in case demonic tyranny again shows its face and rears its teeth."
+		# ── American Laws ────────────────────────────────────────────────────────
+		"Second Amendment":
+			lawDescription = "The right of the people to keep and bear arms shall not be infringed. Citizen militias stand ready to defend the Republic against all tyranny."
 			quadrant = "Freedom"
 			lawIcon = load("res://art assets/Placeholder Art/UI Art/resources/weapons.png")
 			lawCosts = str("Cost: 50 Mandate
@@ -31,45 +32,99 @@ func buildSelf(newLawType, selected):
 						+25 Manpower Per Farm
 						-1 Mandate Per Farm
 						+1 Mandate Per Forge")
-		"Navigation Acts":
-			lawDescription = "By creating a new corp of bureacratic tax collectors, we can attempt to more directly control the economy.  By pushing exports and minimizing imports, we hope to become quite wealthy."
+		"Merchant Marine Act":
+			lawDescription = "American vessels carry American goods. A strong merchant fleet drives our exports and fills the treasury."
 			quadrant = "Order"
 			lawIcon = load("res://art assets/Placeholder Art/UI Art/resources/gold.png")
 			lawCosts = str("Cost: 25 Mandate
 						-2 Mandate, +2 Gold per Workshop
 						+1 Gold Per Farm
 						+1 Gold Per Camp")
-		"Local Elections":
-			lawDescription = "Each of our provinces will hold elections where every single person in the society of voting age may cast a ballot for their preferred candidate."
+		"Municipal Reform Act":
+			lawDescription = "Free and fair elections in every township. No appointed official may replace the voice of the people."
 			quadrant = "Freedom"
 			lawIcon = load("res://art assets/Placeholder Art/UI Art/resources/Older Icons/faith.png")
 			lawCosts = str("Cost: 10 Mandate
 						-3 Mandate, +1 Harmony from Courthouses
-						+1 Haromny Per Farm
+						+1 Harmony Per Farm
 						+1 Harmony Per Camp")
-		"Democratic Mandate":
-			lawDescription = "It is the will of the people which will direct us.  The Demon King is the last tyrant of our world.  Let monarchism die with the Wretched One!"
+		"Voting Rights Act":
+			lawDescription = "No citizen shall be denied the right to vote. The ballot is the foundation of a free Republic."
 			quadrant = "Freedom"
 			lawIcon = load("res://art assets/Placeholder Art/UI Art/resources/Older Icons/harmony 100 x 100.png")
 			lawCosts = str("Cost: 30 Mandate
 						-1 Mandate Per Province
 						+1 Max Level Courthouse")
-		"Universal Citizenship":
-			lawDescription = "No one shall be turned away from our Republic for any reason which stems from simple personal traits.  All who condemn the Demon King and his Horde are welcome to live and be citizens here."
+		"Civil Rights Act":
+			lawDescription = "Discrimination based on race, color, or creed is abolished. All citizens stand equal before the law of this Republic."
 			quadrant = "Equality"
 			lawIcon = load("res://art assets/Placeholder Art/UI Art/resources/Older Icons/manpower 100 x 100.png")
 			lawCosts = str("Cost: 15 Mandate
 						-1 Mandate Per Population
 						+1 Harmony Per Population")
-		"Disability Care":
-			lawDescription = "Due to the heavy toll Demonic occupation has taken on us, many of our citizens are physically incapable of taking care of their own needs.  By creating a social safety net for our disabled citizens, we can alleviate their suffering."
+		"Americans with Disabilities Act":
+			lawDescription = "No citizen shall be excluded from civic life on account of disability. The Republic provides for all who cannot provide for themselves."
 			quadrant = "Equality"
 			lawIcon = load("res://art assets/Placeholder Art/UI Art/resources/Older Icons/harmony 100 x 100.png")
 			lawCosts = str("Cost: 145 Mandate
 						+1 Gold Per Workshop
 						-10% cost for population Upgrade")
-		"Homeland Defense":
-			lawDescription = "Each of our citizens is expected to take up arms against the tyrant Demon King in case of invasion.  Freedom is not something our nation will ever again take for granted."
+		"National Security Act":
+			lawDescription = "A unified national defense apparatus ensures no enemy foreign or domestic can catch the Republic unprepared."
+			quadrant = "Order"
+			lawIcon = load("res://art assets/Placeholder Art/UI Art/resources/clubsmall.png")
+			lawCosts = str("Cost: 15 Mandate
+						-1 Mandate Per Barracks
+						+5 Manpower from All buildings")
+		# ── Canadian Laws ────────────────────────────────────────────────────────
+		"Militia Act":
+			lawDescription = "Every able-bodied man in the Dominion is liable for militia service. Our communities stand ready to defend the Crown's peace."
+			quadrant = "Freedom"
+			lawIcon = load("res://art assets/Placeholder Art/UI Art/resources/weapons.png")
+			lawCosts = str("Cost: 50 Mandate
+						+5 Weapons per Governor's Mansion lvl
+						+25 Manpower Per Farm
+						-1 Mandate Per Farm
+						+1 Mandate Per Forge")
+		"Canada Shipping Act":
+			lawDescription = "Canadian waters carry Canadian commerce. The Dominion regulates its shipping lanes and expands its mercantile reach."
+			quadrant = "Order"
+			lawIcon = load("res://art assets/Placeholder Art/UI Art/resources/gold.png")
+			lawCosts = str("Cost: 25 Mandate
+						-2 Mandate, +2 Gold per Workshop
+						+1 Gold Per Farm
+						+1 Gold Per Camp")
+		"Municipal Elections Act":
+			lawDescription = "Responsible government begins at the local level. Each municipality elects its own council to govern in the people's interest."
+			quadrant = "Freedom"
+			lawIcon = load("res://art assets/Placeholder Art/UI Art/resources/Older Icons/faith.png")
+			lawCosts = str("Cost: 10 Mandate
+						-3 Mandate, +1 Harmony from Courthouses
+						+1 Harmony Per Farm
+						+1 Harmony Per Camp")
+		"Dominion Elections Act":
+			lawDescription = "A single, unified Dominion-wide elections code ensures every eligible citizen may cast a ballot for their representatives."
+			quadrant = "Freedom"
+			lawIcon = load("res://art assets/Placeholder Art/UI Art/resources/Older Icons/harmony 100 x 100.png")
+			lawCosts = str("Cost: 30 Mandate
+						-1 Mandate Per Province
+						+1 Max Level Courthouse")
+		"Canadian Citizenship Act":
+			lawDescription = "All who reside within the Dominion share equal standing before the law, regardless of origin, language, or background."
+			quadrant = "Equality"
+			lawIcon = load("res://art assets/Placeholder Art/UI Art/resources/Older Icons/manpower 100 x 100.png")
+			lawCosts = str("Cost: 15 Mandate
+						-1 Mandate Per Population
+						+1 Harmony Per Population")
+		"Accessible Canada Act":
+			lawDescription = "A barrier-free Canada ensures that disability is no obstacle to full participation in the life of the Dominion."
+			quadrant = "Equality"
+			lawIcon = load("res://art assets/Placeholder Art/UI Art/resources/Older Icons/harmony 100 x 100.png")
+			lawCosts = str("Cost: 145 Mandate
+						+1 Gold Per Workshop
+						-10% cost for population Upgrade")
+		"National Defence Act":
+			lawDescription = "The Canadian Armed Forces stand on a permanent constitutional footing. The Dominion's sovereignty is non-negotiable."
 			quadrant = "Order"
 			lawIcon = load("res://art assets/Placeholder Art/UI Art/resources/clubsmall.png")
 			lawCosts = str("Cost: 15 Mandate

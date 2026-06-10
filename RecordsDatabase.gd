@@ -1028,44 +1028,44 @@ func _register_all() -> void:
 
 	# ── FACTIONS ─────────────────────────────────────────────────────────────
 	_add("fac_sons_of_liberty", "Factions", "Sons of Liberty",
-		"Led by Patrick Henry, the Sons of Liberty are the revolutionary vanguard — the men who lit the fire before anyone else was ready. They believe the republic is won at the barrel of a musket and maintained by the vigilance of armed citizens. Every free man a soldier. Every farm a fortress.\n\nReach 30 loyalty to unlock Militia Muster (Armed Peasantry + Homeland Defense laws; Barracks +50 manpower).\nReach 60 to unlock Merchant Networks (Navigation Acts; Markets and Workshops +1 gold).\nReach 90 to unlock Letters of Marque (Calico Jack joins your governors; Docks produce weapons).",
-		{"see_also": ["law_armed_peasantry", "law_homeland_defense", "law_navigation_acts"]})
+		"Led by Patrick Henry, the Sons of Liberty are the revolutionary vanguard — the men who lit the fire before anyone else was ready. They believe the republic is won at the barrel of a musket and maintained by the vigilance of armed citizens. Every free man a soldier. Every farm a fortress.\n\nReach 30 loyalty to unlock Militia Muster (Second Amendment + National Security Act laws; Barracks +50 manpower).\nReach 60 to unlock Merchant Networks (Merchant Marine Act; Markets and Workshops +1 gold).\nReach 90 to unlock Letters of Marque (Calico Jack joins your governors; Docks produce weapons).",
+		{"see_also": ["law_second_amendment", "law_national_security_act", "law_merchant_marine_act"]})
 
 	_add("fac_continental_congress", "Factions", "Continental Congress",
-		"Led by Abigail Adams, the Continental Congress believes the republic must be built on institutions — law, consent, legitimacy. They are the architects. While others fight, they write constitutions.\n\nReach 30 loyalty to unlock Articles of Confederation (Local Elections + Democratic Mandate laws; Courthouses +1 mandate).\nReach 60 to unlock Foreign Diplomacy (Monuments +1 influence).\nReach 90 to unlock Constitutional Convention (Democratic Mandate law; Libraries +1 science).",
-		{"see_also": ["law_local_elections", "law_democratic_mandate"]})
+		"Led by Abigail Adams, the Continental Congress believes the republic must be built on institutions — law, consent, legitimacy. They are the architects. While others fight, they write constitutions.\n\nReach 30 loyalty to unlock Articles of Confederation (Municipal Reform Act + Voting Rights Act laws; Courthouses +1 mandate).\nReach 60 to unlock Foreign Diplomacy (Monuments +1 influence).\nReach 90 to unlock Constitutional Convention (Voting Rights Act law; Libraries +1 science).",
+		{"see_also": ["law_municipal_reform_act", "law_voting_rights_act"]})
 
 	_add("fac_common_cause", "Factions", "Common Cause",
-		"Led by Daniel Shays, Common Cause is the faction of the ordinary settler — the farmer, the homesteader, the person who fought a war and came home to find a debt collector. They want land, fairness, and a government that remembers who actually won the revolution.\n\nReach 30 loyalty to unlock Frontier Homesteads (Armed Peasantry law; Farms +1 food).\nReach 60 to unlock The People's Assembly (Universal Citizenship law; Baths and Temples +1 happiness).\nReach 90 to unlock Land Reform (Farms +1 additional food).",
-		{"see_also": ["law_armed_peasantry", "law_universal_citizenship"]})
+		"Led by Daniel Shays, Common Cause is the faction of the ordinary settler — the farmer, the homesteader, the person who fought a war and came home to find a debt collector. They want land, fairness, and a government that remembers who actually won the revolution.\n\nReach 30 loyalty to unlock Frontier Homesteads (Second Amendment law; Farms +1 food).\nReach 60 to unlock The People's Assembly (Civil Rights Act law; Baths and Temples +1 happiness).\nReach 90 to unlock Land Reform (Farms +1 additional food).",
+		{"see_also": ["law_second_amendment", "law_civil_rights_act"]})
 
 	_add("fac_abolitionist_league", "Factions", "Abolitionist League",
-		"Led by Mercy Otis Warren, the Abolitionist League holds that no republic worthy of the name can tolerate slavery. They are the conscience of the revolution — often uncomfortable, always right, and entirely unwilling to wait.\n\nReach 30 loyalty to unlock Freedom Papers (Universal Citizenship + Disability Care laws).\nReach 60 to unlock Underground Railroad (Phillis Wheatley joins your governors; Temples +1 culture).\nReach 90 to unlock Universal Emancipation (Democratic Mandate law; Temples +1 happiness, Courthouses +1 mandate).",
-		{"see_also": ["law_universal_citizenship", "law_disability_care", "law_democratic_mandate"]})
+		"Led by Mercy Otis Warren, the Abolitionist League holds that no republic worthy of the name can tolerate slavery. They are the conscience of the revolution — often uncomfortable, always right, and entirely unwilling to wait.\n\nReach 30 loyalty to unlock Freedom Papers (Civil Rights Act + Americans with Disabilities Act laws).\nReach 60 to unlock Underground Railroad (Phillis Wheatley joins your governors; Temples +1 culture).\nReach 90 to unlock Universal Emancipation (Voting Rights Act law; Temples +1 happiness, Courthouses +1 mandate).",
+		{"see_also": ["law_civil_rights_act", "law_americans_with_disabilities_act", "law_voting_rights_act"]})
 
 	_add("fac_free_workers_union", "Factions", "Free Workers Union",
-		"Led by Thomas Paine, the Free Workers Union represents artisans, dockworkers, and the laboring poor. They want the republic to mean something for the people who built it with their hands, not just the people who signed the papers.\n\nReach 30 loyalty to unlock Guild Charters (Forges +1 weapons, Markets and Workshops +1 gold).\nReach 60 to unlock General Strike (Disability Care law; Camps +1 wood, Mines +1 metal).\nReach 90 to unlock Workers Commonwealth (Universal Citizenship law; Farms +1 food, Libraries +1 science).",
-		{"see_also": ["law_disability_care", "law_universal_citizenship"]})
+		"Led by Thomas Paine, the Free Workers Union represents artisans, dockworkers, and the laboring poor. They want the republic to mean something for the people who built it with their hands, not just the people who signed the papers.\n\nReach 30 loyalty to unlock Guild Charters (Forges +1 weapons, Markets and Workshops +1 gold).\nReach 60 to unlock General Strike (Americans with Disabilities Act law; Camps +1 wood, Mines +1 metal).\nReach 90 to unlock Workers Commonwealth (Civil Rights Act law; Farms +1 food, Libraries +1 science).",
+		{"see_also": ["law_americans_with_disabilities_act", "law_civil_rights_act"]})
 
 	_add("fac_french_habitants", "Factions", "French Habitants",
-		"The French-speaking farming communities of Quebec are cautious allies. They want their language, their faith, and their legal traditions respected. Give them that, and they will give you a revolution that runs on wheat.\n\nReach 30 loyalty to unlock Quebec Act Recognition (Local Elections law; Temples +1 culture).\nReach 60 to unlock Habitants Alliance (Pierre Renard joins your governors; Farms +1 food).\nReach 90 to unlock Republic of Quebec (Universal Citizenship + Democratic Mandate laws; Farms +1 additional food, Temples +1 happiness).",
-		{"see_also": ["law_local_elections", "law_universal_citizenship", "law_democratic_mandate"]})
+		"The French-speaking farming communities of Quebec are cautious allies. They want their language, their faith, and their legal traditions respected. Give them that, and they will give you a revolution that runs on wheat.\n\nReach 30 loyalty to unlock Quebec Act Recognition (Municipal Elections Act law; Temples +1 culture).\nReach 60 to unlock Habitants Alliance (Pierre Renard joins your governors; Farms +1 food).\nReach 90 to unlock Republic of Quebec (Canadian Citizenship Act + Dominion Elections Act laws; Farms +1 additional food, Temples +1 happiness).",
+		{"see_also": ["law_municipal_elections_act", "law_canadian_citizenship_act", "law_dominion_elections_act"]})
 
 	_add("fac_loyalist_settlers", "Factions", "Loyalist Settlers",
-		"Not everyone in Canada welcomed the Crown's rule — but they waited to see which way the wind blew. The Loyalist Settlers are pragmatists who have decided the republic is the safer bet. They bring with them British administrative competence and, occasionally, British guilt.\n\nReach 30 loyalty to unlock Crown Defectors (Homeland Defense law; Courthouses +1 mandate).\nReach 60 to unlock Pragmatic Compact (Benjamin Tallmadge joins your governors at level 2; Barracks +50 manpower).\nReach 90 to unlock New Republic Converts (Navigation Acts + Democratic Mandate laws; Libraries +1 science, Markets and Workshops +1 gold).",
-		{"see_also": ["law_homeland_defense", "law_navigation_acts", "law_democratic_mandate"]})
+		"Not everyone in Canada welcomed the Crown's rule — but they waited to see which way the wind blew. The Loyalist Settlers are pragmatists who have decided the republic is the safer bet. They bring with them British administrative competence and, occasionally, British guilt.\n\nReach 30 loyalty to unlock Crown Defectors (National Defence Act law; Courthouses +1 mandate).\nReach 60 to unlock Pragmatic Compact (Benjamin Tallmadge joins your governors at level 2; Barracks +50 manpower).\nReach 90 to unlock New Republic Converts (Canada Shipping Act + Dominion Elections Act laws; Libraries +1 science, Markets and Workshops +1 gold).",
+		{"see_also": ["law_national_defence_act", "law_canada_shipping_act", "law_dominion_elections_act"]})
 
 	_add("fac_haudenosaunee_confederacy", "Factions", "Haudenosaunee Confederacy",
-		"The Haudenosaunee — the Six Nations — have governed this land by confederation for centuries. They have no interest in replacing one empire with another. What they want is sovereignty, respect, and a treaty that is actually honored.\n\nReach 30 loyalty to unlock Treaty of Friendship (Universal Citizenship law; Camps +1 wood).\nReach 60 to unlock Haudenosaunee Alliance (Camps +1 weapons).\nReach 90 to unlock Sovereign Partnership (Universal Citizenship + Disability Care laws; Barracks +50 manpower).",
-		{"see_also": ["law_universal_citizenship", "law_disability_care"]})
+		"The Haudenosaunee — the Six Nations — have governed this land by confederation for centuries. They have no interest in replacing one empire with another. What they want is sovereignty, respect, and a treaty that is actually honored.\n\nReach 30 loyalty to unlock Treaty of Friendship (Canadian Citizenship Act law; Camps +1 wood).\nReach 60 to unlock Haudenosaunee Alliance (Camps +1 weapons).\nReach 90 to unlock Sovereign Partnership (Canadian Citizenship Act + Accessible Canada Act laws; Barracks +50 manpower).",
+		{"see_also": ["law_canadian_citizenship_act", "law_accessible_canada_act"]})
 
 	_add("fac_coureurs_des_bois", "Factions", "Coureurs des Bois",
 		"The woodsmen who mapped the continent before any government claimed it. They trade in furs, information, and silence. Their loyalty is earned slowly and kept carefully. When they commit to a cause, the forest moves with them.\n\nReach 30 loyalty to unlock Trade Routes (Camps +1 wood).\nReach 60 to unlock Frontier Network (Louis Tremblant joins your governors; Camps +2 wood total, Mines +1 metal).\nReach 90 to unlock Continental Reach (Camps +1 weapons).",
 		{"see_also": []})
 
 	_add("fac_maritime_patriots", "Factions", "Maritime Patriots",
-		"The fishing and trading communities of the Atlantic coast — Nova Scotia, New Brunswick, Prince Edward Island. They have always lived by the sea and by their own rules. The republic offers them something the Crown never did: a charter that treats them as citizens instead of subjects.\n\nReach 30 loyalty to unlock Port Alliance (Docks +1 boats).\nReach 60 to unlock Atlantic Commerce (Navigation Acts law; Markets, Workshops, and Docks +1 gold).\nReach 90 to unlock Maritime Union (Docks +1 additional boats).",
-		{"see_also": ["law_navigation_acts"]})
+		"The fishing and trading communities of the Atlantic coast — Nova Scotia, New Brunswick, Prince Edward Island. They have always lived by the sea and by their own rules. The republic offers them something the Crown never did: a charter that treats them as citizens instead of subjects.\n\nReach 30 loyalty to unlock Port Alliance (Docks +1 boats).\nReach 60 to unlock Atlantic Commerce (Merchant Marine Act law; Markets, Workshops, and Docks +1 gold).\nReach 90 to unlock Maritime Union (Docks +1 additional boats).",
+		{"see_also": ["law_merchant_marine_act"]})
 
 	# ── PROTECTORS (mystery until agree) ─────────────────────────────────────
 	_add_mystery("PROT_01", "Protectors",
@@ -1169,49 +1169,95 @@ func _register_all() -> void:
 		"CA_PROT_08")
 
 	# ── FAITHS & DOCTRINES ───────────────────────────────────────────────────
-	_add("doc_healing_waters", "Faiths & Doctrines", "Healing Waters",
-		"Fresh water is scarce, and those who control it speak with the voice of the divine. Healing Waters doctrine channels spiritual energy through sacred springs and river sanctuaries — wherever clean water flows, the faithful gather.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
-		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_temple"]})
+	# ── AMERICAN DOCTRINES ──────────────────────────────────────────────────
+	_add("doc_social_security_act", "Faiths & Doctrines", "Social Security Act",
+		"Signed in 1935, the Social Security Act established federal old-age pensions and unemployment insurance for the first time in American history. It transformed the relationship between government and citizen — a safety net woven from public obligation.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_resort"]})
 
-	_add("doc_standing_stones", "Faiths & Doctrines", "Standing Stones",
-		"Monuments older than memory mark the sacred geography of the land. Standing Stones doctrine holds that the divine is written in stone and landscape — worship is not conducted in buildings but at the sites where earth remembers.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
-		{"icon_path": "", "see_also": ["sys_reason_providence"]})
+	_add("doc_national_monument_act", "Faiths & Doctrines", "National Monument Act",
+		"The Antiquities Act of 1906 gave the President authority to designate national monuments by executive proclamation. Theodore Roosevelt used it seventeen times in his first term. Sacred geography has never been more official.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_monument"]})
 
-	_add("doc_valued_idolatry", "Faiths & Doctrines", "Valued Idolatry",
-		"Gold and silver speak the language of the divine. Valued Idolatry holds that material wealth is spiritual proof — that a god honored with precious artifacts is a god who rewards in kind. Temples become treasuries of faith.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
-		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_temple"]})
+	_add("doc_sherman_antitrust_act", "Faiths & Doctrines", "Sherman Antitrust Act",
+		"Passed in 1890, the Sherman Act was the first federal law to limit monopolies and cartels. Its authors believed that economic concentration was a threat to republican government itself — that markets, like elections, required competition to be legitimate.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_market"]})
 
-	_add("doc_sacred_groves", "Faiths & Doctrines", "Sacred Groves",
-		"The oldest temples are not buildings. Sacred Groves doctrine returns worship to the forest — to the places where light falls in columns and the wind carries messages the clergy cannot translate. These groves are protected, maintained, and politically significant.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
-		{"icon_path": "", "see_also": ["sys_reason_providence", "ter_forest"]})
+	_add("doc_lacey_wildlife_act", "Faiths & Doctrines", "Lacey Wildlife Act",
+		"Enacted in 1900, the Lacey Act was the first federal wildlife protection law in the United States, prohibiting the trafficking of illegally taken fish, wildlife, and plants. It turned the forest into a matter of federal conscience.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_camp", "ter_forest"]})
 
-	_add("doc_midsummer_celebrations", "Faiths & Doctrines", "Midsummer Celebrations",
-		"When the year reaches its peak, the republic celebrates together. Midsummer Celebrations doctrine treats collective seasonal ritual as spiritual infrastructure — if the people party together, they believe together, and a people who believe together are harder to break apart.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
-		{"icon_path": "", "see_also": ["sys_reason_providence"]})
+	_add("doc_federal_arts_endowment", "Faiths & Doctrines", "Federal Arts Endowment",
+		"Established in 1965, the National Endowment for the Arts made the federal government a patron of culture for the first time. Critics called it elitist. Supporters called it civilization. Both were probably right.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_theater"]})
 
-	_add("doc_tree_of_life", "Faiths & Doctrines", "Tree of Life",
-		"The sacred tree stands at the center of the world. Tree of Life doctrine is the oldest theology in the catalogue — cosmological, pervasive, and remarkably durable. Every culture has a tree. This is the doctrine that says the tree is real.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
-		{"icon_path": "", "see_also": ["sys_reason_providence"]})
+	_add("doc_homestead_act", "Faiths & Doctrines", "Homestead Act",
+		"Signed by Lincoln in 1862, the Homestead Act offered 160 acres of public land to any American willing to farm it for five years. It was the largest land distribution in U.S. history — and also the largest dispossession of Indigenous land in legal form.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_farm", "bld_camp"]})
 
-	_add("doc_tower_control", "Faiths & Doctrines", "Tower Control",
-		"Not all mystic practice is safe or sanctioned. Tower Control doctrine implements state oversight of spiritual energy — all arcane and religious activity is channeled through licensed institutions. The scholars call it regulation. The clergy call it something else.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
-		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_tower"]})
+	_add("doc_defense_production_act", "Faiths & Doctrines", "Defense Production Act",
+		"Passed in 1950, the Defense Production Act gave the President sweeping authority to direct industrial production toward national security needs. It turned the civilian economy into a strategic instrument — and it has never been fully repealed.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_tower", "bld_library"]})
 
-	_add("doc_nature_sanctuaries", "Faiths & Doctrines", "Nature Sanctuaries",
-		"The divine is best approached through undisturbed wilderness. Nature Sanctuaries doctrine designates portions of the republic's territory as sacred preserves — off-limits to development, available to pilgrims, and deeply inconvenient to anyone who wanted to build a mine there.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
-		{"icon_path": "", "see_also": ["sys_reason_providence", "ter_forest", "ter_taiga"]})
+	_add("doc_wilderness_act", "Faiths & Doctrines", "Wilderness Act",
+		"Signed in 1964 after eight years of congressional debate, the Wilderness Act created a National Wilderness Preservation System — land where the hand of man shall not be felt. It is one of the most philosophically ambitious laws ever passed.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_camp", "bld_barracks", "ter_forest"]})
 
-	_add("doc_conservative_orthodoxy", "Faiths & Doctrines", "Conservative Orthodoxy",
-		"The founding documents of faith are complete. Conservative Orthodoxy holds that all divine revelation occurred at the moment of founding — that the church's role is preservation, not interpretation. No new prophets. No revised doctrine. What was written stands.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
-		{"icon_path": "", "see_also": ["sys_reason_providence"]})
+	_add("doc_first_amendment", "Faiths & Doctrines", "First Amendment",
+		"Ratified in 1791 as part of the Bill of Rights, the First Amendment prohibits Congress from making any law abridging freedom of speech, religion, the press, or assembly. It is the most litigated sentence in American law and, arguably, the most important.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_monument", "bld_courthouse"]})
 
-	_add("doc_sanctioned_cadaver_research", "Faiths & Doctrines", "Sanctioned Cadaver Research",
-		"Faith and medicine need not be enemies. Sanctioned Cadaver Research doctrine authorizes the church to permit — or at least not prohibit — the scientific study of the human body for medical advancement. It is a compromise born of necessity and smells faintly of formaldehyde.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
-		{"icon_path": "", "see_also": ["sys_reason_providence", "res_science"]})
+	_add("doc_national_research_act", "Faiths & Doctrines", "National Research Act",
+		"Passed in 1974 in the aftermath of the Tuskegee syphilis study, the National Research Act established the first federal framework for ethical oversight of biomedical research. It answered the question: who watches the scientists?\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_library", "res_science"]})
 
-	_add("doc_temple_height_restrictions", "Faiths & Doctrines", "Temple Height Restrictions",
-		"No building may exceed the height of a temple in any settlement. Temple Height Restrictions doctrine is less about faith and more about spatial politics — a formal assertion that spiritual authority occupies more of the skyline than commerce or government.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
-		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_temple"]})
+	_add("doc_height_of_buildings_act", "Faiths & Doctrines", "Height of Buildings Act",
+		"Enacted by Congress in 1910 after the Cairo Building threatened to block the Capitol dome, the Height of Buildings Act permanently caps Washington D.C. buildings at 130 feet. The city's skyline was legally frozen in deference to civic monuments.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_monument"]})
+
+	# ── CANADIAN DOCTRINES ──────────────────────────────────────────────────
+	_add("doc_canada_wildlife_act", "Faiths & Doctrines", "Canada Wildlife Act",
+		"First enacted in 1973, the Canada Wildlife Act established the federal framework for wildlife research, conservation, and protection across the Dominion. It made the government a steward of species that could not speak for themselves.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_camp", "ter_forest"]})
+
+	_add("doc_canada_council_for_the_arts_act", "Faiths & Doctrines", "Canada Council for the Arts Act",
+		"Founded in 1957 on the recommendation of the Massey Commission, the Canada Council for the Arts has funded Canadian literature, music, visual art, and performance for generations. It is the institutional argument that culture is a public good.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_theater"]})
+
+	_add("doc_dominion_lands_act", "Faiths & Doctrines", "Dominion Lands Act",
+		"Passed in 1872, the Dominion Lands Act opened the Canadian prairies to homestead settlement, offering 160-acre grants to settlers who would farm the land for three years. It populated the West — and dispossessed those already living there.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_farm", "bld_camp"]})
+
+	_add("doc_historic_sites_and_monuments_act", "Faiths & Doctrines", "Historic Sites and Monuments Act",
+		"First enacted in 1953, the Historic Sites and Monuments Act formalized federal commemoration of places, persons, and events significant to Canadian history. It is the law that decides what the Dominion chooses to remember.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_monument"]})
+
+	_add("doc_combines_investigation_act", "Faiths & Doctrines", "Combines Investigation Act",
+		"Canada's first competition law, enacted in 1889 — one year before the Sherman Act — the Combines Investigation Act prohibited conspiracies to unduly restrain trade. The Dominion regulated markets before it had a central bank.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_market"]})
+
+	_add("doc_canada_health_act", "Faiths & Doctrines", "Canada Health Act",
+		"Passed in 1984, the Canada Health Act established the five principles of publicly funded health care: universality, comprehensiveness, accessibility, portability, and public administration. It is the legislative expression of Tommy Douglas's dream.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_resort"]})
+
+	_add("doc_national_parks_act", "Faiths & Doctrines", "National Parks Act",
+		"Canada's national parks system, formalized in legislation from 1930 onward, preserves wilderness for the benefit of all Canadians — 'for all time,' in the Act's own words. It is an act of faith that some things should be left alone.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_camp", "bld_barracks", "ter_forest"]})
+
+	_add("doc_charter_of_rights_and_freedoms", "Faiths & Doctrines", "Charter of Rights and Freedoms",
+		"Entrenched in the Constitution Act of 1982, the Canadian Charter of Rights and Freedoms guarantees fundamental rights to every person in Canada. Pierre Elliott Trudeau called it his greatest achievement. Premiers who disagreed signed anyway.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_monument", "bld_courthouse"]})
+
+	_add("doc_medical_research_council_act", "Faiths & Doctrines", "Medical Research Council Act",
+		"The Medical Research Council of Canada, established formally in 1969, funded biomedical science across the country for three decades before its successor, the Canadian Institutes of Health Research, took over in 2000. It built a tradition of publicly funded discovery.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_library", "res_science"]})
+
+	_add("doc_national_building_code_of_canada", "Faiths & Doctrines", "National Building Code of Canada",
+		"First published in 1941 and revised continuously since, the National Building Code sets minimum standards for construction safety across Canada. It is the Dominion's quiet assertion that how we build shapes how we live.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_monument"]})
+
+	_add("doc_war_measures_act", "Faiths & Doctrines", "War Measures Act",
+		"Enacted in 1914 and invoked three times — in both World Wars and during the 1970 October Crisis — the War Measures Act granted the federal Cabinet sweeping emergency powers. It was celebrated as decisive and condemned as despotic, often by the same people.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_tower", "bld_library"]})
 
 	# ── AMERICAN ICONS ───────────────────────────────────────────────────────
 	_add("icon_george_washington", "American Icons", "George Washington",
@@ -1251,8 +1297,8 @@ func _register_all() -> void:
 		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_library"]})
 
 	_add("icon_sitting_bull", "American Icons", "Sitting Bull",
-		"Hunkpapa Lakota war chief, holy man, and the figure who outlasted Custer. Sitting Bull's patronage honors the land itself — Nature Sanctuaries flourish and buildings in wooded and river territories produce bonus resources.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",
-		{"icon_path": "", "see_also": ["sys_reason_providence", "doc_nature_sanctuaries", "ter_forest"]})
+		"Hunkpapa Lakota war chief, holy man, and the figure who outlasted Custer. Sitting Bull's patronage honors the land itself — Wilderness Act flourishes and buildings in wooded and river territories produce bonus resources.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "doc_wilderness_act", "ter_forest"]})
 
 	_add("icon_sojourner_truth", "American Icons", "Sojourner Truth",
 		"Ain't I a woman? She asked the question that exposed every hypocrite in the room. Truth's patronage uplifts Farms and Temples, and grants a Harmony bonus to every province with diverse population.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",
@@ -1293,6 +1339,87 @@ func _register_all() -> void:
 	_add("icon_dolores_huerta", "American Icons", "Dolores Huerta",
 		"Co-founder of the United Farm Workers and proof that 'no' is not an acceptable final answer. Huerta's patronage amplifies Cesar Chavez's farm bonuses if both are selected, and adds exceptional Harmony in provinces with mixed labor.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",
 		{"icon_path": "", "see_also": ["sys_reason_providence", "icon_cesar_chavez", "bld_farm"]})
+
+	# ── CANADIAN ICONS ───────────────────────────────────────────────────────
+	_add("icon_john_a_macdonald", "Canadian Icons", "John A. Macdonald",
+		"The Father of Confederation and first Prime Minister of Canada, Macdonald built the Dominion through coalition, compromise, and the transcontinental railway. He also authored the Indian Act. The Dominion he built reflects both his genius and his blind spots.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_courthouse", "bld_monument"]})
+
+	_add("icon_george_etienne_cartier", "Canadian Icons", "George-Étienne Cartier",
+		"Macdonald's indispensable partner, Cartier brought French Canada into Confederation and made the project possible. Without him, there is no Canada — only a British colony that gradually forgot the Saint Lawrence.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_library", "bld_courthouse"]})
+
+	_add("icon_wilfrid_laurier", "Canadian Icons", "Wilfrid Laurier",
+		"Canada's first francophone Prime Minister, Laurier presided over the great immigration wave of the early 1900s, opening the prairies and declaring the twentieth century to be Canada's. His optimism built a country; his compromises haunted it.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_market", "bld_monument"]})
+
+	_add("icon_agnes_macphail", "Canadian Icons", "Agnes Macphail",
+		"The first woman elected to the Canadian House of Commons in 1921, Macphail spent her career fighting for prison reform, women's rights, and rural workers. She was told repeatedly that she did not belong in Parliament. She disagreed, repeatedly.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_courthouse", "bld_library"]})
+
+	_add("icon_laura_secord", "Canadian Icons", "Laura Secord",
+		"In June 1813, Laura Secord walked 19 miles through American-occupied territory to warn British forces of an impending attack at Beaver Dams. The garrison held. She was not thanked officially for fifty years. The chocolate company came later.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_barracks"]})
+
+	_add("icon_louis_hippolyte_lafontaine", "Canadian Icons", "Louis-Hippolyte LaFontaine",
+		"The architect of responsible government in the Canadas, LaFontaine formed the first true parliamentary ministry in British North America in 1842 alongside Robert Baldwin. He proved that self-government was possible without revolution.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_courthouse"]})
+
+	_add("icon_tommy_douglas", "Canadian Icons", "Tommy Douglas",
+		"Premier of Saskatchewan and father of Canadian Medicare, Douglas introduced the continent's first single-payer health insurance system in 1962 over the furious opposition of doctors, insurance companies, and newspapers. He won. Repeatedly.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_resort", "bld_monument", "doc_canada_health_act"]})
+
+	_add("icon_viola_desmond", "Canadian Icons", "Viola Desmond",
+		"A Black Nova Scotia businesswoman who refused to leave the main-floor section of a New Glasgow cinema in 1946, Desmond was arrested, convicted, and fined. Her refusal became a landmark in Canadian civil rights history. She now appears on the ten-dollar bill.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_library", "bld_courthouse"]})
+
+	_add("icon_lester_b_pearson", "Canadian Icons", "Lester B. Pearson",
+		"Nobel Peace Prize laureate, architect of UN peacekeeping, and the Prime Minister who gave Canada the Maple Leaf flag, universal health care, and the Canada Pension Plan. Pearson's legacy is the modern welfare state wrapped in a red maple leaf.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_monument"]})
+
+	_add("icon_louis_riel", "Canadian Icons", "Louis Riel",
+		"Leader of two Métis resistances and founder of Manitoba, Riel was hanged for treason in 1885. He is now considered a Father of Confederation by the Manitoba legislature. Canada is still working out what to do with that contradiction.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_camp", "bld_farm"]})
+
+	_add("icon_emily_murphy", "Canadian Icons", "Emily Murphy",
+		"The first female magistrate in the British Empire, Murphy led the Famous Five in the Persons Case of 1929, which established that women were legally 'persons' under the British North America Act. The fact that this required a court ruling tells you something.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_courthouse", "bld_library"]})
+
+	_add("icon_nellie_mcclung", "Canadian Icons", "Nellie McClung",
+		"Author, suffragist, and member of the Famous Five, McClung was one of the most effective political communicators in Canadian history. She organized, she wrote, and she mocked her opponents with a precision that still reads as devastating.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_farm", "bld_monument"]})
+
+	_add("icon_terry_fox", "Canadian Icons", "Terry Fox",
+		"In 1980, Terry Fox ran 5,373 kilometres across Canada on a prosthetic leg to raise money for cancer research before his illness forced him to stop. He had hoped to run the whole country. He nearly did. His Marathon of Hope continues without him.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_barracks", "bld_resort"]})
+
+	_add("icon_chief_dan_george", "Canadian Icons", "Chief Dan George",
+		"Chief of the Tsleil-Waututh Nation and Academy Award-nominated actor, Chief Dan George used both platforms — the political and the cinematic — to speak with dignity about Indigenous dispossession. His words carried further than most legislatures.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_camp", "bld_library"]})
+
+	_add("icon_buffy_sainte_marie", "Canadian Icons", "Buffy Sainte-Marie",
+		"Cree musician, activist, and artist whose songs 'Universal Soldier' and 'Now That the Buffalo's Gone' reached audiences that political speeches never could. She was placed on a secret government blacklist by both the U.S. and Canadian governments. She kept singing.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_library", "bld_monument"]})
+
+	_add("icon_david_suzuki", "Canadian Icons", "David Suzuki",
+		"Geneticist, broadcaster, and Canada's most prominent environmental voice, Suzuki spent five decades translating science into public urgency. The Nature of Things ran for sixty years. The nature of things, he argued, required our attention.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_camp", "bld_farm"]})
+
+	_add("icon_romeo_dallaire", "Canadian Icons", "Roméo Dallaire",
+		"Force Commander of UNAMIR during the Rwandan genocide, Dallaire watched 800,000 people die while the world looked away. He spent the rest of his life arguing that it need not have happened. His book 'Shake Hands with the Devil' is a document of institutional failure.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_barracks"]})
+
+	_add("icon_therese_casgrain", "Canadian Icons", "Thérèse Casgrain",
+		"Quebec suffragist, CCF leader, and social reformer who led the campaign for women's provincial voting rights in Quebec — finally granted in 1940, 22 years after the federal franchise. She accepted no timeline she had not agreed to.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_courthouse", "bld_library"]})
+
+	_add("icon_mary_two_axe_earley", "Canadian Icons", "Mary Two-Axe Earley",
+		"A Mohawk activist from Kahnawake, Mary Two-Axe Earley spent decades fighting the discriminatory clause of the Indian Act that stripped Indigenous women of their status when they married non-Indigenous men. Bill C-31 finally corrected it in 1985.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_courthouse", "bld_farm"]})
+
+	_add("icon_pierre_elliott_trudeau", "Canadian Icons", "Pierre Elliott Trudeau",
+		"Philosopher, swimmer, and Prime Minister who gave Canada the Official Languages Act, the Charter of Rights and Freedoms, and the Constitution Act of 1982. He believed the state had no business in the bedrooms of the nation, and legislated accordingly.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_monument", "bld_courthouse", "doc_charter_of_rights_and_freedoms"]})
 
 	# ── LORE & HISTORY ───────────────────────────────────────────────────────
 	_add("lore_first_war", "Lore & History", "The First British Reconquest War",

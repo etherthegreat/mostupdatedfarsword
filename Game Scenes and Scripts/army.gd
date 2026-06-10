@@ -689,10 +689,20 @@ func applyCountryBeliefMilMods() -> void:
 				modsToGrant.append("North Star Address")
 			"Sitting Bull":
 				modsToGrant.append("Little Bighorn Ambush")
-			"Nature Sanctuaries":
+			"Wilderness Act":
 				modsToGrant.append("Woodsman")
-			"Tower Control":
+			"Defense Production Act":
 				modsToGrant.append("Vanguard")
+			"National Parks Act":
+				modsToGrant.append("Woodsman")
+			"War Measures Act":
+				modsToGrant.append("Vanguard")
+			"Laura Secord":
+				modsToGrant.append("Beaverdams Dispatch")
+			"Louis Riel":
+				modsToGrant.append("Batoche's Stand")
+			"Roméo Dallaire":
+				modsToGrant.append("Peacekeeping Mandate")
 
 	# churchLevel ±3 axis grants
 	match parentCountry.churchLevel:
