@@ -838,8 +838,8 @@ EVENTS = [
     ("Canada","Canadian Alliance","CAN_ALLIANCE_SIGNED",
      "THE CONTINENTAL DEFENSE ALLIANCE IS SIGNED: THREE NATIONS — ONE FRONT",
      "Branch","CAN_SUMMIT_01","→ CAN_PEACE_01",
-     "FIRST PASS","","Not Started","YES","explicit","0",
-     "EXPLICIT #2 (all three); fires after can_summit_complete; form_alliance CA outcome"),
+     "FIRST PASS","can_alliance_signed_scene","Not Started","YES","explicit","0",
+     "EXPLICIT #2 (all three); fires after can_summit_complete; form_alliance CA outcome. Text polished: ceremony + addendum comedy + 'principals remain in the treaty room' pivot. Art commissioned (120x120 pixel, 4 panels: ceremony/addendum/private room/explicit). Awaiting art integration for FULL COMPLETION."),
 
     ("Canada","Canadian Alliance","CAN_PEACE_01",
      "THE TIDE HAS TURNED: PENOIT AND CLEAR-WATER COME TO WASHINGTON",
