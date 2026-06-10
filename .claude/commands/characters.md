@@ -1,0 +1,1 @@
+Run `python3 scripts/build_characters_masterdoc.py` from the repo root to regenerate the character design bible spreadsheet, then send the updated `character_masterdoc.xlsx` file to the user with a one-line summary of the counts (total characters by country/type, how many are fully described vs partial/stub).
