@@ -1241,6 +1241,340 @@ EVENTS = [
      "Root","—","—",
      "IDEA","","Not Started","NO","","0",
      "Month 3-4; UK neighbor + player army present; tactical pressure event"),
+
+    # ── INTIMATE VARIANTS ────────────────────────────────────────────────────
+    # Stub entries for the "By morning" intimate path on every explicit event.
+    # All IDEA status until authored. No art needed (no explicit imagery).
+    # Chain: {PARENT}_INTIMATE fires when player selects "By morning" in scene nav.
+
+    # Commander
+    ("Commander","Commander Arc","CMD_THANKS_INTIMATE",
+     "PRESIDENT CARLISLE DELIVERS PERSONAL THANKS TO [COMM... — BY MORNING",
+     "Chain","CMD_THANKS (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of CMD_THANKS. By morning: emotional arc, no explicit imagery."),
+
+    # Fort Chain
+    ("Fort Chain","Fort Disrepair","FORT_005_INTIMATE",
+     "CLASSIFIED DIPLOMATIC PROCEEDINGS AT [TILE_NAME] — BY MORNING",
+     "Chain","FORT_005 (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of FORT_005. By morning: emotional arc, no explicit imagery."),
+
+    # Collapse
+    ("Collapse","Republic Falls","COLLAPSE_02_INTIMATE",
+     "WASHINGTON STANDS ALONE — BY MORNING",
+     "Chain","COLLAPSE_02 (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of COLLAPSE_02. By morning: emotional arc, no explicit imagery."),
+
+    # Tile Crisis
+    ("Tile Crisis","Harvest Crisis","HARVEST_VISIT_01_INTIMATE",
+     "PRESIDENT CARLISLE SAVES THE HARVEST — BY MORNING",
+     "Chain","HARVEST_VISIT_01 (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of HARVEST_VISIT_01. By morning: emotional arc, no explicit imagery."),
+
+    ("Tile Crisis","Election Arc","STUMP_SPEECH_01_INTIMATE",
+     "PRESIDENT CARLISLE TAKES THE FLOOR AT [TILE_NAME] — ... — BY MORNING",
+     "Chain","STUMP_SPEECH_01 (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of STUMP_SPEECH_01. By morning: emotional arc, no explicit imagery."),
+
+    # VP Arc
+    ("VP Arc","VP Arc","VP_DOUBT_INTIMATE",
+     "THE VICE PRESIDENT AT 2 A.M.: [COMMANDER_NAME] IS QU... — BY MORNING",
+     "Chain","VP_DOUBT (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of VP_DOUBT. By morning: emotional arc, no explicit imagery."),
+
+    ("VP Arc","VP Arc","VP_BATTLEFIELD_INTIMATE",
+     "THE VICE PRESIDENT PICKS UP A MUSKET: [COMMANDER_NAM... — BY MORNING",
+     "Chain","VP_BATTLEFIELD (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of VP_BATTLEFIELD. By morning: emotional arc, no explicit imagery."),
+
+    ("VP Arc","VP Arc","VP_PRE_ELECTION_INTIMATE",
+     "THE VICE PRESIDENT CALLS AN UNSCHEDULED MEETING — [C... — BY MORNING",
+     "Chain","VP_PRE_ELECTION (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of VP_PRE_ELECTION. By morning: emotional arc, no explicit imagery."),
+
+    ("VP Arc","VP Arc","VP_LEGACY_INTIMATE",
+     "THE VICE PRESIDENT LEAVES A NOTE — [COMMANDER_NAME] ... — BY MORNING",
+     "Chain","VP_LEGACY (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of VP_LEGACY. By morning: emotional arc, no explicit imagery."),
+
+    # Canada — Canadian Alliance
+    ("Canada","Canadian Alliance","CAN_CLEARWATER_01_INTIMATE",
+     "PM CLEAR-WATER'S PRIVATE CHANNEL: JESSICA WRITES OUT... — BY MORNING",
+     "Chain","CAN_CLEARWATER_01 (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of CAN_CLEARWATER_01. By morning: emotional arc, no explicit imagery."),
+
+    ("Canada","Canadian Alliance","CAN_JOINT_OPS_01_INTIMATE",
+     "JOINT INTELLIGENCE SUMMIT: THREE GOVERNMENTS SHARE O... — BY MORNING",
+     "Chain","CAN_JOINT_OPS_01 (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of CAN_JOINT_OPS_01. By morning: emotional arc, no explicit imagery."),
+
+    ("Canada","Canadian Alliance","CAN_SUMMIT_01_INTIMATE",
+     "THE OTTAWA SUMMIT: ALL THREE IN THE SAME ROOM FOR TH... — BY MORNING",
+     "Chain","CAN_SUMMIT_01 (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of CAN_SUMMIT_01. By morning: emotional arc, no explicit imagery."),
+
+    ("Canada","Canadian Alliance","CAN_ELECTION_LUCK_INTIMATE",
+     "PM CLEAR-WATER'S CALL: JESSICA HAS SOMETHING TO SAY ... — BY MORNING",
+     "Chain","CAN_ELECTION_LUCK (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of CAN_ELECTION_LUCK. By morning: emotional arc, no explicit imagery."),
+
+    # Canada — Peace
+    ("Canada","Peace","CAN_PEACE_01_INTIMATE",
+     "THE TIDE HAS TURNED: PENOIT AND CLEAR-WATER COME TO ... — BY MORNING",
+     "Chain","CAN_PEACE_01 (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of CAN_PEACE_01. By morning: emotional arc, no explicit imagery."),
+
+    ("Canada","Peace","PEACE_ALLIED_01_INTIMATE",
+     "PEACE OF [TILE_NAME] — THE CROWN EXPELLED FROM THE C... — BY MORNING",
+     "Chain","PEACE_ALLIED_01 (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of PEACE_ALLIED_01. By morning: emotional arc, no explicit imagery."),
+
+    ("Canada","Peace","PEACE_USA_01_INTIMATE",
+     "PEACE OF [TILE_NAME] — THE REPUBLIC HAS EXPELLED THE... — BY MORNING",
+     "Chain","PEACE_USA_01 (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of PEACE_USA_01. By morning: emotional arc, no explicit imagery."),
+
+    # CA Protectors
+    ("CA Protector","Le Wendigo","CA_PROT_01_AGREE_INTIMATE",
+     "LE WENDIGO STANDS DOWN: SAINT-GEORGES FOREST ACCORD — BY MORNING",
+     "Chain","CA_PROT_01_AGREE (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of CA_PROT_01_AGREE. By morning: emotional arc, no explicit imagery."),
+
+    ("CA Protector","Le Loup-Garou","CA_PROT_02_AGREE_INTIMATE",
+     "LE LOUP-GAROU OF RIVIÈRE-DU-LOUP: FORMALLY ACKNOWLED... — BY MORNING",
+     "Chain","CA_PROT_02_AGREE (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of CA_PROT_02_AGREE. By morning: emotional arc, no explicit imagery."),
+
+    ("CA Protector","Les Feux Follets","CA_PROT_03_AGREE_INTIMATE",
+     "LES FEUX FOLLETS FORMALLY ACKNOWLEDGED: THE SAINT JO... — BY MORNING",
+     "Chain","CA_PROT_03_AGREE (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of CA_PROT_03_AGREE. By morning: emotional arc, no explicit imagery."),
+
+    ("CA Protector","Mishepeshu","CA_PROT_04_AGREE_INTIMATE",
+     "MISHEPESHU PACT FORMALIZED: THE GREAT LYNX HOLDS THE... — BY MORNING",
+     "Chain","CA_PROT_04_AGREE (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of CA_PROT_04_AGREE. By morning: emotional arc, no explicit imagery."),
+
+    ("CA Protector","La Corriveau","CA_PROT_05_AGREE_INTIMATE",
+     "LA CORRIVEAU FORMALLY ALLIES WITH THE REPUBLIC — THR... — BY MORNING",
+     "Chain","CA_PROT_05_AGREE (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of CA_PROT_05_AGREE. By morning: emotional arc, no explicit imagery."),
+
+    ("CA Protector","Le Carcajou","CA_PROT_06_AGREE_INTIMATE",
+     "LE CARCAJOU FORMALLY RECOGNIZED: THE MONCTON CORRIDO... — BY MORNING",
+     "Chain","CA_PROT_06_AGREE (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of CA_PROT_06_AGREE. By morning: emotional arc, no explicit imagery."),
+
+    ("CA Protector","La Chasse-Galerie","CA_PROT_07_AGREE_INTIMATE",
+     "LA CHASSE-GALERIE: THE RIVER RUNS FOR THE REPUBLIC NOW — BY MORNING",
+     "Chain","CA_PROT_07_AGREE (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of CA_PROT_07_AGREE. By morning: emotional arc, no explicit imagery."),
+
+    ("CA Protector","Le Gougou","CA_PROT_08_AGREE_INTIMATE",
+     "THE GOUGOU FORMALLY GUARDS THE CHALEUR BAY FOR THE C... — BY MORNING",
+     "Chain","CA_PROT_08_AGREE (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of CA_PROT_08_AGREE. By morning: emotional arc, no explicit imagery."),
+
+    # Ualani Arc
+    ("Ualani","Ambush","UALANI_AMBUSH_01_INTIMATE",
+     "CROWN AMBUSH AVERTED: PRESIDENT CARLISLE HOLDS THE W... — BY MORNING",
+     "Chain","UALANI_AMBUSH_01 (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of UALANI_AMBUSH_01. By morning: emotional arc, no explicit imagery."),
+
+    ("Ualani","Dignitary Reception","UALANI_DIGNITARY_01_INTIMATE",
+     "STATE RECEPTION AT [TILE_NAME]: PRESIDENT CARLISLE A... — BY MORNING",
+     "Chain","UALANI_DIGNITARY_01 (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of UALANI_DIGNITARY_01. By morning: emotional arc, no explicit imagery."),
+
+    ("Ualani","Memorial Address","UALANI_MEMORIAL_01_INTIMATE",
+     "PRESIDENT CARLISLE VISITS [TILE_NAME]: PRESIDENTIAL ... — BY MORNING",
+     "Chain","UALANI_MEMORIAL_01 (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of UALANI_MEMORIAL_01. By morning: emotional arc, no explicit imagery."),
+
+    ("Ualani","Field Hospital","UALANI_WOUNDED_01_INTIMATE",
+     "PRESIDENT CARLISLE VISITS FIELD HOSPITAL AT [TILE_NAME] — BY MORNING",
+     "Chain","UALANI_WOUNDED_01 (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of UALANI_WOUNDED_01. By morning: emotional arc, no explicit imagery."),
+
+    ("Ualani","Forge Inspection","UALANI_FORGE_01_INTIMATE",
+     "PRESIDENT CARLISLE CONDUCTS SURPRISE INSPECTION OF F... — BY MORNING",
+     "Chain","UALANI_FORGE_01 (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of UALANI_FORGE_01. By morning: emotional arc, no explicit imagery."),
+
+    ("Ualani","Culper Ring","UALANI_CULPER_01_INTIMATE",
+     "CULPER RING CONTACT AT [TILE_NAME]: INTELLIGENCE ASS... — BY MORNING",
+     "Chain","UALANI_CULPER_01 (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of UALANI_CULPER_01. By morning: emotional arc, no explicit imagery."),
+
+    ("Ualani","Alliance Council","UALANI_ALLIANCE_01_INTIMATE",
+     "PRESIDENT CARLISLE MEETS WITH [COMMANDER_NAME] AT [T... — BY MORNING",
+     "Chain","UALANI_ALLIANCE_01 (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of UALANI_ALLIANCE_01. By morning: emotional arc, no explicit imagery."),
+
+    ("Ualani","Frontier","UALANI_FRONTIER_01_INTIMATE",
+     "PRESIDENT CARLISLE ESTABLISHES FRONTIER PRESENCE AT ... — BY MORNING",
+     "Chain","UALANI_FRONTIER_01 (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of UALANI_FRONTIER_01. By morning: emotional arc, no explicit imagery."),
+
+    # Protectors — US
+    ("Protector","Mothman","PROT_01_AGREE_INTIMATE",
+     "MOTHMAN FORMALLY ALLIES WITH THE CONTINENTAL REPUBLIC — BY MORNING",
+     "Chain","PROT_01_AGREE (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of PROT_01_AGREE. By morning: emotional arc, no explicit imagery."),
+
+    ("Protector","Jersey Devil","PROT_02_AGREE_INTIMATE",
+     "JERSEY DEVIL FORMALLY ENDORSES THE CONTINENTAL CAUSE — BY MORNING",
+     "Chain","PROT_02_AGREE (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of PROT_02_AGREE. By morning: emotional arc, no explicit imagery."),
+
+    ("Protector","Bigfoot","PROT_03_AGREE_INTIMATE",
+     "BIGFOOT FORMALLY GUIDES THE CONTINENTAL CAUSE THROUG... — BY MORNING",
+     "Chain","PROT_03_AGREE (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of PROT_03_AGREE. By morning: emotional arc, no explicit imagery."),
+
+    ("Protector","Thunderbird","PROT_04_AGREE_INTIMATE",
+     "THUNDERBIRD FORMALLY ALLIES WITH THE CONTINENTAL REP... — BY MORNING",
+     "Chain","PROT_04_AGREE (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of PROT_04_AGREE. By morning: emotional arc, no explicit imagery."),
+
+    ("Protector","Headless Horseman","PROT_05_AGREE_INTIMATE",
+     "THE HORSEMAN RIDES FOR THE REPUBLIC — FORMALLY — BY MORNING",
+     "Chain","PROT_05_AGREE (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of PROT_05_AGREE. By morning: emotional arc, no explicit imagery."),
+
+    ("Protector","Chessie","PROT_06_AGREE_INTIMATE",
+     "CHESSIE FORMALLY PATROLS FOR THE CONTINENTAL NAVY — BY MORNING",
+     "Chain","PROT_06_AGREE (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of PROT_06_AGREE. By morning: emotional arc, no explicit imagery."),
+
+    ("Protector","Bell Witch","PROT_07_AGREE_INTIMATE",
+     "THE BELL WITCH FORMALLY COMMITS TO THE CONTINENTAL C... — BY MORNING",
+     "Chain","PROT_07_AGREE (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of PROT_07_AGREE. By morning: emotional arc, no explicit imagery."),
+
+    ("Protector","Old Ironsides","PROT_08_AGREE_INTIMATE",
+     "OLD IRONSIDES FORMALLY JOINS THE CONTINENTAL NAVY — BY MORNING",
+     "Chain","PROT_08_AGREE (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of PROT_08_AGREE. By morning: emotional arc, no explicit imagery."),
+
+    ("Protector","Valley Forge Guardian","PROT_09_AGREE_INTIMATE",
+     "VALLEY FORGE GUARDIAN FORMALLY BLESSES THE CONTINENT... — BY MORNING",
+     "Chain","PROT_09_AGREE (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of PROT_09_AGREE. By morning: emotional arc, no explicit imagery."),
+
+    ("Protector","Snallygaster","PROT_10_AGREE_INTIMATE",
+     "SNALLYGASTER FORMALLY GUARDS THE CONTINENTAL SUPPLY ... — BY MORNING",
+     "Chain","PROT_10_AGREE (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of PROT_10_AGREE. By morning: emotional arc, no explicit imagery."),
+
+    ("Protector","Paul Revere","PROT_11_AGREE_INTIMATE",
+     "PAUL REVERE FORMALLY INTEGRATES WITH CONTINENTAL INT... — BY MORNING",
+     "Chain","PROT_11_AGREE (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of PROT_11_AGREE. By morning: emotional arc, no explicit imagery."),
+
+    ("Protector","Liberty Bell","PROT_12_AGREE_INTIMATE",
+     "THE LIBERTY BELL FORMALLY RINGS FOR THE REPUBLIC — BY MORNING",
+     "Chain","PROT_12_AGREE (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of PROT_12_AGREE. By morning: emotional arc, no explicit imagery."),
+
+    ("Protector","Green Mountain Ghost","PROT_13_AGREE_INTIMATE",
+     "GREEN MOUNTAIN GHOST FORMALLY PROTECTS VERMONT FOR T... — BY MORNING",
+     "Chain","PROT_13_AGREE (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of PROT_13_AGREE. By morning: emotional arc, no explicit imagery."),
+
+    ("Protector","Mount Rushmore","PROT_14_AGREE_INTIMATE",
+     "THE RUSHMORE COUNCIL FORMALLY ENDORSES PRESIDENT CAR... — BY MORNING",
+     "Chain","PROT_14_AGREE (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of PROT_14_AGREE. By morning: emotional arc, no explicit imagery."),
+
+    ("Protector","Skunk Ape","PROT_15_AGREE_INTIMATE",
+     "SKUNK APE FORMALLY PATROLS FLORIDA FOR THE CONTINENT... — BY MORNING",
+     "Chain","PROT_15_AGREE (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of PROT_15_AGREE. By morning: emotional arc, no explicit imagery."),
+
+    ("Protector","Minuteman","PROT_16_AGREE_INTIMATE",
+     "THE MINUTEMAN FORMALLY DECLARES FOR THE CONTINENTAL ... — BY MORNING",
+     "Chain","PROT_16_AGREE (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of PROT_16_AGREE. By morning: emotional arc, no explicit imagery."),
+
+    ("Protector","Lincoln's Ghost","PROT_17_AGREE_INTIMATE",
+     "LINCOLN FORMALLY ENDORSES PRESIDENT CARLISLE'S ADMIN... — BY MORNING",
+     "Chain","PROT_17_AGREE (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of PROT_17_AGREE. By morning: emotional arc, no explicit imagery."),
+
+    # White House Secrets
+    ("White House","Month 1","WH_SECRET_01_INTIMATE",
+     "THE WHITE HOUSE AT MIDNIGHT — THE PRESIDENT WATCHES ... — BY MORNING",
+     "Chain","WH_SECRET_01 (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of WH_SECRET_01. By morning: emotional arc, no explicit imagery."),
+
+    ("White House","Month 7","WH_SECRET_07_INTIMATE",
+     "JULY AT THE WHITE HOUSE — INDEPENDENCE DAY IS ALSO HERS — BY MORNING",
+     "Chain","WH_SECRET_07 (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of WH_SECRET_07. By morning: emotional arc, no explicit imagery."),
+
+    ("White House","Month 10","WH_SECRET_10_INTIMATE",
+     "INDIGENOUS PEOPLES DAY — A PERSONAL LETTER FROM JESS... — BY MORNING",
+     "Chain","WH_SECRET_10 (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of WH_SECRET_10. By morning: emotional arc, no explicit imagery."),
+
+    ("White House","Month 12","WH_SECRET_12_INTIMATE",
+     "CHRISTMAS IN WASHINGTON — THE PRESIDENT IS FAR FROM ... — BY MORNING",
+     "Chain","WH_SECRET_12 (intimate choice)","—",
+     "IDEA","","N/A","NO","","0",
+     "Stub — author intimate version of WH_SECRET_12. By morning: emotional arc, no explicit imagery."),
 ]
 
 
