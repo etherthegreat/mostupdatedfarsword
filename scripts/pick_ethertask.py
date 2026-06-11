@@ -13,7 +13,7 @@ State:  data/current_ethertask.json  — persists the active task between runs.
         the next call auto-advances to the next task.
 """
 import sys, os, json, importlib.util, random
-from datetime import date
+from datetime import date, datetime
 
 STATE_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
                           "data", "current_ethertask.json")
@@ -242,9 +242,14 @@ def _load_state():
         return None
 
 
-def _save_state(task):
+def _save_state(task, started_at=None):
+    payload = {
+        "id": task["id"],
+        "source": task["source"],
+        "started_at": started_at or datetime.now().isoformat(),
+    }
     with open(STATE_PATH, "w") as f:
-        json.dump({"id": task["id"], "source": task["source"]}, f, indent=2)
+        json.dump(payload, f, indent=2)
 
 
 def _clear_state():
