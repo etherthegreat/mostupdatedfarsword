@@ -823,6 +823,13 @@ func generateBarracksCommanders() -> void:
 			"nb": ["River","Ash","Stone","Flint","Cedar","Birch","Sky"],
 			"l":  [""],   # Nation-specific; will appear as single-name
 		},
+		# Creek / Muscogee / Seminole — Southeast FL/GA/SC, 1780s–1790s
+		"NP_NA_CREEK": {
+			"m":  ["Menawa","Opothle","Yahola","Hadjo","Tustenuggee","Fixico","Emathla","Hoboithle","Thlucco","Coacoochee"],
+			"f":  ["Sehoy","Coosaponakeesa","Wewoka","Okchai","Tallassee","Moniac","Talofah","Hichiti","Oki","Efvhvke"],
+			"nb": ["Hatchee","Ekvnv","Hvse","Cedar","Talwa","Homosa"],
+			"l":  [""],   # Nation-specific; will appear as single-name
+		},
 		"NP_08": {
 			"m":  ["Kai","Koa","Makoa","Keoni","Hoku","Noa","Kahale","Ikaika","Kaimana","Lono"],
 			"f":  ["Leilani","Malia","Nohea","Haunani","Kalani","Pua","Moana","Alana","Kealoha","Kaimana"],
@@ -1194,6 +1201,13 @@ func _generate_ai_barracks_commanders(country_node: country) -> void:
 			"f":  ["Winona","Kaya","Aiyana","Taini","Chenoa","Aponi","Wren","Dove","Ama","Shoshana"],
 			"nb": ["River","Ash","Stone","Flint","Cedar","Birch","Sky"],
 			"l":  [""],
+		},
+		# Creek / Muscogee / Seminole — Southeast FL/GA/SC, 1780s–1790s
+		"NP_NA_CREEK": {
+			"m":  ["Menawa","Opothle","Yahola","Hadjo","Tustenuggee","Fixico","Emathla","Hoboithle","Thlucco","Coacoochee"],
+			"f":  ["Sehoy","Coosaponakeesa","Wewoka","Okchai","Tallassee","Moniac","Talofah","Hichiti","Oki","Efvhvke"],
+			"nb": ["Hatchee","Ekvnv","Hvse","Cedar","Talwa","Homosa"],
+			"l":  [""],   # Nation-specific; will appear as single-name
 		},
 		# Algonquin (Anishinaabe Algonquin) — attested Kitigan Zibi / Pikwakanagan community names
 		"NP_NA_CA_01": {
