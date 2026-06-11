@@ -8,8 +8,12 @@ var event_data: Dictionary
 var button_data: Array = []
 var player_country = null   # set by createNewEvent so prerequisites can check CountryFlags
 
-signal eventButtonPressed
-signal tileEventButtonPressed
+# Holds button metadata while scene navigation UI is open
+var _pending: Dictionary = {}
+
+# Signals carry next_event_id so scene nav can override it per choice
+signal eventButtonPressed(button_id, event_id, event_country, outcome_type, outcome_value, outcome_amount, next_event_id)
+signal tileEventButtonPressed(button_id, event_id, event_country, outcome_type, outcome_value, outcome_amount, next_event_id, tile)
 
 
 func build_from_data(data: Dictionary, tile = null, player = null) -> void:
@@ -40,7 +44,7 @@ func build_from_csv(eid: String, tile = null, player = null) -> void:
 		queue_free()
 		return
 
-	# ── Console preview (always prints so you can see what fired) ──
+	# ── Console preview ────────────────────────────────────────────────────────
 	print("=== EVENT FIRED: " + eid + " ===")
 	print("HEADLINE:   " + event_data.get("headline",   ""))
 	print("SHORT DESC: " + event_data.get("short_desc", ""))
@@ -49,11 +53,6 @@ func build_from_csv(eid: String, tile = null, player = null) -> void:
 
 	event_type    = event_data.get("event_type", "standard")
 	event_country = event_data.get("country_cid", "GEN")
-
-	var content_flag = event_data.get("content_flag", "")
-	if content_flag != "" and not _player_allows_content(content_flag):
-		queue_free()
-		return
 
 	$EventPanel/EventNameLabel.text             = _substitute(event_data.get("headline", ""))
 	$EventPanel/EventShortDescriptionLabel.text = _substitute(event_data.get("short_desc", ""))
@@ -71,14 +70,11 @@ func _build_buttons() -> void:
 		if prereq != "" and not _check_prerequisite(prereq):
 			continue
 
-		var btype = btn_data.get("button_type", "standard")
-		if not _player_allows_content(btype):
-			continue
-
 		var newButton = Button.new()
 		newButton.text = btn_data.get("button_text", "Choose")
 		newButton.name = btn_data.get("button_id", "btn")
 		newButton.set_meta("button_id",      btn_data.get("button_id", ""))
+		newButton.set_meta("button_type",    btn_data.get("button_type", "standard"))
 		newButton.set_meta("outcome_type",   btn_data.get("outcome_type", ""))
 		newButton.set_meta("outcome_value",  btn_data.get("outcome_value", ""))
 		newButton.set_meta("outcome_amount", btn_data.get("outcome_amount", 0))
@@ -88,28 +84,57 @@ func _build_buttons() -> void:
 
 
 func _on_button_pressed(btn: Button) -> void:
-	var button_id     = btn.get_meta("button_id")
-	var outcome_type  = btn.get_meta("outcome_type")
-	var outcome_value = btn.get_meta("outcome_value")
-	var outcome_amount = btn.get_meta("outcome_amount")
-
-	if target_tile != null:
-		emit_signal("tileEventButtonPressed",
-			button_id, event_id, event_country,
-			outcome_type, outcome_value, outcome_amount, target_tile)
+	_pending = {
+		"button_id":      btn.get_meta("button_id"),
+		"button_type":    btn.get_meta("button_type", "standard"),
+		"outcome_type":   btn.get_meta("outcome_type"),
+		"outcome_value":  btn.get_meta("outcome_value"),
+		"outcome_amount": btn.get_meta("outcome_amount"),
+		"next_event_id":  btn.get_meta("next_event_id"),
+	}
+	var btype: String = _pending["button_type"]
+	if btype in ["explicit", "kinky_lewd", "sensual"]:
+		_show_scene_nav()
 	else:
-		emit_signal("eventButtonPressed",
-			button_id, event_id, event_country,
-			outcome_type, outcome_value, outcome_amount)
+		_emit_resolved(_pending["next_event_id"])
+
+
+func _show_scene_nav() -> void:
+	var nav: Control = load("res://scene_navigation.gd").new()
+	var s = get_node_or_null("/root/Settings")
+	nav.streaming_mode = s != null and s.streaming_mode
+	nav.scene_choice_made.connect(_on_scene_choice)
+	add_child(nav)
+
+
+func _on_scene_choice(choice: String) -> void:
+	var next_id: String = _pending.get("next_event_id", "")
+	match choice:
+		"intimate":
+			var iid := event_id + "_INTIMATE"
+			next_id = iid if not EventDatabase.get_event(iid).is_empty() else ""
+		"skip":
+			next_id = ""
+		# "full": keep original next_event_id unchanged
+
+	if get_node_or_null("/root/LibraryData") != null:
+		LibraryData.record_scene(event_id, choice, 0)
+
+	_emit_resolved(next_id)
+
+
+func _emit_resolved(next_id: String) -> void:
+	if target_tile != null:
+		tileEventButtonPressed.emit(
+			_pending["button_id"], event_id, event_country,
+			_pending["outcome_type"], _pending["outcome_value"],
+			_pending["outcome_amount"], next_id, target_tile)
+	else:
+		eventButtonPressed.emit(
+			_pending["button_id"], event_id, event_country,
+			_pending["outcome_type"], _pending["outcome_value"],
+			_pending["outcome_amount"], next_id)
 	queue_free()
-
-
-func _player_allows_content(flag: String) -> bool:
-	match flag:
-		"kinky_lewd": return Settings.content_kinky_lewd
-		"explicit":   return Settings.content_explicit
-		"sensual":    return Settings.content_sensual
-	return true
 
 
 func _check_prerequisite(prereq: String) -> bool:
@@ -118,6 +143,7 @@ func _check_prerequisite(prereq: String) -> bool:
 	if prereq.begins_with("!"):
 		return not player_country.CountryFlags.has(prereq.substr(1))
 	return player_country.CountryFlags.has(prereq)
+
 
 func _substitute(text: String) -> String:
 	if target_tile != null:
@@ -130,7 +156,7 @@ func _substitute(text: String) -> String:
 	return text
 
 
-# ── LEGACY WRAPPERS ──────────────────────────────────────────
+# ── LEGACY WRAPPERS ──────────────────────────────────────────────────────────
 # Keep old-style callers working during transition
 
 func buildSelf(eventType: String, eventID: String,

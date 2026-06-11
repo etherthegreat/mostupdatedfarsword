@@ -129,21 +129,12 @@ func _on_language_selected(lang_code: String) -> void:
 		file.store_var(old_settings)
 		file.close()
 
-# ── CONTENT FLAGS ─────────────────────────────────────────────────────────────
-func _on_content_sensual_toggled(enabled: bool) -> void:
-	LibraryData.set_setting("content_sensual", enabled)
-	if get_node_or_null("/root/Settings"):
-		get_node("/root/Settings").content_sensual = enabled
-
-func _on_content_explicit_toggled(enabled: bool) -> void:
-	LibraryData.set_setting("content_explicit", enabled)
-	if get_node_or_null("/root/Settings"):
-		get_node("/root/Settings").content_explicit = enabled
-
-func _on_content_kinky_toggled(enabled: bool) -> void:
-	LibraryData.set_setting("content_kinky", enabled)
-	if get_node_or_null("/root/Settings"):
-		get_node("/root/Settings").content_kinky_lewd = enabled
+# ── CONTENT FLAGS (removed per PAA scene navigation spec) ────────────────────
+# Scene content choice is made at the scene, not in Settings.
+# Streaming Mode toggle belongs in the pause menu, not here.
+func _on_content_sensual_toggled(_enabled: bool) -> void: pass
+func _on_content_explicit_toggled(_enabled: bool) -> void: pass
+func _on_content_kinky_toggled(_enabled: bool) -> void: pass
 
 # ── DATA ─────────────────────────────────────────────────────────────────────
 func _on_reset_data_pressed() -> void:

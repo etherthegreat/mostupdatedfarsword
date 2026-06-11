@@ -2141,27 +2141,25 @@ func createNewEvent(event_id: String, tile = null) -> void:
 
 func _on_event_button_pressed(button_id: String, event_id: String,
 		event_country: String, outcome_type: String,
-		outcome_value: String, outcome_amount: int) -> void:
+		outcome_value: String, outcome_amount: int,
+		next_event_id: String) -> void:
 	executeOutcome(outcome_type, outcome_value, outcome_amount, null)
 	if outcome_type == "set_flag" and outcome_value.ends_with("_agreed") \
 			and (outcome_value.begins_with("prot_") or outcome_value.begins_with("ca_prot_")):
 		_on_protector_agreed(outcome_value)
-	var btn = EventDatabase.get_button(button_id)
-	var next_id = btn.get("next_event_id", "")
-	if next_id != "":
-		createNewEvent(next_id)
+	if next_event_id != "":
+		createNewEvent(next_event_id)
 
 func _on_tile_event_button_pressed(button_id: String, event_id: String,
 		event_country: String, outcome_type: String,
-		outcome_value: String, outcome_amount: int, tile: Tile) -> void:
+		outcome_value: String, outcome_amount: int,
+		next_event_id: String, tile: Tile) -> void:
 	executeOutcome(outcome_type, outcome_value, outcome_amount, tile)
 	if outcome_type == "set_flag" and outcome_value.ends_with("_agreed") \
 			and (outcome_value.begins_with("prot_") or outcome_value.begins_with("ca_prot_")):
 		_on_protector_agreed(outcome_value)
-	var btn = EventDatabase.get_button(button_id)
-	var next_id = btn.get("next_event_id", "")
-	if next_id != "":
-		createNewEvent(next_id, tile)
+	if next_event_id != "":
+		createNewEvent(next_event_id, tile)
 
 func executeOutcome(outcome_type: String, outcome_value: String,
 		outcome_amount: int, tile) -> void:
@@ -5442,16 +5440,10 @@ func _library_on_event_fired(event_id: String) -> void:
 	if event.is_empty():
 		return
 
-	# Gallery unlock — fire when content-flagged event is shown for first time
+	# Gallery unlock — all players reach all scenes; no content gate
 	var content_flag: String = event.get("content_flag", "").strip()
 	if content_flag != "" and content_flag != "false":
-		var flag_active := false
-		match content_flag:
-			"sensual":  flag_active = LibraryData.get_setting("content_sensual",  false)
-			"explicit": flag_active = LibraryData.get_setting("content_explicit", false)
-			"kinky":    flag_active = LibraryData.get_setting("content_kinky",    false)
-		if flag_active:
-			LibraryData.unlock_gallery(event_id)
+		LibraryData.unlock_gallery(event_id)
 
 	# Journal entry — major Ualani or historical events
 	# event_type values come directly from events.csv
