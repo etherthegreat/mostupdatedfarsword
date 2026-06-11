@@ -251,6 +251,7 @@ CAN_SUMMIT_BTN1,CAN_SUMMIT_01,Sign the Framework Agreement,standard,set_flag,can
 CAN_SUMMIT_BTN2,CAN_SUMMIT_01,The Full Ottawa Summit — All Diplomatic Protocols Observed,explicit,set_flag,can_summit_complete,0,,,,,
 CAN_ALLIANCE_BTN1,CAN_ALLIANCE_SIGNED,Formalize the Continental Defense Alliance,standard,form_alliance,CA,0,,,,,
 CAN_ALLIANCE_BTN2,CAN_ALLIANCE_SIGNED,The Full Ratification Ceremony — All Three in Agreement,explicit,form_alliance,CA,0,,,,,
+CAN_ALLIANCE_INTIMATE_BTN1,CAN_ALLIANCE_SIGNED_INTIMATE,Continue,standard,nothing,,0,,,,,
 CAN_PEACE_BTN1,CAN_PEACE_01,Mark This Moment Together,standard,morale_boost,,20,,,,,
 CAN_PEACE_BTN2,CAN_PEACE_01,The Full Continental Peace Proceedings,explicit,morale_boost,,40,,,,,
 CAN_ELECTION_BTN1,CAN_ELECTION_LUCK,Thank Her — The Alliance Made This Possible,standard,election_pressure_change,,10,,,,,

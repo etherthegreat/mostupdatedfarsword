@@ -841,6 +841,12 @@ EVENTS = [
      "FIRST PASS","can_alliance_signed_scene","Not Started","YES","explicit","0",
      "EXPLICIT #2 (all three); fires after can_summit_complete; form_alliance CA outcome. Text polished: Lake Erie at sundown — ceremony + addendum comedy — cameras clear — Marc borrows tricorne and walks to the beach — Ualani + Jessica alone at the table — Marc's silhouette gets the perfect shot. Awaiting art integration for FULL COMPLETION."),
 
+    ("Canada","Canadian Alliance","CAN_ALLIANCE_SIGNED_INTIMATE",
+     "LAKE ERIE, AN HOUR AFTER: THREE HEADS OF STATE ON A BEACH",
+     "Chain","CAN_ALLIANCE_SIGNED (intimate choice)","—",
+     "FIRST PASS","","N/A","NO","","0",
+     "Intimate variant of CAN_ALLIANCE_SIGNED. Beach walk: philosophy of leadership, Marc launches into Québécois independence and visibly regrets his audience, they find the US/CA border marker and draw a heart (U+J+M) in the sand. Sun sets. No art needed — this is the explicit-imagery-absent authored scene."),
+
     ("Canada","Canadian Alliance","CAN_PEACE_01",
      "THE TIDE HAS TURNED: PENOIT AND CLEAR-WATER COME TO WASHINGTON",
      "Followup","CAN_ALLIANCE_SIGNED (can_allied flag)","—",
