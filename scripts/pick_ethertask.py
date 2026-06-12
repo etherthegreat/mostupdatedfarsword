@@ -182,9 +182,9 @@ def collect():
             })
 
     # ── FLAVORDOC: LAWS ───────────────────────────────────────────────────────
-    # tuple: country, name, category, effect, hist_ref, flavor_text, status
+    # tuple: country, name, category, effect, hist_ref, flavor_text, icon_path, status
     for t in flav.LAWS:
-        country, name, category, effect, hist_ref, flavor_text, status = t
+        country, name, category, effect, hist_ref, flavor_text, icon_path, status = t
         if status in DONE:
             continue
         w = 5 if status in ("IDEA", "FIRST DRAFT") else 1
