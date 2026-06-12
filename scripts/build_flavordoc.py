@@ -696,8 +696,16 @@ CA_PM_ARC = [
      "BTN1: Confirm everything · BTN2: Partial confirmation",
      "FIRST PASS"),
     ("CA_PM_LEGACY", "MARC PENOIT'S FINAL ASSESSMENT — THE DEPUTY GOVERNOR WRITES HIS HISTORY",
-     "Branch (req: ca_pm_met, turn 96+)", "Dynamic loyalty declaration — text assembled at runtime in world.gd:_build_ca_pm_legacy_data(). Checks: uk_ca_peace, Quebec tile ownership, ca_prot_01-08_agreed, can_allied. No intimate path (Jessica is WLW).",
-     "BTN1: Acknowledge the Record (+1 claim)",
+     "Branch (req: ca_pm_met, turn 96+)", "Dynamic loyalty declaration (world.gd:_build_ca_pm_legacy_data). Always fires CA_QUEBEC_SEPARATION_01 or CA_QUEBEC_UNIFIED_01 after BTN1.",
+     "BTN1: Acknowledge the Record (+1 claim) → referendum follow-up",
+     "FIRST PASS"),
+    ("CA_PM_LEGACY", "QUEBEC HOLDS THE REFERENDUM — AND MARC PENOIT CANNOT STOP IT",
+     "Follow-up (auto after CA_PM_LEGACY if Quebec not freed or < 2 Quebec protectors)", "Quebec separates; Penoit remains alliance executive",
+     "BTN1: The alliance holds (nothing outcome)",
+     "FIRST PASS"),
+    ("CA_PM_LEGACY", "QUEBEC HOLDS THE REFERENDUM — AND VOTES TO BUILD A REPUBLIC TOGETHER",
+     "Follow-up (auto after CA_PM_LEGACY if Quebec freed AND 2+ Quebec protectors)", "canada_unified flag; +2 claim, +20 harmony",
+     "BTN1: For all of us. (set_flag: canada_unified)",
      "FIRST PASS"),
 ]
 
