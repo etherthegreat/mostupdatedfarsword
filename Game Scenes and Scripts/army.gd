@@ -435,10 +435,25 @@ func updateCommanderUI():
 	if commander != null:
 		$CommanderButton.icon = commander.governorTexture
 		$CommanderLabel.text = str(commander.governorType)
+		$CommanderButton.modulate = _commander_portrait_modulate()
 	else:
 		$CommanderButton.icon = load("res://art assets/finishedAssets/Panels/armypanelfinishedui/IMG_1564.PNG")
 		$CommanderLabel.text = "No Commander"
+		$CommanderButton.modulate = Color.WHITE
 	pass
+
+func _commander_portrait_modulate() -> Color:
+	var ratio: float = 1.0
+	if maxManpower > 0:
+		ratio = clampf(float(manpowerInArmy) / float(maxManpower), 0.0, 1.0)
+	var r: float = 1.0
+	var g: float = 0.3 + 0.7 * ratio
+	var b: float = 0.3 + 0.7 * ratio
+	if armyShield > 0:
+		r *= 0.75
+		g *= 0.75
+		b = minf(b + 0.5, 1.0)
+	return Color(r, g, b, 1.0)
 
 func updateFinalTotals():
 	$resourcescontainer/armyCostUI.updateSelf(armyPunch,armyPunch)

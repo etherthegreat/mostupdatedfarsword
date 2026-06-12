@@ -102,6 +102,9 @@ func _refresh_display() -> void:
 	var portrait = _n.call("Panel/VBoxContainer/HBoxContainer/PortraitSprite")
 	if portrait and gov != null and gov.governorTexture != null:
 		portrait.texture = gov.governorTexture
+		var home_tile = arcData.get("home_tile")
+		var arc_army = home_tile.stationedArmy if home_tile != null else null
+		portrait.modulate = _portrait_modulate(arc_army)
 
 	var name_lbl = _n.call("Panel/VBoxContainer/HBoxContainer/VBoxContainer/CommanderNameLabel")
 	if name_lbl:
@@ -151,3 +154,19 @@ func _refresh_display() -> void:
 			else "Complete all objectives to unlock reunion scene"
 		if all_done:
 			reward_lbl.add_theme_color_override("font_color", Color(1.0, 0.85, 0.2))
+
+
+func _portrait_modulate(army) -> Color:
+	if army == null:
+		return Color.WHITE
+	var ratio: float = 1.0
+	if army.maxManpower > 0:
+		ratio = clampf(float(army.manpowerInArmy) / float(army.maxManpower), 0.0, 1.0)
+	var r: float = 1.0
+	var g: float = 0.3 + 0.7 * ratio
+	var b: float = 0.3 + 0.7 * ratio
+	if army.armyShield > 0:
+		r *= 0.75
+		g *= 0.75
+		b = minf(b + 0.5, 1.0)
+	return Color(r, g, b, 1.0)
