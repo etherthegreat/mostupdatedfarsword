@@ -30,6 +30,11 @@ var activeProtectorArcs: Array = []
 var commanderArcEntryScene = preload("res://CommanderArcEntry.tscn")
 var protectorArcEntryScene = preload("res://ProtectorArcEntry.tscn")
 
+const PROTECTOR_GOVERNOR_UNLOCKS: Dictionary = {
+	"PROT_01": "Mothman",
+	"PROT_17": "Lincoln's Ghost",
+}
+
 signal arcObjectiveCompleted(arc_id, objective_num)
 signal arcFullyCompleted(arc_id)
 signal requestEventFire(event_id, tile)
@@ -813,6 +818,15 @@ func _on_commander_objective_completed(arc_id: String, obj_num: int) -> void:
 
 func _on_protector_devotion_completed(protector_id: String) -> void:
 	print("Protector ", protector_id, " prayers fulfilled!")
+	var gov_name: String = PROTECTOR_GOVERNOR_UNLOCKS.get(protector_id, "")
+	if gov_name == "" or playerCountryNode == null:
+		return
+	for existing in playerCountryNode.unlockedGovernors:
+		if existing.governorType == gov_name:
+			return
+	var new_gov = governor.new()
+	new_gov.buildSelf(gov_name, 1)
+	playerCountryNode.unlockedGovernors.append(new_gov)
 
 
 func _on_protector_summon_requested(protector_id: String) -> void:
