@@ -697,7 +697,7 @@ CA_PM_ARC = [
      "FIRST PASS"),
     ("CA_PM_LEGACY", "MARK PENOIT'S FINAL ASSESSMENT — THE DEPUTY GOVERNOR WRITES HIS HISTORY",
      "Branch (req: ca_pm_met, turn 96+)", "Late-game narrative resolution",
-     "BTN1: Acknowledge the record · BTN2: Commission a formal history",
+     "BTN1: Acknowledge the Record (+1 claim) · BTN2: He Was Right About the Eastern Flank (sensual, +25 morale)",
      "FIRST PASS"),
 ]
 
