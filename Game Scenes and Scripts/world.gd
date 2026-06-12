@@ -3567,7 +3567,6 @@ func _check_ca_vp_events() -> void:
 		return
 	if _try_ca_pm_first_meeting(pm_tile): return
 	if _try_ca_pm_doubt(pm_tile): return
-	if _try_ca_pm_sacrifice(pm_tile): return
 	if _try_ca_pm_pre_election(pm_tile): return
 	if _try_ca_pm_loyalty_test(pm_tile): return
 	if _try_ca_pm_counsel(pm_tile): return
@@ -3638,17 +3637,6 @@ func _try_ca_pm_pre_election(pm_tile) -> bool:
 		return false
 	return _ca_fire_vp_event("CA_PM_PRE_ELECTION", pm_tile)
 
-
-func _try_ca_pm_sacrifice(pm_tile) -> bool:
-	if _event_on_cooldown("CA_PM_SACRIFICE"):
-		return false
-	if not playerCountryNode.CountryFlags.has("ca_pm_met"):
-		return false
-	if playerCountryNode.CountryFlags.has("ca_pm_resigned"):
-		return false
-	if pm_tile.electionPressure >= -20:
-		return false
-	return _ca_fire_vp_event("CA_PM_SACRIFICE", pm_tile)
 
 
 func _try_ca_pm_solidarity(pm_tile) -> bool:
