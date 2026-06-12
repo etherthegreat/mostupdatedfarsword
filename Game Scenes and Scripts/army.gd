@@ -812,34 +812,6 @@ func changeArmyBanner(icon):
 	$VBoxContainer/BannerControl/BannerContainer.visible = false
 	pass
 
-var bannerButtonScene= load("res://banner_button.tscn")
-
-func _on_banner_button_pressed() -> void:
-	if $VBoxContainer/BannerControl/BannerContainer.get_children() != null:
-		for bannerButton in $VBoxContainer/BannerControl/BannerContainer.get_children():
-			bannerButton.queue_free()
-	if $VBoxContainer/BannerControl/BannerContainer.visible == false:
-		for Texture in parentCountry.armyIconList:
-			print("ANTICLIMATIC", parentCountry.armyIconList)
-			var newBannerButton = bannerButtonScene.instantiate()
-			newBannerButton.buildSelf(Texture)
-			newBannerButton.bannerButtonPressed.connect(changeArmyBanner)
-			$VBoxContainer/BannerControl/BannerContainer.add_child(newBannerButton)
-		$VBoxContainer/BannerControl/Sprite2D.visible = true
-		$VBoxContainer/BannerControl/BannerContainer.visible = true
-	else:
-		$VBoxContainer/BannerControl/BannerContainer.visible = false
-		$VBoxContainer/BannerControl/Sprite2D.visible = false
-	pass # Replace with function body.
-
-signal changeBanner
-func changeArmyBanner(icon):
-	armyIcon = icon
-	$VBoxContainer/BannerControl/BannerSprite.texture = armyIcon
-	$VBoxContainer/BannerControl/Sprite2D.visible = false
-	$VBoxContainer/BannerControl/BannerContainer.visible = false
-	pass
-
 #=================
 #Helpers
 #================
