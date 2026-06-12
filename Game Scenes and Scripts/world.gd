@@ -2222,44 +2222,8 @@ func _on_event_button_pressed(button_id: String, event_id: String,
 	if outcome_type == "set_flag" and outcome_value.ends_with("_agreed") \
 			and (outcome_value.begins_with("prot_") or outcome_value.begins_with("ca_prot_")):
 		_on_protector_agreed(outcome_value)
-	# CA_PM_LEGACY always fires the Quebec referendum as its follow-up
-	if event_id == "CA_PM_LEGACY":
-		createNewEvent(_resolve_ca_quebec_referendum())
-		return
 	if next_event_id != "":
 		createNewEvent(next_event_id)
-
-
-# Returns CA_QUEBEC_UNIFIED_01 if Jessica liberated all Quebec tiles AND has 2+
-# Quebec protectors; otherwise returns CA_QUEBEC_SEPARATION_01.
-func _resolve_ca_quebec_referendum() -> String:
-	var flags: Array = playerCountryNode.CountryFlags
-
-	# Check Quebec tile ownership
-	var quebec_total: int  = 0
-	var quebec_held:  int  = 0
-	for t in $TileController.get_children():
-		if t.get("tileContinent") == "Quebec":
-			quebec_total += 1
-			if t.get("tileOwner") == "CA":
-				quebec_held += 1
-	var all_quebec_free: bool = (quebec_total > 0 and quebec_held == quebec_total)
-
-	# Count Quebec-rooted protectors
-	var QUEBEC_PROT_FLAGS: Array = [
-		"ca_prot_01_agreed",  # Le Wendigo — Laurentian Forest
-		"ca_prot_02_agreed",  # Le Loup-Garou — Rivière-du-Loup
-		"ca_prot_05_agreed",  # La Corriveau — Trois-Pistoles
-		"ca_prot_07_agreed",  # La Chasse-Galerie — Ottawa River
-	]
-	var prot_count: int = 0
-	for f in QUEBEC_PROT_FLAGS:
-		if flags.has(f):
-			prot_count += 1
-
-	if all_quebec_free and prot_count >= 2:
-		return "CA_QUEBEC_UNIFIED_01"
-	return "CA_QUEBEC_SEPARATION_01"
 
 func _on_tile_event_button_pressed(button_id: String, event_id: String,
 		event_country: String, outcome_type: String,

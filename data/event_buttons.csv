@@ -489,5 +489,3 @@ WH_SECRET_10_INT_BTN1,WH_SECRET_10_INTIMATE,Continue,standard,nothing,,0,,,,,
 WH_SECRET_12_INT_BTN1,WH_SECRET_12_INTIMATE,Continue,standard,nothing,,0,,,,,
 CA_PM_LEGACY_BTN1,CA_PM_LEGACY,Acknowledge the Record — The Alliance Archives Will Know His Name,standard,claim_change,,1,,,,,
 
-CA_QUEBEC_UNIFIED_BTN1,CA_QUEBEC_UNIFIED_01,For all of us.,standard,set_flag,canada_unified,0,,,,,
-CA_QUEBEC_SEPARATION_BTN1,CA_QUEBEC_SEPARATION_01,The alliance holds.,standard,nothing,,0,,,,,

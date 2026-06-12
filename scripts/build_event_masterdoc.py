@@ -859,23 +859,6 @@ EVENTS = [
      "FIRST PASS","","Not Started","NO","sensual option","0",
      "End-game; fires turn 93+ if can_allied; BTN1 +pressure 10 / BTN2 sensual +pressure 15"),
 
-    # ── QUEBEC REFERENDUM ARC ────────────────────────────────────────────────
-    # Always fires as follow-up to CA_PM_LEGACY (world.gd:_resolve_ca_quebec_referendum).
-    # Condition: all Quebec tiles owned by CA AND ca_prot_01/02/05/07 ≥ 2 → UNIFIED
-    # Otherwise → SEPARATION
-
-    ("Canada","Quebec Referendum","CA_QUEBEC_SEPARATION_01",
-     "QUEBEC HOLDS THE REFERENDUM — AND MARC PENOIT CANNOT STOP IT",
-     "Followup","CA_PM_LEGACY (conditions not met)","—",
-     "FIRST PASS","","N/A","NO","","0",
-     "Quebec separates; Penoit serves as transition executive; alliance with USA survives. BTN1: The alliance holds."),
-
-    ("Canada","Quebec Referendum","CA_QUEBEC_UNIFIED_01",
-     "QUEBEC HOLDS THE REFERENDUM — AND VOTES TO BUILD A REPUBLIC TOGETHER",
-     "Followup","CA_PM_LEGACY (all Quebec freed + 2 Quebec protectors)","—",
-     "FIRST PASS","","N/A","NO","","0",
-     "Quebec votes to stay in the Republic; sets canada_unified flag. BTN1: For all of us."),
-
     # ── CANADIAN PROTECTORS ──────────────────────────────────────────────────
     # 8 creatures from Algonquin, Mi'kmaq, and French-Canadian folklore.
     # Fire as dispatches from Jessica Commanda Odjick to Ualani Carlisle.
