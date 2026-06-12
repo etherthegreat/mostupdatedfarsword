@@ -253,8 +253,8 @@ LAWS = [
 
     ("CA", "Dominion Elections Act", "Freedom",
      "−1 Mandate/Province · +1 Max Level Courthouse",
-     "Dominion Elections Act (1920)", "A single, unified Dominion-wide elections code ensures every eligible citizen may cast a ballot for their representatives.",
-     "FIRST DRAFT"),
+     "Dominion Elections Act (1920)", "One franchise, one standard, coast to coast. Ottawa's elections code unifies the ballot under federal law and elevates the courthouse as the seat of the democratic compact — no Province stands apart.",
+     "FULL PASS"),
 
     ("CA", "Canadian Citizenship Act", "Equality",
      "−1 Mandate/Population · +1 Happiness/Population",
