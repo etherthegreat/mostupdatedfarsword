@@ -32,13 +32,48 @@ var isLeader: bool = false         # true for the named head-of-state of any cou
 var questComplete: bool = false
 var _loyalty_acc: float = 0.0  # accumulates sub-integer deltas between turns
 
+const GOVERNOR_PORTRAITS: Dictionary = {
+	# Named governors — update values once IMG numbers are confirmed
+	"Patrick Henry":             "res://art assets/finishedAssets/governors/patrick_henry.png",
+	"Abigail Adams":             "res://art assets/finishedAssets/governors/abigail_adams.png",
+	"Thomas Paine":              "res://art assets/finishedAssets/governors/thomas_paine.png",
+	"Mercy Otis Warren":         "res://art assets/finishedAssets/governors/mercy_otis_warren.png",
+	"Daniel Shays":              "res://art assets/finishedAssets/governors/daniel_shays.png",
+	"Ualani Carlisle":           "res://art assets/finishedAssets/governors/ualani_carlisle.png",
+	"Benjamin Tallmadge":        "res://art assets/finishedAssets/governors/benjamin_tallmadge.png",
+	"Phillis Wheatley":          "res://art assets/finishedAssets/governors/phillis_wheatley.png",
+	"Francis Asbury":            "res://art assets/finishedAssets/governors/francis_asbury.png",
+	"Jessica Commanda Odjick":   "res://art assets/finishedAssets/governors/jessica_commanda_odjick.png",
+	"Marc Penoit":               "res://art assets/finishedAssets/governors/marc_penoit.png",
+	"Calico Jack":               "res://art assets/finishedAssets/governors/calico_jack.png",
+	"Pierre Renard":             "res://art assets/finishedAssets/governors/pierre_renard.png",
+	"Louis Tremblant":           "res://art assets/finishedAssets/governors/louis_tremblant.png",
+	# Protectors as governors
+	"Mothman":                   "res://art assets/finishedAssets/governors/mothman.png",
+	"Lincoln's Ghost":           "res://art assets/finishedAssets/governors/lincolns_ghost.png",
+	"Turkey God":                "res://art assets/finishedAssets/governors/turkey_god.png",
+	"Jersey Devil":              "res://art assets/finishedAssets/governors/jersey_devil.png",
+	"Bigfoot":                   "res://art assets/finishedAssets/governors/bigfoot.png",
+	"Thunderbird":               "res://art assets/finishedAssets/governors/thunderbird.png",
+	"Headless Horseman":         "res://art assets/finishedAssets/governors/headless_horseman.png",
+}
+
+const PORTRAIT_FALLBACK: String = \
+	"res://art assets/Placeholder Art/character/4-22-Ikra-Colors - Copy.png"
+
+func _get_portrait(name: String) -> Texture:
+	var path: String = GOVERNOR_PORTRAITS.get(name, "")
+	if path != "" and ResourceLoader.exists(path):
+		return load(path)
+	return load(PORTRAIT_FALLBACK)
+
 func buildSelf(gT, gL):
 	governorType = gT
 	governorLevel = gL
 	hired = false
 	match governorType:
 		"Patrick Henry":
-			governorTexture = load("res://art assets/Placeholder Art/character/4-22-Ikra-Colors - Copy.png")
+			governorTexture = _get_portrait(governorType)
 			governorDescription = "Give me liberty or give me death. Henry brooks no compromise with tyranny."
 			governorBiography = "Virginia orator and patriot. His fury at the crown is matched only by his suspicion of centralized power in any form."
 			governorPosition = "ORATOR"
@@ -49,7 +84,7 @@ func buildSelf(gT, gL):
 			addMilMod("Healer", 3)
 
 		"Abigail Adams":
-			governorTexture = load("res://art assets/Placeholder Art/character/4-22-Ikra-Colors - Copy.png")
+			governorTexture = _get_portrait(governorType)
 			governorDescription = "Remember the ladies, or we will foment our own rebellion."
 			governorBiography = "Wife, intellectual, and the conscience of the revolution. Pushes the movement toward its own stated ideals."
 			governorPosition = "DIPLOMAT"
@@ -57,7 +92,7 @@ func buildSelf(gT, gL):
 			loyalty = 7.0
 
 		"Thomas Paine":
-			governorTexture = load("res://art assets/Placeholder Art/character/4-22-Ikra-Colors - Copy.png")
+			governorTexture = _get_portrait(governorType)
 			governorDescription = "Common sense is not so common. Government is a necessary evil at best."
 			governorBiography = "English immigrant turned American revolutionary. His pamphlets lit the fire. He believes in the people absolutely."
 			governorPosition = "SCHOLAR"
@@ -65,7 +100,7 @@ func buildSelf(gT, gL):
 			loyalty = 4.0  # Loyal but independently principled — will balk at overreach
 
 		"Mercy Otis Warren":
-			governorTexture = load("res://art assets/Placeholder Art/character/4-22-Ikra-Colors - Copy.png")
+			governorTexture = _get_portrait(governorType)
 			governorDescription = "The pen is mightier than any redcoat bayonet."
 			governorBiography = "Playwright and historian of the revolution. Her sharp political satire keeps the movement honest."
 			governorPosition = "SCHOLAR"
@@ -73,7 +108,7 @@ func buildSelf(gT, gL):
 			loyalty = 7.0
 
 		"Daniel Shays":
-			governorTexture = load("res://art assets/Placeholder Art/character/4-22-Ikra-Colors - Copy.png")
+			governorTexture = _get_portrait(governorType)
 			governorDescription = "The farmers have had enough. We will not be taxed into poverty."
 			governorBiography = "Veteran of the Continental Army who led a farmers revolt when the revolution forgot the people who fought it."
 			governorPosition = "FARMER"
@@ -81,7 +116,7 @@ func buildSelf(gT, gL):
 			loyalty = 1.0  # Has real grievances; loyalty fragile under low claim
 
 		"Ualani Carlisle":
-			governorTexture = load("res://art assets/Placeholder Art/character/4-22-Ikra-Colors - Copy.png")
+			governorTexture = _get_portrait(governorType)
 			governorDescription = "The President does not wait for permission. She leads from the front and the briefing room and, when necessary, the battlefield."
 			governorBiography = "Hawaii's finest export and Washington's current occupant — when it is not occupied. President Carlisle commands the APF personally. Her security detail has filed seventeen formal objections. She has read none of them."
 			governorPosition = "PRESIDENT & COMMANDER"
@@ -92,7 +127,7 @@ func buildSelf(gT, gL):
 			addMilMod("President", 123)
 
 		"Benjamin Tallmadge":
-			governorTexture = load("res://art assets/Placeholder Art/character/4-22-Ikra-Colors - Copy.png")
+			governorTexture = _get_portrait(governorType)
 			governorDescription = "The Culper Ring never stopped running. It merely changed names."
 			governorBiography = "Washington's spymaster and the architect of America's first intelligence network. Tallmadge ran agents behind Crown lines for six years without losing one. He is methodical, loyal, and deeply suspicious of everyone — including himself. The Codebook is his invention. The Ring is his life's work. He keeps a ledger. The ledger is encrypted. He is the only one who knows the key."
 			governorPosition = "SPYMASTER"
@@ -101,7 +136,7 @@ func buildSelf(gT, gL):
 			addMilMod("Translator", 123)
 
 		"Phillis Wheatley":
-			governorTexture = load("res://art assets/Placeholder Art/character/4-22-Ikra-Colors - Copy.png")
+			governorTexture = _get_portrait(governorType)
 			governorDescription = "Liberty and peace are not decorative concepts. They are demands."
 			governorBiography = "The first published African American poet and the revolution's most inconvenient mirror. She met Washington and wrote him a poem and the poem was better than the war. Her work is circulating in British-held territories. Crown officers have begun confiscating it, which, historically speaking, is how you know a poem is working. She does not fight with a musket. She does not need to."
 			governorPosition = "HERALD"
@@ -109,7 +144,7 @@ func buildSelf(gT, gL):
 			loyalty = 6.0
 
 		"Francis Asbury":
-			governorTexture = load("res://art assets/Placeholder Art/character/4-22-Ikra-Colors - Copy.png")
+			governorTexture = _get_portrait(governorType)
 			governorDescription = "I have traveled three hundred thousand miles in this country and I am not done yet."
 			governorBiography = "The Father of American Methodism arrived from England in 1771 and proceeded to cover every inch of the new nation on horseback at a pace that worried his horse. He preaches liberation theology in territories where armies cannot follow. His circuits reach the frontier settlements, the Appalachian hollows, the farmlands between battlefields. He is anti-slavery, democratic, tireless, and genuinely impossible to stop. Crown forces have twice tried to arrest him. He preached at both arresting officers. One converted."
 			governorPosition = "CIRCUIT PREACHER"
@@ -117,7 +152,7 @@ func buildSelf(gT, gL):
 			loyalty = 5.0
 
 		"Jessica Commanda Odjick":
-			governorTexture = load("res://art assets/Placeholder Art/character/4-22-Ikra-Colors - Copy.png")
+			governorTexture = _get_portrait(governorType)
 			governorDescription = "The colony belongs to no crown. The land remembers who tended it long before London drew a line."
 			governorBiography = "Algonquin leader and the voice the Continental Republic actually needs to hear. Commanda grew up on the waterways between territories London calls borders and her people call home. She speaks three languages and none of them are asking permission. She came to Ottawa not as a supplicant but as the only person in the room who has been right about every British promise for forty years. The Governor's Council objected to her presence at the table. The Governor's Council is no longer at the table."
 			governorPosition = "PRIME MINISTER"
@@ -127,7 +162,7 @@ func buildSelf(gT, gL):
 			isLeader = true
 
 		"Marc Penoit":
-			governorTexture = load("res://art assets/Placeholder Art/character/4-22-Ikra-Colors - Copy.png")
+			governorTexture = _get_portrait(governorType)
 			governorDescription = "I did not march this far to hand the colony back to London in a different hat."
 			governorBiography = "Québécois militia commander and deputy to Clear-Water. Penoit spent two winters at the siege of Saint-Georges before the Continental Republic knew his name. Pragmatic where Clear-Water is principled, military where she is diplomatic, and entirely convinced that the French Habitants will only survive this war if someone is watching the eastern flank. He disagrees with the alliance about once a week. He never disagreed enough to leave."
 			governorPosition = "DEPUTY GOVERNOR"

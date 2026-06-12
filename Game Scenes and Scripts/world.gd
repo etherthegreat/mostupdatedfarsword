@@ -1041,7 +1041,7 @@ func generateBarracksCommanders() -> void:
 		new_gov.governorBiography  = \
 			full_name + " came from " + tile.tileName + " (" + tile.terrain + "). " + \
 			"They carry the skills of " + chosen["name"] + " into the fight for independence."
-		new_gov.governorTexture    = portrait_placeholder
+		new_gov.governorTexture    = new_gov._get_portrait(new_gov.governorType)
 		new_gov.hired              = false
 
 		# Add to player's unlocked governor pool
