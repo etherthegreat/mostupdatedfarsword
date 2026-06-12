@@ -696,8 +696,8 @@ CA_PM_ARC = [
      "BTN1: Confirm everything · BTN2: Partial confirmation",
      "FIRST PASS"),
     ("CA_PM_LEGACY", "MARC PENOIT'S FINAL ASSESSMENT — THE DEPUTY GOVERNOR WRITES HIS HISTORY",
-     "Branch (req: ca_pm_met, turn 96+)", "Late-game narrative resolution",
-     "BTN1: Acknowledge the Record (+1 claim) · BTN2: He Was Right About the Eastern Flank (sensual, +25 morale)",
+     "Branch (req: ca_pm_met, turn 96+)", "Dynamic loyalty declaration — text assembled at runtime in world.gd:_build_ca_pm_legacy_data(). Checks: uk_ca_peace, Quebec tile ownership, ca_prot_01-08_agreed, can_allied. No intimate path (Jessica is WLW).",
+     "BTN1: Acknowledge the Record (+1 claim)",
      "FIRST PASS"),
 ]
 

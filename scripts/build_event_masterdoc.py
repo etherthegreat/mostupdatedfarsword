@@ -1350,13 +1350,6 @@ EVENTS = [
      "IDEA","","N/A","NO","","0",
      "Stub — author intimate version of PEACE_USA_01. By morning: emotional arc, no explicit imagery."),
 
-    # Canada — PM Arc (Marc Penoit)
-    ("Canada","PM Arc","CA_PM_LEGACY_INTIMATE",
-     "MARC PENOIT'S FINAL ASSESSMENT — BY MORNING",
-     "Chain","CA_PM_LEGACY (intimate choice)","—",
-     "FIRST PASS","","N/A","NO","","0",
-     "By morning: Penoit at the desk before light, writing page forty-one. Emotional resolution — he was wrong about what this would feel like."),
-
     # CA Protectors
     ("CA Protector","Le Wendigo","CA_PROT_01_AGREE_INTIMATE",
      "LE WENDIGO STANDS DOWN: SAINT-GEORGES FOREST ACCORD — BY MORNING",

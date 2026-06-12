@@ -2132,12 +2132,87 @@ func createNewEvent(event_id: String, tile = null) -> void:
 	if not EventDatabase.event_can_fire(event_id, currentWorldTurn):
 		return
 	var newEvent = eventScene.instantiate()
-	newEvent.build_from_csv(event_id, tile, playerCountryNode)
+	if event_id == "CA_PM_LEGACY":
+		newEvent.build_from_data(_build_ca_pm_legacy_data(), tile, playerCountryNode)
+	else:
+		newEvent.build_from_csv(event_id, tile, playerCountryNode)
 	newEvent.eventButtonPressed.connect(_on_event_button_pressed)
 	newEvent.tileEventButtonPressed.connect(_on_tile_event_button_pressed)
 	$CanvasLayer/EventControl/EventContainer.add_child(newEvent)
 	EventDatabase.mark_event_fired(event_id, currentWorldTurn)
 	_library_on_event_fired(event_id)
+
+
+# Assembles CA_PM_LEGACY long_desc dynamically based on the player's CA run flags.
+func _build_ca_pm_legacy_data() -> Dictionary:
+	var flags: Array = playerCountryNode.CountryFlags
+
+	# ── Protector names by flag ───────────────────────────────────────────────
+	var PROT_NAMES: Dictionary = {
+		"ca_prot_01_agreed": "Le Wendigo",
+		"ca_prot_02_agreed": "Le Loup-Garou",
+		"ca_prot_03_agreed": "Les Feux Follets",
+		"ca_prot_04_agreed": "Mishepeshu",
+		"ca_prot_05_agreed": "La Corriveau",
+		"ca_prot_06_agreed": "Le Carcajou",
+		"ca_prot_07_agreed": "La Chasse-Galerie",
+		"ca_prot_08_agreed": "Le Gougou",
+	}
+	var agreed: Array = []
+	for f in PROT_NAMES:
+		if flags.has(f):
+			agreed.append(PROT_NAMES[f])
+
+	# ── Check whether Quebec tiles are held by the player ────────────────────
+	var quebec_held: bool = false
+	for t in $TileController.get_children():
+		if t.get("tileContinent") == "Quebec" and t.get("tileOwner") == "CA":
+			quebec_held = true
+			break
+
+	# ── Assemble paragraphs ───────────────────────────────────────────────────
+	var parts: Array = []
+
+	# Opening — always present
+	parts.append("Marc Penoit's dispatch arrived before dawn. It was addressed to the Prime Minister personally. It did not begin with a salutation. It began: I have served this Republic for ninety-six turns. I have one more thing to say before I file it.")
+
+	# Britain expelled
+	if flags.has("uk_ca_peace"):
+		parts.append("Britain is gone. I want to write that sentence again because I did not expect to write it once. The Crown that garrisoned this country for a century, that tried Corriveau and called it justice, that named our rivers and then mispronounced them — is gone. You did that. The Republic did that. I will not pretend I am not moved.")
+
+	# Quebec liberated
+	if quebec_held:
+		parts.append("Quebec is free because of your actions. I was born in Montreal. I have carried this since I was nineteen years old in a café on Saint-Denis that no longer exists. The Quebecois people held the Saint Lawrence corridor for six weeks without reinforcement and without complaint and without leaving. You did not trade them away in a negotiation about something else. You did not forget them when the capital was under pressure. Our loyalty to you, to Ottawa, and to Canada will remain forever secure.")
+
+	# Protectors
+	if agreed.size() == 1:
+		parts.append("I spent thirty years dismissing the old stories as strategically irrelevant. " + agreed[0] + " altered the course of this war. You did not laugh at what you could not explain. You acknowledged it. Canada's soul was not lost — it was waiting to be recognized. You recognized it.")
+	elif agreed.size() >= 2:
+		var names: String = ", ".join(agreed)
+		parts.append("I want to name them, because the historians will not know where to begin. " + names + ". I spent thirty years dismissing the old stories. These were not legends that held — these were allies you earned because you treated them as this country always should have. Canada's soul has been restored. I did not think I would live to write that sentence. I am writing it.")
+
+	# Alliance
+	if flags.has("can_allied"):
+		parts.append("The alliance with the Continental Republic holds. I was not certain it would survive the first year. It has survived four. When they write this history — and they will write it — the Accord will be the chapter that makes everything else legible.")
+
+	# Closing — always present
+	parts.append("You are the best Prime Minister this country has had. I have worked for three of them. I say this with the precision I apply to all my assessments and without qualification. This Republic exists because of decisions made in this office, by you, under conditions that would have broken most governments before the second year. The dispatch is filed. The record is complete. I remain, as always, at your service.")
+
+	return {
+		"event_id":      "CA_PM_LEGACY",
+		"event_type":    "ca_vp",
+		"country_cid":   "CA",
+		"headline":      "MARC PENOIT'S FINAL ASSESSMENT — THE DEPUTY GOVERNOR WRITES HIS HISTORY",
+		"short_desc":    "Marc Penoit Has Filed His Report. This One Is Not About Flanks.",
+		"long_desc":     "\n\n".join(parts),
+		"image_tag":     "penoit_legacy",
+		"tone":          "Somber/Historic",
+		"content_flag":  "",
+		"repeatable":    "false",
+		"cooldown_turns":"0",
+		"buttons":       EventDatabase.get_buttons_for_event("CA_PM_LEGACY"),
+	}
+
 
 func _on_event_button_pressed(button_id: String, event_id: String,
 		event_country: String, outcome_type: String,
