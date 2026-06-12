@@ -33,7 +33,13 @@ var questComplete: bool = false
 var _loyalty_acc: float = 0.0  # accumulates sub-integer deltas between turns
 
 const GOVERNOR_PORTRAITS: Dictionary = {
-	# Named governors — update values once IMG numbers are confirmed
+	# Named governors — portraits confirmed
+	"Mothman":                   "res://art assets/finishedAssets/governors/mothman.png",
+	"Lincoln's Ghost":           "res://art assets/finishedAssets/governors/lincolns_ghost.png",
+	"Turkey God":                "res://art assets/finishedAssets/governors/turkey_god.png",
+	"Secret Service Detail":     "res://art assets/finishedAssets/governors/secret_service_detail.png",
+	"Baseball Legend":           "res://art assets/finishedAssets/governors/baseball_legend.png",
+	# Named governors — sprites pending
 	"Patrick Henry":             "res://art assets/finishedAssets/governors/patrick_henry.png",
 	"Abigail Adams":             "res://art assets/finishedAssets/governors/abigail_adams.png",
 	"Thomas Paine":              "res://art assets/finishedAssets/governors/thomas_paine.png",
@@ -48,15 +54,29 @@ const GOVERNOR_PORTRAITS: Dictionary = {
 	"Calico Jack":               "res://art assets/finishedAssets/governors/calico_jack.png",
 	"Pierre Renard":             "res://art assets/finishedAssets/governors/pierre_renard.png",
 	"Louis Tremblant":           "res://art assets/finishedAssets/governors/louis_tremblant.png",
-	# Protectors as governors
-	"Mothman":                   "res://art assets/finishedAssets/governors/mothman.png",
-	"Lincoln's Ghost":           "res://art assets/finishedAssets/governors/lincolns_ghost.png",
-	"Turkey God":                "res://art assets/finishedAssets/governors/turkey_god.png",
-	"Jersey Devil":              "res://art assets/finishedAssets/governors/jersey_devil.png",
-	"Bigfoot":                   "res://art assets/finishedAssets/governors/bigfoot.png",
-	"Thunderbird":               "res://art assets/finishedAssets/governors/thunderbird.png",
-	"Headless Horseman":         "res://art assets/finishedAssets/governors/headless_horseman.png",
 }
+
+# Procedural commander portrait pools — picked by archetype name keyword
+const MINUTEMAN_POOL: Array = [
+	"res://art assets/finishedAssets/governors/minuteman_01.png",   # Mexican female
+	"res://art assets/finishedAssets/governors/minuteman_02.png",   # Lebanese NB
+	"res://art assets/finishedAssets/governors/minuteman_03.png",   # Irish female
+	"res://art assets/finishedAssets/governors/minuteman_04.png",   # Chinese male
+	"res://art assets/finishedAssets/governors/minuteman_05.png",   # Vietnamese female
+	"res://art assets/finishedAssets/governors/minuteman_06.png",   # Mystery cloak
+	"res://art assets/finishedAssets/governors/minuteman_07.png",   # English NB
+	"res://art assets/finishedAssets/governors/minuteman_08.png",   # W African male
+	"res://art assets/finishedAssets/governors/minuteman_09.png",   # Scottish father
+	"res://art assets/finishedAssets/governors/minuteman_10.png",   # Indian emo
+	"res://art assets/finishedAssets/governors/minuteman_11.png",   # Rastafarian
+	"res://art assets/finishedAssets/governors/minuteman_12.png",   # Aboriginal giant
+	"res://art assets/finishedAssets/governors/minuteman_13.png",   # French refugee
+]
+
+const GREEN_MOUNTAINEER_POOL: Array = [
+	"res://art assets/finishedAssets/governors/green_mountaineer_01.png",  # Angolan female
+	"res://art assets/finishedAssets/governors/green_mountaineer_02.png",  # Quebecois male
+]
 
 const PORTRAIT_FALLBACK: String = \
 	"res://art assets/Placeholder Art/character/4-22-Ikra-Colors - Copy.png"
@@ -65,6 +85,15 @@ func _get_portrait(name: String) -> Texture:
 	var path: String = GOVERNOR_PORTRAITS.get(name, "")
 	if path != "" and ResourceLoader.exists(path):
 		return load(path)
+	# Procedural pool — stable pick so same archetype name always gets same face
+	var pool: Array = MINUTEMAN_POOL
+	if "Mountain" in name or "Vermont" in name or "Mountaineer" in name:
+		pool = GREEN_MOUNTAINEER_POOL
+	if not pool.is_empty():
+		var idx: int = absi(name.hash()) % pool.size()
+		var pool_path: String = pool[idx]
+		if ResourceLoader.exists(pool_path):
+			return load(pool_path)
 	return load(PORTRAIT_FALLBACK)
 
 func buildSelf(gT, gL):
@@ -169,6 +198,50 @@ func buildSelf(gT, gL):
 			governorFaction = "French Habitants"
 			loyalty = 15.0
 			isVicePresident = true
+
+		"Mothman":
+			governorTexture = _get_portrait(governorType)
+			governorDescription = "It appeared before the bridge fell. It appears now. Draw your own conclusions."
+			governorBiography = "The Mothman of Point Pleasant has haunted the Ohio River valley since before the revolution. Its warning cries precede disasters — or cause them, depending on who you ask. It does not speak. It does not need to. When it stands at your side on the battlefield, the enemy sees it too."
+			governorPosition = "OMEN"
+			governorFaction = "Protector"
+			loyalty = 20.0
+			questComplete = true
+
+		"Lincoln's Ghost":
+			governorTexture = _get_portrait(governorType)
+			governorDescription = "The first time was unfinished business. The second time, he came back to finish it."
+			governorBiography = "Abe Lincoln died in Washington once. Now he haunts the White House and the war rooms and the places where decisions are made badly. He does not give orders. He stands behind you when you are about to make a mistake and says nothing at all, which is somehow worse. Carlisle finds him unnerving. He finds that funny."
+			governorPosition = "SPECTER"
+			governorFaction = "Protector"
+			loyalty = 20.0
+			questComplete = true
+
+		"Turkey God":
+			governorTexture = _get_portrait(governorType)
+			governorDescription = "Ben Franklin was right. Nobody respected him until they needed him."
+			governorBiography = "Ancient, enormous, and profoundly unimpressed. The Turkey God is older than the republic, older than the colonies, older than the name for any of this. It arrived at the first Thanksgiving with an agenda nobody asked about and has been watching since. It does not fight. It makes the land remember what it owes the people who tended it."
+			governorPosition = "ELDER"
+			governorFaction = "Protector"
+			loyalty = 20.0
+			questComplete = true
+
+		"Secret Service Detail":
+			governorTexture = _get_portrait(governorType)
+			governorDescription = "She has kept Carlisle alive through four assassination attempts. The fifth one hasn't tried yet."
+			governorBiography = "She doesn't have a name on the record, a file in the system, or a rank on the org chart. She has a job. The job is the President. She is very good at her job."
+			governorPosition = "DETAIL"
+			governorFaction = "Patriot"
+			loyalty = 20.0
+			questComplete = true
+
+		"Baseball Legend":
+			governorTexture = _get_portrait(governorType)
+			governorDescription = "She hit .340 in a league that told her she couldn't play. She wasn't listening then either."
+			governorBiography = "The most famous athlete in a country currently at war. She showed up with a bat, a grievance, and no patience for the idea that the revolution didn't need her. She was right. The morale she brings to a garrison is measurable. The morale she takes from the enemy is also measurable. Different units of measurement."
+			governorPosition = "LEGEND"
+			governorFaction = "Patriot"
+			loyalty = 10.0
 	pass
 
 
