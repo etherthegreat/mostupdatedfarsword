@@ -489,3 +489,6 @@ WH_SECRET_10_INT_BTN1,WH_SECRET_10_INTIMATE,Continue,standard,nothing,,0,,,,,
 WH_SECRET_12_INT_BTN1,WH_SECRET_12_INTIMATE,Continue,standard,nothing,,0,,,,,
 CA_PM_LEGACY_BTN1,CA_PM_LEGACY,Acknowledge the Record — The Alliance Archives Will Know His Name,standard,claim_change,,1,,,,,
 
+
+CA_PM_SOLIDARITY_BTN1,CA_PM_SOLIDARITY,Forward the Report to the Alliance — They Should Know What They're Working With,standard,morale_boost,,15,,,,,
+CA_PM_SOLIDARITY_BTN2,CA_PM_SOLIDARITY,File It With the Records Office,standard,harmony_boost,,10,,,,,
