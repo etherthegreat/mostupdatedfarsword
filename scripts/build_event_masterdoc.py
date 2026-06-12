@@ -812,7 +812,7 @@ EVENTS = [
      "Fires turn 8+ after uk_buildup_known; BTN1 sets can_contact / BTN2 sets can_rejected (ends arc)"),
 
     ("Canada","Canadian Alliance","CAN_PENOIT_01",
-     "PRESIDENT PENOIT'S CONDITIONS: MARK PENOIT PUTS IT IN WRITING",
+     "PRESIDENT PENOIT'S CONDITIONS: MARC PENOIT PUTS IT IN WRITING",
      "Branch","CAN_CALL_01 (can_contact)","→ CAN_CLEARWATER_01",
      "FIRST PASS","","Not Started","NO","","0",
      "Fires turn 12+ after can_contact; BTN1 can_penoit_agreed / BTN2 can_penoit_negotiating"),
@@ -1349,6 +1349,13 @@ EVENTS = [
      "Chain","PEACE_USA_01 (intimate choice)","—",
      "IDEA","","N/A","NO","","0",
      "Stub — author intimate version of PEACE_USA_01. By morning: emotional arc, no explicit imagery."),
+
+    # Canada — PM Arc (Marc Penoit)
+    ("Canada","PM Arc","CA_PM_LEGACY_INTIMATE",
+     "MARC PENOIT'S FINAL ASSESSMENT — BY MORNING",
+     "Chain","CA_PM_LEGACY (intimate choice)","—",
+     "FIRST PASS","","N/A","NO","","0",
+     "By morning: Penoit at the desk before light, writing page forty-one. Emotional resolution — he was wrong about what this would feel like."),
 
     # CA Protectors
     ("CA Protector","Le Wendigo","CA_PROT_01_AGREE_INTIMATE",
