@@ -112,10 +112,9 @@ func buildSelf(newLawType, selected):
 		"Canadian Citizenship Act":
 			lawDescription = "For the first time, to live in the Republic is to belong to it. The British subject is gone; in its place, the Canadian citizen — French, Indigenous, newcomer alike, equal before every law that follows."
 			quadrant = "Equality"
-			lawIcon = load("res://art assets/Placeholder Art/UI Art/resources/Older Icons/manpower 100 x 100.png")
+			lawIcon = load("res://art assets/finishedAssets/lawIcons/can_citizenship_act.png")
 			lawCosts = str("Cost: 15 Mandate
-						-1 Mandate Per Population
-						+1 Harmony Per Population")
+						-10% Mandate Cost (All Buildings)")
 		"Accessible Canada Act":
 			lawDescription = "A barrier-free Canada ensures that disability is no obstacle to full participation in the life of the Republic."
 			quadrant = "Equality"

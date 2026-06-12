@@ -2031,6 +2031,11 @@ func calculateOutputs(playerCountryNode):
 	if mandatePerLevel != 0 or mandateCostPerLevel != 0:
 		totalBuildingMandate = (mandatePerLevel - mandateCostPerLevel)
 		totalBuildingMandate *= buildingLevel
+		if totalBuildingMandate < 0 and is_instance_valid(playerCountry):
+			for law in playerCountry.lawsInConstitution:
+				if law.lawType == "Canadian Citizenship Act":
+					totalBuildingMandate = int(float(totalBuildingMandate) * 0.9)
+					break
 	if happinessPerLevel != 0 or happinessCostPerLevel != 0:
 		totalBuildingHappiness = (happinessPerLevel - happinessCostPerLevel)
 		totalBuildingHappiness *= buildingLevel

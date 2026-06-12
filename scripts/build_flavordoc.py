@@ -257,9 +257,9 @@ LAWS = [
      "", "FULL PASS"),
 
     ("CA", "Canadian Citizenship Act", "Equality",
-     "−1 Mandate/Population · +1 Harmony/Population",
+     "−10% Mandate Cost (All Buildings)",
      "Canadian Citizenship Act (1947)", "For the first time, to live in the Republic is to belong to it. The British subject is gone; in its place, the Canadian citizen — French, Indigenous, newcomer alike, equal before every law that follows. The mandate slips because the Republic has grown wider than before. The harmony rises for exactly the same reason.",
-     "", "FULL PASS"),
+     "art assets/finishedAssets/lawIcons/can_citizenship_act.png", "FULL PASS"),
 
     ("CA", "Accessible Canada Act", "Equality",
      "+1 Gold/Workshop · −10% Population Upgrade cost",
