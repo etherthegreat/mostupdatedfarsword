@@ -2163,12 +2163,25 @@ func _build_ca_pm_legacy_data() -> Dictionary:
 		if flags.has(f):
 			agreed.append(PROT_NAMES[f])
 
-	# ── Check whether Quebec tiles are held by the player ────────────────────
-	var quebec_held: bool = false
+	# ── Check whether all Quebec tiles are held by the player ───────────────
+	var quebec_total: int = 0
+	var quebec_player: int = 0
 	for t in $TileController.get_children():
-		if t.get("tileContinent") == "Quebec" and t.get("tileOwner") == "CA":
-			quebec_held = true
-			break
+		if t.get("tileContinent") == "Quebec":
+			quebec_total += 1
+			if t.get("tileOwner") == "CA":
+				quebec_player += 1
+	var quebec_held: bool = (quebec_total > 0 and quebec_player == quebec_total)
+
+	# ── Count Quebec-rooted protectors ────────────────────────────────────────
+	var QUEBEC_PROT_FLAGS: Array = [
+		"ca_prot_01_agreed", "ca_prot_02_agreed",
+		"ca_prot_05_agreed", "ca_prot_07_agreed",
+	]
+	var quebec_prot_count: int = 0
+	for f in QUEBEC_PROT_FLAGS:
+		if flags.has(f):
+			quebec_prot_count += 1
 
 	# ── Assemble paragraphs ───────────────────────────────────────────────────
 	var parts: Array = []
@@ -2195,8 +2208,14 @@ func _build_ca_pm_legacy_data() -> Dictionary:
 	if flags.has("can_allied"):
 		parts.append("The alliance with the Continental Republic holds. I was not certain it would survive the first year. It has survived four. When they write this history — and they will write it — the Accord will be the chapter that makes everything else legible.")
 
-	# Closing — always present
-	parts.append("You are the best Prime Minister this country has had. I have worked for three of them. I say this with the precision I apply to all my assessments and without qualification. This Republic exists because of decisions made in this office, by you, under conditions that would have broken most governments before the second year. The dispatch is filed. The record is complete. I remain, as always, at your service.")
+	# Penultimate — always present
+	parts.append("You are the best Prime Minister this country has had. I have worked for three of them. I say this with the precision I apply to all my assessments and without qualification. This Republic exists because of decisions made in this office, by you, under conditions that would have broken most governments before the second year.")
+
+	# Closing — independence decision, conditional on Quebec liberation + protectors
+	if quebec_held and quebec_prot_count >= 2:
+		parts.append("I have made a decision about Quebec. I am the President of Canada, and this decision belongs to me, and I am making it now. There will be no referendum. The Quebecois people have been answered — not in a vote but in everything you did before one was necessary. Quebec is free. Its soul has been acknowledged. The question I have been carrying since I was nineteen years old in a café on Saint-Denis is closed. The Republic of Canada is whole. The dispatch is filed. The record is complete. I remain, as always, at your service.")
+	else:
+		parts.append("I have made a decision about Quebec. I am the President of Canada, and this decision belongs to me, and I am making it now. There will be a referendum. I cannot in good conscience close the question while the answer remains incomplete. The Quebecois people deserve to be heard — not as a formality, but as a people whose loyalty was never unconditional and should not have been expected to be. Whatever they decide, I serve this Republic and I serve you. That does not change. The dispatch is filed. The record is complete. I remain, as always, at your service.")
 
 	return {
 		"event_id":      "CA_PM_LEGACY",

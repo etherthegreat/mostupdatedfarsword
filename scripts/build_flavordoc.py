@@ -696,7 +696,7 @@ CA_PM_ARC = [
      "BTN1: Confirm everything · BTN2: Partial confirmation",
      "FIRST PASS"),
     ("CA_PM_LEGACY", "MARC PENOIT'S FINAL ASSESSMENT — THE DEPUTY GOVERNOR WRITES HIS HISTORY",
-     "Branch (req: ca_pm_met, turn 96+)", "Dynamic loyalty declaration (world.gd:_build_ca_pm_legacy_data). Checks uk_ca_peace, Quebec tile ownership, ca_prot flags, can_allied. Ends on its own.",
+     "Branch (req: ca_pm_met, turn 96+)", "Single dynamic letter (world.gd:_build_ca_pm_legacy_data). Paragraphs conditional on uk_ca_peace, all-Quebec ownership, named protectors, can_allied. Closes with Marc's independence decision: no referendum if Quebec freed + 2 Quebec protectors; referendum announced otherwise.",
      "BTN1: Acknowledge the Record (+1 claim)",
      "FULL PASS"),
 ]
