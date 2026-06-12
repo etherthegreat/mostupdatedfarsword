@@ -248,8 +248,8 @@ LAWS = [
 
     ("CA", "Municipal Elections Act", "Freedom",
      "−3 Mandate/Courthouse · +1 Happiness/Farm · +1 Happiness/Camp",
-     "Municipal elections tradition (1849+)", "Responsible government begins at the local level. Each municipality elects its own council to govern in the people's interest.",
-     "FIRST DRAFT"),
+     "Municipal elections tradition (1849+)", "Responsible government runs all the way down. From Baldwin's day onward, every township elects its own council — the courthouse serves the community, not the administrator, and the people who work the land have a say in how it's governed.",
+     "FULL PASS"),
 
     ("CA", "Dominion Elections Act", "Freedom",
      "−1 Mandate/Province · +1 Max Level Courthouse",
