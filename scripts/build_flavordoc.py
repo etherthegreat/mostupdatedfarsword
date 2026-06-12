@@ -694,7 +694,7 @@ CA_PM_ARC = [
     ("CA_PM_SOLIDARITY", "PENOIT AND THE PROTECTORS — THE DEPUTY GOVERNOR ACKNOWLEDGES THE CREATURES",
      "Branch (req: ca_pm_met, 3+ CA protectors agreed)", "Relationship culmination; morale +15 or harmony +10",
      "BTN1: Forward to alliance (+15 morale) · BTN2: File with Records (+10 harmony)",
-     "FIRST PASS"),
+     "FULL PASS"),
     ("CA_PM_LEGACY", "MARC PENOIT'S FINAL ASSESSMENT — THE DEPUTY GOVERNOR WRITES HIS HISTORY",
      "Branch (req: ca_pm_met, turn 96+)", "Single dynamic letter (world.gd:_build_ca_pm_legacy_data). Paragraphs conditional on uk_ca_peace, all-Quebec ownership, named protectors, can_allied. Closes with Marc's independence decision: no referendum if Quebec freed + 2 Quebec protectors; referendum announced otherwise.",
      "BTN1: Acknowledge the Record (+1 claim)",
