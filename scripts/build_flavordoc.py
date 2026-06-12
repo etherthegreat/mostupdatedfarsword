@@ -243,8 +243,8 @@ LAWS = [
 
     ("CA", "Canada Shipping Act", "Order",
      "−2 Mandate/Workshop · +2 Gold/Workshop · +1 Gold/Farm · +1 Gold/Camp",
-     "Canada Shipping Act (1936)", "Canadian waters carry Canadian commerce. The Dominion regulates its shipping lanes and expands its mercantile reach.",
-     "FIRST DRAFT"),
+     "Canada Shipping Act (1936)", "The St. Lawrence is the Dominion's spine. Ottawa consolidates maritime law under one code — Canadian vessels, Canadian rules, Canadian profit. The workshops that outfit the fleet keep more of what they earn.",
+     "FULL PASS"),
 
     ("CA", "Municipal Elections Act", "Freedom",
      "−3 Mandate/Courthouse · +1 Happiness/Farm · +1 Happiness/Camp",
