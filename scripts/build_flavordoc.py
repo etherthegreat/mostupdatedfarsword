@@ -166,13 +166,13 @@ FACTIONS = [
     # ── CA ───────────────────────────────────────────────────────────────────
     ("CA", "French Habitants", "Marc Penoit / Pierre Renard (pool)", "Equality / Freedom",
      "Quebec Act Recognition", "Habitants Alliance", "Republic of Quebec",
-     "Municipal Elections Act, Canadian Citizenship Act, Dominion Elections Act",
+     "Municipal Elections Act, Canadian Citizenship Act, Republic Elections Act",
      "Quebec sovereignty faction. Governor Carleton is the NPC counterpart. Events around language rights, dual governance, and Francophone identity.",
      "FIRST DRAFT"),
 
     ("CA", "Loyalist Settlers", "Benjamin Tallmadge (pool)", "Order",
      "Crown Defectors", "Pragmatic Compact", "New Republic Converts",
-     "National Defence Act, Canada Shipping Act, Dominion Elections Act",
+     "National Defence Act, Canada Shipping Act, Republic Elections Act",
      "Former Crown loyalists who've accepted the new reality. Provide military discipline and naval expertise. Uneasy but reliable.",
      "FIRST DRAFT"),
 
@@ -238,12 +238,12 @@ LAWS = [
     # ── CA ───────────────────────────────────────────────────────────────────
     ("CA", "Militia Act", "Freedom",
      "+5 Weapons/Mansion lvl · +25 MP/Farm · −1 Mandate/Farm · +1 Mandate/Forge",
-     "Militia Act (1868)", "From Confederation onward, the Dominion's defence rests on its people. Every farm a recruiting ground, every estate an armoury — the Militia Act turns the countryside into a reserve force that moves the moment the call goes out.",
+     "Militia Act (1868)", "From Confederation onward, the Republic's defence rests on its people. Every farm a recruiting ground, every estate an armoury — the Militia Act turns the countryside into a reserve force that moves the moment the call goes out.",
      "", "FULL PASS"),
 
     ("CA", "Canada Shipping Act", "Order",
      "−1 Mandate/Dock · +2 Gold/Dock · +1 Happiness/Dock",
-     "Canada Shipping Act (1936)", "Every vessel on Canadian waters submits to Dominion safety standards — commercial freighters, fishing trawlers, and the pleasure yachts of whoever thought the St. Lawrence was a private amenity. The docks keep more of what they earn. In exchange, they fill out the forms.",
+     "Canada Shipping Act (1936)", "Every vessel on Canadian waters submits to Republic safety standards — commercial freighters, fishing trawlers, and the pleasure yachts of whoever thought the St. Lawrence was a private amenity. The docks keep more of what they earn. In exchange, they fill out the forms.",
      "art assets/finishedAssets/lawIcons/can_shipping_act.png", "FULL PASS"),
 
     ("CA", "Municipal Elections Act", "Freedom",
@@ -251,24 +251,24 @@ LAWS = [
      "Municipal elections tradition (1849+)", "Responsible government runs all the way down. From Baldwin's day onward, every township elects its own council — the courthouse serves the community, not the administrator, and the people who work the land have a say in how it's governed.",
      "", "FULL PASS"),
 
-    ("CA", "Dominion Elections Act", "Freedom",
+    ("CA", "Republic Elections Act", "Freedom",
      "−1 Mandate/Province · +1 Max Level Courthouse",
-     "Dominion Elections Act (1920)", "One franchise, one standard, coast to coast. Ottawa's elections code unifies the ballot under federal law and elevates the courthouse as the seat of the democratic compact — no Province stands apart.",
+     "Republic Elections Act (1920)", "One franchise, one standard, coast to coast. Ottawa's elections code unifies the ballot under federal law and elevates the courthouse as the seat of the democratic compact — no Province stands apart.",
      "", "FULL PASS"),
 
     ("CA", "Canadian Citizenship Act", "Equality",
      "−1 Mandate/Population · +1 Happiness/Population",
-     "Canadian Citizenship Act (1947)", "All who reside within the Dominion share equal standing before the law, regardless of origin, language, or background.",
+     "Canadian Citizenship Act (1947)", "All who reside within the Republic share equal standing before the law, regardless of origin, language, or background.",
      "", "FIRST DRAFT"),
 
     ("CA", "Accessible Canada Act", "Equality",
      "+1 Gold/Workshop · −10% Population Upgrade cost",
-     "Accessible Canada Act (2019)", "A barrier-free Canada ensures that disability is no obstacle to full participation in the life of the Dominion.",
+     "Accessible Canada Act (2019)", "A barrier-free Canada ensures that disability is no obstacle to full participation in the life of the Republic.",
      "", "FIRST DRAFT"),
 
     ("CA", "National Defence Act", "Order",
      "−1 Mandate/Barracks · +5 Manpower/all buildings",
-     "National Defence Act (1922)", "The Canadian Armed Forces stand on a permanent constitutional footing. The Dominion's sovereignty is non-negotiable.",
+     "National Defence Act (1922)", "The Canadian Armed Forces stand on a permanent constitutional footing. The Republic's sovereignty is non-negotiable.",
      "", "FIRST DRAFT"),
 ]
 
@@ -310,7 +310,7 @@ DOCTRINES = [
      "Camp: +1 Wood",                                         "—",       "Providence", "IDEA"),
     ("CA", "Tier 1", "Canada Council for the Arts Act",  "Canada Council for the Arts",  "1957",
      "Theater/Faire: +1 Culture · Resort: +1 Happiness",      "—",       "Providence", "IDEA"),
-    ("CA", "Tier 1", "Dominion Lands Act",               "Dominion Lands Act",            "1872",
+    ("CA", "Tier 1", "Republic Lands Act",               "Republic Lands Act",            "1872",
      "Farm: +1 Food · Camp: +1 Wood",                         "—",       "Providence", "IDEA"),
     ("CA", "Tier 1", "Historic Sites and Monuments Act", "Historic Sites Act",            "1953",
      "Monument: +1 Mandate",                                  "—",       "Providence", "IDEA"),

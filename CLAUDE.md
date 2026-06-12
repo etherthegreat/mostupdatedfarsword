@@ -17,6 +17,16 @@ Steps after adding flavor content:
 2. Run `python3 scripts/build_flavordoc.py` from the repo root
 3. Commit both `scripts/build_flavordoc.py` and `flavordoc.xlsx`
 
+## Canada Lore Rule
+
+Canada in this game is a **parliamentary republic** — not a monarchy, not a dominion.
+
+- Use **"Republic"** everywhere "Dominion" would appear in lore, law text, event descriptions, and flavor writing
+- Use **"Republic of Canada"** for formal references, **"the Republic"** for shorthand
+- Law/doctrine names that historically include "Dominion" are renamed in-game: e.g. "Republic Elections Act", "Republic Lands Act"
+- Canada's government is led by a **Prime Minister** and a **Parliament** (not a Governor-General or Crown)
+- The word **"Dominion"** should not appear in any new lore, event text, law description, or flavor text referring to Canada
+
 ## Branch
 
 All development goes on `claude/farsword-recent-push-JL6OS`. Always push to that branch.

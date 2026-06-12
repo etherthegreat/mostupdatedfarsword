@@ -78,7 +78,7 @@ func buildSelf(newLawType, selected):
 						+5 Manpower from All buildings")
 		# ── Canadian Laws ────────────────────────────────────────────────────────
 		"Militia Act":
-			lawDescription = "Every able-bodied man in the Dominion is liable for militia service. Our communities stand ready to defend the Crown's peace."
+			lawDescription = "Every able-bodied man in the Republic is liable for militia service. Our communities stand ready to defend the Crown's peace."
 			quadrant = "Freedom"
 			lawIcon = load("res://art assets/Placeholder Art/UI Art/resources/weapons.png")
 			lawCosts = str("Cost: 50 Mandate
@@ -87,7 +87,7 @@ func buildSelf(newLawType, selected):
 						-1 Mandate Per Farm
 						+1 Mandate Per Forge")
 		"Canada Shipping Act":
-			lawDescription = "Canadian waters carry Canadian commerce. The Dominion regulates its shipping lanes and expands its mercantile reach."
+			lawDescription = "Canadian waters carry Canadian commerce. The Republic regulates its shipping lanes and expands its mercantile reach."
 			quadrant = "Order"
 			lawIcon = load("res://art assets/Placeholder Art/UI Art/resources/gold.png")
 			lawCosts = str("Cost: 25 Mandate
@@ -102,29 +102,29 @@ func buildSelf(newLawType, selected):
 						-3 Mandate, +1 Harmony from Courthouses
 						+1 Harmony Per Farm
 						+1 Harmony Per Camp")
-		"Dominion Elections Act":
-			lawDescription = "A single, unified Dominion-wide elections code ensures every eligible citizen may cast a ballot for their representatives."
+		"Republic Elections Act":
+			lawDescription = "A single, unified Republic-wide elections code ensures every eligible citizen may cast a ballot for their representatives."
 			quadrant = "Freedom"
 			lawIcon = load("res://art assets/Placeholder Art/UI Art/resources/Older Icons/harmony 100 x 100.png")
 			lawCosts = str("Cost: 30 Mandate
 						-1 Mandate Per Province
 						+1 Max Level Courthouse")
 		"Canadian Citizenship Act":
-			lawDescription = "All who reside within the Dominion share equal standing before the law, regardless of origin, language, or background."
+			lawDescription = "All who reside within the Republic share equal standing before the law, regardless of origin, language, or background."
 			quadrant = "Equality"
 			lawIcon = load("res://art assets/Placeholder Art/UI Art/resources/Older Icons/manpower 100 x 100.png")
 			lawCosts = str("Cost: 15 Mandate
 						-1 Mandate Per Population
 						+1 Harmony Per Population")
 		"Accessible Canada Act":
-			lawDescription = "A barrier-free Canada ensures that disability is no obstacle to full participation in the life of the Dominion."
+			lawDescription = "A barrier-free Canada ensures that disability is no obstacle to full participation in the life of the Republic."
 			quadrant = "Equality"
 			lawIcon = load("res://art assets/Placeholder Art/UI Art/resources/Older Icons/harmony 100 x 100.png")
 			lawCosts = str("Cost: 145 Mandate
 						+1 Gold Per Workshop
 						-10% cost for population Upgrade")
 		"National Defence Act":
-			lawDescription = "The Canadian Armed Forces stand on a permanent constitutional footing. The Dominion's sovereignty is non-negotiable."
+			lawDescription = "The Canadian Armed Forces stand on a permanent constitutional footing. The Republic's sovereignty is non-negotiable."
 			quadrant = "Order"
 			lawIcon = load("res://art assets/Placeholder Art/UI Art/resources/clubsmall.png")
 			lawCosts = str("Cost: 15 Mandate

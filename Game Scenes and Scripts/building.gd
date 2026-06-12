@@ -1631,13 +1631,13 @@ func _apply_belief_bonuses(bType: String) -> void:
 				if bType == "Resort":
 					happinessPerLevel += 1
 					happinessDic["Doctrine: Canada Council for the Arts Act"] = (1 * buildingLevel)
-			"Dominion Lands Act":
+			"Republic Lands Act":
 				if bType == "Farm":
 					foodPerLevel += 1
-					foodDic["Doctrine: Dominion Lands Act"] = (1 * buildingLevel)
+					foodDic["Doctrine: Republic Lands Act"] = (1 * buildingLevel)
 				if bType == "Camp":
 					woodPerLevel += 1
-					woodDic["Doctrine: Dominion Lands Act"] = (1 * buildingLevel)
+					woodDic["Doctrine: Republic Lands Act"] = (1 * buildingLevel)
 			"Historic Sites and Monuments Act":
 				if bType == "Monument":
 					mandatePerLevel += 1

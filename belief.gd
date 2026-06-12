@@ -35,7 +35,7 @@ func buildBelief(type):
 			faithBelief = false
 		"Canada Council for the Arts Act":
 			faithBelief = false
-		"Dominion Lands Act":
+		"Republic Lands Act":
 			faithBelief = false
 		"Historic Sites and Monuments Act":
 			faithBelief = false

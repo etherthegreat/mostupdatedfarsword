@@ -1048,11 +1048,11 @@ func _register_all() -> void:
 		{"see_also": ["law_americans_with_disabilities_act", "law_civil_rights_act"]})
 
 	_add("fac_french_habitants", "Factions", "French Habitants",
-		"The French-speaking farming communities of Quebec are cautious allies. They want their language, their faith, and their legal traditions respected. Give them that, and they will give you a revolution that runs on wheat.\n\nReach 30 loyalty to unlock Quebec Act Recognition (Municipal Elections Act law; Temples +1 culture).\nReach 60 to unlock Habitants Alliance (Pierre Renard joins your governors; Farms +1 food).\nReach 90 to unlock Republic of Quebec (Canadian Citizenship Act + Dominion Elections Act laws; Farms +1 additional food, Temples +1 happiness).",
+		"The French-speaking farming communities of Quebec are cautious allies. They want their language, their faith, and their legal traditions respected. Give them that, and they will give you a revolution that runs on wheat.\n\nReach 30 loyalty to unlock Quebec Act Recognition (Municipal Elections Act law; Temples +1 culture).\nReach 60 to unlock Habitants Alliance (Pierre Renard joins your governors; Farms +1 food).\nReach 90 to unlock Republic of Quebec (Canadian Citizenship Act + Republic Elections Act laws; Farms +1 additional food, Temples +1 happiness).",
 		{"see_also": ["law_municipal_elections_act", "law_canadian_citizenship_act", "law_dominion_elections_act"]})
 
 	_add("fac_loyalist_settlers", "Factions", "Loyalist Settlers",
-		"Not everyone in Canada welcomed the Crown's rule — but they waited to see which way the wind blew. The Loyalist Settlers are pragmatists who have decided the republic is the safer bet. They bring with them British administrative competence and, occasionally, British guilt.\n\nReach 30 loyalty to unlock Crown Defectors (National Defence Act law; Courthouses +1 mandate).\nReach 60 to unlock Pragmatic Compact (Benjamin Tallmadge joins your governors at level 2; Barracks +50 manpower).\nReach 90 to unlock New Republic Converts (Canada Shipping Act + Dominion Elections Act laws; Libraries +1 science, Markets and Workshops +1 gold).",
+		"Not everyone in Canada welcomed the Crown's rule — but they waited to see which way the wind blew. The Loyalist Settlers are pragmatists who have decided the republic is the safer bet. They bring with them British administrative competence and, occasionally, British guilt.\n\nReach 30 loyalty to unlock Crown Defectors (National Defence Act law; Courthouses +1 mandate).\nReach 60 to unlock Pragmatic Compact (Benjamin Tallmadge joins your governors at level 2; Barracks +50 manpower).\nReach 90 to unlock New Republic Converts (Canada Shipping Act + Republic Elections Act laws; Libraries +1 science, Markets and Workshops +1 gold).",
 		{"see_also": ["law_national_defence_act", "law_canada_shipping_act", "law_dominion_elections_act"]})
 
 	_add("fac_haudenosaunee_confederacy", "Factions", "Haudenosaunee Confederacy",
@@ -1216,23 +1216,23 @@ func _register_all() -> void:
 
 	# ── CANADIAN DOCTRINES ──────────────────────────────────────────────────
 	_add("doc_canada_wildlife_act", "Faiths & Doctrines", "Canada Wildlife Act",
-		"First enacted in 1973, the Canada Wildlife Act established the federal framework for wildlife research, conservation, and protection across the Dominion. It made the government a steward of species that could not speak for themselves.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
+		"First enacted in 1973, the Canada Wildlife Act established the federal framework for wildlife research, conservation, and protection across the Republic. It made the government a steward of species that could not speak for themselves.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
 		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_camp", "ter_forest"]})
 
 	_add("doc_canada_council_for_the_arts_act", "Faiths & Doctrines", "Canada Council for the Arts Act",
 		"Founded in 1957 on the recommendation of the Massey Commission, the Canada Council for the Arts has funded Canadian literature, music, visual art, and performance for generations. It is the institutional argument that culture is a public good.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
 		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_theater"]})
 
-	_add("doc_dominion_lands_act", "Faiths & Doctrines", "Dominion Lands Act",
-		"Passed in 1872, the Dominion Lands Act opened the Canadian prairies to homestead settlement, offering 160-acre grants to settlers who would farm the land for three years. It populated the West — and dispossessed those already living there.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
+	_add("doc_dominion_lands_act", "Faiths & Doctrines", "Republic Lands Act",
+		"Passed in 1872, the Republic Lands Act opened the Canadian prairies to homestead settlement, offering 160-acre grants to settlers who would farm the land for three years. It populated the West — and dispossessed those already living there.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
 		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_farm", "bld_camp"]})
 
 	_add("doc_historic_sites_and_monuments_act", "Faiths & Doctrines", "Historic Sites and Monuments Act",
-		"First enacted in 1953, the Historic Sites and Monuments Act formalized federal commemoration of places, persons, and events significant to Canadian history. It is the law that decides what the Dominion chooses to remember.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
+		"First enacted in 1953, the Historic Sites and Monuments Act formalized federal commemoration of places, persons, and events significant to Canadian history. It is the law that decides what the Republic chooses to remember.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
 		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_monument"]})
 
 	_add("doc_combines_investigation_act", "Faiths & Doctrines", "Combines Investigation Act",
-		"Canada's first competition law, enacted in 1889 — one year before the Sherman Act — the Combines Investigation Act prohibited conspiracies to unduly restrain trade. The Dominion regulated markets before it had a central bank.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
+		"Canada's first competition law, enacted in 1889 — one year before the Sherman Act — the Combines Investigation Act prohibited conspiracies to unduly restrain trade. The Republic regulated markets before it had a central bank.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
 		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_market"]})
 
 	_add("doc_canada_health_act", "Faiths & Doctrines", "Canada Health Act",
@@ -1252,7 +1252,7 @@ func _register_all() -> void:
 		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_library", "res_science"]})
 
 	_add("doc_national_building_code_of_canada", "Faiths & Doctrines", "National Building Code of Canada",
-		"First published in 1941 and revised continuously since, the National Building Code sets minimum standards for construction safety across Canada. It is the Dominion's quiet assertion that how we build shapes how we live.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
+		"First published in 1941 and revised continuously since, the National Building Code sets minimum standards for construction safety across Canada. It is the Republic's quiet assertion that how we build shapes how we live.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
 		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_monument"]})
 
 	_add("doc_war_measures_act", "Faiths & Doctrines", "War Measures Act",
@@ -1342,7 +1342,7 @@ func _register_all() -> void:
 
 	# ── CANADIAN ICONS ───────────────────────────────────────────────────────
 	_add("icon_john_a_macdonald", "Canadian Icons", "John A. Macdonald",
-		"The Father of Confederation and first Prime Minister of Canada, Macdonald built the Dominion through coalition, compromise, and the transcontinental railway. He also authored the Indian Act. The Dominion he built reflects both his genius and his blind spots.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",
+		"The Father of Confederation and first Prime Minister of Canada, Macdonald built the Republic through coalition, compromise, and the transcontinental railway. He also authored the Indian Act. The Republic he built reflects both his genius and his blind spots.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",
 		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_courthouse", "bld_monument"]})
 
 	_add("icon_george_etienne_cartier", "Canadian Icons", "George-Étienne Cartier",
