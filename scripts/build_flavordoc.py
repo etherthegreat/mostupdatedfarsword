@@ -196,80 +196,80 @@ FACTIONS = [
 ]
 
 # ── LAWS ─────────────────────────────────────────────────────────────────────
-# country | law | quadrant | mechanical effect | real-world basis | description | status
+# country | law | quadrant | mechanical effect | real-world basis | description | icon_path | status
 
 LAWS = [
     # ── USA ──────────────────────────────────────────────────────────────────
     ("USA", "Second Amendment", "Freedom",
      "+5 Weapons/Mansion lvl · +25 MP/Farm · −1 Mandate/Farm · +1 Mandate/Forge",
      "2nd Amendment (1791)", "The right of the people to keep and bear arms shall not be infringed. Every farm a muster point, every mansion an armoury — a Republic that arms its citizens does not ask permission to defend itself.",
-     "FULL PASS"),
+     "", "FULL PASS"),
 
     ("USA", "Merchant Marine Act", "Order",
      "−2 Mandate/Workshop · +2 Gold/Workshop · +1 Gold/Farm · +1 Gold/Camp",
      "Merchant Marine Act (1920)", "American vessels carry American goods. The workshops that outfit the fleet answer to one flag, keep more of what they earn, and the river towns and frontier camps collect a share of every voyage.",
-     "FULL PASS"),
+     "", "FULL PASS"),
 
     ("USA", "Municipal Reform Act", "Freedom",
      "−3 Mandate/Courthouse · +1 Happiness/Farm · +1 Happiness/Camp",
      "Municipal reform tradition (1800s–1900s)", "No appointed official may replace the voice of the people. Free elections in every township mean the courthouse runs on consent, not mandate — and the farms and camps that send their people there are better for it.",
-     "FULL PASS"),
+     "", "FULL PASS"),
 
     ("USA", "Voting Rights Act", "Freedom",
      "−1 Mandate/Province · +1 Max Level Courthouse",
      "Voting Rights Act (1965)", "No citizen shall be denied the ballot on account of race or condition of previous servitude. The franchise is the foundation of the Republic — and the courthouse is where that foundation is enforced.",
-     "FULL PASS"),
+     "", "FULL PASS"),
 
     ("USA", "Civil Rights Act", "Equality",
      "−1 Mandate/Population · +1 Happiness/Population",
      "Civil Rights Act (1964)", "Discrimination based on race, color, or creed is abolished. Every person the Republic governs is a person the Republic answers to — the mandate drops because the people it covers are finally counted.",
-     "FULL PASS"),
+     "", "FULL PASS"),
 
     ("USA", "Americans with Disabilities Act", "Equality",
      "+1 Gold/Workshop · −10% Population Upgrade cost",
      "Americans with Disabilities Act (1990)", "No citizen is excluded from civic life on account of disability. The workshops that adapt their operations keep more of what they produce, and the cost of bringing more people into the Republic's economy falls.",
-     "FULL PASS"),
+     "", "FULL PASS"),
 
     ("USA", "National Security Act", "Order",
      "−1 Mandate/Barracks · +5 Manpower/all buildings",
      "National Security Act (1947)", "One command, no gaps. The Republic draws its defence under the executive — the barracks run leaner, and every settlement from the frontier to the capital becomes a source of trained manpower.",
-     "FULL PASS"),
+     "", "FULL PASS"),
 
     # ── CA ───────────────────────────────────────────────────────────────────
     ("CA", "Militia Act", "Freedom",
      "+5 Weapons/Mansion lvl · +25 MP/Farm · −1 Mandate/Farm · +1 Mandate/Forge",
      "Militia Act (1868)", "From Confederation onward, the Dominion's defence rests on its people. Every farm a recruiting ground, every estate an armoury — the Militia Act turns the countryside into a reserve force that moves the moment the call goes out.",
-     "FULL PASS"),
+     "", "FULL PASS"),
 
     ("CA", "Canada Shipping Act", "Order",
-     "−2 Mandate/Workshop · +2 Gold/Workshop · +1 Gold/Farm · +1 Gold/Camp",
-     "Canada Shipping Act (1936)", "The St. Lawrence is the Dominion's spine. Ottawa consolidates maritime law under one code — Canadian vessels, Canadian rules, Canadian profit. The workshops that outfit the fleet keep more of what they earn.",
-     "FULL PASS"),
+     "−1 Mandate/Dock · +2 Gold/Dock · +1 Happiness/Dock",
+     "Canada Shipping Act (1936)", "Every vessel on Canadian waters submits to Dominion safety standards — commercial freighters, fishing trawlers, and the pleasure yachts of whoever thought the St. Lawrence was a private amenity. The docks keep more of what they earn. In exchange, they fill out the forms.",
+     "art assets/finishedAssets/lawIcons/can_shipping_act.png", "FULL PASS"),
 
     ("CA", "Municipal Elections Act", "Freedom",
      "−3 Mandate/Courthouse · +1 Happiness/Farm · +1 Happiness/Camp",
      "Municipal elections tradition (1849+)", "Responsible government runs all the way down. From Baldwin's day onward, every township elects its own council — the courthouse serves the community, not the administrator, and the people who work the land have a say in how it's governed.",
-     "FULL PASS"),
+     "", "FULL PASS"),
 
     ("CA", "Dominion Elections Act", "Freedom",
      "−1 Mandate/Province · +1 Max Level Courthouse",
      "Dominion Elections Act (1920)", "One franchise, one standard, coast to coast. Ottawa's elections code unifies the ballot under federal law and elevates the courthouse as the seat of the democratic compact — no Province stands apart.",
-     "FULL PASS"),
+     "", "FULL PASS"),
 
     ("CA", "Canadian Citizenship Act", "Equality",
      "−1 Mandate/Population · +1 Happiness/Population",
      "Canadian Citizenship Act (1947)", "All who reside within the Dominion share equal standing before the law, regardless of origin, language, or background.",
-     "FIRST DRAFT"),
+     "", "FIRST DRAFT"),
 
     ("CA", "Accessible Canada Act", "Equality",
      "+1 Gold/Workshop · −10% Population Upgrade cost",
      "Accessible Canada Act (2019)", "A barrier-free Canada ensures that disability is no obstacle to full participation in the life of the Dominion.",
-     "FIRST DRAFT"),
+     "", "FIRST DRAFT"),
 
     ("CA", "National Defence Act", "Order",
      "−1 Mandate/Barracks · +5 Manpower/all buildings",
      "National Defence Act (1922)", "The Canadian Armed Forces stand on a permanent constitutional footing. The Dominion's sovereignty is non-negotiable.",
-     "FIRST DRAFT"),
+     "", "FIRST DRAFT"),
 ]
 
 # ── DOCTRINES ────────────────────────────────────────────────────────────────
@@ -951,7 +951,7 @@ def build_laws(wb):
     cols = [
         ("COUNTRY", 10), ("LAW NAME", 30), ("QUADRANT", 12),
         ("MECHANICAL EFFECT", 42), ("REAL-WORLD BASIS", 32),
-        ("FLAVOR DESCRIPTION", 60), ("STATUS", 14),
+        ("FLAVOR DESCRIPTION", 60), ("ICON PATH", 48), ("STATUS", 14),
     ]
     _hdr(ws, 1, cols)
     _set_widths(ws, cols)
