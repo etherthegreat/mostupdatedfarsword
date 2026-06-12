@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dk0i0na54ljx7"
-path="res://.godot/imported/3.png-b21680505b3e4192567dac9dad822848.ctex"
+uid="uid://cwj2hvw51pub8"
+path="res://.godot/imported/heart.png-e4ea1b322f20b66e9cc4dc9b6697677a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art assets/finishedAssets/armyicons/3.png"
-dest_files=["res://.godot/imported/3.png-b21680505b3e4192567dac9dad822848.ctex"]
+source_file="res://art assets/finishedAssets/armyicons/finished/heart.png"
+dest_files=["res://.godot/imported/heart.png-e4ea1b322f20b66e9cc4dc9b6697677a.ctex"]
 
 [params]
 

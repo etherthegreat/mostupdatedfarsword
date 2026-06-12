@@ -118,9 +118,9 @@ func newGameBuild(CID, gameLang):
 	$CanvasLayer/LoadingSprite.visible = false
 	$CanvasLayer/LoadingProgressBar.visible = false
 	$CanvasLayer/LoadingLabel.visible = false
-	#for country in aliveCountriesList:
-		#for Army in country.countryArmyList:
-			#Army.raiseSelf()
+	for country in aliveCountriesList:
+		for Army in country.countryArmyList:
+			Army.raiseSelf()
 	pass
 
 var countryNode = load("res://Game Scenes and Scripts/country.tscn")

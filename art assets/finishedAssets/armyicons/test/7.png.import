@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c31se4cc0tqo1"
-path="res://.godot/imported/7.png-6e6d1172b561df2a0f5af032206074eb.ctex"
+path="res://.godot/imported/7.png-0a637ea90561bc9c7aca6d94529571a9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art assets/finishedAssets/armyicons/7.png"
-dest_files=["res://.godot/imported/7.png-6e6d1172b561df2a0f5af032206074eb.ctex"]
+source_file="res://art assets/finishedAssets/armyicons/test/7.png"
+dest_files=["res://.godot/imported/7.png-0a637ea90561bc9c7aca6d94529571a9.ctex"]
 
 [params]
 

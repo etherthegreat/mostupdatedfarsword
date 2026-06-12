@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dq6q7oa2ceh21"
-path="res://.godot/imported/5.png-a1841c0a80cd73a8d7f93bb40dfb1359.ctex"
+uid="uid://dep27xg3gjrku"
+path="res://.godot/imported/circle.png-585ef6f0ff1e99c863a9da3dc5048381.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art assets/finishedAssets/armyicons/5.png"
-dest_files=["res://.godot/imported/5.png-a1841c0a80cd73a8d7f93bb40dfb1359.ctex"]
+source_file="res://art assets/finishedAssets/armyicons/finished/circle.png"
+dest_files=["res://.godot/imported/circle.png-585ef6f0ff1e99c863a9da3dc5048381.ctex"]
 
 [params]
 

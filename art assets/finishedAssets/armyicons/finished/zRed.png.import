@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://u1vsf14yau5o"
-path="res://.godot/imported/2.png-cd056760bd6094ba2e7636685c398587.ctex"
+uid="uid://dg807fyssplrk"
+path="res://.godot/imported/zRed.png-afb0b1a7dc89a29aa25919c9b1a494d5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art assets/finishedAssets/armyicons/2.png"
-dest_files=["res://.godot/imported/2.png-cd056760bd6094ba2e7636685c398587.ctex"]
+source_file="res://art assets/finishedAssets/armyicons/finished/zRed.png"
+dest_files=["res://.godot/imported/zRed.png-afb0b1a7dc89a29aa25919c9b1a494d5.ctex"]
 
 [params]
 

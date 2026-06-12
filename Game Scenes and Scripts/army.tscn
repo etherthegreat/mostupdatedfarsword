@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://cxmy8mdrrj0yl"]
+[gd_scene load_steps=21 format=3 uid="uid://cxmy8mdrrj0yl"]
 
 [ext_resource type="Script" uid="uid://cdkg2sl6mii80" path="res://Game Scenes and Scripts/army.gd" id="1_clqeb"]
 [ext_resource type="Texture2D" uid="uid://d2ka05yjukq25" path="res://art assets/finishedAssets/Panels/armypanelfinishedui/IMG_1551.PNG" id="2_fbxbp"]
@@ -11,6 +11,8 @@
 [ext_resource type="Texture2D" uid="uid://cc8uccirtqr6p" path="res://art assets/finishedAssets/Panels/armypanelfinishedui/IMG_1549.PNG" id="9_kd2xh"]
 [ext_resource type="Texture2D" uid="uid://cqeg42epxn2vu" path="res://art assets/finishedAssets/Panels/armypanelfinishedui/IMG_1556.PNG" id="9_qyt7h"]
 [ext_resource type="Texture2D" uid="uid://ddotujvsq51tr" path="res://art assets/finishedAssets/Panels/armypanelfinishedui/IMG_1553.PNG" id="10_kd2xh"]
+[ext_resource type="Texture2D" uid="uid://dk0i0na54ljx7" path="res://art assets/finishedAssets/armyicons/test/3.png" id="10_v4rpa"]
+[ext_resource type="Texture2D" uid="uid://b1nj1le7cj86i" path="res://art assets/finishedAssets/Panels/yellow building panel.png" id="11_5sx4d"]
 [ext_resource type="Texture2D" uid="uid://dtlurepbpgtkl" path="res://art assets/Placeholder Art/Spells/Green 1.PNG" id="11_gr5rn"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_blg07"]
@@ -211,6 +213,17 @@ tempType = "Catch"
 layout_mode = 2
 tempType = "Spell"
 
+[node name="ScrollContainer2" type="ScrollContainer" parent="."]
+layout_mode = 0
+offset_left = 315.0
+offset_top = 1.0
+offset_right = 431.0
+offset_bottom = 261.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer2"]
+layout_mode = 2
+theme_override_constants/separation = 67
+
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 0
 offset_left = 266.0
@@ -233,10 +246,33 @@ icon = ExtResource("9_qyt7h")
 icon_alignment = 1
 expand_icon = true
 
-[node name="Sprite2D" type="Sprite2D" parent="VBoxContainer/BannerControl"]
+[node name="BackgroundSprite" type="Sprite2D" parent="VBoxContainer/BannerControl"]
 position = Vector2(-3.7085, -31.2916)
 scale = Vector2(0.0554167, 0.0554167)
 texture = ExtResource("9_kd2xh")
+
+[node name="BannerSprite" type="Sprite2D" parent="VBoxContainer/BannerControl"]
+position = Vector2(-3, -32)
+rotation = -0.804183
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("10_v4rpa")
+
+[node name="Sprite2D" type="Sprite2D" parent="VBoxContainer/BannerControl"]
+visible = false
+position = Vector2(163, 66.5)
+scale = Vector2(0.25, 0.956667)
+texture = ExtResource("11_5sx4d")
+
+[node name="BannerContainer" type="GridContainer" parent="VBoxContainer/BannerControl"]
+visible = false
+layout_mode = 0
+offset_left = 46.0
+offset_top = -53.0
+offset_right = 281.0
+offset_bottom = 188.0
+theme_override_constants/h_separation = 59
+theme_override_constants/v_separation = 64
+columns = 4
 
 [node name="SpellControl" type="Control" parent="VBoxContainer"]
 layout_mode = 2
@@ -281,16 +317,6 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 9
 text = "Locate On Map"
 
-[node name="ScrollContainer2" type="ScrollContainer" parent="."]
-layout_mode = 0
-offset_left = 315.0
-offset_top = 1.0
-offset_right = 431.0
-offset_bottom = 261.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer2"]
-layout_mode = 2
-theme_override_constants/separation = 67
-
 [connection signal="pressed" from="RaiseArmy" to="." method="_on_raise_army_pressed"]
 [connection signal="pressed" from="CommanderButton" to="." method="_on_commander_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/BannerControl/BannerButton" to="." method="_on_banner_button_pressed"]

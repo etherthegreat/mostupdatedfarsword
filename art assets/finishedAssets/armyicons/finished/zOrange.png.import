@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d3wthuurt4h6a"
-path="res://.godot/imported/1.png-15336a2c9b0c1109ba667489686232d1.ctex"
+uid="uid://ce8q6ir75w3d"
+path="res://.godot/imported/zOrange.png-b6470d1d6f502c5f93cdb90e7a5942e1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art assets/finishedAssets/armyicons/1.png"
-dest_files=["res://.godot/imported/1.png-15336a2c9b0c1109ba667489686232d1.ctex"]
+source_file="res://art assets/finishedAssets/armyicons/finished/zOrange.png"
+dest_files=["res://.godot/imported/zOrange.png-b6470d1d6f502c5f93cdb90e7a5942e1.ctex"]
 
 [params]
 

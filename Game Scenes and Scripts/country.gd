@@ -13,8 +13,7 @@ var ToleratedPeoples: Array = [] #list of all accepted cultures in the country
 var isAlive: bool
 var Player: bool
 var AIPersonality
-var countryBanner #banner used for determining the banner that hangs from the top left
-var countryUnitBanner #banner used for this country's units
+
 var isPuppet #determines if this country is a Puppet of another country
 
 var primaryCapital #tile that acts as this country's capital city
@@ -117,6 +116,8 @@ var armyModList: Array = []
 var countryMaxNavySize
 var countryNavyList: Array = []
 var navyModList: Array = []
+
+var armyBannersList: Array = []
 
 #Diplomatic Actions
 var countryAllies: Array = [] #countries allied to this country
@@ -280,9 +281,9 @@ func NewGameBuild():
 			addFaction("Elto-Tal", 20) # Moderates
 			updateUnlockableAttributes()
 			addMilMod("Berserkers")
-			var newIcon1: Texture2D = load("res://art assets/finishedAssets/armyicons/7.png")
-			var newIcon2: Texture2D = load("res://art assets/finishedAssets/armyicons/10.png")
-			var newIcon3: Texture2D = load("res://art assets/finishedAssets/armyicons/11.png")
+			var newIcon1: Texture = load("res://art assets/finishedAssets/armyicons/finished/heart.png")
+			var newIcon2: Texture = load("res://art assets/finishedAssets/armyicons/finished/horse.png")
+			var newIcon3: Texture = load("res://art assets/finishedAssets/armyicons/finished/circle.png")
 			addArmy("Palace Guards", 3, newIcon2)
 			addGovernorToGovernorPool("Wolverina Gundo", 1)
 			armyReinforceRate = 30 #add a function to determin reinforce rate
