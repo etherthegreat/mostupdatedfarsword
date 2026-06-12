@@ -241,9 +241,6 @@ func newGameBuild(CID, gameLang, isCoop: bool = false):
 	$CanvasLayer/LoadingSprite.visible = false
 	$CanvasLayer/LoadingProgressBar.visible = false
 	$CanvasLayer/LoadingLabel.visible = false
-	# Generate procedural commanders (assigns them to barracks tiles, adds
-	# Ualani Carlisle to pool), spawn 3 random starting armies, set up all
-	# 17 protector arcs, then fire the game-start event.
 	generateBarracksCommanders()
 	spawnStartingArmies()
 	# Populate AI country commanders and armies at barracks tiles
@@ -259,9 +256,6 @@ func newGameBuild(CID, gameLang, isCoop: bool = false):
 	_assign_vice_president()
 	_build_turn_order()
 	evaluateDateEvents()
-	#for country in aliveCountriesList:
-		#for Army in country.countryArmyList:
-			#Army.raiseSelf()
 	pass
 
 # ── BARRACKS COMMANDER GENERATION ───────────────────────────────────────────

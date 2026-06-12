@@ -812,6 +812,33 @@ func changeArmyBanner(icon):
 	$VBoxContainer/BannerControl/BannerContainer.visible = false
 	pass
 
+var bannerButtonScene= load("res://banner_button.tscn")
+
+func _on_banner_button_pressed() -> void:
+	if $VBoxContainer/BannerControl/BannerContainer.get_children() != null:
+		for bannerButton in $VBoxContainer/BannerControl/BannerContainer.get_children():
+			bannerButton.queue_free()
+	if $VBoxContainer/BannerControl/BannerContainer.visible == false:
+		for Texture in parentCountry.armyIconList:
+			print("ANTICLIMATIC", parentCountry.armyIconList)
+			var newBannerButton = bannerButtonScene.instantiate()
+			newBannerButton.buildSelf(Texture)
+			newBannerButton.bannerButtonPressed.connect(changeArmyBanner)
+			$VBoxContainer/BannerControl/BannerContainer.add_child(newBannerButton)
+		$VBoxContainer/BannerControl/Sprite2D.visible = true
+		$VBoxContainer/BannerControl/BannerContainer.visible = true
+	else:
+		$VBoxContainer/BannerControl/BannerContainer.visible = false
+		$VBoxContainer/BannerControl/Sprite2D.visible = false
+	pass # Replace with function body.
+
+signal changeBanner
+func changeArmyBanner(icon):
+	armyIcon = icon
+	$VBoxContainer/BannerControl/BannerSprite.texture = armyIcon
+	$VBoxContainer/BannerControl/Sprite2D.visible = false
+	$VBoxContainer/BannerControl/BannerContainer.visible = false
+	pass
 
 #=================
 #Helpers
@@ -821,22 +848,19 @@ func has_ready_ranged_units() -> bool:
 		if Unit.can_fire_ranged():
 			return true
 	return false
- 
+
 func has_melee_units() -> bool:
 	for Unit in unitsList:
 		if Unit.can_charge_melee():
 			return true
 	return false
- 
+
 func tick_all_reloads() -> void:
-	# Call at end of each combat round for non-firing units
 	for Unit in unitsList:
 		if Unit.is_reloading():
 			Unit.tick_reload()
- 
+
 func get_army_weapon_classes() -> Dictionary:
-	# Returns count of each weapon class in this army
-	# Use for UI display and special formation bonuses
 	var counts = {"Saber": 0, "Musket": 0, "Artillery": 0, "Legacy": 0}
 	for Unit in unitsList:
 		if Unit.unitWeapon != null:
@@ -846,35 +870,9 @@ func get_army_weapon_classes() -> Dictionary:
 			else:
 				counts[wClass] = 1
 	return counts
- 
+
 func is_pure_artillery() -> bool:
-	# Army composed entirely of artillery — cannot melee at all
 	var classes = get_army_weapon_classes()
 	return classes.get("Artillery", 0) > 0 and \
 		   classes.get("Saber", 0) == 0 and \
 		   classes.get("Musket", 0) == 0
-
-# ============================================================
-# ARMY SPELL TRACKING (placeholder for future implementation)
-# These variables should be added to army.gd class variables
-# ============================================================
- 
-# var armySpell: spell = null         # spell currently affecting this army
-# var armySpellDuration: int = 0      # turns remaining on active spell
-# var armySpellCaster: country = null # who cast the spell
- 
-# func apply_spell(newSpell: spell, duration: int, caster: country) -> void:
-#     armySpell = newSpell
-#     armySpellDuration = duration
-#     armySpellCaster = caster
- 
-# func tick_spell() -> void:
-#     # Call each turn in _on_next_turn_pressed
-#     if armySpellDuration > 0:
-#         armySpellDuration -= 1
-#         if armySpellDuration <= 0:
-#             armySpell = null
-#             armySpellCaster = null
- 
-# func has_active_spell() -> bool:
-#     return armySpell != null and armySpellDuration > 0
