@@ -163,14 +163,20 @@ def collect():
             eid, headline, trigger, effect, buttons, status = t
             if status in DONE:
                 continue
+            art_tag = eid.lower() + "_scene"
+            import glob as _glob
+            art_matches = _glob.glob(
+                f"art assets/AmericanRevolutionArt/Panel/{art_tag}.*"
+            )
+            art_status = "Integrated" if art_matches else "Not Started"
             tasks.append({
                 "w": 3,
                 "source": f"Flavordoc › {label}",
                 "id": eid,
                 "name": headline,
                 "status": status,
-                "art_tag": eid.lower() + "_scene",
-                "art_status": "Not Started",
+                "art_tag": art_tag,
+                "art_status": art_status,
                 "flag": "",
                 "notes": f"{trigger}  ·  {effect}",
                 "script": "build_flavordoc.py",
