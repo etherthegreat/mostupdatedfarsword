@@ -970,6 +970,17 @@ func generateBarracksCommanders() -> void:
 				break
 		if not carlisle.hired:
 			print("[Commanders] Washington DC not player-owned at start — Carlisle added to pool unassigned.")
+		# Secret Service Detail unlocks alongside Carlisle
+		var detail: governor = governor.new()
+		detail.buildSelf("Secret Service Detail", 1)
+		playerCountryNode.unlockedGovernors.append(detail)
+		# Turkey God and Baseball Legend available from game start
+		var turkey_god: governor = governor.new()
+		turkey_god.buildSelf("Turkey God", 1)
+		playerCountryNode.unlockedGovernors.append(turkey_god)
+		var baseball: governor = governor.new()
+		baseball.buildSelf("Baseball Legend", 1)
+		playerCountryNode.unlockedGovernors.append(baseball)
 
 	var used_names: Dictionary = {}
 	var generated: int = 0
