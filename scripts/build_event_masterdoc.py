@@ -194,10 +194,10 @@ EVENTS = [
     # ── PROTECTOR ────────────────────────────────────────────────────────────
     # Mothman
     ("Protector","Mothman","PROT_01_SUMMON",
-     "MOTHMAN APPROACHES",
+     "MOTHMAN APPROACHES — THESE WOODS, THESE HILLS",
      "Root","—","→ PROT_01_TAME",
-     "FIRST PASS","mothman_approach","Integrated","YES","kinky_lewd","0",
-     "Wild: +1 corruption/turn 25% chance; fires turn 10+; kinky_lewd gated"),
+     "FULL COMPLETION","mothman_approach","Integrated","YES","kinky_lewd","0",
+     "Wild: +1 corruption/turn 25% chance; fires turn 10+; kinky_lewd gated. Ualani listens for hours in the foothills; leaves before dawn."),
     ("Protector","Mothman","PROT_01_TAME",
      "MOTHMAN DEESCALATED: THE RIDGE MEETING HOLDS",
      "Branch","PROT_01_SUMMON","→ PROT_01_AGREE (next_event_id)",
