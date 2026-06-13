@@ -201,7 +201,7 @@ EVENTS = [
     ("Protector","Mothman","PROT_01_TAME",
      "MOTHMAN DEESCALATED: THE RIDGE MEETING HOLDS",
      "Branch","PROT_01_SUMMON","→ PROT_01_AGREE (next_event_id)",
-     "FIRST PASS","","Not Started","NO","","0",
+     "FULL COMPLETION","prot_01_tame_scene","Integrated","NO","","0",
      "Sets prot_01_tame flag; immediately chains to AGREE"),
     ("Protector","Mothman","PROT_01_AGREE",
      "MOTHMAN FORMALLY ALLIES WITH THE CONTINENTAL REPUBLIC",
