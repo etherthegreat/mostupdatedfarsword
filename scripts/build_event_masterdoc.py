@@ -206,7 +206,7 @@ EVENTS = [
     ("Protector","Mothman","PROT_01_AGREE",
      "MOTHMAN FORMALLY ALLIES WITH THE CONTINENTAL REPUBLIC",
      "Followup","PROT_01_TAME","—",
-     "FIRST PASS","","Not Started","YES","kinky_lewd","0",
+     "FULL COMPLETION","prot_01_agree","Integrated","YES","kinky_lewd","0",
      "Sets prot_01_agreed; BTN2 kinky_lewd gated"),
 
     # Jersey Devil
