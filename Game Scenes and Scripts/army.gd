@@ -82,6 +82,7 @@ var sabotaged: bool = false       # enemy spy Sabotage — blocks movement/actio
 var sabotageTimer: int = 0        # turns remaining before sabotage clears
 var reconDebuffed: bool = false   # enemy spy Reconnaissance — reduces armyDefence in battle
 var reconDebuffTimer: int = 0     # turns remaining before recon debuff clears
+var propagandaBuff: int = 0       # flat attack bonus (and equivalent defence penalty) from propaganda events
 
 # ── STATUS EFFECTS ─────────────────────────────────────────────────────────────
 var armyStatusEffects: Array = []   # Array of {type: String, turnsLeft: int}
@@ -640,6 +641,9 @@ func surveySelf():
 		var mm: float = 1.0 + (float(commander.morale) / 100.0) * 0.25
 		armyPunch   = int(float(armyPunch)   * mm)
 		armyDefence = int(float(armyDefence) * mm)
+	if propagandaBuff != 0:
+		armyPunch   += propagandaBuff
+		armyDefence -= propagandaBuff
 	_apply_status_effects_to_stats()
 	pass
 

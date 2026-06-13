@@ -2324,6 +2324,18 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 				tile.addBuilding(outcome_value, outcome_amount)
 		"army_buff":
 			_apply_army_buff(outcome_value, outcome_amount, tile)
+		"propaganda_spread":
+			for army in playerCountryNode.countryArmyList:
+				army.propagandaBuff += int(outcome_amount)
+				army.surveySelf()
+				army.updateArmyUI()
+			playerCountryNode.TotalMandate += 30
+			updatePlayerUI()
+		"quebec_manpower_refill":
+			for army in playerCountryNode.countryArmyList:
+				if army.inTile != null and army.inTile.tileContinent == "CA - QB":
+					army.manpowerInArmy = army.maxManpower
+					army.updateArmyUI()
 		"summon_protector":
 			_summon_protector(outcome_value, tile)
 		"trigger_event":

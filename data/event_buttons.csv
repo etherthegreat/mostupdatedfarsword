@@ -492,5 +492,5 @@ CA_PM_LEGACY_BTN1,CA_PM_LEGACY,Acknowledge the Record — The Alliance Archives 
 
 CA_PM_SOLIDARITY_BTN1,CA_PM_SOLIDARITY,Forward the Report to the Alliance — They Should Know What They're Working With,standard,morale_boost,,15,,,,,
 CA_PM_SOLIDARITY_BTN2,CA_PM_SOLIDARITY,File It With the Records Office,standard,harmony_boost,,10,,,,,
-CA_PM_BATTLEFIELD_BTN1,CA_PM_BATTLEFIELD,Honor His Initiative — The Field Needs a Commander Who Moves,standard,morale_boost,,20,,,,,
-CA_PM_BATTLEFIELD_BTN2,CA_PM_BATTLEFIELD,Formally Reprimand — The Prime Minister Gives the Orders,standard,harmony_boost,,5,,,,,
+CA_PM_BATTLEFIELD_BTN1,CA_PM_BATTLEFIELD,Spread the Images — Let the Republic See What Its President Does,standard,propaganda_spread,,2,,,,,
+CA_PM_BATTLEFIELD_BTN2,CA_PM_BATTLEFIELD,Limited Recruitment Drive — Quebec Needs Soldiers Not Legends,standard,quebec_manpower_refill,,0,,,,,
