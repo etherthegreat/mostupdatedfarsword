@@ -682,7 +682,7 @@ CA_PM_ARC = [
     ("CA_PM_BATTLEFIELD", "PENOIT AT THE FRONT — THE DEPUTY GOVERNOR IS NOT IN QUEBEC CITY",
      "Branch (req: ca_pm_met, neighbor UK tile)", "Military event; Penoit acts autonomously",
      "BTN1: Honor his initiative · BTN2: Formally reprimand",
-     "FIRST PASS"),
+     "FULL PASS"),
     ("CA_PM_PRE_ELECTION", "PENOIT ADDRESSES THE REPUBLIC: THE ELECTION IS COMING",
      "Branch (req: ca_pm_met, turns 88–92)", "Sets ca_pm_declined_candidacy or morale +20",
      "BTN1: Accept withdrawal · BTN2: Convince him to run (+20 morale)",
