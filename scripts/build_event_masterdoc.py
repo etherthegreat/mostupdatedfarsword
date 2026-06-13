@@ -196,7 +196,7 @@ EVENTS = [
     ("Protector","Mothman","PROT_01_SUMMON",
      "MOTHMAN APPROACHES",
      "Root","—","→ PROT_01_TAME",
-     "FIRST PASS","mothman_approach","Not Started","YES","kinky_lewd","0",
+     "FIRST PASS","mothman_approach","Integrated","YES","kinky_lewd","0",
      "Wild: +1 corruption/turn 25% chance; fires turn 10+; kinky_lewd gated"),
     ("Protector","Mothman","PROT_01_TAME",
      "MOTHMAN DEESCALATED: THE RIDGE MEETING HOLDS",
