@@ -287,10 +287,9 @@ func _assign_governor_to_faction(gov: governor) -> void:
 func _apply_archetype_mods(gov: governor, arc_id: String) -> void:
 	match arc_id:
 		"ARC_01":
-			gov.addMilMod("Swamp Legs",       123)
-			gov.addMilMod("Coastal Watch",    123)
-			gov.addMilMod("Marine",            23)
-			gov.addMilMod("Naval Supremacy",    3)
+			gov.addMilMod("Experienced Fisherman", 123)
+			gov.addMilMod("Master Baiter",          23)
+			gov.addMilMod("Marine",                  3)
 		"ARC_02":
 			gov.addMilMod("Hill Runner",      123)
 			gov.addMilMod("Powder & Shot",    123)
@@ -2517,6 +2516,7 @@ func evaluateDateEvents() -> void:
 		_tick_wild_ca_protectors()
 		_check_protector_summons()
 		_tick_commander_turns()
+		_check_arc01_objectives()
 		_check_cmd_merit()
 		_check_cmd_recognition()
 		_check_cmd_thanks()
@@ -2540,6 +2540,7 @@ func evaluateDateEvents() -> void:
 		_check_ca_vp_events()
 		_tick_wild_ca_protectors()
 		_tick_commander_turns()
+		_check_arc01_objectives()
 		_check_cmd_merit()
 		_check_cmd_recognition()
 		_check_cmd_thanks()
@@ -4038,6 +4039,35 @@ func _tick_commander_turns() -> void:
 			continue
 		var key = _commander_key(tile)
 		_commander_turns[key] = _commander_turns.get(key, 0) + 1
+
+
+func _check_arc01_objectives() -> void:
+	for tile in playerCountryNode.OwnedTileList:
+		if tile.tileGovernor == null or tile.stationedArmy == null:
+			continue
+		if tile.tileGovernor.governorArchetypeId != "ARC_01":
+			continue
+		if tile.stationedArmy.commander != tile.tileGovernor:
+			continue
+		var gov = tile.tileGovernor
+		var army = tile.stationedArmy
+		# Conditions: ≥500 troops, tile owned, lvl 2+ camp present
+		if army.manpowerInArmy < 500:
+			continue
+		if tile.tileOwner != playerCountry:
+			continue
+		var camp_lvl: int = 0
+		for b in tile.tileBuildingsList:
+			if b.buildingType == "Camp" and b.enabled:
+				camp_lvl = maxi(camp_lvl, b.buildingLevel)
+		if camp_lvl < 2:
+			continue
+		# Obj 1: governor at lvl 1 → fire FIRST event
+		if gov.governorLevel == 1:
+			createNewEvent("ARC_01_FIRST", tile)
+		# Obj 3: governor at lvl 2 → fire DONE event
+		elif gov.governorLevel == 2:
+			createNewEvent("ARC_01_DONE", tile)
 
 
 func _check_cmd_merit() -> void:

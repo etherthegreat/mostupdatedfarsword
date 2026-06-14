@@ -126,6 +126,10 @@ func _apply_governor_archetype_bonus(bType: String) -> void:
 		return
 	var pos: String = tile.tileGovernor.governorPosition
 	var lvl: int    = tile.tileGovernor.governorLevel
+	var arc: String = tile.tileGovernor.governorArchetypeId
+	# ARC_01 (Wetlands Fisher): flat +50 manpower from every building at lvl 3
+	if arc == "ARC_01" and lvl == 3:
+		manpowerPerLevel += 50
 
 	var f0   := foodPerLevel;     var d0   := dollarsPerLevel
 	var w0   := woodPerLevel;     var m0   := metalPerLevel
@@ -208,10 +212,16 @@ func _apply_governor_archetype_bonus(bType: String) -> void:
 		"Camp":
 			match pos:
 				"SCOUT":
-					match lvl:
-						1: woodPerLevel += 2
-						2: woodPerLevel += 3; foodPerLevel += 1
-						3: woodPerLevel += 4; foodPerLevel += 2; culturePerLevel += 1
+					if arc == "ARC_01":
+						match lvl:
+							1: foodPerLevel += 1
+							2: foodPerLevel += 2
+							3: foodPerLevel += 3
+					else:
+						match lvl:
+							1: woodPerLevel += 2
+							2: woodPerLevel += 3; foodPerLevel += 1
+							3: woodPerLevel += 4; foodPerLevel += 2; culturePerLevel += 1
 				"ENGINEER":
 					match lvl:
 						1: woodPerLevel += 1
@@ -259,20 +269,26 @@ func _apply_governor_archetype_bonus(bType: String) -> void:
 						2: sciencePerLevel += 1; influencePerLevel += 1
 						3: sciencePerLevel += 2; influencePerLevel += 2; mandatePerLevel += 1
 		"Workshop", "Market":
-			match pos:
-				"ENGINEER":
-					match lvl:
-						1: dollarsPerLevel += 1
-						2: dollarsPerLevel += 2; culturePerLevel += 1
-						3: dollarsPerLevel += 3; culturePerLevel += 2; mandatePerLevel += 1
-				"SOLDIER":
-					match lvl:
-						2: dollarsPerLevel += 1
-						3: dollarsPerLevel += 2; manpowerPerLevel += 100
-				"WARRIOR":
-					match lvl:
-						2: dollarsPerLevel += 1; weaponsPerLevel += 1
-						3: dollarsPerLevel += 2; weaponsPerLevel += 2
+			# ARC_01 (Wetlands Fisher): market yields culture instead of dollars
+			if bType == "Market" and arc == "ARC_01":
+				match lvl:
+					2: culturePerLevel += 1
+					3: culturePerLevel += 2
+			else:
+				match pos:
+					"ENGINEER":
+						match lvl:
+							1: dollarsPerLevel += 1
+							2: dollarsPerLevel += 2; culturePerLevel += 1
+							3: dollarsPerLevel += 3; culturePerLevel += 2; mandatePerLevel += 1
+					"SOLDIER":
+						match lvl:
+							2: dollarsPerLevel += 1
+							3: dollarsPerLevel += 2; manpowerPerLevel += 100
+					"WARRIOR":
+						match lvl:
+							2: dollarsPerLevel += 1; weaponsPerLevel += 1
+							3: dollarsPerLevel += 2; weaponsPerLevel += 2
 		"Bath":
 			match pos:
 				"HEALER":

@@ -204,6 +204,18 @@ func onTurnEnd():
 			print("unitREFILL", Unit.unitCurrentManpower, parentCountry.armyReinforceRate)
 	if unit_mods_changed:
 		surveySelf()
+	# Master Baiter: +10% shield recharge per turn
+	if commander != null and armyMaxShield > 0:
+		var cmd_mods: Array
+		match commander.governorLevel:
+			1: cmd_mods = commander.govMilModsLvl1
+			2: cmd_mods = commander.govMilModsLvl2
+			3: cmd_mods = commander.govMilModsLvl3
+			_: cmd_mods = commander.govMilModsLvl1
+		for mod in cmd_mods:
+			if mod.milModType == "Master Baiter" and not mod.disabled:
+				armyShield = mini(armyShield + int(armyMaxShield * 0.1), armyMaxShield)
+				break
 	# Corruption disease check (Park Ranger grants immunity)
 	if inTile != null and inTile.corruption > 0 and not _army_has_active_mod("Park Ranger"):
 		if randf() * 100.0 < float(inTile.corruption):
@@ -641,6 +653,18 @@ func surveySelf():
 		var mm: float = 1.0 + (float(commander.morale) / 100.0) * 0.25
 		armyPunch   = int(float(armyPunch)   * mm)
 		armyDefence = int(float(armyDefence) * mm)
+		# Experienced Fisherman: +1 attack per gov level when in wetlands tile
+		if inTile != null and inTile.tileTerrain == "Wetlands":
+			var cmd_mods: Array
+			match commander.governorLevel:
+				1: cmd_mods = commander.govMilModsLvl1
+				2: cmd_mods = commander.govMilModsLvl2
+				3: cmd_mods = commander.govMilModsLvl3
+				_: cmd_mods = commander.govMilModsLvl1
+			for mod in cmd_mods:
+				if mod.milModType == "Experienced Fisherman" and not mod.disabled:
+					armyPunch += commander.governorLevel
+					break
 	if propagandaBuff != 0:
 		armyPunch   += propagandaBuff
 		armyDefence -= propagandaBuff
