@@ -4051,22 +4051,29 @@ func _check_arc01_objectives() -> void:
 			continue
 		var gov = tile.tileGovernor
 		var army = tile.stationedArmy
-		# Conditions: ≥500 troops, tile owned, lvl 2+ camp present
-		if army.manpowerInArmy < 500:
-			continue
 		if tile.tileOwner != playerCountry:
 			continue
-		var camp_lvl: int = 0
-		for b in tile.tileBuildingsList:
-			if b.buildingType == "Camp" and b.enabled:
-				camp_lvl = maxi(camp_lvl, b.buildingLevel)
-		if camp_lvl < 2:
-			continue
-		# Obj 1: governor at lvl 1 → fire FIRST event
+		# Obj 1 (lvl 1→2): ≥500 troops, lvl 2+ camp
 		if gov.governorLevel == 1:
+			if army.manpowerInArmy < 500:
+				continue
+			var camp_lvl: int = 0
+			for b in tile.tileBuildingsList:
+				if b.buildingType == "Camp" and b.enabled:
+					camp_lvl = maxi(camp_lvl, b.buildingLevel)
+			if camp_lvl < 2:
+				continue
 			createNewEvent("ARC_01_FIRST", tile)
-		# Obj 3: governor at lvl 2 → fire DONE event
+		# Obj 3 (lvl 2→3): ≥800 troops, 2+ granaries
 		elif gov.governorLevel == 2:
+			if army.manpowerInArmy < 800:
+				continue
+			var granary_count: int = 0
+			for b in tile.tileBuildingsList:
+				if b.buildingType == "Granary" and b.enabled:
+					granary_count += 1
+			if granary_count < 2:
+				continue
 			createNewEvent("ARC_01_DONE", tile)
 
 
