@@ -1134,6 +1134,13 @@ EVENTS = [
      "FULL COMPLETION", "", "N/A", "NO", "standard", "0",
      "BTN1: tile_yield culture×4; 3%/turn at loyalty≥8; once per governor"),
 
+    # ARC_03 — Ivy League Dropout: honorary degree from their university; 3%/turn at loyalty≥6; once per governor
+    ("Commander", "Ivy League Dropout", "ARC_03_HONORARY",
+     "HONORARY DEGREE GRANTED — [TILE_NAME] UNIVERSITY RECOGNIZES [COMMANDER_NAME]'S SERVICE",
+     "Root", "—", "—",
+     "FULL COMPLETION", "", "N/A", "NO", "standard", "0",
+     "BTN1: resource_change manpower+1000; BTN2: resource_change science+100; 3%/turn at loyalty≥6; once per governor"),
+
     # ARC_11 — Boston Rabble-Rouser: monarchist mob event; 3%/turn at loyalty≥5; once per governor
     ("Commander", "Boston Rabble-Rouser", "ARC_11_MONARCHISTS",
      "ORAL PERFORMANCE SWAYS MONARCHISTS — A MOB IN [TILE_NAME] IS LISTENING",
@@ -1234,6 +1241,7 @@ _ARC_FIRST_OVERRIDES = {
     # arc_id: (status, art_tag, art_status)  — commander arcs are text-only (N/A art)
     "ARC_01": ("FULL COMPLETION", "", "N/A"),
     "ARC_02": ("FULL COMPLETION", "", "N/A"),
+    "ARC_03": ("FULL COMPLETION", "", "N/A"),
 }
 
 EVENTS += [

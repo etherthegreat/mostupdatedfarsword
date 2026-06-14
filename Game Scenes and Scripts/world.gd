@@ -2575,6 +2575,7 @@ func evaluateDateEvents() -> void:
 		_check_can_events()
 		_check_ca_protectors()
 		_check_loyal_governor_events()
+		_check_arc03_honorary_event()
 		_check_arc11_monarchist_event()
 		_check_george_peace_offer()
 		_check_peace_conditions()
@@ -2616,6 +2617,7 @@ func evaluateDateEvents() -> void:
 		_check_usa_alliance_events()
 		_check_ca_own_protectors()
 		_check_loyal_governor_events()
+		_check_arc03_honorary_event()
 		_check_arc11_monarchist_event()
 		_check_george_peace_offer()
 		_check_peace_conditions()
@@ -4403,6 +4405,26 @@ func _check_loyal_governor_events() -> void:
 		print("[LoyalGov] ", gov.governorType, " (", gov.governorArchetypeId,
 			") loyal event fired at ", tile.tileName)
 		return  # one per turn max
+
+
+func _check_arc03_honorary_event() -> void:
+	for tile in playerCountryNode.OwnedTileList:
+		if tile.tileGovernor == null:
+			continue
+		var gov = tile.tileGovernor
+		if gov.governorArchetypeId != "ARC_03":
+			continue
+		if gov.loyalty < 6.0:
+			continue
+		var flag: String = "arc03_honorary_" + str(tile.tileNumber)
+		if playerCountryNode.CountryFlags.has(flag):
+			continue
+		if randf() >= 0.03:
+			continue
+		playerCountryNode.CountryFlags.append(flag)
+		createNewEvent("ARC_03_HONORARY", tile)
+		print("[ARC_03] Honorary degree event fired at ", tile.tileName)
+		return
 
 
 func _check_arc11_monarchist_event() -> void:
