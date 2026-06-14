@@ -1117,7 +1117,14 @@ EVENTS = [
     # 25 archetypes × 2 events each (FIRST + DONE).
     # FIRST fires when objective 1 completes via evaluate_commander_triggers.
     # DONE fires when objective 3 completes; grants morale + archetype resource.
-] + [
+]
+
+_ARC_DONE_OVERRIDES = {
+    # arc_id: (status, art_tag, art_status)
+    "ARC_01": ("FULL COMPLETION", "arc_01_done_scene", "Not Started"),
+}
+
+EVENTS += [
     item
     for arc_id, arc_name, done_resource in [
         ("ARC_01","Wetlands Fisher","food"),
@@ -1155,7 +1162,7 @@ EVENTS = [
         ("Commander", f"{arc_name}", f"{arc_id}_DONE",
          f"[COMMANDER_NAME] — {arc_name.upper()} ARC COMPLETE",
          "Resolution", f"{arc_id}_FIRST", "—",
-         "FIRST PASS", "", "Not Started", "NO", "", "0",
+         *_ARC_DONE_OVERRIDES.get(arc_id, ("FIRST PASS", "", "Not Started")), "NO", "", "0",
          f"Fires when {arc_id} completes all 3 objectives; BTN1: morale+20, BTN2: {done_resource}"),
     ]
 ] + [
