@@ -261,7 +261,19 @@ func buildSelf(Type):
 			milModDescription = str("[i]Eyes on every inlet and estuary:[/i][color= green] All units +2 Defense per Level when adjacent to naval tiles[/color]")
 			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
 			milModResource = "None"
+		"Experienced Fisherman":
+			commanderMod = true
+			terrainMod = true
+			terrainType = "Wetlands"
+			milModDescription = str("[i]Knows every current and tidal crossing:[/i][color= green] +1 Attack per Governor Level when stationed in Wetlands terrain[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
 		# ── TIER 2 MIL MODS ───────────────────────────────────────────────────
+		"Master Baiter":
+			commanderMod = true
+			milModDescription = str("[i]Patience is a military virtue:[/i][color= green] Army Shield recharges +10% of max per turn[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
 		"Marine":
 			commanderMod = true
 			marineMod = true
