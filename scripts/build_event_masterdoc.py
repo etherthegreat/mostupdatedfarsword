@@ -1167,6 +1167,23 @@ EVENTS += [
     ]
 ] + [
 
+    # ── GOVERNOR LEVEL-UP CEREMONIES ─────────────────────────────────────────
+    ("Commander","Governor Ceremony","GOV_LVL2_HONOR",
+     "FIELD CITATION — [COMMANDER_NAME]",
+     "Level-Up","—","—",
+     "FULL COMPLETION","","Not Started","NO","","0",
+     "Fires on promote_commander to lvl 2; BTN1: morale+10"),
+    ("Commander","Governor Ceremony","GOV_LVL3_CEREMONY",
+     "GENERAL [COMMANDER_NAME] — WHITE HOUSE RECOGNITION CEREMONY",
+     "Level-Up","—","GOV_REWARD",
+     "FULL COMPLETION","gov_lvl3_ceremony_scene","Integrated","NO","","0",
+     "Fires on promote_commander to lvl 3; BTN1: morale+20; BTN2: → GOV_REWARD"),
+    ("Commander","Governor Ceremony","GOV_REWARD",
+     "GENERAL [COMMANDER_NAME] — THE LINCOLN BEDROOM",
+     "Intimate","GOV_LVL3_CEREMONY BTN2","—",
+     "FULL COMPLETION","gov_reward_scene","Integrated","YES","intimate","0",
+     "Fires from GOV_LVL3_CEREMONY BTN2; BTN1: governor_loyalty +3"),
+
     ("VP Arc","VP Arc","VP_LEGACY",
      "THE VICE PRESIDENT LEAVES A NOTE — [COMMANDER_NAME] HAS SOMETHING TO SAY",
      "Followup","VP_FIRST_MEETING (turn 96+)","—",

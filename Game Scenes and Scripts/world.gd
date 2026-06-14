@@ -2301,6 +2301,9 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 					playerCountryNode.changeFactionLoyalty(tile.tileGovernor.governorFaction, 1)
 				if tile.stationedArmy != null:
 					tile.stationedArmy.updateArmyUI()
+				match tile.tileGovernor.governorLevel:
+					2: createNewEvent("GOV_LVL2_HONOR", tile)
+					3: createNewEvent("GOV_LVL3_CEREMONY", tile)
 		"tile_liberation":
 			if tile != null:
 				tile.record_conquest("USA")

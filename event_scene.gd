@@ -153,6 +153,17 @@ func _substitute(text: String) -> String:
 		if target_tile.tileGovernor != null:
 			cmd_name = target_tile.tileGovernor.governorType
 		text = text.replace("[COMMANDER_NAME]", cmd_name)
+		# [GOVERNOR_TITLE]: General at lvl 3; Governor if courthouse present; else Commander
+		var gov_title: String = "Commander"
+		if target_tile.tileGovernor != null:
+			if target_tile.tileGovernor.governorLevel >= 3:
+				gov_title = "General"
+			else:
+				for b in target_tile.tileBuildingsList:
+					if b.buildingType == "Courthouse" and b.enabled:
+						gov_title = "Governor"
+						break
+		text = text.replace("[GOVERNOR_TITLE]", gov_title)
 	return text
 
 
