@@ -2471,6 +2471,18 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 					" — ", outcome_amount, " magic/turn")
 			else:
 				push_warning("cast_protector_buff: no army at tile " + str(tile))
+		"corrupt_windfall":
+			# outcome_value = resource, outcome_amount = tile yield multiplier
+			# Also adds +20 corruption to the tile
+			if tile != null:
+				var per_turn: int = _get_tile_resource_output(tile, outcome_value)
+				var total: int = per_turn * outcome_amount
+				_apply_resource_change(outcome_value, total)
+				tile.corruption = mini(tile.corruption + 20, 100)
+				print("[CorruptWindfall] ", tile.tileName, " +", total, " ",
+					outcome_value, " | corruption now ", tile.corruption)
+			else:
+				push_warning("corrupt_windfall: requires tile context")
 		"level_all_spell_schools":
 			for i in range(outcome_amount):
 				playerCountryNode.levelUpSchool("manifest")

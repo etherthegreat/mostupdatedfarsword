@@ -1099,7 +1099,7 @@ EVENTS = [
         ("ARC_12","Continental Surgeon",  "food",     4),
         ("ARC_13","Nantucket Sailor",     "boats",    3),
         ("ARC_14","Frontier Preacher",    "culture",  4),
-        ("ARC_15","DC Bureaucrat",        "gold",     4),
+        # ARC_15 handled separately below (FULL COMPLETION — two buttons)
         # ARC_16 handled separately below (custom buttons: state building yield + community_steel perk)
         # ARC_17 handled separately below (custom buttons: manpower refill + spawn anarchist)
         # ARC_18 handled separately below (FULL COMPLETION)
@@ -1126,6 +1126,13 @@ EVENTS = [
      "Root", "—", "—",
      "FULL COMPLETION", "", "N/A", "NO", "standard", "0",
      "BTN1: tile_yield gold×4; 3%/turn at loyalty≥8; once per governor"),
+
+    # ARC_15 — DC Bureaucrat: BTN1=tile_yield gold×4, BTN2=corrupt_windfall gold×10 (+20 corruption)
+    ("Loyal Governor", "DC Bureaucrat", "GOV_LOYAL_ARC_15",
+     "DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] AUDITS [TILE_NAME] AND FINDS THREE YEARS OF ACCOUNTING ERROR",
+     "Root", "—", "—",
+     "FULL COMPLETION", "", "N/A", "NO", "standard", "0",
+     "BTN1: tile_yield gold×4; BTN2: corrupt_windfall gold×10 +20 corruption; 3%/turn at loyalty≥8; once per governor"),
 
     # ARC_16 — Rust Belt Steelworker: custom buttons (state building yield OR community_steel perk)
     ("Loyal Governor", "Rust Belt Steelworker", "GOV_LOYAL_ARC_16",
