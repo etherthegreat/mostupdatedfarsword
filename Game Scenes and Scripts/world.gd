@@ -2540,6 +2540,13 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 				push_warning("tile_army_manpower_refill: no army at tile")
 		"spawn_anarchist":
 			_spawn_anarchist_army(tile)
+		"reveal_british_tiles":
+			var revealed_count: int = 0
+			for t in $TileController.get_children():
+				if t.tileOwner == "UK" or (t.stationedArmy != null and t.stationedArmy.parentCountry != null and t.stationedArmy.parentCountry.CID == "UK"):
+					t.discoverTile()
+					revealed_count += 1
+			print("[RevealBritish] Revealed ", revealed_count, " British tiles")
 		"all_armies_manpower_heal":
 			var pct: float = float(outcome_amount) / 100.0
 			for army in playerCountryNode.countryArmyList:
@@ -2568,6 +2575,7 @@ func evaluateDateEvents() -> void:
 		_check_can_events()
 		_check_ca_protectors()
 		_check_loyal_governor_events()
+		_check_arc11_monarchist_event()
 		_check_george_peace_offer()
 		_check_peace_conditions()
 		_check_harvest_crisis()
@@ -2608,6 +2616,7 @@ func evaluateDateEvents() -> void:
 		_check_usa_alliance_events()
 		_check_ca_own_protectors()
 		_check_loyal_governor_events()
+		_check_arc11_monarchist_event()
 		_check_george_peace_offer()
 		_check_peace_conditions()
 		_check_harvest_crisis()
@@ -4394,6 +4403,26 @@ func _check_loyal_governor_events() -> void:
 		print("[LoyalGov] ", gov.governorType, " (", gov.governorArchetypeId,
 			") loyal event fired at ", tile.tileName)
 		return  # one per turn max
+
+
+func _check_arc11_monarchist_event() -> void:
+	for tile in playerCountryNode.OwnedTileList:
+		if tile.tileGovernor == null:
+			continue
+		var gov = tile.tileGovernor
+		if gov.governorArchetypeId != "ARC_11":
+			continue
+		if gov.loyalty < 5.0:
+			continue
+		var flag: String = "arc11_monarchists_" + str(tile.tileNumber)
+		if playerCountryNode.CountryFlags.has(flag):
+			continue
+		if randf() >= 0.03:
+			continue
+		playerCountryNode.CountryFlags.append(flag)
+		createNewEvent("ARC_11_MONARCHISTS", tile)
+		print("[ARC_11] Monarchist mob event fired at ", tile.tileName)
+		return
 
 
 func _get_tile_resource_output(tile, resource: String) -> int:

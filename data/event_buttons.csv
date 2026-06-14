@@ -398,6 +398,8 @@ ARC_10_DONE_BTN2,ARC_10_DONE,A Indigenous Scout's Work Deserves Its Reward,stand
 ARC_11_FIRST_BTN1,ARC_11_FIRST,Field Dispatch Acknowledged.,standard,nothing,,0,,,,,
 ARC_11_DONE_BTN1,ARC_11_DONE,Formally Recognize [COMMANDER_NAME]'s Service,standard,morale_boost,,20,,,,,
 ARC_11_DONE_BTN2,ARC_11_DONE,A Boston Rabble-Rouser's Work Deserves Its Reward,standard,resource_change,culture,25,,,,,
+ARC_11_MONARCHISTS_BTN1,ARC_11_MONARCHISTS,These men will make fine soldiers — convince them to join our cause,standard,resource_change,manpower,1000,,,,,
+ARC_11_MONARCHISTS_BTN2,ARC_11_MONARCHISTS,Use the loyalists against the King — extract their secrets,standard,reveal_british_tiles,,1,,,,,
 ARC_12_FIRST_BTN1,ARC_12_FIRST,Field Dispatch Acknowledged.,standard,nothing,,0,,,,,
 ARC_12_DONE_BTN1,ARC_12_DONE,Formally Recognize [COMMANDER_NAME]'s Service,standard,morale_boost,,20,,,,,
 ARC_12_DONE_BTN2,ARC_12_DONE,A Continental Surgeon's Work Deserves Its Reward,standard,resource_change,food,25,,,,,

@@ -1134,6 +1134,13 @@ EVENTS = [
      "FULL COMPLETION", "", "N/A", "NO", "standard", "0",
      "BTN1: tile_yield culture×4; 3%/turn at loyalty≥8; once per governor"),
 
+    # ARC_11 — Boston Rabble-Rouser: monarchist mob event; 3%/turn at loyalty≥5; once per governor
+    ("Commander", "Boston Rabble-Rouser", "ARC_11_MONARCHISTS",
+     "ORAL PERFORMANCE SWAYS MONARCHISTS — A MOB IN [TILE_NAME] IS LISTENING",
+     "Root", "—", "—",
+     "FULL COMPLETION", "", "N/A", "NO", "standard", "0",
+     "BTN1: resource_change manpower+1000; BTN2: reveal_british_tiles (fog reveal 1 turn); 3%/turn at loyalty≥5; once per governor"),
+
     # ARC_12 — Continental Surgeon: two-button (all armies 25% manpower heal OR medical_science perk)
     ("Loyal Governor", "Continental Surgeon", "GOV_LOYAL_ARC_12",
      "THE AMPUTEE'S HANDBOOK — [COMMANDER_NAME] SUBMITS A REPORT ON BATTLEFIELD MEDICINE",
