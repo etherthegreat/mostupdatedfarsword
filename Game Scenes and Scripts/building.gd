@@ -130,6 +130,9 @@ func _apply_governor_archetype_bonus(bType: String) -> void:
 	# ARC_01 (Wetlands Fisher): flat +50 manpower from every building at lvl 3
 	if arc == "ARC_01" and lvl == 3:
 		manpowerPerLevel += 50
+	# ARC_12 (Continental Surgeon): medical_science perk → +1 science from every building
+	if arc == "ARC_12" and tile.tileGovernor.governor_perks.has("medical_science"):
+		sciencePerLevel += 1
 
 	var f0   := foodPerLevel;     var d0   := dollarsPerLevel
 	var w0   := woodPerLevel;     var m0   := metalPerLevel

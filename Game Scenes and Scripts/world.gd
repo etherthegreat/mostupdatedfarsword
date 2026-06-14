@@ -2540,6 +2540,15 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 				push_warning("tile_army_manpower_refill: no army at tile")
 		"spawn_anarchist":
 			_spawn_anarchist_army(tile)
+		"all_armies_manpower_heal":
+			var pct: float = float(outcome_amount) / 100.0
+			for army in playerCountryNode.countryArmyList:
+				for unit in army.unitsList:
+					var heal: int = int(float(unit.unitMaxManpower) * pct)
+					unit.unitCurrentManpower = mini(unit.unitCurrentManpower + heal, unit.unitMaxManpower)
+				army.surveySelf()
+				army.updateArmyUI()
+			print("[ManpowerHeal] All armies healed ", outcome_amount, "% of max manpower")
 		"nothing":
 			pass
 		_:

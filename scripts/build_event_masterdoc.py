@@ -1096,7 +1096,7 @@ EVENTS = [
         ("ARC_09","War Widow",            "culture",  4),
         ("ARC_10","Indigenous Scout",     "manpower", 3),
         ("ARC_11","Boston Rabble-Rouser", "culture",  4),
-        ("ARC_12","Continental Surgeon",  "food",     4),
+        # ARC_12 handled separately below (FULL COMPLETION — two buttons)
         # ARC_13 handled separately below (FULL COMPLETION)
         # ARC_14 handled separately below (FULL COMPLETION)
         # ARC_15 handled separately below (FULL COMPLETION — two buttons)
@@ -1126,6 +1126,13 @@ EVENTS = [
      "Root", "—", "—",
      "FULL COMPLETION", "", "N/A", "NO", "standard", "0",
      "BTN1: tile_yield gold×4; 3%/turn at loyalty≥8; once per governor"),
+
+    # ARC_12 — Continental Surgeon: two-button (all armies 25% manpower heal OR medical_science perk)
+    ("Loyal Governor", "Continental Surgeon", "GOV_LOYAL_ARC_12",
+     "THE AMPUTEE'S HANDBOOK — [COMMANDER_NAME] SUBMITS A REPORT ON BATTLEFIELD MEDICINE",
+     "Root", "—", "—",
+     "FULL COMPLETION", "", "N/A", "NO", "standard", "0",
+     "BTN1: all_armies_manpower_heal 25%; BTN2: set_governor_perk medical_science (+1 science all buildings); 3%/turn at loyalty≥8; once per governor"),
 
     # ARC_13 — Nantucket Sailor: text polished, standard tile_yield boats×3
     ("Loyal Governor", "Nantucket Sailor", "GOV_LOYAL_ARC_13",
