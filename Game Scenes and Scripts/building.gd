@@ -130,9 +130,6 @@ func _apply_governor_archetype_bonus(bType: String) -> void:
 	# ARC_01 (Wetlands Fisher): flat +50 manpower from every building at lvl 3
 	if arc == "ARC_01" and lvl == 3:
 		manpowerPerLevel += 50
-	# ARC_03 (Ivy League Dropout): flat +1 science from every building at lvl 3
-	if arc == "ARC_03" and lvl == 3:
-		sciencePerLevel += 1
 	# ARC_12 (Continental Surgeon): medical_science perk → +1 science from every building
 	if arc == "ARC_12" and tile.tileGovernor.governor_perks.has("medical_science"):
 		sciencePerLevel += 1
@@ -271,12 +268,12 @@ func _apply_governor_archetype_bonus(bType: String) -> void:
 						2: sciencePerLevel += 1; magicPerLevel += 1
 						3: sciencePerLevel += 2; magicPerLevel += 1; culturePerLevel += 1
 		"Library":
-			# ARC_03 (Ivy League Dropout): scaling science bonus per governor level
+			# ARC_03 (Ivy League Dropout): manpower + culture per governor level
 			if arc == "ARC_03":
 				match lvl:
-					1: sciencePerLevel += 1
-					2: sciencePerLevel += 2
-					3: sciencePerLevel += 3
+					1: manpowerPerLevel += 100
+					2: manpowerPerLevel += 175
+					3: manpowerPerLevel += 250; culturePerLevel += 1
 			match pos:
 				"SCHOLAR":
 					match lvl:
@@ -301,11 +298,6 @@ func _apply_governor_archetype_bonus(bType: String) -> void:
 			# ARC_16 Community Steel: +1 metal/turn per building level when perk is unlocked
 			if bType == "Market" and arc == "ARC_16" and tile.tileGovernor.governor_perks.has("community_steel"):
 				metalPerLevel += 1
-			# ARC_03 (Ivy League Dropout): gold from markets/workshops at governor level 2+
-			if arc == "ARC_03":
-				match lvl:
-					2: dollarsPerLevel += 1
-					3: dollarsPerLevel += 2
 			# ARC_01 (Wetlands Fisher): market yields culture instead of dollars
 			if bType == "Market" and arc == "ARC_01":
 				match lvl:
@@ -369,6 +361,11 @@ func _apply_governor_archetype_bonus(bType: String) -> void:
 						2: weaponsPerLevel += 2; manpowerPerLevel += 200
 						3: weaponsPerLevel += 3; manpowerPerLevel += 300
 		"Barracks":
+			# ARC_03 (Ivy League Dropout): science from barracks at governor level 2+
+			if arc == "ARC_03":
+				match lvl:
+					2: sciencePerLevel += 1
+					3: sciencePerLevel += 2
 			match pos:
 				"WARRIOR":
 					match lvl:

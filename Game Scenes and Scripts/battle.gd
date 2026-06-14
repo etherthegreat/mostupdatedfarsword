@@ -236,6 +236,11 @@ func applyBattleResults() -> void:
 
 	_apply_combat_status_effects()
 
+	# Field Research (ARC_03 lvl 2): science = 20% of damage dealt
+	if attacker != null and defenderManpowerLoss > 0 and attacker.parentCountry != null:
+		if attacker._army_has_active_mod("Field Research"):
+			attacker.parentCountry.TotalScience += max(1, int(float(defenderManpowerLoss) * 0.2))
+
 	emit_signal("deleteBattles")
 
 

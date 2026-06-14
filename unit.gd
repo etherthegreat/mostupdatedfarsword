@@ -49,10 +49,11 @@ var reloadCounter: int = 0  # counts down to 0 before unit can fire ranged
 
 var militaryModifierList: Array = []
 
-var currentTerrain: String = ""   # set from inTile.terrain before calculateMilMods()
-var currentStorm: String = ""     # set from inTile.stormType when inTile.stormActive
-var currentState: String = ""     # set from inTile.tileContinent before calculateMilMods()
-var armyDemoralized: bool = false # set from army before calculateMilMods(); skips all mods
+var currentTerrain: String = ""       # set from inTile.terrain before calculateMilMods()
+var currentStorm: String = ""         # set from inTile.stormType when inTile.stormActive
+var currentState: String = ""         # set from inTile.tileContinent before calculateMilMods()
+var inIvyLeagueTile: bool = false     # set from inTile.has_special_feature("Ivy League") before calculateMilMods()
+var armyDemoralized: bool = false     # set from army before calculateMilMods(); skips all mods
 
 const milModScene = preload("res://mil_mod.tscn")
 const weaponScene = preload("res://weapon.tscn")
@@ -374,6 +375,14 @@ func calculateMilMods() -> void:
 						unitDefensiveScore += (2 * unitLevel)
 				"Explosives Expert":
 					unitRangedOffence *= 1.10
+				"Student Body Commander":
+					if inIvyLeagueTile:
+						unitOffensiveScore = int(float(unitOffensiveScore) * 1.10)
+						unitDefensiveScore = int(float(unitDefensiveScore) * 1.10)
+				"Field Research":
+					pass  # science gain on attack handled in battle.gd
+				"Cultural Corps":
+					pass  # culture per turn handled in world.gd turn loop
 			# State guard: culturalMod entries with a state target get +2 attack/defence per level
 			if MilMod.culturalMod and MilMod.culturalState != "" and currentState == MilMod.culturalState:
 				unitOffensiveScore += (2 * unitLevel)

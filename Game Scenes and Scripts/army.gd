@@ -615,10 +615,11 @@ func surveySelf():
 		if parentCountry.TotalMetal <= 0:
 			Unit.disableMilModType("Metal")
 			# prevents units from replenishing armor
-		Unit.currentTerrain  = inTile.terrain if inTile != null else ""
-		Unit.currentStorm   = inTile.stormType if (inTile != null and inTile.stormActive) else ""
-		Unit.currentState   = inTile.tileContinent if inTile != null else ""
-		Unit.armyDemoralized = _has_status("Demoralized")
+		Unit.currentTerrain    = inTile.terrain if inTile != null else ""
+		Unit.currentStorm      = inTile.stormType if (inTile != null and inTile.stormActive) else ""
+		Unit.currentState      = inTile.tileContinent if inTile != null else ""
+		Unit.inIvyLeagueTile   = inTile.has_special_feature("Ivy League") if inTile != null else false
+		Unit.armyDemoralized   = _has_status("Demoralized")
 		Unit.calculateMilMods()
 		armyPunch += Unit.unitOffensiveScore
 		armyBlock += Unit.unitDefensiveScore

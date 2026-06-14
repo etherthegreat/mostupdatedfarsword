@@ -300,6 +300,22 @@ func buildSelf(Type):
 			milModDescription = str("[i]The mountain is not an obstacle. It is a road:[/i][color= green] +1 Movement when beginning a turn in Foothills terrain[/color]")
 			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
 			milModResource = "None"
+		# ── ARC_03 (Ivy League Dropout) mods ─────────────────────────────────────
+		"Student Body Commander":
+			commanderMod = true
+			milModDescription = str("[i]A commander shaped by the finest minds in the colonies:[/i][color= green] +10% Attack and Defense in tiles with Ivy League modifier[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"Field Research":
+			commanderMod = true
+			milModDescription = str("[i]Every battle is a lesson, and every lesson is science:[/i][color= green] Gain Science equal to 20% of damage dealt when attacking[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"Cultural Corps":
+			commanderMod = true
+			milModDescription = str("[i]The regiment marches as a school — every mile, a new lecture:[/i][color= green] +1 Culture per unit per level in army per turn[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
 		"Guerrilla Tactics":
 			infantryMod = true
 			terrainMod = true

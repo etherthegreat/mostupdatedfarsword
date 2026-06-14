@@ -1,6 +1,6 @@
 number,tileName,terrain,state,country,corruption,specialFeature,buildings,tileCrop,winterScore
 1,Valley Forge,Fortress,PA,USA,0,Birthplace of America,barracks:3|monument:1|fortress:3,corn,45
-2,Philadelphia,Metro,PA,USA,0,Liberty Bell,barracks:2|courthouse:2|forge:1|library:2,corn,35
+2,Philadelphia,Metro,PA,USA,0,Liberty Bell|Ivy League,barracks:2|courthouse:2|forge:1|library:2,corn,35
 3,West Chester,Suburbs,PA,USA,0,,market:1,corn,40
 4,Trenton,Suburbs,NJ,USA,0,,barracks:1|market:1,corn,38
 5,,,,,,,,,0
@@ -63,7 +63,7 @@ number,tileName,terrain,state,country,corruption,specialFeature,buildings,tileCr
 62,Harvard,Woods,MA,USA,0,Harvard University,library:3,apples,60
 63,Portsmouth,Wetlands,NH,USA,0,First Naval Shipyard,dock:1|barracks:1|market:1,apples,55
 64,Salem,Woods,MA,USA,0,,market:2,apples,52
-65,Boston,Metro,MA,UK,0,MIT|Charlestown Navy Yard,barracks:3|courthouse:3|library:4|dock:2,apples,55
+65,Boston,Metro,MA,UK,0,MIT|Charlestown Navy Yard|Ivy League,barracks:3|courthouse:3|library:4|dock:2,apples,55
 66,Plymouth,Wetlands,MA,UK,0,The Original Dock,market:1|monument:2|dock:1,apples,50
 67,Nantucket,Wetlands,MA,UK,0,Whaling Capital — Formerly,resort:3|dock:1,hay,30
 68,Concord,Woods,NH,USA,0,,monument:1|barracks:1|courthouse:2,apples,68

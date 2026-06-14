@@ -296,10 +296,9 @@ func _apply_archetype_mods(gov: governor, arc_id: String) -> void:
 			gov.addMilMod("Explosives Expert",         23)
 			gov.addMilMod("Mountain Pathfinder",        3)
 		"ARC_03":
-			gov.addMilMod("Steady Line",      123)
-			gov.addMilMod("Street Tough",     123)
-			gov.addMilMod("Flanking Drill",    23)
-			gov.addMilMod("Continental Line",   3)
+			gov.addMilMod("Student Body Commander", 123)
+			gov.addMilMod("Field Research",          23)
+			gov.addMilMod("Cultural Corps",           3)
 		"ARC_04":
 			gov.addMilMod("Swamp Legs",       123)
 			gov.addMilMod("Saber Drill",      123)
@@ -2605,6 +2604,7 @@ func evaluateDateEvents() -> void:
 		_check_protector_summons()
 		_tick_commander_turns()
 		_check_arc01_objectives()
+		_tick_arc03_cultural_corps()
 		_check_cmd_merit()
 		_check_cmd_recognition()
 		_check_cmd_thanks()
@@ -2632,6 +2632,7 @@ func evaluateDateEvents() -> void:
 		_tick_wild_ca_protectors()
 		_tick_commander_turns()
 		_check_arc01_objectives()
+		_tick_arc03_cultural_corps()
 		_check_cmd_merit()
 		_check_cmd_recognition()
 		_check_cmd_thanks()
@@ -4194,29 +4195,47 @@ func _check_arc01_objectives() -> void:
 					createNewEvent("ARC_02_DONE", tile)
 
 			"ARC_03":
-				# Obj 1 (lvl 1→2): own Metro tile + library level 2+
+				# Obj 1 (lvl 1→2): liberate an Ivy League tile from UK + station commander there
 				if gov.governorLevel == 1:
 					if tile.tileOwner != playerCountry:
 						continue
-					if tile.terrain != "Metro":
+					if not tile.has_special_feature("Ivy League"):
+						continue
+					if tile.lastConqueror != "UK":
+						continue
+					createNewEvent("ARC_03_FIRST", tile)
+				# Obj 2 (lvl 2→3): library at level 5 in tile + 1000 manpower in army
+				elif gov.governorLevel == 2:
+					if tile.tileOwner != playerCountry:
+						continue
+					if army.manpowerInArmy < 1000:
 						continue
 					var lib_lvl: int = 0
 					for b in tile.tileBuildingsList:
 						if b.buildingType == "Library" and b.enabled:
 							lib_lvl = maxi(lib_lvl, b.buildingLevel)
-					if lib_lvl < 2:
-						continue
-					createNewEvent("ARC_03_FIRST", tile)
-				# Obj 2 (lvl 2→3): own tile + 10 turns stationed + 200 gold in treasury
-				elif gov.governorLevel == 2:
-					if tile.tileOwner != playerCountry:
-						continue
-					if playerCountryNode.TotalDollars < 200:
-						continue
-					var key: String = _commander_key(tile)
-					if _commander_turns.get(key, 0) < 10:
+					if lib_lvl < 5:
 						continue
 					createNewEvent("ARC_03_DONE", tile)
+
+
+func _tick_arc03_cultural_corps() -> void:
+	for tile in playerCountryNode.OwnedTileList:
+		if tile.tileGovernor == null or tile.stationedArmy == null:
+			continue
+		var gov = tile.tileGovernor
+		var army = tile.stationedArmy
+		if army.commander != gov:
+			continue
+		if gov.governorArchetypeId != "ARC_03" or gov.governorLevel < 3:
+			continue
+		if not army._army_has_active_mod("Cultural Corps"):
+			continue
+		var culture_gain: int = 0
+		for unit in army.unitsList:
+			culture_gain += unit.unitLevel
+		if culture_gain > 0:
+			playerCountryNode.TotalCulture += culture_gain
 
 
 func _check_cmd_merit() -> void:
