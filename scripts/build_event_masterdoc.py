@@ -1106,7 +1106,7 @@ EVENTS = [
         # ARC_19 handled separately below (FULL COMPLETION)
         # ARC_20 excluded — Hawaiian Refugee is Ualani's archetype; no loyalty event
         # ARC_21 handled separately below (custom buttons: gold+attack surge OR permanent defense)
-        ("ARC_22","Acadian Forest Ranger","wood",     5),
+        # ARC_22 handled separately below (FULL COMPLETION)
         ("ARC_23","Gettysburg Descendant","manpower", 4),
         ("ARC_24","LGBTQ+ Organizer",     "culture",  4),
         ("ARC_25","Carnival Barker",      "gold",     3),
@@ -1140,6 +1140,13 @@ EVENTS = [
      "Root", "—", "—",
      "FULL COMPLETION", "", "N/A", "NO", "standard", "0",
      "BTN1: tile_army_manpower_refill; BTN2: spawn_anarchist; 3%/turn at loyalty≥8; once per governor"),
+
+    # ARC_22 — Acadian Forest Ranger: text polished, standard tile_yield wood×5
+    ("Loyal Governor", "Acadian Forest Ranger", "GOV_LOYAL_ARC_22",
+     "DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] HAS MAPPED EVERY TIMBER STAND WITHIN TWO DAYS' TRAVEL",
+     "Root", "—", "—",
+     "FULL COMPLETION", "", "N/A", "NO", "standard", "0",
+     "BTN1: tile_yield wood×5; 3%/turn at loyalty≥8; once per governor"),
 
     # ARC_21 — Border Mercenary: custom buttons (gold+attack surge OR permanent defense)
     ("Loyal Governor", "Border Mercenary", "GOV_LOYAL_ARC_21",
