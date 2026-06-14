@@ -1105,7 +1105,7 @@ EVENTS = [
         ("ARC_18","Swamp Witch",          "magic",    4),
         ("ARC_19","Caribbean Privateer",  "gold",     4),
         ("ARC_20","Hawaiian Refugee",     "food",     3),
-        ("ARC_21","Border Mercenary",     "weapons",  4),
+        # ARC_21 handled separately below (custom buttons: gold+attack surge OR permanent defense)
         ("ARC_22","Acadian Forest Ranger","wood",     5),
         ("ARC_23","Gettysburg Descendant","manpower", 4),
         ("ARC_24","LGBTQ+ Organizer",     "culture",  4),
@@ -1126,6 +1126,13 @@ EVENTS = [
      "Root", "—", "—",
      "FULL COMPLETION", "", "N/A", "NO", "standard", "0",
      "BTN1: tile_army_manpower_refill; BTN2: spawn_anarchist; 3%/turn at loyalty≥8; once per governor"),
+
+    # ARC_21 — Border Mercenary: custom buttons (gold+attack surge OR permanent defense)
+    ("Loyal Governor", "Border Mercenary", "GOV_LOYAL_ARC_21",
+     "MERCENARY COMMANDER'S PATRIOTIC DISPLAY",
+     "Root", "—", "—",
+     "FULL COMPLETION", "", "N/A", "NO", "standard", "0",
+     "BTN1: gold_and_army_buff Mercenary Zeal×10 turns + 50 gold; BTN2: army_buff Iron Discipline permanent; 3%/turn at loyalty≥8; once per governor"),
 
     # ── COMMANDER ARCS ───────────────────────────────────────────────────────────
     # 25 archetypes × 2 events each (FIRST + DONE).

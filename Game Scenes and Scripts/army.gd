@@ -383,6 +383,11 @@ func _apply_status_effects_to_stats() -> void:
 				armyBlock   += 15
 				armyLaunch  += 15
 				armyDefence += 10
+			# ── LOYAL GOVERNOR BUFFS ─────────────────────────────────────────────
+			"Mercenary Zeal":
+				armyPunch += 2  # Border Mercenary coin pact — timed 10 turns
+			"Iron Discipline":
+				armyDefence += 1  # Border Mercenary discipline — permanent (duration 9999)
 			# ── CANADIAN PROTECTOR BUFFS ─────────────────────────────────────────
 			"Le Wendigo's Hunger":
 				armyPunch += 30

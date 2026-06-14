@@ -2471,6 +2471,10 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 					" — ", outcome_amount, " magic/turn")
 			else:
 				push_warning("cast_protector_buff: no army at tile " + str(tile))
+		"gold_and_army_buff":
+			# outcome_value = buff status name, outcome_amount = turns; also grants 50 gold
+			_apply_resource_change("gold", 50)
+			_apply_army_buff(outcome_value, outcome_amount, tile)
 		"state_building_level_yield":
 			if tile != null:
 				var total_levels: int = 0
@@ -4584,9 +4588,17 @@ func _apply_morale_boost(amount: int, tile = null) -> void:
 				t.tileGovernor.morale = clampi(t.tileGovernor.morale + amount, 0, 100)
 
 func _apply_army_buff(buff_type: String, duration: int, tile) -> void:
-	for Army in playerCountryNode.countryArmyList:
-		if tile == null or Army.inTile == tile:
-			pass
+	var targets: Array = []
+	if tile != null and tile.stationedArmy != null:
+		targets = [tile.stationedArmy]
+	else:
+		targets = playerCountryNode.countryArmyList
+	for army in targets:
+		army.apply_status(buff_type, duration)
+		army.surveySelf()
+		army.updateArmyUI()
+	print("[ArmyBuff] ", buff_type, " (", duration, " turns) applied to ",
+		targets.size(), " army/armies")
 
 func _summon_protector(protector_id: String, tile) -> void:
 	createNewEvent("PROT_" + protector_id + "_SUMMON", tile)
