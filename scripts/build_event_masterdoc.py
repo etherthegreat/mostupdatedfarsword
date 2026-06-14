@@ -1120,13 +1120,13 @@ EVENTS = [
 ]
 
 _ARC_DONE_OVERRIDES = {
-    # arc_id: (status, art_tag, art_status)
-    "ARC_01": ("FULL COMPLETION", "arc_01_done_scene", "Not Started"),
+    # arc_id: (status, art_tag, art_status)  — commander arcs are text-only (N/A art)
+    "ARC_01": ("FULL COMPLETION", "", "N/A"),
 }
 
 _ARC_FIRST_OVERRIDES = {
-    # arc_id: (status, art_tag, art_status)
-    "ARC_01": ("FULL COMPLETION", "", "Not Started"),
+    # arc_id: (status, art_tag, art_status)  — commander arcs are text-only (N/A art)
+    "ARC_01": ("FULL COMPLETION", "", "N/A"),
 }
 
 EVENTS += [
@@ -1162,12 +1162,12 @@ EVENTS += [
         ("Commander", f"{arc_name}", f"{arc_id}_FIRST",
          f"[COMMANDER_NAME] — {arc_name.upper()} FIRST OBJECTIVE",
          "Milestone 1", "—", f"{arc_id}_DONE",
-         *_ARC_FIRST_OVERRIDES.get(arc_id, ("FIRST PASS", "", "Not Started")), "NO", "", "0",
+         *_ARC_FIRST_OVERRIDES.get(arc_id, ("FIRST PASS", "", "N/A")), "NO", "", "0",
          f"Fires when {arc_id} completes objective 1; BTN1: nothing"),
         ("Commander", f"{arc_name}", f"{arc_id}_DONE",
          f"[COMMANDER_NAME] — {arc_name.upper()} ARC COMPLETE",
          "Resolution", f"{arc_id}_FIRST", "—",
-         *_ARC_DONE_OVERRIDES.get(arc_id, ("FIRST PASS", "", "Not Started")), "NO", "", "0",
+         *_ARC_DONE_OVERRIDES.get(arc_id, ("FIRST PASS", "", "N/A")), "NO", "", "0",
          f"Fires when {arc_id} completes all 3 objectives; BTN1: morale+20, BTN2: {done_resource}"),
     ]
 ] + [
