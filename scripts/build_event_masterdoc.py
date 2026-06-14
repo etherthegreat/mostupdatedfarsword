@@ -1102,7 +1102,7 @@ EVENTS = [
         ("ARC_15","DC Bureaucrat",        "gold",     4),
         # ARC_16 handled separately below (custom buttons: state building yield + community_steel perk)
         # ARC_17 handled separately below (custom buttons: manpower refill + spawn anarchist)
-        ("ARC_18","Swamp Witch",          "magic",    4),
+        # ARC_18 handled separately below (FULL COMPLETION)
         # ARC_19 handled separately below (FULL COMPLETION)
         # ARC_20 excluded — Hawaiian Refugee is Ualani's archetype; no loyalty event
         # ARC_21 handled separately below (custom buttons: gold+attack surge OR permanent defense)
@@ -1112,6 +1112,13 @@ EVENTS = [
         ("ARC_25","Carnival Barker",      "gold",     3),
     ]
 ] + [
+
+    # ARC_18 — Swamp Witch: custom buttons (power = tile magic×10 OR knowledge = +10 all spell schools)
+    ("Loyal Governor", "Swamp Witch", "GOV_LOYAL_ARC_18",
+     "MESSAGE IN A BOTTLE FROM THE DEEP SWAMPS OF [TILE_NAME] — SEEK POWER? OR SEEK KNOWLEDGE?",
+     "Root", "—", "—",
+     "FULL COMPLETION", "", "N/A", "NO", "standard", "0",
+     "BTN1: tile_yield magic×10; BTN2: level_all_spell_schools ×10; 3%/turn at loyalty≥8; once per governor"),
 
     # ARC_19 — Caribbean Privateer: text polished, standard tile_yield gold×4
     ("Loyal Governor", "Caribbean Privateer", "GOV_LOYAL_ARC_19",

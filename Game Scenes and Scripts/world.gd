@@ -2471,6 +2471,15 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 					" — ", outcome_amount, " magic/turn")
 			else:
 				push_warning("cast_protector_buff: no army at tile " + str(tile))
+		"level_all_spell_schools":
+			for i in range(outcome_amount):
+				playerCountryNode.levelUpSchool("manifest")
+				playerCountryNode.levelUpSchool("iron")
+				playerCountryNode.levelUpSchool("storm")
+				playerCountryNode.levelUpSchool("liberty")
+				playerCountryNode.levelUpSchool("cryptid")
+				playerCountryNode.levelUpSchool("spectral")
+			print("[SpellSchools] All 6 schools +", outcome_amount, " levels")
 		"gold_and_army_buff":
 			# outcome_value = buff status name, outcome_amount = turns; also grants 50 gold
 			_apply_resource_change("gold", 50)
