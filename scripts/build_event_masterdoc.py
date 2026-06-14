@@ -218,7 +218,7 @@ EVENTS = [
     ("Protector","Jersey Devil","PROT_02_TAME",
      "JERSEY DEVIL CEASES SUPPLY ROUTE DISRUPTIONS — PINE BARRENS ACCORD",
      "Branch","PROT_02_SUMMON","→ PROT_02_AGREE (next_event_id)",
-     "FIRST PASS","","Integrated","NO","","0",
+     "FULL COMPLETION","prot_02_tame","Integrated","NO","","0",
      "Sets prot_02_tame flag; immediately chains to AGREE"),
     ("Protector","Jersey Devil","PROT_02_AGREE",
      "JERSEY DEVIL FORMALLY ENDORSES THE CONTINENTAL CAUSE",
