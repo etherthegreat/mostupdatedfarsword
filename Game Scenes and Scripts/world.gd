@@ -4193,6 +4193,31 @@ func _check_arc01_objectives() -> void:
 						continue
 					createNewEvent("ARC_02_DONE", tile)
 
+			"ARC_03":
+				# Obj 1 (lvl 1→2): own Metro tile + library level 2+
+				if gov.governorLevel == 1:
+					if tile.tileOwner != playerCountry:
+						continue
+					if tile.terrain != "Metro":
+						continue
+					var lib_lvl: int = 0
+					for b in tile.tileBuildingsList:
+						if b.buildingType == "Library" and b.enabled:
+							lib_lvl = maxi(lib_lvl, b.buildingLevel)
+					if lib_lvl < 2:
+						continue
+					createNewEvent("ARC_03_FIRST", tile)
+				# Obj 2 (lvl 2→3): own tile + 10 turns stationed + 200 gold in treasury
+				elif gov.governorLevel == 2:
+					if tile.tileOwner != playerCountry:
+						continue
+					if playerCountryNode.TotalDollars < 200:
+						continue
+					var key: String = _commander_key(tile)
+					if _commander_turns.get(key, 0) < 10:
+						continue
+					createNewEvent("ARC_03_DONE", tile)
+
 
 func _check_cmd_merit() -> void:
 	if _event_on_cooldown("CMD_MERIT"):

@@ -1235,6 +1235,7 @@ _ARC_DONE_OVERRIDES = {
     # arc_id: (status, art_tag, art_status)  — commander arcs are text-only (N/A art)
     "ARC_01": ("FULL COMPLETION", "", "N/A"),
     "ARC_02": ("FULL COMPLETION", "", "N/A"),
+    "ARC_03": ("FULL COMPLETION", "", "N/A"),
 }
 
 _ARC_FIRST_OVERRIDES = {
