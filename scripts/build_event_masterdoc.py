@@ -1107,7 +1107,7 @@ EVENTS = [
         # ARC_20 excluded — Hawaiian Refugee is Ualani's archetype; no loyalty event
         # ARC_21 handled separately below (custom buttons: gold+attack surge OR permanent defense)
         # ARC_22 handled separately below (FULL COMPLETION)
-        ("ARC_23","Gettysburg Descendant","manpower", 4),
+        # ARC_23 handled separately below (FULL COMPLETION)
         ("ARC_24","LGBTQ+ Organizer",     "culture",  4),
         ("ARC_25","Carnival Barker",      "gold",     3),
     ]
@@ -1147,6 +1147,13 @@ EVENTS = [
      "Root", "—", "—",
      "FULL COMPLETION", "", "N/A", "NO", "standard", "0",
      "BTN1: tile_army_manpower_refill; BTN2: spawn_anarchist; 3%/turn at loyalty≥8; once per governor"),
+
+    # ARC_23 — Gettysburg Descendant: text polished, standard tile_yield manpower×4
+    ("Loyal Governor", "Gettysburg Descendant", "GOV_LOYAL_ARC_23",
+     "DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] POSTS ONE MUSTER NOTICE; THE LINE FORMS BEFORE DAWN",
+     "Root", "—", "—",
+     "FULL COMPLETION", "", "N/A", "NO", "standard", "0",
+     "BTN1: tile_yield manpower×4; 3%/turn at loyalty≥8; once per governor"),
 
     # ARC_22 — Acadian Forest Ranger: text polished, standard tile_yield wood×5
     ("Loyal Governor", "Acadian Forest Ranger", "GOV_LOYAL_ARC_22",
