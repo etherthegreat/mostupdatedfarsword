@@ -173,6 +173,9 @@ func _commander_movement_bonus() -> int:
 			match mm.milModType:
 				"President":       bonus += 3
 				"Election Season": bonus += 3
+				"Mountain Pathfinder":
+					if inTile != null and inTile.terrain == "Foothills":
+						bonus += 1
 	return bonus
 
 func onTurnEnd():

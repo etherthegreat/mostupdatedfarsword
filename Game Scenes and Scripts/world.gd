@@ -292,10 +292,9 @@ func _apply_archetype_mods(gov: governor, arc_id: String) -> void:
 			gov.addMilMod("Master Baiter",          23)
 			gov.addMilMod("Marine",                  3)
 		"ARC_02":
-			gov.addMilMod("Hill Runner",      123)
-			gov.addMilMod("Powder & Shot",    123)
-			gov.addMilMod("Siege Line",        23)
-			gov.addMilMod("Rampart",            3)
+			gov.addMilMod("Appalachian Hill Fighter", 123)
+			gov.addMilMod("Explosives Expert",         23)
+			gov.addMilMod("Mountain Pathfinder",        3)
 		"ARC_03":
 			gov.addMilMod("Steady Line",      123)
 			gov.addMilMod("Street Tough",     123)
@@ -4118,36 +4117,61 @@ func _check_arc01_objectives() -> void:
 	for tile in playerCountryNode.OwnedTileList:
 		if tile.tileGovernor == null or tile.stationedArmy == null:
 			continue
-		if tile.tileGovernor.governorArchetypeId != "ARC_01":
-			continue
 		if tile.stationedArmy.commander != tile.tileGovernor:
 			continue
 		var gov = tile.tileGovernor
 		var army = tile.stationedArmy
-		if tile.tileOwner != playerCountry:
-			continue
-		# Obj 1 (lvl 1→2): ≥500 troops, lvl 2+ camp
-		if gov.governorLevel == 1:
-			if army.manpowerInArmy < 500:
-				continue
-			var camp_lvl: int = 0
-			for b in tile.tileBuildingsList:
-				if b.buildingType == "Camp" and b.enabled:
-					camp_lvl = maxi(camp_lvl, b.buildingLevel)
-			if camp_lvl < 2:
-				continue
-			createNewEvent("ARC_01_FIRST", tile)
-		# Obj 3 (lvl 2→3): ≥800 troops, 2+ granaries
-		elif gov.governorLevel == 2:
-			if army.manpowerInArmy < 800:
-				continue
-			var granary_count: int = 0
-			for b in tile.tileBuildingsList:
-				if b.buildingType == "Granary" and b.enabled:
-					granary_count += 1
-			if granary_count < 2:
-				continue
-			createNewEvent("ARC_01_DONE", tile)
+
+		match gov.governorArchetypeId:
+			"ARC_01":
+				if tile.tileOwner != playerCountry:
+					continue
+				if gov.governorLevel == 1:
+					if army.manpowerInArmy < 500:
+						continue
+					var camp_lvl: int = 0
+					for b in tile.tileBuildingsList:
+						if b.buildingType == "Camp" and b.enabled:
+							camp_lvl = maxi(camp_lvl, b.buildingLevel)
+					if camp_lvl < 2:
+						continue
+					createNewEvent("ARC_01_FIRST", tile)
+				elif gov.governorLevel == 2:
+					if army.manpowerInArmy < 800:
+						continue
+					var granary_count: int = 0
+					for b in tile.tileBuildingsList:
+						if b.buildingType == "Granary" and b.enabled:
+							granary_count += 1
+					if granary_count < 2:
+						continue
+					createNewEvent("ARC_01_DONE", tile)
+
+			"ARC_02":
+				# Obj 1 (lvl 1→2): army stationed + lvl 2 mine + 500 manpower
+				if gov.governorLevel == 1:
+					if army.manpowerInArmy < 500:
+						continue
+					var mine_lvl: int = 0
+					for b in tile.tileBuildingsList:
+						if b.buildingType == "Mine" and b.enabled:
+							mine_lvl = maxi(mine_lvl, b.buildingLevel)
+					if mine_lvl < 2:
+						continue
+					createNewEvent("ARC_02_FIRST", tile)
+				# Obj 2 (lvl 2→3): own tile + lvl 4 mine + 800 manpower
+				elif gov.governorLevel == 2:
+					if tile.tileOwner != playerCountry:
+						continue
+					if army.manpowerInArmy < 800:
+						continue
+					var mine_lvl: int = 0
+					for b in tile.tileBuildingsList:
+						if b.buildingType == "Mine" and b.enabled:
+							mine_lvl = maxi(mine_lvl, b.buildingLevel)
+					if mine_lvl < 4:
+						continue
+					createNewEvent("ARC_02_DONE", tile)
 
 
 func _check_cmd_merit() -> void:

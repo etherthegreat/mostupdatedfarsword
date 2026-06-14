@@ -182,6 +182,15 @@ func _apply_governor_archetype_bonus(bType: String) -> void:
 			# ARC_16 Community Steel: +1 metal/turn per building level when perk is unlocked
 			if arc == "ARC_16" and tile.tileGovernor.governor_perks.has("community_steel"):
 				metalPerLevel += 1
+			# ARC_02 (Appalachian Miner): scaling metal bonus; lvl 3 removes resource input costs
+			if arc == "ARC_02":
+				match lvl:
+					1: metalPerLevel += 1
+					2: metalPerLevel += 2
+					3:
+						metalPerLevel += 3
+						foodCostPerLevel = 0
+						woodCostPerLevel = 0
 			match pos:
 				"ENGINEER":
 					match lvl:
@@ -213,6 +222,11 @@ func _apply_governor_archetype_bonus(bType: String) -> void:
 						2: magicPerLevel += 1; culturePerLevel += 1
 						3: magicPerLevel += 2; culturePerLevel += 2; mandatePerLevel += 1
 		"Camp":
+			# ARC_02 (Appalachian Miner): culture from camps at lvl 2+
+			if arc == "ARC_02":
+				match lvl:
+					2: culturePerLevel += 1
+					3: culturePerLevel += 2
 			match pos:
 				"SCOUT":
 					if arc == "ARC_01":

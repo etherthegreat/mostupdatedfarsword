@@ -280,6 +280,26 @@ func buildSelf(Type):
 			milModDescription = str("[i]Land and sea are one battlefield:[/i][color= green] Army may launch melee attacks into adjacent naval tile neighbors[/color]")
 			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
 			milModResource = "None"
+		# ── ARC_02 (Appalachian Miner) mods ───────────────────────────────────────
+		"Appalachian Hill Fighter":
+			commanderMod = true
+			terrainMod = true
+			terrainType = "Foothills"
+			milModDescription = str("[i]Knows every ridge, gully, and choke point in the Appalachians:[/i][color= green] +2 Defense when stationed in Foothills terrain[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"Explosives Expert":
+			commanderMod = true
+			milModDescription = str("[i]Powder and timing — the miner's two greatest gifts to artillery:[/i][color= green] +10% Ranged Attack for this army[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"Mountain Pathfinder":
+			commanderMod = true
+			terrainMod = true
+			terrainType = "Foothills"
+			milModDescription = str("[i]The mountain is not an obstacle. It is a road:[/i][color= green] +1 Movement when beginning a turn in Foothills terrain[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
 		"Guerrilla Tactics":
 			infantryMod = true
 			terrainMod = true

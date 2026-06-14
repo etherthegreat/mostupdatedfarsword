@@ -367,7 +367,7 @@ CHALCH_Q3_BTN1,CHALCH_Q3,Show the Turkey God Five Farms,standard,resource_change
 CHALCH_AGREE_BTN1,CHALCH_AGREE,Accept the Jade Turkey's Protection,standard,resource_change,food,100,,,,,
 ARC_01_FIRST_BTN1,ARC_01_FIRST,Promote [COMMANDER_NAME] to Second Rank,standard,promote_commander,,0,,,,,
 ARC_01_DONE_BTN1,ARC_01_DONE,Invite the General to Washington,standard,promote_commander,,0,,,,,
-ARC_02_FIRST_BTN1,ARC_02_FIRST,Field Dispatch Acknowledged.,standard,nothing,,0,,,,,
+ARC_02_FIRST_BTN1,ARC_02_FIRST,Promote [COMMANDER_NAME] to Second Rank,standard,promote_commander,,0,,,,,
 ARC_02_DONE_BTN1,ARC_02_DONE,Formally Recognize [COMMANDER_NAME]'s Service,standard,morale_boost,,20,,,,,
 ARC_02_DONE_BTN2,ARC_02_DONE,A Appalachian Miner's Work Deserves Its Reward,standard,resource_change,metal,20,,,,,
 ARC_03_FIRST_BTN1,ARC_03_FIRST,Field Dispatch Acknowledged.,standard,nothing,,0,,,,,

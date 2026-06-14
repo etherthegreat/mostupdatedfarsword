@@ -368,6 +368,12 @@ func calculateMilMods() -> void:
 					pass  # first-shot bonus handled in battle.gd
 				"HardeeDisc":
 					pass  # formation bonus handled at army level
+				# ── Commander Arc mods ────────────────────────────────────────
+				"Appalachian Hill Fighter":
+					if currentTerrain == "Foothills":
+						unitDefensiveScore += (2 * unitLevel)
+				"Explosives Expert":
+					unitRangedOffence *= 1.10
 			# State guard: culturalMod entries with a state target get +2 attack/defence per level
 			if MilMod.culturalMod and MilMod.culturalState != "" and currentState == MilMod.culturalState:
 				unitOffensiveScore += (2 * unitLevel)
