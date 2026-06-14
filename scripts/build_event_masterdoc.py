@@ -1098,7 +1098,7 @@ EVENTS = [
         ("ARC_11","Boston Rabble-Rouser", "culture",  4),
         ("ARC_12","Continental Surgeon",  "food",     4),
         ("ARC_13","Nantucket Sailor",     "boats",    3),
-        ("ARC_14","Frontier Preacher",    "culture",  4),
+        # ARC_14 handled separately below (FULL COMPLETION)
         # ARC_15 handled separately below (FULL COMPLETION — two buttons)
         # ARC_16 handled separately below (custom buttons: state building yield + community_steel perk)
         # ARC_17 handled separately below (custom buttons: manpower refill + spawn anarchist)
@@ -1126,6 +1126,13 @@ EVENTS = [
      "Root", "—", "—",
      "FULL COMPLETION", "", "N/A", "NO", "standard", "0",
      "BTN1: tile_yield gold×4; 3%/turn at loyalty≥8; once per governor"),
+
+    # ARC_14 — Frontier Preacher: text polished, standard tile_yield culture×4
+    ("Loyal Governor", "Frontier Preacher", "GOV_LOYAL_ARC_14",
+     "DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] RIDES ELEVEN DAYS THROUGH FOUR SETTLEMENTS AND COMES BACK WITH PLEDGES FROM ALL OF THEM",
+     "Root", "—", "—",
+     "FULL COMPLETION", "", "N/A", "NO", "standard", "0",
+     "BTN1: tile_yield culture×4; 3%/turn at loyalty≥8; once per governor"),
 
     # ARC_15 — DC Bureaucrat: BTN1=tile_yield gold×4, BTN2=corrupt_windfall gold×10 (+20 corruption)
     ("Loyal Governor", "DC Bureaucrat", "GOV_LOYAL_ARC_15",
