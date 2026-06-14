@@ -1109,7 +1109,7 @@ EVENTS = [
         # ARC_22 handled separately below (FULL COMPLETION)
         # ARC_23 handled separately below (FULL COMPLETION)
         # ARC_24 handled separately below (FULL COMPLETION)
-        ("ARC_25","Carnival Barker",      "gold",     3),
+        # ARC_25 handled separately below (FULL COMPLETION)
     ]
 ] + [
 
@@ -1140,6 +1140,13 @@ EVENTS = [
      "Root", "—", "—",
      "FULL COMPLETION", "", "N/A", "NO", "standard", "0",
      "BTN1: tile_yield culture×5; BTN2: resource_change manpower 1000; 3%/turn at loyalty≥8; once per governor"),
+
+    # ARC_25 — Carnival Barker: BTN1=tile_yield gold×5, BTN2=tile_building_mandate_surge×5
+    ("Loyal Governor", "Carnival Barker", "GOV_LOYAL_ARC_25",
+     "FOR ONE NIGHT ONLY!",
+     "Root", "—", "—",
+     "FULL COMPLETION", "", "N/A", "NO", "standard", "0",
+     "BTN1: tile_yield gold×5; BTN2: tile_building_mandate_surge×5 turns; 3%/turn at loyalty≥8; once per governor"),
 
     # ARC_24 — LGBTQ+ Organizer: text polished, standard tile_yield culture×4
     ("Loyal Governor", "LGBTQ+ Organizer", "GOV_LOYAL_ARC_24",

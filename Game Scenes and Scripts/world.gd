@@ -2471,6 +2471,19 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 					" — ", outcome_amount, " magic/turn")
 			else:
 				push_warning("cast_protector_buff: no army at tile " + str(tile))
+		"tile_building_mandate_surge":
+			# +1 mandate per building level per turn × outcome_amount turns, paid as lump sum
+			if tile != null:
+				var total_levels: int = 0
+				for b in tile.tileBuildingsList:
+					if b.enabled:
+						total_levels += b.buildingLevel
+				var total: int = total_levels * outcome_amount
+				_apply_resource_change("mandate", total)
+				print("[MandateSurge] ", tile.tileName, " levels:", total_levels,
+					" ×", outcome_amount, " turns = ", total, " mandate")
+			else:
+				push_warning("tile_building_mandate_surge: requires tile context")
 		"corrupt_windfall":
 			# outcome_value = resource, outcome_amount = tile yield multiplier
 			# Also adds +20 corruption to the tile
