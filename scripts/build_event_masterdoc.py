@@ -1097,7 +1097,7 @@ EVENTS = [
         ("ARC_10","Indigenous Scout",     "manpower", 3),
         ("ARC_11","Boston Rabble-Rouser", "culture",  4),
         ("ARC_12","Continental Surgeon",  "food",     4),
-        ("ARC_13","Nantucket Sailor",     "boats",    3),
+        # ARC_13 handled separately below (FULL COMPLETION)
         # ARC_14 handled separately below (FULL COMPLETION)
         # ARC_15 handled separately below (FULL COMPLETION — two buttons)
         # ARC_16 handled separately below (custom buttons: state building yield + community_steel perk)
@@ -1126,6 +1126,13 @@ EVENTS = [
      "Root", "—", "—",
      "FULL COMPLETION", "", "N/A", "NO", "standard", "0",
      "BTN1: tile_yield gold×4; 3%/turn at loyalty≥8; once per governor"),
+
+    # ARC_13 — Nantucket Sailor: text polished, standard tile_yield boats×3
+    ("Loyal Governor", "Nantucket Sailor", "GOV_LOYAL_ARC_13",
+     "DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] REFLOATS A HULL THAT WAS LISTED ON THE CHARTS AS A NAVIGATION HAZARD",
+     "Root", "—", "—",
+     "FULL COMPLETION", "", "N/A", "NO", "standard", "0",
+     "BTN1: tile_yield boats×3; 3%/turn at loyalty≥8; once per governor"),
 
     # ARC_14 — Frontier Preacher: two buttons (culture×5 OR 1000 manpower)
     ("Loyal Governor", "Frontier Preacher", "GOV_LOYAL_ARC_14",
