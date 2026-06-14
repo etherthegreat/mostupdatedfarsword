@@ -1108,7 +1108,7 @@ EVENTS = [
         # ARC_21 handled separately below (custom buttons: gold+attack surge OR permanent defense)
         # ARC_22 handled separately below (FULL COMPLETION)
         # ARC_23 handled separately below (FULL COMPLETION)
-        ("ARC_24","LGBTQ+ Organizer",     "culture",  4),
+        # ARC_24 handled separately below (FULL COMPLETION)
         ("ARC_25","Carnival Barker",      "gold",     3),
     ]
 ] + [
@@ -1127,9 +1127,16 @@ EVENTS = [
      "FULL COMPLETION", "", "N/A", "NO", "standard", "0",
      "BTN1: tile_yield gold×4; 3%/turn at loyalty≥8; once per governor"),
 
-    # ARC_14 — Frontier Preacher: text polished, standard tile_yield culture×4
+    # ARC_14 — Frontier Preacher: two buttons (culture×5 OR 1000 manpower)
     ("Loyal Governor", "Frontier Preacher", "GOV_LOYAL_ARC_14",
-     "DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] RIDES ELEVEN DAYS THROUGH FOUR SETTLEMENTS AND COMES BACK WITH PLEDGES FROM ALL OF THEM",
+     "FRONTIER PREACHER INSPIRES THOUSANDS",
+     "Root", "—", "—",
+     "FULL COMPLETION", "", "N/A", "NO", "standard", "0",
+     "BTN1: tile_yield culture×5; BTN2: resource_change manpower 1000; 3%/turn at loyalty≥8; once per governor"),
+
+    # ARC_24 — LGBTQ+ Organizer: text polished, standard tile_yield culture×4
+    ("Loyal Governor", "LGBTQ+ Organizer", "GOV_LOYAL_ARC_24",
+     "DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] ORGANIZED SOMETHING NOBODY OFFICIALLY SANCTIONED AND EVERYONE SHOWED UP",
      "Root", "—", "—",
      "FULL COMPLETION", "", "N/A", "NO", "standard", "0",
      "BTN1: tile_yield culture×4; 3%/turn at loyalty≥8; once per governor"),
