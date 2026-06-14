@@ -1103,7 +1103,7 @@ EVENTS = [
         # ARC_16 handled separately below (custom buttons: state building yield + community_steel perk)
         # ARC_17 handled separately below (custom buttons: manpower refill + spawn anarchist)
         ("ARC_18","Swamp Witch",          "magic",    4),
-        ("ARC_19","Caribbean Privateer",  "gold",     4),
+        # ARC_19 handled separately below (FULL COMPLETION)
         # ARC_20 excluded — Hawaiian Refugee is Ualani's archetype; no loyalty event
         # ARC_21 handled separately below (custom buttons: gold+attack surge OR permanent defense)
         ("ARC_22","Acadian Forest Ranger","wood",     5),
@@ -1112,6 +1112,13 @@ EVENTS = [
         ("ARC_25","Carnival Barker",      "gold",     3),
     ]
 ] + [
+
+    # ARC_19 — Caribbean Privateer: text polished, standard tile_yield gold×4
+    ("Loyal Governor", "Caribbean Privateer", "GOV_LOYAL_ARC_19",
+     "DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] CLOSES AN UNDISCLOSED DEAL; GOLD ARRIVES WITHOUT EXPLANATION",
+     "Root", "—", "—",
+     "FULL COMPLETION", "", "N/A", "NO", "standard", "0",
+     "BTN1: tile_yield gold×4; 3%/turn at loyalty≥8; once per governor"),
 
     # ARC_16 — Rust Belt Steelworker: custom buttons (state building yield OR community_steel perk)
     ("Loyal Governor", "Rust Belt Steelworker", "GOV_LOYAL_ARC_16",
