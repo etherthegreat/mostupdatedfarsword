@@ -1124,6 +1124,11 @@ _ARC_DONE_OVERRIDES = {
     "ARC_01": ("FULL COMPLETION", "arc_01_done_scene", "Not Started"),
 }
 
+_ARC_FIRST_OVERRIDES = {
+    # arc_id: (status, art_tag, art_status)
+    "ARC_01": ("FULL COMPLETION", "", "Not Started"),
+}
+
 EVENTS += [
     item
     for arc_id, arc_name, done_resource in [
@@ -1157,7 +1162,7 @@ EVENTS += [
         ("Commander", f"{arc_name}", f"{arc_id}_FIRST",
          f"[COMMANDER_NAME] — {arc_name.upper()} FIRST OBJECTIVE",
          "Milestone 1", "—", f"{arc_id}_DONE",
-         "FIRST PASS", "", "Not Started", "NO", "", "0",
+         *_ARC_FIRST_OVERRIDES.get(arc_id, ("FIRST PASS", "", "Not Started")), "NO", "", "0",
          f"Fires when {arc_id} completes objective 1; BTN1: nothing"),
         ("Commander", f"{arc_name}", f"{arc_id}_DONE",
          f"[COMMANDER_NAME] — {arc_name.upper()} ARC COMPLETE",
