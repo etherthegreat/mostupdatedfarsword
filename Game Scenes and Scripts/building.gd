@@ -179,6 +179,9 @@ func _apply_governor_archetype_bonus(bType: String) -> void:
 						2: foodPerLevel += 1
 						3: foodPerLevel += 2; happinessPerLevel += 1
 		"Mine":
+			# ARC_16 Community Steel: +1 metal/turn per building level when perk is unlocked
+			if arc == "ARC_16" and tile.tileGovernor.governor_perks.has("community_steel"):
+				metalPerLevel += 1
 			match pos:
 				"ENGINEER":
 					match lvl:
@@ -269,6 +272,9 @@ func _apply_governor_archetype_bonus(bType: String) -> void:
 						2: sciencePerLevel += 1; influencePerLevel += 1
 						3: sciencePerLevel += 2; influencePerLevel += 2; mandatePerLevel += 1
 		"Workshop", "Market":
+			# ARC_16 Community Steel: +1 metal/turn per building level when perk is unlocked
+			if bType == "Market" and arc == "ARC_16" and tile.tileGovernor.governor_perks.has("community_steel"):
+				metalPerLevel += 1
 			# ARC_01 (Wetlands Fisher): market yields culture instead of dollars
 			if bType == "Market" and arc == "ARC_01":
 				match lvl:

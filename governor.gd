@@ -31,6 +31,7 @@ var isVicePresident: bool = false  # true for one randomly-assigned named govern
 var isLeader: bool = false         # true for the named head-of-state of any country
 var questComplete: bool = false
 var _loyalty_acc: float = 0.0  # accumulates sub-integer deltas between turns
+var governor_perks: Array = []  # unlocked via set_governor_perk outcome (e.g. "community_steel")
 
 const GOVERNOR_PORTRAITS: Dictionary = {
 	# Named governors — portraits confirmed

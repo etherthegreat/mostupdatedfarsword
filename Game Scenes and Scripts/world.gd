@@ -2471,6 +2471,29 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 					" — ", outcome_amount, " magic/turn")
 			else:
 				push_warning("cast_protector_buff: no army at tile " + str(tile))
+		"state_building_level_yield":
+			if tile != null:
+				var total_levels: int = 0
+				var state: String = tile.tileContinent
+				for t in $TileController.get_children():
+					if t.tileOwner == playerCountry and t.tileContinent == state:
+						for b in t.tileBuildingsList:
+							if b.enabled:
+								total_levels += b.buildingLevel
+				var yield_amount: int = total_levels * outcome_amount
+				_apply_resource_change(outcome_value, yield_amount)
+				print("[StateBuildingYield] ", state, " levels:", total_levels,
+					" ×", outcome_amount, " = ", yield_amount, " ", outcome_value)
+			else:
+				push_warning("state_building_level_yield: requires tile context")
+		"set_governor_perk":
+			if tile != null and tile.tileGovernor != null:
+				if not tile.tileGovernor.governor_perks.has(outcome_value):
+					tile.tileGovernor.governor_perks.append(outcome_value)
+					print("[GovPerk] ", tile.tileGovernor.governorType,
+						" unlocked perk: ", outcome_value)
+			else:
+				push_warning("set_governor_perk: requires tile with governor")
 		"tile_army_manpower_refill":
 			if tile != null and tile.stationedArmy != null:
 				tile.stationedArmy.manpowerInArmy = tile.stationedArmy.maxManpower

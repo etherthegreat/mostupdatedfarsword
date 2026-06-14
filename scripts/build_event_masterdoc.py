@@ -1082,8 +1082,8 @@ EVENTS = [
     ("Loyal Governor", arc_name, f"GOV_LOYAL_{arc_id}",
      f"DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] (LOYAL {arc_name.upper()})",
      "Root", "—", "—",
-     "FIRST PASS", "", "Not Started", "NO", "standard", "0",
-     f"tile_yield {resource}×{turns}; 3%/turn at loyalty≥8; once per governor")
+     "FIRST PASS", "", "N/A", "NO", "standard", "0",
+     f"tile_yield {resource}×{turns}; 3%/turn at loyalty≥8; once per governor; text-only")
     for arc_id, arc_name, resource, turns in [
         ("ARC_01","Wetlands Fisher",      "food",     4),
         ("ARC_02","Appalachian Miner",    "metal",    5),
@@ -1100,7 +1100,7 @@ EVENTS = [
         ("ARC_13","Nantucket Sailor",     "boats",    3),
         ("ARC_14","Frontier Preacher",    "culture",  4),
         ("ARC_15","DC Bureaucrat",        "gold",     4),
-        ("ARC_16","Rust Belt Steelworker","metal",    5),
+        # ARC_16 handled separately below (custom buttons: state building yield + community_steel perk)
         # ARC_17 handled separately below (custom buttons: manpower refill + spawn anarchist)
         ("ARC_18","Swamp Witch",          "magic",    4),
         ("ARC_19","Caribbean Privateer",  "gold",     4),
@@ -1112,6 +1112,13 @@ EVENTS = [
         ("ARC_25","Carnival Barker",      "gold",     3),
     ]
 ] + [
+
+    # ARC_16 — Rust Belt Steelworker: custom buttons (state building yield OR community_steel perk)
+    ("Loyal Governor", "Rust Belt Steelworker", "GOV_LOYAL_ARC_16",
+     "DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] HAS A PROPOSAL FOR THE FOUNDRY",
+     "Root", "—", "—",
+     "FULL COMPLETION", "", "N/A", "NO", "standard", "0",
+     "BTN1: state_building_level_yield metal×10; BTN2: set_governor_perk community_steel; 3%/turn at loyalty≥8; once per governor"),
 
     # ARC_17 — Plantation Deserter: custom buttons (manpower refill OR spawn anarchist)
     ("Loyal Governor", "Plantation Deserter", "GOV_LOYAL_ARC_17",
