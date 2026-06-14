@@ -1104,7 +1104,7 @@ EVENTS = [
         # ARC_17 handled separately below (custom buttons: manpower refill + spawn anarchist)
         ("ARC_18","Swamp Witch",          "magic",    4),
         ("ARC_19","Caribbean Privateer",  "gold",     4),
-        ("ARC_20","Hawaiian Refugee",     "food",     3),
+        # ARC_20 excluded — Hawaiian Refugee is Ualani's archetype; no loyalty event
         # ARC_21 handled separately below (custom buttons: gold+attack surge OR permanent defense)
         ("ARC_22","Acadian Forest Ranger","wood",     5),
         ("ARC_23","Gettysburg Descendant","manpower", 4),
@@ -1172,7 +1172,7 @@ EVENTS += [
         ("ARC_17","Plantation Deserter","food"),
         ("ARC_18","Swamp Witch","magic"),
         ("ARC_19","Caribbean Privateer","gold"),
-        ("ARC_20","Hawaiian Refugee","culture"),
+        # ARC_20 excluded (Ualani's archetype — no arc events)
         ("ARC_21","Border Mercenary","weapons"),
         ("ARC_22","Acadian Forest Ranger","wood"),
         ("ARC_23","Gettysburg Descendant","manpower"),

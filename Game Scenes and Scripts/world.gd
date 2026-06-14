@@ -4313,6 +4313,8 @@ func _check_loyal_governor_events() -> void:
 			continue
 		if gov.governorArchetypeId == "":
 			continue  # named governor — skip
+		if gov.governorArchetypeId == "ARC_20":
+			continue  # Hawaiian Refugee — Ualani's archetype, no loyalty event
 		if gov.loyalty < GOV_LOYAL_THRESHOLD:
 			continue
 		var fired_flag: String = "loyal_event_" + gov.governorArchetypeId + "_" + str(tile.tileNumber)
