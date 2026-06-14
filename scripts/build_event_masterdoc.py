@@ -1095,7 +1095,7 @@ EVENTS = [
         ("ARC_08","Tobacco Belt Drifter", "food",     4),
         ("ARC_09","War Widow",            "culture",  4),
         ("ARC_10","Indigenous Scout",     "manpower", 3),
-        ("ARC_11","Boston Rabble-Rouser", "culture",  4),
+        # ARC_11 handled separately below (FULL COMPLETION)
         # ARC_12 handled separately below (FULL COMPLETION — two buttons)
         # ARC_13 handled separately below (FULL COMPLETION)
         # ARC_14 handled separately below (FULL COMPLETION)
@@ -1126,6 +1126,13 @@ EVENTS = [
      "Root", "—", "—",
      "FULL COMPLETION", "", "N/A", "NO", "standard", "0",
      "BTN1: tile_yield gold×4; 3%/turn at loyalty≥8; once per governor"),
+
+    # ARC_11 — Boston Rabble-Rouser: speech that does not disperse; tile_yield culture×4
+    ("Loyal Governor", "Boston Rabble-Rouser", "GOV_LOYAL_ARC_11",
+     "DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] DELIVERS A SPEECH THAT DOES NOT DISPERSE",
+     "Root", "—", "—",
+     "FULL COMPLETION", "", "N/A", "NO", "standard", "0",
+     "BTN1: tile_yield culture×4; 3%/turn at loyalty≥8; once per governor"),
 
     # ARC_12 — Continental Surgeon: two-button (all armies 25% manpower heal OR medical_science perk)
     ("Loyal Governor", "Continental Surgeon", "GOV_LOYAL_ARC_12",
