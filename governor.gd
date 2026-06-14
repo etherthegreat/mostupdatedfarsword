@@ -242,6 +242,14 @@ func buildSelf(gT, gL):
 			governorPosition = "LEGEND"
 			governorFaction = "Patriot"
 			loyalty = 10.0
+
+		"Anarchistic":
+			governorTexture = load("res://art assets/finishedAssets/governors/anarchist.png")
+			governorDescription = "No country. No crown. No compromise."
+			governorBiography = "They came from the occupied territories — from plantations and prisons and Crown-held towns where the revolution never arrived. They do not fight for any republic. They fight against everything that calls itself a government. They are ungovernable by design."
+			governorPosition = "AGITATOR"
+			governorFaction = "Radical"
+			loyalty = 0.0
 	pass
 
 

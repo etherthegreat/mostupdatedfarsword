@@ -33,6 +33,7 @@ var _ca_collapsed: bool = false
 var _game_ended: bool = false
 var _mission_timers: Dictionary = {}   # flag_key → turns_remaining until expiry
 var _event_cooldowns: Dictionary = {}  # event_id → turns_remaining before can fire again
+var _anarchist_armies: Array = []      # anarchist armies that auto-attack UK each turn
 var _commander_turns: Dictionary = {}  # "TileName:CommanderName" → turns_served
 var _vp_governor = null                # reference to the assigned Vice President governor
 var _vp_faction: String = ""           # game faction name belonging to the VP
@@ -2470,6 +2471,15 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 					" — ", outcome_amount, " magic/turn")
 			else:
 				push_warning("cast_protector_buff: no army at tile " + str(tile))
+		"tile_army_manpower_refill":
+			if tile != null and tile.stationedArmy != null:
+				tile.stationedArmy.manpowerInArmy = tile.stationedArmy.maxManpower
+				tile.stationedArmy.updateArmyUI()
+				print("[ManpowerRefill] ", tile.tileName, " army fully refilled")
+			else:
+				push_warning("tile_army_manpower_refill: no army at tile")
+		"spawn_anarchist":
+			_spawn_anarchist_army(tile)
 		"nothing":
 			pass
 		_:
@@ -2523,6 +2533,7 @@ func evaluateDateEvents() -> void:
 		_tick_election_pressure()
 		_check_stump_speech()
 		_check_election_season()
+		_tick_anarchists()
 	elif playerCountry == "CA" and not _ca_collapsed:
 		_check_war_events()
 		_check_usa_alliance_events()
@@ -2546,6 +2557,7 @@ func evaluateDateEvents() -> void:
 		_check_cmd_thanks()
 		_tick_election_pressure()
 		_check_election_season()
+		_tick_anarchists()
 	_check_end_game()
 	var to_fire = EventDatabase.evaluate_date_triggers(currentWorldTurn, month)
 	for event_id in to_fire:
@@ -5631,6 +5643,90 @@ func _journal_classification(event_type: String) -> String:
 		"city_liberated", "reintegration":       return "CONFIDENTIAL"
 		"commander_complete":                    return "DECLASSIFIED"
 		_:                                       return "DECLASSIFIED"
+
+func _spawn_anarchist_army(source_tile) -> void:
+	# Find a UK-owned tile adjacent to the source tile, or any UK tile in the world.
+	var uk_tile = null
+	if source_tile != null:
+		for neighbor in source_tile.TileNeighbors:
+			if neighbor.tileOwner == "UK":
+				uk_tile = neighbor
+				break
+	if uk_tile == null:
+		for t in $TileController.get_children():
+			if t.tileOwner == "UK":
+				uk_tile = t
+				break
+	if uk_tile == null:
+		push_warning("spawn_anarchist: no UK tile found")
+		return
+
+	# Build the anarchist army on the UK tile via the player country's addArmy machinery,
+	# but as an independent rogue unit we manage ourselves.
+	var armyInstance = load("res://Game Scenes and Scripts/army.tscn").instantiate()
+	var anarch_gov = governor.new()
+	anarch_gov.buildSelf("Anarchistic", 1)
+
+	# TileNumber=0 so buildSelf skips the OwnedTileList search (UK tile won't be there)
+	add_child(armyInstance)
+	armyInstance.buildSelf("Anarchist Cell", playerCountryNode, 0, null)
+	armyInstance.is_anarchist = true
+	armyInstance.commander = anarch_gov
+	armyInstance.armyMaxShield = 0
+	armyInstance.armyShield = 0
+
+	playerCountryNode.addNewUnit(armyInstance, "Infantry", 1, "Flintlock", "Iron", "Cloth", 150, 80)
+	armyInstance.surveySelf()
+
+	armyInstance.inTile = uk_tile
+	uk_tile.addStationedArmy(armyInstance)
+	armyInstance.armyDestroyed.connect(_on_anarchist_destroyed.bind(armyInstance))
+	_anarchist_armies.append(armyInstance)
+	armyInstance.updateArmyUI()
+	print("[Anarchist] Cell spawned at ", uk_tile.tileName)
+
+func _on_anarchist_destroyed(army: Army) -> void:
+	_anarchist_armies.erase(army)
+
+func _tick_anarchists() -> void:
+	var to_remove: Array = []
+	for army in _anarchist_armies:
+		if not is_instance_valid(army):
+			to_remove.append(army)
+			continue
+		if army.inTile == null:
+			to_remove.append(army)
+			continue
+		# Try to attack an adjacent UK tile or fight whatever is in the current tile.
+		var target: Tile = null
+		for neighbor in army.inTile.TileNeighbors:
+			if neighbor.tileOwner == "UK":
+				target = neighbor
+				break
+		if target != null and target.stationedArmy != null:
+			# Trigger a battle against the UK army
+			var uk_army = target.stationedArmy
+			var attacker_loss: int = randi_range(10, 40)
+			var defender_loss: int = randi_range(30, 80)
+			army.manpowerInArmy = maxi(army.manpowerInArmy - attacker_loss, 0)
+			uk_army.manpowerInArmy = maxi(uk_army.manpowerInArmy - defender_loss, 0)
+			print("[Anarchist] ", army.ArmyName, " raids ", target.tileName,
+				" — loses ", attacker_loss, ", UK loses ", defender_loss)
+			army.updateArmyUI()
+			uk_army.updateArmyUI()
+			if army.manpowerInArmy <= 0:
+				to_remove.append(army)
+				army.queue_free()
+		elif army.inTile.tileOwner == "UK":
+			# Already on UK soil — apply sabotage attrition
+			var loss: int = randi_range(5, 20)
+			army.manpowerInArmy = maxi(army.manpowerInArmy - loss, 0)
+			army.updateArmyUI()
+			if army.manpowerInArmy <= 0:
+				to_remove.append(army)
+				army.queue_free()
+	for a in to_remove:
+		_anarchist_armies.erase(a)
 
 # WORLD.GD ADDITIONS
 # Add to existing save/load functions

@@ -91,6 +91,8 @@ var reinforcementBlocked: bool = false  # set by Supply Cut/Quarantined
 
 var armySiegeScore: float
 
+var is_anarchist: bool = false  # anarchist armies auto-attack UK each turn, no shield, uncontrollable
+
 #spawning and tiles
 var awake: bool #if a unit isn't stationed in a barracks, it is awake.  if awake, can be controlled
 var inTile: Tile #the tile this unit is currently in

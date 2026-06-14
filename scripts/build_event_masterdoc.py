@@ -1101,7 +1101,7 @@ EVENTS = [
         ("ARC_14","Frontier Preacher",    "culture",  4),
         ("ARC_15","DC Bureaucrat",        "gold",     4),
         ("ARC_16","Rust Belt Steelworker","metal",    5),
-        ("ARC_17","Plantation Deserter",  "manpower", 4),
+        # ARC_17 handled separately below (custom buttons: manpower refill + spawn anarchist)
         ("ARC_18","Swamp Witch",          "magic",    4),
         ("ARC_19","Caribbean Privateer",  "gold",     4),
         ("ARC_20","Hawaiian Refugee",     "food",     3),
@@ -1112,6 +1112,13 @@ EVENTS = [
         ("ARC_25","Carnival Barker",      "gold",     3),
     ]
 ] + [
+
+    # ARC_17 — Plantation Deserter: custom buttons (manpower refill OR spawn anarchist)
+    ("Loyal Governor", "Plantation Deserter", "GOV_LOYAL_ARC_17",
+     "DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] RETURNS WITH RECRUITS WHO WERE WAITING",
+     "Root", "—", "—",
+     "FULL COMPLETION", "", "N/A", "NO", "standard", "0",
+     "BTN1: tile_army_manpower_refill; BTN2: spawn_anarchist; 3%/turn at loyalty≥8; once per governor"),
 
     # ── COMMANDER ARCS ───────────────────────────────────────────────────────────
     # 25 archetypes × 2 events each (FIRST + DONE).
