@@ -27,6 +27,14 @@ Canada in this game is a **parliamentary republic** — not a monarchy, not a do
 - Canada's government is led by a **Prime Minister** and a **Parliament** (not a Governor-General or Crown)
 - The word **"Dominion"** should not appear in any new lore, event text, law description, or flavor text referring to Canada
 
+## Ethertask Close Rule
+
+**Never mark an ethertask as FULL PASS, FULL COMPLETION, or update its status in any builder script unless the user explicitly runs `/closetask`.**
+
+- Do the work (write text, implement mechanics, polish flavor) — but hold the status update.
+- Only `/closetask` triggers the status change, builder rerun, and commit.
+- This applies to both `scripts/build_flavordoc.py` (icons, doctrines, laws) and `scripts/build_event_masterdoc.py` (all event types).
+
 ## Branch
 
 All development goes on `claude/farsword-recent-push-JL6OS`. Always push to that branch.
