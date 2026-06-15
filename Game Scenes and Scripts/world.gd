@@ -2555,6 +2555,10 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 				army.surveySelf()
 				army.updateArmyUI()
 			print("[ManpowerHeal] All armies healed ", outcome_amount, "% of max manpower")
+		"halloween_endorsement":
+			# Ghost presidents' blessing: +1 happiness per unit per turn for N turns
+			playerCountryNode.CountryFlags["halloween_endorsement_turns"] = int(outcome_amount)
+			print("[HalloweenEndorsement] Granted for ", outcome_amount, " turns")
 		"nothing":
 			pass
 		_:
@@ -2605,6 +2609,7 @@ func evaluateDateEvents() -> void:
 		_tick_commander_turns()
 		_check_arc01_objectives()
 		_tick_arc03_cultural_corps()
+		_tick_halloween_endorsement()
 		_check_cmd_merit()
 		_check_cmd_recognition()
 		_check_cmd_thanks()
@@ -4236,6 +4241,22 @@ func _tick_arc03_cultural_corps() -> void:
 			culture_gain += unit.unitLevel
 		if culture_gain > 0:
 			playerCountryNode.TotalCulture += culture_gain
+
+
+func _tick_halloween_endorsement() -> void:
+	var turns_left: int = playerCountryNode.CountryFlags.get("halloween_endorsement_turns", 0)
+	if turns_left <= 0:
+		return
+	var ualani_tile = _find_ualani_tile()
+	if ualani_tile != null and ualani_tile.stationedArmy != null:
+		var unit_count: int = ualani_tile.stationedArmy.unitsList.size()
+		if unit_count > 0:
+			playerCountryNode.TotalHappiness += unit_count
+	turns_left -= 1
+	if turns_left <= 0:
+		playerCountryNode.CountryFlags.erase("halloween_endorsement_turns")
+	else:
+		playerCountryNode.CountryFlags["halloween_endorsement_turns"] = turns_left
 
 
 func _check_cmd_merit() -> void:

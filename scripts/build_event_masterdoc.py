@@ -1314,11 +1314,19 @@ EVENTS += [
     # ── WHITE HOUSE SECRETS ──────────────────────────────────────────────────
     # Fires when Ualani is stationed at DC (tile 188) during the matching month.
     # One-shot per event; 12 total; cover holidays Jan–Dec (game starts month 6).
-] + [
+]
+
+_WH_SECRET_OVERRIDES = {
+    # num: (status, art_tag, art_status)
+    9: ("FULL COMPLETION", "wh_secret_09", "Integrated"),
+}
+
+EVENTS += [
     ("White House", f"Month {month}", f"WH_SECRET_{str(num).zfill(2)}",
      f"WHITE HOUSE SECRET — {holiday.upper()}",
      "Root", "—", "—",
-     "FIRST PASS", "", "Not Started", explicit, btn_note, "0",
+     *(_WH_SECRET_OVERRIDES.get(num, ("FIRST PASS", "", "Not Started"))),
+     explicit, btn_note, "0",
      f"Fires when Ualani in DC (tile 188) during month {month}; one-shot")
     for num, month, holiday, explicit, btn_note in [
         ( 1,  1, "New Year's Day",           "YES", "sensual option"),

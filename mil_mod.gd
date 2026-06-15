@@ -300,6 +300,11 @@ func buildSelf(Type):
 			milModDescription = str("[i]The mountain is not an obstacle. It is a road:[/i][color= green] +1 Movement when beginning a turn in Foothills terrain[/color]")
 			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
 			milModResource = "None"
+		"Halloween Endorsement":
+			commanderMod = true
+			milModDescription = str("[i]Four former Presidents saw who answered the call and approved:[/i][color= green] All units in Ualani's army generate +1 Happiness per turn for 10 years[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
 		# ── ARC_03 (Ivy League Dropout) mods ─────────────────────────────────────
 		"Student Body Commander":
 			commanderMod = true
