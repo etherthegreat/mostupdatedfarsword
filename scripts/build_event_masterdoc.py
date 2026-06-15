@@ -1318,6 +1318,7 @@ EVENTS += [
 
 _WH_SECRET_OVERRIDES = {
     # num: (status, art_tag, art_status)
+    7: ("FULL COMPLETION", "wh_secret_07_scene", "Not Started"),
     9: ("FULL COMPLETION", "wh_secret_09", "Integrated"),
 }
 
