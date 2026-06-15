@@ -302,7 +302,7 @@ func buildSelf(Type):
 			milModResource = "None"
 		"Halloween Endorsement":
 			commanderMod = true
-			milModDescription = str("[i]Four former Presidents saw who answered the call and approved:[/i][color= green] All units in Ualani's army generate +1 Happiness per turn for 10 years[/color]")
+			milModDescription = str("[i]Four former Presidents saw who answered the call and approved:[/i][color= green] All units in Ualani's army generate +1 Happiness per turn for 10 turns[/color]")
 			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
 			milModResource = "None"
 		# ── ARC_03 (Ivy League Dropout) mods ─────────────────────────────────────
