@@ -41,8 +41,8 @@ func updateSelf():
 				newBB.buildSelf("Pioneer Heritage", load("res://art assets/finishedAssets/lawIcons/homestead_act.png"), $religionData.treeOfLifeBWIcon, false, 100, "The frontier spirit lives in the land. Pioneer Heritage honors the communities that built from nothing — farms that feed the Republic and drive out the rot of environmental decay.", $religionData.border1)
 			"Defense Production Act":
 				newBB.buildSelf("Defense Production Act", $religionData.towerControlIcon, $religionData.towerControlBWIcon, false, 250, "Passed in 1950, the Defense Production Act gave the President sweeping authority to direct industrial production toward national security needs.", $religionData.border1)
-			"Wilderness Act":
-				newBB.buildSelf("Wilderness Act", $religionData.natureSanctuariesIcon, $religionData.natureSanctuariesIconBW, false, 100, "Signed in 1964, the Wilderness Act created a National Wilderness Preservation System — land where the hand of man shall not be felt.", $religionData.border1)
+			"Inland Maritime Expertise":
+				newBB.buildSelf("Inland Maritime Expertise", load("res://art assets/finishedAssets/lawIcons/can_shipping_act.png"), $religionData.natureSanctuariesIconBW, false, 100, "Mastery of the inland waterways. Units starting a turn on Major River or Major Lake tiles gain +1 Movement — the currents work for those who know them.", $religionData.border1)
 			"First Amendment":
 				newBB.buildSelf("First Amendment", $religionData.conservativeOrthodoxyIcon, $religionData.conservativeOrthodoxyIconBW, false, 200, "Ratified in 1791, the First Amendment prohibits Congress from abridging freedom of speech, religion, the press, or assembly.", $religionData.border1)
 			"National Research Act":
@@ -95,7 +95,7 @@ func updateSelf():
 			"Frederick Douglass":
 				newBB.buildSelf("Frederick Douglass", $religionData.douglassIcon, $religionData.douglassBWIcon, false, 180, "Escaped slavery and spent the rest of his life explaining to anyone who would listen why that was a bad system, using words so precise they still cut. Douglass's patronage elevates Libraries, Courthouses, and the uncomfortable power of truth.", $religionData.border3)
 			"Sitting Bull":
-				newBB.buildSelf("Sitting Bull", $religionData.sittingBullIcon, $religionData.sittingBullBWIcon, false, 200, "Hunkpapa Lakota war chief, holy man, and the figure who outlasted Custer. Sitting Bull's patronage honors the land itself — Wilderness Act flourishes, and buildings in wooded and river territories produce bonus resources.", $religionData.border5)
+				newBB.buildSelf("Sitting Bull", $religionData.sittingBullIcon, $religionData.sittingBullBWIcon, false, 200, "Hunkpapa Lakota war chief, holy man, and the figure who outlasted Custer. Sitting Bull's patronage honors the land itself — inland waterways run free, and buildings in wooded and river territories produce bonus resources.", $religionData.border5)
 			"Sojourner Truth":
 				newBB.buildSelf("Sojourner Truth", $religionData.sojournerTruthIcon, $religionData.sojournerTruthBWIcon, false, 130, "Ain't I a woman? She asked the question that exposed every hypocrite in the room. Truth's patronage uplifts Farms and Temples, and her presence grants a Harmony bonus to every province with diverse population.", $religionData.border1)
 			"Chief Joseph":
@@ -189,8 +189,8 @@ func buildPD(type):
 			newPD.buildSelf("Pioneer Heritage", load("res://art assets/finishedAssets/lawIcons/homestead_act.png"), "The frontier spirit lives in the land. Pioneer Heritage honors communities that built from nothing — farms that feed the Republic and drive out environmental decay.", true, $religionData.border1)
 		"Defense Production Act":
 			newPD.buildSelf("Defense Production Act", $religionData.towerControlIcon, "Passed in 1950, the Defense Production Act gave the President sweeping authority to direct industrial production toward national security needs.", true, $religionData.border1)
-		"Wilderness Act":
-			newPD.buildSelf("Wilderness Act", $religionData.natureSanctuariesIcon, "Signed in 1964, the Wilderness Act created a National Wilderness Preservation System — land where the hand of man shall not be felt.", true, $religionData.border1)
+		"Inland Maritime Expertise":
+			newPD.buildSelf("Inland Maritime Expertise", load("res://art assets/finishedAssets/lawIcons/can_shipping_act.png"), "Mastery of the inland waterways. Units starting a turn on Major River or Major Lake tiles gain +1 Movement — the currents work for those who know them.", true, $religionData.border1)
 		"First Amendment":
 			newPD.buildSelf("First Amendment", $religionData.conservativeOrthodoxyIcon, "Ratified in 1791, the First Amendment prohibits Congress from abridging freedom of speech, religion, the press, or assembly.", true, $religionData.border1)
 		"National Research Act":
@@ -239,7 +239,7 @@ func buildPD(type):
 		"Frederick Douglass":
 			newPD.buildSelf("Frederick Douglass", $religionData.douglassIcon, "Words so precise they still cut. Douglass's patronage elevates Libraries, Courthouses, and the uncomfortable power of truth.", false, $religionData.border3)
 		"Sitting Bull":
-			newPD.buildSelf("Sitting Bull", $religionData.sittingBullIcon, "Hunkpapa Lakota war chief and holy man. Wilderness Act flourishes, and buildings in wooded and river territories produce bonus resources.", false, $religionData.border5)
+			newPD.buildSelf("Sitting Bull", $religionData.sittingBullIcon, "Hunkpapa Lakota war chief and holy man. Inland waterways run free, and buildings in wooded and river territories produce bonus resources.", false, $religionData.border5)
 		"Sojourner Truth":
 			newPD.buildSelf("Sojourner Truth", $religionData.sojournerTruthIcon, "Ain't I a woman? She asked the question that exposed every hypocrite in the room. Uplifts Farms and Temples, Harmony bonus in diverse provinces.", false, $religionData.border1)
 		"Chief Joseph":

@@ -2617,6 +2617,7 @@ func evaluateDateEvents() -> void:
 		_tick_cherry_blossom_prayer()
 		_tick_pioneer_heritage_corruption()
 		_tick_nature_conservationists_corruption()
+		_tick_inland_maritime_expertise()
 		_tick_civic_pride_mandate()
 		_check_cmd_merit()
 		_check_cmd_recognition()
@@ -4331,6 +4332,21 @@ func _tick_nature_conservationists_corruption() -> void:
 			tile.corruption = max(0, tile.corruption - whole)
 			playerCountryNode.nature_conservationists_corrupt_acc[key] -= float(whole)
 			tile.calculateCorruption()
+
+
+func _tick_inland_maritime_expertise() -> void:
+	var active := false
+	for b in playerCountryNode.selectedBeliefs:
+		if b.beliefType == "Inland Maritime Expertise":
+			active = true
+			break
+	if not active:
+		return
+	for tile in playerCountryNode.OwnedTileList:
+		if tile.stationedArmy == null:
+			continue
+		if tile.tileSpecialFeatures.has("Major River") or tile.tileSpecialFeatures.has("Major Lake"):
+			tile.stationedArmy.currentMovementPoints += 1
 
 
 func _tick_cherry_blossom_prayer() -> void:

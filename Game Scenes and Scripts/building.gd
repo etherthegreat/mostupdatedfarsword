@@ -1658,13 +1658,8 @@ func _apply_belief_bonuses(bType: String) -> void:
 				if bType == "Library":
 					sciencePerLevel += 1
 					scienceDic["Doctrine: Defense Production Act"] = (1 * buildingLevel)
-			"Wilderness Act":
-				if bType == "Camp":
-					woodPerLevel += 1
-					woodDic["Doctrine: Wilderness Act"] = (1 * buildingLevel)
-				if bType == "Barracks":
-					manpowerPerLevel += 50
-					manpowerDic["Doctrine: Wilderness Act"] = (50 * buildingLevel)
+			"Inland Maritime Expertise":
+				pass # movement bonus handled in world.gd tick
 			"First Amendment":
 				if bType == "Monument":
 					mandatePerLevel += 1

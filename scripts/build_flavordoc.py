@@ -274,7 +274,7 @@ LAWS = [
     ("CA", "National Defence Act", "Order",
      "−1 Mandate/Barracks · +5 Manpower/all buildings",
      "National Defence Act (1922)", "The Republic's defence is no longer a wartime improvisation — it is a permanent constitutional obligation. The National Defence Act unified command under federal authority, placing the armed forces on a standing footing that does not wait for the next crisis. Barracks run leaner; every settlement from the coasts to the interior contributes to the reserve.",
-     "", "FIRST DRAFT"),
+     "", "FULL PASS"),
 ]
 
 # ── DOCTRINES ────────────────────────────────────────────────────────────────
@@ -298,8 +298,8 @@ DOCTRINES = [
      "Resort: +1 Happiness · Monument: +1 Culture",           "—",       "Providence", "FIRST DRAFT"),
 
     # ── USA Tier 2 ───────────────────────────────────────────────────────────
-    ("USA", "Tier 2", "Wilderness Act",             "Wilderness Act",             "1964",
-     "Camp: +1 Wood · Barracks: +50 Manpower",                "Woodsman","Providence", "FIRST DRAFT"),
+    ("USA", "Tier 2", "Inland Maritime Expertise",   "Inland Maritime Expertise",  "1964",
+     "+1 Movement for units starting a turn on Major River or Major Lake tiles", "Woodsman","Providence", "FIRST DRAFT"),
     ("USA", "Tier 2", "First Amendment",            "1st Amendment (Bill of Rights)","1791",
      "Monument: +1 Mandate · Courthouse: +1 Mandate",         "—",       "Providence", "FIRST DRAFT"),
     ("USA", "Tier 2", "National Research Act",      "National Research Act",      "1974",
@@ -565,7 +565,7 @@ BELIEF_MODS = [
      "FIRST PASS"),
 
     # ── Doctrine Mods ────────────────────────────────────────────────────────
-    ("Woodsman", "Doctrine — Wilderness Act / National Parks Act",
+    ("Woodsman", "Doctrine — Inland Maritime Expertise / National Parks Act",
      "infantryMod (terrainMod: Woods)", "+2 Attack, +2 Defense per Level in Woods terrain",
      "The wilderness is not hostile to those who know it. Frontier rangers, trappers, and scouts treat the forest as cover, not obstacle.",
      "FIRST PASS"),
