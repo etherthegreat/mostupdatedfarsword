@@ -1239,6 +1239,9 @@ func matchPlayerUnlockables(playerCountryNode):
 					# Cash and land bounties to fill the ranks
 					manpowerPerLevel += 200
 					dollarsCostPerLevel += 2
+				if law.lawType == "National Security Act" or law.lawType == "National Defence Act":
+					mandateCostPerLevel += 1
+					mandateDic["Law: " + law.lawType + " (Barracks cost)"] = (-1 * buildingLevel)
 			_apply_governor_archetype_bonus("Barracks")
 			for tradition in playerCountry.unlockedTraditions:
 				if tradition.traditionType == "Minuteman Ready":
@@ -1411,6 +1414,11 @@ func matchPlayerUnlockables(playerCountryNode):
 						mandatePerLevel += 5
 						magicCostPerLevel += 15
 		_apply_faction_bonuses(buildingType)
+		# Global law bonuses — apply to every building type
+		for law in playerCountry.lawsInConstitution:
+			if law.lawType == "National Security Act" or law.lawType == "National Defence Act":
+				manpowerPerLevel += 5
+				manpowerDic["Law: " + law.lawType] = (5 * buildingLevel)
 	_apply_axis_bonuses(buildingType)
 	_apply_belief_bonuses(buildingType)
 	pass

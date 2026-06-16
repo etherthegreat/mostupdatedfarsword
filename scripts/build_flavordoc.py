@@ -273,7 +273,7 @@ LAWS = [
 
     ("CA", "National Defence Act", "Order",
      "−1 Mandate/Barracks · +5 Manpower/all buildings",
-     "National Defence Act (1922)", "The Canadian Armed Forces stand on a permanent constitutional footing. The Republic's sovereignty is non-negotiable.",
+     "National Defence Act (1922)", "The Republic's defence is no longer a wartime improvisation — it is a permanent constitutional obligation. The National Defence Act unified command under federal authority, placing the armed forces on a standing footing that does not wait for the next crisis. Barracks run leaner; every settlement from the coasts to the interior contributes to the reserve.",
      "", "FIRST DRAFT"),
 ]
 
