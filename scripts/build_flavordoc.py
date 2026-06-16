@@ -267,7 +267,7 @@ LAWS = [
      "art assets/finishedAssets/lawIcons/can_citizenship_act.png", "FULL PASS"),
 
     ("CA", "Accessible Canada Act", "Equality",
-     "+1 Gold/Workshop · +1 Gold/Courthouse · +1 Culture/Courthouse · −10% Population Upgrade cost",
+     "+1 Gold/Courthouse · +1 Culture/Courthouse",
      "Accessible Canada Act (2019)", "No barrier — physical, digital, or architectural — shall prevent a Canadian from full participation in the life of the Republic. Workshops adapt and earn more; courthouses that serve everyone generate more revenue and more culture. The cost of bringing more citizens into the economy falls because the Republic has finally decided they belong there.",
      "art assets/finishedAssets/lawIcons/accessible_canada_act.png", "FULL PASS"),
 

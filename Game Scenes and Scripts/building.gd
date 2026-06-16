@@ -1080,10 +1080,7 @@ func matchPlayerUnlockables(playerCountryNode):
 					manpowerPerLevel += 300
 				if law.lawType == "Merchant Marine Act":
 					dollarsPerLevel += 1
-				if law.lawType == "Accessible Canada Act":
-					dollarsPerLevel += 1
-					dollarsDic["Law: Accessible Canada Act"] = (1 * buildingLevel)
-					mandateCostPerLevel += 2
+
 			_apply_governor_archetype_bonus("Workshop")
 			for tradition in playerCountry.unlockedTraditions:
 				if tradition.traditionType == "Artisan Quarter":
