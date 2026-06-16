@@ -238,7 +238,7 @@ LAWS = [
     ("USA", "Homestead Act", "Freedom",
      "Farm: +1 Food · Camp: +1 Wood",
      "Homestead Act (1862)", "One hundred and sixty acres to any citizen willing to work it. The Republic built westward not by conquest alone but by offer — free land, free labour, and the promise that what you cultivate is yours. Every farm a frontier held; every camp a settlement begun.",
-     "", "FIRST DRAFT"),
+     "art assets/finishedAssets/lawIcons/homestead_act.png", "FIRST DRAFT"),
 
     # ── CA ───────────────────────────────────────────────────────────────────
     ("CA", "Militia Act", "Freedom",

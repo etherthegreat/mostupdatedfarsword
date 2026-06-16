@@ -734,6 +734,9 @@ func matchPlayerUnlockables(playerCountryNode):
 				if law.lawType == "Colonial Trade Act":
 					dollarsPerLevel += 1
 					dollarsDic["Enacted Law: Mercantilism"] = (1 * buildingLevel)
+				if law.lawType == "Homestead Act":
+					foodPerLevel += 1
+					foodDic["Law: Homestead Act"] = (1 * buildingLevel)
 			_apply_governor_archetype_bonus("Farm")
 			for tradition in playerCountry.unlockedTraditions:
 				if tradition.traditionType == "Plain Folk Virtues":
@@ -931,6 +934,9 @@ func matchPlayerUnlockables(playerCountryNode):
 					culturePerLevel +=1
 				if law.lawType == "Naval Stores Act":
 					dollarsPerLevel += 1
+				if law.lawType == "Homestead Act":
+					woodPerLevel += 1
+					woodDic["Law: Homestead Act"] = (1 * buildingLevel)
 			_apply_governor_archetype_bonus("Camp")
 			for tradition in playerCountry.unlockedTraditions:
 				if tradition.traditionType == "Frontier Scouts":
