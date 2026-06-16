@@ -35,8 +35,8 @@ func updateSelf():
 				newBB.buildSelf("Sherman Antitrust Act", $religionData.valuedIdolatryIcon, $religionData.valuedIdolatryBWIcon, false, 20, "The first federal law to limit monopolies and cartels. Markets, like elections, require competition to be legitimate.", $religionData.border1)
 			"Lacey Wildlife Act":
 				newBB.buildSelf("Lacey Wildlife Act", $religionData.sacredGrovesIcon, $religionData.sacredGrovesBWIcon, false, 70, "The first federal wildlife protection law in the United States, prohibiting the trafficking of illegally taken fish, wildlife, and plants.", $religionData.border1)
-			"Federal Arts Endowment":
-				newBB.buildSelf("Federal Arts Endowment", $religionData.midsummerCelebrationsIcon, $religionData.midsummerCelebrationsBWIcon, false, 35, "Established in 1965, the National Endowment for the Arts made the federal government a patron of culture for the first time.", $religionData.border1)
+			"Civic Pride":
+				newBB.buildSelf("Civic Pride", $religionData.midsummerCelebrationsIcon, $religionData.midsummerCelebrationsBWIcon, false, 35, "A Republic that invests in its arts invests in its identity. Civic Pride turns leisure into culture and monuments into authority.", $religionData.border1)
 			"Pioneer Heritage":
 				newBB.buildSelf("Pioneer Heritage", $religionData.treeOfLifeIcon, $religionData.treeOfLifeBWIcon, false, 100, "The frontier spirit lives in the land. Pioneer Heritage honors the communities that built from nothing — farms that feed the Republic and drive out the rot of environmental decay.", $religionData.border1)
 			"Defense Production Act":
@@ -184,8 +184,8 @@ func buildPD(type):
 			newPD.buildSelf("Sherman Antitrust Act", $religionData.valuedIdolatryIcon, "The first federal law to limit monopolies and cartels. Markets, like elections, require competition to be legitimate.", true, $religionData.border1)
 		"Lacey Wildlife Act":
 			newPD.buildSelf("Lacey Wildlife Act", $religionData.sacredGrovesIcon, "The first federal wildlife protection law in the United States, prohibiting the trafficking of illegally taken fish, wildlife, and plants.", true, $religionData.border1)
-		"Federal Arts Endowment":
-			newPD.buildSelf("Federal Arts Endowment", $religionData.midsummerCelebrationsIcon, "Established in 1965, the National Endowment for the Arts made the federal government a patron of culture for the first time.", true, $religionData.border1)
+		"Civic Pride":
+			newPD.buildSelf("Civic Pride", $religionData.midsummerCelebrationsIcon, "A Republic that invests in its arts invests in its identity. Civic Pride turns leisure into culture and monuments into authority.", true, $religionData.border1)
 		"Pioneer Heritage":
 			newPD.buildSelf("Pioneer Heritage", $religionData.treeOfLifeIcon, "The frontier spirit lives in the land. Pioneer Heritage honors communities that built from nothing — farms that feed the Republic and drive out environmental decay.", true, $religionData.border1)
 		"Defense Production Act":

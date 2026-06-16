@@ -285,8 +285,8 @@ DOCTRINES = [
     # ── USA Tier 1 ───────────────────────────────────────────────────────────
     ("USA", "Tier 1", "Lacey Wildlife Act",         "Lacey Act",                 "1900",
      "Camp: +1 Wood",                                         "—",       "Providence", "FIRST DRAFT"),
-    ("USA", "Tier 1", "Federal Arts Endowment",     "National Endowment for Arts","1965",
-     "Theater/Faire: +1 Culture · Resort: +1 Happiness",      "—",       "Providence", "FIRST DRAFT"),
+    ("USA", "Tier 1", "Civic Pride",                 "National Endowment for the Arts","1965",
+     "Resort: +1 Culture · Monument: +0.5 Mandate/level/turn","—",       "Providence", "FIRST DRAFT"),
     ("USA", "Tier 1", "Pioneer Heritage",            "Frontier Tradition",         "1800s",
      "Farm: +1 Food · −0.1 Corruption/Farm level/turn · Cost: 100 Culture",
      "—",       "Providence", "FULL PASS"),

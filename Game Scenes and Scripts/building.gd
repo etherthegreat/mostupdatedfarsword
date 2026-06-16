@@ -1624,13 +1624,10 @@ func _apply_belief_bonuses(bType: String) -> void:
 				if bType == "Camp":
 					woodPerLevel += 1
 					woodDic["Doctrine: Lacey Wildlife Act"] = (1 * buildingLevel)
-			"Federal Arts Endowment":
-				if bType == "Theater" or bType == "Faire":
-					culturePerLevel += 1
-					cultureDic["Doctrine: Federal Arts Endowment"] = (1 * buildingLevel)
+			"Civic Pride":
 				if bType == "Resort":
-					happinessPerLevel += 1
-					happinessDic["Doctrine: Federal Arts Endowment"] = (1 * buildingLevel)
+					culturePerLevel += 1
+					cultureDic["Doctrine: Civic Pride"] = (1 * buildingLevel)
 			"Pioneer Heritage":
 				if bType == "Farm":
 					foodPerLevel += 1

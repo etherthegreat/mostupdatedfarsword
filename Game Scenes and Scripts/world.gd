@@ -2616,6 +2616,7 @@ func evaluateDateEvents() -> void:
 		_tick_halloween_endorsement()
 		_tick_cherry_blossom_prayer()
 		_tick_pioneer_heritage_corruption()
+		_tick_civic_pride_mandate()
 		_check_cmd_merit()
 		_check_cmd_recognition()
 		_check_cmd_thanks()
@@ -4263,6 +4264,25 @@ func _tick_halloween_endorsement() -> void:
 		playerCountryNode.CountryFlags.erase("halloween_endorsement_turns")
 	else:
 		playerCountryNode.CountryFlags["halloween_endorsement_turns"] = turns_left
+
+
+func _tick_civic_pride_mandate() -> void:
+	var active := false
+	for b in playerCountryNode.selectedBeliefs:
+		if b.beliefType == "Civic Pride":
+			active = true
+			break
+	if not active:
+		return
+	for tile in playerCountryNode.OwnedTileList:
+		var monument_level: int = tile.get_building_level("monument")
+		if monument_level <= 0:
+			continue
+		playerCountryNode.civic_pride_mandate_acc += 0.5 * float(monument_level)
+	var whole: int = int(playerCountryNode.civic_pride_mandate_acc)
+	if whole >= 1:
+		playerCountryNode.TotalMandate += whole
+		playerCountryNode.civic_pride_mandate_acc -= float(whole)
 
 
 func _tick_pioneer_heritage_corruption() -> void:
