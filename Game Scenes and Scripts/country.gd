@@ -31,6 +31,7 @@ var TotalWood: int
 var TotalFood: int
 var TotalMagic: int
 var cherry_blossom_magic_acc: float = 0.0
+var pioneer_heritage_corrupt_acc: Dictionary = {}
 var TotalCulture: int     # now covers both Culture and old Faith
 var TotalHappiness: float # renamed from TotalHarmony
 var TotalBoats: int       # new Boats resource
@@ -1616,6 +1617,7 @@ func save_state() -> Dictionary:
 		"TotalCulture":   TotalCulture,   # covers old Faith + Culture
 		"TotalMagic":              TotalMagic,
 		"cherry_blossom_magic_acc": cherry_blossom_magic_acc,
+		"pioneer_heritage_corrupt_acc": pioneer_heritage_corrupt_acc,
 		"TotalWeapons":            TotalWeapons,
 		"TotalScience":   TotalScience,
 		"TotalHappiness": TotalHappiness,
@@ -1748,6 +1750,7 @@ func build_from_save(save_data: Dictionary) -> void:
 	TotalCulture   = save_data.get("TotalCulture",   TotalCulture)  # covers old Faith + Culture
 	TotalMagic             = save_data.get("TotalMagic",              TotalMagic)
 	cherry_blossom_magic_acc = save_data.get("cherry_blossom_magic_acc", 0.0)
+	pioneer_heritage_corrupt_acc = save_data.get("pioneer_heritage_corrupt_acc", {})
 	TotalWeapons           = save_data.get("TotalWeapons",            TotalWeapons)
 	TotalScience   = save_data.get("TotalScience",   TotalScience)
 	TotalHappiness = save_data.get("TotalHappiness", TotalHappiness)

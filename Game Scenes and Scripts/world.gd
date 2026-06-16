@@ -2615,6 +2615,7 @@ func evaluateDateEvents() -> void:
 		_tick_arc03_cultural_corps()
 		_tick_halloween_endorsement()
 		_tick_cherry_blossom_prayer()
+		_tick_pioneer_heritage_corruption()
 		_check_cmd_merit()
 		_check_cmd_recognition()
 		_check_cmd_thanks()
@@ -4262,6 +4263,29 @@ func _tick_halloween_endorsement() -> void:
 		playerCountryNode.CountryFlags.erase("halloween_endorsement_turns")
 	else:
 		playerCountryNode.CountryFlags["halloween_endorsement_turns"] = turns_left
+
+
+func _tick_pioneer_heritage_corruption() -> void:
+	var active := false
+	for b in playerCountryNode.selectedBeliefs:
+		if b.beliefType == "Pioneer Heritage":
+			active = true
+			break
+	if not active:
+		return
+	for tile in playerCountryNode.OwnedTileList:
+		var farm_level: int = tile.get_building_level("farm")
+		if farm_level <= 0 or tile.corruption <= 0:
+			continue
+		var key := str(tile.tileNumber)
+		var gain: float = 0.1 * float(farm_level)
+		playerCountryNode.pioneer_heritage_corrupt_acc[key] = \
+			playerCountryNode.pioneer_heritage_corrupt_acc.get(key, 0.0) + gain
+		var whole: int = int(playerCountryNode.pioneer_heritage_corrupt_acc[key])
+		if whole >= 1:
+			tile.corruption = max(0, tile.corruption - whole)
+			playerCountryNode.pioneer_heritage_corrupt_acc[key] -= float(whole)
+			tile.calculateCorruption()
 
 
 func _tick_cherry_blossom_prayer() -> void:

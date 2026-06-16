@@ -1609,10 +1609,10 @@ func _apply_belief_bonuses(bType: String) -> void:
 				if bType == "Monument":
 					culturePerLevel += 1
 					cultureDic["Doctrine: Social Security Act"] = (1 * buildingLevel)
-			"National Monument Act":
+			"Landmark Heritage":
 				if bType == "Monument":
 					mandatePerLevel += 1
-					mandateDic["Doctrine: National Monument Act"] = (1 * buildingLevel)
+					mandateDic["Doctrine: Landmark Heritage"] = (1 * buildingLevel)
 			"Sherman Antitrust Act":
 				if bType == "Market":
 					dollarsPerLevel += 1
@@ -1631,13 +1631,10 @@ func _apply_belief_bonuses(bType: String) -> void:
 				if bType == "Resort":
 					happinessPerLevel += 1
 					happinessDic["Doctrine: Federal Arts Endowment"] = (1 * buildingLevel)
-			"Homestead Act":
+			"Pioneer Heritage":
 				if bType == "Farm":
 					foodPerLevel += 1
-					foodDic["Doctrine: Homestead Act"] = (1 * buildingLevel)
-				if bType == "Camp":
-					woodPerLevel += 1
-					woodDic["Doctrine: Homestead Act"] = (1 * buildingLevel)
+					foodDic["Doctrine: Pioneer Heritage"] = (1 * buildingLevel)
 			"Defense Production Act":
 				if bType == "Tower":
 					magicPerLevel += 1
