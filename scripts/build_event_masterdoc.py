@@ -1318,6 +1318,7 @@ EVENTS += [
 
 _WH_SECRET_OVERRIDES = {
     # num: (status, art_tag, art_status)
+    2:  ("FULL COMPLETION", "wh_secret_02_scene", "Integrated"),
     7:  ("FULL COMPLETION", "wh_secret_07_scene", "Integrated"),
     8:  ("FULL COMPLETION", "wh_secret_08_scene", "Integrated"),
     9:  ("FULL COMPLETION", "wh_secret_09",       "Integrated"),
@@ -1333,7 +1334,7 @@ EVENTS += [
      f"Fires when Ualani in DC (tile 188) during month {month}; one-shot")
     for num, month, holiday, explicit, btn_note in [
         ( 1,  1, "New Year's Day",           "YES", "sensual option"),
-        ( 2,  2, "President's Day",           "NO",  "standard"),
+        ( 2,  2, "Black History Month",         "NO",  "standard"),
         ( 3,  3, "Cherry Blossom Season",     "NO",  "standard"),
         ( 4,  4, "Easter Morning",            "NO",  "standard"),
         ( 5,  5, "Cinco de Mayo",             "NO",  "standard"),
