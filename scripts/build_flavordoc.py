@@ -289,7 +289,7 @@ DOCTRINES = [
      "Theater/Faire: +1 Culture · Resort: +1 Happiness",      "—",       "Providence", "FIRST DRAFT"),
     ("USA", "Tier 1", "Pioneer Heritage",            "Frontier Tradition",         "1800s",
      "Farm: +1 Food · −0.1 Corruption/Farm level/turn · Cost: 100 Culture",
-     "—",       "Providence", "FIRST DRAFT"),
+     "—",       "Providence", "FULL PASS"),
     ("USA", "Tier 1", "Landmark Heritage",           "Antiquities Act",            "1906",
      "Monument: +1 Mandate",                                  "—",       "Providence", "FULL PASS"),
     ("USA", "Tier 1", "Sherman Antitrust Act",      "Sherman Antitrust Act",      "1890",
