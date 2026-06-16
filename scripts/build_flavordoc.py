@@ -235,6 +235,11 @@ LAWS = [
      "National Security Act (1947)", "One command, no gaps. The Republic draws its defence under the executive — the barracks run leaner, and every settlement from the frontier to the capital becomes a source of trained manpower.",
      "", "FULL PASS"),
 
+    ("USA", "Homestead Act", "Freedom",
+     "Farm: +1 Food · Camp: +1 Wood",
+     "Homestead Act (1862)", "One hundred and sixty acres to any citizen willing to work it. The Republic built westward not by conquest alone but by offer — free land, free labour, and the promise that what you cultivate is yours. Every farm a frontier held; every camp a settlement begun.",
+     "", "FIRST DRAFT"),
+
     # ── CA ───────────────────────────────────────────────────────────────────
     ("CA", "Militia Act", "Freedom",
      "+5 Weapons/Mansion lvl · +25 MP/Farm · −1 Mandate/Farm · +1 Mandate/Forge",
@@ -282,8 +287,8 @@ DOCTRINES = [
      "Camp: +1 Wood",                                         "—",       "Providence", "FIRST DRAFT"),
     ("USA", "Tier 1", "Federal Arts Endowment",     "National Endowment for Arts","1965",
      "Theater/Faire: +1 Culture · Resort: +1 Happiness",      "—",       "Providence", "FIRST DRAFT"),
-    ("USA", "Tier 1", "Homestead Act",              "Homestead Act",              "1862",
-     "Farm: +1 Food · Camp: +1 Wood",                         "—",       "Providence", "FIRST DRAFT"),
+    ("USA", "Tier 1", "Pioneer Heritage",            "Frontier Tradition",         "1800s",
+     "Farm: +1 Food · −0.1 Corruption/Farm level/turn",       "—",       "Providence", "FIRST DRAFT"),
     ("USA", "Tier 1", "Landmark Heritage",           "Antiquities Act",            "1906",
      "Monument: +1 Mandate",                                  "—",       "Providence", "FULL PASS"),
     ("USA", "Tier 1", "Sherman Antitrust Act",      "Sherman Antitrust Act",      "1890",
