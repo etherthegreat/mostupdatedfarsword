@@ -347,7 +347,7 @@ GOV_LOYAL_ARC_25_BTN2,GOV_LOYAL_ARC_25,His Oration Inspires the Audience to Publ
 WH_SECRET_01_BTN1,WH_SECRET_01,The Record Is Private. As It Should Be.,standard,nothing,,0,,,,,
 WH_SECRET_01_BTN2,WH_SECRET_01,The Long Night of the New Year — What She Does with the Bottle and the Quiet,sensual,morale_boost,,15,,,,,
 WH_SECRET_02_BTN1,WH_SECRET_02,Close the Corridor. Personal Record Only.,standard,claim_change,,1,,,,,
-WH_SECRET_03_BTN1,WH_SECRET_03,Close the Window. Personal Log Entry.,standard,nothing,,0,,,,,
+WH_SECRET_03_BTN1,WH_SECRET_03,A moment of peace goes a long way.,standard,cherry_blossom_prayer,,0,,,,,
 WH_SECRET_04_BTN1,WH_SECRET_04,Keep the Note. Private Residence Record.,standard,nothing,,0,,,,,
 WH_SECRET_05_BTN1,WH_SECRET_05,Log: Personal Attendance. Duration: Two Hours. No Incidents.,standard,nothing,,0,,,,,
 WH_SECRET_06_BTN1,WH_SECRET_06,The Record Stays With Her.,standard,claim_change,,1,,,,,

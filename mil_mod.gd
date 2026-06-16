@@ -305,6 +305,11 @@ func buildSelf(Type):
 			milModDescription = str("[i]Four former Presidents saw who answered the call and approved:[/i][color= green] All units in Ualani's army generate +1 Happiness per turn for 10 turns[/color]")
 			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
 			milModResource = "None"
+		"Cherry Blossom Prayer":
+			commanderMod = true
+			milModDescription = str("[i]She stood at the Washington Monument a long time. Whatever she asked for, it was granted:[/i][color= green] All armies generate +0.01 Magic per unit per turn (permanent)[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
 		# ── ARC_03 (Ivy League Dropout) mods ─────────────────────────────────────
 		"Student Body Commander":
 			commanderMod = true

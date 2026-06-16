@@ -2559,6 +2559,10 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 			# Ghost presidents' blessing: +1 happiness per unit per turn for N turns
 			playerCountryNode.CountryFlags["halloween_endorsement_turns"] = int(outcome_amount)
 			print("[HalloweenEndorsement] Granted for ", outcome_amount, " turns")
+		"cherry_blossom_prayer":
+			# Ualani's prayer at the Washington Monument: permanent +0.01 magic/unit/turn
+			playerCountryNode.CountryFlags["cherry_blossom_prayer"] = true
+			print("[CherryBlossomPrayer] Granted — permanent fractional magic gain active")
 		"nothing":
 			pass
 		_:
@@ -2610,6 +2614,7 @@ func evaluateDateEvents() -> void:
 		_check_arc01_objectives()
 		_tick_arc03_cultural_corps()
 		_tick_halloween_endorsement()
+		_tick_cherry_blossom_prayer()
 		_check_cmd_merit()
 		_check_cmd_recognition()
 		_check_cmd_thanks()
@@ -4257,6 +4262,22 @@ func _tick_halloween_endorsement() -> void:
 		playerCountryNode.CountryFlags.erase("halloween_endorsement_turns")
 	else:
 		playerCountryNode.CountryFlags["halloween_endorsement_turns"] = turns_left
+
+
+func _tick_cherry_blossom_prayer() -> void:
+	if not playerCountryNode.CountryFlags.get("cherry_blossom_prayer", false):
+		return
+	var unit_count: int = 0
+	for tile in playerCountryNode.OwnedTileList:
+		if tile.stationedArmy != null:
+			unit_count += tile.stationedArmy.unitsList.size()
+	if unit_count == 0:
+		return
+	playerCountryNode.cherry_blossom_magic_acc += 0.01 * float(unit_count)
+	var whole: int = int(playerCountryNode.cherry_blossom_magic_acc)
+	if whole >= 1:
+		playerCountryNode.TotalMagic += whole
+		playerCountryNode.cherry_blossom_magic_acc -= float(whole)
 
 
 func _check_cmd_merit() -> void:
