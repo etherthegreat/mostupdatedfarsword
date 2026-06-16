@@ -284,7 +284,7 @@ LAWS = [
 DOCTRINES = [
     # ── USA Tier 1 ───────────────────────────────────────────────────────────
     ("USA", "Tier 1", "Nature Conservationists",      "Lacey Act / Conservation Movement", "1900",
-     "Camp: +1 Culture · −0.1 Corruption/Farm & Camp level/turn", "—", "Providence", "FIRST DRAFT"),
+     "Camp: +1 Culture · −0.1 Corruption/Farm & Camp level/turn", "—", "Providence", "FULL PASS"),
     ("USA", "Tier 1", "Civic Pride",                 "National Endowment for the Arts","1965",
      "Resort: +1 Culture · Monument: +0.5 Mandate/level/turn","—",       "Providence", "FULL PASS"),
     ("USA", "Tier 1", "Pioneer Heritage",            "Frontier Tradition",         "1800s",
@@ -313,7 +313,7 @@ DOCTRINES = [
 
     # ── CA Tier 1 ────────────────────────────────────────────────────────────
     ("CA", "Tier 1", "Nature Conservationists",           "Canada Wildlife Act / Conservation Movement", "1973",
-     "Camp: +1 Culture · −0.1 Corruption/Farm & Camp level/turn", "—", "Providence", "FIRST DRAFT"),
+     "Camp: +1 Culture · −0.1 Corruption/Farm & Camp level/turn", "—", "Providence", "FULL PASS"),
     ("CA", "Tier 1", "Canada Council for the Arts Act",  "Canada Council for the Arts",  "1957",
      "Theater/Faire: +1 Culture · Resort: +1 Happiness",      "—",       "Providence", "IDEA"),
     ("CA", "Tier 1", "Republic Lands Act",               "Republic Lands Act",            "1872",
