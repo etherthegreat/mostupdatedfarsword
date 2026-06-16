@@ -238,7 +238,7 @@ LAWS = [
     ("USA", "Homestead Act", "Freedom",
      "Farm: +1 Food · Camp: +1 Wood",
      "Homestead Act (1862)", "One hundred and sixty acres to any citizen willing to work it. The Republic built westward not by conquest alone but by offer — free land, free labour, and the promise that what you cultivate is yours. Every farm a frontier held; every camp a settlement begun.",
-     "art assets/finishedAssets/lawIcons/homestead_act.png", "FULL PASS"),
+     "", "FULL PASS"),
 
     # ── CA ───────────────────────────────────────────────────────────────────
     ("CA", "Militia Act", "Freedom",
@@ -249,7 +249,7 @@ LAWS = [
     ("CA", "Canada Shipping Act", "Order",
      "−1 Mandate/Dock · +2 Gold/Dock · +1 Happiness/Dock",
      "Canada Shipping Act (1936)", "Every vessel on Canadian waters submits to Republic safety standards — commercial freighters, fishing trawlers, and the pleasure yachts of whoever thought the St. Lawrence was a private amenity. The docks keep more of what they earn. In exchange, they fill out the forms.",
-     "art assets/finishedAssets/lawIcons/can_shipping_act.png", "FULL PASS"),
+     "", "FULL PASS"),
 
     ("CA", "Municipal Elections Act", "Freedom",
      "−3 Mandate/Courthouse · +1 Happiness/Farm · +1 Happiness/Camp",
@@ -264,12 +264,12 @@ LAWS = [
     ("CA", "Canadian Citizenship Act", "Equality",
      "−10% Mandate Cost (All Buildings)",
      "Canadian Citizenship Act (1947)", "For the first time, to live in the Republic is to belong to it. The British subject is gone; in its place, the Canadian citizen — French, Indigenous, newcomer alike, equal before every law that follows. The mandate slips because the Republic has grown wider than before. The harmony rises for exactly the same reason.",
-     "art assets/finishedAssets/lawIcons/can_citizenship_act.png", "FULL PASS"),
+     "", "FULL PASS"),
 
     ("CA", "Accessible Canada Act", "Equality",
      "+1 Gold/Courthouse · +1 Culture/Courthouse",
      "Accessible Canada Act (2019)", "No barrier — physical, digital, or architectural — shall prevent a Canadian from full participation in the life of the Republic. Workshops adapt and earn more; courthouses that serve everyone generate more revenue and more culture. The cost of bringing more citizens into the economy falls because the Republic has finally decided they belong there.",
-     "art assets/finishedAssets/lawIcons/accessible_canada_act.png", "FULL PASS"),
+     "", "FULL PASS"),
 
     ("CA", "National Defence Act", "Order",
      "−1 Mandate/Barracks · +5 Manpower/all buildings",
