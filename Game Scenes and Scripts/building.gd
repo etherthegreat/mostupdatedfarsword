@@ -1080,6 +1080,9 @@ func matchPlayerUnlockables(playerCountryNode):
 					manpowerPerLevel += 300
 				if law.lawType == "Merchant Marine Act":
 					dollarsPerLevel += 1
+				if law.lawType == "Accessible Canada Act":
+					dollarsPerLevel += 1
+					dollarsDic["Law: Accessible Canada Act"] = (1 * buildingLevel)
 					mandateCostPerLevel += 2
 			_apply_governor_archetype_bonus("Workshop")
 			for tradition in playerCountry.unlockedTraditions:
@@ -1384,6 +1387,11 @@ func matchPlayerUnlockables(playerCountryNode):
 				if law.lawType == "Free Speech Act":
 					happinessPerLevel += 1
 					influencePerLevel += 1
+				if law.lawType == "Accessible Canada Act":
+					dollarsPerLevel += 1
+					culturePerLevel += 1
+					dollarsDic["Law: Accessible Canada Act"] = (1 * buildingLevel)
+					cultureDic["Law: Accessible Canada Act"] = (1 * buildingLevel)
 			_apply_governor_archetype_bonus("Courthouse")
 			for tradition in playerCountry.unlockedTraditions:
 				if tradition.traditionType == "Continental Congress Ledgers":
