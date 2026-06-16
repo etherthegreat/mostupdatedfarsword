@@ -1620,10 +1620,10 @@ func _apply_belief_bonuses(bType: String) -> void:
 				if bType == "Mine":
 					metalPerLevel += 1
 					metalDic["Doctrine: Sherman Antitrust Act"] = (1 * buildingLevel)
-			"Lacey Wildlife Act":
+			"Nature Conservationists":
 				if bType == "Camp":
-					woodPerLevel += 1
-					woodDic["Doctrine: Lacey Wildlife Act"] = (1 * buildingLevel)
+					culturePerLevel += 1
+					cultureDic["Doctrine: Nature Conservationists"] = (1 * buildingLevel)
 			"Civic Pride":
 				if bType == "Resort":
 					culturePerLevel += 1
@@ -1664,10 +1664,7 @@ func _apply_belief_bonuses(bType: String) -> void:
 					cultureDic["Doctrine: Height of Buildings Act"] = (1 * buildingLevel)
 					mandateDic["Doctrine: Height of Buildings Act"] = (1 * buildingLevel)
 			# ── Canadian Doctrines (→ Providence) ───────────────────────────────
-			"Canada Wildlife Act":
-				if bType == "Camp":
-					woodPerLevel += 1
-					woodDic["Doctrine: Canada Wildlife Act"] = (1 * buildingLevel)
+			# "Nature Conservationists" covers both USA and CA — handled above
 			"Canada Council for the Arts Act":
 				if bType == "Theater" or bType == "Faire":
 					culturePerLevel += 1

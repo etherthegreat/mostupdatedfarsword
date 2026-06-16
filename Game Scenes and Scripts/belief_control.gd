@@ -33,8 +33,8 @@ func updateSelf():
 				newBB.buildSelf("Landmark Heritage", $religionData.standingStonesIcon, $religionData.standingStonesBWIcon, false, 120, "The Antiquities Act of 1906 gave the President authority to designate national monuments by executive order — the Republic's way of saying: this ground is not for sale.", $religionData.border1)
 			"Sherman Antitrust Act":
 				newBB.buildSelf("Sherman Antitrust Act", $religionData.valuedIdolatryIcon, $religionData.valuedIdolatryBWIcon, false, 20, "The first federal law to limit monopolies and cartels. Markets, like elections, require competition to be legitimate.", $religionData.border1)
-			"Lacey Wildlife Act":
-				newBB.buildSelf("Lacey Wildlife Act", $religionData.sacredGrovesIcon, $religionData.sacredGrovesBWIcon, false, 70, "The first federal wildlife protection law in the United States, prohibiting the trafficking of illegally taken fish, wildlife, and plants.", $religionData.border1)
+			"Nature Conservationists":
+				newBB.buildSelf("Nature Conservationists", $religionData.sacredGrovesIcon, $religionData.sacredGrovesBWIcon, false, 70, "From the Lacey Act to the Canada Wildlife Act, conservation law recognized that the land does not belong to the present alone. Camps yield culture; farms and wilderness both breathe easier.", $religionData.border1)
 			"Civic Pride":
 				newBB.buildSelf("Civic Pride", $religionData.midsummerCelebrationsIcon, $religionData.midsummerCelebrationsBWIcon, false, 35, "A Republic that invests in its arts invests in its identity. Civic Pride turns leisure into culture and monuments into authority.", $religionData.border1)
 			"Pioneer Heritage":
@@ -50,8 +50,7 @@ func updateSelf():
 			"Height of Buildings Act":
 				newBB.buildSelf("Height of Buildings Act", $religionData.templeHeightLawsIcon, $religionData.templeHeightLawsIconBW, false, 120, "Enacted in 1910, the Height of Buildings Act permanently caps Washington D.C. buildings at 130 feet in deference to civic monuments.", $religionData.border1)
 			# ── Canadian Doctrines ───────────────────────────────────────────────
-			"Canada Wildlife Act":
-				newBB.buildSelf("Canada Wildlife Act", $religionData.sacredGrovesIcon, $religionData.sacredGrovesBWIcon, false, 70, "Enacted in 1973, the Canada Wildlife Act established the federal framework for wildlife research, conservation, and protection across the Dominion.", $religionData.border1)
+			# Nature Conservationists covers CA as well — handled above
 			"Canada Council for the Arts Act":
 				newBB.buildSelf("Canada Council for the Arts Act", $religionData.midsummerCelebrationsIcon, $religionData.midsummerCelebrationsBWIcon, false, 35, "Founded in 1957, the Canada Council for the Arts has funded Canadian literature, music, visual art, and performance for generations.", $religionData.border1)
 			"Republic Lands Act":
@@ -182,8 +181,8 @@ func buildPD(type):
 			newPD.buildSelf("Landmark Heritage", $religionData.standingStonesIcon, "The Antiquities Act gave the President authority to designate national monuments. Sacred geography has never been more official.", true, $religionData.border1)
 		"Sherman Antitrust Act":
 			newPD.buildSelf("Sherman Antitrust Act", $religionData.valuedIdolatryIcon, "The first federal law to limit monopolies and cartels. Markets, like elections, require competition to be legitimate.", true, $religionData.border1)
-		"Lacey Wildlife Act":
-			newPD.buildSelf("Lacey Wildlife Act", $religionData.sacredGrovesIcon, "The first federal wildlife protection law in the United States, prohibiting the trafficking of illegally taken fish, wildlife, and plants.", true, $religionData.border1)
+		"Nature Conservationists":
+			newPD.buildSelf("Nature Conservationists", $religionData.sacredGrovesIcon, "The land does not belong to the present alone. Camps yield culture; farms and wilderness both breathe easier under conservation law.", true, $religionData.border1)
 		"Civic Pride":
 			newPD.buildSelf("Civic Pride", $religionData.midsummerCelebrationsIcon, "A Republic that invests in its arts invests in its identity. Civic Pride turns leisure into culture and monuments into authority.", true, $religionData.border1)
 		"Pioneer Heritage":
@@ -199,8 +198,7 @@ func buildPD(type):
 		"Height of Buildings Act":
 			newPD.buildSelf("Height of Buildings Act", $religionData.templeHeightLawsIcon, "Enacted in 1910, permanently caps Washington D.C. buildings at 130 feet in deference to civic monuments.", true, $religionData.border1)
 		# ── Canadian Doctrines ───────────────────────────────────────────────────
-		"Canada Wildlife Act":
-			newPD.buildSelf("Canada Wildlife Act", $religionData.sacredGrovesIcon, "Enacted in 1973, established the federal framework for wildlife research, conservation, and protection across the Dominion.", true, $religionData.border1)
+		# Nature Conservationists covers CA as well — handled above
 		"Canada Council for the Arts Act":
 			newPD.buildSelf("Canada Council for the Arts Act", $religionData.midsummerCelebrationsIcon, "Founded in 1957, the Canada Council for the Arts has funded Canadian literature, music, visual art, and performance for generations.", true, $religionData.border1)
 		"Republic Lands Act":

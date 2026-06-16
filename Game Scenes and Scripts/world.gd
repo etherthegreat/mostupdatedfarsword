@@ -2616,6 +2616,7 @@ func evaluateDateEvents() -> void:
 		_tick_halloween_endorsement()
 		_tick_cherry_blossom_prayer()
 		_tick_pioneer_heritage_corruption()
+		_tick_nature_conservationists_corruption()
 		_tick_civic_pride_mandate()
 		_check_cmd_merit()
 		_check_cmd_recognition()
@@ -4305,6 +4306,30 @@ func _tick_pioneer_heritage_corruption() -> void:
 		if whole >= 1:
 			tile.corruption = max(0, tile.corruption - whole)
 			playerCountryNode.pioneer_heritage_corrupt_acc[key] -= float(whole)
+			tile.calculateCorruption()
+
+
+func _tick_nature_conservationists_corruption() -> void:
+	var active := false
+	for b in playerCountryNode.selectedBeliefs:
+		if b.beliefType == "Nature Conservationists":
+			active = true
+			break
+	if not active:
+		return
+	for tile in playerCountryNode.OwnedTileList:
+		var farm_level: int = tile.get_building_level("farm")
+		var camp_level: int = tile.get_building_level("camp")
+		var total_levels: int = farm_level + camp_level
+		if total_levels <= 0 or tile.corruption <= 0:
+			continue
+		var key := str(tile.tileNumber)
+		var gain: float = 0.1 * float(total_levels)
+		playerCountryNode.nature_conservationists_corrupt_acc[key] = 			playerCountryNode.nature_conservationists_corrupt_acc.get(key, 0.0) + gain
+		var whole: int = int(playerCountryNode.nature_conservationists_corrupt_acc[key])
+		if whole >= 1:
+			tile.corruption = max(0, tile.corruption - whole)
+			playerCountryNode.nature_conservationists_corrupt_acc[key] -= float(whole)
 			tile.calculateCorruption()
 
 
