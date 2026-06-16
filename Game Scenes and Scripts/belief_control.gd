@@ -36,9 +36,9 @@ func updateSelf():
 			"Nature Conservationists":
 				newBB.buildSelf("Nature Conservationists", $religionData.sacredGrovesIcon, $religionData.sacredGrovesBWIcon, false, 70, "From the Lacey Act to the Canada Wildlife Act, conservation law recognized that the land does not belong to the present alone. Camps yield culture; farms and wilderness both breathe easier.", $religionData.border1)
 			"Civic Pride":
-				newBB.buildSelf("Civic Pride", $religionData.midsummerCelebrationsIcon, $religionData.midsummerCelebrationsBWIcon, false, 35, "A Republic that invests in its arts invests in its identity. Civic Pride turns leisure into culture and monuments into authority.", $religionData.border1)
+				newBB.buildSelf("Civic Pride", load("res://art assets/finishedAssets/lawIcons/accessible_canada_act.png"), $religionData.midsummerCelebrationsBWIcon, false, 35, "A Republic that invests in its arts invests in its identity. Civic Pride turns leisure into culture and monuments into authority.", $religionData.border1)
 			"Pioneer Heritage":
-				newBB.buildSelf("Pioneer Heritage", $religionData.treeOfLifeIcon, $religionData.treeOfLifeBWIcon, false, 100, "The frontier spirit lives in the land. Pioneer Heritage honors the communities that built from nothing — farms that feed the Republic and drive out the rot of environmental decay.", $religionData.border1)
+				newBB.buildSelf("Pioneer Heritage", load("res://art assets/finishedAssets/lawIcons/homestead_act.png"), $religionData.treeOfLifeBWIcon, false, 100, "The frontier spirit lives in the land. Pioneer Heritage honors the communities that built from nothing — farms that feed the Republic and drive out the rot of environmental decay.", $religionData.border1)
 			"Defense Production Act":
 				newBB.buildSelf("Defense Production Act", $religionData.towerControlIcon, $religionData.towerControlBWIcon, false, 250, "Passed in 1950, the Defense Production Act gave the President sweeping authority to direct industrial production toward national security needs.", $religionData.border1)
 			"Wilderness Act":
@@ -184,9 +184,9 @@ func buildPD(type):
 		"Nature Conservationists":
 			newPD.buildSelf("Nature Conservationists", $religionData.sacredGrovesIcon, "The land does not belong to the present alone. Camps yield culture; farms and wilderness both breathe easier under conservation law.", true, $religionData.border1)
 		"Civic Pride":
-			newPD.buildSelf("Civic Pride", $religionData.midsummerCelebrationsIcon, "A Republic that invests in its arts invests in its identity. Civic Pride turns leisure into culture and monuments into authority.", true, $religionData.border1)
+			newPD.buildSelf("Civic Pride", load("res://art assets/finishedAssets/lawIcons/accessible_canada_act.png"), "A Republic that invests in its arts invests in its identity. Civic Pride turns leisure into culture and monuments into authority.", true, $religionData.border1)
 		"Pioneer Heritage":
-			newPD.buildSelf("Pioneer Heritage", $religionData.treeOfLifeIcon, "The frontier spirit lives in the land. Pioneer Heritage honors communities that built from nothing — farms that feed the Republic and drive out environmental decay.", true, $religionData.border1)
+			newPD.buildSelf("Pioneer Heritage", load("res://art assets/finishedAssets/lawIcons/homestead_act.png"), "The frontier spirit lives in the land. Pioneer Heritage honors communities that built from nothing — farms that feed the Republic and drive out environmental decay.", true, $religionData.border1)
 		"Defense Production Act":
 			newPD.buildSelf("Defense Production Act", $religionData.towerControlIcon, "Passed in 1950, the Defense Production Act gave the President sweeping authority to direct industrial production toward national security needs.", true, $religionData.border1)
 		"Wilderness Act":
