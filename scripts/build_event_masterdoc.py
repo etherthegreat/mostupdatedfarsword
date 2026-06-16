@@ -1318,8 +1318,10 @@ EVENTS += [
 
 _WH_SECRET_OVERRIDES = {
     # num: (status, art_tag, art_status)
-    7: ("FULL COMPLETION", "wh_secret_07_scene", "Not Started"),
-    9: ("FULL COMPLETION", "wh_secret_09", "Integrated"),
+    7:  ("FULL COMPLETION", "wh_secret_07_scene", "Integrated"),
+    8:  ("FULL COMPLETION", "wh_secret_08_scene", "Integrated"),
+    9:  ("FULL COMPLETION", "wh_secret_09",       "Integrated"),
+    12: ("FULL COMPLETION", "wh_secret_12_scene", "Integrated"),
 }
 
 EVENTS += [
@@ -1336,12 +1338,12 @@ EVENTS += [
         ( 4,  4, "Easter Morning",            "NO",  "standard"),
         ( 5,  5, "Cinco de Mayo",             "NO",  "standard"),
         ( 6,  6, "Juneteenth",                "NO",  "standard"),
-        ( 7,  7, "Independence Day & Pride",  "YES", "explicit option"),
-        ( 8,  8, "Diwali",                    "NO",  "standard"),
+        ( 7,  7, "Independence Day",            "NO",  "standard"),
+        ( 8,  8, "Pride Month",               "NO",  "standard"),
         ( 9,  9, "Halloween",                 "NO",  "standard"),
         (10, 10, "Indigenous Peoples Day",    "YES", "sensual option"),
         (11, 11, "Thanksgiving",              "NO",  "standard"),
-        (12, 12, "Christmas",                 "YES", "sensual option"),
+        (12, 12, "Winter Holidays",            "NO",  "standard"),
     ]
 ] + [
 
