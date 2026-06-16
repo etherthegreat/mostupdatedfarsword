@@ -29,16 +29,16 @@ func updateSelf():
 			# ── American Doctrines ───────────────────────────────────────────────
 			"Social Security Act":
 				newBB.buildSelf("Social Security Act", $religionData.healingWatersIcon, $religionData.healingWatersBWIcon, false, 100, "Signed in 1935, the Social Security Act established federal old-age pensions and unemployment insurance. A safety net woven from public obligation.", $religionData.border1)
-			"National Monument Act":
-				newBB.buildSelf("National Monument Act", $religionData.standingStonesIcon, $religionData.standingStonesBWIcon, false, 120, "The Antiquities Act gave the President authority to designate national monuments by executive proclamation. Sacred geography has never been more official.", $religionData.border1)
+			"Landmark Heritage":
+				newBB.buildSelf("Landmark Heritage", $religionData.standingStonesIcon, $religionData.standingStonesBWIcon, false, 120, "The Antiquities Act of 1906 gave the President authority to designate national monuments by executive order — the Republic's way of saying: this ground is not for sale.", $religionData.border1)
 			"Sherman Antitrust Act":
 				newBB.buildSelf("Sherman Antitrust Act", $religionData.valuedIdolatryIcon, $religionData.valuedIdolatryBWIcon, false, 20, "The first federal law to limit monopolies and cartels. Markets, like elections, require competition to be legitimate.", $religionData.border1)
 			"Lacey Wildlife Act":
 				newBB.buildSelf("Lacey Wildlife Act", $religionData.sacredGrovesIcon, $religionData.sacredGrovesBWIcon, false, 70, "The first federal wildlife protection law in the United States, prohibiting the trafficking of illegally taken fish, wildlife, and plants.", $religionData.border1)
 			"Federal Arts Endowment":
 				newBB.buildSelf("Federal Arts Endowment", $religionData.midsummerCelebrationsIcon, $religionData.midsummerCelebrationsBWIcon, false, 35, "Established in 1965, the National Endowment for the Arts made the federal government a patron of culture for the first time.", $religionData.border1)
-			"Homestead Act":
-				newBB.buildSelf("Homestead Act", $religionData.treeOfLifeIcon, $religionData.treeOfLifeBWIcon, false, 160, "Signed by Lincoln in 1862, the Homestead Act offered 160 acres of public land to any American willing to farm it for five years.", $religionData.border1)
+			"Pioneer Heritage":
+				newBB.buildSelf("Pioneer Heritage", $religionData.treeOfLifeIcon, $religionData.treeOfLifeBWIcon, false, 100, "The frontier spirit lives in the land. Pioneer Heritage honors the communities that built from nothing — farms that feed the Republic and drive out the rot of environmental decay.", $religionData.border1)
 			"Defense Production Act":
 				newBB.buildSelf("Defense Production Act", $religionData.towerControlIcon, $religionData.towerControlBWIcon, false, 250, "Passed in 1950, the Defense Production Act gave the President sweeping authority to direct industrial production toward national security needs.", $religionData.border1)
 			"Wilderness Act":
@@ -54,8 +54,8 @@ func updateSelf():
 				newBB.buildSelf("Canada Wildlife Act", $religionData.sacredGrovesIcon, $religionData.sacredGrovesBWIcon, false, 70, "Enacted in 1973, the Canada Wildlife Act established the federal framework for wildlife research, conservation, and protection across the Dominion.", $religionData.border1)
 			"Canada Council for the Arts Act":
 				newBB.buildSelf("Canada Council for the Arts Act", $religionData.midsummerCelebrationsIcon, $religionData.midsummerCelebrationsBWIcon, false, 35, "Founded in 1957, the Canada Council for the Arts has funded Canadian literature, music, visual art, and performance for generations.", $religionData.border1)
-			"Dominion Lands Act":
-				newBB.buildSelf("Dominion Lands Act", $religionData.treeOfLifeIcon, $religionData.treeOfLifeBWIcon, false, 160, "Passed in 1872, the Dominion Lands Act opened the Canadian prairies to homestead settlement, offering 160-acre grants to settlers who would farm the land for three years.", $religionData.border1)
+			"Republic Lands Act":
+				newBB.buildSelf("Republic Lands Act", $religionData.treeOfLifeIcon, $religionData.treeOfLifeBWIcon, false, 160, "Passed in 1872, the Republic Lands Act opened the Canadian prairies to homestead settlement, offering 160-acre grants to settlers who would farm the land for three years.", $religionData.border1)
 			"Historic Sites and Monuments Act":
 				newBB.buildSelf("Historic Sites and Monuments Act", $religionData.standingStonesIcon, $religionData.standingStonesBWIcon, false, 120, "The Historic Sites and Monuments Act formalized federal commemoration of places, persons, and events significant to Canadian history.", $religionData.border1)
 			"Combines Investigation Act":
@@ -178,16 +178,16 @@ func buildPD(type):
 		# ── American Doctrines ───────────────────────────────────────────────────
 		"Social Security Act":
 			newPD.buildSelf("Social Security Act", $religionData.healingWatersIcon, "Signed in 1935, the Social Security Act established federal old-age pensions and unemployment insurance.", true, $religionData.border1)
-		"National Monument Act":
-			newPD.buildSelf("National Monument Act", $religionData.standingStonesIcon, "The Antiquities Act gave the President authority to designate national monuments. Sacred geography has never been more official.", true, $religionData.border1)
+		"Landmark Heritage":
+			newPD.buildSelf("Landmark Heritage", $religionData.standingStonesIcon, "The Antiquities Act gave the President authority to designate national monuments. Sacred geography has never been more official.", true, $religionData.border1)
 		"Sherman Antitrust Act":
 			newPD.buildSelf("Sherman Antitrust Act", $religionData.valuedIdolatryIcon, "The first federal law to limit monopolies and cartels. Markets, like elections, require competition to be legitimate.", true, $religionData.border1)
 		"Lacey Wildlife Act":
 			newPD.buildSelf("Lacey Wildlife Act", $religionData.sacredGrovesIcon, "The first federal wildlife protection law in the United States, prohibiting the trafficking of illegally taken fish, wildlife, and plants.", true, $religionData.border1)
 		"Federal Arts Endowment":
 			newPD.buildSelf("Federal Arts Endowment", $religionData.midsummerCelebrationsIcon, "Established in 1965, the National Endowment for the Arts made the federal government a patron of culture for the first time.", true, $religionData.border1)
-		"Homestead Act":
-			newPD.buildSelf("Homestead Act", $religionData.treeOfLifeIcon, "Signed by Lincoln in 1862, the Homestead Act offered 160 acres of public land to any American willing to farm it for five years.", true, $religionData.border1)
+		"Pioneer Heritage":
+			newPD.buildSelf("Pioneer Heritage", $religionData.treeOfLifeIcon, "The frontier spirit lives in the land. Pioneer Heritage honors communities that built from nothing — farms that feed the Republic and drive out environmental decay.", true, $religionData.border1)
 		"Defense Production Act":
 			newPD.buildSelf("Defense Production Act", $religionData.towerControlIcon, "Passed in 1950, the Defense Production Act gave the President sweeping authority to direct industrial production toward national security needs.", true, $religionData.border1)
 		"Wilderness Act":
@@ -203,8 +203,8 @@ func buildPD(type):
 			newPD.buildSelf("Canada Wildlife Act", $religionData.sacredGrovesIcon, "Enacted in 1973, established the federal framework for wildlife research, conservation, and protection across the Dominion.", true, $religionData.border1)
 		"Canada Council for the Arts Act":
 			newPD.buildSelf("Canada Council for the Arts Act", $religionData.midsummerCelebrationsIcon, "Founded in 1957, the Canada Council for the Arts has funded Canadian literature, music, visual art, and performance for generations.", true, $religionData.border1)
-		"Dominion Lands Act":
-			newPD.buildSelf("Dominion Lands Act", $religionData.treeOfLifeIcon, "Passed in 1872, opened the Canadian prairies to homestead settlement with 160-acre grants for those willing to farm the land for three years.", true, $religionData.border1)
+		"Republic Lands Act":
+			newPD.buildSelf("Republic Lands Act", $religionData.treeOfLifeIcon, "Passed in 1872, opened the Canadian prairies to homestead settlement with 160-acre grants for those willing to farm the land for three years.", true, $religionData.border1)
 		"Historic Sites and Monuments Act":
 			newPD.buildSelf("Historic Sites and Monuments Act", $religionData.standingStonesIcon, "Formalized federal commemoration of places, persons, and events significant to Canadian history. The law that decides what the Dominion chooses to remember.", true, $religionData.border1)
 		"Combines Investigation Act":
