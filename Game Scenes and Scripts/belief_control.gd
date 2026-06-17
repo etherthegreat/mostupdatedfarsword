@@ -118,7 +118,7 @@ func updateSelf():
 				newBB.buildSelf("Dolores Huerta", $religionData.doloresHuertaIcon, $religionData.doloresHuertaBWIcon, false, 140, "Co-founder of the United Farm Workers and proof that 'no' is not an acceptable final answer. Huerta's patronage amplifies Cesar Chavez's farm bonuses if both are selected, and adds exceptional Harmony in provinces with mixed labor.", $religionData.border3)
 			# ── Canadian Icons ───────────────────────────────────────────────────
 			"John A. Macdonald":
-				newBB.buildSelf("John A. Macdonald", $religionData.macdonaldIcon, $religionData.macdonaldBWIcon, false, 200, "The Father of Confederation and first Prime Minister of Canada. Built the Dominion through coalition, compromise, and the transcontinental railway.", $religionData.border2)
+				newBB.buildSelf("John A. Macdonald", $religionData.macdonaldIcon, $religionData.macdonaldBWIcon, false, 200, "The Father of Confederation and first Prime Minister of Canada. Built the Republic through coalition, compromise, and the transcontinental railway.", $religionData.border2)
 			"George-Étienne Cartier":
 				newBB.buildSelf("George-Étienne Cartier", $religionData.cartierIcon, $religionData.cartierBWIcon, false, 180, "Macdonald's indispensable partner who brought French Canada into Confederation. Without him, there is no Canada.", $religionData.border3)
 			"Wilfrid Laurier":
@@ -204,7 +204,7 @@ func buildPD(type):
 		"Republic Lands Act":
 			newPD.buildSelf("Republic Lands Act", $religionData.treeOfLifeIcon, "Passed in 1872, opened the Canadian prairies to homestead settlement with 160-acre grants for those willing to farm the land for three years.", true, $religionData.border1)
 		"Historic Sites and Monuments Act":
-			newPD.buildSelf("Historic Sites and Monuments Act", $religionData.standingStonesIcon, "Formalized federal commemoration of places, persons, and events significant to Canadian history. The law that decides what the Dominion chooses to remember.", true, $religionData.border1)
+			newPD.buildSelf("Historic Sites and Monuments Act", $religionData.standingStonesIcon, "Formalized federal commemoration of places, persons, and events significant to Canadian history. The law that decides what the Republic chooses to remember.", true, $religionData.border1)
 		"Combines Investigation Act":
 			newPD.buildSelf("Combines Investigation Act", $religionData.valuedIdolatryIcon, "Canada's first competition law, enacted in 1889. The Republic regulated markets before it had a central bank.", true, $religionData.border1)
 		"Canada Health Act":
@@ -262,7 +262,7 @@ func buildPD(type):
 			newPD.buildSelf("Dolores Huerta", $religionData.doloresHuertaIcon, "Co-founder of the United Farm Workers. Amplifies Cesar Chavez's farm bonuses if both are selected. Exceptional Harmony in provinces with mixed labor.", false, $religionData.border3)
 		# ── Canadian Icons ───────────────────────────────────────────────────────
 		"John A. Macdonald":
-			newPD.buildSelf("John A. Macdonald", $religionData.macdonaldIcon, "Father of Confederation and first Prime Minister of Canada. Built the Dominion through coalition, compromise, and the transcontinental railway.", false, $religionData.border2)
+			newPD.buildSelf("John A. Macdonald", $religionData.macdonaldIcon, "Father of Confederation and first Prime Minister of Canada. Built the Republic through coalition, compromise, and the transcontinental railway.", false, $religionData.border2)
 		"George-Étienne Cartier":
 			newPD.buildSelf("George-Étienne Cartier", $religionData.cartierIcon, "Macdonald's indispensable partner who brought French Canada into Confederation. Without him, there is no Canada.", false, $religionData.border3)
 		"Wilfrid Laurier":
