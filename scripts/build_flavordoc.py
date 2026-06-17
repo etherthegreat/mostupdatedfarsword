@@ -383,7 +383,7 @@ ICONS = [
     # ── USA Tier 2 (1800s–Modern) ─────────────────────────────────────────────
     ("USA", "Tier 2 – 1800s/Modern", "Abraham Lincoln",       "1809–1865",
      "Barracks: +50 Manpower · Courthouse: +1 Mandate",
-     "Emancipation Advance / Red Badge of Courage", "FIRST PASS",
+     "Emancipation Advance / Red Badge of Courage", "FULL PASS",
      "The president who refused to let the Union dissolve, at the cost of 750,000 lives and his own. Lincoln held together a government, a war, and an argument with history — and signed the document that changed what the war was for. His patronage fills every barracks with soldiers who have something to prove, every courthouse with the weight of law, and grants rifle units the hardened resilience of men who held the line knowing exactly what it cost."),
     ("USA", "Tier 2 – 1800s/Modern", "Harriet Tubman",        "1822–1913",
      "Barracks: +50 Manpower, +1 Weapons",
