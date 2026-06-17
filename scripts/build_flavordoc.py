@@ -461,8 +461,8 @@ ICONS = [
      "She overheard the American officers planning the attack and walked 20 miles through enemy-occupied territory to deliver the warning. The garrison held. She cannot be selected if Canada has allied with the United States — she warned against them in 1813, and that is not a small thing. Markets yield +1 Food per level in her name; all units gain +2% Defense."),
     ("CA", "Tier 1 – Founding", "Louis-Hippolyte LaFontaine", "1807–1864",
      "Courthouse: +2 Mandate",
-     "—", "IDEA",
-     "Responsible government architect. Double courthouse mandate bonus."),
+     "—", "FIRST PASS",
+     "He argued that the elected assembly — not the appointed council — must control the executive. That argument won, and when it did, every courthouse in the Republic gained teeth. Under LaFontaine, local courts stopped being instruments of colonial administration and became instruments of self-governance. Courthouses yield +2 Mandate instead of +1, representing a population that now believes its institutions belong to it."),
 
     # ── CA Tier 2 (Modern Era) ────────────────────────────────────────────────
     ("CA", "Tier 2 – Modern", "Tommy Douglas",          "1904–1986",
