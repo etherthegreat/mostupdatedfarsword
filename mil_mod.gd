@@ -282,7 +282,7 @@ func buildSelf(Type):
 			milModResource = "None"
 		"SaberCharge":
 			infantryMod = true
-			milModDescription = str("[i]Strike while they reload — the saber does not wait for muskets:[/i][color= green] x2 Melee damage vs enemies that have not yet fired; x3 with Tempering tech[/color]")
+			milModDescription = str("[i]Strike while they reload — the saber does not wait for muskets:[/i][color= green] x2 Melee damage vs enemies that have not yet fired; x3 with Tempuring tech[/color]")
 			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
 			milModResource = "None"
 		"CannonBlast":

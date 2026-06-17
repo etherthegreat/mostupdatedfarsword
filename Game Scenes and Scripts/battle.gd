@@ -307,7 +307,7 @@ func _army_has_tempering(army: Army) -> bool:
 	if army.parentCountry == null:
 		return false
 	for tech in army.parentCountry.unlockedTechnologies:
-		if tech.techName == "Tempering":
+		if tech.techName == "Tempuring":
 			return true
 	return false
 

@@ -108,6 +108,8 @@ func buildSelf():
 		"Tempuring":
 			addReward("Workshop Upgrade")
 			addReward("Forge Upgrade")
+			addReward("SaberCharge Enhanced")
+			addReward("CannonBlast Enhanced")
 		"Banking":
 			addReward("Banking Upgrade 1")
 			$Sprite2D.texture = load("res://art assets/finishedAssets/technology images/banking.png")
