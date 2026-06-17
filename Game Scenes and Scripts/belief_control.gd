@@ -273,7 +273,7 @@ func buildPD(type):
 		"Wilfrid Laurier":
 			newPD.buildSelf("Wilfrid Laurier", $religionData.laurierIcon, "Canada's first francophone Prime Minister. His optimism built a country; his compromises haunted it.", false, $religionData.border1)
 		"Agnes Macphail":
-			newPD.buildSelf("Agnes Macphail", $religionData.macphailIcon, "First woman elected to the Canadian House of Commons. She was told she didn't belong in Parliament. She disagreed, repeatedly.", false, $religionData.border1)
+			newPD.buildSelf("Agnes Macphail", $religionData.macphailIcon, "First woman elected to the House of Commons — six terms. She proved that democratic legitimacy expands when more voices are counted. Courthouses yield +1 Mandate; Libraries yield +1 Culture.", false, $religionData.border1)
 		"Laura Secord":
 			newPD.buildSelf("Laura Secord", $religionData.lauraSecordIcon, "Walked 19 miles through enemy lines to warn British forces of an impending attack at Beaver Dams. The garrison held. Markets yield +1 Food per level; all units gain +2% Defense. Unavailable if allied with the United States.", false, $religionData.border4)
 		"Louis-Hippolyte LaFontaine":
