@@ -103,8 +103,8 @@ var macphailIcon: Texture = load("res://art assets/finishedAssets/religiousIcons
 var macphailBWIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1159 - Copy.JPG")
 var lauraSecordIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1160.JPG")
 var lauraSecordBWIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1160 - Copy.JPG")
-var laFontaineIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1161.JPG")
-var laFontaineBWIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1161 - Copy.JPG")
+var laFontaineIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/louis_hippolyte_lafontaine.png")
+var laFontaineBWIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/louis_hippolyte_lafontaine_bw.png")
 # CAGods2 — Modern Era (14 items): reuse IMG_1194, 1199, 1201, 1202 cycling
 var tommyDouglasIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1194.PNG")
 var tommyDouglasBWIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1194 - Copy.PNG")

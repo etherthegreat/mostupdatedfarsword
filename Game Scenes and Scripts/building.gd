@@ -1928,9 +1928,7 @@ func _apply_belief_bonuses(bType: String) -> void:
 					manpowerDic["Icon: Laura Secord"] = (50 * buildingLevel)
 					weaponsDic["Icon: Laura Secord"] = (1 * buildingLevel)
 			"Louis-Hippolyte LaFontaine":
-				if bType == "Courthouse":
-					mandatePerLevel += 2
-					mandateDic["Icon: Louis-Hippolyte LaFontaine"] = (2 * buildingLevel)
+				pass  # handled in _apply_abnormal_modifiers (flat Ottawa/Montreal courthouse bonus)
 			"Tommy Douglas":
 				if bType == "Resort":
 					happinessPerLevel += 1
@@ -2126,6 +2124,7 @@ func calculateOutputs(playerCountryNode):
 		totalBuildingDefensiveness = defensivenessPerLevel * buildingLevel
 	if corruptionLossPerLevel != 0 or corruptionGainPerLevel != 0:
 		corruptionChange = corruptionGainPerLevel - corruptionLossPerLevel
+	_apply_abnormal_modifiers()
 	match buildingType:
 		"Farm":
 			dollarsTax = (totalBuildingFood * (playerCountry.setFarmTaxAmount * .01))
@@ -2177,6 +2176,39 @@ func calculateOutputs(playerCountryNode):
 	totalBuildingHappiness -= happinessTax
 	#print("totalBuildingMagic", totalBuildingMagic)
 	pass
+
+func _apply_abnormal_modifiers() -> void:
+	# Flat bonuses that don't follow the standard PerLevel × buildingLevel model.
+	# Country check (CA / USA) always comes first; icon/doctrine checks follow.
+	if not is_instance_valid(playerCountry):
+		return
+
+	# ── Canada ───────────────────────────────────────────────────────────────
+	if playerCountry.CID == "CA":
+		for belief in religiousBeliefs:
+			if belief.beliefType == "Louis-Hippolyte LaFontaine":
+				# Courthouse in Ottawa or Montreal only — flat +1 all resources, +50 manpower
+				if buildingType == "Courthouse" and \
+						(tile.tileName == "Ottawa" or tile.tileName == "Montreal"):
+					totalBuildingDollars  += 1
+					totalBuildingFood     += 1
+					totalBuildingWood     += 1
+					totalBuildingWeapons  += 1
+					totalBuildingMandate  += 1
+					totalBuildingCulture  += 1
+					totalBuildingManpower += 50
+					dollarsDic["Icon: Louis-Hippolyte LaFontaine"]  = 1
+					foodDic["Icon: Louis-Hippolyte LaFontaine"]     = 1
+					woodDic["Icon: Louis-Hippolyte LaFontaine"]     = 1
+					weaponsDic["Icon: Louis-Hippolyte LaFontaine"]  = 1
+					mandateDic["Icon: Louis-Hippolyte LaFontaine"]  = 1
+					cultureDic["Icon: Louis-Hippolyte LaFontaine"]  = 1
+					manpowerDic["Icon: Louis-Hippolyte LaFontaine"] = 50
+				break
+
+	# ── USA ──────────────────────────────────────────────────────────────────
+	# (reserved for future USA abnormal icon/doctrine checks)
+
 
 func upgradeBuilding():
 	buildingLevel += 1
