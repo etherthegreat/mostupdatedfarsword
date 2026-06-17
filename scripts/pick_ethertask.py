@@ -12,8 +12,20 @@ State:  data/current_ethertask.json  — persists the active task between runs.
         in its source data (status → FULL PASS/FULL COMPLETION).  At that point
         the next call auto-advances to the next task.
 """
-import sys, os, json, importlib.util, random
+import sys, os, json, importlib.util, random, re as _re, glob as _glob
 from datetime import date, datetime
+
+_PORTRAIT_DIR = "art assets/finishedAssets/religiousIcons"
+
+def _slug(name):
+    return _re.sub(r"[^a-z0-9]+", "_", name.lower()).strip("_")
+
+def _portrait_check(slug):
+    color = bool(_glob.glob(f"{_PORTRAIT_DIR}/{slug}.*"))
+    bw    = bool(_glob.glob(f"{_PORTRAIT_DIR}/{slug}_bw.*"))
+    if color and bw:   return "Done"
+    if color:          return "BW Missing"
+    return "Not Started"
 
 STATE_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
                           "data", "current_ethertask.json")
@@ -109,9 +121,13 @@ def collect():
         if status in DONE:
             continue
         a_status = "Not Started" if art_tag == "—" else "Needed"
+        p_slug   = _slug(name)
+        p_status = _portrait_check(p_slug)
         w = 4 if status in ("IDEA", "FIRST DRAFT") else 2
         if a_status == "Needed":
             w += 1
+        if p_status != "Done":
+            w += 2
         art_out = art_tag if art_tag != "—" else name.lower().replace(" ", "_")
         tasks.append({
             "w": w,
@@ -121,6 +137,8 @@ def collect():
             "status": status,
             "art_tag": art_out,
             "art_status": a_status,
+            "portrait_slug": p_slug,
+            "portrait_status": p_status,
             "flag": "",
             "notes": f"{bldg_fx}  ·  {desc}",
             "script": "build_flavordoc.py",
@@ -218,7 +236,11 @@ def collect():
         country, tier, name, hist_ref, year, effect, notes, axis, status = t
         if status in DONE:
             continue
+        p_slug   = _slug(name)
+        p_status = _portrait_check(p_slug)
         w = 5 if status in ("IDEA", "FIRST DRAFT") else 1
+        if p_status != "Done":
+            w += 2
         tasks.append({
             "w": w,
             "source": f"Flavordoc › Doctrines ({country} · {tier})",
@@ -227,6 +249,8 @@ def collect():
             "status": status,
             "art_tag": "—",
             "art_status": "N/A",
+            "portrait_slug": p_slug,
+            "portrait_status": p_status,
             "flag": "",
             "notes": effect or "",
             "script": "build_flavordoc.py",
@@ -316,8 +340,9 @@ def main():
     rule = "━" * W
     line = "─" * (W - 2)
 
-    needs_art = t["art_status"] not in ("N/A", "Done", "Integrated")
-    flag_str  = f"  [{t['flag'].upper()}]" if t["flag"] else ""
+    needs_art      = t["art_status"] not in ("N/A", "Done", "Integrated")
+    needs_portrait = t.get("portrait_status") not in (None, "Done")
+    flag_str       = f"  [{t['flag'].upper()}]" if t["flag"] else ""
 
     mode_str = "CONTINUING" if continuing else "NEW TASK"
 
@@ -334,6 +359,15 @@ def main():
         print(f"  Tag:     {t['art_tag']}")
         print(f"  Status:  {t['art_status']}")
 
+    if needs_portrait:
+        p_slug   = t["portrait_slug"]
+        p_status = t["portrait_status"]
+        print(f"\n  ── PORTRAITS {line[11:]}")
+        print(f"  Status:  {p_status}")
+        if p_status == "Not Started":
+            print(f"  Color  → {_PORTRAIT_DIR}/{p_slug}.png")
+        print(f"  BW     → {_PORTRAIT_DIR}/{p_slug}_bw.png")
+
     if t["notes"] and t["notes"].strip() not in ("—", ""):
         print(f"\n  ── TEXT {line[6:]}")
         note = t["notes"].replace("\n", " · ")
@@ -348,6 +382,15 @@ def main():
         art_dir = "art assets/AmericanRevolutionArt/Panel"
         print(f"  {step}. Draw 1 illustration")
         print(f"     Save to: {art_dir}/{t['art_tag']}.png")
+        step += 1
+
+    if needs_portrait:
+        p_slug   = t["portrait_slug"]
+        p_status = t["portrait_status"]
+        if p_status == "Not Started":
+            print(f"  {step}. Draw portrait (color) → {_PORTRAIT_DIR}/{p_slug}.png")
+            step += 1
+        print(f"  {step}. Draw portrait (BW)    → {_PORTRAIT_DIR}/{p_slug}_bw.png")
         step += 1
 
     if t["csv"]:
