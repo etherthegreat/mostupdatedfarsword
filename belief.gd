@@ -22,7 +22,7 @@ func buildBelief(type):
 			faithBelief = false
 		"Defense Production Act":
 			faithBelief = false
-		"Wilderness Act":
+		"Inland Maritime Expertise":
 			faithBelief = false
 		"First Amendment":
 			faithBelief = false

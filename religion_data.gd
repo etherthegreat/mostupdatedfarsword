@@ -146,7 +146,7 @@ func buildSelf():
 	genericDoc1 = ["Lacey Wildlife Act", "Federal Arts Endowment", "Homestead Act", "National Monument Act", "Sherman Antitrust Act", "Social Security Act"]
 	PDTDoc1 = ["Defense Production Act"]
 	genericGods1 = ["George Washington", "Benjamin Franklin", "Abigail Adams", "Alexander Hamilton", "Phillis Wheatley", "Thomas Jefferson"]
-	genericDoc2 = ["Wilderness Act", "First Amendment", "National Research Act", "Height of Buildings Act"]
+	genericDoc2 = ["Inland Maritime Expertise", "First Amendment", "National Research Act", "Height of Buildings Act"]
 	genericGods2 = ["Abraham Lincoln", "Harriet Tubman", "Frederick Douglass", "Sitting Bull", "Sojourner Truth", "Chief Joseph", "Theodore Roosevelt", "Susan B. Anthony", "Ida B. Wells", "Eleanor Roosevelt", "Martin Luther King Jr.", "Cesar Chavez", "Jimmy Carter", "Dolores Huerta"]
 	CADoc1 = ["Canada Wildlife Act", "Canada Council for the Arts Act", "Dominion Lands Act", "Historic Sites and Monuments Act", "Combines Investigation Act", "Canada Health Act"]
 	CADoc2 = ["National Parks Act", "Charter of Rights and Freedoms", "Medical Research Council Act", "National Building Code of Canada"]
