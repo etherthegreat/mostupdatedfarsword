@@ -315,7 +315,7 @@ EVENTS = [
     ("Protector","Old Ironsides","PROT_08_SUMMON",
      "OLD IRONSIDES RETURNS TO SERVICE",
      "Root","—","→ PROT_08_TAME",
-     "FIRST PASS","old_ironsides","Integrated","NO","","0",
+     "FULL COMPLETION","old_ironsides","Integrated","NO","","0",
      "Wild: +1 corruption/turn 25% chance; fires turn 45+"),
     ("Protector","Old Ironsides","PROT_08_TAME",
      "OLD IRONSIDES ACCEPTS CONTINENTAL NAVAL COMMAND — BOSTON HARBOR STABLE",
