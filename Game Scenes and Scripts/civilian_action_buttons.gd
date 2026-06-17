@@ -33,6 +33,12 @@ func updateUI(CID, civ, toolName, kitType, ppbTile):
 				$ContactTurncoatsButton.visible = true
 			if has_node("ReconnaissanceButton"):
 				$ReconnaissanceButton.visible = true
+		"DMA Badge":
+			# DMA field agent — add InvestigateSightingsButton to this scene to activate it.
+			# When pressed, sets ppbTile.dmaInvestigationPending = true; world checks this
+			# at turn start and fires the associated protector summon event.
+			if has_node("InvestigateSightingsButton"):
+				$InvestigateSightingsButton.visible = ppbTile.hasMysteriousShipRaids or ppbTile.dmaInvestigationPending == false
 	match kitType:
 		"Constructor":
 			$IncreaseAgriculturalDevelopment.visible = true

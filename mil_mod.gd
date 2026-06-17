@@ -285,6 +285,11 @@ func buildSelf(Type):
 			milModDescription = str("[i]Strike while they reload — the saber does not wait for muskets:[/i][color= green] x2 Melee damage vs enemies that have not yet fired; x3 with Tempuring tech[/color]")
 			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
 			milModResource = "None"
+		"USS Constitution Support":
+			siegeMod = true
+			milModDescription = str("[i]Old Ironsides rides with you:[/i][color= green] +20% Ranged Attack and +20% Ranged Defense when beginning a round in a Coastal tile[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
 		"CannonBlast":
 			siegeMod = true
 			milModDescription = str("[i]Cannon shot laughs at soft flesh, balks at stone:[/i][color= green] ÷2 damage vs Shield; attacker takes +25% melee damage; x3 vs unshielded (x5 w/ Tempering); provides Siege progress (doubled w/ Tempering)[/color]")
@@ -772,6 +777,12 @@ func buildSelf(Type):
 			civilianMod = true
 			toolMod = true
 			milModDescription = str("[i]Knows every trail, every hazard, every bad thing in the dirt:[/i][color=green] Army is immune to corruption-based disease[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"DMA Badge":
+			civilianMod = true
+			toolMod = true
+			milModDescription = str("[i]Department of Mythological Affairs field credential:[/i][color=green] Civilian may Investigate Sightings in tiles with active Protector-backed modifiers — triggers associated Protector Summon event on next turn[/color]")
 			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
 			milModResource = "None"
 		"President":

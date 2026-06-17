@@ -56,6 +56,7 @@ var inIvyLeagueTile: bool = false     # set from inTile.has_special_feature("Ivy
 var inFortifiedTile: bool = false     # set from inTile barracks/fortress check before calculateMilMods()
 var inHomeTile: bool = false          # set from inTile.tileOwner == parentCountry.CID before calculateMilMods()
 var inEntrenched: bool = false        # set from army.stationaryTurns >= 3 before calculateMilMods()
+var inCoastalTile: bool = false       # set from inTile.isCoastal before calculateMilMods(); used by USS Constitution Support
 var armyDemoralized: bool = false     # set from army before calculateMilMods(); skips all mods
 
 const milModScene = preload("res://mil_mod.tscn")
@@ -182,6 +183,10 @@ func calculateMilMods() -> void:
 					unitOffensiveScore += unitLevel
 				"SaberCharge":
 					pass  # handled in battle.gd
+				"USS Constitution Support":
+					if inCoastalTile:
+						unitRangedOffence *= 1.20
+						unitRangedDefence *= 1.20
 				"Bayonet":
 					pass  # handled in unit can_melee()
 				"CannonBlast":

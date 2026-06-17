@@ -66,4 +66,9 @@ func buildTileEcoMod():
 			modDescription = "Summer sun warms the air."
 			modSprite = load("res://art assets/Placeholder Art/UI Art/resources/Orange Circle.png")
 			number = 0
+		"MysteriousShipRaids":
+			modType = "DOLLAR_PENALTY"
+			modDescription = "An unmanned warship is raiding coastal trade. All buildings lose $2 per turn until the disturbance is resolved."
+			modSprite = load("res://art assets/Placeholder Art/UI Art/resources/blue water.png")
+			number = -2
 	pass

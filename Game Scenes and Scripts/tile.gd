@@ -21,6 +21,15 @@ var season             # determines the season, based on terrain type and curren
 var tileEcoModifiers: Array = []  # all resource modifiers for this tile
 var tileMilModifiers: Array = []  # all military modifiers for this tile
 
+# ── PROTECTOR / DMA FLAGS ────────────────────────────────────────────────────
+# isCoastal: set in the editor on coastal MA/RI/etc tiles; used by USS Constitution Support mil mod
+@export var isCoastal: bool = false
+# hasMysteriousShipRaids: set in the editor on affected coastal tiles; applies -2 dollars per building
+@export var hasMysteriousShipRaids: bool = false
+# dmaInvestigationPending: set true when a DMA-badge civilian investigates this tile;
+# world.gd checks this at turn start and fires the associated protector summon event
+var dmaInvestigationPending: bool = false
+
 var tileWizard: wizard
 var tileSpell: spell
 
@@ -592,6 +601,13 @@ func censusTile(playerCountryNode):
 		corruptionChange += building.corruptionChange
 		tileDollarsTax += building.dollarsTax
 		tileHappinessTax += building.happinessTax
+	# Mysterious Ship Raids: -2 dollars per active building per turn
+	if hasMysteriousShipRaids:
+		var active_count: int = 0
+		for b in tileBuildingsList:
+			if b.enabled:
+				active_count += 1
+		buildingDollarsOutput -= 2.0 * float(active_count)
 	_apply_output_reductions()
 	tileFoodDic.clear();      tileDollarsDic.clear();   tileWoodDic.clear()
 	tileMetalDic.clear();     tileMagicDic.clear();     tileCultureDic.clear()
@@ -1890,7 +1906,8 @@ func calculateDynamicModifiers() -> void:
 		func(mod): return not mod.modName in [
 			"RevolutionaryHotbed",
 			"OccupiedTerritory",
-			"SunbeltHeat"
+			"SunbeltHeat",
+			"MysteriousShipRaids"
 		]
 	)
  
@@ -1927,6 +1944,15 @@ func calculateDynamicModifiers() -> void:
 		sunbeltMod.modName = "SunbeltHeat"
 		sunbeltMod.buildTileEcoMod()
 		tileEcoModifiers.append(sunbeltMod)
+
+	# --- MYSTERIOUS SHIP RAIDS ---
+	# Coastal MA/RI tiles set hasMysteriousShipRaids = true in the editor;
+	# cleared when Old Ironsides is tamed (PROT_08_TAME fires)
+	if hasMysteriousShipRaids:
+		var shipMod = tileEcoModifier.new()
+		shipMod.modName = "MysteriousShipRaids"
+		shipMod.buildTileEcoMod()
+		tileEcoModifiers.append(shipMod)
 
 
 #===============

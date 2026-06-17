@@ -644,6 +644,7 @@ func surveySelf():
 		Unit.inFortifiedTile   = (inTile != null and (inTile.has_building("Barracks") or inTile.has_building("Fortress")))
 		Unit.inHomeTile        = (inTile != null and inTile.tileOwner == parentCountry.CID)
 		Unit.inEntrenched      = (stationaryTurns >= 3)
+		Unit.inCoastalTile     = (inTile != null and inTile.isCoastal)
 		Unit.armyDemoralized   = _has_status("Demoralized")
 		Unit.calculateMilMods()
 		armyPunch += Unit.unitOffensiveScore
