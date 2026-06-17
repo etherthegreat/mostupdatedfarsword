@@ -1132,6 +1132,11 @@ func buildSelf(Type):
 			milModDescription = str("[i]The Métis held Batoche for days with hunting rifles and prayer:[/i][color= green] +2 Attack, +2 Defense per Level in Woods terrain[/color]")
 			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
 			milModResource = "None"
+		"Red Badge of Courage":
+			commanderMod = true
+			milModDescription = str("[i]The Civil War infantry knew what it cost to hold the line — and held it anyway:[/i][color= green] Rifle units take 5% less manpower loss from all combat[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/green cross.png")
+			milModResource = "None"
 		"Peacekeeping Mandate":
 			commanderMod = true
 			milModDescription = str("[i]He witnessed the worst of humanity and refused to stop fighting for peace:[/i][color= green] Morale loss reduced; rout threshold lowered to 15%[/color]")

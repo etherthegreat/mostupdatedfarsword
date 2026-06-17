@@ -737,6 +737,7 @@ func applyCountryBeliefMilMods() -> void:
 				modsToGrant.append("Combahee River Raid")
 			"Abraham Lincoln":
 				modsToGrant.append("Emancipation Advance")
+				modsToGrant.append("Red Badge of Courage")
 			"Theodore Roosevelt":
 				modsToGrant.append("Rough Rider's Charge")
 			"Frederick Douglass":

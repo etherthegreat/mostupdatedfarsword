@@ -58,7 +58,7 @@ func updateSelf():
 			"Historic Sites and Monuments Act":
 				newBB.buildSelf("Historic Sites and Monuments Act", $religionData.standingStonesIcon, $religionData.standingStonesBWIcon, false, 120, "The Historic Sites and Monuments Act formalized federal commemoration of places, persons, and events significant to Canadian history.", $religionData.border1)
 			"Combines Investigation Act":
-				newBB.buildSelf("Combines Investigation Act", $religionData.valuedIdolatryIcon, $religionData.valuedIdolatryBWIcon, false, 20, "Canada's first competition law, enacted in 1889 — the Dominion regulated markets before it had a central bank.", $religionData.border1)
+				newBB.buildSelf("Combines Investigation Act", $religionData.valuedIdolatryIcon, $religionData.valuedIdolatryBWIcon, false, 20, "Canada's first competition law, enacted in 1889 — the Republic regulated markets before it had a central bank.", $religionData.border1)
 			"Canada Health Act":
 				newBB.buildSelf("Canada Health Act", $religionData.healingWatersIcon, $religionData.healingWatersBWIcon, false, 100, "Passed in 1984, the Canada Health Act established universality, comprehensiveness, accessibility, portability, and public administration as the pillars of Canadian health care.", $religionData.border1)
 			"National Parks Act":
@@ -89,7 +89,7 @@ func updateSelf():
 			"Thomas Jefferson":
 				newBB.buildSelf("Thomas Jefferson", $religionData.jeffersonIcon, $religionData.jeffersonBWIcon, false, 220, "A man of infinite contradiction who wrote that all men are created equal and then went home to his plantation. Jefferson's patronage is powerful but complicated: Libraries and Farms flourish, but Harmony costs extra. History contains multitudes.", $religionData.border4)
 			"Abraham Lincoln":
-				newBB.buildSelf("Abraham Lincoln", $religionData.lincolnIcon, $religionData.lincolnBWIcon, false, 250, "He held the Union together at the cost of 750,000 lives and his own. Lincoln's patronage transforms every barracks into a recruiting ground for the cause and every courthouse into a seat of law that must eventually be lived up to. All units fight harder — because they know what they're fighting for.", $religionData.border2)
+				newBB.buildSelf("Abraham Lincoln", $religionData.lincolnIcon, $religionData.lincolnBWIcon, false, 250, "He held the Union together at the cost of 750,000 lives and his own. Lincoln's patronage fills every barracks and courthouse with the weight of that sacrifice — all units gain +2 Attack and +2 Defense permanently, and rifle units take 5% less manpower loss from every engagement.", $religionData.border2)
 			"Harriet Tubman":
 				newBB.buildSelf("Harriet Tubman", $religionData.tubmanIcon, $religionData.tubmanBWIcon, false, 200, "Conductor of the Underground Railroad, spy for the Union Army, and the most dangerous person any tyrant could encounter. Tubman's patronage grants military bonuses and increases Manpower — freedom, it turns out, is a combat advantage.", $religionData.border4)
 			"Frederick Douglass":
@@ -206,7 +206,7 @@ func buildPD(type):
 		"Historic Sites and Monuments Act":
 			newPD.buildSelf("Historic Sites and Monuments Act", $religionData.standingStonesIcon, "Formalized federal commemoration of places, persons, and events significant to Canadian history. The law that decides what the Dominion chooses to remember.", true, $religionData.border1)
 		"Combines Investigation Act":
-			newPD.buildSelf("Combines Investigation Act", $religionData.valuedIdolatryIcon, "Canada's first competition law, enacted in 1889. The Dominion regulated markets before it had a central bank.", true, $religionData.border1)
+			newPD.buildSelf("Combines Investigation Act", $religionData.valuedIdolatryIcon, "Canada's first competition law, enacted in 1889. The Republic regulated markets before it had a central bank.", true, $religionData.border1)
 		"Canada Health Act":
 			newPD.buildSelf("Canada Health Act", $religionData.healingWatersIcon, "Passed in 1984, established universality, comprehensiveness, accessibility, portability, and public administration as the pillars of Canadian health care.", true, $religionData.border1)
 		"National Parks Act":
@@ -233,7 +233,7 @@ func buildPD(type):
 		"Thomas Jefferson":
 			newPD.buildSelf("Thomas Jefferson", $religionData.jeffersonIcon, "A man of infinite contradiction. Libraries and Farms flourish, but Harmony costs extra. History contains multitudes.", false, $religionData.border4)
 		"Abraham Lincoln":
-			newPD.buildSelf("Abraham Lincoln", $religionData.lincolnIcon, "He held the Union together at a cost no one wanted to count. Lincoln's patronage fills barracks with soldiers who have something to prove, courthouses with the weight of law, and every unit in the field with +2 Attack and +2 Defense — permanently.", false, $religionData.border2)
+			newPD.buildSelf("Abraham Lincoln", $religionData.lincolnIcon, "He held the Union together at a cost no one wanted to count. All units: +2 Attack, +2 Defense permanently. Rifle units: −5% manpower loss from all combat. Barracks: +50 Manpower. Courthouse: +1 Mandate.", false, $religionData.border2)
 		"Harriet Tubman":
 			newPD.buildSelf("Harriet Tubman", $religionData.tubmanIcon, "Conductor of the Underground Railroad, spy for the Union Army. Tubman's patronage grants military bonuses and increases Manpower — freedom is a combat advantage.", false, $religionData.border4)
 		"Frederick Douglass":

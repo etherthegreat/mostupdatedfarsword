@@ -383,8 +383,8 @@ ICONS = [
     # ── USA Tier 2 (1800s–Modern) ─────────────────────────────────────────────
     ("USA", "Tier 2 – 1800s/Modern", "Abraham Lincoln",       "1809–1865",
      "Barracks: +50 Manpower · Courthouse: +1 Mandate",
-     "Emancipation Advance", "FIRST PASS",
-     "The president who refused to let the Union dissolve, at the cost of 750,000 lives and his own. Lincoln held together a government, a war, and an argument with history — and signed the document that changed what the war was for. His patronage fills every barracks with soldiers who have something to prove and every courthouse with the weight of law that must, eventually, be lived up to."),
+     "Emancipation Advance / Red Badge of Courage", "FIRST PASS",
+     "The president who refused to let the Union dissolve, at the cost of 750,000 lives and his own. Lincoln held together a government, a war, and an argument with history — and signed the document that changed what the war was for. His patronage fills every barracks with soldiers who have something to prove, every courthouse with the weight of law, and grants rifle units the hardened resilience of men who held the line knowing exactly what it cost."),
     ("USA", "Tier 2 – 1800s/Modern", "Harriet Tubman",        "1822–1913",
      "Barracks: +50 Manpower, +1 Weapons",
      "Combahee River Raid", "FIRST PASS",
@@ -541,6 +541,10 @@ BELIEF_MODS = [
     ("Emancipation Advance", "Icon — Abraham Lincoln",
      "commanderMod", "+2 Attack, +2 Defense per Level permanently",
      "January 1, 1863: The Emancipation Proclamation did not end slavery — it changed what the war was. Every soldier in the field now carried that argument on his bayonet. The cause had a name. The advance became something it hadn't been before.",
+     "FIRST PASS"),
+    ("Red Badge of Courage", "Icon — Abraham Lincoln",
+     "commanderMod (Musket units only)", "Rifle units take −5% manpower loss from all combat",
+     "The Civil War infantryman learned something that cannot be taught in peacetime — that the line must hold even when holding it is the worst thing in the world. Those who survived carried that knowledge in their bones, and it showed in the casualty counts.",
      "FIRST PASS"),
 
     ("Rough Rider's Charge", "Icon — Theodore Roosevelt",
