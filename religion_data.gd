@@ -62,7 +62,7 @@ var jeffersonIcon: Texture = load("res://art assets/finishedAssets/religiousIcon
 var jeffersonBWIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1161 - Copy.JPG")
 # 1800s (tier 2)
 var lincolnIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1194.PNG")
-var lincolnBWIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1194 - Copy.PNG")
+var lincolnBWIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1755.PNG")
 var tubmanIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1199.PNG")
 var tubmanBWIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1199 - Copy.PNG")
 var douglassIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1201.PNG")
