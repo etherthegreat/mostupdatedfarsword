@@ -597,7 +597,7 @@ func surveySelf():
 				cannon_count += 1
 				break
 	if cannon_count > 0:
-		var has_tempering = parentCountry != null and parentCountry.unlockedTechnologies.any(func(t): return t.techName == "Tempering")
+		var has_tempering = parentCountry != null and parentCountry.unlockedTechnologies.any(func(t): return t.techName == "Tempuring")
 		var cannon_siege_bonus: float = float(cannon_count) * (0.3 if has_tempering else 0.15)
 		armySiegeScore += cannon_siege_bonus
 	for Unit in unitsList:
@@ -691,7 +691,7 @@ func surveySelf():
 		armyPunch   = int(float(armyPunch)   * mm)
 		armyDefence = int(float(armyDefence) * mm)
 		# Experienced Fisherman: +1 attack per gov level when in wetlands tile
-		if inTile != null and inTile.tileTerrain == "Wetlands":
+		if inTile != null and inTile.terrain == "Wetlands":
 			var cmd_mods: Array
 			match commander.governorLevel:
 				1: cmd_mods = commander.govMilModsLvl1

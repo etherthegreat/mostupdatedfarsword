@@ -292,7 +292,7 @@ func buildSelf(Type):
 			milModResource = "None"
 		"CannonBlast":
 			siegeMod = true
-			milModDescription = str("[i]Cannon shot laughs at soft flesh, balks at stone:[/i][color= green] ÷2 damage vs Shield; attacker takes +25% melee damage; x3 vs unshielded (x5 w/ Tempering); provides Siege progress (doubled w/ Tempering)[/color]")
+			milModDescription = str("[i]Cannon shot laughs at soft flesh, balks at stone:[/i][color= green] ÷2 damage vs Shield; attacker takes +25% melee damage; x3 vs unshielded (x5 w/ Tempuring); provides Siege progress (doubled w/ Tempuring)[/color]")
 			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
 			milModResource = "None"
 		# ── ARC_02 (Appalachian Miner) mods ───────────────────────────────────────
