@@ -189,6 +189,51 @@ func setupAllProtectors(allTiles: Array, country_id: String = "") -> void:
 			"devotion_level":        0,
 			"arc_complete":          false,
 		}
+		# PROT_08 (Old Ironsides) — two-phase arc: tame then agree
+		if pid == "PROT_08":
+			arcData["prayers"] = [
+				{
+					"label": "Control 3 coastal provinces each with a Dock and Barracks",
+					"prayer_type": "tiles_with_dual_buildings",
+					"building_a": "dock",
+					"building_b": "barracks",
+					"count": 3,
+				},
+				{
+					"label": "Accumulate 30 boats in national stockpiles",
+					"prayer_type": "resource_threshold",
+					"resource": "boats",
+					"amount": 30,
+				},
+				{
+					"label": "Deploy a DMA agent to investigate the Mysterious Ship Raids",
+					"prayer_type": "dma_investigation_done",
+				},
+			]
+			arcData["prayers_complete"] = [false, false, false]
+			arcData["agree_prayers"] = [
+				{
+					"label": "Upgrade 3 coastal provinces to Dock + Barracks each at level 3",
+					"prayer_type": "tiles_with_dual_buildings_min_level",
+					"building_a": "dock",
+					"building_b": "barracks",
+					"min_level": 3,
+					"count": 3,
+				},
+				{
+					"label": "Accumulate 60 boats in national stockpiles",
+					"prayer_type": "resource_threshold",
+					"resource": "boats",
+					"amount": 60,
+				},
+				{
+					"label": "Field 8 cannon units across all armies",
+					"prayer_type": "cannon_units_in_armies",
+					"count": 8,
+				},
+			]
+			arcData["agree_prayers_complete"] = [false, false, false]
+			arcData["prot08_phase"] = "tame"
 		activeProtectorArcs.append(arcData)
 	_populate_presidential_tab()
 	print("[Protectors] ", activeProtectorArcs.size(), " protector arcs registered.")
@@ -319,6 +364,10 @@ func _check_commander_objectives(allTiles: Array, currentTurn: int) -> void:
 
 func _check_protector_prayers(allTiles: Array, currentTurn: int) -> void:
 	for arcData in activeProtectorArcs:
+		# PROT_08 uses a two-phase tame/agree system
+		if arcData.get("protector_id", "") == "PROT_08":
+			_check_prot08_prayers(arcData, currentTurn)
+			continue
 		if arcData["arc_complete"]:
 			continue
 		for i in range(3):
@@ -332,6 +381,38 @@ func _check_protector_prayers(allTiles: Array, currentTurn: int) -> void:
 		if arcData["prayers_complete"].all(func(b): return b):
 			arcData["arc_complete"] = true
 			# Don't auto-fire — the button in ProtectorArcEntry handles the summon
+
+
+func _check_prot08_prayers(arcData: Dictionary, currentTurn: int) -> void:
+	var phase: String = arcData.get("prot08_phase", "tame")
+	if phase == "done":
+		return
+	if phase == "tame":
+		for i in range(3):
+			if arcData["prayers_complete"][i]:
+				continue
+			var fulfilled = _evaluate_protector_prayer(arcData["prayers"][i], arcData, currentTurn)
+			if fulfilled:
+				arcData["prayers_complete"][i] = true
+				arcData["devotion_level"] = min(100, arcData["devotion_level"] + 33)
+		if arcData["prayers_complete"].all(func(b): return b):
+			arcData["prot08_phase"] = "agree"
+			var events = EventDatabase.evaluate_protector_triggers("PROT_08", "protector_tame", currentTurn)
+			for event_id in events:
+				emit_signal("requestEventFire", event_id, arcData.get("origin_tile"))
+	if arcData.get("prot08_phase", "tame") == "agree":
+		for i in range(3):
+			if arcData["agree_prayers_complete"][i]:
+				continue
+			var fulfilled = _evaluate_protector_prayer(arcData["agree_prayers"][i], arcData, currentTurn)
+			if fulfilled:
+				arcData["agree_prayers_complete"][i] = true
+		if arcData["agree_prayers_complete"].all(func(b): return b):
+			arcData["prot08_phase"] = "done"
+			arcData["arc_complete"] = true
+			var events = EventDatabase.evaluate_protector_triggers("PROT_08", "protector_agree", currentTurn)
+			for event_id in events:
+				emit_signal("requestEventFire", event_id, arcData.get("origin_tile"))
 
 
 # ============================================================
@@ -484,6 +565,50 @@ func _evaluate_protector_prayer(prayer: Dictionary,
 					if army.commander.governorType == "Ualani Carlisle":
 						if army.inTile == origin_tile:
 							return true
+			return false
+
+		"tiles_with_dual_buildings":
+			if playerCountryNode == null:
+				return false
+			var ba: String = prayer.get("building_a", "dock").to_lower()
+			var bb: String = prayer.get("building_b", "barracks").to_lower()
+			var required: int = prayer.get("count", 3)
+			var count: int = 0
+			for tile in playerCountryNode.OwnedTileList:
+				if tile.buildings.get(ba, 0) >= 1 and tile.buildings.get(bb, 0) >= 1:
+					count += 1
+			return count >= required
+
+		"tiles_with_dual_buildings_min_level":
+			if playerCountryNode == null:
+				return false
+			var ba: String = prayer.get("building_a", "dock").to_lower()
+			var bb: String = prayer.get("building_b", "barracks").to_lower()
+			var min_lvl: int = prayer.get("min_level", 3)
+			var required: int = prayer.get("count", 3)
+			var count: int = 0
+			for tile in playerCountryNode.OwnedTileList:
+				if tile.buildings.get(ba, 0) >= min_lvl and tile.buildings.get(bb, 0) >= min_lvl:
+					count += 1
+			return count >= required
+
+		"cannon_units_in_armies":
+			if playerCountryNode == null:
+				return false
+			var required: int = prayer.get("count", 8)
+			var count: int = 0
+			for army in playerCountryNode.countryArmyList:
+				for unit in army.unitList:
+					if unit.unitType == "Cannon" or unit.unitClass == "siege":
+						count += 1
+			return count >= required
+
+		"dma_investigation_done":
+			if playerCountryNode == null:
+				return false
+			for tile in playerCountryNode.OwnedTileList:
+				if tile.get("dmaInvestigationPending", false):
+					return true
 			return false
 
 		_:
@@ -753,6 +878,8 @@ func _get_soma_memo(protector_id: String) -> String:
 			return "RE: Asset Acquisition Request — Mothman (PROT_01)\nStatus: In Progress\nBudget: Approved\nWeirdness Level: Elevated\nNote: Asset has been attempting contact for decades. Recommend receptive posture."
 		"PROT_12":
 			return "RE: Asset Reactivation — Liberty Bell (PROT_12)\nStatus: In Progress\nNote: Asset has expressed willingness to assist. Asset is self-conscious about the crack. Please do not mention the crack unless the asset brings it up first."
+		"PROT_08":
+			return "RE: Asset Reactivation — Old Ironsides (PROT_08)\nStatus: OBSERVING\nClassification: NAUTICAL / SUPERNATURAL\nNote: Asset has been conducting unauthorized coastal patrols since 1812. Asset does not appear to require fuel. Asset does not appear to require crew. DMA field investigation recommended before formal contact. Suggest complimentary remarks about hull integrity. Do NOT mention the British."
 		"PROT_17":
 			return "RE: Consultation Request — Lincoln's Ghost (PROT_17)\nStatus: PENDING DC LIBERATION\nNote: Asset has been on-site since 1865. Asset will not require briefing. Asset has opinions about the memos. Most of them are correct."
 		_:
