@@ -779,7 +779,6 @@ func applyCountryBeliefMilMods() -> void:
 			"War Measures Act":
 				modsToGrant.append("Vanguard")
 			"Laura Secord":
-				modsToGrant.append("Beaverdams Dispatch")
 				modsToGrant.append("Secord's Alert")
 			"Louis Riel":
 				modsToGrant.append("Batoche's Stand")

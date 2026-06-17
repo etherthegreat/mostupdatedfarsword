@@ -458,7 +458,7 @@ ICONS = [
     ("CA", "Tier 1 – Founding", "Laura Secord",               "1775–1868",
      "All units: +2% Defense · Market: +1 Food per level · LOCKED if allied with USA",
      "Beaverdams Dispatch", "FIRST PASS",
-     "She overheard the American officers planning the attack and walked 20 miles through enemy-occupied territory to deliver the warning. The garrison held. She cannot be selected if Canada has allied with the United States — she warned against them in 1813, and that is not a small thing. Markets yield +1 Food per level in her name; all units gain +2% Defense; Beaverdams Dispatch gives commanders +3 Defense per Level in fortified tiles."),
+     "She overheard the American officers planning the attack and walked 20 miles through enemy-occupied territory to deliver the warning. The garrison held. She cannot be selected if Canada has allied with the United States — she warned against them in 1813, and that is not a small thing. Markets yield +1 Food per level in her name; all units gain +2% Defense."),
     ("CA", "Tier 1 – Founding", "Louis-Hippolyte LaFontaine", "1807–1864",
      "Courthouse: +2 Mandate",
      "—", "IDEA",
