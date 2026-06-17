@@ -619,6 +619,7 @@ func surveySelf():
 		Unit.currentStorm      = inTile.stormType if (inTile != null and inTile.stormActive) else ""
 		Unit.currentState      = inTile.tileContinent if inTile != null else ""
 		Unit.inIvyLeagueTile   = inTile.has_special_feature("Ivy League") if inTile != null else false
+		Unit.inFortifiedTile   = (inTile != null and (inTile.has_building("Barracks") or inTile.has_building("Fortress")))
 		Unit.armyDemoralized   = _has_status("Demoralized")
 		Unit.calculateMilMods()
 		armyPunch += Unit.unitOffensiveScore

@@ -53,6 +53,7 @@ var currentTerrain: String = ""       # set from inTile.terrain before calculate
 var currentStorm: String = ""         # set from inTile.stormType when inTile.stormActive
 var currentState: String = ""         # set from inTile.tileContinent before calculateMilMods()
 var inIvyLeagueTile: bool = false     # set from inTile.has_special_feature("Ivy League") before calculateMilMods()
+var inFortifiedTile: bool = false     # set from inTile barracks/fortress check before calculateMilMods()
 var armyDemoralized: bool = false     # set from army before calculateMilMods(); skips all mods
 
 const milModScene = preload("res://mil_mod.tscn")
@@ -369,6 +370,31 @@ func calculateMilMods() -> void:
 					pass  # first-shot bonus handled in battle.gd
 				"HardeeDisc":
 					pass  # formation bonus handled at army level
+				# ── Icon figure mods (TEMP — needs full pass per ethertask) ──
+				"Emancipation Advance":
+					unitOffensiveScore += (2 * unitLevel)
+					unitDefensiveScore += (2 * unitLevel)
+				"Rough Rider's Charge":
+					if currentTerrain == "Woods" or currentTerrain == "Wetlands":
+						unitOffensiveScore += (4 * unitLevel)
+						unitDefensiveScore += (4 * unitLevel)
+				"Little Bighorn Ambush":
+					if currentTerrain == "Woods":
+						unitOffensiveScore += (2 * unitLevel)
+						unitDefensiveScore += (2 * unitLevel)
+				"Batoche's Stand":
+					if currentTerrain == "Woods":
+						unitOffensiveScore += (2 * unitLevel)
+						unitDefensiveScore += (2 * unitLevel)
+				"North Star Address":
+					unitDefensiveScore += (2 * unitLevel)
+				"Peacekeeping Mandate":
+					unitDefensiveScore += (2 * unitLevel)
+				"Beaverdams Dispatch":
+					if inFortifiedTile:
+						unitDefensiveScore += (3 * unitLevel)
+				"Combahee River Raid":
+					unitOffensiveScore += (3 * unitLevel)
 				# ── Commander Arc mods ────────────────────────────────────────
 				"Appalachian Hill Fighter":
 					if currentTerrain == "Foothills":

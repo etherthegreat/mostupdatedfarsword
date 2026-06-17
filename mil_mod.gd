@@ -1110,7 +1110,7 @@ func buildSelf(Type):
 			milModResource = "None"
 		"North Star Address":
 			commanderMod = true
-			milModDescription = str("[i]Once he found his voice, nothing could silence it:[/i][color= green] Morale loss reduced; rout threshold lowered to 15%[/color]")
+			milModDescription = str("[i]Once he found his voice, nothing could silence it:[/i][color= green] All units +2 Defense per Level[/color]")
 			milModTexture = load("res://art assets/ModifierIcons/milMods/green cross.png")
 			milModResource = "None"
 		"Little Bighorn Ambush":
@@ -1139,7 +1139,7 @@ func buildSelf(Type):
 			milModResource = "None"
 		"Peacekeeping Mandate":
 			commanderMod = true
-			milModDescription = str("[i]He witnessed the worst of humanity and refused to stop fighting for peace:[/i][color= green] Morale loss reduced; rout threshold lowered to 15%[/color]")
+			milModDescription = str("[i]He witnessed the worst of humanity and refused to stop fighting for peace:[/i][color= green] All units +2 Defense per Level[/color]")
 			milModTexture = load("res://art assets/ModifierIcons/milMods/green cross.png")
 			milModResource = "None"
 		# ── NEGATIVE STATUS EFFECTS ──────────────────────────────────────────────

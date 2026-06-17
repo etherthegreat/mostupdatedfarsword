@@ -534,9 +534,9 @@ BELIEF_MODS = [
      "FIRST PASS"),
 
     ("Combahee River Raid", "Icon — Harriet Tubman",
-     "infantryMod", "+5 Attack per Level in first battle round",
+     "infantryMod", "+3 Attack per Level (temp — first-round bonus pending full pass)",
      "June 1863: Tubman led Col. James Montgomery's gunboats up the Combahee River, freeing 700+ enslaved people. No hesitation. No casualties on her side.",
-     "FIRST PASS"),
+     "FIRST DRAFT"),
 
     ("Emancipation Advance", "Icon — Abraham Lincoln",
      "commanderMod", "+2 Attack, +2 Defense per Level permanently",
@@ -548,35 +548,35 @@ BELIEF_MODS = [
      "FIRST PASS"),
 
     ("Rough Rider's Charge", "Icon — Theodore Roosevelt",
-     "infantryMod (terrainMod: Woods)", "+4 Attack, +4 Defense in Woods or Wetlands terrain",
+     "infantryMod (terrainMod: Woods)", "+4 Attack, +4 Defense in Woods or Wetlands terrain (temp)",
      "July 1898: Roosevelt led the Rough Riders charging up San Juan Hill under heavy fire. 'Bully!' he reportedly shouted. No one argued with him.",
-     "FIRST PASS"),
+     "FIRST DRAFT"),
 
     ("North Star Address", "Icon — Frederick Douglass",
-     "commanderMod", "Morale loss reduced; rout threshold lowered to 15%",
+     "commanderMod", "+2 Defense per Level (temp — rout system pending full pass)",
      "Douglass's oratory — from escaped slave to the Republic's conscience. His newspaper The North Star (1847) gave voice to those the revolution was still failing.",
-     "FIRST PASS"),
+     "FIRST DRAFT"),
 
     ("Little Bighorn Ambush", "Icon — Sitting Bull",
-     "infantryMod (terrainMod: Woods)", "+2 Attack, +2 Defense per Level in Woods terrain",
+     "infantryMod (terrainMod: Woods)", "+2 Attack, +2 Defense per Level in Woods terrain (temp)",
      "June 1876: Sitting Bull had a vision of soldiers falling like grasshoppers before the battle. The combined Lakota and Cheyenne forces destroyed Custer's 7th Cavalry.",
-     "FIRST PASS"),
+     "FIRST DRAFT"),
 
     # ── Canadian Icon Mods ───────────────────────────────────────────────────
     ("Beaverdams Dispatch", "Icon — Laura Secord",
-     "commanderMod", "+3 Defense in Barracks/Fortress tiles",
+     "commanderMod", "+3 Defense in Barracks/Fortress tiles (temp)",
      "June 1813: Secord walked 20 miles through American-occupied territory to warn Lt. FitzGibbon of an approaching attack. The garrison held. The Americans surrendered.",
-     "FIRST PASS"),
+     "FIRST DRAFT"),
 
     ("Batoche's Stand", "Icon — Louis Riel",
-     "infantryMod (terrainMod: Woods)", "+2 Attack, +2 Defense per Level in Woods terrain",
+     "infantryMod (terrainMod: Woods)", "+2 Attack, +2 Defense per Level in Woods terrain (temp)",
      "May 1885: The Métis held Batoche for four days with hunting rifles, kitchen knives, and nails fired from improvised guns. Against a professional army. They lasted longer than anyone expected.",
-     "FIRST PASS"),
+     "FIRST DRAFT"),
 
     ("Peacekeeping Mandate", "Icon — Roméo Dallaire",
-     "commanderMod", "Morale loss reduced; rout threshold lowered to 15%",
+     "commanderMod", "+2 Defense per Level (temp — rout system pending full pass)",
      "1994: Dallaire commanded UNAMIR in Rwanda with 2,500 troops and no mandate to stop a genocide. He stayed anyway. His testimony shaped every peacekeeping doctrine that followed.",
-     "FIRST PASS"),
+     "FIRST DRAFT"),
 
     # ── Doctrine Mods ────────────────────────────────────────────────────────
     ("Woodsman", "Doctrine — Inland Maritime Expertise / National Parks Act",
