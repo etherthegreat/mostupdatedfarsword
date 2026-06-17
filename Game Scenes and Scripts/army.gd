@@ -743,7 +743,7 @@ func applyCountryBeliefMilMods() -> void:
 				modsToGrant.append("North Star Address")
 			"Sitting Bull":
 				modsToGrant.append("Little Bighorn Ambush")
-			"Wilderness Act":
+			"Inland Maritime Expertise":
 				modsToGrant.append("Woodsman")
 			"Defense Production Act":
 				modsToGrant.append("Vanguard")
