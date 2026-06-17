@@ -184,7 +184,7 @@ func calculateMilMods() -> void:
 				"SaberCharge":
 					pass  # handled in battle.gd
 				"USS Constitution Support":
-					if inCoastalTile:
+					if inCoastalTile and unitWeapon != null and unitWeapon.is_artillery():
 						unitRangedOffence *= 1.20
 						unitRangedDefence *= 1.20
 				"Bayonet":

@@ -1860,7 +1860,7 @@ func buildNewPlayerArmy(barracksBuilding, barracksTile, bbButton, playerNode, ne
 	for Army in playerNode.countryArmyList:
 		if Army.ArmyName == newArmyName:
 			bbButton.addPrebuiltArmy(Army)
-	pass
+			Army.applyCountryBeliefMilMods()
 
 func UICommander(commander, army):
 	if commander != null:
@@ -2054,6 +2054,14 @@ func _on_protector_agreed(agreed_flag: String) -> void:
 	if spell_name != "":
 		playerCountryNode.addSpellToSpellbook(spell_name, 1, 0)
 		print("[Protectors] Presidential Power unlocked: ", spell_name)
+
+	# PROT_08: grant USS Constitution Support mil mod to all current armies
+	if agreed_flag == "prot_08_agreed":
+		for army in playerCountryNode.countryArmyList:
+			army.applyCountryBeliefMilMods()
+			army.surveySelf()
+			army.updateArmyUI()
+		print("[Protectors] USS Constitution Support granted to all player armies")
 
 	# Reveal this protector's Records entry globally
 	if get_node_or_null("/root/LibraryData"):
@@ -2610,6 +2618,7 @@ func evaluateDateEvents() -> void:
 		_tick_wild_protectors()
 		_tick_wild_ca_protectors()
 		_check_protector_summons()
+		_check_prot08_dma_summon()
 		_tick_commander_turns()
 		_check_arc01_objectives()
 		_tick_arc03_cultural_corps()
@@ -4465,6 +4474,8 @@ func _tick_wild_protectors() -> void:
 
 func _check_protector_summons() -> void:
 	for pid in PROTECTOR_IDS:
+		if pid == "PROT_08":
+			continue  # PROT_08 summon is gated by DMA investigation, not the turn timer
 		if not _is_protector_wild(pid):
 			continue
 		var min_turn: int = PROTECTOR_SUMMON_TURNS.get(pid, 999)
@@ -4477,6 +4488,25 @@ func _check_protector_summons() -> void:
 		createNewEvent(summon_id, null)
 		print("[Protector] SUMMON fired: ", summon_id, " on turn ", currentWorldTurn)
 		return
+
+
+func _check_prot08_dma_summon() -> void:
+	if not _is_protector_wild("PROT_08"):
+		return
+	if _event_on_cooldown("PROT_08_SUMMON"):
+		return
+	# Scan player-owned tiles for a pending DMA investigation
+	var dma_tile = null
+	for tile in playerCountryNode.OwnedTileList:
+		if tile.get("dmaInvestigationPending", false):
+			dma_tile = tile
+			tile.dmaInvestigationPending = false  # consume the flag
+			break
+	if dma_tile == null:
+		return
+	_start_cooldown("PROT_08_SUMMON", 9999)  # fires once
+	createNewEvent("PROT_08_SUMMON", dma_tile)
+	print("[Protector] PROT_08_SUMMON fired via DMA investigation at ", dma_tile.tileName)
 
 
 # ── CANADIAN PROTECTOR CHECKS ────────────────────────────────────────────────

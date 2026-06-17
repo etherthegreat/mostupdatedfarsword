@@ -785,6 +785,10 @@ func applyCountryBeliefMilMods() -> void:
 			"Roméo Dallaire":
 				modsToGrant.append("Peacekeeping Mandate")
 
+	# PROT_08 (Old Ironsides) agreed — USS Constitution Support for all armies
+	if parentCountry.CountryFlags.has("prot_08_agreed"):
+		modsToGrant.append("USS Constitution Support")
+
 	# churchLevel ±3 axis grants
 	match parentCountry.churchLevel:
 		3:
