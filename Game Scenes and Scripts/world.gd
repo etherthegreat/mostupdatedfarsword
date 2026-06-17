@@ -2618,6 +2618,7 @@ func evaluateDateEvents() -> void:
 		_tick_pioneer_heritage_corruption()
 		_tick_nature_conservationists_corruption()
 		_tick_inland_maritime_expertise()
+		_tick_french_cultural_identity()
 		_tick_civic_pride_mandate()
 		_check_cmd_merit()
 		_check_cmd_recognition()
@@ -4332,6 +4333,25 @@ func _tick_nature_conservationists_corruption() -> void:
 			tile.corruption = max(0, tile.corruption - whole)
 			playerCountryNode.nature_conservationists_corrupt_acc[key] -= float(whole)
 			tile.calculateCorruption()
+
+
+func _tick_french_cultural_identity() -> void:
+	var active := false
+	for law in playerCountryNode.lawsInConstitution:
+		if law.lawType == "French Cultural Identity Enshrined":
+			active = true
+			break
+	if not active:
+		return
+	for tile in playerCountryNode.OwnedTileList:
+		if tile.tileOwner != "CA":
+			continue
+		if not tile.has_building("Resort"):
+			continue
+		tile.resortDevelopmentPoints += 1
+		if tile.resortDevelopmentPoints >= tile.tileResortDevCost:
+			tile.levelUpBuilding("Resort")
+			tile.resortDevelopmentPoints = 0
 
 
 func _tick_inland_maritime_expertise() -> void:

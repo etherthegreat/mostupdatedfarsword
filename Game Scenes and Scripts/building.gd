@@ -1419,6 +1419,25 @@ func matchPlayerUnlockables(playerCountryNode):
 			if law.lawType == "National Security Act" or law.lawType == "National Defence Act":
 				manpowerPerLevel += 5
 				manpowerDic["Law: " + law.lawType] = (5 * buildingLevel)
+			if law.lawType == "French Language Rights":
+				if tile != null and tile.tileState == "CA - QB":
+					culturePerLevel += 1
+					cultureDic["Law: French Language Rights"] = (1 * buildingLevel)
+					if buildingType == "Courthouse":
+						mandatePerLevel -= 2
+						mandateDic["Law: French Language Rights"] = (-2 * buildingLevel)
+					if buildingType == "Barracks":
+						manpowerPerLevel = int(round(float(manpowerPerLevel) * 1.1))
+			if law.lawType == "French Cultural Identity Enshrined":
+				if tile != null and tile.tileState == "CA - QB" and buildingType == "Resort":
+					culturePerLevel += 1
+					cultureDic["Law: French Cultural Identity Enshrined"] = (1 * buildingLevel)
+					dollarsPerLevel += 1
+					dollarsDic["Law: French Cultural Identity Enshrined"] = (1 * buildingLevel)
+					manpowerPerLevel += 100
+					manpowerDic["Law: French Cultural Identity Enshrined"] = (100 * buildingLevel)
+					mandatePerLevel -= 1
+					mandateDic["Law: French Cultural Identity Enshrined"] = (-1 * buildingLevel)
 	_apply_axis_bonuses(buildingType)
 	_apply_belief_bonuses(buildingType)
 	pass

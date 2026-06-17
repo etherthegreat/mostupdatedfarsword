@@ -275,6 +275,16 @@ LAWS = [
      "−1 Mandate/Barracks · +5 Manpower/all buildings",
      "National Defence Act (1922)", "The Republic's defence is no longer a wartime improvisation — it is a permanent constitutional obligation. The National Defence Act unified command under federal authority, placing the armed forces on a standing footing that does not wait for the next crisis. Barracks run leaner; every settlement from the coasts to the interior contributes to the reserve.",
      "", "FULL PASS"),
+
+    ("CA", "French Language Rights", "Equality",
+     "+1 Culture/all Quebec buildings · +10% Manpower/Quebec Barracks · −2 Mandate/Quebec Courthouse",
+     "French Language Rights (Emergency Recognition Act)", "The Prime Minister has answered the habitants with law. Every building in Quebec now operates in both official tongues of the Republic — the cultural output of the province rises, and the courthouses that administer federal authority in Quebec find their mandate stretched by the weight of recognition.",
+     "", "FIRST PASS"),
+
+    ("CA", "French Cultural Identity Enshrined", "Culture",
+     "Quebec Resort: +1 Culture · +1 Gold · +100 Manpower · −1 Mandate/level · +50% resort dev speed (all CA)",
+     "French Cultural Identity Enshrined (Cultural Institutes Act)", "The Republic funds what the Republic claims to value. Québécois cultural institutes receive direct patronage, turning resorts into cultural anchors — profitable, martial, and proud. Every leisure institution the Republic supports is, quietly, also a statement about who it has decided to be.",
+     "", "FIRST PASS"),
 ]
 
 # ── DOCTRINES ────────────────────────────────────────────────────────────────
