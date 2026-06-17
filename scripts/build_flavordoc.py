@@ -458,7 +458,7 @@ ICONS = [
     ("CA", "Tier 1 – Founding", "Laura Secord",               "1775–1868",
      "Barracks: +50 Manpower, +1 Weapons",
      "Beaverdams Dispatch", "FIRST PASS",
-     "Walked 20 miles to warn garrison at Beaverdams (1813). Barracks defense (mil mod)."),
+     "She overheard the American officers planning the attack, and she walked 20 miles through enemy-occupied territory to deliver the warning. The garrison at Beaverdams was ready when the Americans arrived. Barracks yield extra manpower and weapons in her name; Beaverdams Dispatch gives all units +3 Defense per Level when stationed in fortified tiles."),
     ("CA", "Tier 1 – Founding", "Louis-Hippolyte LaFontaine", "1807–1864",
      "Courthouse: +2 Mandate",
      "—", "IDEA",
@@ -564,9 +564,9 @@ BELIEF_MODS = [
 
     # ── Canadian Icon Mods ───────────────────────────────────────────────────
     ("Beaverdams Dispatch", "Icon — Laura Secord",
-     "commanderMod", "+3 Defense in Barracks/Fortress tiles (temp)",
-     "June 1813: Secord walked 20 miles through American-occupied territory to warn Lt. FitzGibbon of an approaching attack. The garrison held. The Americans surrendered.",
-     "FIRST DRAFT"),
+     "commanderMod", "+3 Defense per Level in tiles with Barracks or Fortress",
+     "June 1813: Secord walked 20 miles through American-occupied territory to warn Lt. FitzGibbon of an approaching attack. The garrison was ready. The Americans surrendered.",
+     "FIRST PASS"),
 
     ("Batoche's Stand", "Icon — Louis Riel",
      "infantryMod (terrainMod: Woods)", "+2 Attack, +2 Defense per Level in Woods terrain (temp)",
