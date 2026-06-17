@@ -460,7 +460,7 @@ ICONS = [
      "Beaverdams Dispatch", "FULL PASS",
      "She overheard the American officers planning the attack and walked 20 miles through enemy-occupied territory to deliver the warning. The garrison held. She cannot be selected if Canada has allied with the United States — she warned against them in 1813, and that is not a small thing. Markets yield +1 Food per level in her name; all units gain +2% Defense."),
     ("CA", "Tier 1 – Founding", "Louis-Hippolyte LaFontaine", "1807–1864",
-     "Ottawa & Montreal Courthouse: +1 Gold · +1 Food · +1 Wood · +1 Weapons · +1 Mandate · +1 Culture · +50 Manpower (flat, not per level)",
+     "Ottawa & Montreal Courthouse: +3 Gold · +3 Food · +3 Wood · +3 Weapons · +3 Mandate · +3 Culture · +150 Manpower (flat, not per level)",
      "—", "FIRST PASS",
      "He argued that the elected assembly — not the appointed council — must control the executive. That argument won, and when it did, the two great cities of the Republic became something more than administrative nodes. The courthouses of Ottawa and Montreal now function as civic engines: every resource the government touches flows through them a little faster, a little more completely. Flat bonus — not per level — because responsible government is not a function of how tall the building is."),
 

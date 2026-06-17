@@ -277,7 +277,7 @@ func buildPD(type):
 		"Laura Secord":
 			newPD.buildSelf("Laura Secord", $religionData.lauraSecordIcon, "Walked 19 miles through enemy lines to warn British forces of an impending attack at Beaver Dams. The garrison held. Markets yield +1 Food per level; all units gain +2% Defense. Unavailable if allied with the United States.", false, $religionData.border4)
 		"Louis-Hippolyte LaFontaine":
-			newPD.buildSelf("Louis-Hippolyte LaFontaine", $religionData.laFontaineIcon, "Argued that the elected assembly must control the executive — not the appointed council. The courthouses of Ottawa and Montreal now function as civic engines. Each yields +1 Gold, Food, Wood, Weapons, Mandate, and Culture, plus +50 Manpower (flat bonus, not per level).", false, $religionData.border5)
+			newPD.buildSelf("Louis-Hippolyte LaFontaine", $religionData.laFontaineIcon, "Argued that the elected assembly must control the executive — not the appointed council. The courthouses of Ottawa and Montreal now function as civic engines. Each yields +3 Gold, Food, Wood, Weapons, Mandate, and Culture, plus +150 Manpower (flat bonus, not per level).", false, $religionData.border5)
 		"Tommy Douglas":
 			newPD.buildSelf("Tommy Douglas", $religionData.tommyDouglasIcon, "Father of Canadian Medicare. Introduced single-payer health insurance over furious opposition. He won. Repeatedly.", false, $religionData.border2)
 		"Viola Desmond":

@@ -2190,20 +2190,20 @@ func _apply_abnormal_modifiers() -> void:
 				# Courthouse in Ottawa or Montreal only — flat +1 all resources, +50 manpower
 				if buildingType == "Courthouse" and \
 						(tile.tileName == "Ottawa" or tile.tileName == "Montreal"):
-					totalBuildingDollars  += 1
-					totalBuildingFood     += 1
-					totalBuildingWood     += 1
-					totalBuildingWeapons  += 1
-					totalBuildingMandate  += 1
-					totalBuildingCulture  += 1
-					totalBuildingManpower += 50
-					dollarsDic["Icon: Louis-Hippolyte LaFontaine"]  = 1
-					foodDic["Icon: Louis-Hippolyte LaFontaine"]     = 1
-					woodDic["Icon: Louis-Hippolyte LaFontaine"]     = 1
-					weaponsDic["Icon: Louis-Hippolyte LaFontaine"]  = 1
-					mandateDic["Icon: Louis-Hippolyte LaFontaine"]  = 1
-					cultureDic["Icon: Louis-Hippolyte LaFontaine"]  = 1
-					manpowerDic["Icon: Louis-Hippolyte LaFontaine"] = 50
+					totalBuildingDollars  += 3
+					totalBuildingFood     += 3
+					totalBuildingWood     += 3
+					totalBuildingWeapons  += 3
+					totalBuildingMandate  += 3
+					totalBuildingCulture  += 3
+					totalBuildingManpower += 150
+					dollarsDic["Icon: Louis-Hippolyte LaFontaine"]  = 3
+					foodDic["Icon: Louis-Hippolyte LaFontaine"]     = 3
+					woodDic["Icon: Louis-Hippolyte LaFontaine"]     = 3
+					weaponsDic["Icon: Louis-Hippolyte LaFontaine"]  = 3
+					mandateDic["Icon: Louis-Hippolyte LaFontaine"]  = 3
+					cultureDic["Icon: Louis-Hippolyte LaFontaine"]  = 3
+					manpowerDic["Icon: Louis-Hippolyte LaFontaine"] = 150
 				break
 
 	# ── USA ──────────────────────────────────────────────────────────────────
