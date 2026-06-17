@@ -505,6 +505,8 @@ CA_PM_SOLIDARITY_BTN1,CA_PM_SOLIDARITY,Forward the Report to the Alliance — Th
 CA_PM_SOLIDARITY_BTN2,CA_PM_SOLIDARITY,File It With the Records Office,standard,harmony_boost,,10,,,,,
 CA_PM_BATTLEFIELD_BTN1,CA_PM_BATTLEFIELD,Spread the Images — Let the Republic See What Its President Does,standard,propaganda_spread,,2,,,,,
 CA_PM_BATTLEFIELD_BTN2,CA_PM_BATTLEFIELD,Limited Recruitment Drive — Quebec Needs Soldiers Not Legends,standard,quebec_manpower_refill,,0,,,,,
+CA_PM_LOYALTY_TEST_BTN1,CA_PM_LOYALTY_TEST,Commit to Their Demands — The Republic Recognizes the French Habitants,standard,loyalty_change,French Habitants,15,,,,,
+CA_PM_LOYALTY_TEST_BTN2,CA_PM_LOYALTY_TEST,Acknowledge the Message — Promise a Parliamentary Review,standard,loyalty_change,French Habitants,5,,,,,
 GOV_LVL2_HONOR_BTN1,GOV_LVL2_HONOR,Citation Received.,standard,morale_boost,,10,,,,,
 GOV_LVL3_CEREMONY_BTN1,GOV_LVL3_CEREMONY,Dismiss the General — Back to the Field,standard,morale_boost,,20,,,,,
 GOV_LVL3_CEREMONY_BTN2,GOV_LVL3_CEREMONY,Invite the General to Stay the Night,standard,nothing,,0,,,GOV_REWARD,,
