@@ -2663,6 +2663,7 @@ func evaluateDateEvents() -> void:
 		_tick_election_pressure()
 		_check_election_season()
 		_tick_anarchists()
+		_tick_laura_secord_market()
 	_check_end_game()
 	var to_fire = EventDatabase.evaluate_date_triggers(currentWorldTurn, month)
 	for event_id in to_fire:
@@ -4376,6 +4377,20 @@ func _tick_inland_maritime_expertise() -> void:
 			continue
 		if tile.tileSpecialFeatures.has("Major River") or tile.tileSpecialFeatures.has("Major Lake"):
 			tile.stationedArmy.currentMovementPoints += 1
+
+
+func _tick_laura_secord_market() -> void:
+	var active := false
+	for b in playerCountryNode.selectedBeliefs:
+		if b.beliefType == "Laura Secord":
+			active = true
+			break
+	if not active:
+		return
+	for tile in playerCountryNode.OwnedTileList:
+		for b in tile.tileBuildingsList:
+			if b.buildingType == "Market" and b.enabled:
+				playerCountryNode.TotalFood += b.buildingLevel
 
 
 func _tick_cherry_blossom_prayer() -> void:

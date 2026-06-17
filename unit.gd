@@ -187,6 +187,8 @@ func calculateMilMods() -> void:
 					if inCoastalTile and unitWeapon != null and unitWeapon.is_artillery():
 						unitRangedOffence *= 1.20
 						unitRangedDefence *= 1.20
+				"Secord's Alert":
+					unitDefensiveScore = int(float(unitDefensiveScore) * 1.02)
 				"Bayonet":
 					pass  # handled in unit can_melee()
 				"CannonBlast":

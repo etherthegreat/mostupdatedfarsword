@@ -1146,6 +1146,10 @@ func buildSelf(Type):
 			milModDescription = str("[i]She walked 20 miles through enemy lines to warn the garrison — and they held:[/i][color= green] All units +3 Defense per Level in tiles with Barracks or Fortress[/color]")
 			milModTexture = load("res://art assets/ModifierIcons/milMods/green cross.png")
 			milModResource = "None"
+		"Secord's Alert":
+			milModDescription = str("[i]She heard them planning it. Then she walked:[/i][color= green] +2% Defense for all units[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/green cross.png")
+			milModResource = "None"
 		"Batoche's Stand":
 			infantryMod = true
 			terrainMod = true

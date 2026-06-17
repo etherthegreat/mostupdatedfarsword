@@ -126,7 +126,12 @@ func updateSelf():
 			"Agnes Macphail":
 				newBB.buildSelf("Agnes Macphail", $religionData.macphailIcon, $religionData.macphailBWIcon, false, 120, "The first woman elected to the Canadian House of Commons in 1921. She was told repeatedly that she did not belong in Parliament. She disagreed, repeatedly.", $religionData.border1)
 			"Laura Secord":
-				newBB.buildSelf("Laura Secord", $religionData.lauraSecordIcon, $religionData.lauraSecordBWIcon, false, 160, "In June 1813, Laura Secord walked 19 miles through enemy lines to warn British forces of an impending attack. The garrison held.", $religionData.border4)
+				# Permanently unavailable if Canada has allied with the United States —
+				# she warned against them in 1813 and cannot endorse that alliance.
+				if player.CountryFlags.has("can_allied"):
+					pass
+				else:
+					newBB.buildSelf("Laura Secord", $religionData.lauraSecordIcon, $religionData.lauraSecordBWIcon, false, 160, "In June 1813, Laura Secord walked 19 miles through enemy lines to warn British forces of an impending attack. The garrison held.", $religionData.border4)
 			"Louis-Hippolyte LaFontaine":
 				newBB.buildSelf("Louis-Hippolyte LaFontaine", $religionData.laFontaineIcon, $religionData.laFontaineBWIcon, false, 150, "The architect of responsible government in the Canadas. He proved that self-government was possible without revolution.", $religionData.border5)
 			"Tommy Douglas":
@@ -270,7 +275,7 @@ func buildPD(type):
 		"Agnes Macphail":
 			newPD.buildSelf("Agnes Macphail", $religionData.macphailIcon, "First woman elected to the Canadian House of Commons. She was told she didn't belong in Parliament. She disagreed, repeatedly.", false, $religionData.border1)
 		"Laura Secord":
-			newPD.buildSelf("Laura Secord", $religionData.lauraSecordIcon, "Walked 19 miles through enemy lines to warn British forces of an impending attack at Beaver Dams. The garrison held.", false, $religionData.border4)
+			newPD.buildSelf("Laura Secord", $religionData.lauraSecordIcon, "Walked 19 miles through enemy lines to warn British forces of an impending attack at Beaver Dams. The garrison held. Markets yield +1 Food per level; all units gain +2% Defense. Unavailable if allied with the United States.", false, $religionData.border4)
 		"Louis-Hippolyte LaFontaine":
 			newPD.buildSelf("Louis-Hippolyte LaFontaine", $religionData.laFontaineIcon, "The architect of responsible government in the Canadas. Proved that self-government was possible without revolution.", false, $religionData.border5)
 		"Tommy Douglas":
