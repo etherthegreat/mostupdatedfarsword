@@ -54,6 +54,8 @@ var currentStorm: String = ""         # set from inTile.stormType when inTile.st
 var currentState: String = ""         # set from inTile.tileContinent before calculateMilMods()
 var inIvyLeagueTile: bool = false     # set from inTile.has_special_feature("Ivy League") before calculateMilMods()
 var inFortifiedTile: bool = false     # set from inTile barracks/fortress check before calculateMilMods()
+var inHomeTile: bool = false          # set from inTile.tileOwner == parentCountry.CID before calculateMilMods()
+var inEntrenched: bool = false        # set from army.stationaryTurns >= 3 before calculateMilMods()
 var armyDemoralized: bool = false     # set from army before calculateMilMods(); skips all mods
 
 const milModScene = preload("res://mil_mod.tscn")
@@ -257,7 +259,8 @@ func calculateMilMods() -> void:
 					pass  # handled in tile/world logic
 				# ── Tier 3 mods ──────────────────────────────────────────────
 				"Entrenched":
-					pass  # handled at army level (stationary turn counter)
+					if inEntrenched:
+						unitDefensiveScore += (5 * unitLevel)  # dug-in after 3 stationary turns
 				"Continental Line":
 					unitOffensiveScore += (2 * unitLevel)
 					unitDefensiveScore += (2 * unitLevel)
@@ -267,9 +270,11 @@ func calculateMilMods() -> void:
 				"Terror":
 					pass  # handled in battle.gd morale drain
 				"Iron Wall":
-					pass  # handled at army level (home-tile check)
+					if inHomeTile:
+						unitDefensiveScore += (8 * unitLevel)  # defending sovereign territory
 				"Rampart":
-					pass  # handled at army level (fortress-tile check)
+					if inFortifiedTile:
+						unitDefensiveScore += (5 * unitLevel)  # fortification advantage
 				"Naval Supremacy":
 					pass  # handled at army level
 				"Ghost March":

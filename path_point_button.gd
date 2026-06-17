@@ -46,6 +46,7 @@ func revealTile():
 func calculateBattle(armyPath, type, attackingArmy, lastSelectedPathPoint):
 	if stationedArmy != null:
 		if stationedArmy.enemy == true:
+			attackingArmy.attacksFromCurrentTile += 1
 			stationedArmy.calculateBattle(armyPath, type, attackingArmy, stationedAPF, lastSelectedPathPoint)
 	pass
 

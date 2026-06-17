@@ -91,6 +91,10 @@ var reinforcementBlocked: bool = false  # set by Supply Cut/Quarantined
 
 var armySiegeScore: float
 
+var stationaryTurns: int = 0       # increments each turn army doesn't move; resets on movement
+var movedThisTurn: bool = false    # set true by path_control when army spends movement points
+var attacksFromCurrentTile: int = 0  # counts attacks without moving; resets on movement
+
 var is_anarchist: bool = false  # anarchist armies auto-attack UK each turn, no shield, uncontrollable
 
 #spawning and tiles
@@ -179,6 +183,13 @@ func _commander_movement_bonus() -> int:
 	return bonus
 
 func onTurnEnd():
+	# Stationary turn tracking — must happen before movement points reset
+	if movedThisTurn:
+		stationaryTurns = 0
+		attacksFromCurrentTile = 0
+	else:
+		stationaryTurns += 1
+	movedThisTurn = false
 	# Restore full movement points at the start of each new turn
 	currentMovementPoints = maxMovementPoints + _commander_movement_bonus()
 	# Reset per-turn flags (re-derived below from active statuses)
@@ -578,6 +589,17 @@ func surveySelf():
 	armySiegeScore = unitCount * 0.1
 	if inTile != null:
 		armySiegeScore *= inTile.get_siege_difficulty()
+	# CannonBlast: artillery adds bonus siege progress (doubled with Tempering)
+	var cannon_count: int = 0
+	for Unit in unitsList:
+		for mm in Unit.militaryModifierList:
+			if mm.milModType == "CannonBlast" and not mm.disabled:
+				cannon_count += 1
+				break
+	if cannon_count > 0:
+		var has_tempering = parentCountry != null and parentCountry.unlockedTechnologies.any(func(t): return t.techName == "Tempering")
+		var cannon_siege_bonus: float = float(cannon_count) * (0.3 if has_tempering else 0.15)
+		armySiegeScore += cannon_siege_bonus
 	for Unit in unitsList:
 		Unit.enableMilModType("All")
 		if Unit.unitCurrentManpower < Unit.unitMaxManpower:
@@ -620,6 +642,8 @@ func surveySelf():
 		Unit.currentState      = inTile.tileContinent if inTile != null else ""
 		Unit.inIvyLeagueTile   = inTile.has_special_feature("Ivy League") if inTile != null else false
 		Unit.inFortifiedTile   = (inTile != null and (inTile.has_building("Barracks") or inTile.has_building("Fortress")))
+		Unit.inHomeTile        = (inTile != null and inTile.tileOwner == parentCountry.CID)
+		Unit.inEntrenched      = (stationaryTurns >= 3)
 		Unit.armyDemoralized   = _has_status("Demoralized")
 		Unit.calculateMilMods()
 		armyPunch += Unit.unitOffensiveScore

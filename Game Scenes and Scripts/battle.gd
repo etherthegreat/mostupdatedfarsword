@@ -91,10 +91,35 @@ func _calculate_melee_damage() -> void:
 		if unit.unitWeapon != null and unit.unitWeapon.is_saber():
 			attacker_charge_loss += float(unit.unitCurrentManpower) * unit.unitWeapon.chargeManpowerCost
 
+	# ── First-engagement bonuses ────────────────────────────
+	var n = attacker.attacksFromCurrentTile
+	if n <= 1:
+		# Iron Bayonet: +2/level on the very first charge
+		raw_attack += _first_engage_bonus(attacker, "Iron Bayonet", 2.0)
+		# Vanguard: +1/level on first engagement
+		raw_attack += _first_engage_bonus(attacker, "Vanguard", 1.0)
+	if n <= 3:
+		# Minuteman's Pride: +4/level on first three engagements
+		raw_attack += _first_engage_bonus(attacker, "Minuteman's Pride", 4.0)
+
+	# ── SaberCharge: bonus vs unloaded (reloading) defenders ──
+	if _army_has_siege_mod(attacker, "SaberCharge"):
+		var defender_reloading = false
+		for unit in defender.unitsList:
+			if unit.is_reloading():
+				defender_reloading = true
+				break
+		if defender_reloading:
+			raw_attack *= 3.0 if _army_has_tempering(attacker) else 2.0
+
 	# Defender's melee block reduces incoming damage (armyBlock is sum of unit blocks 0-1)
 	# Normalize: if 3 units each have 0.15 block, total = 0.45, meaning 45% reduction
 	var block_ratio = clamp(defender.armyBlock / max(1.0, float(defender.unitsList.size())), 0.0, 0.9)
 	var net_to_defender = raw_attack * (1.0 - block_ratio)
+
+	# ── CannonBlast: artillery units take 25% more from melee ──
+	if _army_has_siege_mod(defender, "CannonBlast"):
+		net_to_defender *= 1.25
 
 	# Shield absorbs before manpower
 	defenderShieldLoss = int(min(defenderCurrentShield, net_to_defender))
@@ -125,9 +150,20 @@ func _calculate_ranged_damage() -> void:
 	for unit in attacker.unitsList:
 		effective_launch += unit.get_effective_ranged_offence()
 
+	# ── QuickDraw: +3/level on first ranged engagement ──────
+	if attacker.attacksFromCurrentTile <= 1:
+		effective_launch += _first_engage_bonus(attacker, "QuickDraw", 3.0)
+
 	# Defender's ranged block
 	var ranged_block_ratio = clamp(defender.armyDefence / max(1.0, float(defender.unitsList.size())), 0.0, 0.9)
 	var net_ranged = effective_launch * (1.0 - ranged_block_ratio)
+
+	# ── CannonBlast: half damage vs shielded; 3x (5x w/ Tempering) vs unshielded ──
+	if _army_has_siege_mod(attacker, "CannonBlast"):
+		if defenderCurrentShield > 0:
+			net_ranged *= 0.5   # cannons barely scratch shields
+		else:
+			net_ranged *= 5.0 if _army_has_tempering(attacker) else 3.0
 
 	defenderShieldLoss   = int(min(defenderCurrentShield, net_ranged))
 	var past_shield      = net_ranged - float(defenderShieldLoss)
@@ -266,6 +302,23 @@ func _army_has_siege_mod(army: Army, mod_name: String) -> bool:
 			if mm.milModType == mod_name and not mm.disabled:
 				return true
 	return false
+
+func _army_has_tempering(army: Army) -> bool:
+	if army.parentCountry == null:
+		return false
+	for tech in army.parentCountry.unlockedTechnologies:
+		if tech.techName == "Tempering":
+			return true
+	return false
+
+func _first_engage_bonus(army: Army, mod_name: String, bonus_per_level: float) -> float:
+	var bonus: float = 0.0
+	for unit in army.unitsList:
+		for mm in unit.militaryModifierList:
+			if mm.milModType == mod_name and not mm.disabled:
+				bonus += bonus_per_level * float(unit.unitLevel)
+				break
+	return bonus
 
 func _count_artillery(army: Army) -> int:
 	var count: int = 0

@@ -280,6 +280,16 @@ func buildSelf(Type):
 			milModDescription = str("[i]Land and sea are one battlefield:[/i][color= green] Army may launch melee attacks into adjacent naval tile neighbors[/color]")
 			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
 			milModResource = "None"
+		"SaberCharge":
+			infantryMod = true
+			milModDescription = str("[i]Strike while they reload — the saber does not wait for muskets:[/i][color= green] x2 Melee damage vs enemies that have not yet fired; x3 with Tempering tech[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"CannonBlast":
+			siegeMod = true
+			milModDescription = str("[i]Cannon shot laughs at soft flesh, balks at stone:[/i][color= green] ÷2 damage vs Shield; attacker takes +25% melee damage; x3 vs unshielded (x5 w/ Tempering); provides Siege progress (doubled w/ Tempering)[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
 		# ── ARC_02 (Appalachian Miner) mods ───────────────────────────────────────
 		"Appalachian Hill Fighter":
 			commanderMod = true
@@ -340,7 +350,7 @@ func buildSelf(Type):
 			milModResource = "None"
 		"Iron Bayonet":
 			infantryMod = true
-			milModDescription = str("[i]The first charge carries iron conviction:[/i][color= green] +5 Attack per Level in first battle round[/color]")
+			milModDescription = str("[i]The first charge carries iron conviction:[/i][color= green] +2 Attack per Level on first engagement from current position[/color]")
 			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
 			milModResource = "None"
 		"Sharpshooter":
@@ -370,7 +380,7 @@ func buildSelf(Type):
 			milModResource = "None"
 		"Vanguard":
 			commanderMod = true
-			milModDescription = str("[i]The first into the breach:[/i][color= green] All units +4 Attack per Level on first engagement in a fresh tile[/color]")
+			milModDescription = str("[i]The first into the breach:[/i][color= green] All units +1 Attack per Level on first engagement from current position[/color]")
 			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
 			milModResource = "None"
 		"Siege Line":
@@ -497,7 +507,7 @@ func buildSelf(Type):
 		# ── UNIFORM MODS ──────────────────────────────────────────────────────────
 		"QuickDraw":
 			infantryMod = true
-			milModDescription = str("[i]First shot wins the duel:[/i][color= green] First ranged attack each battle deals +5 bonus damage[/color]")
+			milModDescription = str("[i]First shot wins the duel:[/i][color= green] +3 Ranged Attack per Level on first engagement from current position[/color]")
 			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
 			milModResource = "None"
 		"HardeeDisc":
@@ -609,7 +619,7 @@ func buildSelf(Type):
 			commanderMod = true
 			culturalMod = true
 			culturalState = "MA"
-			milModDescription = str("[i]The shot heard 'round the world started here:[/i][color= green] +5 attack per level in the first 3 battle rounds[/color]")
+			milModDescription = str("[i]The shot heard 'round the world started here:[/i][color= green] +4 Attack per Level on first 3 engagements from current position[/color]")
 			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
 			milModResource = "None"
 		"Quaker Steel":

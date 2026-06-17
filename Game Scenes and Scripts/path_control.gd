@@ -204,6 +204,8 @@ func calculateArmyMovement(endPathPoint, endNodes, startNodes, neighborPathPoint
 				# TODO: show a small UI indicator ("Not enough movement points")
 				return
 			army.currentMovementPoints -= cost
+			army.movedThisTurn = true
+			army.attacksFromCurrentTile = 0
 	elif selectedCPF != null:
 		startingPoint = selectedCPF.currentPathPoint
 		# Action point gate — civilians spend 1 point per tile moved
