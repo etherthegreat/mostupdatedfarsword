@@ -384,7 +384,7 @@ ICONS = [
     ("USA", "Tier 2 – 1800s/Modern", "Abraham Lincoln",       "1809–1865",
      "Barracks: +50 Manpower · Courthouse: +1 Mandate",
      "Emancipation Advance", "FIRST PASS",
-     "16th President. All units +2 Atk +2 Def permanent (mil mod)."),
+     "The president who refused to let the Union dissolve, at the cost of 750,000 lives and his own. Lincoln held together a government, a war, and an argument with history — and signed the document that changed what the war was for. His patronage fills every barracks with soldiers who have something to prove and every courthouse with the weight of law that must, eventually, be lived up to."),
     ("USA", "Tier 2 – 1800s/Modern", "Harriet Tubman",        "1822–1913",
      "Barracks: +50 Manpower, +1 Weapons",
      "Combahee River Raid", "FIRST PASS",
@@ -540,7 +540,7 @@ BELIEF_MODS = [
 
     ("Emancipation Advance", "Icon — Abraham Lincoln",
      "commanderMod", "+2 Attack, +2 Defense per Level permanently",
-     "January 1863: The Emancipation Proclamation transformed the war's moral stakes. Every soldier now fought for something larger than territory.",
+     "January 1, 1863: The Emancipation Proclamation did not end slavery — it changed what the war was. Every soldier in the field now carried that argument on his bayonet. The cause had a name. The advance became something it hadn't been before.",
      "FIRST PASS"),
 
     ("Rough Rider's Charge", "Icon — Theodore Roosevelt",

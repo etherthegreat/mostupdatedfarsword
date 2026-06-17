@@ -89,7 +89,7 @@ func updateSelf():
 			"Thomas Jefferson":
 				newBB.buildSelf("Thomas Jefferson", $religionData.jeffersonIcon, $religionData.jeffersonBWIcon, false, 220, "A man of infinite contradiction who wrote that all men are created equal and then went home to his plantation. Jefferson's patronage is powerful but complicated: Libraries and Farms flourish, but Harmony costs extra. History contains multitudes.", $religionData.border4)
 			"Abraham Lincoln":
-				newBB.buildSelf("Abraham Lincoln", $religionData.lincolnIcon, $religionData.lincolnBWIcon, false, 250, "The rail-splitter who held the Union together with sheer stubbornness and a magnificent beard. Lincoln's patronage represents sacrifice and reconstruction — the long, costly work of living up to your nation's founding documents.", $religionData.border2)
+				newBB.buildSelf("Abraham Lincoln", $religionData.lincolnIcon, $religionData.lincolnBWIcon, false, 250, "He held the Union together at the cost of 750,000 lives and his own. Lincoln's patronage transforms every barracks into a recruiting ground for the cause and every courthouse into a seat of law that must eventually be lived up to. All units fight harder — because they know what they're fighting for.", $religionData.border2)
 			"Harriet Tubman":
 				newBB.buildSelf("Harriet Tubman", $religionData.tubmanIcon, $religionData.tubmanBWIcon, false, 200, "Conductor of the Underground Railroad, spy for the Union Army, and the most dangerous person any tyrant could encounter. Tubman's patronage grants military bonuses and increases Manpower — freedom, it turns out, is a combat advantage.", $religionData.border4)
 			"Frederick Douglass":
@@ -233,7 +233,7 @@ func buildPD(type):
 		"Thomas Jefferson":
 			newPD.buildSelf("Thomas Jefferson", $religionData.jeffersonIcon, "A man of infinite contradiction. Libraries and Farms flourish, but Harmony costs extra. History contains multitudes.", false, $religionData.border4)
 		"Abraham Lincoln":
-			newPD.buildSelf("Abraham Lincoln", $religionData.lincolnIcon, "The rail-splitter who held the Union together with sheer stubbornness. Lincoln's patronage represents sacrifice and the long, costly work of living up to your founding documents.", false, $religionData.border2)
+			newPD.buildSelf("Abraham Lincoln", $religionData.lincolnIcon, "He held the Union together at a cost no one wanted to count. Lincoln's patronage fills barracks with soldiers who have something to prove, courthouses with the weight of law, and every unit in the field with +2 Attack and +2 Defense — permanently.", false, $religionData.border2)
 		"Harriet Tubman":
 			newPD.buildSelf("Harriet Tubman", $religionData.tubmanIcon, "Conductor of the Underground Railroad, spy for the Union Army. Tubman's patronage grants military bonuses and increases Manpower — freedom is a combat advantage.", false, $religionData.border4)
 		"Frederick Douglass":
