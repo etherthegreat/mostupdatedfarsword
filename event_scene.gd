@@ -164,6 +164,14 @@ func _substitute(text: String) -> String:
 						gov_title = "Governor"
 						break
 		text = text.replace("[GOVERNOR_TITLE]", gov_title)
+		# Pronoun tokens — fall back to they/them/their/themselves if no pronouns set
+		var p: Dictionary = {}
+		if target_tile.tileGovernor != null:
+			p = target_tile.tileGovernor.pronouns
+		text = text.replace("[CMD_SUBJECT]",    p.get("subject",    "they"))
+		text = text.replace("[CMD_OBJECT]",     p.get("object",     "them"))
+		text = text.replace("[CMD_POSSESSIVE]", p.get("possessive", "their"))
+		text = text.replace("[CMD_REFLEXIVE]",  p.get("reflexive",  "themselves"))
 	return text
 
 
