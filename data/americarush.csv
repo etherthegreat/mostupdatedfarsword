@@ -1,6 +1,6 @@
 id,name,category,priority,status,notes
 FIX_ARMY_BUFF,Fix _apply_army_buff() stub,CODE,P0,DONE,Already implemented. Also added _apply_ualani_aura() in world.gd for Spirit of the General adjacency effect.
-FIX_GAME_OVER,Implement _trigger_game_over() and victory/defeat screen,CODE,P0,TODO,"world.gd:5660 — function referenced but undefined. Create it: show GameOverPanel, set win/loss state, halt turn loop. Depends on GOV-001."
+FIX_GAME_OVER,Implement _trigger_game_over() and victory/defeat screen,CODE,P0,DONE,"world.gd:5660 — function referenced but undefined. Create it: show GameOverPanel, set win/loss state, halt turn loop. Depends on GOV-001."
 FIX_CONTENT_TOGGLE,Wire explicit content filter to Settings booleans,CODE,P0,DONE,event_scene.gd:87-88 — return true hardcoded. Wire to Settings.content_kinky_lewd / Settings.content_explicit.
 FIX_WIN_CONDITIONS,Implement win / loss condition checks,CODE,P0,DONE,"world.gd — add _check_win_conditions() called from _end_turn(): all-tiles-owned win, Canadian peace-treaty win, president-death loss."
 WAR-001,WarRoomPanel: Add CloseButton and wire signal,EDITOR,P0,TODO,"WarRoomPanel.tscn — Add Button 'CloseButton', wire pressed → _on_close_button_pressed() (line 814)."
@@ -234,7 +234,7 @@ CANADA_FLAG,Canada flag sprite,ASSET,P2,TODO,Draw/create Canada flag sprite for 
 CANADA_DOCTRINE_SILHOUETTE,Canada doctrine silhouette (BW),ASSET,P2,TODO,Black silhouette placeholder for unfinished CA doctrine portrait art.
 CANADA_GOVERNOR_SILHOUETTE,Mountee silhouette for CA governors,ASSET,P2,TODO,Mountee (RCMP) silhouette image for unfinished Canadian governor portraits. Used as placeholder.
 MARC_PENOIT_PORTRAIT,Marc Penoit portrait (color + BW),ASSET,P2,TODO,"Draw Marc Penoit governor portrait. Save color → art assets/finishedAssets/governors/marc_penoit.png, BW variant also needed."
-FIX_CA_PROT_TRIGGERS,Wire CA protector summon triggers,CODE,P2,TODO,event_triggers.csv — add 8 rows for CA_PROT_01 through CA_PROT_08 SUMMON events (protector_summon type).
+FIX_CA_PROT_TRIGGERS,Wire CA protector summon triggers,CODE,P2,DONE,event_triggers.csv — add 8 rows for CA_PROT_01 through CA_PROT_08 SUMMON events (protector_summon type).
 French Language Rights,CA Law: French Language Rights,LAW,P2,TODO,
 French Cultural Identity Enshrined,CA Law: French Cultural Identity,LAW,P2,TODO,
 Louis Riel,CA Icon: Louis Riel,ICON,P2,TODO,
