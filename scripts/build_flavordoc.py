@@ -357,7 +357,7 @@ ICONS = [
     # ── USA Tier 1 (Founding Era) ─────────────────────────────────────────────
     ("USA", "Tier 1 – Founding", "George Washington",  "1732–1799",
      "Ualani: Spirit of the General — friendly units adjacent to Ualani gain +15% Attack",
-     "Crossing of the Delaware", "FIRST PASS",
+     "Crossing of the Delaware", "FULL PASS",
      "Continental Army commander. Grants Ualani the Spirit of the General aura mil mod."),
     ("USA", "Tier 1 – Founding", "Benjamin Franklin",  "1706–1790",
      "Library: +1 Science · Workshop: +1 Gold",
