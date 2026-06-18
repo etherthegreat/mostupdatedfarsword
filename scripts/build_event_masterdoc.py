@@ -468,7 +468,7 @@ EVENTS = [
     ("Protector","Lincoln's Ghost","PROT_17_SUMMON",
      "LINCOLN'S GHOST APPEARS IN WASHINGTON",
      "Root","—","→ PROT_17_TAME",
-     "FIRST PASS","lincolns_ghost","Integrated","NO","","0",
+     "FULL COMPLETION","lincolns_ghost","Integrated","NO","","0",
      "Wild: +1 corruption/turn 25% chance; fires turn 90+"),
     ("Protector","Lincoln's Ghost","PROT_17_TAME",
      "LINCOLN'S GHOST — ROOFTOP ACCORDS",
