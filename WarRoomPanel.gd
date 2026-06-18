@@ -234,6 +234,21 @@ func setupAllProtectors(allTiles: Array, country_id: String = "") -> void:
 			]
 			arcData["agree_prayers_complete"] = [false, false, false]
 			arcData["prot08_phase"] = "tame"
+		# PROT_17 (Lincoln's Ghost) — single objective: level-6 Courthouse in DC
+		if pid == "PROT_17":
+			arcData["prayers"] = [
+				{
+					"label": "Build a level 6 Courthouse in Washington DC (tile 188)",
+					"prayer_type": "building_level_in_tile",
+					"tile_id": 188,
+					"building_type": "courthouse",
+					"min_level": 6,
+				},
+				{"label": "", "prayer_type": "auto_complete"},
+				{"label": "", "prayer_type": "auto_complete"},
+			]
+			arcData["prayers_complete"] = [false, true, true]
+			arcData["prot17_phase"] = "waiting_summon"
 		activeProtectorArcs.append(arcData)
 	_populate_presidential_tab()
 	print("[Protectors] ", activeProtectorArcs.size(), " protector arcs registered.")
@@ -368,6 +383,10 @@ func _check_protector_prayers(allTiles: Array, currentTurn: int) -> void:
 		if arcData.get("protector_id", "") == "PROT_08":
 			_check_prot08_prayers(arcData, currentTurn)
 			continue
+		# PROT_17 gates tame behind level-6 Courthouse in DC
+		if arcData.get("protector_id", "") == "PROT_17":
+			_check_prot17_prayers(arcData, currentTurn)
+			continue
 		if arcData["arc_complete"]:
 			continue
 		for i in range(3):
@@ -413,6 +432,28 @@ func _check_prot08_prayers(arcData: Dictionary, currentTurn: int) -> void:
 			var events = EventDatabase.evaluate_protector_triggers("PROT_08", "protector_agree", currentTurn)
 			for event_id in events:
 				emit_signal("requestEventFire", event_id, arcData.get("origin_tile"))
+
+
+func _check_prot17_prayers(arcData: Dictionary, currentTurn: int) -> void:
+	if arcData.get("arc_complete", false):
+		return
+	if playerCountryNode == null:
+		return
+	# Wait for SUMMON button to activate the arc
+	if not playerCountryNode.CountryFlags.has("prot_17_summoned"):
+		return
+	# Evaluate the single building-level prayer
+	if not arcData["prayers_complete"][0]:
+		var prayer = arcData["prayers"][0]
+		var fulfilled = _evaluate_protector_prayer(prayer, arcData, currentTurn)
+		if fulfilled:
+			arcData["prayers_complete"][0] = true
+			arcData["devotion_level"] = 100
+	if arcData["prayers_complete"][0]:
+		arcData["arc_complete"] = true
+		var events = EventDatabase.evaluate_protector_triggers("PROT_17", "protector_tame", currentTurn)
+		for event_id in events:
+			emit_signal("requestEventFire", event_id, arcData.get("origin_tile"))
 
 
 # ============================================================
@@ -609,6 +650,17 @@ func _evaluate_protector_prayer(prayer: Dictionary,
 			for tile in playerCountryNode.OwnedTileList:
 				if tile.get("dmaInvestigationPending", false):
 					return true
+			return false
+
+		"building_level_in_tile":
+			if playerCountryNode == null:
+				return false
+			var tile_id: int = prayer.get("tile_id", 0)
+			var btype: String = prayer.get("building_type", "courthouse").to_lower()
+			var min_lvl: int  = prayer.get("min_level", 6)
+			for tile in playerCountryNode.OwnedTileList:
+				if tile.tileNumber == tile_id:
+					return tile.buildings.get(btype, 0) >= min_lvl
 			return false
 
 		_:
@@ -881,7 +933,7 @@ func _get_soma_memo(protector_id: String) -> String:
 		"PROT_08":
 			return "RE: Asset Reactivation — Old Ironsides (PROT_08)\nStatus: OBSERVING\nClassification: NAUTICAL / SUPERNATURAL\nNote: Asset has been conducting unauthorized coastal patrols since 1812. Asset does not appear to require fuel. Asset does not appear to require crew. DMA field investigation recommended before formal contact. Suggest complimentary remarks about hull integrity. Do NOT mention the British."
 		"PROT_17":
-			return "RE: Consultation Request — Lincoln's Ghost (PROT_17)\nStatus: PENDING DC LIBERATION\nNote: Asset has been on-site since 1865. Asset will not require briefing. Asset has opinions about the memos. Most of them are correct."
+			return "RE: Consultation Request — Lincoln's Ghost (PROT_17)\nStatus: OBSERVING\nClassification: SUPERNATURAL / HISTORICAL\nNote: Asset has been on-site since 1865. Asset will not require briefing. Asset has opinions about the memos. Most of them are correct. DMA recommends formal contact once a level 6 Courthouse is operational in Washington DC."
 		_:
 			return "RE: Asset Acquisition Request — [CLASSIFIED]\nStatus: Pending\nNote: See attached procurement forms. There are many forms."
 

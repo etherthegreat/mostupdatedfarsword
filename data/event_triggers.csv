@@ -84,3 +84,5 @@ TRIG_082,ARC_25_FIRST,commander_objective,0,,0,0,0,9999,,ARC_25,,1,2
 TRIG_083,ARC_25_DONE,commander_objective,0,,0,0,0,9999,,ARC_25,,3,2
 TRIG_085,PROT_08_TAME,protector_tame,0,,0,0,0,9999,,,PROT_08,,1
 TRIG_086,PROT_08_AGREE,protector_agree,0,,0,0,0,9999,,,PROT_08,,1
+TRIG_087,PROT_17_TAME,protector_tame,0,,0,0,0,9999,,,PROT_17,,1
+TRIG_088,PROT_17_AGREE,protector_agree,0,,0,0,0,9999,,,PROT_17,,1
