@@ -74,6 +74,14 @@ func _build_buttons() -> void:
 		if prereq != "" and not _check_prerequisite(prereq):
 			continue
 
+		var btype: String = btn_data.get("button_type", "standard")
+		if btype == "explicit"    and not Settings.content_explicit:
+			continue
+		if btype == "kinky_lewd"  and not Settings.content_kinky_lewd:
+			continue
+		if btype == "sensual"     and not Settings.content_sensual:
+			continue
+
 		var newButton = Button.new()
 		newButton.text = btn_data.get("button_text", "Choose")
 		newButton.name = btn_data.get("button_id", "btn")
