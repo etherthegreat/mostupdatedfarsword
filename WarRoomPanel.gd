@@ -234,7 +234,7 @@ func setupAllProtectors(allTiles: Array, country_id: String = "") -> void:
 			]
 			arcData["agree_prayers_complete"] = [false, false, false]
 			arcData["prot08_phase"] = "tame"
-		# PROT_17 (Lincoln's Ghost) — single objective: level-6 Courthouse in DC
+		# PROT_17 (Lincoln's Ghost) — two-phase arc gated by flags
 		if pid == "PROT_17":
 			arcData["prayers"] = [
 				{
@@ -248,6 +248,16 @@ func setupAllProtectors(allTiles: Array, country_id: String = "") -> void:
 				{"label": "", "prayer_type": "auto_complete"},
 			]
 			arcData["prayers_complete"] = [false, true, true]
+			arcData["agree_prayers"] = [
+				{
+					"label": "Build a level 8 Monument in Washington DC (tile 188)",
+					"prayer_type": "building_level_in_tile",
+					"tile_id": 188,
+					"building_type": "monument",
+					"min_level": 8,
+				},
+			]
+			arcData["agree_prayers_complete"] = [false]
 			arcData["prot17_phase"] = "waiting_summon"
 		activeProtectorArcs.append(arcData)
 	_populate_presidential_tab()
@@ -439,21 +449,34 @@ func _check_prot17_prayers(arcData: Dictionary, currentTurn: int) -> void:
 		return
 	if playerCountryNode == null:
 		return
-	# Wait for SUMMON button to activate the arc
-	if not playerCountryNode.CountryFlags.has("prot_17_summoned"):
-		return
-	# Evaluate the single building-level prayer
-	if not arcData["prayers_complete"][0]:
-		var prayer = arcData["prayers"][0]
-		var fulfilled = _evaluate_protector_prayer(prayer, arcData, currentTurn)
-		if fulfilled:
-			arcData["prayers_complete"][0] = true
-			arcData["devotion_level"] = 100
-	if arcData["prayers_complete"][0]:
-		arcData["arc_complete"] = true
-		var events = EventDatabase.evaluate_protector_triggers("PROT_17", "protector_tame", currentTurn)
-		for event_id in events:
-			emit_signal("requestEventFire", event_id, arcData.get("origin_tile"))
+	var phase: String = arcData.get("prot17_phase", "waiting_summon")
+	match phase:
+		"waiting_summon":
+			if playerCountryNode.CountryFlags.has("prot_17_summoned"):
+				arcData["prot17_phase"] = "tame"
+		"tame":
+			if not arcData["prayers_complete"][0]:
+				var fulfilled = _evaluate_protector_prayer(arcData["prayers"][0], arcData, currentTurn)
+				if fulfilled:
+					arcData["prayers_complete"][0] = true
+					arcData["devotion_level"] = min(100, arcData["devotion_level"] + 50)
+					arcData["prot17_phase"] = "waiting_tame"
+					var events = EventDatabase.evaluate_protector_triggers("PROT_17", "protector_tame", currentTurn)
+					for event_id in events:
+						emit_signal("requestEventFire", event_id, arcData.get("origin_tile"))
+		"waiting_tame":
+			if playerCountryNode.CountryFlags.has("prot_17_tame"):
+				arcData["prot17_phase"] = "agree"
+		"agree":
+			if not arcData["agree_prayers_complete"][0]:
+				var fulfilled = _evaluate_protector_prayer(arcData["agree_prayers"][0], arcData, currentTurn)
+				if fulfilled:
+					arcData["agree_prayers_complete"][0] = true
+					arcData["devotion_level"] = 100
+					arcData["arc_complete"] = true
+					var events = EventDatabase.evaluate_protector_triggers("PROT_17", "protector_agree", currentTurn)
+					for event_id in events:
+						emit_signal("requestEventFire", event_id, arcData.get("origin_tile"))
 
 
 # ============================================================

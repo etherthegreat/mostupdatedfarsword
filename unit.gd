@@ -485,7 +485,9 @@ func takeLosses(type: String, amount: float) -> void:
 	if unitWeapon != null and unitWeapon.weaponClass == "Musket":
 		for mm in militaryModifierList:
 			if mm.milModType == "Red Badge of Courage" and not mm.disabled:
-				amount *= 0.95
+				var has_lincoln_accord = (playerCountry != null and
+						playerCountry.CountryFlags.has("prot_17_agreed"))
+				amount *= 0.90 if has_lincoln_accord else 0.95
 				break
 	match type:
 		"melee":
