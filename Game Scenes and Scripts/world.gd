@@ -980,6 +980,7 @@ func generateBarracksCommanders() -> void:
 		baseball.buildSelf("Baseball Legend", 1)
 		playerCountryNode.unlockedGovernors.append(baseball)
 
+	governor.reset_portrait_pool()
 	var used_names: Dictionary = {}
 	var generated: int = 0
 
@@ -1008,24 +1009,21 @@ func generateBarracksCommanders() -> void:
 					candidates.append(arch)
 		if candidates.is_empty():
 			candidates = ARCHETYPES
-		var chosen: Dictionary = candidates[randi() % candidates.size()]
+		var arch_chosen: Dictionary = candidates[randi() % candidates.size()]
 
-		# ── Pick name pool ────────────────────────────────────────────────
-		var pool_id: String = chosen["pools"][randi() % chosen["pools"].size()]
-		var pool: Dictionary = NAME_POOLS.get(pool_id, NAME_POOLS["NP_01"])
+		# ── Pick portrait first — portrait drives name, pronouns, culture ────
+		var new_gov: governor = governor.new()
+		var portrait_data: Dictionary = new_gov.pick_procedural_portrait()
+		new_gov.culture  = portrait_data["culture"]
+		new_gov.pronouns = portrait_data["pronouns"]
+		new_gov.governorTexture = load(portrait_data["path"])
 
-		# Gender: 0 = m, 1 = f, 2 = nb
-		var gender: int = randi() % 3
-		var first_list: Array
-		match gender:
-			0: first_list = pool["m"]
-			1: first_list = pool["f"]
-			_: first_list = pool["nb"]
-		var last_list: Array = pool.get("l", [])
+		var first_list: Array = portrait_data["first"]
+		var last_list: Array  = portrait_data["last"]
 
 		var first: String = first_list[randi() % first_list.size()]
 		var last: String  = ""
-		if last_list.size() > 0 and last_list[0] != "":
+		if last_list.size() > 0:
 			last = last_list[randi() % last_list.size()]
 
 		var full_name: String = (first + " " + last).strip_edges()
@@ -1038,20 +1036,21 @@ func generateBarracksCommanders() -> void:
 			tries += 1
 		used_names[full_name] = true
 
-		# ── Build governor ────────────────────────────────────────────────
-		var new_gov: governor = governor.new()
-		new_gov.governorType       = full_name           # display name shown in UI
-		new_gov.governorArchetypeId = chosen["id"]       # archetype for War Room matching
-		new_gov.governorPosition   = chosen["position"]  # role title (SCOUT, ORATOR, …)
-		new_gov.governorLevel      = 1
-		_apply_archetype_mods(new_gov, chosen["id"])
+		# ── Configure governor from archetype ─────────────────────────────
+		new_gov.governorType        = full_name
+		new_gov.governorArchetypeId = arch_chosen["id"]
+		new_gov.governorPosition    = arch_chosen["position"]
+		new_gov.governorLevel       = 1
+		_apply_archetype_mods(new_gov, arch_chosen["id"])
+		var subj: String = portrait_data["pronouns"].get("subject", "they")
+		var subj_cap: String = subj.substr(0, 1).to_upper() + subj.substr(1)
 		new_gov.governorDescription = \
-			"A " + chosen["name"] + " who answered the revolution's call from " + tile.tileName + "."
-		new_gov.governorBiography  = \
+			"A " + arch_chosen["name"] + " who answered the revolution's call from " + tile.tileName + "."
+		new_gov.governorBiography = \
 			full_name + " came from " + tile.tileName + " (" + tile.terrain + "). " + \
-			"They carry the skills of " + chosen["name"] + " into the fight for independence."
-		new_gov.governorTexture    = new_gov._get_portrait(new_gov.governorType)
-		new_gov.hired              = false
+			subj_cap + " carr" + ("ies" if subj == "he" or subj == "she" else "y") + \
+			" the skills of " + arch_chosen["name"] + " into the fight for independence."
+		new_gov.hired = false
 
 		# Add to player's unlocked governor pool
 		playerCountryNode.unlockedGovernors.append(new_gov)
