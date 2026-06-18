@@ -26,6 +26,9 @@ var tileMilModifiers: Array = []  # all military modifiers for this tile
 @export var isCoastal: bool = false
 # hasMysteriousShipRaids: set in the editor on affected coastal tiles; applies -2 dollars per building
 @export var hasMysteriousShipRaids: bool = false
+# hasMysteriousOrations: set in the editor on Washington DC (tile 188); applies -1 mandate per building
+# until PROT_17 (Lincoln's Ghost) is summoned via DMA investigation
+@export var hasMysteriousOrations: bool = false
 # dmaInvestigationPending: set true when a DMA-badge civilian investigates this tile;
 # world.gd checks this at turn start and fires the associated protector summon event
 var dmaInvestigationPending: bool = false
@@ -608,6 +611,13 @@ func censusTile(playerCountryNode):
 			if b.enabled:
 				active_count += 1
 		buildingDollarsOutput -= 2.0 * float(active_count)
+	# Mysterious Orations: -1 mandate per active building per turn
+	if hasMysteriousOrations:
+		var active_count: int = 0
+		for b in tileBuildingsList:
+			if b.enabled:
+				active_count += 1
+		buildingMandateOutput -= active_count
 	_apply_output_reductions()
 	tileFoodDic.clear();      tileDollarsDic.clear();   tileWoodDic.clear()
 	tileMetalDic.clear();     tileMagicDic.clear();     tileCultureDic.clear()
@@ -1953,6 +1963,15 @@ func calculateDynamicModifiers() -> void:
 		shipMod.modName = "MysteriousShipRaids"
 		shipMod.buildTileEcoMod()
 		tileEcoModifiers.append(shipMod)
+
+	# --- MYSTERIOUS ORATIONS ---
+	# Washington DC (tile 188) sets hasMysteriousOrations = true in the editor;
+	# cleared when Lincoln's Ghost is summoned via DMA investigation (PROT_17_SUMMON fires)
+	if hasMysteriousOrations:
+		var orationMod = tileEcoModifier.new()
+		orationMod.modName = "MysteriousOrations"
+		orationMod.buildTileEcoMod()
+		tileEcoModifiers.append(orationMod)
 
 
 #===============

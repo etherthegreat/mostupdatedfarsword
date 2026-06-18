@@ -2619,6 +2619,7 @@ func evaluateDateEvents() -> void:
 		_tick_wild_ca_protectors()
 		_check_protector_summons()
 		_check_prot08_dma_summon()
+		_check_prot17_dma_summon()
 		_tick_commander_turns()
 		_check_arc01_objectives()
 		_tick_arc03_cultural_corps()
@@ -4489,8 +4490,8 @@ func _tick_wild_protectors() -> void:
 
 func _check_protector_summons() -> void:
 	for pid in PROTECTOR_IDS:
-		if pid == "PROT_08":
-			continue  # PROT_08 summon is gated by DMA investigation, not the turn timer
+		if pid == "PROT_08" or pid == "PROT_17":
+			continue  # DMA-investigation gated — handled by dedicated summon functions
 		if not _is_protector_wild(pid):
 			continue
 		var min_turn: int = PROTECTOR_SUMMON_TURNS.get(pid, 999)
@@ -4510,10 +4511,10 @@ func _check_prot08_dma_summon() -> void:
 		return
 	if _event_on_cooldown("PROT_08_SUMMON"):
 		return
-	# Scan player-owned tiles for a pending DMA investigation
+	# Scan player-owned tiles for a pending DMA investigation on a ship-raid tile
 	var dma_tile = null
 	for tile in playerCountryNode.OwnedTileList:
-		if tile.get("dmaInvestigationPending", false):
+		if tile.get("dmaInvestigationPending", false) and tile.get("hasMysteriousShipRaids", false):
 			dma_tile = tile
 			tile.dmaInvestigationPending = false  # consume the flag
 			break
@@ -4522,6 +4523,25 @@ func _check_prot08_dma_summon() -> void:
 	_start_cooldown("PROT_08_SUMMON", 9999)  # fires once
 	createNewEvent("PROT_08_SUMMON", dma_tile)
 	print("[Protector] PROT_08_SUMMON fired via DMA investigation at ", dma_tile.tileName)
+
+
+func _check_prot17_dma_summon() -> void:
+	if not _is_protector_wild("PROT_17"):
+		return
+	if _event_on_cooldown("PROT_17_SUMMON"):
+		return
+	# Scan player-owned tiles for a pending DMA investigation on the DC oration tile
+	var dma_tile = null
+	for tile in playerCountryNode.OwnedTileList:
+		if tile.get("dmaInvestigationPending", false) and tile.get("hasMysteriousOrations", false):
+			dma_tile = tile
+			tile.dmaInvestigationPending = false  # consume the flag
+			break
+	if dma_tile == null:
+		return
+	_start_cooldown("PROT_17_SUMMON", 9999)  # fires once
+	createNewEvent("PROT_17_SUMMON", dma_tile)
+	print("[Protector] PROT_17_SUMMON fired via DMA investigation at ", dma_tile.tileName)
 
 
 # ── CANADIAN PROTECTOR CHECKS ────────────────────────────────────────────────
