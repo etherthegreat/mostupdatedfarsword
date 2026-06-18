@@ -485,8 +485,8 @@ EVENTS = [
     ("Commander","Commander Arc","CMD_MERIT",
      "FIELD PROMOTION: [COMMANDER_NAME] DISTINGUISHED IN EARLY OPERATIONS",
      "Root","—","—",
-     "FIRST PASS","","Not Started","NO","","0",
-     "Fires at governorLevel==1 after 5 turns stationed; promote_commander BTN1; morale_boost BTN2"),
+     "FULL COMPLETION","","Not Started","NO","","0",
+     "DROPPED — arc redesigned to XP system; entry begins at CMD_RECOGNITION (50 XP)"),
 
     ("Commander","Commander Arc","CMD_RECOGNITION",
      "CITATION FOR EXCEPTIONAL SERVICE: [COMMANDER_NAME] AT [TILE_NAME]",
