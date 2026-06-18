@@ -2213,10 +2213,10 @@ func _apply_abnormal_modifiers() -> void:
 				if buildingType != "Dock" and buildingType != "Barracks":
 					totalBuildingManpower -= 10
 					manpowerDic["Icon: Agnes Macphail"] = -10
-					if buildingType in ["Farm", "Camp", "Mine", "Forge"]:
+					if buildingType in ["Farm", "Camp", "Mine", "Forge", "Granary"]:
 						totalBuildingCulture += 1
 						cultureDic["Icon: Agnes Macphail"] = 1
-					elif buildingType in ["Library", "Monument", "Courthouse", "Market"]:
+					elif buildingType in ["Library", "Monument", "Courthouse", "Market", "Resort"]:
 						totalBuildingScience += 1
 						scienceDic["Icon: Agnes Macphail"] = 1
 				break

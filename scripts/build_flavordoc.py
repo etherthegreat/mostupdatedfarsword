@@ -452,7 +452,7 @@ ICONS = [
      "—", "IDEA",
      "First French-Canadian PM. Liberal economic prosperity and national pride."),
     ("CA", "Tier 1 – Founding", "Agnes Macphail",             "1890–1954",
-     "Courthouse: +1 Mandate/level · Library: +1 Culture/level · All buildings (not Dock/Barracks): −10 Manpower flat · Farms/Camps/Mines/Forges: +1 Culture flat · Libraries/Monuments/Courthouses/Markets: +1 Science flat",
+     "Courthouse: +1 Mandate/level · Library: +1 Culture/level · All buildings (not Dock/Barracks): −10 Manpower flat · Farms/Camps/Mines/Forges/Granaries: +1 Culture flat · Libraries/Monuments/Courthouses/Markets/Resorts: +1 Science flat",
      "—", "FIRST PASS",
      "She was told she didn't belong there. She went anyway, and then she went back, and then she went back again — six consecutive terms. The first woman elected to the House of Commons, she spent her career arguing that democracy only works if it actually includes people. Her influence doesn't make armies larger — it redirects people toward learning, culture, and civic life. Every building that isn't a barracks or a dock loses ten soldiers to the library, the courthouse, the field school. In exchange, the Republic thinks harder and builds more deliberately."),
     ("CA", "Tier 1 – Founding", "Laura Secord",               "1775–1868",
