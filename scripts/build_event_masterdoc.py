@@ -413,22 +413,6 @@ EVENTS = [
      "FIRST PASS","","Not Started","YES","","0",
      "Sets prot_13_agreed; BTN2 explicit gated"),
 
-    # Mount Rushmore
-    ("Protector","Mount Rushmore","PROT_14_SUMMON",
-     "MOUNT RUSHMORE AWAKENS",
-     "Root","—","→ PROT_14_TAME",
-     "FIRST PASS","rushmore_awakens","Not Started","YES","kinky_lewd","0",
-     "Wild: +1 corruption/turn 25% chance; fires turn 75+; kinky_lewd gated"),
-    ("Protector","Mount Rushmore","PROT_14_TAME",
-     "MOUNT RUSHMORE COUNCIL REACHES INTERNAL CONSENSUS — DEBATES FORMALIZED",
-     "Branch","PROT_14_SUMMON","→ PROT_14_AGREE (next_event_id)",
-     "FIRST PASS","","Not Started","NO","","0",
-     "Sets prot_14_tame flag; immediately chains to AGREE"),
-    ("Protector","Mount Rushmore","PROT_14_AGREE",
-     "THE RUSHMORE COUNCIL FORMALLY ENDORSES PRESIDENT CARLISLE",
-     "Followup","PROT_14_TAME","—",
-     "FIRST PASS","","Not Started","YES","kinky_lewd","0",
-     "Sets prot_14_agreed; BTN2 kinky_lewd gated"),
 
     # Skunk Ape
     ("Protector","Skunk Ape","PROT_15_SUMMON",
@@ -1734,11 +1718,6 @@ EVENTS += [
      "IDEA","","N/A","NO","","0",
      "Stub — author intimate version of PROT_13_AGREE. By morning: emotional arc, no explicit imagery."),
 
-    ("Protector","Mount Rushmore","PROT_14_AGREE_INTIMATE",
-     "THE RUSHMORE COUNCIL FORMALLY ENDORSES PRESIDENT CAR... — BY MORNING",
-     "Chain","PROT_14_AGREE (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of PROT_14_AGREE. By morning: emotional arc, no explicit imagery."),
 
     ("Protector","Skunk Ape","PROT_15_AGREE_INTIMATE",
      "SKUNK APE FORMALLY PATROLS FLORIDA FOR THE CONTINENT... — BY MORNING",

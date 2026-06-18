@@ -141,20 +141,7 @@ const GALLERY_CATALOG := [
 		"art_path": "",
 		"flavor":   "The agreement required no words. The words came anyway.",
 	},
-	{
-		"event_id": "PROT_14_SUMMON",
-		"title":    "Rushmore Awakens",
-		"hint":     "Begin the Mount Rushmore protector arc (Gettysburg region)",
-		"art_path": "",
-		"flavor":   "All four have arrived and they are already arguing.",
-	},
-	{
-		"event_id": "PROT_14_AGREE",
-		"title":    "The Presidential Council",
-		"hint":     "Complete the Mount Rushmore protector arc and accept the endorsement",
-		"art_path": "",
-		"flavor":   "They came to a vote. The vote was unanimous. Lincoln broke the tie.",
-	},
+
 ]
 
 var _tile_scene = preload("res://GalleryTile.tscn")

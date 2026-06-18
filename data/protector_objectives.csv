@@ -12,7 +12,7 @@ PROT_10,Snallygaster,dynamic,0,MD,Foothills,metal,15,25,3
 PROT_11,Paul Revere,dynamic,0,MA,Suburbs,culture,20,35,3
 PROT_12,Liberty Bell,fixed,2,PA,Metro,dollars,30,50,4
 PROT_13,Green Mountain Ghost,dynamic,0,VT,Foothills,happiness,20,35,2
-PROT_14,Mount Rushmore,dynamic,0,,Metro,mandate,25,40,5
+
 PROT_15,Skunk Ape,dynamic,0,FL,Wetlands,food,15,25,2
 PROT_16,Eternal Minuteman,fixed,61,MA,Suburbs,manpower,30,50,3
 PROT_17,Lincoln's Ghost,fixed,188,DC,Metro,mandate,20,35,3

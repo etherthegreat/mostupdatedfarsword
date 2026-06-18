@@ -103,11 +103,7 @@ func newGameSpellAssignment():
 			spellSprite = load("res://art assets/Placeholder Art/Spells/Health Potion.PNG")
 			spellCastCost = 30
 			spellShortDescription = "The Green Mountain Ghost haunts your forests in a professional capacity, encouraging settlers to greater productivity through nocturnal visitations. Settlers report working harder, sleeping less, and declining to elaborate on specifics."
-		"MONUMENT-BASED ECONOMIC STIMULUS PACKAGE":      # PROT_14 Mount Rushmore
-			militarySpell = false
-			spellSprite = load("res://art assets/Placeholder Art/Spells/Draught of Knowledge.PNG")
-			spellCastCost = 65
-			spellShortDescription = "The four stone presidents gaze upon our commerce. Washington approves. Jefferson has seen things. Roosevelt is very excited about all of it. Lincoln looks as though he has been told something he cannot un-know."
+
 		"FLORIDA CRYPTID INTEGRATION TASK FORCE":        # PROT_15 Skunk Ape
 			militarySpell = false
 			spellSprite = load("res://art assets/Placeholder Art/Spells/Draught of Knowledge.PNG")

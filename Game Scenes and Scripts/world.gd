@@ -63,7 +63,7 @@ const VP_FACTION_MAP: Dictionary = {
 const PROTECTOR_IDS: Array = [
 	"PROT_01", "PROT_02", "PROT_03", "PROT_04", "PROT_05",
 	"PROT_06", "PROT_07", "PROT_08", "PROT_09", "PROT_10",
-	"PROT_11", "PROT_12", "PROT_13", "PROT_14", "PROT_15",
+	"PROT_11", "PROT_12", "PROT_13", "PROT_15",
 	"PROT_16", "PROT_17"
 ]
 
@@ -71,7 +71,7 @@ const PROTECTOR_SUMMON_TURNS: Dictionary = {
 	"PROT_01": 10,  "PROT_02": 15,  "PROT_03": 20,  "PROT_04": 25,
 	"PROT_05": 30,  "PROT_06": 35,  "PROT_07": 40,  "PROT_08": 45,
 	"PROT_09": 50,  "PROT_10": 55,  "PROT_11": 60,  "PROT_12": 65,
-	"PROT_13": 70,  "PROT_14": 75,  "PROT_15": 80,  "PROT_16": 85,
+	"PROT_13": 70,  "PROT_15": 80,  "PROT_16": 85,
 	"PROT_17": 90
 }
 
@@ -91,7 +91,7 @@ const USA_PROT_TILES: Dictionary = {
 	"PROT_11":  61,   # Paul Revere           — Lexington, MA (Lexington Cry)
 	"PROT_12":   2,   # Liberty Bell          — Philadelphia, PA (Liberty Bell)
 	"PROT_13":  80,   # Green Mountain Ghost  — Montpelier, VT (Green Mountains)
-	"PROT_14":  11,   # Mount Rushmore        — Gettysburg, PA (monument landmark)
+
 	"PROT_15": 177,   # Skunk Ape             — Gainesville, FL (Wetlands)
 	"PROT_16":  71,   # Eternal Minuteman     — Springfield, MA (Gun Valley / Armory)
 	"PROT_17": 188,   # Lincoln's Ghost       — Washington, DC (White House)
@@ -2092,7 +2092,6 @@ func _protector_id_to_name(pid: String) -> String:
 		"PROT_11": return "Paul Revere"
 		"PROT_12": return "Liberty Bell"
 		"PROT_13": return "Green Mountain Ghost"
-		"PROT_14": return "Mount Rushmore"
 		"PROT_15": return "Skunk Ape"
 		"PROT_16": return "Eternal Minuteman"
 		"PROT_17": return "Lincoln's Ghost"
@@ -2114,7 +2113,6 @@ func _protector_id_to_school(pid: String) -> String:
 		"PROT_05", "PROT_13", "PROT_17":                        return "spectral"
 		"PROT_08", "PROT_09", "PROT_16":                        return "iron"
 		"PROT_11", "PROT_12":                                   return "liberty"
-		"PROT_14":                                              return "manifest"
 	return "manifest"
 
 
@@ -2133,7 +2131,6 @@ func _protector_id_to_spell(pid: String) -> String:
 		"PROT_11": return "MIDNIGHT EMERGENCY MOBILIZATION ORDER"
 		"PROT_12": return "FREEDOM RESONANCE AMPLIFICATION DECREE"
 		"PROT_13": return "RURAL SPECTRAL INVESTMENT INITIATIVE"
-		"PROT_14": return "MONUMENT-BASED ECONOMIC STIMULUS PACKAGE"
 		"PROT_15": return "FLORIDA CRYPTID INTEGRATION TASK FORCE"
 		"PROT_16": return "PERMANENT READINESS MANDATE (EXPIRES NEVER)"
 		"PROT_17": return "EMANCIPATION PROCLAMATION 2: STILL EMANCIPATING"
@@ -5049,7 +5046,6 @@ func _get_spell_school(spell_name: String) -> String:
 		"FREEDOM RESONANCE AMPLIFICATION DECREE",
 		"RURAL SPECTRAL INVESTMENT INITIATIVE",
 		"EMANCIPATION PROCLAMATION 2: STILL EMANCIPATING": return "liberty"
-		"MONUMENT-BASED ECONOMIC STIMULUS PACKAGE": return "manifest"
 		"HEADLESS HORSEMAN": return "spectral"
 		_: return "manifest"
 

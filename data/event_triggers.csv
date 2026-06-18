@@ -14,7 +14,7 @@ TRIG_011,CX_005,tile_lost,11,UK,0,0,0,9999,,,,,2
 TRIG_012,SL_001,state_liberated,0,,0,0,0,9999,PA,,,,2
 TRIG_013,SL_004,state_liberated,0,,0,0,0,9999,VT,,,,2
 TRIG_014,PROT_01_SUMMON,protector_summon,0,,0,0,0,9999,,,PROT_01,,1
-TRIG_015,PROT_14_SUMMON,protector_summon,0,,0,0,0,9999,,,PROT_14,,1
+
 
 TRIG_018,PROT_02_SUMMON,protector_summon,0,,0,0,0,9999,,,PROT_02,,1
 TRIG_019,PROT_03_SUMMON,protector_summon,0,,0,0,0,9999,,,PROT_03,,1

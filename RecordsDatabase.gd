@@ -910,9 +910,6 @@ func _register_all() -> void:
 		"Green Mountain Haunting: +20 Block, +15 Ranged Defence.",
 		{"see_also": ["PROT_13"]})
 
-	_add("milmod_presidential_decree", "Military Modifiers", "Presidential Decree",
-		"Presidential Decree: +20 Attack, +20 Block, +15 Ranged, +15 Defence.",
-		{"see_also": ["PROT_14"]})
 
 	_add("milmod_skunk_ape", "Military Modifiers", "Skunk Ape's Domain",
 		"Skunk Ape's Domain: +20 Attack, +15 Block.",
@@ -1120,9 +1117,6 @@ func _register_all() -> void:
 		"The mountains of Vermont are haunted by something patriotic and enormous. It has opinions about taxation.",
 		"PROT_13")
 
-	_add_mystery("PROT_14", "Protectors",
-		"The faces in the rock at Gettysburg open their eyes sometimes. Only sometimes. But when they do, they are looking south.",
-		"PROT_14")
 
 	_add_mystery("PROT_15", "Protectors",
 		"The Everglades hold something enormous and foul-smelling that the local Seminole call very old. They do not explain further.",

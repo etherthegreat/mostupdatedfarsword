@@ -579,7 +579,7 @@ EVENTS_DATA = [
      "SUMMON fires via _check_protector_summons() with wild corruption risk 25%/turn. "
      "All 17 protectors: Mothman, Jersey Devil, Bigfoot, Thunderbird, Headless Horseman, "
      "Chessie, Bell Witch, Old Ironsides, Valley Forge Spirit, Snallygaster, Paul Revere, "
-     "Liberty Bell, Green Mountain Boys, Mount Rushmore Spirits, Skunk Ape, "
+     "Liberty Bell, Green Mountain Boys, Skunk Ape, "
      "Eternal Minuteman, Lincoln's Ghost. "
      "Staggered turn thresholds per protector.",
      ""),
@@ -866,7 +866,7 @@ EXPLICIT_SYSTEM_ROWS = [
     ("Explicit Events in events.csv","FULL PASS",
      "CMD_THANKS (explicit), FORT_005 (explicit), PROT_01_SUMMON (kinky_lewd), "
      "CAN_PEACE_01 (explicit), WH_SECRET_07 (explicit). "
-     "PROT_01_AGREE, PROT_14_AGREE, PROT_14_SUMMON also kinky_lewd flagged."),
+     "PROT_01_AGREE also kinky_lewd flagged."),
 ]
 
 

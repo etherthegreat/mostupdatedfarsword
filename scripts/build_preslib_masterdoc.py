@@ -233,17 +233,7 @@ GALLERY_DATA = [
      "The agreement required no words. The words came anyway.",
      "FIRST PASS", "Not Started", "", ""),
 
-    ("Protector Arcs", "PROT_14_SUMMON", "Rushmore Awakens",
-     "kinky",
-     "Begin the Mount Rushmore protector arc (Gettysburg region)",
-     "All four have arrived and they are already arguing.",
-     "FIRST PASS", "Not Started", "", ""),
 
-    ("Protector Arcs", "PROT_14_AGREE", "The Presidential Council",
-     "kinky",
-     "Complete the Mount Rushmore protector arc and accept the endorsement",
-     "They came to a vote. The vote was unanimous. Lincoln broke the tie.",
-     "FIRST PASS", "Not Started", "", ""),
 ]
 
 
@@ -931,9 +921,7 @@ RECORDS_DATA = [
     ("Military Modifiers","milmod_green_mountain","Green Mountain Haunting","Regular",
      "Green Mountain Haunting: +20 Block, +15 Ranged Defence.",
      "",False,"FIRST PASS","","Protectors: Green Mountain (PROT_13)"),
-    ("Military Modifiers","milmod_presidential_decree","Presidential Decree","Regular",
-     "Presidential Decree: +20 Attack, +20 Block, +15 Ranged, +15 Defence.",
-     "",False,"FIRST PASS","","Protectors: Presidential Decree (PROT_14)"),
+
     ("Military Modifiers","milmod_skunk_ape","Skunk Ape's Domain","Regular",
      "Skunk Ape's Domain: +20 Attack, +15 Block.",
      "",False,"FIRST PASS","","Protectors: Skunk Ape (PROT_15)"),
@@ -1374,9 +1362,7 @@ RECORDS_DATA = [
     ("Protectors","PROT_13","???","Mystery",
      "The mountains of Vermont are haunted by something patriotic and enormous. It has opinions about taxation.",
      "PROT_13",False,"FIRST PASS","Green Mountain giant (Ethan Allen). Revealed entry not yet written.",""),
-    ("Protectors","PROT_14","???","Mystery",
-     "The faces in the rock at Gettysburg open their eyes sometimes. Only sometimes. But when they do, they are looking south.",
-     "PROT_14",False,"FIRST PASS","Mount Rushmore (anachronistic). Revealed entry not yet written.",""),
+
     ("Protectors","PROT_15","???","Mystery",
      "The Everglades hold something enormous and foul-smelling that the local Seminole call very old. They do not explain further.",
      "PROT_15",False,"FIRST PASS","Skunk Ape. Revealed entry not yet written.",""),
