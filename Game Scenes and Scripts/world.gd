@@ -4959,8 +4959,7 @@ func _check_win_conditions() -> void:
 		var is_allied: bool = playerCountryNode.CountryFlags.has("can_allied")
 		var ca_peace:  bool = uk_country.CountryFlags.has("uk_ca_peace")
 		if usa_peace and (not is_allied or ca_peace):
-			_game_ended = true
-			print("[WinCon] Peace treaty victory.")
+			_trigger_game_over(true, "The Crown has acknowledged the Republic. Peace is signed.")
 			return
 
 	# Military victory: no UK-owned tiles remain anywhere on the map
@@ -4970,8 +4969,7 @@ func _check_win_conditions() -> void:
 			uk_tiles_remain = true
 			break
 	if not uk_tiles_remain:
-		_game_ended = true
-		print("[WinCon] Military victory — all UK tiles captured.")
+		_trigger_game_over(true, "Every Crown garrison has fallen. The continent is free.")
 
 
 func _generate_and_assign_governor(tile: Tile) -> void:
@@ -5444,7 +5442,22 @@ func tileSiegeWon(tile, oldCID: String, newCID: String) -> void:
 			createNewEvent("MEMORIAL_001", tile)
 			print("[Memorial] UK occupied special feature tile: ", tile.tileName)
 
+func _trigger_game_over(won: bool, reason: String = "") -> void:
+	if _game_ended:
+		return
+	_game_ended = true
+	print("[GameOver] won=", won, "  reason=", reason)
+	var panel = get_node_or_null("CanvasLayer/GameOverPanel")
+	if panel != null:
+		panel.show_result(won, reason)
+	else:
+		# GameOverPanel.tscn not yet instanced (GOV-001 editor task pending)
+		push_warning("[GameOver] GameOverPanel not found — result: " + ("WIN" if won else "LOSS"))
+
+
 func _on_next_turn_pressed() -> void:
+	if _game_ended:
+		return
 	# End this player's individual turn
 	_end_current_player_turn()
 
@@ -5458,7 +5471,8 @@ func _on_next_turn_pressed() -> void:
 		_turn_phase_index = 0
 		_resolve_ai_and_advance_round()
 		# Restore first player as active after round ends
-		_activate_player(_player_turn_order[0])
+		if not _game_ended:
+			_activate_player(_player_turn_order[0])
 
 # ── DATE SYSTEM ──────────────────────────────────────────────────────────────
 # Each turn represents one fortnight (14 days).
@@ -5711,7 +5725,7 @@ func _handle_president_death(commander, army_name: String, tile) -> void:
 			}
 		],
 	}
-	_game_ended = true
+	_trigger_game_over(false, name + " has fallen in battle. The Republic has no President.")
 	_create_dynamic_event(data, tile)
 
 
