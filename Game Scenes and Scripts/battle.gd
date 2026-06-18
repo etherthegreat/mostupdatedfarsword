@@ -288,7 +288,7 @@ func applyBattleResults() -> void:
 	if defender != null and defender.commander != null:
 		if battleType == "ranged":
 			if not defender_killed:
-				defender.commander.xp += 10.0
+				defender.commander.xp += 15.0
 		else:
 			defender.commander.xp += _calc_combat_xp(
 					attackerManpowerLoss, defenderManpowerLoss, attacker_killed)

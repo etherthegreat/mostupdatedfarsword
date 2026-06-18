@@ -4407,7 +4407,11 @@ func _tick_cherry_blossom_prayer() -> void:
 
 
 func _check_cmd_merit() -> void:
-	if _event_on_cooldown("CMD_MERIT"):
+	pass  # dropped — arc begins at CMD_RECOGNITION
+
+
+func _check_cmd_recognition() -> void:
+	if _event_on_cooldown("CMD_RECOGNITION"):
 		return
 	for tile in playerCountryNode.OwnedTileList:
 		if tile.tileGovernor == null or tile.stationedArmy == null:
@@ -4418,18 +4422,16 @@ func _check_cmd_merit() -> void:
 		if gov.governorLevel != 1 or gov.xp < 50.0:
 			continue
 		gov.governorLevel = 2
-		if gov.governorLevel >= 3:
-			gov.questComplete = true
 		if tile.stationedArmy != null:
 			tile.stationedArmy.updateArmyUI()
-		_start_cooldown("CMD_MERIT", 10)
-		createNewEvent("CMD_MERIT", tile)
-		print("[Commander] CMD_MERIT fired for ", gov.governorType, " (XP: ", gov.xp, ")")
+		_start_cooldown("CMD_RECOGNITION", 10)
+		createNewEvent("CMD_RECOGNITION", tile)
+		print("[Commander] CMD_RECOGNITION fired for ", gov.governorType, " (XP: ", gov.xp, ")")
 		return
 
 
-func _check_cmd_recognition() -> void:
-	if _event_on_cooldown("CMD_RECOGNITION"):
+func _check_cmd_thanks() -> void:
+	if _event_on_cooldown("CMD_THANKS"):
 		return
 	for tile in playerCountryNode.OwnedTileList:
 		if tile.tileGovernor == null or tile.stationedArmy == null:
@@ -4443,15 +4445,10 @@ func _check_cmd_recognition() -> void:
 		gov.questComplete = true
 		if tile.stationedArmy != null:
 			tile.stationedArmy.updateArmyUI()
-		_start_cooldown("CMD_RECOGNITION", 10)
-		createNewEvent("CMD_RECOGNITION", tile)
-		print("[Commander] CMD_RECOGNITION fired for ", gov.governorType, " (XP: ", gov.xp, ")")
+		_start_cooldown("CMD_THANKS", 999)
+		createNewEvent("CMD_THANKS", tile)
+		print("[Commander] CMD_THANKS fired for ", gov.governorType, " (XP: ", gov.xp, ")")
 		return
-
-
-func _check_cmd_thanks() -> void:
-	# CMD_THANKS now chains from CMD_RECOGNITION BTN1 — no independent XP gate
-	pass
 
 
 # ── WILD PROTECTOR SYSTEM ────────────────────────────────────────
