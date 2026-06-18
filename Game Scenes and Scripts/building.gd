@@ -2210,7 +2210,7 @@ func _apply_abnormal_modifiers() -> void:
 			if belief.beliefType == "Agnes Macphail":
 				# All buildings except Dock and Barracks: redirect labour to knowledge
 				# -10 manpower flat; culture or science depending on building type
-				if buildingType != "Dock" and buildingType != "Barracks":
+				if buildingType != "Dock" and buildingType != "Barracks" and buildingType != "Fortress":
 					totalBuildingManpower -= 10
 					manpowerDic["Icon: Agnes Macphail"] = -10
 					if buildingType in ["Farm", "Camp", "Mine", "Forge", "Granary"]:
