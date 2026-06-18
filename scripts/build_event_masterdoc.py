@@ -497,7 +497,7 @@ EVENTS = [
     ("Commander","Commander Arc","CMD_THANKS",
      "PRESIDENT CARLISLE DELIVERS PERSONAL THANKS TO [COMMANDER_NAME] AT [TILE_NAME]",
      "Followup","CMD_RECOGNITION","—",
-     "FIRST PASS","","Not Started","YES","explicit","0",
+     "FULL COMPLETION","cmd_thanks_scene","Not Started","YES","explicit","0",
      "Fires at governorLevel==3 after 50 turns stationed; BTN2 explicit morale_boost +40; non-repeatable"),
 
     # ── FORT CHAIN ───────────────────────────────────────────────────────────
