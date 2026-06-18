@@ -476,10 +476,10 @@ EVENTS = [
      "FULL COMPLETION","","Integrated","NO","","0",
      "Sets prot_17_tame flag; AGREE gated by level-8 Monument in DC"),
     ("Protector","Lincoln's Ghost","PROT_17_AGREE",
-     "LINCOLN FORMALLY ENDORSES PRESIDENT CARLISLE'S ADMINISTRATION",
+     "LINCOLN'S GHOST TOURS THE MALL",
      "Followup","PROT_17_TAME","—",
-     "FIRST PASS","","Integrated","YES","","0",
-     "Sets prot_17_agreed; BTN2 explicit gated"),
+     "FULL COMPLETION","","Integrated","YES","","0",
+     "Sets prot_17_agreed; BTN2 triggers intimate; unlocks Lincoln governor + doubles Red Badge"),
 
     # ── COMMANDER ────────────────────────────────────────────────────────────
     ("Commander","Commander Arc","CMD_MERIT",
