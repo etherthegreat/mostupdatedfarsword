@@ -468,17 +468,17 @@ EVENTS = [
     ("Protector","Lincoln's Ghost","PROT_17_SUMMON",
      "LINCOLN'S GHOST APPEARS IN WASHINGTON",
      "Root","—","→ PROT_17_TAME",
-     "FIRST PASS","lincolns_ghost","Not Started","NO","","0",
+     "FIRST PASS","lincolns_ghost","Integrated","NO","","0",
      "Wild: +1 corruption/turn 25% chance; fires turn 90+"),
     ("Protector","Lincoln's Ghost","PROT_17_TAME",
      "LINCOLN'S GHOST ESTABLISHES OFFICE HOURS — PRESIDENTIAL SCHEDULE RESTORED",
      "Branch","PROT_17_SUMMON","→ PROT_17_AGREE (next_event_id)",
-     "FIRST PASS","","Not Started","NO","","0",
+     "FIRST PASS","","Integrated","NO","","0",
      "Sets prot_17_tame flag; immediately chains to AGREE"),
     ("Protector","Lincoln's Ghost","PROT_17_AGREE",
      "LINCOLN FORMALLY ENDORSES PRESIDENT CARLISLE'S ADMINISTRATION",
      "Followup","PROT_17_TAME","—",
-     "FIRST PASS","","Not Started","YES","","0",
+     "FIRST PASS","","Integrated","YES","","0",
      "Sets prot_17_agreed; BTN2 explicit gated"),
 
     # ── COMMANDER ────────────────────────────────────────────────────────────
@@ -1754,8 +1754,8 @@ EVENTS += [
 
     ("Protector","Lincoln's Ghost","PROT_17_AGREE_INTIMATE",
      "LINCOLN FORMALLY ENDORSES PRESIDENT CARLISLE'S ADMIN... — BY MORNING",
-     "Chain","PROT_17_AGREE (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
+     "Chain","PROT_17_AGREE (intimate choice)","prot_17_agree_intimate",
+     "IDEA","Integrated","N/A","NO","","0",
      "Stub — author intimate version of PROT_17_AGREE. By morning: emotional arc, no explicit imagery."),
 
     # White House Secrets
