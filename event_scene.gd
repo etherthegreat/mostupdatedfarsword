@@ -23,11 +23,15 @@ func build_from_data(data: Dictionary, tile = null, player = null) -> void:
 	event_type     = data.get("event_type", "standard")
 	event_country  = data.get("country_cid", "GEN")
 	event_data     = data
-	button_data    = data.get("buttons", [])
+	# Use inline buttons if supplied; otherwise fall back to CSV lookup by event_id
+	if data.has("buttons"):
+		button_data = data["buttons"]
+	else:
+		button_data = EventDatabase.get_buttons_for_event(event_id)
 
-	$EventPanel/EventNameLabel.text             = data.get("headline",   "")
-	$EventPanel/EventShortDescriptionLabel.text = data.get("short_desc", "")
-	$EventPanel/EventLongDescriptionLabel.text  = data.get("long_desc",  "")
+	$EventPanel/EventNameLabel.text             = _substitute(data.get("headline",   ""))
+	$EventPanel/EventShortDescriptionLabel.text = _substitute(data.get("short_desc", ""))
+	$EventPanel/EventLongDescriptionLabel.text  = _substitute(data.get("long_desc",  ""))
 
 	_build_buttons()
 

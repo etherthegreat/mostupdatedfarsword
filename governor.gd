@@ -60,6 +60,11 @@ const GOVERNOR_PORTRAITS: Dictionary = {
 var culture: String   = ""
 var pronouns: Dictionary = {}   # subject/object/possessive/reflexive/plural
 
+var thanksTxt: String    = ""   # SFW press conference scene, generated at creation
+var thanksImg: String    = ""   # path to SFW Oval Office art (portrait-paired)
+var thanksTxtExp: String = ""   # intimate scene, generated at creation
+var thanksImgExp: String = ""   # path to intimate Oval Office art (portrait-paired)
+
 # ── Static dedup tracker — reset at game start via reset_portrait_pool() ─────
 static var _used_portrait_paths: Array = []
 

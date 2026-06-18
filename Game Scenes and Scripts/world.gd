@@ -1051,6 +1051,7 @@ func generateBarracksCommanders() -> void:
 			subj_cap + " carr" + ("ies" if subj == "he" or subj == "she" else "y") + \
 			" the skills of " + arch_chosen["name"] + " into the fight for independence."
 		new_gov.hired = false
+		_assign_thanks_content(new_gov, arch_chosen["position"], portrait_data)
 
 		# Add to player's unlocked governor pool
 		playerCountryNode.unlockedGovernors.append(new_gov)
@@ -2144,6 +2145,9 @@ func createNewEvent(event_id: String, tile = null) -> void:
 	var newEvent = eventScene.instantiate()
 	if event_id == "CA_PM_LEGACY":
 		newEvent.build_from_data(_build_ca_pm_legacy_data(), tile, playerCountryNode)
+	elif event_id in ["CMD_THANKS", "CMD_THANKS_INTIMATE"] and tile != null and tile.tileGovernor != null:
+		var is_exp: bool = (event_id == "CMD_THANKS_INTIMATE")
+		newEvent.build_from_data(_build_cmd_thanks_data(tile, is_exp), tile, playerCountryNode)
 	else:
 		newEvent.build_from_csv(event_id, tile, playerCountryNode)
 	newEvent.eventButtonPressed.connect(_on_event_button_pressed)
@@ -4448,6 +4452,67 @@ func _check_cmd_thanks() -> void:
 		createNewEvent("CMD_THANKS", tile)
 		print("[Commander] CMD_THANKS fired for ", gov.governorType, " (XP: ", gov.xp, ")")
 		return
+
+
+# ── COMMANDER THANKS DYNAMIC EVENT BUILDERS ──────────────────────
+
+func _assign_thanks_content(gov: governor, position: String, portrait_data: Dictionary) -> void:
+	var path: String      = portrait_data.get("path", "")
+	var portrait_id: String = path.get_file().get_basename()
+	gov.thanksImg    = "res://art assets/AmericanRevolutionArt/Panel/cmd_thanks_" + portrait_id + ".png"
+	gov.thanksImgExp = "res://art assets/AmericanRevolutionArt/Panel/cmd_thanks_exp_" + portrait_id + ".png"
+	gov.thanksTxt    = _build_thanks_txt(position)
+	gov.thanksTxtExp = _build_thanks_txt_exp(position)
+
+
+func _build_cmd_thanks_data(tile, is_exp: bool) -> Dictionary:
+	var gov = tile.tileGovernor
+	var eid: String = "CMD_THANKS_INTIMATE" if is_exp else "CMD_THANKS"
+	return {
+		"event_id":    eid,
+		"event_type":  "standard",
+		"country_cid": "USA",
+		"headline":    "PRESIDENT CARLISLE DELIVERS PERSONAL THANKS TO [COMMANDER_NAME] AT [TILE_NAME]",
+		"short_desc":  "The President Doesn't Visit Everyone. She Visited [CMD_OBJECT].",
+		"long_desc":   gov.thanksTxtExp if is_exp else gov.thanksTxt,
+	}
+
+
+func _build_thanks_txt(position: String) -> String:
+	match position:
+		"SCOUT":
+			return "[COMMANDER_NAME] arrived at the White House press conference with the same directness [CMD_SUBJECT] brings to any terrain: immediately oriented, looking for the exits, and slightly wary of a room with no visible horizon. The press corps, accustomed to commanders who perform comfort, found the lack of performance refreshing. [CMD_SUBJECT] accepted the citation from President Carlisle without ceremony and said three words that the White House stenographer has described, in their personal notes, as the most honest thing said aloud in that room all year. Carlisle said nothing in return. She didn't need to."
+		"ORATOR":
+			return "There was a moment, approximately four minutes into President Carlisle's remarks, when the press corps quietly shifted their attention from the President to [COMMANDER_NAME]. Carlisle noticed. She finished her remarks, handed over the citation, and said: 'Go ahead.' [COMMANDER_NAME] spoke for eleven minutes. The transcription has been reprinted seventeen times. Carlisle's people later asked [CMD_OBJECT] what [CMD_SUBJECT] was going to say before [CMD_SUBJECT] said it. [CMD_SUBJECT] said [CMD_SUBJECT] didn't know. The press corps doesn't believe that."
+		"ENGINEER":
+			return "[COMMANDER_NAME] arrived at the White House with a citation in hand — not the one [CMD_SUBJECT] was about to receive, but one [CMD_SUBJECT] had drafted independently, for President Carlisle, for decisions made in the second month of operations that [CMD_SUBJECT] had wanted to acknowledge formally for some time. Carlisle accepted it with visible surprise. The exchange was not on the schedule. The press corps photographed it. The photograph is now in the Smithsonian. The blueprints [COMMANDER_NAME] also brought were not photographed. They were immediately classified."
+		"SPY":
+			return "The White House security log shows [COMMANDER_NAME] arriving at 9:47. The visitor log shows no entry for [CMD_OBJECT] at any time. The security detail has filed a report. The report contains a notation that reads, in the supervisor's handwriting: 'I believe this is intentional.' President Carlisle presented the citation in front of eighteen members of the press corps. [COMMANDER_NAME] accepted it. Three cameras malfunctioned simultaneously. The working photos show a podium, the President, and an excellent citation being held by someone the photos can't quite bring into focus."
+		"SOLDIER":
+			return "[COMMANDER_NAME] arrived in full dress uniform forty-five minutes before the press corps and stood at attention in the reception hall while the White House staff finished setting up. Three reporters, arriving early, stood up straighter without being asked. Carlisle walked in, looked at [CMD_OBJECT], and said: 'Stand easy.' [COMMANDER_NAME] said: 'Yes, ma'am,' and stood slightly less like a monument. The citation was presented. The applause was immediate. Carlisle shook [CMD_POSSESSIVE] hand and leaned in and said something nobody else heard. [COMMANDER_NAME] nodded once. That was the ceremony."
+		"FARMER":
+			return "[COMMANDER_NAME] brought food. Not as a gesture — practically, because [CMD_SUBJECT] had driven two days and figured the White House press corps probably hadn't eaten. [CMD_SUBJECT] was right. The food was gone before the ceremony started. Carlisle's deputy chief of staff asked where [CMD_SUBJECT] had gotten it. [COMMANDER_NAME] explained, briefly, that a revolution is not won on documents alone. Carlisle presented the citation and then, off-record, asked [CMD_OBJECT] to send more. [COMMANDER_NAME] said [CMD_SUBJECT] already had."
+		"HEALER":
+			return "[COMMANDER_NAME] was the only person in the room who asked President Carlisle how she was holding up. Not as protocol — as a direct question from someone who had been watching people carry too much for too long and knew what it looked like. Carlisle paused. She answered honestly. The press corps didn't catch what she said; [COMMANDER_NAME] had quietly ensured nobody was close enough to hear. The photo of that moment — Carlisle mid-answer, [COMMANDER_NAME] listening — has been called the most human photograph of the war. The citation was almost incidental."
+		"DIPLOMAT":
+			return "[COMMANDER_NAME] had renegotiated the ceremony format before it officially began. The changes were small: different staging, a brief private moment before the press entered, a different order to the remarks. The White House communications director noticed afterward and asked when this had happened. [COMMANDER_NAME] said it had come up naturally in the pre-event walkthrough. The communications director reviewed the walkthrough schedule. There was no pre-event walkthrough. The ceremony was better for the changes. Carlisle presented the citation and then asked [CMD_OBJECT], privately, if [CMD_SUBJECT] was available for a longer conversation. [COMMANDER_NAME] said [CMD_SUBJECT] had already cleared [CMD_POSSESSIVE] schedule."
+		"BUREAUCRAT":
+			return "[COMMANDER_NAME] arrived with three copies of every document — the invitation, the agenda, the citation text, the press release, and a four-page addendum [CMD_SUBJECT] had prepared regarding procedural improvements to the commendation process. The addendum was, by all accounts, excellent. Carlisle's chief of staff read it in the car and said nothing for eleven minutes. At the ceremony, Carlisle presented the citation and then, departing from prepared remarks, said: 'The addendum has been accepted.' [COMMANDER_NAME] said: 'I know.' Three members of the White House staff applauded separately, and not for the citation."
+		"SCHOLAR":
+			return "[COMMANDER_NAME] took notes during [CMD_POSSESSIVE] own commendation ceremony. This was observed by four members of the press corps, who could not agree afterward on what [CMD_SUBJECT] was writing. Carlisle presented the citation, made her remarks, and then asked [CMD_OBJECT] afterward what [CMD_SUBJECT] had written down. [COMMANDER_NAME] showed her. Carlisle read it. She handed it back without comment. The White House archivist, who happened to be present, described the contents as 'the most complete account of the ceremony I have ever read, written by the person being honored, while it was happening.'"
+		"ADMIRAL":
+			return "[COMMANDER_NAME] arrived by water. The Potomac dock had not been used for official arrivals in fourteen years. The dock master was not notified. The press corps was. The photographs of the approach — [COMMANDER_NAME] standing at the bow in the early morning fog — were on every wire service before the ceremony started. Carlisle was briefed on the arrival method by her deputy, who was trying to suppress a smile and not succeeding. The citation was presented without further incident. The departure, also by water, had better lighting."
+		"MAGE":
+			return "The White House press corps filed their reports on the commendation ceremony for [COMMANDER_NAME] within the hour. All eighteen reports described an unremarkable event: citation presented, remarks made, photographs taken. Three reporters have since filed amendments. The amendments describe, with some inconsistency, various secondary phenomena the original reports did not include. Carlisle's official statement, when asked, is that the ceremony proceeded as planned. There are no photographs. The press pool photographer says the camera was working. Three technicians confirm it was working. The photographs are simply not there."
+		"WARRIOR":
+			return "The room went quiet when [COMMANDER_NAME] walked in. Not from uncertainty — from recognition. The press corps, the White House staff, the three generals in the back row: everyone in that room had heard the name, and now they were standing in the same space as the person it belonged to. Carlisle presented the citation without preamble. [COMMANDER_NAME] accepted it without performance. Whatever was said between them was not recorded. The press corps, by unspoken agreement, did not attempt to capture the private exchange. Some moments are not improved by documentation."
+		_:
+			return "President Carlisle delivered personal thanks to [COMMANDER_NAME] at the White House. The citation was presented, the record was made, and something unscheduled happened in the margins of the ceremony that the official account doesn't fully capture. [COMMANDER_NAME] accepted the commendation without fanfare. Carlisle shook [CMD_POSSESSIVE] hand and held it a moment longer than the cameras expected."
+
+
+func _build_thanks_txt_exp(position: String) -> String:
+	var tag: String = position
+	return "The press conference is over. The Oval Office door closes. What happens next belongs to [COMMANDER_NAME] and [CMD_OBJECT] alone.\n\n[ EXPLICIT SCENE PLACEHOLDER — " + tag + " archetype. Oval Office setting. Hand-craft this scene with [COMMANDER_NAME]'s pronouns and personality. ]"
 
 
 # ── WILD PROTECTOR SYSTEM ────────────────────────────────────────
