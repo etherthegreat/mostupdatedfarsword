@@ -491,8 +491,8 @@ EVENTS = [
     ("Commander","Commander Arc","CMD_RECOGNITION",
      "CITATION FOR EXCEPTIONAL SERVICE: [COMMANDER_NAME] AT [TILE_NAME]",
      "Branch","CMD_MERIT","—",
-     "FIRST PASS","","Not Started","NO","","0",
-     "Fires at governorLevel==2 after 20 turns stationed; promote_commander BTN1; claim_change BTN2"),
+     "FULL COMPLETION","cmd_recognition_scene","Not Started","NO","","0",
+     "Fires at governorLevel==2 (50 XP from combat); promote_commander BTN1 (+20 morale commendation); claim_change BTN2"),
 
     ("Commander","Commander Arc","CMD_THANKS",
      "PRESIDENT CARLISLE DELIVERS PERSONAL THANKS TO [COMMANDER_NAME] AT [TILE_NAME]",
