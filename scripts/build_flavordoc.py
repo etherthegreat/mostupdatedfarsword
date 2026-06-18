@@ -356,9 +356,9 @@ DOCTRINES = [
 ICONS = [
     # ── USA Tier 1 (Founding Era) ─────────────────────────────────────────────
     ("USA", "Tier 1 – Founding", "George Washington",  "1732–1799",
-     "Barracks: +50 Manpower, +1 Weapons",
+     "Ualani: Spirit of the Commander — friendly units adjacent to Ualani gain +15% Attack",
      "Crossing of the Delaware", "FIRST PASS",
-     "Continental Army commander. Barracks/Fortress +3 Defense (mil mod)."),
+     "Continental Army commander. Grants Ualani the Spirit of the Commander aura mil mod."),
     ("USA", "Tier 1 – Founding", "Benjamin Franklin",  "1706–1790",
      "Library: +1 Science · Workshop: +1 Gold",
      "—", "FIRST PASS",
@@ -528,9 +528,9 @@ ICONS = [
 
 BELIEF_MODS = [
     # ── American Icon Mods ───────────────────────────────────────────────────
-    ("Crossing of the Delaware", "Icon — George Washington",
-     "commanderMod", "+3 Defense in Barracks/Fortress tiles",
-     "December 1776: Washington crossed the Delaware at midnight in sleet and darkness, surprising the Hessians at Trenton. The gambit saved the revolution.",
+    ("Spirit of the Commander", "Icon — George Washington",
+     "ualaniAura", "+15% Attack to all friendly units adjacent to Ualani",
+     "December 1776: Washington crossed the Delaware at midnight in sleet and darkness, surprising the Hessians at Trenton. The gambit saved the revolution. Where the Commander stands, the line holds.",
      "FIRST PASS"),
 
     ("Combahee River Raid", "Icon — Harriet Tubman",
