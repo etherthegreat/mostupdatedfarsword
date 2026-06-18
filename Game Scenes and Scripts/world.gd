@@ -1549,6 +1549,7 @@ func _resolve_ai_and_advance_round() -> void:
 	for tile in $TileController.get_children():
 		tile.tick_conquest_timer()
 	$CanvasLayer/TurnLabel.text = _format_game_date()
+	_check_win_conditions()
 	# playerCountry/Node now hold last player in order; caller calls _activate_player to restore
 
 
@@ -4920,6 +4921,37 @@ func _execute_ca_peace(uk_country, peace_tile) -> void:
 	print("[Peace] CA separate peace signed — PEACE_CA_AI_01 fired")
 
 
+func _check_win_conditions() -> void:
+	if _game_ended or _republic_collapsed or _ca_collapsed:
+		return
+
+	var uk_country = null
+	for c in aliveCountriesList:
+		if c.CID == "UK":
+			uk_country = c
+			break
+
+	# Peace-treaty victory: UK has signed peace with USA (and CA if allied)
+	if uk_country != null:
+		var usa_peace: bool = uk_country.CountryFlags.has("uk_usa_peace")
+		var is_allied: bool = playerCountryNode.CountryFlags.has("can_allied")
+		var ca_peace:  bool = uk_country.CountryFlags.has("uk_ca_peace")
+		if usa_peace and (not is_allied or ca_peace):
+			_game_ended = true
+			print("[WinCon] Peace treaty victory.")
+			return
+
+	# Military victory: no UK-owned tiles remain anywhere on the map
+	var uk_tiles_remain: bool = false
+	for tile in $TileController.get_children():
+		if tile.tileOwner == "UK":
+			uk_tiles_remain = true
+			break
+	if not uk_tiles_remain:
+		_game_ended = true
+		print("[WinCon] Military victory — all UK tiles captured.")
+
+
 func _generate_and_assign_governor(tile: Tile) -> void:
 	var portrait_placeholder: Texture = load(
 		"res://art assets/Placeholder Art/character/4-22-Ikra-Colors - Copy.png")
@@ -5657,7 +5689,7 @@ func _handle_president_death(commander, army_name: String, tile) -> void:
 			}
 		],
 	}
-	# TODO: call _trigger_game_over() here once game over screen exists
+	_game_ended = true
 	_create_dynamic_event(data, tile)
 
 
