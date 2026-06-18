@@ -172,6 +172,14 @@ func _substitute(text: String) -> String:
 		text = text.replace("[CMD_OBJECT]",     p.get("object",     "them"))
 		text = text.replace("[CMD_POSSESSIVE]", p.get("possessive", "their"))
 		text = text.replace("[CMD_REFLEXIVE]",  p.get("reflexive",  "themselves"))
+	# Safety sweep: replace any tokens that survived (tile was null, governor missing, etc.)
+	text = text.replace("[TILE_NAME]",      "the front")
+	text = text.replace("[COMMANDER_NAME]", "the Commander")
+	text = text.replace("[GOVERNOR_TITLE]", "Commander")
+	text = text.replace("[CMD_SUBJECT]",    "they")
+	text = text.replace("[CMD_OBJECT]",     "them")
+	text = text.replace("[CMD_POSSESSIVE]", "their")
+	text = text.replace("[CMD_REFLEXIVE]",  "themselves")
 	return text
 
 
