@@ -245,6 +245,7 @@ func buildSelf(gT, gL):
 			governorBiography = "Hawaii's finest export and Washington's current occupant — when it is not occupied. President Carlisle commands the APF personally. Her security detail has filed seventeen formal objections. She has read none of them."
 			governorPosition = "PRESIDENT & COMMANDER"
 			governorFaction = "Federal"
+			pronouns = {"subject":"she","object":"her","possessive":"her","reflexive":"herself","plural":false}
 			loyalty = 20.0  # Absolute personal loyalty — this is her Republic
 			questComplete = true  # Her loyalty is uncapped from the start
 			isLeader = true
@@ -309,6 +310,7 @@ func buildSelf(gT, gL):
 			governorBiography = "Abe Lincoln died in Washington once. Now he haunts the White House and the war rooms and the places where decisions are made badly. He does not give orders. He stands behind you when you are about to make a mistake and says nothing at all, which is somehow worse. Carlisle finds him unnerving. He finds that funny."
 			governorPosition = "SPECTER"
 			governorFaction = "Protector"
+			pronouns = {"subject":"he","object":"him","possessive":"his","reflexive":"himself","plural":false}
 			loyalty = 20.0
 			questComplete = true
 
