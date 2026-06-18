@@ -1,16 +1,20 @@
 #!/usr/bin/env python3
 """
-pick_ethertask.py — Pull one unfinished content item from all masterdocs.
-Prints a single focused task card (one event, one art, one text).
+pick_ethertask.py — Pull one unfinished content item from the AmericaRush manifest.
+
+When data/americarush.csv exists it is used as the EXCLUSIVE task source.
+Tasks are tiered: all P0 items clear before P1, P1 before P2, P2 before P3.
+CODE / EDITOR / ASSET tasks track their own done-state in the CSV (status=DONE).
+EVENT / ICON / DOCTRINE / FACTION / LAW tasks are marked done through their
+normal builder scripts; this picker cross-checks builder data to detect completion.
 
 Run:  python3 scripts/pick_ethertask.py          # show current task (or pick one)
-      python3 scripts/pick_ethertask.py --next    # mark current done, pick next
+      python3 scripts/pick_ethertask.py --next    # skip current, pick next
       python3 scripts/pick_ethertask.py --seed 42 # force a specific seed (picks new)
 
 State:  data/current_ethertask.json  — persists the active task between runs.
-        The task is shown on every /ethertask call until it is marked complete
-        in its source data (status → FULL PASS/FULL COMPLETION).  At that point
-        the next call auto-advances to the next task.
+        The task is shown on every /ethertask call until it is marked complete.
+        At that point the next call auto-advances to the next task.
 """
 import sys, os, json, importlib.util, random, re as _re, glob as _glob
 from datetime import date, datetime
@@ -264,6 +268,139 @@ def collect():
     return tasks
 
 
+# ── AmericaRush manifest path ─────────────────────────────────────────────────
+RUSH_CSV = os.path.join(ROOT, "data", "americarush.csv")
+
+# Category sets
+_DIRECT_CATS   = {"CODE", "EDITOR", "ASSET"}   # done via CSV status=DONE
+_CONTENT_CATS  = {"EVENT", "ICON", "DOCTRINE", "FACTION", "LAW"}
+
+# Priority weights used for random selection WITHIN a tier
+_PRIO_WEIGHT = {"P0": 10, "P1": 5, "P2": 3, "P3": 1}
+
+
+def _read_rush_manifest():
+    """Return list of dicts from americarush.csv."""
+    import csv as _csv
+    with open(RUSH_CSV, newline="", encoding="utf-8") as f:
+        return list(_csv.DictReader(f))
+
+
+def _write_rush_manifest(rows):
+    """Rewrite americarush.csv preserving column order."""
+    import csv as _csv
+    fieldnames = ["id", "name", "category", "priority", "status", "notes"]
+    with open(RUSH_CSV, "w", newline="", encoding="utf-8") as f:
+        w = _csv.DictWriter(f, fieldnames=fieldnames)
+        w.writeheader()
+        w.writerows(rows)
+
+
+def mark_rush_done(task_id):
+    """Mark a CODE/EDITOR/ASSET row as DONE in americarush.csv."""
+    rows = _read_rush_manifest()
+    for r in rows:
+        if r["id"] == task_id:
+            r["status"] = "DONE"
+    _write_rush_manifest(rows)
+
+
+def collect_rush():
+    """
+    Build task list from americarush.csv.
+
+    - CODE/EDITOR/ASSET: done if status==DONE in CSV.
+    - Content tasks (EVENT/ICON/etc): done if the builder data shows FULL PASS/FULL COMPLETION.
+      We cross-check by running the normal collect() and building a lookup dict.
+    Returns a list of task dicts identical in shape to collect() output,
+    plus an extra "rush_priority" key.
+    """
+    if not os.path.exists(RUSH_CSV):
+        return collect()
+
+    manifest = _read_rush_manifest()
+
+    # Build lookup of task-id → task dict from the standard collector
+    # (only for content categories, to avoid expensive builder loads when not needed)
+    content_rows = [r for r in manifest if r["category"] in _CONTENT_CATS]
+    content_ids  = {r["id"] for r in content_rows}
+
+    content_lookup = {}
+    if content_ids:
+        for t in collect():
+            if t["id"] in content_ids:
+                content_lookup[t["id"]] = t
+
+    tasks = []
+    for row in manifest:
+        cat  = row["category"]
+        prio = row["priority"]
+        rid  = row["id"]
+
+        if cat in _DIRECT_CATS:
+            if row["status"] == "DONE":
+                continue
+            # Build a synthetic task dict for display
+            tasks.append({
+                "w":           _PRIO_WEIGHT.get(prio, 1),
+                "rush_priority": prio,
+                "source":      f"AmericaRush › {cat}",
+                "id":          rid,
+                "name":        row["name"],
+                "status":      row["status"],
+                "art_tag":     "",
+                "art_status":  "N/A",
+                "flag":        "",
+                "notes":       row["notes"],
+                "script":      "",
+                "attr":        "",
+                "done_status": "DONE",
+                "done_art":    "",
+                "regen":       f"Mark DONE in data/americarush.csv  (row {rid})",
+                "csv":         None,
+                "is_direct":   True,
+            })
+
+        elif cat in _CONTENT_CATS:
+            t = content_lookup.get(rid)
+            if t is None:
+                continue  # already FULL PASS/COMPLETION — not in collect() pool
+            t = dict(t)
+            t["rush_priority"] = prio
+            t["w"] = _PRIO_WEIGHT.get(prio, 1)
+            # Boost weight when art is still needed
+            if t.get("art_status") not in ("N/A", "Done", "Integrated"):
+                t["w"] += 2
+            tasks.append(t)
+
+    return tasks
+
+
+def _pick_from_rush(tasks, rng):
+    """
+    Priority-tiered selection: clear all P0 before P1, etc.
+    Within a tier use weighted random choice.
+    """
+    for tier in ("P0", "P1", "P2", "P3"):
+        pool = [t for t in tasks if t.get("rush_priority") == tier]
+        if pool:
+            weights = [t["w"] for t in pool]
+            return rng.choices(pool, weights=weights, k=1)[0]
+    return rng.choices(tasks, k=1)[0]
+
+
+def _rush_mode():
+    return os.path.exists(RUSH_CSV)
+
+
+def _rush_remaining(tasks):
+    by_prio = {}
+    for t in tasks:
+        p = t.get("rush_priority", "P?")
+        by_prio[p] = by_prio.get(p, 0) + 1
+    return by_prio
+
+
 def _load_state():
     try:
         with open(STATE_PATH) as f:
@@ -297,13 +434,14 @@ def _find_task(tasks, task_id, source):
 
 
 def main():
-    tasks = collect()
+    rush = _rush_mode()
+    tasks = collect_rush() if rush else collect()
     force_next = "--next" in sys.argv
     force_seed = "--seed" in sys.argv
 
     if not tasks:
         _clear_state()
-        print("🎉  ALL CONTENT IS FULL PASS — nothing left to finish!")
+        print("ALL TASKS COMPLETE — nothing left in the AmericaRush queue!")
         return
 
     # ── Determine the active task ─────────────────────────────────────────────
@@ -312,14 +450,11 @@ def main():
     continuing = False
 
     if not force_next and not force_seed and state:
-        # Try to find the stored task in the current unfinished pool
         t = _find_task(tasks, state["id"], state["source"])
         if t:
             continuing = True
-        # If not found, it was completed — fall through to pick a new one
 
     if t is None:
-        # Pick a new task
         if force_seed:
             try:
                 seed_val = int(sys.argv[sys.argv.index("--seed") + 1])
@@ -329,8 +464,11 @@ def main():
             seed_val = int(date.today().strftime("%Y%j"))
 
         rng = random.Random(seed_val)
-        weights = [t["w"] for t in tasks]
-        t = rng.choices(tasks, weights=weights, k=1)[0]
+        if rush:
+            t = _pick_from_rush(tasks, rng)
+        else:
+            weights = [t["w"] for t in tasks]
+            t = rng.choices(tasks, weights=weights, k=1)[0]
         _save_state(t)
 
     seed_val = int(date.today().strftime("%Y%j"))
@@ -340,14 +478,17 @@ def main():
     rule = "━" * W
     line = "─" * (W - 2)
 
-    needs_art      = t["art_status"] not in ("N/A", "Done", "Integrated")
-    needs_portrait = t.get("portrait_status") not in (None, "Done")
-    flag_str       = f"  [{t['flag'].upper()}]" if t["flag"] else ""
+    is_direct      = t.get("is_direct", False)
+    needs_art      = not is_direct and t["art_status"] not in ("N/A", "Done", "Integrated")
+    needs_portrait = not is_direct and t.get("portrait_status") not in (None, "Done")
+    flag_str       = f"  [{t['flag'].upper()}]" if t.get("flag") else ""
 
-    mode_str = "CONTINUING" if continuing else "NEW TASK"
+    mode_str  = "CONTINUING" if continuing else "NEW TASK"
+    prio_str  = f"  ·  {t['rush_priority']}" if rush and t.get("rush_priority") else ""
+    hdr_label = "AMERICA RUSH" if rush else "ETHER TASK"
 
     print(rule)
-    print(f"  ETHER TASK  ·  {mode_str}  ·  {date.today().strftime('%B %d, %Y')}")
+    print(f"  {hdr_label}  ·  {mode_str}{prio_str}  ·  {date.today().strftime('%B %d, %Y')}")
     print(rule)
     print(f"  SOURCE   {t['source']}")
     print(f"  ID       {t['id']}")
@@ -368,53 +509,82 @@ def main():
             print(f"  Color  → {_PORTRAIT_DIR}/{p_slug}.png")
         print(f"  BW     → {_PORTRAIT_DIR}/{p_slug}_bw.png")
 
-    if t["notes"] and t["notes"].strip() not in ("—", ""):
-        print(f"\n  ── TEXT {line[6:]}")
+    if t.get("notes") and t["notes"].strip() not in ("—", ""):
+        hdr_lbl = "WHAT TO DO" if is_direct else "TEXT"
+        print(f"\n  ── {hdr_lbl} {line[len(hdr_lbl)+1:]}")
         note = t["notes"].replace("\n", " · ")
-        if len(note) > 160:
-            note = note[:157] + "…"
+        if len(note) > 200:
+            note = note[:197] + "…"
         print(f"  {note}")
 
     print(f"\n  ── TO COMPLETE {line[13:]}")
     step = 1
 
-    if needs_art:
-        art_dir = "art assets/AmericanRevolutionArt/Panel"
-        print(f"  {step}. Draw 1 illustration")
-        print(f"     Save to: {art_dir}/{t['art_tag']}.png")
+    if is_direct:
+        print(f"  {step}. Complete the task described above")
         step += 1
-
-    if needs_portrait:
-        p_slug   = t["portrait_slug"]
-        p_status = t["portrait_status"]
-        if p_status == "Not Started":
-            print(f"  {step}. Draw portrait (color) → {_PORTRAIT_DIR}/{p_slug}.png")
-            step += 1
-        print(f"  {step}. Draw portrait (BW)    → {_PORTRAIT_DIR}/{p_slug}_bw.png")
+        print(f"  {step}. Run:  python3 scripts/pick_ethertask.py --close-direct {t['id']}")
         step += 1
-
-    if t["csv"]:
-        print(f"  {step}. Polish headline + text in  {t['csv']}  (row {t['id']})")
     else:
-        print(f"  {step}. Polish text/effect in  scripts/{t['script']}  ({t['attr']})")
-    step += 1
+        if needs_art:
+            art_dir = "art assets/AmericanRevolutionArt/Panel"
+            print(f"  {step}. Draw 1 illustration")
+            print(f"     Save to: {art_dir}/{t['art_tag']}.png")
+            step += 1
 
-    print(f"  {step}. In scripts/{t['script']} ({t['attr']}):")
-    print(f"     status  → \"{t['done_status']}\"")
-    if needs_art and t["done_art"] not in ("N/A", ""):
-        print(f"     art     → \"{t['done_art']}\"")
-    step += 1
+        if needs_portrait:
+            p_slug   = t["portrait_slug"]
+            p_status = t["portrait_status"]
+            if p_status == "Not Started":
+                print(f"  {step}. Draw portrait (color) → {_PORTRAIT_DIR}/{p_slug}.png")
+                step += 1
+            print(f"  {step}. Draw portrait (BW)    → {_PORTRAIT_DIR}/{p_slug}_bw.png")
+            step += 1
 
-    print(f"  {step}. {t['regen']}")
+        if t.get("csv"):
+            print(f"  {step}. Polish headline + text in  {t['csv']}  (row {t['id']})")
+        elif t.get("script"):
+            print(f"  {step}. Polish text/effect in  scripts/{t['script']}  ({t['attr']})")
+        step += 1
+
+        if t.get("script"):
+            print(f"  {step}. In scripts/{t['script']} ({t['attr']}):")
+            print(f"     status  → \"{t['done_status']}\"")
+            if needs_art and t.get("done_art") not in ("N/A", ""):
+                print(f"     art     → \"{t['done_art']}\"")
+            step += 1
+
+        if t.get("regen"):
+            print(f"  {step}. {t['regen']}")
+
+    # Handle --close-direct flag
+    if "--close-direct" in sys.argv:
+        try:
+            close_id = sys.argv[sys.argv.index("--close-direct") + 1]
+            mark_rush_done(close_id)
+            _clear_state()
+            print(f"\n  Marked {close_id} as DONE in americarush.csv.")
+        except (IndexError, ValueError):
+            pass
+        return
 
     print(rule)
     remaining = len(tasks)
-    if continuing:
-        print(f"  Tasks in pool: {remaining}  ·  This task is ACTIVE until marked complete.")
-        print(f"  Complete it, update status in source, then run:  python3 scripts/pick_ethertask.py")
-        print(f"  To skip ahead without completing:  pick_ethertask.py --next")
+    if rush:
+        by_prio = _rush_remaining(tasks)
+        prio_summary = "  ".join(f"{p}:{n}" for p, n in sorted(by_prio.items()))
+        if continuing:
+            print(f"  AmericaRush: {remaining} tasks remaining  ·  {prio_summary}")
+            print(f"  Task is ACTIVE until completed. Run pick_ethertask.py --next to skip.")
+        else:
+            print(f"  AmericaRush: {remaining} tasks remaining  ·  {prio_summary}")
     else:
-        print(f"  Tasks in pool: {remaining}  ·  seed {seed_val}  ·  use --seed N for another")
+        if continuing:
+            print(f"  Tasks in pool: {remaining}  ·  This task is ACTIVE until marked complete.")
+            print(f"  Complete it, update status in source, then run:  python3 scripts/pick_ethertask.py")
+            print(f"  To skip ahead without completing:  pick_ethertask.py --next")
+        else:
+            print(f"  Tasks in pool: {remaining}  ·  seed {seed_val}  ·  use --seed N for another")
     print(rule)
 
 
