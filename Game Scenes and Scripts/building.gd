@@ -2206,6 +2206,21 @@ func _apply_abnormal_modifiers() -> void:
 					manpowerDic["Icon: Louis-Hippolyte LaFontaine"] = 150
 				break
 
+		for belief in religiousBeliefs:
+			if belief.beliefType == "Agnes Macphail":
+				# All buildings except Dock and Barracks: redirect labour to knowledge
+				# -10 manpower flat; culture or science depending on building type
+				if buildingType != "Dock" and buildingType != "Barracks":
+					totalBuildingManpower -= 10
+					manpowerDic["Icon: Agnes Macphail"] = -10
+					if buildingType in ["Farm", "Camp", "Mine", "Forge"]:
+						totalBuildingCulture += 1
+						cultureDic["Icon: Agnes Macphail"] = 1
+					elif buildingType in ["Library", "Monument", "Courthouse", "Market"]:
+						totalBuildingScience += 1
+						scienceDic["Icon: Agnes Macphail"] = 1
+				break
+
 	# ── USA ──────────────────────────────────────────────────────────────────
 	# (reserved for future USA abnormal icon/doctrine checks)
 
