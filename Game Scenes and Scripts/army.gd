@@ -397,6 +397,9 @@ func _apply_status_effects_to_stats() -> void:
 				armyBlock   += 15
 				armyLaunch  += 15
 				armyDefence += 10
+			# ── DOCTRINE AURA BUFFS ──────────────────────────────────────────────
+			"Spirit of the General":
+				armyPunch += 15
 			# ── LOYAL GOVERNOR BUFFS ─────────────────────────────────────────────
 			"Mercenary Zeal":
 				armyPunch += 2  # Border Mercenary coin pact — timed 10 turns
@@ -758,7 +761,7 @@ func applyCountryBeliefMilMods() -> void:
 	for belief in parentCountry.selectedBeliefs:
 		match belief.beliefType:
 			"George Washington":
-				modsToGrant.append("Crossing of the Delaware")
+				pass  # Handled by _apply_ualani_aura() adjacency in world.gd
 			"Harriet Tubman":
 				modsToGrant.append("Combahee River Raid")
 			"Abraham Lincoln":

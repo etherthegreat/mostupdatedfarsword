@@ -1549,6 +1549,7 @@ func _resolve_ai_and_advance_round() -> void:
 	for tile in $TileController.get_children():
 		tile.tick_conquest_timer()
 	$CanvasLayer/TurnLabel.text = _format_game_date()
+	_apply_ualani_aura()
 	_check_win_conditions()
 	# playerCountry/Node now hold last player in order; caller calls _activate_player to restore
 
@@ -3279,6 +3280,27 @@ func _find_jessica_tile() -> Tile:
 		if tile.stationedArmy != null and tile.stationedArmy.parentCountry == playerCountryNode:
 			return tile
 	return null
+
+
+func _apply_ualani_aura() -> void:
+	# George Washington doctrine: armies adjacent to Ualani gain "Spirit of the General" (+15 Attack)
+	# Runs every round. Duration 2 so it expires naturally if Ualani moves away.
+	var has_washington: bool = false
+	for belief in playerCountryNode.selectedBeliefs:
+		if belief.beliefType == "George Washington":
+			has_washington = true
+			break
+	if not has_washington:
+		return
+	var ualani_tile: Tile = _find_ualani_tile()
+	if ualani_tile == null:
+		return
+	for neighbor in ualani_tile.TileNeighbors:
+		if neighbor.stationedArmy == null:
+			continue
+		if neighbor.stationedArmy.parentCountry != playerCountryNode:
+			continue
+		neighbor.stationedArmy.apply_status("Spirit of the General", 2)
 
 
 func _check_ualani_ambush() -> void:

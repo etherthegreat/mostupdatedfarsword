@@ -1107,9 +1107,9 @@ func buildSelf(Type):
 			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
 			milModResource = "None"
 		# ── ICON BELIEF MODS ─────────────────────────────────────────────────────
-		"Crossing of the Delaware":
+		"Spirit of the General":
 			commanderMod = true
-			milModDescription = str("[i]A midnight river, a freezing dawn, and the world changed:[/i][color= green] All units +3 Defense per Level in tiles with Barracks or Fortress[/color]")
+			milModDescription = str("[i]Where the Commander stands, the line holds:[/i][color=green] Friendly armies adjacent to Ualani gain +15 Attack[/color]")
 			milModTexture = load("res://art assets/ModifierIcons/milMods/green cross.png")
 			milModResource = "None"
 		"Combahee River Raid":
