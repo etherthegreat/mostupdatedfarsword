@@ -7,6 +7,7 @@ var governorArchetypeId: String = ""  # set by procedural generation — overrid
 var governorPosition: String # title / role (ORATOR, SCOUT, etc.)
 
 var governorLevel: int
+var xp: float = 0.0         # accumulated combat XP; 50 → level 2, 125 → level 3
 var governorTexture: Texture
 var governorDescription: String
 var governorBiography: String

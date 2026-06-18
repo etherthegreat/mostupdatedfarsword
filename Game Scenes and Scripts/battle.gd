@@ -277,7 +277,37 @@ func applyBattleResults() -> void:
 		if attacker._army_has_active_mod("Field Research"):
 			attacker.parentCountry.TotalScience += max(1, int(float(defenderManpowerLoss) * 0.2))
 
+	# Commander XP
+	var defender_killed: bool = (defender != null and
+			defender.manpowerInArmy - defenderManpowerLoss <= 0)
+	var attacker_killed: bool = (attacker != null and
+			attacker.manpowerInArmy - attackerManpowerLoss <= 0)
+	if attacker != null and attacker.commander != null:
+		attacker.commander.xp += _calc_combat_xp(
+				defenderManpowerLoss, attackerManpowerLoss, defender_killed)
+	if defender != null and defender.commander != null:
+		if battleType == "ranged":
+			if not defender_killed:
+				defender.commander.xp += 10.0
+		else:
+			defender.commander.xp += _calc_combat_xp(
+					attackerManpowerLoss, defenderManpowerLoss, attacker_killed)
+
 	emit_signal("deleteBattles")
+
+
+func _calc_combat_xp(dealt: int, received: int, enemy_killed: bool) -> float:
+	var ratio: float = float(dealt) / max(1.0, float(received))
+	var base: float
+	if ratio >= 1.5:
+		base = 30.0
+	elif ratio >= 1.25:
+		base = 20.0
+	else:
+		base = 10.0
+	if enemy_killed:
+		base += 10.0
+	return base
 
 
 func _apply_reload_to_attacker() -> void:

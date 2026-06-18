@@ -2297,19 +2297,15 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 		"morale_boost":
 			_apply_morale_boost(outcome_amount, tile)
 		"promote_commander":
+			# Level-up is now automatic via XP threshold — this outcome grants
+			# a commendation morale bonus and faction loyalty to acknowledge the event
 			if tile != null and tile.tileGovernor != null:
-				tile.tileGovernor.governorLevel = mini(tile.tileGovernor.governorLevel + 1, 3)
-				if tile.tileGovernor.governorLevel >= 3:
-					tile.tileGovernor.questComplete = true
-				print("[Commander] Promoted ", tile.tileGovernor.governorType,
-					" to level ", tile.tileGovernor.governorLevel)
+				tile.tileGovernor.morale = mini(tile.tileGovernor.morale + 20, 100)
 				if tile.tileGovernor.governorFaction != "":
 					playerCountryNode.changeFactionLoyalty(tile.tileGovernor.governorFaction, 1)
 				if tile.stationedArmy != null:
 					tile.stationedArmy.updateArmyUI()
-				match tile.tileGovernor.governorLevel:
-					2: createNewEvent("GOV_LVL2_HONOR", tile)
-					3: createNewEvent("GOV_LVL3_CEREMONY", tile)
+				print("[Commander] Commendation issued to ", tile.tileGovernor.governorType)
 		"tile_liberation":
 			if tile != null:
 				tile.record_conquest("USA")
@@ -4418,14 +4414,17 @@ func _check_cmd_merit() -> void:
 			continue
 		if tile.stationedArmy.commander != tile.tileGovernor:
 			continue
-		if tile.tileGovernor.governorLevel != 1:
+		var gov = tile.tileGovernor
+		if gov.governorLevel != 1 or gov.xp < 50.0:
 			continue
-		var key = _commander_key(tile)
-		if _commander_turns.get(key, 0) < 5:
-			continue
+		gov.governorLevel = 2
+		if gov.governorLevel >= 3:
+			gov.questComplete = true
+		if tile.stationedArmy != null:
+			tile.stationedArmy.updateArmyUI()
 		_start_cooldown("CMD_MERIT", 10)
 		createNewEvent("CMD_MERIT", tile)
-		print("[Commander] CMD_MERIT fired for ", tile.tileGovernor.governorType)
+		print("[Commander] CMD_MERIT fired for ", gov.governorType, " (XP: ", gov.xp, ")")
 		return
 
 
@@ -4437,34 +4436,22 @@ func _check_cmd_recognition() -> void:
 			continue
 		if tile.stationedArmy.commander != tile.tileGovernor:
 			continue
-		if tile.tileGovernor.governorLevel != 2:
+		var gov = tile.tileGovernor
+		if gov.governorLevel != 2 or gov.xp < 125.0:
 			continue
-		var key = _commander_key(tile)
-		if _commander_turns.get(key, 0) < 20:
-			continue
+		gov.governorLevel = 3
+		gov.questComplete = true
+		if tile.stationedArmy != null:
+			tile.stationedArmy.updateArmyUI()
 		_start_cooldown("CMD_RECOGNITION", 10)
 		createNewEvent("CMD_RECOGNITION", tile)
-		print("[Commander] CMD_RECOGNITION fired for ", tile.tileGovernor.governorType)
+		print("[Commander] CMD_RECOGNITION fired for ", gov.governorType, " (XP: ", gov.xp, ")")
 		return
 
 
 func _check_cmd_thanks() -> void:
-	if _event_on_cooldown("CMD_THANKS"):
-		return
-	for tile in playerCountryNode.OwnedTileList:
-		if tile.tileGovernor == null or tile.stationedArmy == null:
-			continue
-		if tile.stationedArmy.commander != tile.tileGovernor:
-			continue
-		if tile.tileGovernor.governorLevel != 3:
-			continue
-		var key = _commander_key(tile)
-		if _commander_turns.get(key, 0) < 50:
-			continue
-		_start_cooldown("CMD_THANKS", 999)
-		createNewEvent("CMD_THANKS", tile)
-		print("[Commander] CMD_THANKS fired for ", tile.tileGovernor.governorType)
-		return
+	# CMD_THANKS now chains from CMD_RECOGNITION BTN1 — no independent XP gate
+	pass
 
 
 # ── WILD PROTECTOR SYSTEM ────────────────────────────────────────
