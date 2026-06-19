@@ -319,7 +319,7 @@ GOV_LOYAL_ARC_10_BTN1,GOV_LOYAL_ARC_10,Accept the Scouts — Three Turns of Manp
 GOV_LOYAL_ARC_11_BTN1,GOV_LOYAL_ARC_11,Distribute the Transcript — Four Turns of Culture,standard,tile_yield,culture,4,,,,,
 GOV_LOYAL_ARC_12_BTN1,GOV_LOYAL_ARC_12,Send it to the frontline — all units receive 25% manpower back,standard,all_armies_manpower_heal,,25,,,,,
 GOV_LOYAL_ARC_12_BTN2,GOV_LOYAL_ARC_12,Our scholars will be very pleased — all buildings in [TILE_NAME] produce +1 science,standard,set_governor_perk,medical_science,0,,,,,
-GOV_LOYAL_ARC_13_BTN1,GOV_LOYAL_ARC_13,Commission the Hull — Three Turns of Boats,standard,tile_yield,boats,3,,,,,
+GOV_LOYAL_ARC_13_BTN1,GOV_LOYAL_ARC_13,Commission the Port — Three Turns of Food,standard,tile_yield,food,3,,,,,
 GOV_LOYAL_ARC_14_BTN1,GOV_LOYAL_ARC_14,Community Inspiration Builds True Beauty — 5x Culture Gift,standard,tile_yield,culture,5,,,,,
 GOV_LOYAL_ARC_14_BTN2,GOV_LOYAL_ARC_14,Direct the Flock to Heroism — 1000 Manpower to National Stockpile,standard,resource_change,manpower,1000,,,,,
 GOV_LOYAL_ARC_15_BTN1,GOV_LOYAL_ARC_15,Commend [COMMANDER_NAME] for Their Diligent Oversight and Eagle-Like Eyes,standard,tile_yield,gold,4,,,,,

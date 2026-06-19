@@ -4788,7 +4788,6 @@ func _get_tile_resource_output(tile, resource: String) -> int:
 		"manpower": return max(int(tile.buildingManpowerOutput), 2)
 		"culture":  return max(int(tile.buildingCultureOutput), 2)
 		"magic":    return max(int(tile.buildingMagicOutput), 2)
-		"boats":    return max(tile.buildingBoatsOutput, 1)
 		_:          return 2
 
 
@@ -5053,7 +5052,6 @@ func _apply_resource_change(resource: String, amount: int) -> void:
 		"magic":           playerCountryNode.TotalMagic     += amount
 		"science":         playerCountryNode.TotalScience   += amount
 		"harmony", "happiness": playerCountryNode.TotalHappiness += amount  # "harmony" compat
-		"boats":           playerCountryNode.TotalBoats     += amount
 		"mandate":         playerCountryNode.TotalMandate   += amount
 		"manpower":        playerCountryNode.TotalManpower  += amount
 

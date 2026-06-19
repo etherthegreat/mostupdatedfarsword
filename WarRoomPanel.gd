@@ -200,10 +200,10 @@ func setupAllProtectors(allTiles: Array, country_id: String = "") -> void:
 					"count": 3,
 				},
 				{
-					"label": "Accumulate 30 boats in national stockpiles",
+					"label": "Accumulate 500 food in national stockpiles",
 					"prayer_type": "resource_threshold",
-					"resource": "boats",
-					"amount": 30,
+					"resource": "food",
+					"amount": 500,
 				},
 				{
 					"label": "Deploy a DMA agent to investigate the Mysterious Ship Raids",
@@ -221,10 +221,10 @@ func setupAllProtectors(allTiles: Array, country_id: String = "") -> void:
 					"count": 3,
 				},
 				{
-					"label": "Accumulate 60 boats in national stockpiles",
+					"label": "Accumulate 1000 food in national stockpiles",
 					"prayer_type": "resource_threshold",
-					"resource": "boats",
-					"amount": 60,
+					"resource": "food",
+					"amount": 1000,
 				},
 				{
 					"label": "Field 8 cannon units across all armies",
@@ -334,7 +334,6 @@ func _get_resource_amount(resource: String) -> float:
 		"faith", "culture":      return playerCountryNode.TotalCulture   # "faith" for CSV compat
 		"magic":                 return playerCountryNode.TotalMagic
 		"happiness", "harmony":  return playerCountryNode.TotalHappiness # "harmony" for CSV compat
-		"boats":                 return playerCountryNode.TotalBoats
 		"mandate":               return playerCountryNode.TotalMandate
 		"manpower":              return playerCountryNode.TotalManpower
 	return 0.0

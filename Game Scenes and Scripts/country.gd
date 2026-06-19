@@ -36,7 +36,6 @@ var nature_conservationists_corrupt_acc: Dictionary = {}
 var civic_pride_mandate_acc: float = 0.0
 var TotalCulture: int     # now covers both Culture and old Faith
 var TotalHappiness: float # renamed from TotalHarmony
-var TotalBoats: int       # new Boats resource
 var TotalMandate: int
 var TotalScience: int
 var TotalWeapons: int
@@ -63,7 +62,6 @@ var APM: int #magic per month
 # IPM (Faith per month) removed — faith merged into Culture
 var CPM: int #Culture per month (now covers Faith + Culture)
 var HPM: int #Happiness per month (renamed from Harmony)
-var BPM: int #boats per month (new)
 var NDT: int #Mandate per month
 var SPM: int #science per month
 var PPM: int #weapons per month
@@ -266,7 +264,6 @@ func NewGameBuild() -> void:
 	TotalWeapons   += data.get("startWeapons", 10)
 	TotalScience   += data.get("startScience", 10)
 	TotalHappiness += data.get("startHarmony", 5.0)   # "startHarmony" key kept for compat
-	TotalBoats     += data.get("startBoats", 0)
 	TotalMandate   += data.get("startMandate", 10)
 	TotalInfluence += data.get("startInfluence", 0)
 	TotalManpower  += data.get("startManpower", 500)
@@ -1055,7 +1052,6 @@ func surveyResources():
 	MPM = 0
 	CPM = 0
 	HPM = 0
-	BPM = 0
 	NDT = 0
 	NPM = 0
 	MAN = 0
@@ -1078,7 +1074,6 @@ func surveyResources():
 		SPM += Tile.buildingScienceOutput
 		CPM += Tile.buildingCultureOutput    # covers both old faith and culture
 		HPM += Tile.buildingHappinessOutput  # renamed from buildingHarmonyOutput
-		BPM += Tile.buildingBoatsOutput      # new Boats resource
 		NDT += Tile.buildingMandateOutput
 		NPM += Tile.buildingInfluenceOutput
 		MAN += Tile.buildingManpowerOutput
@@ -1103,7 +1098,6 @@ var tempSPM = 0
 var tempMPM = 0
 var tempCPM = 0
 var tempHPM = 0
-var tempBPM = 0
 var tempNDT = 0
 var tempNPM = 0
 var tempMAN = 0
@@ -1128,7 +1122,6 @@ func outputCheck(caller):
 	tempMPM = 0
 	tempCPM = 0
 	tempHPM = 0
-	tempBPM = 0
 	tempNDT = 0
 	tempNPM = 0
 	tempMAN = 0
@@ -1151,7 +1144,6 @@ func outputCheck(caller):
 		tempSPM += Tile.buildingScienceOutput
 		tempCPM += Tile.buildingCultureOutput    # covers old faith + culture
 		tempHPM += Tile.buildingHappinessOutput  # renamed from buildingHarmonyOutput
-		tempBPM += Tile.buildingBoatsOutput      # new Boats resource
 		tempNDT += Tile.buildingMandateOutput
 		tempNPM += Tile.buildingInfluenceOutput
 		tempMAN += Tile.buildingManpowerOutput
@@ -1173,7 +1165,6 @@ func outputCheck(caller):
 		"MPM" : tempMPM,
 		"CPM" : tempCPM,
 		"HPM" : tempHPM,
-		"BPM" : tempBPM,
 		"NDT" : tempNDT,
 		"NPM" : tempNPM,
 		"MAN" : tempMAN,
@@ -1219,7 +1210,6 @@ func collectTaxes():
 	TotalScience += SPM
 	TotalCulture += CPM   # covers old Faith + Culture outputs
 	TotalHappiness += HPM # renamed from TotalHarmony
-	TotalBoats += BPM     # new Boats resource
 	TotalMandate += NDT
 	TotalInfluence += NPM
 	TotalManpower += MAN
@@ -1232,6 +1222,8 @@ func calculateUniqueBuildingAttributes():
 	for building in countryBuildingList:
 		if building.buildingType == "Granary":
 			foodStorageMax += (100 * building.buildingLevel)
+		if building.buildingType == "Dock":
+			foodStorageMax += (200 * building.buildingLevel)
 			for Technology in unlockedTechnologies:
 				if Technology.techName == "Agriculture":
 					foodStorageMax += (100 * building.buildingLevel)
@@ -1566,8 +1558,6 @@ func payBill(type, amount):
 			TotalDollars -= amount
 		"happiness", "harmony":  # "harmony" kept for backward compat
 			TotalHappiness -= amount
-		"boats":
-			TotalBoats -= amount
 	pass
 
 var newToolScene = load("res://tool.tscn")
@@ -1625,7 +1615,6 @@ func save_state() -> Dictionary:
 		"TotalWeapons":            TotalWeapons,
 		"TotalScience":   TotalScience,
 		"TotalHappiness": TotalHappiness,
-		"TotalBoats":     TotalBoats,
 		"TotalMandate":   TotalMandate,
 		"TotalInfluence": TotalInfluence,
 		"TotalManpower":  TotalManpower,
@@ -1760,7 +1749,6 @@ func build_from_save(save_data: Dictionary) -> void:
 	TotalWeapons           = save_data.get("TotalWeapons",            TotalWeapons)
 	TotalScience   = save_data.get("TotalScience",   TotalScience)
 	TotalHappiness = save_data.get("TotalHappiness", TotalHappiness)
-	TotalBoats     = save_data.get("TotalBoats",     TotalBoats)
 	TotalMandate   = save_data.get("TotalMandate",   TotalMandate)
 	TotalInfluence = save_data.get("TotalInfluence", TotalInfluence)
 	TotalManpower  = save_data.get("TotalManpower",  TotalManpower)

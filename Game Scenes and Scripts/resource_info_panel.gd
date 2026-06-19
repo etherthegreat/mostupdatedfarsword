@@ -80,9 +80,4 @@ func displayNationalResource(playerCountry, resourceNumber):
 		$ResourceIncomeLab.text = str("Total Manpower Increase: ", playerCountry.MAN)
 		$ResourceExpenseLab.text = str("Total Manpower Losses: ", playerCountry.manpowerEXPM)
 		$ResourceMaxLabel.text = str("")
-	if resourceNumber == 13:
-		$TotalResourceLabel.text = str("Total Boats: ", playerCountry.TotalBoats)
-		$ResourceIncomeLab.text = str("Boats Per Month: ", playerCountry.BPM)
-		$ResourceExpenseLab.text = str("")
-		$ResourceMaxLabel.text = str("")
 	pass

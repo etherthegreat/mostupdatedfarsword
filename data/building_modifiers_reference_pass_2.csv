@@ -234,9 +234,9 @@ Market,Law,Mercantilism,+1 dollars / -2 mandate cost,dollars+mandate cost,Naviga
 Market,Law,Protected Supply Chain,+2 dollars / -1 food / -1 metal cost,dollars+costs,Non-Importation Agreement,Colonial boycott of British goods
 Market,Tradition,Agrarian Bastions,+1 food,food,Market Garden,Farmer's market — food produced alongside trade
 Market,Tradition,Artist Enclaves,+1 culture,culture,Artisan Quarter,Craftspeople cluster around the market
-Dock,Technology,Navigation,+1 boats,boats,Dead Reckoning,Colonial celestial navigation techniques
-Dock,Technology,Engineering,+1 boats,boats,Dry Dock Construction,Shipyard engineering
-Dock,Law,Naval Contracts,+1 boats / -1 dollars cost,boats+dollars cost,Prize Contracts,Privateering contracts and naval shipbuilding
+Dock,Technology,Navigation,+1 gold +1 wood,gold+wood,Dead Reckoning,Colonial celestial navigation — efficient maritime trade routes
+Dock,Technology,Engineering,+1 gold +1 wood,gold+wood,Dry Dock Construction,Shipyard engineering — timber-efficient hull construction
+Dock,Law,Naval Contracts,+1 weapons +1 science,weapons+science,Prize Contracts,Privateering contracts drive arms production and maritime research
 Dock,Tradition,Agrarian Bastions,+1 dollars,dollars,Market Wharf,Dock doubles as trade post — farmland to port pipeline
 Monument,Technology,Architecture,-1 wood cost / -1 metal cost / -2 culture cost,costs,Classical Design,Roman-inspired architecture — Neoclassical American style
 Monument,Law,Pacifist Sanctuaries,+1 happiness,happiness,Peace Memorial,Monuments to peace — not just war

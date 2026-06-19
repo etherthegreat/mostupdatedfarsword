@@ -41,7 +41,6 @@ var mandatePerLevel: int = 0
 var happinessPerLevel: float = 0 # renamed from happinessPerLevel
 var manpowerPerLevel: int = 0
 var influencePerLevel: int = 0
-var boatsPerLevel: int = 0       # new Boats resource
 var corruptionLossPerLevel: int = 0
 var defensivenessPerLevel: int = 0  # for Fortress building
 #each month this building costs this amount of resources
@@ -58,7 +57,6 @@ var mandateCostPerLevel: int = 0
 var happinessCostPerLevel: float = 0 # renamed from happinessCostPerLevel
 var manpowerCostPerLevel: int = 0
 var influenceCostPerLevel: int = 0
-var boatsCostPerLevel: int = 0
 var corruptionGainPerLevel: int = 0
 
 #the balance of resourcePerLevel - resourceCostPerLevel
@@ -75,7 +73,6 @@ var totalBuildingMandate: int = 0
 var totalBuildingInfluence: int = 0
 var totalBuildingManpower: int = 0
 var totalBuildingHappiness: float = 0 # renamed from totalBuildingHappiness
-var totalBuildingBoats: int = 0       # new Boats resource
 var totalBuildingDefensiveness: int = 0  # how much defensiveness this building gives the province
 var corruptionChange: int #corruption difference
 #storage capacity buildings - used to increase max national storage capacity of resource
@@ -112,8 +109,6 @@ var cultureDic: Dictionary   # now covers old Faith and Culture outputs
 var mandateDic: Dictionary
 var happinessDic: Dictionary # renamed from happinessDic
 var influenceDic: Dictionary
-var boatsDic: Dictionary     # new Boats resource dictionary
-
 var corruptionDic: Dictionary
 
 signal towerBuilding
@@ -140,7 +135,6 @@ func _apply_governor_archetype_bonus(bType: String) -> void:
 	var cu0  := culturePerLevel;  var mn0  := mandatePerLevel
 	var hp0  := happinessPerLevel; var mp0  := manpowerPerLevel
 	var inf0 := influencePerLevel; var wp0  := weaponsPerLevel
-	var bt0  := boatsPerLevel
 
 	match bType:
 		"Farm":
@@ -390,17 +384,17 @@ func _apply_governor_archetype_bonus(bType: String) -> void:
 			match pos:
 				"ADMIRAL":
 					match lvl:
-						1: boatsPerLevel += 1
-						2: boatsPerLevel += 2; dollarsPerLevel += 1
-						3: boatsPerLevel += 3; dollarsPerLevel += 2; manpowerPerLevel += 100
+						1: manpowerPerLevel += 100
+						2: manpowerPerLevel += 200; dollarsPerLevel += 1
+						3: manpowerPerLevel += 300; dollarsPerLevel += 2
 				"ENGINEER":
 					match lvl:
-						2: boatsPerLevel += 1; woodPerLevel += 1
-						3: boatsPerLevel += 2; woodPerLevel += 2
+						2: metalPerLevel += 1
+						3: metalPerLevel += 2
 				"SCOUT":
 					match lvl:
-						2: woodPerLevel += 1
-						3: woodPerLevel += 2; boatsPerLevel += 1
+						2: culturePerLevel += 1
+						3: culturePerLevel += 2
 		"Courthouse":
 			match pos:
 				"BUREAUCRAT", "DEPUTY GOVERNOR":
@@ -474,7 +468,6 @@ func _apply_governor_archetype_bonus(bType: String) -> void:
 	if manpowerPerLevel  != mp0:  manpowerDic[label]  = (manpowerPerLevel  - mp0)  * buildingLevel
 	if influencePerLevel != inf0: influenceDic[label] = (influencePerLevel - inf0) * buildingLevel
 	if weaponsPerLevel   != wp0:  weaponsDic[label]   = (weaponsPerLevel   - wp0)  * buildingLevel
-	if boatsPerLevel     != bt0:  boatsDic[label]     = (boatsPerLevel     - bt0)  * buildingLevel
 
 func buildBuilding():
 	match buildingType:
@@ -570,18 +563,20 @@ func buildBuilding():
 			woodDic["Base Market Wood Cost"] = (-1 * buildingLevel)
 			metalDic["Base Market Metal Cost"] = (-1 * buildingLevel)
 		"Dock":
-			# Dock produces Boats (new mana resource)
+			# Dock: converts wood + metal into food + gold; raises food storage cap
 			buildingSprite = load("res://art assets/finishedAssets/buildingsketches/workshop.png")
-			boatsPerLevel += 1
-			woodCostPerLevel += 1
-			foodCostPerLevel += 1
+			foodPerLevel += 3
+			dollarsPerLevel += 2
+			woodCostPerLevel += 2
+			metalCostPerLevel += 2
 			foodPurchaseCost = 50
 			goldPurchaseCost = 75
 			woodPurchaseCost = 100
 			metalPurchaseCost = 50
-			boatsDic["Base Dock Boats Output"] = (1 * buildingLevel)
-			woodDic["Base Dock Wood Cost"] = (-1 * buildingLevel)
-			foodDic["Base Dock Food Cost"] = (-1 * buildingLevel)
+			foodDic["Base Dock Food Output"] = (3 * buildingLevel)
+			dollarsDic["Base Dock Gold Output"] = (2 * buildingLevel)
+			woodDic["Base Dock Wood Cost"] = (-2 * buildingLevel)
+			metalDic["Base Dock Metal Cost"] = (-2 * buildingLevel)
 		"Monument":
 			# Monument = Temple equivalent (produces Culture instead of old Faith)
 			buildingSprite = load("res://art assets/finishedAssets/buildingsketches/temple.png")
@@ -708,7 +703,6 @@ func matchPlayerUnlockables(playerCountryNode):
 	# cultureDic removed — merged into cultureDic
 	magicDic.clear()
 	cultureDic.clear()
-	boatsDic.clear()
 	playerCountry = playerCountryNode
 	match buildingType:
 		"Farm":
@@ -1276,20 +1270,36 @@ func matchPlayerUnlockables(playerCountryNode):
 					culturePerLevel += 1
 			_apply_governor_archetype_bonus("Market")
 		"Dock":
-			# Dock unlockables: traditions/techs/laws that boost naval output.
+			# Dock unlockables: techs/laws/traditions that boost output.
 			for Technology in playerCountry.unlockedTechnologies:
 				if Technology.techName == "Dead Reckoning":
-					boatsPerLevel += 1
+					dollarsPerLevel += 1
+					woodPerLevel += 1
+					dollarsDic["Tech: Dead Reckoning"] = (1 * buildingLevel)
+					woodDic["Tech: Dead Reckoning"] = (1 * buildingLevel)
 				if Technology.techName == "Dry Dock Construction":
-					boatsPerLevel += 1
+					dollarsPerLevel += 1
+					woodPerLevel += 1
+					dollarsDic["Tech: Dry Dock Construction"] = (1 * buildingLevel)
+					woodDic["Tech: Dry Dock Construction"] = (1 * buildingLevel)
 			for law in playerCountry.lawsInConstitution:
 				if law.lawType == "Naval Contracts":
-					boatsPerLevel += 1
-					dollarsCostPerLevel += 1
+					weaponsPerLevel += 1
+					sciencePerLevel += 1
+					weaponsDic["Law: Naval Contracts"] = (1 * buildingLevel)
+					scienceDic["Law: Naval Contracts"] = (1 * buildingLevel)
 			for tradition in playerCountry.unlockedTraditions:
 				if tradition.traditionType == "Agrarian Bastions":
-					# Agrarian Bastions: docks can produce dollars from trade
 					dollarsPerLevel += 1
+					dollarsDic["Tradition: Agrarian Bastions"] = (1 * buildingLevel)
+			# Conditional: food stockpile < 50% cap → +1 food/level; else → +1 gold/level
+			var food_cap_half: int = int(playerCountry.foodStorageMax * 0.5)
+			if playerCountry.TotalFood < food_cap_half:
+				foodPerLevel += 1
+				foodDic["Dock Stockpile Bonus (Food)"] = (1 * buildingLevel)
+			else:
+				dollarsPerLevel += 1
+				dollarsDic["Dock Stockpile Bonus (Gold)"] = (1 * buildingLevel)
 			_apply_governor_archetype_bonus("Dock")
 		"Monument":
 			# Monument is the primary Reason↔Providence axis building.
@@ -1584,8 +1594,8 @@ func _apply_faction_bonuses(bType: String) -> void:
 			"Maritime Patriots":
 				if fac.factionLoyalty >= 30:
 					if bType == "Dock":
-						boatsPerLevel += 1
-						boatsDic["Faction: Maritime Patriots (Port Alliance)"] = (1 * buildingLevel)
+						foodPerLevel += 1
+						foodDic["Faction: Maritime Patriots (Port Alliance)"] = (1 * buildingLevel)
 				if fac.factionLoyalty >= 60:
 					if bType == "Market" or bType == "Workshop":
 						dollarsPerLevel += 1
@@ -1595,8 +1605,8 @@ func _apply_faction_bonuses(bType: String) -> void:
 						dollarsDic["Faction: Maritime Patriots (Atlantic Commerce)"] = (1 * buildingLevel)
 				if fac.factionLoyalty >= 90:
 					if bType == "Dock":
-						boatsPerLevel += 1
-						boatsDic["Faction: Maritime Patriots (Maritime Union)"] = (1 * buildingLevel)
+						manpowerPerLevel += 100
+						manpowerDic["Faction: Maritime Patriots (Maritime Union)"] = (100 * buildingLevel)
 
 func _apply_axis_bonuses(bType: String) -> void:
 	if playerCountry == null:
@@ -2042,7 +2052,6 @@ func calculateOutputs(playerCountryNode):
 	happinessPerLevel = 0  # renamed from harmonyPerLevel
 	influencePerLevel = 0
 	manpowerPerLevel = 0
-	boatsPerLevel = 0
 	defensivenessPerLevel = 0
 	corruptionLossPerLevel = 0
 
@@ -2058,7 +2067,6 @@ func calculateOutputs(playerCountryNode):
 	happinessCostPerLevel = 0
 	influenceCostPerLevel = 0
 	manpowerCostPerLevel = 0
-	boatsCostPerLevel = 0
 	corruptionGainPerLevel = 0
 	buildBuilding()
 	matchPlayerUnlockables(playerCountryNode)
@@ -2073,7 +2081,6 @@ func calculateOutputs(playerCountryNode):
 	totalBuildingManpower = 0
 	totalBuildingInfluence = 0
 	totalBuildingHappiness = 0 # renamed from totalBuildingHarmony
-	totalBuildingBoats = 0
 	totalBuildingDefensiveness = 0
 	corruptionChange = 0
 	if dollarsPerLevel != 0 or dollarsCostPerLevel != 0:
@@ -2117,9 +2124,6 @@ func calculateOutputs(playerCountryNode):
 	if influencePerLevel != 0 or influenceCostPerLevel != 0:
 		totalBuildingInfluence = (influencePerLevel - influenceCostPerLevel)
 		totalBuildingInfluence *= buildingLevel
-	if boatsPerLevel != 0 or boatsCostPerLevel != 0:
-		totalBuildingBoats = (boatsPerLevel - boatsCostPerLevel)
-		totalBuildingBoats *= buildingLevel
 	if defensivenessPerLevel != 0:
 		totalBuildingDefensiveness = defensivenessPerLevel * buildingLevel
 	if corruptionLossPerLevel != 0 or corruptionGainPerLevel != 0:
@@ -2157,7 +2161,7 @@ func calculateOutputs(playerCountryNode):
 			dollarsTax = (corruptionLossPerLevel * (playerCountry.setBathTaxAmount * .01))
 			happinessTax = (corruptionLossPerLevel * (playerCountry.setBathTaxAmount * .02))
 		"Dock":
-			# Dock produces Boats — no dollar/happiness tax (naval tax system TBD)
+			# Dock tax exempt — food/gold output taxed as trade income via flat exemption
 			dollarsTax = 0
 			happinessTax = 0
 		"Fortress":

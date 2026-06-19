@@ -153,7 +153,6 @@ var buildingWeaponsOutput
 var buildingScienceOutput
 var buildingMandateOutput
 var buildingHappinessOutput: float # renamed from buildingHappinessOutput
-var buildingBoatsOutput: int       # new Boats resource
 var buildingManpowerOutput
 var buildingInfluenceOutput
 
@@ -299,7 +298,6 @@ var tileMandateDic:   Dictionary = {}
 var tileHappinessDic: Dictionary = {}
 var tileManpowerDic:  Dictionary = {}
 var tileInfluenceDic: Dictionary = {}
-var tileBoatsDic:     Dictionary = {}
 
 var discoveryPoints: int = 0
 
@@ -579,7 +577,6 @@ func censusTile(playerCountryNode):
 	buildingManpowerOutput = 0
 	buildingHappinessOutput = 0
 	buildingCultureOutput = 0
-	buildingBoatsOutput = 0
 	corruptionChange = 0
 	tileDollarsTax = 0
 	tileHappinessTax = 0
@@ -598,7 +595,6 @@ func censusTile(playerCountryNode):
 		buildingCultureOutput += building.totalBuildingCulture  # covers old faith + culture
 		buildingMandateOutput += building.totalBuildingMandate
 		buildingHappinessOutput += building.totalBuildingHappiness
-		buildingBoatsOutput += building.totalBuildingBoats
 		buildingManpowerOutput += building.totalBuildingManpower
 		buildingInfluenceOutput += building.totalBuildingInfluence
 		corruptionChange += building.corruptionChange
@@ -623,7 +619,6 @@ func censusTile(playerCountryNode):
 	tileMetalDic.clear();     tileMagicDic.clear();     tileCultureDic.clear()
 	tileWeaponsDic.clear();   tileScienceDic.clear();   tileMandateDic.clear()
 	tileHappinessDic.clear(); tileManpowerDic.clear();  tileInfluenceDic.clear()
-	tileBoatsDic.clear()
 	for building in tileBuildingsList:
 		if not building.foodDic.is_empty():      tileFoodDic[building.buildingType]      = building.foodDic
 		if not building.dollarsDic.is_empty():   tileDollarsDic[building.buildingType]   = building.dollarsDic
@@ -637,7 +632,6 @@ func censusTile(playerCountryNode):
 		if not building.happinessDic.is_empty(): tileHappinessDic[building.buildingType] = building.happinessDic
 		if not building.manpowerDic.is_empty():  tileManpowerDic[building.buildingType]  = building.manpowerDic
 		if not building.influenceDic.is_empty(): tileInfluenceDic[building.buildingType] = building.influenceDic
-		if not building.boatsDic.is_empty():     tileBoatsDic[building.buildingType]     = building.boatsDic
 	if not tileFoodDic.is_empty():      emit_signal("censusComplete", "Food",      buildingFoodOutput,      tileFoodDic)
 	if not tileDollarsDic.is_empty():   emit_signal("censusComplete", "Dollars",   buildingDollarsOutput,   tileDollarsDic)
 	if not tileWoodDic.is_empty():      emit_signal("censusComplete", "Wood",      buildingWoodOutput,      tileWoodDic)
@@ -650,7 +644,6 @@ func censusTile(playerCountryNode):
 	if not tileHappinessDic.is_empty(): emit_signal("censusComplete", "Happiness", buildingHappinessOutput, tileHappinessDic)
 	if not tileManpowerDic.is_empty():  emit_signal("censusComplete", "Manpower",  buildingManpowerOutput,  tileManpowerDic)
 	if not tileInfluenceDic.is_empty(): emit_signal("censusComplete", "Influence", buildingInfluenceOutput, tileInfluenceDic)
-	if not tileBoatsDic.is_empty():     emit_signal("censusComplete", "Boats",     buildingBoatsOutput,     tileBoatsDic)
 
 
 func surveyTile(playerCountryNode):
@@ -668,7 +661,6 @@ func surveyTile(playerCountryNode):
 	buildingManpowerOutput = 0
 	buildingHappinessOutput = 0
 	buildingCultureOutput = 0
-	buildingBoatsOutput = 0
 	corruptionChange = 0
 	tileDollarsTax = 0
 	tileHappinessTax = 0
@@ -687,7 +679,6 @@ func surveyTile(playerCountryNode):
 		buildingCultureOutput += building.totalBuildingCulture  # covers old faith + culture
 		buildingMandateOutput += building.totalBuildingMandate
 		buildingHappinessOutput += building.totalBuildingHappiness
-		buildingBoatsOutput += building.totalBuildingBoats
 		buildingManpowerOutput += building.totalBuildingManpower
 		buildingInfluenceOutput += building.totalBuildingInfluence
 		corruptionChange += building.corruptionChange
@@ -1867,7 +1858,6 @@ func _apply_output_reductions() -> void:
 	if buildingHappinessOutput > 0: buildingHappinessOutput = int(float(buildingHappinessOutput) * multiplier)
 	if buildingManpowerOutput  > 0: buildingManpowerOutput  = int(float(buildingManpowerOutput)  * multiplier)
 	if buildingInfluenceOutput > 0: buildingInfluenceOutput = int(float(buildingInfluenceOutput) * multiplier)
-	if buildingBoatsOutput     > 0: buildingBoatsOutput     = int(float(buildingBoatsOutput)     * multiplier)
 
 func disable_building(type: String, turns: int) -> void:
 	for b in tileBuildingsList:
