@@ -2151,6 +2151,7 @@ func createNewEvent(event_id: String, tile = null) -> void:
 		newEvent.build_from_csv(event_id, tile, playerCountryNode)
 	newEvent.eventButtonPressed.connect(_on_event_button_pressed)
 	newEvent.tileEventButtonPressed.connect(_on_tile_event_button_pressed)
+	AudioManager.play_sfx("event_shown")
 	$CanvasLayer/EventControl/EventContainer.add_child(newEvent)
 	EventDatabase.mark_event_fired(event_id, currentWorldTurn)
 	_library_on_event_fired(event_id)
@@ -2253,6 +2254,7 @@ func _on_event_button_pressed(button_id: String, event_id: String,
 	executeOutcome(outcome_type, outcome_value, outcome_amount, null)
 	if outcome_type == "set_flag" and outcome_value.ends_with("_agreed") \
 			and (outcome_value.begins_with("prot_") or outcome_value.begins_with("ca_prot_")):
+		AudioManager.play_sfx("protector_agree")
 		_on_protector_agreed(outcome_value)
 	if next_event_id != "":
 		createNewEvent(next_event_id)
@@ -2264,6 +2266,7 @@ func _on_tile_event_button_pressed(button_id: String, event_id: String,
 	executeOutcome(outcome_type, outcome_value, outcome_amount, tile)
 	if outcome_type == "set_flag" and outcome_value.ends_with("_agreed") \
 			and (outcome_value.begins_with("prot_") or outcome_value.begins_with("ca_prot_")):
+		AudioManager.play_sfx("protector_agree")
 		_on_protector_agreed(outcome_value)
 	if next_event_id != "":
 		createNewEvent(next_event_id, tile)
@@ -5450,6 +5453,7 @@ func _trigger_game_over(won: bool, reason: String = "") -> void:
 	if _game_ended:
 		return
 	_game_ended = true
+	AudioManager.play_sfx("victory" if won else "defeat")
 	print("[GameOver] won=", won, "  reason=", reason)
 	var panel = get_node_or_null("CanvasLayer/GameOverPanel")
 	if panel != null:
@@ -5462,6 +5466,7 @@ func _trigger_game_over(won: bool, reason: String = "") -> void:
 func _on_next_turn_pressed() -> void:
 	if _game_ended:
 		return
+	AudioManager.play_sfx("end_turn")
 	# End this player's individual turn
 	_end_current_player_turn()
 
@@ -5496,6 +5501,7 @@ func _advance_fortnight() -> void:
 			month = 1
 			year += 1
 		# Broadcast season change to all tiles
+		AudioManager.play_sfx("season_change")
 		emit_signal("calculateSeason", month)
 
 func _format_game_date() -> String:

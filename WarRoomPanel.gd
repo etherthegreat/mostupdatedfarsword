@@ -61,7 +61,7 @@ func _populate_commander_tab() -> void:
 
 
 func _populate_presidential_tab() -> void:
-	var vbox = $"PanelBackground/TabContainer/DEPTARTMENT OF MYTHOLOGICAL  AFFAIRS/ScrollContainer/PresidentialVBox"
+	var vbox = $"PanelBackground/TabContainer/DEPARTMENT OF MYTHOLOGICAL AFFAIRS/ScrollContainer/PresidentialVBox"
 	for child in vbox.get_children():
 		child.queue_free()
 

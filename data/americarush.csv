@@ -239,15 +239,15 @@ French Language Rights,CA Law: French Language Rights,LAW,P2,TODO,
 French Cultural Identity Enshrined,CA Law: French Cultural Identity,LAW,P2,TODO,
 Louis Riel,CA Icon: Louis Riel,ICON,P2,TODO,
 Roméo Dallaire,CA Icon: Roméo Dallaire,ICON,P2,TODO,
-WAR-002,WarRoomPanel typo fix: DEPTARTMENT → DEPARTMENT,EDITOR,P3,TODO,WarRoomPanel.tscn tab + world.gd line 57.
+WAR-002,WarRoomPanel typo fix: DEPTARTMENT → DEPARTMENT,EDITOR,P3,DONE,WarRoomPanel.tscn tab + world.gd line 57.
 CMD-001,CommanderArcEntry: set checkTexture + circleTexture,EDITOR,P3,TODO,CommanderArcEntry.gd lines 33-34. Use zGreen.png for check; create/import hollow circle for circle.
 PROT-001,ProtectorArcEntry: set checkTexture + circleTexture,EDITOR,P3,TODO,Match CMD-001 assets.
 MIL-001,Military panel: separator labels between barracks groups,EDITOR,P3,TODO,military_panel_control.gd line 30 — add Label/HSeparator nodes.
 TIP-001,Tile info panel: verify 13-resource ManaPanelContainer,EDITOR,P3,TODO,tile_info_panel.tscn — ensure GridContainer/ScrollContainer can show all 13 resource types.
 GOV-002,GovernorSelection: add Wizard tab,EDITOR,P3,TODO,"Show wizard name, school, active spells. Wire to changePanel('wizard') path."
 MAN-001,Mana panel: add proper Boats icon,EDITOR,P3,TODO,mana_panel.gd line 47-48 uses manpower.png placeholder. Create/import boats.png.
-SFX-001,Create AudioManager autoload + SFX buses,EDITOR,P3,TODO,AudioManager.gd singleton with play_sfx() / stop_sfx(). 4 buses: Master/Music/SFX/Ambient.
-SFX-002,Wire HIGH-priority SFX trigger points,EDITOR,P3,TODO,"Depends on SFX-001. Key points: End Turn, Event shown, Battle start/win/loss, Season change, Protector agree."
+SFX-001,Create AudioManager autoload + SFX buses,EDITOR,P3,DONE,AudioManager.gd singleton with play_sfx() / stop_sfx(). 4 buses: Master/Music/SFX/Ambient.
+SFX-002,Wire HIGH-priority SFX trigger points,EDITOR,P3,DONE,"Depends on SFX-001. Key points: End Turn, Event shown, Battle start/win/loss, Season change, Protector agree."
 MUSIC-001,Implement menu theme music,EDITOR,P1,TODO,Create MusicManager.gd (or extend AudioManager). Wire menu theme .ogg to play on main_menu load. Fade out on game start.
 MUSIC-002,Implement in-game ambient tracks,EDITOR,P1,TODO,Wire 2-3 in-game tracks from composer to AudioManager. Implement track rotation / crossfade on scene change or season change.
 PRES_LIB_LINKS,Presidential Library: wikilink navigation between entries,EDITOR,P1,TODO,RecordsTab entries support [[ENTRY_ID]] syntax in body text. Render as clickable RichTextLabel [url] tags. On click: find matching Records entry and navigate to it. No separate buttons needed.
