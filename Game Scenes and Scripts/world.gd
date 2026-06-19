@@ -2278,6 +2278,8 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 			var lc_faction: String = outcome_value
 			if lc_faction == "vp_faction" and _vp_faction != "":
 				lc_faction = _vp_faction
+			if lc_faction == "ca_pm_faction" and _ca_vp_faction != "":
+				lc_faction = _ca_vp_faction
 			var lc_amount = outcome_amount
 			if _vp_faction != "" and lc_faction == _vp_faction:
 				lc_amount *= 2
@@ -2298,6 +2300,8 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 			_apply_resource_change(outcome_value, outcome_amount)
 		"morale_boost":
 			_apply_morale_boost(outcome_amount, tile)
+		"harmony_boost":
+			playerCountryNode.TotalHappiness += outcome_amount
 		"promote_commander":
 			# Level-up is now automatic via XP threshold — this outcome grants
 			# a commendation morale bonus and faction loyalty to acknowledge the event
