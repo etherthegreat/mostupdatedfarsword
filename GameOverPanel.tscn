@@ -1,0 +1,55 @@
+[gd_scene load_steps=2 format=3 uid="uid://cg4m30v3rp4n1"]
+
+[ext_resource type="Script" uid="uid://bvxq3gameovr1" path="res://GameOverPanel.gd" id="1_gov01"]
+
+[node name="GameOverPanel" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+visible = false
+script = ExtResource("1_gov01")
+
+[node name="Overlay" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.82)
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="CenterContainer"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 32
+
+[node name="TitleLabel" type="Label" parent="CenterContainer/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 72
+text = "VICTORY"
+horizontal_alignment = 1
+
+[node name="ReasonLabel" type="Label" parent="CenterContainer/VBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(720, 0)
+theme_override_font_sizes/font_size = 26
+text = ""
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="ReturnButton" type="Button" parent="CenterContainer/VBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(320, 60)
+theme_override_font_sizes/font_size = 28
+text = "Return to Menu"

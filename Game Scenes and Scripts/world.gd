@@ -5459,7 +5459,6 @@ func _trigger_game_over(won: bool, reason: String = "") -> void:
 	if panel != null:
 		panel.show_result(won, reason)
 	else:
-		# GameOverPanel.tscn not yet instanced (GOV-001 editor task pending)
 		push_warning("[GameOver] GameOverPanel not found — result: " + ("WIN" if won else "LOSS"))
 
 

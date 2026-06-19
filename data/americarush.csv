@@ -4,7 +4,7 @@ FIX_GAME_OVER,Implement _trigger_game_over() and victory/defeat screen,CODE,P0,D
 FIX_CONTENT_TOGGLE,Wire explicit content filter to Settings booleans,CODE,P0,DONE,event_scene.gd:87-88 — return true hardcoded. Wire to Settings.content_kinky_lewd / Settings.content_explicit.
 FIX_WIN_CONDITIONS,Implement win / loss condition checks,CODE,P0,DONE,"world.gd — add _check_win_conditions() called from _end_turn(): all-tiles-owned win, Canadian peace-treaty win, president-death loss."
 WAR-001,WarRoomPanel: Add CloseButton and wire signal,EDITOR,P0,TODO,"WarRoomPanel.tscn — Add Button 'CloseButton', wire pressed → _on_close_button_pressed() (line 814)."
-GOV-001,Create GameOverPanel.tscn,EDITOR,P0,TODO,New scene: overlay + title + reason label + Return button. Add to CanvasLayer in world.tscn. Wire to world.gd _trigger_game_over().
+GOV-001,Create GameOverPanel.tscn,EDITOR,P0,DONE,New scene: overlay + title + reason label + Return button. Add to CanvasLayer in world.tscn. Wire to world.gd _trigger_game_over().
 RES-001,Resource bar: add missing Manpower/Mandate/Happiness/Influence/Boats labels,EDITOR,P0,TODO,Top resource bar — add label nodes for the 5 missing resources. Match FoodLabel/GoldLabel pattern (icon Sprite + Label child of HBoxContainer).
 MENU-001,Rebuild main_menu.tscn: video BG + 5-button panel,EDITOR,P0,TODO,VideoStreamPlayer BG + LeftPanel with 5 buttons. Instance PresidentialLibraryPanel + SettingsPanel as hidden children.
 MENU-002,Create PresidentialLibraryPanel.tscn,EDITOR,P0,TODO,"Full-screen overlay, dark bg, 3-tab panel (GALLERY / RECORDS / JOURNAL), seal, CloseButton. Instance GalleryTab / RecordsTab / JournalTab."
