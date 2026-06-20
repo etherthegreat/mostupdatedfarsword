@@ -41,6 +41,10 @@ signal requestEventFire(event_id, tile)
 signal protectorSummoned(origin_tile, protector_name, protector_id)
 
 
+func _ready() -> void:
+	$PanelBackground/CloseButton.pressed.connect(_on_close_button_pressed)
+
+
 func buildSelf(playerNode: country) -> void:
 	playerCountryNode = playerNode
 	playerCountryID   = playerNode.CID if playerNode != null else "USA"
