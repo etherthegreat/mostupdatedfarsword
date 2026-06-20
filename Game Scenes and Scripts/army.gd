@@ -217,7 +217,6 @@ func onTurnEnd():
 	if not reinforcementBlocked and parentCountry.TotalManpower > 0:
 		for Unit in unitsList:
 			Unit.refillManpower(parentCountry.armyReinforceRate)
-			print("unitREFILL", Unit.unitCurrentManpower, parentCountry.armyReinforceRate)
 	if unit_mods_changed:
 		surveySelf()
 	# Master Baiter: +10% shield recharge per turn
@@ -583,7 +582,6 @@ func surveySelf():
 	armyHarmonyCost = 0
 	armyFaithCost = 0
 	armySiegeScore = 0
-	print("Surveying Self")
 	unitCount = 0
 	for Unit in unitsList:
 		unitCount += Unit.unitLevel
@@ -748,7 +746,6 @@ func addUnitCommander(newCommander):
 			commanderModifiers2.append(MilMod)
 		for MilMod in commander.govMilModsLvl3:
 			commanderModifiers3.append(MilMod)
-	print("MILMODS IN 1", commanderModifiers1)
 	#updateArmyUI()
 	pass
 
@@ -834,8 +831,6 @@ func commanderCheck():
 				for MilMod in commanderModifiers3:
 					for Unit in unitsList:
 						Unit.addMilMod(MilMod)
-	else:
-		print("no commander")
 	pass
 
 signal commanderButtonPressed
@@ -888,7 +883,6 @@ func _on_banner_button_pressed() -> void:
 			bannerButton.queue_free()
 	if $VBoxContainer/BannerControl/BannerContainer.visible == false:
 		for Texture in parentCountry.armyIconList:
-			print("ANTICLIMATIC", parentCountry.armyIconList)
 			var newBannerButton = bannerButtonScene.instantiate()
 			newBannerButton.buildSelf(Texture)
 			newBannerButton.bannerButtonPressed.connect(changeArmyBanner)
