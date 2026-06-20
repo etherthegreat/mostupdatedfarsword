@@ -2,7 +2,7 @@ extends Control
 
 class_name BarracksButton
 
-var barracksBuilding: building
+var barracksBuilding
 var barracksTile: Tile
 
 var barracksArmy: Army

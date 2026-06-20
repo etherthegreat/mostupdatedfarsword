@@ -88,7 +88,7 @@ func _build_entry_list() -> void:
 		btn.flat = true
 		btn.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		btn.custom_minimum_size = Vector2(0, 40)
-		var e := entry  # capture for closure
+		var e = entry  # capture for closure
 		btn.pressed.connect(func():
 			_select_button(btn)
 			_show_entry(e))
@@ -199,7 +199,7 @@ func _get_library_panel() -> Node:
 func _turn_to_date_string(turn: int) -> String:
 	var seasons := ["Spring", "Summer", "Autumn", "Winter"]
 	var year    := 1782 + (turn / 4)
-	var season  := seasons[turn % 4]
+	var season  = seasons[turn % 4]
 	var ordinal := _year_ordinal(year - 1781)
 	return "%s %d  ·  Year %s of the Carlisle Administration" % [season, year, ordinal]
 

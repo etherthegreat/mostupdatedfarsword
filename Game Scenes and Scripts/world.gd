@@ -162,6 +162,8 @@ func _process(delta: float) -> void:
 		$CanvasLayer/LoadingSprite.rotation += 1
 		return
 	else:
+		print("yippie an attempt so close")
+		print("playercountrynode", playerCountryNode.CID)
 		$"CanvasLayer/Resource Bar (TOP)/container/FoodLabel/Label".text = str(playerCountryNode.TotalFood)
 		$"CanvasLayer/Resource Bar (TOP)/container/GoldLabel/Label".text = str(playerCountryNode.TotalDollars)
 		$"CanvasLayer/Resource Bar (TOP)/container/WoodLabel/Label".text = str(playerCountryNode.TotalWood)
@@ -3214,9 +3216,10 @@ func _check_border_dispute() -> void:
 			continue
 		var has_ca_neighbor: bool = false
 		for n in tile.TileNeighbors:
-			if n.tileContinent in CANADIAN_STATES:
-				has_ca_neighbor = true
-				break
+			if n != null:
+				if n.tileContinent in CANADIAN_STATES:
+					has_ca_neighbor = true
+					break
 		if has_ca_neighbor:
 			candidates.append(tile)
 	if candidates.is_empty():
@@ -4628,7 +4631,7 @@ func _check_prot08_dma_summon() -> void:
 	# Scan player-owned tiles for a pending DMA investigation on a ship-raid tile
 	var dma_tile = null
 	for tile in playerCountryNode.OwnedTileList:
-		if tile.get("dmaInvestigationPending", false) and tile.get("hasMysteriousShipRaids", false):
+		if tile.get("dmaInvestigationPending") and tile.get("hasMysteriousShipRaids"):
 			dma_tile = tile
 			tile.dmaInvestigationPending = false  # consume the flag
 			break
@@ -4647,7 +4650,7 @@ func _check_prot17_dma_summon() -> void:
 	# Scan player-owned tiles for a pending DMA investigation on the DC oration tile
 	var dma_tile = null
 	for tile in playerCountryNode.OwnedTileList:
-		if tile.get("dmaInvestigationPending", false) and tile.get("hasMysteriousOrations", false):
+		if tile.get("dmaInvestigationPending") and tile.get("hasMysteriousShipRaids"):
 			dma_tile = tile
 			tile.dmaInvestigationPending = false  # consume the flag
 			break
@@ -5290,53 +5293,53 @@ func giveSpellInfo(type, spellBranch):
 	var schoolType: String
 	match type:
 		"healingPotion":
-			spellString = LocBallUI.magicDic.healingPotion
-			spellDesc = LocBallUI.magicDic.healingPotionDesc
-			schoolType = LocBallUI.magicDic.alchemy
+			spellString = LocBallUI.magicDic.manifest
+			spellDesc = LocBallUI.magicDic.manifest
+			schoolType = LocBallUI.magicDic.manifest
 		"draughtOfKnowledge":
-			spellString = LocBallUI.magicDic.draughtOfKnowledge
-			spellDesc = LocBallUI.magicDic.draughtOfKnowledgeDesc
-			schoolType = LocBallUI.magicDic.alchemy
+			spellString = LocBallUI.magicDic.manifest
+			spellDesc = LocBallUI.magicDic.manifest
+			schoolType = LocBallUI.magicDic.manifest
 		"fireworks":
-			spellString = LocBallUI.magicDic.fireworks
-			spellDesc = LocBallUI.magicDic.fireworksDesc
-			schoolType = LocBallUI.magicDic.alchemy
+			spellString = LocBallUI.magicDic.manifest
+			spellDesc = LocBallUI.magicDic.manifest
+			schoolType = LocBallUI.magicDic.manifest
 		"fleetingFoot":
-			spellString = LocBallUI.magicDic.fleetingFoot
-			spellDesc = LocBallUI.magicDic.fleetingFootDesc
-			schoolType = LocBallUI.magicDic.alchemy
+			spellString = LocBallUI.magicDic.manifest
+			spellDesc = LocBallUI.magicDic.manifest
+			schoolType = LocBallUI.magicDic.manifest
 		"focusingDust":
-			spellString = LocBallUI.magicDic.focusDust
-			spellDesc = LocBallUI.magicDic.focusDustDesc
-			schoolType = LocBallUI.magicDic.alchemy
+			spellString = LocBallUI.magicDic.manifest
+			spellDesc = LocBallUI.magicDic.manifest
+			schoolType = LocBallUI.magicDic.manifest
 		"goldenTouch":
-			spellString = LocBallUI.magicDic.goldenTouch
-			spellDesc = LocBallUI.magicDic.goldenTouchDesc
-			schoolType = LocBallUI.magicDic.alchemy
+			spellString = LocBallUI.magicDic.manifest
+			spellDesc = LocBallUI.magicDic.manifest
+			schoolType = LocBallUI.magicDic.manifest
 		"paralysis":
 			spellString = LocBallUI.magicDic.paralysis
 			spellDesc = LocBallUI.magicDic.paralysisDesc
-			schoolType = LocBallUI.magicDic.alchemy
+			schoolType = LocBallUI.magicDic.manifest
 		"poison":
 			spellString = LocBallUI.magicDic.poison
 			spellDesc = LocBallUI.magicDic.poisonDesc
-			schoolType = LocBallUI.magicDic.alchemy
+			schoolType = LocBallUI.magicDic.manifest
 		"slimeSoldier":
 			spellString = LocBallUI.magicDic.slimeSoldier
 			spellDesc = LocBallUI.magicDic.slimeSoldierDesc
-			schoolType = LocBallUI.magicDic.alchemy
+			schoolType = LocBallUI.magicDic.manifest
 		"slimeSpitter":
 			spellString = LocBallUI.magicDic.slimeSpitter
 			spellDesc = LocBallUI.magicDic.slimeSpitterDesc
-			schoolType = LocBallUI.magicDic.alchemy
+			schoolType = LocBallUI.magicDic.manifest
 		"slimeWeapons":
 			spellString = LocBallUI.magicDic.slimeWeapons
 			spellDesc = LocBallUI.magicDic.slimeWeaponsDesc
-			schoolType = LocBallUI.magicDic.alchemy
+			schoolType = LocBallUI.magicDic.manifest
 		"waterbreathing":
 			spellString = LocBallUI.magicDic.waterbreathing
 			spellDesc = LocBallUI.magicDic.waterbreathingDesc
-			schoolType = LocBallUI.magicDic.alchemy
+			schoolType = LocBallUI.magicDic.manifest
 	spellBranch.giveSpellInfo(schoolPoints, turnsUntil, unlocked, spellString, spellDesc, schoolType)
 	pass
 
@@ -5487,7 +5490,7 @@ func _trigger_game_over(won: bool, reason: String = "", end_type: String = "") -
 	if _game_ended:
 		return
 	_game_ended = true
-	AudioManager.play_sfx("victory" if won else "defeat")
+	#AudioManager.play_sfx("victory" if won else "defeat")
 	print("[GameOver] won=", won, "  reason=", reason, "  end_type=", end_type)
 	if not won and end_type != "":
 		var ending = get_node_or_null("CanvasLayer/EndingSceneControl")
@@ -5504,7 +5507,7 @@ func _trigger_game_over(won: bool, reason: String = "", end_type: String = "") -
 func _on_next_turn_pressed() -> void:
 	if _game_ended:
 		return
-	AudioManager.play_sfx("end_turn")
+	#AudioManager.play_sfx("end_turn")
 	# End this player's individual turn
 	_end_current_player_turn()
 
@@ -5540,7 +5543,7 @@ func _advance_fortnight() -> void:
 		if month > 12:
 			month = 1
 			year += 1
-		AudioManager.play_sfx("season_change")
+		#AudioManager.play_sfx("season_change")
 		emit_signal("calculateSeason", month)
 
 func _format_game_date() -> String:
@@ -5548,7 +5551,7 @@ func _format_game_date() -> String:
 		"January","February","March","April","May","June",
 		"July","August","September","October","November","December"
 	]
-	var mname := month_names[month - 1] if (month >= 1 and month <= 12) else ("Month " + str(month))
+	var mname = month_names[month - 1] if (month >= 1 and month <= 12) else ("Month " + str(month))
 	return "%s %d, %d" % [mname, dayOfMonth, year]
 
 # ── OPENING JOURNAL ENTRY ─────────────────────────────────────────────────────
@@ -5935,7 +5938,7 @@ func _open_vp_picker() -> void:
 		+ "Choose a governor to serve the Republic."
 	)
 	lbl_sub.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	lbl_sub.autowrap_mode = TextServer.AUTOWRAP_WORD_ONLY
+	#lbl_sub.autowrap_mode = TextServer.AUTOWRAP_WORD_ONLY
 	vbox.add_child(lbl_sub)
 
 	vbox.add_child(HSeparator.new())

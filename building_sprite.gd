@@ -5,7 +5,7 @@ class_name buildingSprite
 var buildingType: String
 var buildingLevel: int
 signal updateInspector
-var thisBuilding: building
+var thisBuilding
 
 func buildBuildSprite(building):
 	thisBuilding = building

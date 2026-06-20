@@ -1423,9 +1423,9 @@ func matchPlayerUnlockables(playerCountryNode):
 						culturePerLevel += 2
 						mandatePerLevel += 5
 						magicCostPerLevel += 15
-		_apply_faction_bonuses(buildingType)
+	_apply_faction_bonuses(buildingType)
 		# Global law bonuses — apply to every building type
-		for law in playerCountry.lawsInConstitution:
+	for law in playerCountry.lawsInConstitution:
 			if law.lawType == "National Security Act" or law.lawType == "National Defence Act":
 				manpowerPerLevel += 5
 				manpowerDic["Law: " + law.lawType] = (5 * buildingLevel)

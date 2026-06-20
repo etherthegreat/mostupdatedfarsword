@@ -144,7 +144,7 @@ const GALLERY_CATALOG := [
 
 ]
 
-var _tile_scene = preload("res://GalleryTile.tscn")
+var _tile_scene = load("res://GalleryTile.tscn")
 var _unlocked_list: Array = []   # filtered to only unlocked entries, for lightbox cycling
 var _lightbox_index: int  = 0
 
@@ -197,7 +197,7 @@ func _show_lightbox() -> void:
 func _update_lightbox() -> void:
 	if _unlocked_list.is_empty():
 		return
-	var entry     := _unlocked_list[_lightbox_index]
+	var entry = _unlocked_list[_lightbox_index]
 	var art_rect   = get_node_or_null("Lightbox/FullArtRect")
 	var title_lbl  = get_node_or_null("Lightbox/LightboxTitle")
 	var flavor_lbl = get_node_or_null("Lightbox/LightboxFlavor")

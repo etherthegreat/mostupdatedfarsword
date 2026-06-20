@@ -62,6 +62,7 @@ func _on_play_button_pressed() -> void:
 	$CountryInfoPanel.queue_free()
 	var language = settings.gameLanguage
 	var newGame = newGameScene.instantiate()
-	add_child(newGame)
 	newGame.newGameBuild(selectedCountry, language, isCoopMode)
+	get_tree().change_scene_to_file(
+		"res://Game Scenes and Scripts/world.tscn")
 	pass # Replace with function body.

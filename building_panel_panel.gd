@@ -1,7 +1,7 @@
 extends Control
 
 
-var buildingUnderInspection: building
+var buildingUnderInspection
 
 signal upgradeBuilding
 signal downgradeBuilding
