@@ -217,7 +217,6 @@ func onTurnEnd():
 	if not reinforcementBlocked and parentCountry.TotalManpower > 0:
 		for Unit in unitsList:
 			Unit.refillManpower(parentCountry.armyReinforceRate)
-			print("unitREFILL", Unit.unitCurrentManpower, parentCountry.armyReinforceRate)
 	if unit_mods_changed:
 		surveySelf()
 	# Master Baiter: +10% shield recharge per turn
@@ -583,7 +582,6 @@ func surveySelf():
 	armyHarmonyCost = 0
 	armyFaithCost = 0
 	armySiegeScore = 0
-	print("Surveying Self")
 	unitCount = 0
 	for Unit in unitsList:
 		unitCount += Unit.unitLevel
@@ -677,14 +675,22 @@ func surveySelf():
 				armyWoodCost += uLV
 				armyMetalCost += (2*uLV)
 		match Unit.unitWeapon.weaponType:
-			"Spear" , "Club" , "Dagger", "Atlatl":
+			"Spear", "Club", "Dagger", "Atlatl":
 				armyWeaponsCost += uLV
 			"Machete", "Macuahitl", "Single Axe", "Mace":
-				armyWeaponsCost += (2*uLV)
-			"Flail", "Shortsword", "Pike":
-				armyWeaponsCost += (3*uLV)
-			"War Hammer", "War Axe", "War Sword":
-				armyWeaponsCost += (4*uLV)
+				armyWeaponsCost += (2 * uLV)
+			"Flail", "Shortsword", "Pike", "Cutlass":
+				armyWeaponsCost += (3 * uLV)
+			"War Hammer", "War Axe", "War Sword", "Cavalry Saber", "Flintlock":
+				armyWeaponsCost += (4 * uLV)
+			"Light Saber", "Brown Bess", "Falconet":
+				armyWeaponsCost += (5 * uLV)
+			"Heavy Saber", "Percussion Cap", "Field Gun":
+				armyWeaponsCost += (6 * uLV)
+			"Lever Repeater", "Howitzer":
+				armyWeaponsCost += (7 * uLV)
+			"Mortar":
+				armyWeaponsCost += (8 * uLV)
 		if parentCountry != null: #find costs and savings from country specific modifiers here
 			for law in parentCountry.lawsInConstitution:
 				if law.lawType == "Mercantilism":
@@ -740,7 +746,6 @@ func addUnitCommander(newCommander):
 			commanderModifiers2.append(MilMod)
 		for MilMod in commander.govMilModsLvl3:
 			commanderModifiers3.append(MilMod)
-	print("MILMODS IN 1", commanderModifiers1)
 	#updateArmyUI()
 	pass
 
@@ -826,8 +831,6 @@ func commanderCheck():
 				for MilMod in commanderModifiers3:
 					for Unit in unitsList:
 						Unit.addMilMod(MilMod)
-	else:
-		print("no commander")
 	pass
 
 signal commanderButtonPressed
@@ -880,7 +883,6 @@ func _on_banner_button_pressed() -> void:
 			bannerButton.queue_free()
 	if $VBoxContainer/BannerControl/BannerContainer.visible == false:
 		for Texture in parentCountry.armyIconList:
-			print("ANTICLIMATIC", parentCountry.armyIconList)
 			var newBannerButton = bannerButtonScene.instantiate()
 			newBannerButton.buildSelf(Texture)
 			newBannerButton.bannerButtonPressed.connect(changeArmyBanner)

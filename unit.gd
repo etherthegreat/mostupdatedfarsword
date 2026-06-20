@@ -103,7 +103,8 @@ func getUnitAttributes() -> void:
 	unitMaxWeapons     = (100 * unitLevel)
 
 	for MilMod in militaryModifierList:
-		removeMilMod(MilMod)
+		MilMod.queue_free()
+	militaryModifierList.clear()
 
 	emit_signal("getUnitInfo", unitType, self)
 	calculateWeaponsOresArmor()
