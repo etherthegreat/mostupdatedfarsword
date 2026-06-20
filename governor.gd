@@ -202,7 +202,7 @@ func buildSelf(gT, gL):
 	hired = false
 	match governorType:
 		"Patrick Henry":
-			governorTexture = _get_portrait(governorType)
+			#governorTexture = _get_portrait(governorType)
 			governorDescription = "Give me liberty or give me death. Henry brooks no compromise with tyranny."
 			governorBiography = "Virginia orator and patriot. His fury at the crown is matched only by his suspicion of centralized power in any form."
 			governorPosition = "ORATOR"
@@ -213,7 +213,7 @@ func buildSelf(gT, gL):
 			addMilMod("Healer", 3)
 
 		"Abigail Adams":
-			governorTexture = _get_portrait(governorType)
+			#governorTexture = _get_portrait(governorType)
 			governorDescription = "Remember the ladies, or we will foment our own rebellion."
 			governorBiography = "Wife, intellectual, and the conscience of the revolution. Pushes the movement toward its own stated ideals."
 			governorPosition = "DIPLOMAT"
@@ -221,7 +221,7 @@ func buildSelf(gT, gL):
 			loyalty = 7.0
 
 		"Thomas Paine":
-			governorTexture = _get_portrait(governorType)
+			#governorTexture = _get_portrait(governorType)
 			governorDescription = "Common sense is not so common. Government is a necessary evil at best."
 			governorBiography = "English immigrant turned American revolutionary. His pamphlets lit the fire. He believes in the people absolutely."
 			governorPosition = "SCHOLAR"
@@ -229,7 +229,7 @@ func buildSelf(gT, gL):
 			loyalty = 4.0  # Loyal but independently principled — will balk at overreach
 
 		"Mercy Otis Warren":
-			governorTexture = _get_portrait(governorType)
+			#governorTexture = _get_portrait(governorType)
 			governorDescription = "The pen is mightier than any redcoat bayonet."
 			governorBiography = "Playwright and historian of the revolution. Her sharp political satire keeps the movement honest."
 			governorPosition = "SCHOLAR"
@@ -237,7 +237,7 @@ func buildSelf(gT, gL):
 			loyalty = 7.0
 
 		"Daniel Shays":
-			governorTexture = _get_portrait(governorType)
+		#	governorTexture = _get_portrait(governorType)
 			governorDescription = "The farmers have had enough. We will not be taxed into poverty."
 			governorBiography = "Veteran of the Continental Army who led a farmers revolt when the revolution forgot the people who fought it."
 			governorPosition = "FARMER"
@@ -245,7 +245,7 @@ func buildSelf(gT, gL):
 			loyalty = 1.0  # Has real grievances; loyalty fragile under low claim
 
 		"Ualani Carlisle":
-			governorTexture = _get_portrait(governorType)
+			#governorTexture = _get_portrait(governorType)
 			governorDescription = "The President does not wait for permission. She leads from the front and the briefing room and, when necessary, the battlefield."
 			governorBiography = "Hawaii's finest export and Washington's current occupant — when it is not occupied. President Carlisle commands the APF personally. Her security detail has filed seventeen formal objections. She has read none of them."
 			governorPosition = "PRESIDENT & COMMANDER"
@@ -257,7 +257,7 @@ func buildSelf(gT, gL):
 			addMilMod("President", 123)
 
 		"Benjamin Tallmadge":
-			governorTexture = _get_portrait(governorType)
+			#governorTexture = _get_portrait(governorType)
 			governorDescription = "The Culper Ring never stopped running. It merely changed names."
 			governorBiography = "Washington's spymaster and the architect of America's first intelligence network. Tallmadge ran agents behind Crown lines for six years without losing one. He is methodical, loyal, and deeply suspicious of everyone — including himself. The Codebook is his invention. The Ring is his life's work. He keeps a ledger. The ledger is encrypted. He is the only one who knows the key."
 			governorPosition = "SPYMASTER"
@@ -266,7 +266,7 @@ func buildSelf(gT, gL):
 			addMilMod("Translator", 123)
 
 		"Phillis Wheatley":
-			governorTexture = _get_portrait(governorType)
+			#governorTexture = _get_portrait(governorType)
 			governorDescription = "Liberty and peace are not decorative concepts. They are demands."
 			governorBiography = "The first published African American poet and the revolution's most inconvenient mirror. She met Washington and wrote him a poem and the poem was better than the war. Her work is circulating in British-held territories. Crown officers have begun confiscating it, which, historically speaking, is how you know a poem is working. She does not fight with a musket. She does not need to."
 			governorPosition = "HERALD"
@@ -274,7 +274,7 @@ func buildSelf(gT, gL):
 			loyalty = 6.0
 
 		"Francis Asbury":
-			governorTexture = _get_portrait(governorType)
+			#governorTexture = _get_portrait(governorType)
 			governorDescription = "I have traveled three hundred thousand miles in this country and I am not done yet."
 			governorBiography = "The Father of American Methodism arrived from England in 1771 and proceeded to cover every inch of the new nation on horseback at a pace that worried his horse. He preaches liberation theology in territories where armies cannot follow. His circuits reach the frontier settlements, the Appalachian hollows, the farmlands between battlefields. He is anti-slavery, democratic, tireless, and genuinely impossible to stop. Crown forces have twice tried to arrest him. He preached at both arresting officers. One converted."
 			governorPosition = "CIRCUIT PREACHER"
@@ -282,7 +282,7 @@ func buildSelf(gT, gL):
 			loyalty = 5.0
 
 		"Jessica Commanda Odjick":
-			governorTexture = _get_portrait(governorType)
+			#governorTexture = _get_portrait(governorType)
 			governorDescription = "The colony belongs to no crown. The land remembers who tended it long before London drew a line."
 			governorBiography = "Algonquin leader and the voice the Continental Republic actually needs to hear. Commanda grew up on the waterways between territories London calls borders and her people call home. She speaks three languages and none of them are asking permission. She came to Ottawa not as a supplicant but as the only person in the room who has been right about every British promise for forty years. The Governor's Council objected to her presence at the table. The Governor's Council is no longer at the table."
 			governorPosition = "PRIME MINISTER"
@@ -292,7 +292,7 @@ func buildSelf(gT, gL):
 			isLeader = true
 
 		"Marc Penoit":
-			governorTexture = _get_portrait(governorType)
+			#governorTexture = _get_portrait(governorType)
 			governorDescription = "I did not march this far to hand the colony back to London in a different hat."
 			governorBiography = "Québécois militia commander and deputy to Clear-Water. Penoit spent two winters at the siege of Saint-Georges before the Continental Republic knew his name. Pragmatic where Clear-Water is principled, military where she is diplomatic, and entirely convinced that the French Habitants will only survive this war if someone is watching the eastern flank. He disagrees with the alliance about once a week. He never disagreed enough to leave."
 			governorPosition = "DEPUTY GOVERNOR"
@@ -301,7 +301,7 @@ func buildSelf(gT, gL):
 			isVicePresident = true
 
 		"Mothman":
-			governorTexture = _get_portrait(governorType)
+			#governorTexture = _get_portrait(governorType)
 			governorDescription = "It appeared before the bridge fell. It appears now. Draw your own conclusions."
 			governorBiography = "The Mothman of Point Pleasant has haunted the Ohio River valley since before the revolution. Its warning cries precede disasters — or cause them, depending on who you ask. It does not speak. It does not need to. When it stands at your side on the battlefield, the enemy sees it too."
 			governorPosition = "OMEN"
@@ -310,7 +310,7 @@ func buildSelf(gT, gL):
 			questComplete = true
 
 		"Lincoln's Ghost":
-			governorTexture = _get_portrait(governorType)
+			#governorTexture = _get_portrait(governorType)
 			governorDescription = "The first time was unfinished business. The second time, he came back to finish it."
 			governorBiography = "Abe Lincoln died in Washington once. Now he haunts the White House and the war rooms and the places where decisions are made badly. He does not give orders. He stands behind you when you are about to make a mistake and says nothing at all, which is somehow worse. Carlisle finds him unnerving. He finds that funny."
 			governorPosition = "SPECTER"
@@ -320,7 +320,7 @@ func buildSelf(gT, gL):
 			questComplete = true
 
 		"Turkey God":
-			governorTexture = _get_portrait(governorType)
+			#governorTexture = _get_portrait(governorType)
 			governorDescription = "Ben Franklin was right. Nobody respected him until they needed him."
 			governorBiography = "Ancient, enormous, and profoundly unimpressed. The Turkey God is older than the republic, older than the colonies, older than the name for any of this. It arrived at the first Thanksgiving with an agenda nobody asked about and has been watching since. It does not fight. It makes the land remember what it owes the people who tended it."
 			governorPosition = "ELDER"
@@ -329,7 +329,7 @@ func buildSelf(gT, gL):
 			questComplete = true
 
 		"Secret Service Detail":
-			governorTexture = _get_portrait(governorType)
+			#governorTexture = _get_portrait(governorType)
 			governorDescription = "She has kept Carlisle alive through four assassination attempts. The fifth one hasn't tried yet."
 			governorBiography = "She doesn't have a name on the record, a file in the system, or a rank on the org chart. She has a job. The job is the President. She is very good at her job."
 			governorPosition = "DETAIL"
@@ -338,7 +338,7 @@ func buildSelf(gT, gL):
 			questComplete = true
 
 		"Baseball Legend":
-			governorTexture = _get_portrait(governorType)
+			#governorTexture = _get_portrait(governorType)
 			governorDescription = "She hit .340 in a league that told her she couldn't play. She wasn't listening then either."
 			governorBiography = "The most famous athlete in a country currently at war. She showed up with a bat, a grievance, and no patience for the idea that the revolution didn't need her. She was right. The morale she brings to a garrison is measurable. The morale she takes from the enemy is also measurable. Different units of measurement."
 			governorPosition = "LEGEND"

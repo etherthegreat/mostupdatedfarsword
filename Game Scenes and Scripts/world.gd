@@ -1066,8 +1066,8 @@ func generateBarracksCommanders() -> void:
 		$CanvasLayer/WarRoomPanel.registerCommanderArc(new_gov, tile)
 
 		generated += 1
-		print("[Commanders] Generated: ", full_name, " — ", chosen["name"],
-			  " (", chosen["id"], ") at ", tile.tileName, " [", tile.terrain, "]")
+		#print("[Commanders] Generated: ", full_name, " — ", chosen["name"],
+			#  " (", chosen["id"], ") at ", tile.tileName, " [", tile.terrain, "]")
 
 	print("[Commanders] Barracks scan complete. ", generated, " commanders generated.")
 
@@ -2151,7 +2151,7 @@ func createNewEvent(event_id: String, tile = null) -> void:
 		newEvent.build_from_csv(event_id, tile, playerCountryNode)
 	newEvent.eventButtonPressed.connect(_on_event_button_pressed)
 	newEvent.tileEventButtonPressed.connect(_on_tile_event_button_pressed)
-	AudioManager.play_sfx("event_shown")
+	#AudioManager.play_sfx("event_shown")
 	$CanvasLayer/EventControl/EventContainer.add_child(newEvent)
 	EventDatabase.mark_event_fired(event_id, currentWorldTurn)
 	_library_on_event_fired(event_id)
@@ -2254,7 +2254,7 @@ func _on_event_button_pressed(button_id: String, event_id: String,
 	executeOutcome(outcome_type, outcome_value, outcome_amount, null)
 	if outcome_type == "set_flag" and outcome_value.ends_with("_agreed") \
 			and (outcome_value.begins_with("prot_") or outcome_value.begins_with("ca_prot_")):
-		AudioManager.play_sfx("protector_agree")
+		#AudioManager.play_sfx("protector_agree")
 		_on_protector_agreed(outcome_value)
 	if next_event_id != "":
 		createNewEvent(next_event_id)
@@ -2266,7 +2266,7 @@ func _on_tile_event_button_pressed(button_id: String, event_id: String,
 	executeOutcome(outcome_type, outcome_value, outcome_amount, tile)
 	if outcome_type == "set_flag" and outcome_value.ends_with("_agreed") \
 			and (outcome_value.begins_with("prot_") or outcome_value.begins_with("ca_prot_")):
-		AudioManager.play_sfx("protector_agree")
+		#AudioManager.play_sfx("protector_agree")
 		_on_protector_agreed(outcome_value)
 	if next_event_id != "":
 		createNewEvent(next_event_id, tile)
@@ -5126,22 +5126,6 @@ func _get_spell_school(spell_name: String) -> String:
 		"MANIFEST DESTINY SUBSIDY PROGRAM":        return "iron"
 		"THOUGHTS & PRAYERS (FEDERAL ALLOCATION)": return "spectral"
 		"UNAUTHORIZED WEATHER MODIFICATION ACT":   return "storm"
-		# Presidential Powers — map to their protector's school
-		"FEDERAL ATMOSPHERIC SURVEILLANCE ACT",
-		"PINE BARRENS DEVELOPMENT MORATORIUM",
-		"PACIFIC NORTHWEST PRIVACY PROTECTION ACT",
-		"INTER-AGENCY CRYPTID INTEGRATION PROGRAM",
-		"FLORIDA CRYPTID INTEGRATION TASK FORCE":  return "cryptid"
-		"EXECUTIVE WEATHER CONTROL INITIATIVE",
-		"CHESAPEAKE WATERS RECLAMATION PROJECT",
-		"DEPARTMENT OF PSYCHOLOGICAL OPERATIONS":  return "storm"
-		"CLASSIFIED TACTICAL TERROR BUDGET",
-		"NAVAL SUPERIORITY MAINTENANCE DIRECTIVE",
-		"COLD WEATHER RESILIENCE FUNDING ACT",
-		"MIDNIGHT EMERGENCY MOBILIZATION ORDER",
-		"PERMANENT READINESS MANDATE (EXPIRES NEVER)": return "iron"
-		"FREEDOM RESONANCE AMPLIFICATION DECREE",
-		"RURAL SPECTRAL INVESTMENT INITIATIVE",
 		"EMANCIPATION PROCLAMATION 2: STILL EMANCIPATING": return "liberty"
 		"HEADLESS HORSEMAN": return "spectral"
 		_: return "manifest"

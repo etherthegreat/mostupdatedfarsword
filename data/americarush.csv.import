@@ -1,0 +1,17 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://di5yybcan44s1"
+
+[deps]
+
+files=["res://data/americarush.name.translation", "res://data/americarush.category.translation", "res://data/americarush.priority.translation", "res://data/americarush.status.translation", "res://data/americarush.notes.translation"]
+
+source_file="res://data/americarush.csv"
+dest_files=["res://data/americarush.name.translation", "res://data/americarush.category.translation", "res://data/americarush.priority.translation", "res://data/americarush.status.translation", "res://data/americarush.notes.translation"]
+
+[params]
+
+compress=true
+delimiter=0

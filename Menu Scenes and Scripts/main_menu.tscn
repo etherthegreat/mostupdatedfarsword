@@ -1,13 +1,9 @@
-[gd_scene load_steps=20 format=3 uid="uid://dep7mbivwnnvj"]
+[gd_scene load_steps=15 format=3 uid="uid://dep7mbivwnnvj"]
 
 [ext_resource type="Script" uid="uid://b81ynt4qwcsri" path="res://Menu Scenes and Scripts/main_menu.gd" id="1_rf07e"]
 [ext_resource type="VideoStream" uid="uid://by5gw4q8kkt7j" path="res://art assets/AmericanRevolutionArt/menuart/truewinningvideo.ogv" id="2_s0tsv"]
-[ext_resource type="Texture2D" uid="uid://dknp3bwk3bnvh" path="res://art assets/Placeholder Art/UI Art/resources/black circle.png" id="3_s0tsv"]
 [ext_resource type="Texture2D" uid="uid://cifirfy3eyi30" path="res://art assets/Placeholder Art/UI Art/resources/chinese.png" id="4_oq647"]
-[ext_resource type="Texture2D" uid="uid://vmeysuy506u7" path="res://art assets/AmericanRevolutionArt/Panel/IMG_1690.PNG" id="4_wvvfk"]
 [ext_resource type="Texture2D" uid="uid://c7txommtrxrk3" path="res://art assets/Placeholder Art/UI Art/resources/english.png" id="5_so4gr"]
-[ext_resource type="Texture2D" uid="uid://ri5wqhitlpgp" path="res://art assets/AmericanRevolutionArt/Panel/IMG_1687.PNG" id="5_wktqo"]
-[ext_resource type="Texture2D" uid="uid://demtu316la1b4" path="res://art assets/AmericanRevolutionArt/Panel/IMG_1688.PNG" id="6_8x8sx"]
 [ext_resource type="Texture2D" uid="uid://dlugqagwlxm6w" path="res://art assets/Placeholder Art/UI Art/resources/french.png" id="6_wvvfk"]
 [ext_resource type="Texture2D" uid="uid://bm767bqfd0ifn" path="res://art assets/Placeholder Art/UI Art/resources/german.png" id="7_wktqo"]
 [ext_resource type="Texture2D" uid="uid://scvxad1jblcg" path="res://art assets/Placeholder Art/UI Art/resources/Irish.png" id="8_8x8sx"]
@@ -17,7 +13,6 @@
 [ext_resource type="Texture2D" uid="uid://d385jgaploop4" path="res://art assets/Placeholder Art/UI Art/resources/russian.png" id="12_qlmj1"]
 [ext_resource type="Texture2D" uid="uid://coqvlvmr2swk4" path="res://art assets/Placeholder Art/UI Art/resources/spanish.png" id="13_s4pyd"]
 [ext_resource type="Texture2D" uid="uid://d3e1gu0tab0y2" path="res://art assets/AmericanRevolutionArt/menuart/IMG_1691.PNG" id="17_8x8sx"]
-[ext_resource type="Texture2D" uid="uid://b1pq420vskkvv" path="res://art assets/AmericanRevolutionArt/menuart/IMG_1692.PNG" id="18_w5v35"]
 [ext_resource type="PackedScene" uid="uid://bpreslib0001a" path="res://PresidentialLibraryPanel.tscn" id="19_plib01"]
 
 [node name="MainMenu" type="Control"]
@@ -25,6 +20,8 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_rf07e")
 
 [node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="."]
@@ -60,7 +57,7 @@ offset_left = 12.0
 offset_top = 224.0
 offset_right = 368.0
 offset_bottom = 270.0
-theme_override_colors/font_color = Color(0.95, 0.90, 0.75, 1)
+theme_override_colors/font_color = Color(0.95, 0.9, 0.75, 1)
 theme_override_font_sizes/font_size = 18
 text = "PAX AMERICANA"
 horizontal_alignment = 1
@@ -74,17 +71,17 @@ offset_bottom = 720.0
 theme_override_constants/separation = 12
 
 [node name="NewGameButton" type="Button" parent="LeftPanel/ButtonsVBox"]
-layout_mode = 2
 custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
 theme_override_font_sizes/font_size = 28
 text = "NEW GAME"
 
 [node name="ContinueButton" type="Button" parent="LeftPanel/ButtonsVBox"]
-layout_mode = 2
 custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
 theme_override_font_sizes/font_size = 28
-text = "CONTINUE"
 disabled = true
+text = "CONTINUE"
 
 [node name="SaveInfoLabel" type="Label" parent="LeftPanel/ButtonsVBox/ContinueButton"]
 layout_mode = 1
@@ -92,28 +89,29 @@ anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = -23.0
 offset_bottom = 22.0
-grow_vertical = 1
-theme_override_colors/font_color = Color(0.70, 0.70, 0.70, 1)
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 1)
 theme_override_font_sizes/font_size = 13
 text = "No save found"
 horizontal_alignment = 1
 
 [node name="LibraryButton" type="Button" parent="LeftPanel/ButtonsVBox"]
-layout_mode = 2
 custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "PRESIDENTIAL LIBRARY"
 
 [node name="SettingsButton" type="Button" parent="LeftPanel/ButtonsVBox"]
-layout_mode = 2
 custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
 theme_override_font_sizes/font_size = 28
 text = "SETTINGS"
 
 [node name="ExitButton" type="Button" parent="LeftPanel/ButtonsVBox"]
-layout_mode = 2
 custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
 theme_override_font_sizes/font_size = 28
 text = "EXIT"
 
@@ -126,6 +124,7 @@ anchor_bottom = 1.0
 offset_left = 8.0
 offset_top = -28.0
 offset_right = -8.0
+grow_horizontal = 2
 grow_vertical = 0
 theme_override_colors/font_color = Color(0.55, 0.55, 0.55, 1)
 theme_override_font_sizes/font_size = 13
@@ -202,6 +201,7 @@ icon = ExtResource("13_s4pyd")
 expand_icon = true
 
 [node name="PresidentialLibraryPanel" parent="." instance=ExtResource("19_plib01")]
+layout_mode = 1
 
 [connection signal="pressed" from="LeftPanel/ButtonsVBox/NewGameButton" to="." method="_on_new_game_button_pressed"]
 [connection signal="pressed" from="LeftPanel/ButtonsVBox/ContinueButton" to="." method="_on_continue_button_pressed"]
@@ -209,5 +209,5 @@ expand_icon = true
 [connection signal="pressed" from="LeftPanel/ButtonsVBox/SettingsButton" to="." method="_on_settings_button_pressed"]
 [connection signal="pressed" from="LeftPanel/ButtonsVBox/ExitButton" to="." method="_on_exit_button_pressed"]
 [connection signal="pressed" from="LanguageSelection/GridContainer/EnglishButton" to="." method="_on_english_button_pressed"]
-[connection signal="pressed" from="LanguageSelection/GridContainer/SpanishButton" to="." method="_on_spanish_button_pressed"]
 [connection signal="pressed" from="LanguageSelection/GridContainer/FrenchButton" to="." method="_on_french_button_pressed"]
+[connection signal="pressed" from="LanguageSelection/GridContainer/SpanishButton" to="." method="_on_spanish_button_pressed"]

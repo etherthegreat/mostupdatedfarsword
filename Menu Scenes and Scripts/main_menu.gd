@@ -35,7 +35,7 @@ func _ready() -> void:
 
 # ── language (first-run) ──────────────────────────────────────────────────────
 func _check_language() -> void:
-	var lang := LibraryData.get_setting("language", "")
+	var lang = LibraryData.get_setting("language", "")
 	if lang == "":
 		# Check legacy settings.txt
 		if FileAccess.file_exists(SETTINGS_PATH):
