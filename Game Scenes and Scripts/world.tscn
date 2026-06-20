@@ -1,4 +1,4 @@
-[gd_scene load_steps=538 format=3 uid="uid://bfbouq3jfwkxl"]
+[gd_scene load_steps=541 format=3 uid="uid://bfbouq3jfwkxl"]
 
 [ext_resource type="Script" uid="uid://dthx176t72xxr" path="res://Game Scenes and Scripts/world.gd" id="1_6bnro"]
 [ext_resource type="Texture2D" uid="uid://co1xqkk2trdfd" path="res://art assets/AmericanRevolutionArt/tileandMaps/maps/usamap-borderless.png" id="2_8oo0e"]
@@ -526,7 +526,10 @@
 [ext_resource type="Texture2D" uid="uid://be8m1m8igewog" path="res://art assets/finishedAssets/manaicons/Influence 1.png" id="515_ldxd8"]
 [ext_resource type="Texture2D" uid="uid://crap2pe6yc584" path="res://art assets/finishedAssets/Panels/topbarresources/IMG_1538.PNG" id="520_fwltf"]
 [ext_resource type="Texture2D" uid="uid://ba8w0kcfk7fl6" path="res://art assets/finishedAssets/Panels/topbarresources/IMG_1539.PNG" id="521_mfggh"]
+[ext_resource type="Script" uid="uid://b7qfpgq3yp5kp" path="res://Game Scenes and Scripts/ending_scene_control.gd" id="521_sovr1"]
+[ext_resource type="Texture2D" uid="uid://b035v6wp2xufc" path="res://art assets/AmericanRevolutionArt/End Art/IMG_1775.PNG" id="522_4pj4x"]
 [ext_resource type="Texture2D" uid="uid://bosevb7m63nwm" path="res://art assets/finishedAssets/Panels/topbarresources/IMG_1542.PNG" id="522_mfggh"]
+[ext_resource type="Texture2D" uid="uid://cvvmc8beh62sd" path="res://art assets/AmericanRevolutionArt/End Art/IMG_1777.PNG" id="523_jyjnf"]
 [ext_resource type="Texture2D" uid="uid://c7hyc65jbh6rj" path="res://art assets/finishedAssets/ores/Razorberry.PNG" id="530_7ybmk"]
 
 [sub_resource type="Curve2D" id="Curve2D_bg6fe"]
@@ -11034,6 +11037,7 @@ icon = ExtResource("111_hs44g")
 expand_icon = true
 
 [node name="CivilianUnitControl" type="Control" parent="CanvasLayer"]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
@@ -11244,6 +11248,80 @@ offset_top = 60.0
 offset_right = 352.0
 offset_bottom = 83.0
 text = "July 4, 2026"
+
+[node name="EndingSceneControl" type="Control" parent="CanvasLayer"]
+z_index = 100
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("521_sovr1")
+
+[node name="Black Back" type="Sprite2D" parent="CanvasLayer/EndingSceneControl"]
+position = Vector2(945.5, 566)
+scale = Vector2(5.84872, 5.45669)
+texture = ExtResource("473_168he")
+
+[node name="endingHeadlineLabel" type="Label" parent="CanvasLayer/EndingSceneControl"]
+layout_mode = 0
+offset_left = 464.0
+offset_top = 27.0
+offset_right = 1467.0
+offset_bottom = 142.0
+theme_override_font_sizes/font_size = 66
+text = "Death of the President"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="endTextLabel" type="Label" parent="CanvasLayer/EndingSceneControl"]
+layout_mode = 0
+offset_left = 1123.0
+offset_top = 244.0
+offset_right = 1766.0
+offset_bottom = 1083.0
+theme_override_font_sizes/font_size = 44
+text = "President Ualani Carlisle was reported MIA after a recent encounter with British troops.  After Secret Service agents cleared the battlefield, they positively identified the president as deceased.  
+
+Whether or not America survives will not be determined by Ualani Carlisle."
+autowrap_mode = 3
+
+[node name="GameOver" type="Button" parent="CanvasLayer/EndingSceneControl"]
+layout_mode = 0
+offset_left = 375.0
+offset_top = 962.0
+offset_right = 863.0
+offset_bottom = 1047.0
+theme_override_font_sizes/font_size = 46
+text = "Return To Main Menu"
+
+[node name="SceneSprite" type="Sprite2D" parent="CanvasLayer/EndingSceneControl"]
+position = Vector2(494, 582)
+scale = Vector2(0.509583, 0.509583)
+texture = ExtResource("522_4pj4x")
+
+[node name="SceneSpriteBorder" type="Sprite2D" parent="CanvasLayer/EndingSceneControl"]
+position = Vector2(494, 582)
+scale = Vector2(0.509583, 0.509583)
+texture = ExtResource("523_jyjnf")
+
+[node name="DateLabel" type="Label" parent="CanvasLayer/EndingSceneControl"]
+layout_mode = 0
+offset_left = 1125.0
+offset_top = 149.0
+offset_right = 1362.0
+offset_bottom = 210.0
+theme_override_font_sizes/font_size = 44
+text = "July 4, 2026"
+
+[node name="TurnLabel" type="Label" parent="CanvasLayer/EndingSceneControl"]
+layout_mode = 0
+offset_left = 1507.0
+offset_top = 149.0
+offset_right = 1744.0
+offset_bottom = 210.0
+theme_override_font_sizes/font_size = 44
+text = "Turn 100"
+horizontal_alignment = 2
 
 [node name="CameraMovementController" type="Control" parent="."]
 layout_mode = 3

@@ -1,0 +1,17 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://dkrcf6a37sllv"
+
+[deps]
+
+files=["res://data/character_roster.Name.translation", "res://data/character_roster.Type.translation", "res://data/character_roster.Country.translation", "res://data/character_roster.Alignment.translation", "res://data/character_roster.Position.translation", "res://data/character_roster.Magic.translation", "res://data/character_roster.Spell.translation", "res://data/character_roster.Region.translation", "res://data/character_roster.Terrain.translation", "res://data/character_roster.Starting.translation", "res://data/character_roster.Key.translation", "res://data/character_roster.Narrative.translation", "res://data/character_roster.Status.translation", "res://data/character_roster.Notes.translation"]
+
+source_file="res://data/character_roster.csv"
+dest_files=["res://data/character_roster.Name.translation", "res://data/character_roster.Type.translation", "res://data/character_roster.Country.translation", "res://data/character_roster.Alignment.translation", "res://data/character_roster.Position.translation", "res://data/character_roster.Magic.translation", "res://data/character_roster.Spell.translation", "res://data/character_roster.Region.translation", "res://data/character_roster.Terrain.translation", "res://data/character_roster.Starting.translation", "res://data/character_roster.Key.translation", "res://data/character_roster.Narrative.translation", "res://data/character_roster.Status.translation", "res://data/character_roster.Notes.translation"]
+
+[params]
+
+compress=true
+delimiter=0
