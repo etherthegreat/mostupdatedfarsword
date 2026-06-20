@@ -2621,6 +2621,10 @@ func evaluateDateEvents() -> void:
 		_check_ualani_wounded()
 		_check_ualani_winter()
 		_check_ualani_forge()
+		_check_ualani_dock()
+		_check_ualani_farm()
+		_check_ualani_barracks()
+		_check_ualani_courthouse()
 		_check_ualani_culper()
 		_check_ualani_alliance()
 		_check_ualani_frontier()
@@ -3418,6 +3422,75 @@ func _check_ualani_forge() -> void:
 	_start_cooldown("UALANI_FORGE_01", 15)
 	createNewEvent("UALANI_FORGE_01", tile)
 	print("[Ualani] Forge inspection at ", tile.tileName)
+
+
+func _check_ualani_dock() -> void:
+	if _event_on_cooldown("UALANI_DOCK_01"):
+		return
+	var tile: Tile = _find_ualani_tile()
+	if tile == null:
+		return
+	var has_dock: bool = false
+	for b in tile.tileBuildingsList:
+		if b.buildingType == "Dock" and b.enabled:
+			has_dock = true
+			break
+	if not has_dock:
+		return
+	_start_cooldown("UALANI_DOCK_01", 15)
+	createNewEvent("UALANI_DOCK_01", tile)
+	print("[Ualani] Harbor survey at ", tile.tileName)
+
+
+func _check_ualani_farm() -> void:
+	if _event_on_cooldown("UALANI_FARM_01"):
+		return
+	var tile: Tile = _find_ualani_tile()
+	if tile == null:
+		return
+	if tile.terrain != "Farmlands":
+		return
+	_start_cooldown("UALANI_FARM_01", 15)
+	createNewEvent("UALANI_FARM_01", tile)
+	print("[Ualani] Farmland visit at ", tile.tileName)
+
+
+func _check_ualani_barracks() -> void:
+	if _event_on_cooldown("UALANI_BARRACKS_01"):
+		return
+	var tile: Tile = _find_ualani_tile()
+	if tile == null:
+		return
+	if tile.stationedArmy == null:
+		return
+	var has_barracks: bool = false
+	for b in tile.tileBuildingsList:
+		if b.buildingType == "Barracks" and b.enabled:
+			has_barracks = true
+			break
+	if not has_barracks:
+		return
+	_start_cooldown("UALANI_BARRACKS_01", 15)
+	createNewEvent("UALANI_BARRACKS_01", tile)
+	print("[Ualani] Regimental review at ", tile.tileName)
+
+
+func _check_ualani_courthouse() -> void:
+	if _event_on_cooldown("UALANI_COURTHOUSE_01"):
+		return
+	var tile: Tile = _find_ualani_tile()
+	if tile == null:
+		return
+	var has_courthouse: bool = false
+	for b in tile.tileBuildingsList:
+		if b.buildingType == "Courthouse" and b.enabled:
+			has_courthouse = true
+			break
+	if not has_courthouse:
+		return
+	_start_cooldown("UALANI_COURTHOUSE_01", 15)
+	createNewEvent("UALANI_COURTHOUSE_01", tile)
+	print("[Ualani] Town hall at ", tile.tileName)
 
 
 func _check_ualani_culper() -> void:
