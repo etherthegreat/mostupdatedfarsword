@@ -1,0 +1,109 @@
+[gd_scene load_steps=2 format=3 uid="uid://cgaltab001a"]
+
+[ext_resource type="Script" uid="uid://lmrg3gf0ff8v" path="res://GalleryTab.gd" id="1_galtab"]
+
+[node name="GalleryTab" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_galtab")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="GalleryGrid" type="GridContainer" parent="ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
+
+[node name="Lightbox" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+visible = false
+z_index = 10
+
+[node name="DarkBG" type="ColorRect" parent="Lightbox"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 0.9)
+
+[node name="FullArtRect" type="TextureRect" parent="Lightbox"]
+layout_mode = 1
+anchor_left = 0.1
+anchor_top = 0.05
+anchor_right = 0.9
+anchor_bottom = 0.80
+expand_mode = 1
+stretch_mode = 5
+
+[node name="LightboxTitle" type="Label" parent="Lightbox"]
+layout_mode = 1
+anchor_left = 0.1
+anchor_top = 0.82
+anchor_right = 0.9
+anchor_bottom = 0.88
+theme_override_colors/font_color = Color(0.95, 0.90, 0.75)
+theme_override_font_sizes/font_size = 22
+text = ""
+horizontal_alignment = 1
+
+[node name="LightboxFlavor" type="Label" parent="Lightbox"]
+layout_mode = 1
+anchor_left = 0.1
+anchor_top = 0.88
+anchor_right = 0.9
+anchor_bottom = 0.95
+theme_override_colors/font_color = Color(0.7, 0.7, 0.65)
+theme_override_font_sizes/font_size = 14
+text = ""
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="PrevButton" type="Button" parent="Lightbox"]
+layout_mode = 1
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 16.0
+offset_top = -30.0
+offset_right = 60.0
+offset_bottom = 30.0
+theme_override_font_sizes/font_size = 24
+text = "<"
+
+[node name="NextButton" type="Button" parent="Lightbox"]
+layout_mode = 1
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -60.0
+offset_top = -30.0
+offset_right = -16.0
+offset_bottom = 30.0
+theme_override_font_sizes/font_size = 24
+text = ">"
+
+[node name="CloseButton" type="Button" parent="Lightbox"]
+layout_mode = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -56.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = 48.0
+theme_override_font_sizes/font_size = 20
+text = "✕"
+
+[connection signal="pressed" from="Lightbox/PrevButton" to="." method="_on_prev_button_pressed"]
+[connection signal="pressed" from="Lightbox/NextButton" to="." method="_on_next_button_pressed"]
+[connection signal="pressed" from="Lightbox/CloseButton" to="." method="_on_close_button_pressed"]

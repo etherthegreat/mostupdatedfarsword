@@ -229,3 +229,12 @@ func _on_close_button_pressed() -> void:
 	var lb = get_node_or_null("Lightbox")
 	if lb:
 		lb.visible = false
+
+# ── external navigation ───────────────────────────────────────────────────────
+
+func select_entry(event_id: String) -> void:
+	for i in range(_unlocked_list.size()):
+		if _unlocked_list[i]["event_id"] == event_id:
+			_lightbox_index = i
+			_show_lightbox()
+			return
