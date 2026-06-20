@@ -55,15 +55,11 @@ func _check_language() -> void:
 
 func _show_language_picker() -> void:
 	var ls := get_node_or_null("LanguageSelection")
-	var gc := get_node_or_null("GridContainer")
 	if ls: ls.visible = true
-	if gc: gc.visible = true
 
 func _hide_language_picker() -> void:
 	var ls := get_node_or_null("LanguageSelection")
-	var gc := get_node_or_null("GridContainer")
 	if ls: ls.visible = false
-	if gc: gc.visible = false
 
 # ── continue button ───────────────────────────────────────────────────────────
 func _check_continue_button() -> void:

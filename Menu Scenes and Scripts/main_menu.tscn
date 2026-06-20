@@ -21,7 +21,9 @@
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
-anchors_preset = 0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 script = ExtResource("1_rf07e")
 
 [node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="."]
@@ -33,125 +35,120 @@ autoplay = true
 expand = true
 loop = true
 
-[node name="LanguageSelection" type="Sprite2D" parent="."]
-visible = false
-position = Vector2(960, 525.125)
-scale = Vector2(3.38095, 1.83667)
-texture = ExtResource("3_s0tsv")
+[node name="LeftPanel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 380.0
+grow_vertical = 2
 
-[node name="NewGameButton" type="Button" parent="."]
+[node name="LogoSprite" type="TextureRect" parent="LeftPanel"]
 layout_mode = 0
-offset_left = 912.0
-offset_top = 56.0
-offset_right = 1291.0
-offset_bottom = 188.0
-scale = Vector2(0.840001, 0.800001)
-theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-theme_override_colors/font_color = Color(0.882353, 0.886275, 1, 1)
-theme_override_colors/font_pressed_color = Color(1.44392e-06, 0, 0.569404, 1)
-theme_override_font_sizes/font_size = 65
-text = "New Game"
-icon = ExtResource("4_wvvfk")
-icon_alignment = 1
-expand_icon = true
+offset_left = 20.0
+offset_top = 40.0
+offset_right = 360.0
+offset_bottom = 220.0
+texture = ExtResource("17_8x8sx")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="LoadGameButton" type="Button" parent="."]
+[node name="TitleLabel" type="Label" parent="LeftPanel"]
 layout_mode = 0
-offset_left = 1241.0
-offset_top = 56.0
-offset_right = 1620.0
-offset_bottom = 188.0
-scale = Vector2(0.840001, 0.800001)
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_pressed_color = Color(1, 1, 0.65098, 1)
-theme_override_font_sizes/font_size = 65
-text = "Load Game"
-icon = ExtResource("5_wktqo")
-icon_alignment = 1
-expand_icon = true
-
-[node name="GalleryButton" type="Button" parent="."]
-layout_mode = 0
-offset_left = 1572.0
-offset_top = 56.0
-offset_right = 1951.0
-offset_bottom = 188.0
-scale = Vector2(0.840001, 0.800001)
-theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-theme_override_colors/font_color = Color(0.882353, 0.886275, 1, 1)
-theme_override_colors/font_pressed_color = Color(0.726271, 0, 0, 1)
-theme_override_font_sizes/font_size = 65
-text = "Settings"
-icon = ExtResource("6_8x8sx")
-icon_alignment = 1
-expand_icon = true
-
-[node name="InfoButton" type="Button" parent="."]
-layout_mode = 0
-offset_left = 912.0
-offset_top = 172.0
-offset_right = 1291.0
-offset_bottom = 304.0
-scale = Vector2(0.840001, 0.800001)
-theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-theme_override_colors/font_color = Color(0.882353, 0.886275, 1, 1)
-theme_override_colors/font_pressed_color = Color(0.572717, 0, 0, 1)
-theme_override_font_sizes/font_size = 65
-text = "Codices"
-icon = ExtResource("6_8x8sx")
-icon_alignment = 1
-expand_icon = true
-
-[node name="SettingsButton" type="Button" parent="."]
-layout_mode = 0
-offset_left = 1241.0
-offset_top = 172.0
-offset_right = 1620.0
-offset_bottom = 304.0
-scale = Vector2(0.840001, 0.800001)
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_pressed_color = Color(1, 1, 0.65098, 1)
-theme_override_font_sizes/font_size = 65
-text = "Gallery"
-icon = ExtResource("5_wktqo")
-icon_alignment = 1
-expand_icon = true
-
-[node name="CloseGameButton" type="Button" parent="."]
-layout_mode = 0
-offset_left = 1572.0
-offset_top = 172.0
-offset_right = 1951.0
-offset_bottom = 304.0
-scale = Vector2(0.840001, 0.800001)
-theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-theme_override_colors/font_color = Color(0.882353, 0.886275, 1, 1)
-theme_override_colors/font_pressed_color = Color(2.74345e-06, 0, 0.646837, 1)
-theme_override_font_sizes/font_size = 65
-text = "Exit Game"
-icon = ExtResource("4_wvvfk")
-icon_alignment = 1
-expand_icon = true
-
-[node name="Label" type="Label" parent="."]
-layout_mode = 0
-offset_left = 412.0
-offset_top = 672.0
-offset_right = 1426.0
-offset_bottom = 764.0
-theme_override_colors/font_color = Color(0.999998, 0.964465, 0.963033, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(1, 0.80747, 0.791871, 1)
-theme_override_font_sizes/font_size = 24
-text = "Ether Spacedesk Presents:"
+offset_left = 12.0
+offset_top = 224.0
+offset_right = 368.0
+offset_bottom = 270.0
+theme_override_colors/font_color = Color(0.95, 0.90, 0.75, 1)
+theme_override_font_sizes/font_size = 18
+text = "PAX AMERICANA"
 horizontal_alignment = 1
 
-[node name="GridContainer" type="GridContainer" parent="."]
+[node name="ButtonsVBox" type="VBoxContainer" parent="LeftPanel"]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 284.0
+offset_right = 356.0
+offset_bottom = 720.0
+theme_override_constants/separation = 12
+
+[node name="NewGameButton" type="Button" parent="LeftPanel/ButtonsVBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 64)
+theme_override_font_sizes/font_size = 28
+text = "NEW GAME"
+
+[node name="ContinueButton" type="Button" parent="LeftPanel/ButtonsVBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 64)
+theme_override_font_sizes/font_size = 28
+text = "CONTINUE"
+disabled = true
+
+[node name="SaveInfoLabel" type="Label" parent="LeftPanel/ButtonsVBox/ContinueButton"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = 22.0
+grow_vertical = 1
+theme_override_colors/font_color = Color(0.70, 0.70, 0.70, 1)
+theme_override_font_sizes/font_size = 13
+text = "No save found"
+horizontal_alignment = 1
+
+[node name="LibraryButton" type="Button" parent="LeftPanel/ButtonsVBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 64)
+theme_override_font_sizes/font_size = 24
+text = "PRESIDENTIAL LIBRARY"
+
+[node name="SettingsButton" type="Button" parent="LeftPanel/ButtonsVBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 64)
+theme_override_font_sizes/font_size = 28
+text = "SETTINGS"
+
+[node name="ExitButton" type="Button" parent="LeftPanel/ButtonsVBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 64)
+theme_override_font_sizes/font_size = 28
+text = "EXIT"
+
+[node name="VersionLabel" type="Label" parent="LeftPanel"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = -28.0
+offset_right = -8.0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.55, 0.55, 0.55, 1)
+theme_override_font_sizes/font_size = 13
+text = "v0.1 — Early Access"
+horizontal_alignment = 1
+
+[node name="LanguageSelection" type="Control" parent="."]
 visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="DarkBG" type="ColorRect" parent="LanguageSelection"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.75)
+
+[node name="GridContainer" type="GridContainer" parent="LanguageSelection"]
 layout_mode = 0
 offset_left = 87.0
 offset_top = 226.0
@@ -161,72 +158,52 @@ theme_override_constants/h_separation = 45
 theme_override_constants/v_separation = 130
 columns = 5
 
-[node name="ChineseButton" type="Button" parent="GridContainer"]
+[node name="ChineseButton" type="Button" parent="LanguageSelection/GridContainer"]
 layout_mode = 2
 icon = ExtResource("4_oq647")
 
-[node name="EnglishButton" type="Button" parent="GridContainer"]
+[node name="EnglishButton" type="Button" parent="LanguageSelection/GridContainer"]
 layout_mode = 2
 icon = ExtResource("5_so4gr")
 
-[node name="FrenchButton" type="Button" parent="GridContainer"]
+[node name="FrenchButton" type="Button" parent="LanguageSelection/GridContainer"]
 layout_mode = 2
 icon = ExtResource("6_wvvfk")
 
-[node name="GermanButton" type="Button" parent="GridContainer"]
+[node name="GermanButton" type="Button" parent="LanguageSelection/GridContainer"]
 layout_mode = 2
 icon = ExtResource("7_wktqo")
 
-[node name="IrishButton" type="Button" parent="GridContainer"]
+[node name="IrishButton" type="Button" parent="LanguageSelection/GridContainer"]
 layout_mode = 2
 icon = ExtResource("8_8x8sx")
 
-[node name="ItalianButton" type="Button" parent="GridContainer"]
+[node name="ItalianButton" type="Button" parent="LanguageSelection/GridContainer"]
 layout_mode = 2
 icon = ExtResource("9_w5v35")
 
-[node name="JapaneseButton" type="Button" parent="GridContainer"]
+[node name="JapaneseButton" type="Button" parent="LanguageSelection/GridContainer"]
 layout_mode = 2
 icon = ExtResource("10_a1pys")
 
-[node name="PortugueseButton" type="Button" parent="GridContainer"]
+[node name="PortugueseButton" type="Button" parent="LanguageSelection/GridContainer"]
 layout_mode = 2
 icon = ExtResource("11_ee3of")
 
-[node name="RussianButton" type="Button" parent="GridContainer"]
+[node name="RussianButton" type="Button" parent="LanguageSelection/GridContainer"]
 layout_mode = 2
 icon = ExtResource("12_qlmj1")
 
-[node name="SpanishButton" type="Button" parent="GridContainer"]
+[node name="SpanishButton" type="Button" parent="LanguageSelection/GridContainer"]
 layout_mode = 2
 icon = ExtResource("13_s4pyd")
 expand_icon = true
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(917, 771.875)
-scale = Vector2(0.13575, 0.13575)
-texture = ExtResource("17_8x8sx")
-
-[node name="Sprite2D2" type="Sprite2D" parent="."]
-position = Vector2(909.187, 896.313)
-scale = Vector2(0.112875, 0.112875)
-texture = ExtResource("18_w5v35")
-
-[node name="Label" type="Label" parent="Sprite2D2"]
-offset_left = -2500.0
-offset_top = -473.0
-offset_right = 2514.0
-offset_bottom = 501.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/shadow_offset_y = 15
-theme_override_constants/outline_size = 65
-theme_override_constants/shadow_outline_size = 75
-theme_override_font_sizes/font_size = 561
-text = "PAX AMERICANA"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[connection signal="pressed" from="NewGameButton" to="." method="_on_new_game_button_pressed"]
-[connection signal="pressed" from="GridContainer/EnglishButton" to="." method="_on_english_button_pressed"]
+[connection signal="pressed" from="LeftPanel/ButtonsVBox/NewGameButton" to="." method="_on_new_game_button_pressed"]
+[connection signal="pressed" from="LeftPanel/ButtonsVBox/ContinueButton" to="." method="_on_continue_button_pressed"]
+[connection signal="pressed" from="LeftPanel/ButtonsVBox/LibraryButton" to="." method="_on_library_button_pressed"]
+[connection signal="pressed" from="LeftPanel/ButtonsVBox/SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="pressed" from="LeftPanel/ButtonsVBox/ExitButton" to="." method="_on_exit_button_pressed"]
+[connection signal="pressed" from="LanguageSelection/GridContainer/EnglishButton" to="." method="_on_english_button_pressed"]
+[connection signal="pressed" from="LanguageSelection/GridContainer/SpanishButton" to="." method="_on_spanish_button_pressed"]
+[connection signal="pressed" from="LanguageSelection/GridContainer/FrenchButton" to="." method="_on_french_button_pressed"]
