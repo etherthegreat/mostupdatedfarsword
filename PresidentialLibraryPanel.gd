@@ -52,5 +52,19 @@ func _select_tab(tab_name: String) -> void:
 			tc.current_tab = i
 			return
 
+func navigate_to(tab: String, entry_id: String = "") -> void:
+	_select_tab(tab)
+	if entry_id == "":
+		return
+	var tc := get_node_or_null("LibraryContainer/TabContainer")
+	if not tc:
+		return
+	var tab_node = tc.get_node_or_null(tab)
+	if not tab_node:
+		return
+	var tab_scene = tab_node.get_child(0) if tab_node.get_child_count() > 0 else null
+	if tab_scene and tab_scene.has_method("select_entry"):
+		tab_scene.select_entry(entry_id)
+
 func _on_close_button_pressed() -> void:
 	visible = false
