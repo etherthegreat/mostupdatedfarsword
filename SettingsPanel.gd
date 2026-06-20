@@ -68,8 +68,9 @@ func _show_section(section: String) -> void:
 		target.visible = true
 
 # ── AUDIO ─────────────────────────────────────────────────────────────────────
-# Wire these from the scene — each slider calls _on_audio_changed(key, value)
-func _on_audio_changed(key: String, value: float) -> void:
+# Sliders connect via .tscn binds=["key"]; Godot appends bound args after signal args,
+# so the signature is (value, key) not (key, value).
+func _on_audio_changed(value: float, key: String) -> void:
 	LibraryData.set_setting(key, int(value))
 	# TODO: wire to AudioManager when built — see SFX-001
 

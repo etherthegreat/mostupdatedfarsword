@@ -1,6 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://bpreslib0001a"]
+[gd_scene load_steps=5 format=3 uid="uid://bpreslib0001a"]
 
 [ext_resource type="Script" uid="uid://cpreslib0001b" path="res://PresidentialLibraryPanel.gd" id="1_plib01"]
+[ext_resource type="PackedScene" uid="uid://cgaltab001a" path="res://GalleryTab.tscn" id="2_galtab"]
+[ext_resource type="PackedScene" uid="uid://crectab001a" path="res://RecordsTab.tscn" id="3_rectab"]
+[ext_resource type="PackedScene" uid="uid://cjournl001a" path="res://JournalTab.tscn" id="4_journl"]
 
 [node name="PresidentialLibraryPanel" type="Control"]
 layout_mode = 3
@@ -71,46 +74,34 @@ tab_alignment = 1
 [node name="GALLERY" type="Control" parent="LibraryContainer/OuterVBox/TabContainer"]
 layout_mode = 2
 
-[node name="PlaceholderLabel" type="Label" parent="LibraryContainer/OuterVBox/TabContainer/GALLERY"]
+[node name="GalleryTab" parent="LibraryContainer/OuterVBox/TabContainer/GALLERY" instance=ExtResource("2_galtab")]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "Gallery — GalleryTab.tscn not yet instanced"
-horizontal_alignment = 1
 
 [node name="RECORDS" type="Control" parent="LibraryContainer/OuterVBox/TabContainer"]
 layout_mode = 2
 
-[node name="PlaceholderLabel" type="Label" parent="LibraryContainer/OuterVBox/TabContainer/RECORDS"]
+[node name="RecordsTab" parent="LibraryContainer/OuterVBox/TabContainer/RECORDS" instance=ExtResource("3_rectab")]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "Records — RecordsTab.tscn not yet instanced"
-horizontal_alignment = 1
 
 [node name="JOURNAL" type="Control" parent="LibraryContainer/OuterVBox/TabContainer"]
 layout_mode = 2
 
-[node name="PlaceholderLabel" type="Label" parent="LibraryContainer/OuterVBox/TabContainer/JOURNAL"]
+[node name="JournalTab" parent="LibraryContainer/OuterVBox/TabContainer/JOURNAL" instance=ExtResource("4_journl")]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "Journal — JournalTab.tscn not yet instanced"
-horizontal_alignment = 1
 
 [connection signal="pressed" from="LibraryContainer/OuterVBox/HeaderRow/CloseButton" to="." method="_on_close_button_pressed"]
