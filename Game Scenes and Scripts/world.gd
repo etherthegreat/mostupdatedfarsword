@@ -198,10 +198,10 @@ func newGameBuild(CID, gameLang, isCoop: bool = false):
 	LocBallUI = locBallUIWorld
 	add_child(locBallUIWorld)
 	$CanvasLayer/LoadingLabel.text = "Building World"
-	month = 6
-	year = 673
-	day = 126
-	dayOfMonth = 1
+	month = 7       # July
+	year = 2026
+	day = 0
+	dayOfMonth = 4  # July 4, 2026 — inauguration day
 	age = 2
 	armyMode = false
 	$TileController.connectTileSignals()
@@ -257,7 +257,7 @@ func newGameBuild(CID, gameLang, isCoop: bool = false):
 	_assign_vice_president()
 	_build_turn_order()
 	evaluateDateEvents()
-	pass
+	_seed_opening_journal_entry()
 
 # ── BARRACKS COMMANDER GENERATION ───────────────────────────────────────────
 # Assigns a governor to the faction with the fewest current members.
@@ -5496,7 +5496,7 @@ func _trigger_game_over(won: bool, reason: String = "", end_type: String = "") -
 	if not won and end_type != "":
 		var ending = get_node_or_null("CanvasLayer/EndingSceneControl")
 		if ending != null:
-			ending.endGame(end_type, _format_game_date(), date)
+			ending.endGame(end_type, _format_game_date(), currentWorldTurn)
 			return
 	var panel = get_node_or_null("CanvasLayer/GameOverPanel")
 	if panel != null:
@@ -5526,33 +5526,54 @@ func _on_next_turn_pressed() -> void:
 			_activate_player(_player_turn_order[0])
 
 # ── DATE SYSTEM ──────────────────────────────────────────────────────────────
-# Each turn represents one fortnight (14 days).
-# Calendar: 25-day months, 12 months per year (300-day year).
-# Game starts month=6 year=673 (equivalent to June 1775).
-# At ~26 fortnights per year, four years ≈ 104 turns — one presidential term.
+# Each turn represents 9 days.  Real-world calendar (Gregorian leap years).
+# Game starts July 4, 2026 (inauguration day).
+# 100 turns × 9 days = 900 days → arrives ~December 2028, covering the full
+# presidential emergency term and the 2028 election cycle.
 func _advance_fortnight() -> void:
-	var FORTNIGHT: int = 14
-	var DAYS_PER_MONTH: int = 25
-	var MONTHS_PER_YEAR: int = 12
-	dayOfMonth += FORTNIGHT
-	day += FORTNIGHT
-	if dayOfMonth > DAYS_PER_MONTH:
-		dayOfMonth -= DAYS_PER_MONTH
+	var TURN_DAYS: int = 9
+	var days_per_month := [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+	# Leap year: divisible by 4, except centuries unless also by 400
+	if (year % 4 == 0 and (year % 100 != 0 or year % 400 == 0)):
+		days_per_month[2] = 29
+	day += TURN_DAYS
+	dayOfMonth += TURN_DAYS
+	if dayOfMonth > days_per_month[month]:
+		dayOfMonth -= days_per_month[month]
 		month += 1
-		if month > MONTHS_PER_YEAR:
+		if month > 12:
 			month = 1
 			year += 1
-		# Broadcast season change to all tiles
 		AudioManager.play_sfx("season_change")
 		emit_signal("calculateSeason", month)
 
 func _format_game_date() -> String:
-	var month_names: Array = [
+	var month_names := [
 		"January","February","March","April","May","June",
 		"July","August","September","October","November","December"
 	]
-	var mname: String = month_names[month - 1] if (month >= 1 and month <= 12) else ("Month " + str(month))
-	return mname + " " + str(year)
+	var mname := month_names[month - 1] if (month >= 1 and month <= 12) else ("Month " + str(month))
+	return "%s %d, %d" % [mname, dayOfMonth, year]
+
+# ── OPENING JOURNAL ENTRY ─────────────────────────────────────────────────────
+func _seed_opening_journal_entry() -> void:
+	var lib = get_node_or_null("/root/LibraryData")
+	if lib == null:
+		return
+	var body := """[b]July 4, 2026 — Washington, D.C.[/b]
+
+President Ualani Carlisle didn't expect to become the leader of the final free coalition on Earth. She was a senator who became a vice president due to her devastating speeches criticizing the colonist King George III. It was when her president had a complete and unexpected medical event that she was suddenly holding the reins on the executive branch, just weeks from the second British invasion.
+
+She was a soldier. She fought the robot redcoats during their first invasion, when America lost her ports to the colonizers. She knew she would have critics who claimed her authority was limited due to the fact that she wasn't elected president. But when she looked out into the Atlantic, when her advisers began detailing her of British troop movements, politics faded from her view.
+
+There was only one person who could steer America through these storm clouds. If it wasn't Ualani, who would it be?"""
+	lib.add_journal_entry(
+		"JOURNAL_001",
+		1,
+		"The Inauguration of President Ualani Carlisle",
+		body,
+		"DECLASSIFIED"
+	)
 
 # ── WINTER ARMY SUPPLY DRAIN ─────────────────────────────────────────────────
 # During winter months (Nov–Feb), armies stationed in cold-winter tiles consume

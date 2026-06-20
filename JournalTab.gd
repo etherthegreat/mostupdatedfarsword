@@ -36,7 +36,25 @@ func _ready() -> void:
 		body.meta_clicked.connect(_on_link_clicked)
 		body.meta_hover_started.connect(_on_link_hover_start)
 		body.meta_hover_ended.connect(_on_link_hover_end)
+	_apply_parchment_style()
 	buildSelf()
+
+func _apply_parchment_style() -> void:
+	var panel = get_node_or_null("HSplitContainer/MemoPanel")
+	if not panel:
+		return
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.96, 0.92, 0.80)
+	style.border_width_left   = 2
+	style.border_width_top    = 2
+	style.border_width_right  = 2
+	style.border_width_bottom = 2
+	style.border_color = Color(0.70, 0.58, 0.38)
+	style.corner_radius_top_left     = 4
+	style.corner_radius_top_right    = 4
+	style.corner_radius_bottom_left  = 4
+	style.corner_radius_bottom_right = 4
+	panel.add_theme_stylebox_override("panel", style)
 
 func buildSelf() -> void:
 	_build_entry_list()
@@ -124,7 +142,8 @@ func select_entry(entry_id: String) -> void:
 			return
 
 func _highlight_button_for(entry_id: String) -> void:
-	var list = get_node_or_null("HSplitContainer/EntryListScroll/EntryList")
+	var list   = get_node_or_null("HSplitContainer/EntryListScroll/EntryList")
+	var scroll = get_node_or_null("HSplitContainer/EntryListScroll")
 	if not list:
 		return
 	var idx := 0
@@ -133,6 +152,8 @@ func _highlight_button_for(entry_id: String) -> void:
 			var btn = list.get_child(idx) as Button
 			if btn:
 				_select_button(btn)
+				if scroll:
+					scroll.ensure_control_visible(btn)
 			return
 		idx += 1
 
