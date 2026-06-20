@@ -60,12 +60,12 @@ func _show_entry(entry: Dictionary) -> void:
 	var is_mystery := entry.get("is_mystery", false)
 	var is_unlocked := not is_mystery or LibraryData.is_discovered(entry.get("unlock_flag", ""))
 
-	var name_lbl  = get_node_or_null("HSplitContainer/EntryPanel/EntryHeader/EntryMeta/EntryName")
-	var cat_lbl   = get_node_or_null("HSplitContainer/EntryPanel/EntryHeader/EntryMeta/EntryCategory")
-	var icon_rect = get_node_or_null("HSplitContainer/EntryPanel/EntryHeader/EntryIcon")
-	var body_lbl  = get_node_or_null("HSplitContainer/EntryPanel/EntryBody")
-	var see_box   = get_node_or_null("HSplitContainer/EntryPanel/SeeAlsoBox")
-	var see_links = get_node_or_null("HSplitContainer/EntryPanel/SeeAlsoBox/SeeAlsoLinks")
+	var name_lbl  = get_node_or_null("HSplitContainer/EntryScroll/EntryPanel/EntryHeader/EntryMeta/EntryName")
+	var cat_lbl   = get_node_or_null("HSplitContainer/EntryScroll/EntryPanel/EntryHeader/EntryMeta/EntryCategory")
+	var icon_rect = get_node_or_null("HSplitContainer/EntryScroll/EntryPanel/EntryHeader/EntryIcon")
+	var body_lbl  = get_node_or_null("HSplitContainer/EntryScroll/EntryPanel/EntryBody")
+	var see_box   = get_node_or_null("HSplitContainer/EntryScroll/EntryPanel/SeeAlsoBox")
+	var see_links = get_node_or_null("HSplitContainer/EntryScroll/EntryPanel/SeeAlsoBox/SeeAlsoLinks")
 
 	if name_lbl:
 		name_lbl.text = "???" if (is_mystery and not is_unlocked) else entry.get("name", "")
@@ -102,3 +102,24 @@ func _show_entry(entry: Dictionary) -> void:
 			link_btn.flat = true
 			link_btn.pressed.connect(_show_entry.bind(related))
 			see_links.add_child(link_btn)
+
+# ── external navigation ───────────────────────────────────────────────────────
+
+func select_entry(entry_id: String) -> void:
+	var entry := RecordsDatabase.get_entry(entry_id)
+	if entry.is_empty():
+		return
+	var category := entry.get("category", "")
+	if category != _current_category:
+		_select_category_button(category)
+		_current_category = category
+	_show_entry(entry)
+
+func _select_category_button(category: String) -> void:
+	var list = get_node_or_null("HSplitContainer/CategoryScroll/CategoryList")
+	if not list:
+		return
+	for btn in list.get_children():
+		if btn is Button and btn.text == category:
+			btn.emit_signal("pressed")
+			return
