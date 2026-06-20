@@ -36,7 +36,14 @@ func endGame(endType, endDate, endTurn):
 			endlessBattleEnd()
 		"stalemate":
 			stalemateEnd()
-	pass
+	_fade_in_scene_sprite()
+
+
+func _fade_in_scene_sprite() -> void:
+	$SceneSprite.modulate = Color(0, 0, 0, 1)
+	var tween := create_tween()
+	tween.tween_property($SceneSprite, "modulate", Color(1, 1, 1, 1), 5.0)
+
 
 func funeralEnd():
 	$SceneSprite.texture = funeral

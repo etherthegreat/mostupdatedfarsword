@@ -4158,14 +4158,45 @@ func _check_end_game() -> void:
 		return
 	if currentWorldTurn < 100:
 		return
-	_game_ended = true
+
 	var total = _election_pressure_total()
-	if total > 0:
+
+	# Determine peace and UK land status for ending routing
+	var uk_country = null
+	for c in aliveCountriesList:
+		if c.CID == "UK":
+			uk_country = c
+			break
+	var usa_peace: bool = uk_country != null and uk_country.CountryFlags.has("uk_usa_peace")
+	var is_allied: bool = playerCountryNode.CountryFlags.has("can_allied")
+	var ca_peace:  bool = uk_country != null and uk_country.CountryFlags.has("uk_ca_peace")
+	var peace_signed: bool = usa_peace and (not is_allied or ca_peace)
+	var uk_tiles_remain: bool = false
+	for tile in $TileController.get_children():
+		if tile.tileOwner == "UK":
+			uk_tiles_remain = true
+			break
+
+	if total <= 0:
+		# British puppet wins the election
+		createNewEvent("ELECTION_NIGHT_LOSE", null)
+		print("[EndGame] Crown wins election — pressure total: ", total)
+		_trigger_game_over(false, "A Crown puppet has taken the White House.", "britishWhiteHouse")
+	elif peace_signed and uk_tiles_remain:
+		# Peace signed but UK still holds land — stalemate
+		createNewEvent("ELECTION_NIGHT_WIN", null)
+		print("[EndGame] Stalemate — peace signed, UK holds land, turn ", currentWorldTurn)
+		_trigger_game_over(false, "Peace was signed, but the Crown holds its ground.", "stalemate")
+	elif not peace_signed and uk_tiles_remain:
+		# War still raging at turn limit — endless battle
+		createNewEvent("ELECTION_NIGHT_WIN", null)
+		print("[EndGame] Endless battle — war ongoing at turn ", currentWorldTurn)
+		_trigger_game_over(false, "The war grinds on. No end in sight.", "endlessBattle")
+	else:
+		# Liberty wins clean
 		createNewEvent("ELECTION_NIGHT_WIN", null)
 		print("[EndGame] Liberty Coalition wins — pressure total: ", total)
-	else:
-		createNewEvent("ELECTION_NIGHT_LOSE", null)
-		print("[EndGame] Crown wins — pressure total: ", total)
+		_trigger_game_over(true, "The Liberty Coalition has won. The Republic endures.")
 
 
 # ── COMMANDER PROGRESSION ────────────────────────────────────────
@@ -4953,27 +4984,36 @@ func _check_win_conditions() -> void:
 	if _game_ended or _republic_collapsed or _ca_collapsed:
 		return
 
+	# Single pass: check UK tile presence and DC capture
+	var uk_tiles_remain: bool = false
+	var dc_captured: bool = false
+	for tile in $TileController.get_children():
+		if tile.tileOwner == "UK":
+			uk_tiles_remain = true
+			if tile.tileNumber == 188:
+				dc_captured = true
+
+	# DC fallen loss
+	if dc_captured:
+		_trigger_game_over(false, "Washington DC has fallen to the Crown.", "DCdown")
+		return
+
 	var uk_country = null
 	for c in aliveCountriesList:
 		if c.CID == "UK":
 			uk_country = c
 			break
 
-	# Peace-treaty victory: UK has signed peace with USA (and CA if allied)
+	# Peace + clean victory: peace signed AND no UK tiles remain
 	if uk_country != null:
 		var usa_peace: bool = uk_country.CountryFlags.has("uk_usa_peace")
 		var is_allied: bool = playerCountryNode.CountryFlags.has("can_allied")
 		var ca_peace:  bool = uk_country.CountryFlags.has("uk_ca_peace")
-		if usa_peace and (not is_allied or ca_peace):
+		if usa_peace and (not is_allied or ca_peace) and not uk_tiles_remain:
 			_trigger_game_over(true, "The Crown has acknowledged the Republic. Peace is signed.")
 			return
 
-	# Military victory: no UK-owned tiles remain anywhere on the map
-	var uk_tiles_remain: bool = false
-	for tile in $TileController.get_children():
-		if tile.tileOwner == "UK":
-			uk_tiles_remain = true
-			break
+	# Military victory: all UK tiles expelled, no peace needed
 	if not uk_tiles_remain:
 		_trigger_game_over(true, "Every Crown garrison has fallen. The continent is free.")
 
