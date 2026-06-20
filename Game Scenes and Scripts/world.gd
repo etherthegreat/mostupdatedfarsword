@@ -23,10 +23,14 @@ var worldCreation: bool
 
 var armyMode: bool
 
-var playerCapitalPathButton: pathPointButton 
+var playerCapitalPathButton: pathPointButton
 
 var mapMode: String
 var displayCorruption: bool
+
+# Populated by generateBarracksCommanders() — shared by _generate_and_assign_governor()
+var _usa_archetypes: Array = []
+var _usa_name_pools: Dictionary = {}
 
 var _republic_collapsed: bool = false
 var _ca_collapsed: bool = false
@@ -921,6 +925,10 @@ func generateBarracksCommanders() -> void:
 			"l":  ["Harris","Blue","Brown","Canty","Morrison","Patterson","Sanders","Wahoo","Williams","Gordon"],
 		},
 	}
+
+	# Cache at class level so _generate_and_assign_governor() can access them
+	_usa_archetypes = ARCHETYPES
+	_usa_name_pools = NAME_POOLS
 
 	var portrait_placeholder: Texture = load(
 		"res://art assets/Placeholder Art/character/4-22-Ikra-Colors - Copy.png")
@@ -5019,17 +5027,21 @@ func _check_win_conditions() -> void:
 
 
 func _generate_and_assign_governor(tile: Tile) -> void:
+	if _usa_archetypes.is_empty() or _usa_name_pools.is_empty():
+		push_warning("_generate_and_assign_governor: archetype data not loaded (call generateBarracksCommanders first)")
+		return
 	var portrait_placeholder: Texture = load(
 		"res://art assets/Placeholder Art/character/4-22-Ikra-Colors - Copy.png")
 	var candidates: Array = []
-	for arch in ARCHETYPES:
+	for arch in _usa_archetypes:
 		if tile.terrain in arch["terrain"]:
 			candidates.append(arch)
 	if candidates.is_empty():
-		candidates = ARCHETYPES
+		candidates = _usa_archetypes
 	var chosen: Dictionary = candidates[randi() % candidates.size()]
 	var pool_id: String = chosen["pools"][randi() % chosen["pools"].size()]
-	var pool: Dictionary = NAME_POOLS.get(pool_id, NAME_POOLS["NP_01"])
+	var fallback_pool_id: String = _usa_name_pools.keys()[0] if not _usa_name_pools.is_empty() else ""
+	var pool: Dictionary = _usa_name_pools.get(pool_id, _usa_name_pools.get(fallback_pool_id, {}))
 	var gender: int = randi() % 3
 	var first_list: Array
 	match gender:
