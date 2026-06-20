@@ -5447,12 +5447,17 @@ func tileSiegeWon(tile, oldCID: String, newCID: String) -> void:
 			createNewEvent("MEMORIAL_001", tile)
 			print("[Memorial] UK occupied special feature tile: ", tile.tileName)
 
-func _trigger_game_over(won: bool, reason: String = "") -> void:
+func _trigger_game_over(won: bool, reason: String = "", end_type: String = "") -> void:
 	if _game_ended:
 		return
 	_game_ended = true
 	AudioManager.play_sfx("victory" if won else "defeat")
-	print("[GameOver] won=", won, "  reason=", reason)
+	print("[GameOver] won=", won, "  reason=", reason, "  end_type=", end_type)
+	if not won and end_type != "":
+		var ending = get_node_or_null("CanvasLayer/EndingSceneControl")
+		if ending != null:
+			ending.endGame(end_type, _format_game_date(), date)
+			return
 	var panel = get_node_or_null("CanvasLayer/GameOverPanel")
 	if panel != null:
 		panel.show_result(won, reason)
@@ -5732,7 +5737,7 @@ func _handle_president_death(commander, army_name: String, tile) -> void:
 			}
 		],
 	}
-	_trigger_game_over(false, name + " has fallen in battle. The Republic has no President.")
+	_trigger_game_over(false, name + " has fallen in battle. The Republic has no President.", "funeral")
 	_create_dynamic_event(data, tile)
 
 

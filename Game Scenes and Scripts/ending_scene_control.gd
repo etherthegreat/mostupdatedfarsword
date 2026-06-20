@@ -10,11 +10,21 @@ var date: String
 var turn: String
 
 
+func _ready() -> void:
+	visible = false
+	$GameOver.pressed.connect(_on_return_pressed)
+
+
+func _on_return_pressed() -> void:
+	get_tree().change_scene_to_file("res://Menu Scenes and Scripts/main_menu.tscn")
+
+
 func endGame(endType, endDate, endTurn):
 	date = endDate
 	turn = str("Turn ", endTurn)
 	$DateLabel.text = date
 	$TurnLabel.text = turn
+	visible = true
 	match endType:
 		"funeral":
 			funeralEnd()
