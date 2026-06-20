@@ -2159,7 +2159,7 @@ func createNewEvent(event_id: String, tile = null) -> void:
 
 # Assembles CA_PM_LEGACY long_desc dynamically based on the player's CA run flags.
 func _build_ca_pm_legacy_data() -> Dictionary:
-	var flags: Array = playerCountryNode.CountryFlags
+	var flags: Dictionary = playerCountryNode.CountryFlags
 
 	# ── Protector names by flag ───────────────────────────────────────────────
 	var PROT_NAMES: Dictionary = {
@@ -2355,7 +2355,7 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 		"trigger_event":
 			createNewEvent(outcome_value, tile)
 		"form_alliance":
-			playerCountryNode.CountryFlags.append("can_allied")
+			playerCountryNode.CountryFlags["can_allied"] = true
 			for c in aliveCountriesList:
 				if c.CID == outcome_value:
 					if not playerCountryNode.ALLIED.has(c):
@@ -2366,7 +2366,7 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 						playerCountryNode.CID, " ↔ ", c.CID)
 					break
 		"set_flag":
-			playerCountryNode.CountryFlags.append(outcome_value)
+			playerCountryNode.CountryFlags[outcome_value] = true
 		"clear_flag":
 			playerCountryNode.CountryFlags.erase(outcome_value)
 		"set_mission_flag":
@@ -2377,7 +2377,7 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 			else:
 				var flag_val: String = "mission_" + outcome_value + "_" + str(tile.tileNumber)
 				if not playerCountryNode.CountryFlags.has(flag_val):
-					playerCountryNode.CountryFlags.append(flag_val)
+					playerCountryNode.CountryFlags[flag_val] = true
 					var timeout: int = int(outcome_amount)
 					if timeout > 0:
 						_mission_timers[flag_val] = timeout
@@ -2434,7 +2434,7 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 			else:
 				var flag_val: String = "mission_" + outcome_value + "_" + str(tile.tileNumber) + "_own"
 				if not playerCountryNode.CountryFlags.has(flag_val):
-					playerCountryNode.CountryFlags.append(flag_val)
+					playerCountryNode.CountryFlags[flag_val] = true
 					var timeout: int = int(outcome_amount)
 					if timeout > 0:
 						_mission_timers[flag_val] = timeout
@@ -2468,7 +2468,7 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 			_apply_george_peace()
 		"george_peace_reject":
 			if not playerCountryNode.CountryFlags.has("george_peace_rejected"):
-				playerCountryNode.CountryFlags.append("george_peace_rejected")
+				playerCountryNode.CountryFlags["george_peace_rejected"] = true
 			playerCountryNode.presidentialClaim = clampf(
 				playerCountryNode.presidentialClaim + 1.0, -10.0, 10.0)
 			print("[George Peace] Rejected — presidentialClaim +1")
@@ -2913,7 +2913,7 @@ func _fire_state_secession(state_code: String) -> void:
 				army.parentCountry = rebel_country
 				army.enemy = true  # Rebel armies are hostile to USA
 
-	playerCountryNode.CountryFlags.append("rebel_" + state_code)
+	playerCountryNode.CountryFlags["rebel_" + state_code] = true
 	playerCountryNode.presidentialClaim = clampf(
 		playerCountryNode.presidentialClaim - 3.0, -10.0, 10.0)
 	createNewEvent("STATE_REBEL_01", metro_tile)
@@ -2969,7 +2969,7 @@ func _execute_republic_collapse() -> void:
 			break
 
 	if uk_country != null and not uk_country.CountryFlags.has("uk_usa_peace"):
-		uk_country.CountryFlags.append("uk_usa_peace")
+		uk_country.CountryFlags["uk_usa_peace"] = true
 
 	# Snapshot — we mutate OwnedTileList as we go
 	var usa_tiles: Array = playerCountryNode.OwnedTileList.duplicate()
@@ -3523,7 +3523,7 @@ func _check_chalch_summon() -> void:
 		return
 	_start_cooldown("CHALCH_SUMMON", 999)
 	if not playerCountryNode.CountryFlags.has("chalch_summoned"):
-		playerCountryNode.CountryFlags.append("chalch_summoned")
+		playerCountryNode.CountryFlags["chalch_summoned"] = true
 	createNewEvent("CHALCH_SUMMON", ualani_tile)
 	print("[Chalch] CHALCH_SUMMON fired — Ualani at Plymouth, month 11")
 
@@ -3537,7 +3537,7 @@ func _check_chalch_quests() -> void:
 		if _count_player_farms() >= 3:
 			_start_cooldown("CHALCH_Q1", 999)
 			if not playerCountryNode.CountryFlags.has("chalch_q1_done"):
-				playerCountryNode.CountryFlags.append("chalch_q1_done")
+				playerCountryNode.CountryFlags["chalch_q1_done"] = true
 			createNewEvent("CHALCH_Q1", _find_ualani_tile())
 			print("[Chalch] CHALCH_Q1 fired — 3+ farms")
 			return
@@ -3548,7 +3548,7 @@ func _check_chalch_quests() -> void:
 		if playerCountryNode.TotalFood >= 150:
 			_start_cooldown("CHALCH_Q2", 999)
 			if not playerCountryNode.CountryFlags.has("chalch_q2_done"):
-				playerCountryNode.CountryFlags.append("chalch_q2_done")
+				playerCountryNode.CountryFlags["chalch_q2_done"] = true
 			createNewEvent("CHALCH_Q2", _find_ualani_tile())
 			print("[Chalch] CHALCH_Q2 fired — 150+ food")
 			return
@@ -3559,7 +3559,7 @@ func _check_chalch_quests() -> void:
 		if _count_player_farms() >= 5:
 			_start_cooldown("CHALCH_Q3", 999)
 			if not playerCountryNode.CountryFlags.has("chalch_q3_done"):
-				playerCountryNode.CountryFlags.append("chalch_q3_done")
+				playerCountryNode.CountryFlags["chalch_q3_done"] = true
 			createNewEvent("CHALCH_Q3", _find_ualani_tile())
 			print("[Chalch] CHALCH_Q3 fired — 5+ farms")
 			return
@@ -4762,7 +4762,7 @@ func _check_loyal_governor_events() -> void:
 			continue
 		if randf() >= GOV_LOYAL_CHANCE:
 			continue
-		playerCountryNode.CountryFlags.append(fired_flag)
+		playerCountryNode.CountryFlags[fired_flag] = true
 		createNewEvent("GOV_LOYAL_" + gov.governorArchetypeId, tile)
 		print("[LoyalGov] ", gov.governorType, " (", gov.governorArchetypeId,
 			") loyal event fired at ", tile.tileName)
@@ -4783,7 +4783,7 @@ func _check_arc03_honorary_event() -> void:
 			continue
 		if randf() >= 0.03:
 			continue
-		playerCountryNode.CountryFlags.append(flag)
+		playerCountryNode.CountryFlags[flag] = true
 		createNewEvent("ARC_03_HONORARY", tile)
 		print("[ARC_03] Honorary degree event fired at ", tile.tileName)
 		return
@@ -4803,7 +4803,7 @@ func _check_arc11_monarchist_event() -> void:
 			continue
 		if randf() >= 0.03:
 			continue
-		playerCountryNode.CountryFlags.append(flag)
+		playerCountryNode.CountryFlags[flag] = true
 		createNewEvent("ARC_11_MONARCHISTS", tile)
 		print("[ARC_11] Monarchist mob event fired at ", tile.tileName)
 		return
@@ -4866,19 +4866,19 @@ func _apply_george_peace() -> void:
 	var is_allied: bool = playerCountryNode.CountryFlags.has("can_allied")
 
 	if not uk_country.CountryFlags.has("uk_usa_peace"):
-		uk_country.CountryFlags.append("uk_usa_peace")
+		uk_country.CountryFlags["uk_usa_peace"] = true
 
 	if is_allied:
 		if not uk_country.CountryFlags.has("uk_ca_peace"):
-			uk_country.CountryFlags.append("uk_ca_peace")
+			uk_country.CountryFlags["uk_ca_peace"] = true
 		for c in aliveCountriesList:
 			if c.CID == "CA":
 				if not c.CountryFlags.has("uk_ca_peace"):
-					c.CountryFlags.append("uk_ca_peace")
+					c.CountryFlags["uk_ca_peace"] = true
 				break
 
 	if not playerCountryNode.CountryFlags.has("george_peace_accepted"):
-		playerCountryNode.CountryFlags.append("george_peace_accepted")
+		playerCountryNode.CountryFlags["george_peace_accepted"] = true
 
 	print("[George Peace] Accepted — uk_usa_peace set",
 		" + uk_ca_peace (allied)" if is_allied else " (USA only)")
@@ -4952,11 +4952,11 @@ func _check_peace_conditions() -> void:
 
 
 func _execute_allied_peace(uk_country, peace_tile) -> void:
-	uk_country.CountryFlags.append("uk_usa_peace")
-	uk_country.CountryFlags.append("uk_ca_peace")
+	uk_country.CountryFlags["uk_usa_peace"] = true
+	uk_country.CountryFlags["uk_ca_peace"] = true
 	for c in aliveCountriesList:
 		if c.CID == "CA":
-			c.CountryFlags.append("uk_ca_peace")
+			c.CountryFlags["uk_ca_peace"] = true
 			break
 	createNewEvent("PEACE_ALLIED_01", peace_tile)
 	print("[Peace] Allied peace signed — PEACE_ALLIED_01 fired")
@@ -4964,17 +4964,17 @@ func _execute_allied_peace(uk_country, peace_tile) -> void:
 
 func _execute_usa_peace(uk_country, peace_tile) -> void:
 	if not uk_country.CountryFlags.has("uk_usa_peace"):
-		uk_country.CountryFlags.append("uk_usa_peace")
+		uk_country.CountryFlags["uk_usa_peace"] = true
 	createNewEvent("PEACE_USA_01", peace_tile)
 	print("[Peace] USA separate peace signed — PEACE_USA_01 fired")
 
 
 func _execute_ca_peace(uk_country, peace_tile) -> void:
 	if not uk_country.CountryFlags.has("uk_ca_peace"):
-		uk_country.CountryFlags.append("uk_ca_peace")
+		uk_country.CountryFlags["uk_ca_peace"] = true
 	for c in aliveCountriesList:
 		if c.CID == "CA":
-			c.CountryFlags.append("uk_ca_peace")
+			c.CountryFlags["uk_ca_peace"] = true
 			break
 	createNewEvent("PEACE_CA_AI_01", peace_tile)
 	print("[Peace] CA separate peace signed — PEACE_CA_AI_01 fired")

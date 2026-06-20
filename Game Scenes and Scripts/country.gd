@@ -98,7 +98,7 @@ var domesticatedMonsters: Array = []
 var unlockedTraditions: Array = []
 
 #Country Flags, used for determining events and lots of other things
-var CountryFlags: Array = []
+var CountryFlags: Dictionary = {}
 
 # Countries formally allied with this one — allows tile entry and shared visibility
 var ALLIED: Array = []
