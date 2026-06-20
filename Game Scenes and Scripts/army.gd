@@ -677,14 +677,22 @@ func surveySelf():
 				armyWoodCost += uLV
 				armyMetalCost += (2*uLV)
 		match Unit.unitWeapon.weaponType:
-			"Spear" , "Club" , "Dagger", "Atlatl":
+			"Spear", "Club", "Dagger", "Atlatl":
 				armyWeaponsCost += uLV
 			"Machete", "Macuahitl", "Single Axe", "Mace":
-				armyWeaponsCost += (2*uLV)
-			"Flail", "Shortsword", "Pike":
-				armyWeaponsCost += (3*uLV)
-			"War Hammer", "War Axe", "War Sword":
-				armyWeaponsCost += (4*uLV)
+				armyWeaponsCost += (2 * uLV)
+			"Flail", "Shortsword", "Pike", "Cutlass":
+				armyWeaponsCost += (3 * uLV)
+			"War Hammer", "War Axe", "War Sword", "Cavalry Saber", "Flintlock":
+				armyWeaponsCost += (4 * uLV)
+			"Light Saber", "Brown Bess", "Falconet":
+				armyWeaponsCost += (5 * uLV)
+			"Heavy Saber", "Percussion Cap", "Field Gun":
+				armyWeaponsCost += (6 * uLV)
+			"Lever Repeater", "Howitzer":
+				armyWeaponsCost += (7 * uLV)
+			"Mortar":
+				armyWeaponsCost += (8 * uLV)
 		if parentCountry != null: #find costs and savings from country specific modifiers here
 			for law in parentCountry.lawsInConstitution:
 				if law.lawType == "Mercantilism":
