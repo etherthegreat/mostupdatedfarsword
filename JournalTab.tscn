@@ -1,0 +1,84 @@
+[gd_scene load_steps=2 format=3 uid="uid://cjournl001a"]
+
+[ext_resource type="Script" uid="uid://b0f6ttw3lbwgr" path="res://JournalTab.gd" id="1_jt001"]
+
+[node name="JournalTab" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_jt001")
+
+[node name="HSplitContainer" type="HSplitContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+split_offset = 380
+
+[node name="EntryListScroll" type="ScrollContainer" parent="HSplitContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+custom_minimum_size = Vector2(200, 0)
+
+[node name="EntryList" type="VBoxContainer" parent="HSplitContainer/EntryListScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="MemoPanel" type="Panel" parent="HSplitContainer"]
+layout_mode = 2
+
+[node name="ClassificationLabel" type="Label" parent="HSplitContainer/MemoPanel"]
+layout_mode = 1
+anchor_right = 1.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = 36.0
+theme_override_colors/font_color = Color(0.8, 0.1, 0.1)
+theme_override_font_sizes/font_size = 14
+text = "DECLASSIFIED"
+horizontal_alignment = 1
+
+[node name="DateLabel" type="Label" parent="HSplitContainer/MemoPanel"]
+layout_mode = 1
+anchor_right = 1.0
+offset_left = 20.0
+offset_top = 44.0
+offset_right = -20.0
+offset_bottom = 60.0
+theme_override_colors/font_color = Color(0.55, 0.45, 0.3)
+theme_override_font_sizes/font_size = 12
+text = "Spring 1782  ·  Year One of the Carlisle Administration"
+
+[node name="SubjectLabel" type="Label" parent="HSplitContainer/MemoPanel"]
+layout_mode = 1
+anchor_right = 1.0
+offset_left = 20.0
+offset_top = 68.0
+offset_right = -20.0
+offset_bottom = 96.0
+theme_override_font_sizes/font_size = 16
+text = "RE: Entry Title"
+
+[node name="Divider" type="HSeparator" parent="HSplitContainer/MemoPanel"]
+layout_mode = 1
+anchor_right = 1.0
+offset_left = 12.0
+offset_top = 104.0
+offset_right = -12.0
+offset_bottom = 108.0
+
+[node name="MemoBody" type="RichTextLabel" parent="HSplitContainer/MemoPanel"]
+layout_mode = 1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 116.0
+offset_right = -16.0
+offset_bottom = -16.0
+bbcode_enabled = true
+fit_content = false
+scroll_active = true
+text = "[i]Select an entry from the left.[/i]"
