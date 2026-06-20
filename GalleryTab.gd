@@ -164,12 +164,12 @@ func buildSelf() -> void:
 	_unlocked_list.clear()
 
 	for entry in GALLERY_CATALOG:
-		var eid      := entry.get("event_id", "")
-		var unlocked := LibraryData.is_gallery_unlocked(eid)
+		var eid: String      = entry.get("event_id", "")
+		var unlocked: bool   = LibraryData.is_gallery_unlocked(eid)
 
 		var art: Texture2D = null
 		if unlocked:
-			var art_path := entry.get("art_path", "")
+			var art_path: String = entry.get("art_path", "")
 			if art_path != "" and ResourceLoader.exists(art_path):
 				art = load(art_path)
 			_unlocked_list.append(entry)
@@ -205,7 +205,7 @@ func _update_lightbox() -> void:
 	var next_btn   = get_node_or_null("Lightbox/NextButton")
 
 	if art_rect:
-		var art_path := entry.get("art_path", "")
+		var art_path: String = entry.get("art_path", "")
 		if art_path != "" and ResourceLoader.exists(art_path):
 			art_rect.texture = load(art_path)
 	if title_lbl:

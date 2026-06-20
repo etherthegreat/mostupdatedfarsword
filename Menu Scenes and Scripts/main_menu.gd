@@ -83,11 +83,11 @@ func _read_save_summary() -> String:
 	var f := FileAccess.open(AUTOSAVE_PATH, FileAccess.READ)
 	if not f:
 		return ""
-	var result := JSON.parse_string(f.get_as_text())
+	var result: Variant = JSON.parse_string(f.get_as_text())
 	f.close()
 	if not result is Dictionary:
 		return ""
-	var turn   := int(result.get("turn", 0))
+	var turn: int = result.get("turn", 0)
 	var season := _season_name(turn)
 	var year   := 1782 + (turn / 4)
 	return "%s %d  ·  Turn %d" % [season, year, turn]

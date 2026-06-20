@@ -57,8 +57,8 @@ func _select_category(category: String) -> void:
 		_show_entry(entries[0])
 
 func _show_entry(entry: Dictionary) -> void:
-	var is_mystery := entry.get("is_mystery", false)
-	var is_unlocked := not is_mystery or LibraryData.is_discovered(entry.get("unlock_flag", ""))
+	var is_mystery: bool  = entry.get("is_mystery", false)
+	var is_unlocked: bool = not is_mystery or LibraryData.is_discovered(entry.get("unlock_flag", ""))
 
 	var name_lbl  = get_node_or_null("HSplitContainer/EntryScroll/EntryPanel/EntryHeader/EntryMeta/EntryName")
 	var cat_lbl   = get_node_or_null("HSplitContainer/EntryScroll/EntryPanel/EntryHeader/EntryMeta/EntryCategory")
@@ -72,7 +72,7 @@ func _show_entry(entry: Dictionary) -> void:
 	if cat_lbl:
 		cat_lbl.text = entry.get("category", "")
 	if icon_rect:
-		var ipath := entry.get("icon_path", "")
+		var ipath: String = entry.get("icon_path", "")
 		if ipath != "" and ResourceLoader.exists(ipath):
 			icon_rect.texture = load(ipath)
 		else:
@@ -109,7 +109,7 @@ func select_entry(entry_id: String) -> void:
 	var entry := RecordsDatabase.get_entry(entry_id)
 	if entry.is_empty():
 		return
-	var category := entry.get("category", "")
+	var category: String = entry.get("category", "")
 	if category != _current_category:
 		_select_category_button(category)
 		_current_category = category

@@ -111,12 +111,12 @@ func _show_entry(entry: Dictionary) -> void:
 	var subject_lbl = get_node_or_null("HSplitContainer/MemoPanel/SubjectLabel")
 	var body_lbl    = get_node_or_null("HSplitContainer/MemoPanel/MemoBody")
 
-	var classification := entry.get("classification", "DECLASSIFIED")
-	var turn           := entry.get("turn", 0)
+	var classification: String = entry.get("classification", "DECLASSIFIED")
+	var turn: int              = entry.get("turn", 0)
 
 	if class_lbl:
 		class_lbl.text = classification
-		var col := _CLASSIFICATION_COLORS.get(classification, Color.WHITE)
+		var col: Color = _CLASSIFICATION_COLORS.get(classification, Color.WHITE)
 		class_lbl.add_theme_color_override("font_color", col)
 	if date_lbl:
 		date_lbl.text = _turn_to_date_string(turn)
