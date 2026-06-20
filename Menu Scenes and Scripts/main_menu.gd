@@ -37,7 +37,7 @@ func _ready() -> void:
 func _check_language() -> void:
 	var lang := LibraryData.get_setting("language", "")
 	if lang == "":
-		# No language set yet — check legacy settings.txt
+		# Check legacy settings.txt
 		if FileAccess.file_exists(SETTINGS_PATH):
 			var f := FileAccess.open(SETTINGS_PATH, FileAccess.READ)
 			if f:
@@ -46,12 +46,13 @@ func _check_language() -> void:
 					lang = data["gameLanguage"]
 					LibraryData.set_setting("language", lang)
 					f.close()
-
 	if lang == "":
-		_show_language_picker()
-	else:
-		_game_language = lang
-		_hide_language_picker()
+		# First launch — default to English so the overlay never blocks the menu.
+		# Language can be changed later via Settings.
+		lang = "eng"
+		LibraryData.set_setting("language", lang)
+	_game_language = lang
+	_hide_language_picker()
 
 func _show_language_picker() -> void:
 	var ls := get_node_or_null("LanguageSelection")
