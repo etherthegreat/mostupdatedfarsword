@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://dep7mbivwnnvj"]
+[gd_scene load_steps=20 format=3 uid="uid://dep7mbivwnnvj"]
 
 [ext_resource type="Script" uid="uid://b81ynt4qwcsri" path="res://Menu Scenes and Scripts/main_menu.gd" id="1_rf07e"]
 [ext_resource type="VideoStream" uid="uid://by5gw4q8kkt7j" path="res://art assets/AmericanRevolutionArt/menuart/truewinningvideo.ogv" id="2_s0tsv"]
@@ -18,6 +18,7 @@
 [ext_resource type="Texture2D" uid="uid://coqvlvmr2swk4" path="res://art assets/Placeholder Art/UI Art/resources/spanish.png" id="13_s4pyd"]
 [ext_resource type="Texture2D" uid="uid://d3e1gu0tab0y2" path="res://art assets/AmericanRevolutionArt/menuart/IMG_1691.PNG" id="17_8x8sx"]
 [ext_resource type="Texture2D" uid="uid://b1pq420vskkvv" path="res://art assets/AmericanRevolutionArt/menuart/IMG_1692.PNG" id="18_w5v35"]
+[ext_resource type="PackedScene" uid="uid://bpreslib0001a" path="res://PresidentialLibraryPanel.tscn" id="19_plib01"]
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -198,6 +199,8 @@ icon = ExtResource("12_qlmj1")
 layout_mode = 2
 icon = ExtResource("13_s4pyd")
 expand_icon = true
+
+[node name="PresidentialLibraryPanel" parent="." instance=ExtResource("19_plib01")]
 
 [connection signal="pressed" from="LeftPanel/ButtonsVBox/NewGameButton" to="." method="_on_new_game_button_pressed"]
 [connection signal="pressed" from="LeftPanel/ButtonsVBox/ContinueButton" to="." method="_on_continue_button_pressed"]

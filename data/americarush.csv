@@ -7,7 +7,7 @@ WAR-001,WarRoomPanel: Add CloseButton and wire signal,EDITOR,P0,DONE,"WarRoomPan
 GOV-001,Create GameOverPanel.tscn,EDITOR,P0,DONE,New scene: overlay + title + reason label + Return button. Add to CanvasLayer in world.tscn. Wire to world.gd _trigger_game_over().
 RES-001,Resource bar: add missing Manpower/Mandate/Happiness/Influence/Boats labels,EDITOR,P0,DONE,Already complete — all label nodes exist in world.tscn and are updated each frame in world.gd _process().
 MENU-001,Rebuild main_menu.tscn: video BG + 5-button panel,EDITOR,P0,DONE,VideoStreamPlayer BG + LeftPanel with 5 buttons. Instance PresidentialLibraryPanel + SettingsPanel as hidden children.
-MENU-002,Create PresidentialLibraryPanel.tscn,EDITOR,P0,TODO,"Full-screen overlay, dark bg, 3-tab panel (GALLERY / RECORDS / JOURNAL), seal, CloseButton. Instance GalleryTab / RecordsTab / JournalTab."
+MENU-002,Create PresidentialLibraryPanel.tscn,EDITOR,P0,DONE,"Full-screen overlay, dark bg, 3-tab panel (GALLERY / RECORDS / JOURNAL), seal, CloseButton. Instance GalleryTab / RecordsTab / JournalTab."
 MENU-003,Create GalleryTab.tscn: 4-col grid + lightbox,EDITOR,P0,TODO,"ScrollContainer → GridContainer (columns=4) + Lightbox overlay (DarkBG, FullArtRect, title, flavor, prev/next/close)."
 MENU-004,Create GalleryTile.tscn: locked/unlocked tile,EDITOR,P0,TODO,Control (160x200): ArtRect + LockedOverlay (LockIcon + '???') + UnlockedTitle + HoverHint. Wire mouse signals.
 MENU-005,Create RecordsTab.tscn: sidebar + entry panel,EDITOR,P0,TODO,"HSplitContainer: left=CategoryList (VBox, 25%), right=EntryPanel with icon/name/body/see-also."
