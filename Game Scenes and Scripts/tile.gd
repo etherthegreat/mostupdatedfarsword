@@ -373,7 +373,7 @@ func build_self() -> void:
 	determine_geologic_resource()
 
 	# Connect tile to its path point on the map
-	tileSpawnPoint = get_node("../../PathControl/PathPointsControl/" + str(tileNumber))
+	tileSpawnPoint = get_node_or_null("../../PathControl/PathPointsControl/" + str(tileNumber))
 
 	print(tileName, " | winter: ", get_winter_category(), " (", winterScore, ")")
 # ============================================================
@@ -909,6 +909,8 @@ func addStationedArmy(armyNode):
 # ============================================================
 
 func calculateDiscovered(playerCountry):
+	if playerCountry == null:
+		return
 	if tileOwner == playerCountry.CID:
 		discovered = true
 		undiscovered = false
@@ -1073,6 +1075,9 @@ func updateGraphics(mapMode, displayCorruption, playerCountry):
 				polisMode()
 			"Natural":
 				naturalMode()
+		if playerCountry == null:
+			activeView = false
+			return
 		if tileOwner == playerCountry.CID:
 			activeView = true
 			for neighbor in TileNeighbors:
