@@ -537,3 +537,5 @@ WINTER_SIEGE_01_BTN1,WINTER_SIEGE_01,Issue Emergency Supply Rations,standard,res
 WINTER_SIEGE_01_BTN2,WINTER_SIEGE_01,Order the Men to Hold Position,standard,morale_boost,,20,,,,,
 SPRING_OFFENSIVE_01_BTN1,SPRING_OFFENSIVE_01,Issue Defensive Orders to All Border Garrisons,standard,morale_boost,,20,,,,,
 SPRING_OFFENSIVE_01_BTN2,SPRING_OFFENSIVE_01,Preemptive Strike — Move Up the Offensive Timeline,standard,army_buff,Fortified,3,,,,,
+ESPIONAGE_01_BTN1,ESPIONAGE_DISCOVERY_01,Interrogate and Expel — Let London Know We're Watching,standard,morale_boost,,25,,,,,
+ESPIONAGE_01_BTN2,ESPIONAGE_DISCOVERY_01,Turn the Agent — Feed London False Intelligence,standard,set_flag,double_agent_01,0,,,,,

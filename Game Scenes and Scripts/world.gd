@@ -1556,6 +1556,7 @@ func _resolve_ai_and_advance_round() -> void:
 		evaluateDateEvents()
 	for tile in $TileController.get_children():
 		tile.tick_conquest_timer()
+	_uk_plant_spies()
 	$CanvasLayer/TurnLabel.text = _format_game_date()
 	_apply_ualani_aura()
 	_check_win_conditions()
@@ -2625,6 +2626,7 @@ func evaluateDateEvents() -> void:
 		_check_ualani_farm()
 		_check_ualani_barracks()
 		_check_ualani_courthouse()
+		_check_espionage_discovery()
 		_check_winter_siege()
 		_check_spring_offensive()
 		_check_ualani_culper()
@@ -3493,6 +3495,42 @@ func _check_ualani_courthouse() -> void:
 	_start_cooldown("UALANI_COURTHOUSE_01", 15)
 	createNewEvent("UALANI_COURTHOUSE_01", tile)
 	print("[Ualani] Town hall at ", tile.tileName)
+
+
+func _uk_plant_spies() -> void:
+	if playerCountryNode == null:
+		return
+	if randf() > 0.20:
+		return
+	var candidates: Array = []
+	for tile in playerCountryNode.OwnedTileList:
+		if not tile.is_spy_vulnerable():
+			continue
+		if not tile.has_neighbor_owned_by("UK"):
+			continue
+		candidates.append(tile)
+	if candidates.is_empty():
+		return
+	var target: Tile = candidates[randi() % candidates.size()]
+	target.record_espionage("UK")
+	print("[Espionage] UK planted spy at ", target.tileName)
+
+
+func _check_espionage_discovery() -> void:
+	if _event_on_cooldown("ESPIONAGE_DISCOVERY_01"):
+		return
+	var candidates: Array = []
+	for tile in playerCountryNode.OwnedTileList:
+		if not tile.is_counterintelligence_ready():
+			continue
+		candidates.append(tile)
+	if candidates.is_empty():
+		return
+	var target: Tile = candidates[randi() % candidates.size()]
+	target.clear_espionage()
+	_start_cooldown("ESPIONAGE_DISCOVERY_01", 15)
+	createNewEvent("ESPIONAGE_DISCOVERY_01", target)
+	print("[Espionage] Spy caught at ", target.tileName)
 
 
 func _check_winter_siege() -> void:
