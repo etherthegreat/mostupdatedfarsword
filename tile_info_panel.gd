@@ -63,7 +63,7 @@ func displayTileInfo(tile):
 		$TerrainModifiersGridContainer.add_child(modifierControl)
 		if selectedTile.tileGovernor != null:
 			if selectedTile.tileGovernor.governorTexture != null:
-				$governorButton.icon = selectedTile.tileGovernor.governorTexture
+				$governorButton.icon = selectedTile.tileGovernor.get_portrait_for_region(selectedTile.tileContinent)
 				$governorButton/govnameLabel.text = str(selectedTile.tileGovernor.governorType)
 				#$governorButton.disabled = true
 			else:

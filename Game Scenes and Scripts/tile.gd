@@ -1077,23 +1077,12 @@ func updateGraphics(mapMode, displayCorruption, playerCountry):
 			activeView = true
 			for Tile in TileNeighbors:
 				Tile.activeView = true
-				return
-		if tileSpawnPoint.occupied == true:
+			return
+		if tileSpawnPoint != null and tileSpawnPoint.occupied == true:
 			activeView = true
 			for Tile in TileNeighbors:
 				Tile.activeView = true
-				return
-		if tileSpawnPoint.occupied != true:
-			if TileNeighbors.size() < 0:
-				for Tile in TileNeighbors:
-					if Tile.tileSpawnPoint.occupied == true:
-						activeView = true
-						Tile.activeView = true
-						return
-					if Tile.tileOwner == playerCountry.CID:
-						activeView = true
-						Tile.activeView = true
-						return
+			return
 		activeView = false
 
 func calculateActiveView():
@@ -1163,10 +1152,12 @@ func _on_area_2d_input_event(viewport, event, shape_idx):
 				calculateCorruption()
 
 func _on_area_2d_mouse_entered() -> void:
+	if tileRing == null or tileGraphic == null: return
 	tileRing.modulate = Color(0, 0, 0)
 	tileGraphic.modulate = Color(0, 0, 1)
 
 func _on_area_2d_mouse_exited() -> void:
+	if tileRing == null or tileGraphic == null: return
 	tileRing.modulate = Color(1, 1, 1)
 	tileGraphic.modulate = Color(1, 1, 1)
 

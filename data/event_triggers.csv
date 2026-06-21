@@ -85,3 +85,6 @@ TRIG_085,PROT_08_TAME,protector_tame,0,,0,0,0,9999,,,PROT_08,,1
 TRIG_086,PROT_08_AGREE,protector_agree,0,,0,0,0,9999,,,PROT_08,,1
 TRIG_087,PROT_17_TAME,protector_tame,0,,0,0,0,9999,,,PROT_17,,1
 TRIG_088,PROT_17_AGREE,protector_agree,0,,0,0,0,9999,,,PROT_17,,1
+TRIG_089,CL_WASHINGTON_01,tile_liberated,188,USA,0,0,0,9999,,,,,2
+TRIG_090,CL_VALLEY_FORGE_01,tile_liberated,1,USA,0,0,0,9999,,,,,2
+TRIG_091,CX_NYC_01,tile_lost,14,UK,0,0,0,9999,,,,,2

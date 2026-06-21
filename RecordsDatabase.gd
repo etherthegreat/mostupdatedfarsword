@@ -1284,7 +1284,7 @@ func _register_all() -> void:
 
 	_add("icon_harriet_tubman", "American Icons", "Harriet Tubman",
 		"Conductor of the Underground Railroad, spy for the Union Army, and the most dangerous person any tyrant could encounter. Tubman's patronage grants military bonuses and increases Manpower — freedom is a combat advantage.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",
-		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_barracks"]})
+		{"icon_path": "res://art assets/finishedAssets/religiousIcons/harriet_tubman.png", "see_also": ["sys_reason_providence", "bld_barracks"]})
 
 	_add("icon_frederick_douglass", "American Icons", "Frederick Douglass",
 		"Escaped slavery and spent the rest of his life explaining to anyone who would listen why that was a bad system, using words so precise they still cut. Douglass's patronage elevates Libraries, Courthouses, and the uncomfortable power of truth.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",

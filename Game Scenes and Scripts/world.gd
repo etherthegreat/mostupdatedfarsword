@@ -1558,6 +1558,7 @@ func _resolve_ai_and_advance_round() -> void:
 		evaluateDateEvents()
 	for tile in $TileController.get_children():
 		tile.tick_conquest_timer()
+	_uk_plant_spies()
 	$CanvasLayer/TurnLabel.text = _format_game_date()
 	_apply_ualani_aura()
 	_check_win_conditions()
@@ -2623,6 +2624,13 @@ func evaluateDateEvents() -> void:
 		_check_ualani_wounded()
 		_check_ualani_winter()
 		_check_ualani_forge()
+		_check_ualani_dock()
+		_check_ualani_farm()
+		_check_ualani_barracks()
+		_check_ualani_courthouse()
+		_check_espionage_discovery()
+		_check_winter_siege()
+		_check_spring_offensive()
 		_check_ualani_culper()
 		_check_ualani_alliance()
 		_check_ualani_frontier()
@@ -3421,6 +3429,151 @@ func _check_ualani_forge() -> void:
 	_start_cooldown("UALANI_FORGE_01", 15)
 	createNewEvent("UALANI_FORGE_01", tile)
 	print("[Ualani] Forge inspection at ", tile.tileName)
+
+
+func _check_ualani_dock() -> void:
+	if _event_on_cooldown("UALANI_DOCK_01"):
+		return
+	var tile: Tile = _find_ualani_tile()
+	if tile == null:
+		return
+	var has_dock: bool = false
+	for b in tile.tileBuildingsList:
+		if b.buildingType == "Dock" and b.enabled:
+			has_dock = true
+			break
+	if not has_dock:
+		return
+	_start_cooldown("UALANI_DOCK_01", 15)
+	createNewEvent("UALANI_DOCK_01", tile)
+	print("[Ualani] Harbor survey at ", tile.tileName)
+
+
+func _check_ualani_farm() -> void:
+	if _event_on_cooldown("UALANI_FARM_01"):
+		return
+	var tile: Tile = _find_ualani_tile()
+	if tile == null:
+		return
+	if tile.terrain != "Farmlands":
+		return
+	_start_cooldown("UALANI_FARM_01", 15)
+	createNewEvent("UALANI_FARM_01", tile)
+	print("[Ualani] Farmland visit at ", tile.tileName)
+
+
+func _check_ualani_barracks() -> void:
+	if _event_on_cooldown("UALANI_BARRACKS_01"):
+		return
+	var tile: Tile = _find_ualani_tile()
+	if tile == null:
+		return
+	if tile.stationedArmy == null:
+		return
+	var has_barracks: bool = false
+	for b in tile.tileBuildingsList:
+		if b.buildingType == "Barracks" and b.enabled:
+			has_barracks = true
+			break
+	if not has_barracks:
+		return
+	_start_cooldown("UALANI_BARRACKS_01", 15)
+	createNewEvent("UALANI_BARRACKS_01", tile)
+	print("[Ualani] Regimental review at ", tile.tileName)
+
+
+func _check_ualani_courthouse() -> void:
+	if _event_on_cooldown("UALANI_COURTHOUSE_01"):
+		return
+	var tile: Tile = _find_ualani_tile()
+	if tile == null:
+		return
+	var has_courthouse: bool = false
+	for b in tile.tileBuildingsList:
+		if b.buildingType == "Courthouse" and b.enabled:
+			has_courthouse = true
+			break
+	if not has_courthouse:
+		return
+	_start_cooldown("UALANI_COURTHOUSE_01", 15)
+	createNewEvent("UALANI_COURTHOUSE_01", tile)
+	print("[Ualani] Town hall at ", tile.tileName)
+
+
+func _uk_plant_spies() -> void:
+	if playerCountryNode == null:
+		return
+	if randf() > 0.20:
+		return
+	var candidates: Array = []
+	for tile in playerCountryNode.OwnedTileList:
+		if not tile.is_spy_vulnerable():
+			continue
+		if not tile.has_neighbor_owned_by("UK"):
+			continue
+		candidates.append(tile)
+	if candidates.is_empty():
+		return
+	var target: Tile = candidates[randi() % candidates.size()]
+	target.record_espionage("UK")
+	print("[Espionage] UK planted spy at ", target.tileName)
+
+
+func _check_espionage_discovery() -> void:
+	if _event_on_cooldown("ESPIONAGE_DISCOVERY_01"):
+		return
+	var candidates: Array = []
+	for tile in playerCountryNode.OwnedTileList:
+		if not tile.is_counterintelligence_ready():
+			continue
+		candidates.append(tile)
+	if candidates.is_empty():
+		return
+	var target: Tile = candidates[randi() % candidates.size()]
+	target.clear_espionage()
+	_start_cooldown("ESPIONAGE_DISCOVERY_01", 15)
+	createNewEvent("ESPIONAGE_DISCOVERY_01", target)
+	print("[Espionage] Spy caught at ", target.tileName)
+
+
+func _check_winter_siege() -> void:
+	if _event_on_cooldown("WINTER_SIEGE_01"):
+		return
+	if month not in [11, 12, 1, 2]:
+		return
+	var candidates: Array = []
+	for tile in playerCountryNode.OwnedTileList:
+		if tile.winterScore < 3:
+			continue
+		if tile.stationedArmy == null:
+			continue
+		candidates.append(tile)
+	if candidates.is_empty():
+		return
+	var target: Tile = candidates[randi() % candidates.size()]
+	_start_cooldown("WINTER_SIEGE_01", 12)
+	createNewEvent("WINTER_SIEGE_01", target)
+	print("[Winter] Siege conditions — firing WINTER_SIEGE_01 at ", target.tileName)
+
+
+func _check_spring_offensive() -> void:
+	if _event_on_cooldown("SPRING_OFFENSIVE_01"):
+		return
+	if month not in [3, 4]:
+		return
+	var candidates: Array = []
+	for tile in playerCountryNode.OwnedTileList:
+		if not tile.has_neighbor_owned_by("UK"):
+			continue
+		if tile.stationedArmy == null:
+			continue
+		candidates.append(tile)
+	if candidates.is_empty():
+		return
+	var target: Tile = candidates[randi() % candidates.size()]
+	_start_cooldown("SPRING_OFFENSIVE_01", 20)
+	createNewEvent("SPRING_OFFENSIVE_01", target)
+	print("[Spring] Crown offensive — firing SPRING_OFFENSIVE_01 at ", target.tileName)
 
 
 func _check_ualani_culper() -> void:
