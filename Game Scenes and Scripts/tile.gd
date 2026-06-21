@@ -1075,13 +1075,13 @@ func updateGraphics(mapMode, displayCorruption, playerCountry):
 				naturalMode()
 		if tileOwner == playerCountry.CID:
 			activeView = true
-			for Tile in TileNeighbors:
-				Tile.activeView = true
+			for neighbor in TileNeighbors:
+				neighbor.activeView = true
 			return
 		if tileSpawnPoint != null and tileSpawnPoint.occupied == true:
 			activeView = true
-			for Tile in TileNeighbors:
-				Tile.activeView = true
+			for neighbor in TileNeighbors:
+				neighbor.activeView = true
 			return
 		activeView = false
 
