@@ -21,6 +21,8 @@ TileDatabase="*res://TileDatabase.gd"
 CountryDatabase="*res://country_database.gd"
 ArmyDatabase="*res://army_database.gd"
 EventDatabase="*res://EventDatabase.gd"
+LibraryData="*res://LibraryData.gd"
+RecordsDatabase="*res://RecordsDatabase.gd"
 
 [display]
 
