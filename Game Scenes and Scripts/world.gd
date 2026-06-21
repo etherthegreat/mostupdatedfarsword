@@ -161,9 +161,10 @@ func _process(delta: float) -> void:
 	if worldCreation == true:
 		$CanvasLayer/LoadingSprite.rotation += 1
 		return
+	if playerCountryNode == null:
+		print("NO PLAYER COUNTRY NODE")
+		return
 	else:
-		print("yippie an attempt so close")
-		print("playercountrynode", playerCountryNode.CID)
 		$"CanvasLayer/Resource Bar (TOP)/container/FoodLabel/Label".text = str(playerCountryNode.TotalFood)
 		$"CanvasLayer/Resource Bar (TOP)/container/GoldLabel/Label".text = str(playerCountryNode.TotalDollars)
 		$"CanvasLayer/Resource Bar (TOP)/container/WoodLabel/Label".text = str(playerCountryNode.TotalWood)
