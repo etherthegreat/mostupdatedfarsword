@@ -1163,10 +1163,12 @@ func _on_area_2d_input_event(viewport, event, shape_idx):
 				calculateCorruption()
 
 func _on_area_2d_mouse_entered() -> void:
+	if tileRing == null or tileGraphic == null: return
 	tileRing.modulate = Color(0, 0, 0)
 	tileGraphic.modulate = Color(0, 0, 1)
 
 func _on_area_2d_mouse_exited() -> void:
+	if tileRing == null or tileGraphic == null: return
 	tileRing.modulate = Color(1, 1, 1)
 	tileGraphic.modulate = Color(1, 1, 1)
 
