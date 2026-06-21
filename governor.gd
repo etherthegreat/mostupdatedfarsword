@@ -59,6 +59,7 @@ const GOVERNOR_PORTRAITS: Dictionary = {
 }
 var culture: String   = ""
 var pronouns: Dictionary = {}   # subject/object/possessive/reflexive/plural
+var portrait_entry: Dictionary = {}  # set by pick_procedural_portrait; drives Vermont reskin
 
 var thanksTxt: String    = ""   # SFW press conference scene, generated at creation
 var thanksImg: String    = ""   # path to SFW Oval Office art (portrait-paired)
@@ -104,77 +105,90 @@ const PROCEDURAL_PORTRAIT_DATA: Array = [
 		"last":  ["Li","Wang","Zhang","Liu","Yang","Zhou","Huang","Wu","Xu"],
 	},
 	{
-		"path":    "res://art assets/finishedAssets/governors/minuteman_05.png",
+		"path":         "res://art assets/finishedAssets/governors/minuteman_05.png",
+		"vermont_path": "res://art assets/finishedAssets/governors/green_minuteman_05.png",
 		"culture": "Vietnamese",
 		"pronouns": {"subject":"she","object":"her","possessive":"her","reflexive":"herself","plural":false},
 		"first": ["Lan","Linh","Huong","Phuong","Mai","Thao","Ngoc","Hoa","Tuyen","Bich"],
 		"last":  ["Nguyen","Tran","Le","Pham","Hoang","Phan","Vu","Dang","Bui"],
 	},
 	{
-		"path":    "res://art assets/finishedAssets/governors/minuteman_06.png",
+		"path":         "res://art assets/finishedAssets/governors/minuteman_06.png",
+		"vermont_path": "res://art assets/finishedAssets/governors/green_minuteman_06.png",
 		"culture": "Unknown",
 		"pronouns": {"subject":"they","object":"them","possessive":"their","reflexive":"themselves","plural":true},
 		"first": ["Ash","Ember","Flint","Cipher","Veil","Shade","Rook","Wren","Birch","Slate"],
 		"last":  [],
 	},
 	{
-		"path":    "res://art assets/finishedAssets/governors/minuteman_07.png",
+		"path":         "res://art assets/finishedAssets/governors/minuteman_07.png",
+		"vermont_path": "res://art assets/finishedAssets/governors/green_minuteman_07.png",
 		"culture": "English",
 		"pronouns": {"subject":"they","object":"them","possessive":"their","reflexive":"themselves","plural":true},
 		"first": ["Morgan","Robin","Avery","Taylor","Quinn","Lark","Blair","Cary","Devon","Reeve"],
 		"last":  ["Alderton","Whitfield","Hatch","Morse","Sears","Brewster","Alden","Coffin"],
 	},
 	{
-		"path":    "res://art assets/finishedAssets/governors/minuteman_08.png",
+		"path":         "res://art assets/finishedAssets/governors/minuteman_08.png",
+		"vermont_path": "res://art assets/finishedAssets/governors/green_minuteman_08.png",
 		"culture": "West African",
 		"pronouns": {"subject":"he","object":"him","possessive":"his","reflexive":"himself","plural":false},
 		"first": ["Kofi","Kwame","Ayo","Emeka","Chidi","Seun","Tobi","Dele","Femi","Ola"],
 		"last":  ["Osei","Mensah","Asante","Adeyemi","Okafor","Nwosu","Eze","Abiodun"],
 	},
 	{
-		"path":    "res://art assets/finishedAssets/governors/minuteman_09.png",
+		"path":         "res://art assets/finishedAssets/governors/minuteman_09.png",
+		"vermont_path": "res://art assets/finishedAssets/governors/green_minuteman_09.png",
 		"culture": "Scottish",
 		"pronouns": {"subject":"he","object":"him","possessive":"his","reflexive":"himself","plural":false},
 		"first": ["Alistair","Callum","Hamish","Fergus","Ewan","Angus","Rory","Duncan","Malcolm","Murdoch"],
 		"last":  ["MacLeod","MacDonald","Campbell","Fraser","Ross","Grant","Mackenzie","Stewart"],
 	},
 	{
-		"path":    "res://art assets/finishedAssets/governors/minuteman_10.png",
+		"path":         "res://art assets/finishedAssets/governors/minuteman_10.png",
+		"vermont_path": "res://art assets/finishedAssets/governors/green_minuteman_10.png",
 		"culture": "South Asian",
 		"pronouns": {"subject":"he","object":"him","possessive":"his","reflexive":"himself","plural":false},
 		"first": ["Arjun","Rohan","Dev","Kiran","Vikram","Anand","Raj","Sai","Jai","Neel"],
 		"last":  ["Patel","Sharma","Singh","Kumar","Gupta","Rao","Mehta","Nair","Reddy"],
 	},
 	{
-		"path":    "res://art assets/finishedAssets/governors/minuteman_11.png",
+		"path":         "res://art assets/finishedAssets/governors/minuteman_11.png",
+		"vermont_path": "res://art assets/finishedAssets/governors/green_minuteman_11.png",
 		"culture": "Caribbean",
 		"pronouns": {"subject":"he","object":"him","possessive":"his","reflexive":"himself","plural":false},
 		"first": ["Marcus","Isaiah","Elijah","Nathan","Solomon","Tobias","Levi","Micah","Ezra","Jude"],
 		"last":  ["Williams","Johnson","Brown","Thompson","Clarke","Campbell","Henry","Lewis"],
 	},
 	{
-		"path":    "res://art assets/finishedAssets/governors/minuteman_12.png",
+		"path":         "res://art assets/finishedAssets/governors/minuteman_12.png",
+		"vermont_path": "res://art assets/finishedAssets/governors/green_minuteman_12.png",
 		"culture": "Aboriginal Australian",
 		"pronouns": {"subject":"he","object":"him","possessive":"his","reflexive":"himself","plural":false},
 		"first": ["Jarrah","Warrick","Daku","Mirri","Yarra","Warra","Mulga","Wirra","Bindi","Kuri"],
 		"last":  [],
 	},
 	{
-		"path":    "res://art assets/finishedAssets/governors/minuteman_13.png",
+		"path":         "res://art assets/finishedAssets/governors/minuteman_13.png",
+		"vermont_path": "res://art assets/finishedAssets/governors/green_minuteman_13.png",
 		"culture": "French",
 		"pronouns": {"subject":"she","object":"her","possessive":"her","reflexive":"herself","plural":false},
 		"first": ["Marguerite","Colette","Elise","Brigitte","Vivienne","Celine","Aurelie","Mathilde","Camille","Claudette"],
 		"last":  ["Dupont","Martin","Bernard","Dubois","Laurent","Simon","Michel","Lefevre"],
 	},
 	{
-		"path":    "res://art assets/finishedAssets/governors/green_mountaineer_01.png",
+		# Default (non-Vermont) portrait is blue; Vermont reskin is the original green
+		"path":         "res://art assets/finishedAssets/governors/blue_mountaineer_01.png",
+		"vermont_path": "res://art assets/finishedAssets/governors/green_mountaineer_01.png",
 		"culture": "Angolan",
 		"pronouns": {"subject":"she","object":"her","possessive":"her","reflexive":"herself","plural":false},
 		"first": ["Amara","Zola","Nkechi","Adaeze","Ifunanya","Chisom","Nneka","Obioma","Adanna","Ngozi"],
 		"last":  ["Mateus","Ferreira","Santos","Rodrigues","Costa","Lopes","Alves"],
 	},
 	{
-		"path":    "res://art assets/finishedAssets/governors/green_mountaineer_02.png",
+		# Default (non-Vermont) portrait is blue; Vermont reskin is the original green
+		"path":         "res://art assets/finishedAssets/governors/blue_mountaineer_02.png",
+		"vermont_path": "res://art assets/finishedAssets/governors/green_mountaineer_02.png",
 		"culture": "Quebecois",
 		"pronouns": {"subject":"he","object":"him","possessive":"his","reflexive":"himself","plural":false},
 		"first": ["Jean-Pierre","Luc","Etienne","Benoit","Gaston","Rene","Fernand","Emile","Henri","Armand"],
@@ -194,7 +208,23 @@ func pick_procedural_portrait() -> Dictionary:
 		available = PROCEDURAL_PORTRAIT_DATA.duplicate()
 	var chosen: Dictionary = available[randi() % available.size()]
 	_used_portrait_paths.append(chosen["path"])
+	portrait_entry = chosen
 	return chosen
+
+func _get_portrait(name: String) -> Texture:
+	var path: String = GOVERNOR_PORTRAITS.get(name, "")
+	if path != "" and ResourceLoader.exists(path):
+		return load(path)
+	return null
+
+# Returns the correct portrait for a given tile region.
+# Procedural governors stationed in Vermont ("VT") show their green coat version.
+func get_portrait_for_region(region: String) -> Texture:
+	if region == "VT" and portrait_entry.has("vermont_path"):
+		var vp: String = portrait_entry["vermont_path"]
+		if ResourceLoader.exists(vp):
+			return load(vp)
+	return governorTexture
 
 func buildSelf(gT, gL):
 	governorType = gT
