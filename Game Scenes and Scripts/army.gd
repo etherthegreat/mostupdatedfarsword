@@ -145,8 +145,9 @@ func buildSelf(Name, countryNode, TileNumber, icon):
 		for Tile in parentCountry.OwnedTileList:
 			if Tile.tileNumber == TileNumber:
 				inTile = Tile
-			else:
-				print("error 1 - no matching tile in owned tile list, army, line 93")
+				break
+		if inTile == null:
+			push_warning("army.buildSelf: tile " + str(TileNumber) + " not found in OwnedTileList for " + parentCountry.CID)
 	#print("UnitUIContainer 1 Children", $RadicalCoolTestPanel/UnitUIContainer.get_children())
 	for armyCostUI in $resourcescontainer.get_children():
 		armyCostUI.buildSelf()
