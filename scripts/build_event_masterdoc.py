@@ -1392,22 +1392,22 @@ EVENTS += [
      "Ualani at Courthouse tile; no moralDecay gate (cf. UALANI_DIGNITARY_01); triggers via _check_ualani_courthouse()"),
 
     ("Idea","More City Events","CL_WASHINGTON_01",
-     "WASHINGTON DC LIBERATED  ← IDEA",
+     "WASHINGTON DC RECAPTURED — THE CAPITAL RETURNS TO THE REPUBLIC",
      "Root","—","—",
-     "IDEA","","Not Started","NO","","0",
-     "Would fire when tile 188 is recaptured; natural counterpart to CX_001"),
+     "FIRST PASS","","In Progress","NO","","0",
+     "Fires via TRIG_089 (tile_liberated, 188, USA); one-time historic event; 2 buttons"),
 
     ("Idea","More City Events","CL_VALLEY_FORGE_01",
-     "VALLEY FORGE SECURED  ← IDEA",
+     "VALLEY FORGE IS OURS — THE REPUBLIC HOLDS THE GROUND THAT HELD BEFORE",
      "Root","—","—",
-     "IDEA","","Not Started","NO","","0",
-     "Tile 1; historically significant; would fire on liberation"),
+     "FIRST PASS","","In Progress","NO","","0",
+     "Fires via TRIG_090 (tile_liberated, 1, USA); one-time; 2 buttons; historical weight tone"),
 
     ("Idea","More City Events","CX_NYC_01",
-     "NEW YORK CITY FALLS AGAIN  ← IDEA",
+     "NEW YORK CITY HAS FALLEN — AGAIN — THE STOCK MARKET IS FORMALLY AGGRIEVED",
      "Root","—","—",
-     "IDEA","","Not Started","NO","","0",
-     "Would fire if NYC is re-taken after CL_001; repeatable pair"),
+     "FIRST PASS","","In Progress","NO","","0",
+     "Fires via TRIG_091 (tile_lost, 14, UK); repeatable=true, cooldown=30; satirical callback to CL_001"),
 
     ("Idea","Espionage Events","ESPIONAGE_DISCOVERY_01",
      "SPY NETWORK DISCOVERED AT [TILE_NAME]  ← IDEA",
@@ -1422,16 +1422,16 @@ EVENTS += [
      "Extend the commander arc beyond first objective"),
 
     ("Idea","Seasonal Events","WINTER_SIEGE_01",
-     "VALLEY FORGE CONDITIONS: ARMY SUFFERING IN THE FIELD  ← IDEA",
+     "VALLEY FORGE CONDITIONS — TROOPS SUFFER THROUGH ANOTHER NORTHERN WINTER",
      "Root","—","—",
-     "IDEA","","Not Started","NO","","0",
-     "Generic winter hardship event; non-Ualani; uses winterScore + month check"),
+     "FIRST PASS","","In Progress","NO","","0",
+     "_check_winter_siege(): month [11,12,1,2] + owned tile winterScore>=3 + stationedArmy; cooldown=12; 2 buttons"),
 
     ("Idea","Seasonal Events","SPRING_OFFENSIVE_01",
-     "THE THAW: CROWN FORCES RESUME OFFENSIVE OPERATIONS  ← IDEA",
+     "THE THAW — CROWN FORCES RESUME OFFENSIVE OPERATIONS",
      "Root","—","—",
-     "IDEA","","Not Started","NO","","0",
-     "Month 3-4; UK neighbor + player army present; tactical pressure event"),
+     "FIRST PASS","","In Progress","NO","","0",
+     "_check_spring_offensive(): month [3,4] + UK neighbor + stationedArmy on owned tile; cooldown=20; 2 buttons"),
 
     # ── INTIMATE VARIANTS ────────────────────────────────────────────────────
     # Stub entries for the "By morning" intimate path on every explicit event.

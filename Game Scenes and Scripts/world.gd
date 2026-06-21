@@ -2625,6 +2625,8 @@ func evaluateDateEvents() -> void:
 		_check_ualani_farm()
 		_check_ualani_barracks()
 		_check_ualani_courthouse()
+		_check_winter_siege()
+		_check_spring_offensive()
 		_check_ualani_culper()
 		_check_ualani_alliance()
 		_check_ualani_frontier()
@@ -3491,6 +3493,46 @@ func _check_ualani_courthouse() -> void:
 	_start_cooldown("UALANI_COURTHOUSE_01", 15)
 	createNewEvent("UALANI_COURTHOUSE_01", tile)
 	print("[Ualani] Town hall at ", tile.tileName)
+
+
+func _check_winter_siege() -> void:
+	if _event_on_cooldown("WINTER_SIEGE_01"):
+		return
+	if month not in [11, 12, 1, 2]:
+		return
+	var candidates: Array = []
+	for tile in playerCountryNode.OwnedTileList:
+		if tile.winterScore < 3:
+			continue
+		if tile.stationedArmy == null:
+			continue
+		candidates.append(tile)
+	if candidates.is_empty():
+		return
+	var target: Tile = candidates[randi() % candidates.size()]
+	_start_cooldown("WINTER_SIEGE_01", 12)
+	createNewEvent("WINTER_SIEGE_01", target)
+	print("[Winter] Siege conditions — firing WINTER_SIEGE_01 at ", target.tileName)
+
+
+func _check_spring_offensive() -> void:
+	if _event_on_cooldown("SPRING_OFFENSIVE_01"):
+		return
+	if month not in [3, 4]:
+		return
+	var candidates: Array = []
+	for tile in playerCountryNode.OwnedTileList:
+		if not tile.has_neighbor_owned_by("UK"):
+			continue
+		if tile.stationedArmy == null:
+			continue
+		candidates.append(tile)
+	if candidates.is_empty():
+		return
+	var target: Tile = candidates[randi() % candidates.size()]
+	_start_cooldown("SPRING_OFFENSIVE_01", 20)
+	createNewEvent("SPRING_OFFENSIVE_01", target)
+	print("[Spring] Crown offensive — firing SPRING_OFFENSIVE_01 at ", target.tileName)
 
 
 func _check_ualani_culper() -> void:
