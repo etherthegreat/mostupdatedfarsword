@@ -60,7 +60,8 @@ func _on_play_button_pressed() -> void:
 	$PlayButton.queue_free()
 	$SelectionPanel.queue_free()
 	$CountryInfoPanel.queue_free()
-	var language = settings.gameLanguage
+	var language: String = settings.get("gameLanguage", "eng")
+	print("new_game_selection: launching game with CID='%s', lang='%s'" % [selectedCountry, language])
 	var newGame = newGameScene.instantiate()
 	add_child(newGame)
 	newGame.newGameBuild(selectedCountry, language, isCoopMode)
