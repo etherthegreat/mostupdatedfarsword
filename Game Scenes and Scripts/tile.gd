@@ -322,7 +322,11 @@ func onNewGame():
 	undiscovered = true
 	activeView = false
 	for NodePath in TileNeighborsEXP:
-		TileNeighbors.append(get_node(NodePath))
+		var nb = get_node_or_null(NodePath)
+		if nb != null:
+			TileNeighbors.append(nb)
+		else:
+			push_warning("Tile %d: neighbor path '%s' not found — skipped" % [EXPTileNumber, str(NodePath)])
 	#if ocean == true:
 		#calculateOceanAttributes(tileNumber)
 	#else:
@@ -374,8 +378,6 @@ func build_self() -> void:
 
 	# Connect tile to its path point on the map
 	tileSpawnPoint = get_node_or_null("../../PathControl/PathPointsControl/" + str(tileNumber))
-
-	print(tileName, " | winter: ", get_winter_category(), " (", winterScore, ")")
 # ============================================================
 # LOAD GAME INITIALIZATION
 # ============================================================
@@ -391,7 +393,11 @@ func onLoadGame():
 	undiscovered = true
 	activeView = false
 	for NodePath in TileNeighborsEXP:
-		TileNeighbors.append(get_node(NodePath))
+		var nb = get_node_or_null(NodePath)
+		if nb != null:
+			TileNeighbors.append(nb)
+		else:
+			push_warning("Tile %d: neighbor path '%s' not found — skipped" % [EXPTileNumber, str(NodePath)])
 	build_self()  # CSV is the source of truth for load game too until save system is built
 	calculateCorruption()
 	emit_signal("tileLoaded", self)
@@ -1081,12 +1087,14 @@ func updateGraphics(mapMode, displayCorruption, playerCountry):
 		if tileOwner == playerCountry.CID:
 			activeView = true
 			for neighbor in TileNeighbors:
-				neighbor.activeView = true
+				if neighbor != null:
+					neighbor.activeView = true
 			return
 		if tileSpawnPoint != null and tileSpawnPoint.occupied == true:
 			activeView = true
 			for neighbor in TileNeighbors:
-				neighbor.activeView = true
+				if neighbor != null:
+					neighbor.activeView = true
 			return
 		activeView = false
 

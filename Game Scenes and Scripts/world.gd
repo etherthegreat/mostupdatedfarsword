@@ -161,8 +161,7 @@ func _process(delta: float) -> void:
 	if worldCreation == true:
 		$CanvasLayer/LoadingSprite.rotation += 1
 		return
-	if playerCountryNode == null:
-		push_error("world._process: playerCountryNode is null - map will not update")
+	if not is_instance_valid(playerCountryNode):
 		return
 	$"CanvasLayer/Resource Bar (TOP)/container/FoodLabel/Label".text = str(playerCountryNode.TotalFood)
 	$"CanvasLayer/Resource Bar (TOP)/container/GoldLabel/Label".text = str(playerCountryNode.TotalDollars)
@@ -1410,12 +1409,9 @@ var countryNode = load("res://Game Scenes and Scripts/country.tscn")
 
 func spawnNewGameCountries(CID: String) -> void:
 	playerCountry = CID
-	print("spawnNewGameCountries: called with CID='%s'" % CID)
-	print("spawnNewGameCountries: CountryDatabase.loaded=%s, CIDs=%s" % [CountryDatabase.loaded, CountryDatabase.get_all_CIDs()])
 
 	# Spawn all countries defined in countries.csv
 	for countryCID in CountryDatabase.get_all_CIDs():
-		print("spawnNewGameCountries: spawning country '%s'" % countryCID)
 		var newCountry = countryNode.instantiate()
 		newCountry.CID = countryCID
 
@@ -1424,7 +1420,6 @@ func spawnNewGameCountries(CID: String) -> void:
 			newCountry.Player = true
 			playerCountryNode = newCountry
 			newCountry.commanderFallen.connect(_on_commander_fallen)
-			print("spawnNewGameCountries: assigned playerCountryNode for '%s'" % countryCID)
 		elif isCoopMode and ((playerCountry == "USA" and countryCID == "CA") or
 				(playerCountry == "CA" and countryCID == "USA")):
 			newCountry.Player = true
@@ -1432,24 +1427,23 @@ func spawnNewGameCountries(CID: String) -> void:
 			newCountry.commanderFallen.connect(_on_commander_fallen)
 		else:
 			newCountry.Player = false
+			newCountry.countryArmyDestroyed.connect(_on_enemy_army_defeated)
 
 		# Assign tiles that belong to this country
 		for Tile in $TileController.get_children():
 			if Tile.tileOwner == countryCID:
 				newCountry.OwnedTileList.append(Tile)
-		print("spawnNewGameCountries: '%s' owns %d tiles" % [countryCID, newCountry.OwnedTileList.size()])
 
 		# Build country from CSV data
 		newCountry.NewGameBuild()
 		aliveCountriesList.append(newCountry)
 		$CountryController.add_child(newCountry)
-		print("spawnNewGameCountries: '%s' built and added to scene" % countryCID)
- 
+
 	# Verify player country was found
 	if playerCountryNode == null:
-		push_error("spawnNewGameCountries: playerCountryNode is null after spawn! CID='%s' not found in CountryDatabase." % playerCountry)
+		push_error("spawnNewGameCountries: playerCountryNode is null! CID='%s' not in CountryDatabase." % playerCountry)
 	else:
-		print("spawnNewGameCountries: playerCountryNode set to CID='%s', is_inside_tree=%s" % [playerCountryNode.CID, playerCountryNode.is_inside_tree()])
+		print("spawnNewGameCountries: playerCountryNode='%s' in_tree=%s" % [playerCountryNode.CID, playerCountryNode.is_inside_tree()])
 
 	# Set player capital camera position
 	if playerCountryNode != null:
@@ -1674,12 +1668,13 @@ func retrieveOutputs():
 	pass
 
 func matchCountryBuildings():
-	for country in aliveCountriesList:
-		for Tile in $TileController.get_children():
-			if Tile.tileOwner == playerCountry:
-				for building in Tile.tileBuildingsList:
-					playerCountryNode.connectBuilding(building)
-					#building.towerBuilding.connect(signalTowerInTile)
+	if playerCountryNode == null:
+		push_error("matchCountryBuildings: playerCountryNode is null, skipping")
+		return
+	for Tile in $TileController.get_children():
+		if Tile.tileOwner == playerCountry:
+			for building in Tile.tileBuildingsList:
+				playerCountryNode.connectBuilding(building)
 	pass
 
 func _on_food_area_2d_mouse_entered():
@@ -5916,6 +5911,15 @@ const _ARCHETYPE_FLAVOR: Dictionary = {
 	"ARC_24": "An organizer who built coalitions the old guard called impossible. They proved them wrong until the last.",
 	"ARC_25": "An orator who treated every battle as a performance. The curtain has fallen.",
 }
+
+func _on_enemy_army_defeated(_lost_army: Army) -> void:
+	if not is_instance_valid(playerCountryNode):
+		return
+	if not playerCountryNode.selectedBeliefs.any(func(b): return b.beliefType == "John Brown"):
+		return
+	playerCountryNode.TotalManpower += 250
+	playerCountryNode.TotalMandatePoints += 25
+
 
 func _on_commander_fallen(commander, army_name: String, tile) -> void:
 	# Priority 1: head of state death → game over (Ualani for USA)

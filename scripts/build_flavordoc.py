@@ -437,6 +437,14 @@ ICONS = [
      "Farm: +1 Food",
      "—", "FIRST PASS",
      "UFW co-founder. ¡Sí, se puede! Farm labor bonus."),
+    ("USA", "Tier 2 – 1800s/Modern", "John Brown",            "1800–1859",
+     "—",
+     "Harpers Ferry Spark", "FIRST PASS",
+     "Abolitionist who raided Harpers Ferry in 1859. When an enemy army is destroyed: +250 Manpower, +25 Mandate burst to the player country."),
+    ("USA", "Tier 2 – 1800s/Modern", "Mary Edwards Walker",   "1832–1919",
+     "—",
+     "Field Surgeon's Gift", "FIRST PASS",
+     "Only woman to receive the Medal of Honor for Civil War service. All armies heal +15% more manpower per turn from reinforcement."),
 
     # ── CA Tier 1 (Founding Era) ──────────────────────────────────────────────
     ("CA", "Tier 1 – Founding", "John A. Macdonald",          "1815–1891",
@@ -561,6 +569,16 @@ BELIEF_MODS = [
      "infantryMod (terrainMod: Woods)", "+2 Attack, +2 Defense per Level in Woods terrain (temp)",
      "June 1876: Sitting Bull had a vision of soldiers falling like grasshoppers before the battle. The combined Lakota and Cheyenne forces destroyed Custer's 7th Cavalry.",
      "FIRST DRAFT"),
+
+    ("Harpers Ferry Spark", "Icon — John Brown",
+     "countryMod (on-defeat burst)", "+250 Manpower + 25 Mandate whenever an enemy army is destroyed",
+     "October 16, 1859: Brown seized the armory at Harpers Ferry with 21 men. Captured in 36 hours. Hanged December 2. His last note read: 'I am now quite certain that the crimes of this guilty land will never be purged away but with blood.' He was not wrong.",
+     "FIRST PASS"),
+
+    ("Field Surgeon's Gift", "Icon — Mary Edwards Walker",
+     "countryMod (heal rate)", "+15% manpower recovered through reinforcement per turn for all armies",
+     "Walker served as a Union Army surgeon during the Civil War, was captured as a spy, and received the Medal of Honor in 1865 — the only woman ever to receive it. The Army revoked it in 1917. She wore it until she died in 1919.",
+     "FIRST PASS"),
 
     # ── Canadian Icon Mods ───────────────────────────────────────────────────
     ("Beaverdams Dispatch", "Icon — Laura Secord",

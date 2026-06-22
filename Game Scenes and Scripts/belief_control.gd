@@ -116,6 +116,10 @@ func updateSelf():
 				newBB.buildSelf("Jimmy Carter", $religionData.jimmyCarterIcon, $religionData.jimmyCarterBWIcon, false, 120, "The peanut farmer who brokered peace between Egypt and Israel, then went home and built houses for the poor. Carter's patronage rewards humility — quiet, persistent bonuses to everything, nothing flashy, compounding forever.", $religionData.border1)
 			"Dolores Huerta":
 				newBB.buildSelf("Dolores Huerta", $religionData.doloresHuertaIcon, $religionData.doloresHuertaBWIcon, false, 140, "Co-founder of the United Farm Workers and proof that 'no' is not an acceptable final answer. Huerta's patronage amplifies Cesar Chavez's farm bonuses if both are selected, and adds exceptional Harmony in provinces with mixed labor.", $religionData.border3)
+			"John Brown":
+				newBB.buildSelf("John Brown", $religionData.johnBrownIcon, $religionData.johnBrownBWIcon, false, 200, "He went to Harpers Ferry with 21 men and a plan that required thousands to join him. None did. He held the armory for 36 hours before U.S. Marines broke through. Two months later he was hanged — and the war he predicted started without him. Every time an enemy army falls, his memory bursts through: +250 Manpower, +25 Mandate.", $religionData.border2)
+			"Mary Edwards Walker":
+				newBB.buildSelf("Mary Edwards Walker", $religionData.maryEdwardsWalkerIcon, $religionData.maryEdwardsWalkerBWIcon, false, 180, "The only woman to receive the Medal of Honor for Civil War service. She worked as a battlefield surgeon, crossed enemy lines to treat civilians, was captured as a spy, and wore her medal until the day she died — despite the Army's attempt to revoke it in 1917. Under her patronage, all units recover 15% more manpower through healing each turn.", $religionData.border4)
 			# ── Canadian Icons ───────────────────────────────────────────────────
 			"John A. Macdonald":
 				newBB.buildSelf("John A. Macdonald", $religionData.macdonaldIcon, $religionData.macdonaldBWIcon, false, 200, "The Father of Confederation and first Prime Minister of Canada. Built the Republic through coalition, compromise, and the transcontinental railway.", $religionData.border2)
@@ -265,6 +269,10 @@ func buildPD(type):
 			newPD.buildSelf("Jimmy Carter", $religionData.jimmyCarterIcon, "The peanut farmer who brokered peace and then went home and built houses for the poor. Quiet, persistent bonuses to everything, nothing flashy, compounding forever.", false, $religionData.border1)
 		"Dolores Huerta":
 			newPD.buildSelf("Dolores Huerta", $religionData.doloresHuertaIcon, "Co-founder of the United Farm Workers. Amplifies Cesar Chavez's farm bonuses if both are selected. Exceptional Harmony in provinces with mixed labor.", false, $religionData.border3)
+		"John Brown":
+			newPD.buildSelf("John Brown", $religionData.johnBrownIcon, "He miscalculated the uprising but not the war. When an enemy army is destroyed: +250 Manpower, +25 Mandate.", false, $religionData.border2)
+		"Mary Edwards Walker":
+			newPD.buildSelf("Mary Edwards Walker", $religionData.maryEdwardsWalkerIcon, "Only woman to receive the Medal of Honor. All units heal +15% more manpower per turn.", false, $religionData.border4)
 		# ── Canadian Icons ───────────────────────────────────────────────────────
 		"John A. Macdonald":
 			newPD.buildSelf("John A. Macdonald", $religionData.macdonaldIcon, "Father of Confederation and first Prime Minister of Canada. Built the Republic through coalition, compromise, and the transcontinental railway.", false, $religionData.border2)
