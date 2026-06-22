@@ -6356,7 +6356,7 @@ func _library_on_event_fired(event_id: String) -> void:
 		return
 
 	# Gallery unlock — all players reach all scenes; no content gate
-	var content_flag: String = event.get("content_flag", "").strip()
+	var content_flag: String = event.get("content_flag", "").strip_edges()
 	if content_flag != "" and content_flag != "false":
 		LibraryData.unlock_gallery(event_id)
 
