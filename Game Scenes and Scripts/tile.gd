@@ -349,7 +349,7 @@ func build_self() -> void:
 		tileCrop = "corn"
 		buildings = {}
 		tileSpecialFeatures = []
-		tileSpawnPoint = get_node("../../PathControl/PathPointsControl/" + str(tileNumber))
+		tileSpawnPoint = get_node_or_null("../../PathControl/PathPointsControl/" + str(tileNumber))
 		return
 
 	# Core identity from CSV
@@ -1068,11 +1068,15 @@ func calculateSpellChanges():
 # ============================================================
 
 func updateGraphics(mapMode, displayCorruption, playerCountry):
+	var fow: Node = get_node_or_null("TileFOW")
+	var gfx: Node = get_node_or_null("TileGraphic")
+	if fow == null or gfx == null:
+		return
 	if undiscovered == true:
-		$TileFOW.modulate = Color(0,0,0)
-		$TileFOW.self_modulate.a = .975
-		$TileFOW.visible = true
-		$TileGraphic.visible = false
+		fow.modulate = Color(0,0,0)
+		fow.self_modulate.a = .975
+		fow.visible = true
+		gfx.visible = false
 		activeView = false
 		return
 	if discovered == true:
@@ -1090,7 +1094,7 @@ func updateGraphics(mapMode, displayCorruption, playerCountry):
 				if neighbor != null:
 					neighbor.activeView = true
 			return
-		if tileSpawnPoint != null and tileSpawnPoint.occupied == true:
+		if tileSpawnPoint != null and is_instance_valid(tileSpawnPoint) and tileSpawnPoint.occupied == true:
 			activeView = true
 			for neighbor in TileNeighbors:
 				if neighbor != null:
@@ -1099,49 +1103,59 @@ func updateGraphics(mapMode, displayCorruption, playerCountry):
 		activeView = false
 
 func calculateActiveView():
+	var fow: Node = get_node_or_null("TileFOW")
+	if fow == null:
+		return
 	if activeView == true:
-		$TileFOW.visible = false
+		fow.visible = false
 	if activeView == false && discovered == true:
-		$TileFOW.modulate = Color(0,0,0)
-		$TileFOW.visible = true
-		$TileFOW.self_modulate.a = .6
+		fow.modulate = Color(0,0,0)
+		fow.visible = true
+		fow.self_modulate.a = .6
 
 func polisMode():
-	$TileGraphic.visible = false
-	$TileGraphic.modulate = Color(1,1,1)
+	var gfx: Node = get_node_or_null("TileGraphic")
+	if gfx == null:
+		return
+	gfx.visible = false
+	gfx.modulate = Color(1,1,1)
 	match tileOwner:
 		"USA":
-			$TileGraphic.modulate = Color(0.18, 0.31, 0.65)  # American blue
-			$TileGraphic.visible = true
+			gfx.modulate = Color(0.18, 0.31, 0.65)  # American blue
+			gfx.visible = true
 		"UK":
-			$TileGraphic.modulate = Color(0.7, 0.0, 0.1)     # British red
-			$TileGraphic.visible = true
+			gfx.modulate = Color(0.7, 0.0, 0.1)     # British red
+			gfx.visible = true
 		"CA":
-			$TileGraphic.modulate = Color(0.9, 0.15, 0.15)   # Canadian red
-			$TileGraphic.visible = true
+			gfx.modulate = Color(0.9, 0.15, 0.15)   # Canadian red
+			gfx.visible = true
 		"BA":
-			$TileGraphic.modulate = Color(0.0, 0.5, 0.3)     # Bahamian teal
-			$TileGraphic.visible = true
+			gfx.modulate = Color(0.0, 0.5, 0.3)     # Bahamian teal
+			gfx.visible = true
 		# Legacy Farsword factions kept in case tiles still reference them
 		"PDT":
-			$TileGraphic.modulate = Color(0,1,0)
-			$TileGraphic.visible = true
+			gfx.modulate = Color(0,1,0)
+			gfx.visible = true
 		"ANL":
-			$TileGraphic.modulate = Color(0,0,1)
-			$TileGraphic.visible = true
+			gfx.modulate = Color(0,0,1)
+			gfx.visible = true
 		"EIG":
-			$TileGraphic.modulate = Color(1, 0.078431375, 0.5764706)
-			$TileGraphic.visible = true
+			gfx.modulate = Color(1, 0.078431375, 0.5764706)
+			gfx.visible = true
 		"VTO":
-			$TileGraphic.modulate = Color(1, 0.54901963, 0)
-			$TileGraphic.visible = true
+			gfx.modulate = Color(1, 0.54901963, 0)
+			gfx.visible = true
 		"DUM":
-			$TileGraphic.modulate = Color(0.9,1,0.5)
-			$TileGraphic.visible = true
+			gfx.modulate = Color(0.9,1,0.5)
+			gfx.visible = true
 
 func naturalMode():
-	$TileGraphic.modulate = Color(1,1,1)
-	$TileFOW.self_modulate.a = 0.0
+	var gfx: Node = get_node_or_null("TileGraphic")
+	var fow: Node = get_node_or_null("TileFOW")
+	if gfx != null:
+		gfx.modulate = Color(1,1,1)
+	if fow != null:
+		fow.self_modulate.a = 0.0
 
 
 # ============================================================
