@@ -163,35 +163,20 @@ func _process(delta: float) -> void:
 		return
 	if not is_instance_valid(playerCountryNode):
 		return
-	print("DEBUG _process: Food label")
 	$"CanvasLayer/Resource Bar (TOP)/container/FoodLabel/Label".text = str(playerCountryNode.TotalFood)
-	print("DEBUG _process: Gold label")
 	$"CanvasLayer/Resource Bar (TOP)/container/GoldLabel/Label".text = str(playerCountryNode.TotalDollars)
-	print("DEBUG _process: Wood label")
 	$"CanvasLayer/Resource Bar (TOP)/container/WoodLabel/Label".text = str(playerCountryNode.TotalWood)
-	print("DEBUG _process: Metal label")
 	$"CanvasLayer/Resource Bar (TOP)/container/MetalLabel/Label".text = str(playerCountryNode.TotalMetal)
-	print("DEBUG _process: Weapons label")
 	$"CanvasLayer/Resource Bar (TOP)/container/WeaponsLabel/Label".text = str(playerCountryNode.TotalWeapons)
-	print("DEBUG _process: Science label")
 	$"CanvasLayer/Resource Bar (TOP)/container/ScienceLabel/Label".text = str(playerCountryNode.SPM)
-	print("DEBUG _process: Faith label")
 	$"CanvasLayer/Resource Bar (TOP)/container/FaithLabel/Label".text = str(playerCountryNode.TotalCulture)  # Faith→Culture
-	print("DEBUG _process: Magic label")
 	$"CanvasLayer/Resource Bar (TOP)/container/MagicLabel/Label".text = str(playerCountryNode.TotalMagic)
-	print("DEBUG _process: Culture label")
 	$"CanvasLayer/Resource Bar (TOP)/container/CultureLabel/Label".text = str(playerCountryNode.TotalCulture)
-	print("DEBUG _process: Mandate label")
 	$"CanvasLayer/Resource Bar (TOP)/container/MandateLabel/Label".text = str(playerCountryNode.TotalMandate)
-	print("DEBUG _process: Harmony label")
 	$"CanvasLayer/Resource Bar (TOP)/container/HarmonyLabel/Label".text = str(playerCountryNode.TotalHappiness)  # Harmony→Happiness
-	print("DEBUG _process: Influence label")
 	$"CanvasLayer/Resource Bar (TOP)/container/InfluenceLabel/Label".text = str(playerCountryNode.TotalInfluence)
-	print("DEBUG _process: Manpower label")
 	$"CanvasLayer/Resource Bar (TOP)/container/ManpowerLabel/Label".text = str(playerCountryNode.TotalManpower)
-	print("DEBUG _process: updateMap")
 	updateMap()
-	print("DEBUG _process: updateMap done")
 	if $CanvasLayer/TechTree.investmentTech == null:
 		$CanvasLayer/NextTurnControl/NextTurn.visible = false
 		$CanvasLayer/NextTurnControl/PickTech.visible = true
@@ -277,9 +262,7 @@ func newGameBuild(CID, gameLang, isCoop: bool = false):
 	_assign_vice_president()
 	_build_turn_order()
 	evaluateDateEvents()
-	print("DEBUG newGameBuild: evaluateDateEvents complete")
 	_seed_opening_journal_entry()
-	print("DEBUG newGameBuild: _seed_opening_journal_entry complete")
 
 # ── BARRACKS COMMANDER GENERATION ───────────────────────────────────────────
 # Assigns a governor to the faction with the fewest current members.
@@ -2184,18 +2167,12 @@ func createNewEvent(event_id: String, tile = null) -> void:
 		newEvent.build_from_data(_build_cmd_thanks_data(tile, is_exp), tile, playerCountryNode)
 	else:
 		newEvent.build_from_csv(event_id, tile, playerCountryNode)
-	print("DEBUG createNewEvent [%s]: connecting signals" % event_id)
 	newEvent.eventButtonPressed.connect(_on_event_button_pressed)
 	newEvent.tileEventButtonPressed.connect(_on_tile_event_button_pressed)
-	print("DEBUG createNewEvent [%s]: playing sfx" % event_id)
 	AudioManager.play_sfx("event_shown")
-	print("DEBUG createNewEvent [%s]: add_child" % event_id)
 	$CanvasLayer/EventControl/EventContainer.add_child(newEvent)
-	print("DEBUG createNewEvent [%s]: mark_fired" % event_id)
 	EventDatabase.mark_event_fired(event_id, currentWorldTurn)
-	print("DEBUG createNewEvent [%s]: library hook" % event_id)
 	_library_on_event_fired(event_id)
-	print("DEBUG createNewEvent [%s]: DONE" % event_id)
 
 
 # Assembles CA_PM_LEGACY long_desc dynamically based on the player's CA run flags.
@@ -5754,11 +5731,9 @@ func _format_game_date() -> String:
 
 # ── OPENING JOURNAL ENTRY ─────────────────────────────────────────────────────
 func _seed_opening_journal_entry() -> void:
-	print("DEBUG _seed_opening_journal_entry: start")
 	var lib = get_node_or_null("/root/LibraryData")
 	if lib == null:
 		return
-	print("DEBUG _seed_opening_journal_entry: adding journal entry")
 	var body := """[b]July 4, 2026 — Washington, D.C.[/b]
 
 President Ualani Carlisle didn't expect to become the leader of the final free coalition on Earth. She was a senator who became a vice president due to her devastating speeches criticizing the colonist King George III. It was when her president had a complete and unexpected medical event that she was suddenly holding the reins on the executive branch, just weeks from the second British invasion.
