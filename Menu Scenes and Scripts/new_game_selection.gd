@@ -55,14 +55,14 @@ func updateInfoPanel():
 
 var newGameScene = load("res://Game Scenes and Scripts/world.tscn")
 func _on_play_button_pressed() -> void:
-	$ScenePanel.queue_free()
-	$ReturnButton.queue_free()
-	$PlayButton.queue_free()
-	$SelectionPanel.queue_free()
-	$CountryInfoPanel.queue_free()
 	var language: String = settings.get("gameLanguage", "eng")
 	print("new_game_selection: launching game with CID='%s', lang='%s'" % [selectedCountry, language])
 	var newGame = newGameScene.instantiate()
-	add_child(newGame)
+	# Add world to the scene tree root — NOT as a child of this menu scene.
+	# If world were a child of new_game_selection, freeing the menu would also
+	# free the world and all country nodes (including playerCountryNode).
+	get_tree().root.add_child(newGame)
 	newGame.newGameBuild(selectedCountry, language, isCoopMode)
+	# Free the selection menu now that the game is running
+	queue_free()
 	pass # Replace with function body.
