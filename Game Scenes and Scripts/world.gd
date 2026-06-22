@@ -1410,17 +1410,21 @@ var countryNode = load("res://Game Scenes and Scripts/country.tscn")
 
 func spawnNewGameCountries(CID: String) -> void:
 	playerCountry = CID
- 
+	print("spawnNewGameCountries: called with CID='%s'" % CID)
+	print("spawnNewGameCountries: CountryDatabase.loaded=%s, CIDs=%s" % [CountryDatabase.loaded, CountryDatabase.get_all_CIDs()])
+
 	# Spawn all countries defined in countries.csv
 	for countryCID in CountryDatabase.get_all_CIDs():
+		print("spawnNewGameCountries: spawning country '%s'" % countryCID)
 		var newCountry = countryNode.instantiate()
 		newCountry.CID = countryCID
- 
+
 		# Assign player flag
 		if countryCID == playerCountry:
 			newCountry.Player = true
 			playerCountryNode = newCountry
 			newCountry.commanderFallen.connect(_on_commander_fallen)
+			print("spawnNewGameCountries: assigned playerCountryNode for '%s'" % countryCID)
 		elif isCoopMode and ((playerCountry == "USA" and countryCID == "CA") or
 				(playerCountry == "CA" and countryCID == "USA")):
 			newCountry.Player = true
@@ -1428,16 +1432,18 @@ func spawnNewGameCountries(CID: String) -> void:
 			newCountry.commanderFallen.connect(_on_commander_fallen)
 		else:
 			newCountry.Player = false
- 
+
 		# Assign tiles that belong to this country
 		for Tile in $TileController.get_children():
 			if Tile.tileOwner == countryCID:
 				newCountry.OwnedTileList.append(Tile)
- 
+		print("spawnNewGameCountries: '%s' owns %d tiles" % [countryCID, newCountry.OwnedTileList.size()])
+
 		# Build country from CSV data
 		newCountry.NewGameBuild()
 		aliveCountriesList.append(newCountry)
 		$CountryController.add_child(newCountry)
+		print("spawnNewGameCountries: '%s' built and added to scene" % countryCID)
  
 	# Verify player country was found
 	if playerCountryNode == null:
