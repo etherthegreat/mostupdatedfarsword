@@ -23,6 +23,7 @@ ArmyDatabase="*res://army_database.gd"
 EventDatabase="*res://EventDatabase.gd"
 LibraryData="*res://LibraryData.gd"
 RecordsDatabase="*res://RecordsDatabase.gd"
+AudioManager="*res://AudioManager.gd"
 
 [display]
 
