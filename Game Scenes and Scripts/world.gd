@@ -1427,6 +1427,7 @@ func spawnNewGameCountries(CID: String) -> void:
 			newCountry.commanderFallen.connect(_on_commander_fallen)
 		else:
 			newCountry.Player = false
+			newCountry.countryArmyDestroyed.connect(_on_enemy_army_defeated)
 
 		# Assign tiles that belong to this country
 		for Tile in $TileController.get_children():
@@ -5925,6 +5926,15 @@ const _ARCHETYPE_FLAVOR: Dictionary = {
 	"ARC_24": "An organizer who built coalitions the old guard called impossible. They proved them wrong until the last.",
 	"ARC_25": "An orator who treated every battle as a performance. The curtain has fallen.",
 }
+
+func _on_enemy_army_defeated(_lost_army: Army) -> void:
+	if not is_instance_valid(playerCountryNode):
+		return
+	if not playerCountryNode.selectedBeliefs.any(func(b): return b.beliefType == "John Brown"):
+		return
+	playerCountryNode.TotalManpower += 250
+	playerCountryNode.TotalMandatePoints += 25
+
 
 func _on_commander_fallen(commander, army_name: String, tile) -> void:
 	# Priority 1: head of state death → game over (Ualani for USA)

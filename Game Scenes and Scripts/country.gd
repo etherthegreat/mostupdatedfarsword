@@ -616,6 +616,7 @@ func addArmy(Name, TileNumber, icon = null, tags: Array = []):
 	pass
 
 signal commanderFallen(commander, army_name: String, tile)
+signal countryArmyDestroyed(lost_army: Army)
 
 func _on_army_destroyed(army: Army) -> void:
 	if army.commander != null:
@@ -623,6 +624,7 @@ func _on_army_destroyed(army: Army) -> void:
 	countryArmyList.erase(army)
 	if army.inTile != null:
 		army.inTile.stationedArmy = null
+	emit_signal("countryArmyDestroyed", army)
 	army.queue_free()
 
 var factionScene = load("res://faction.tscn")

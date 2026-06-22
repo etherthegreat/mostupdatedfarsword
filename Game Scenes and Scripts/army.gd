@@ -216,8 +216,11 @@ func onTurnEnd():
 	_apply_status_flags()
 	# Reinforce only if not supply-cut or quarantined
 	if not reinforcementBlocked and parentCountry.TotalManpower > 0:
+		var heal_rate: int = parentCountry.armyReinforceRate
+		if parentCountry.selectedBeliefs.any(func(b): return b.beliefType == "Mary Edwards Walker"):
+			heal_rate = int(float(heal_rate) * 1.15)
 		for Unit in unitsList:
-			Unit.refillManpower(parentCountry.armyReinforceRate)
+			Unit.refillManpower(heal_rate)
 	if unit_mods_changed:
 		surveySelf()
 	# Master Baiter: +10% shield recharge per turn
