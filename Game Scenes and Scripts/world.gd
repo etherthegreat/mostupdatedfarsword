@@ -238,10 +238,10 @@ func newGameBuild(CID, gameLang, isCoop: bool = false):
 	for Tile in $TileController.get_children():
 		Tile.discoverTile()
 	#$TileController.discoverTiles(playerCountryNode)
-	worldCreation = false
-	$RightClickDetector.visible = true
 	mapMode = "Polis"
 	displayCorruption = true
+	worldCreation = false
+	$RightClickDetector.visible = true
 	$CanvasLayer/LoadingProgressBar.value = 100
 	$CanvasLayer/LoadingBackground.visible = false
 	$CanvasLayer/LoadingSprite.visible = false
