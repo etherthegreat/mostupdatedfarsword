@@ -56,7 +56,6 @@ func updateInfoPanel():
 var newGameScene = load("res://Game Scenes and Scripts/world.tscn")
 func _on_play_button_pressed() -> void:
 	var language: String = settings.get("gameLanguage", "eng")
-	print("new_game_selection: launching game with CID='%s', lang='%s'" % [selectedCountry, language])
 	var newGame = newGameScene.instantiate()
 	# Add world to the scene tree root — NOT as a child of this menu scene.
 	# If world were a child of new_game_selection, freeing the menu would also
