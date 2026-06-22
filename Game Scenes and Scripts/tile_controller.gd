@@ -61,8 +61,11 @@ func discoverTiles(playerCountry) -> void:
 
 func updateTiles(mapMode, displayCorruption, playerCountry) -> void:
 	for Tile in get_children():
+		print("DEBUG updateTiles: updateGraphics for ", Tile.name)
 		Tile.updateGraphics(mapMode, displayCorruption, playerCountry)
+		print("DEBUG updateTiles: calculateActiveView for ", Tile.name)
 		Tile.calculateActiveView()
+		print("DEBUG updateTiles: done ", Tile.name)
 
 
 func connectEventSignal(tile) -> void:
