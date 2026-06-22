@@ -2,7 +2,11 @@
 
 importer="texture"
 type="CompressedTexture2D"
+<<<<<<< Updated upstream
 uid="uid://21n76m4dnsej"
+=======
+uid="uid://ck62y1irjpi4a"
+>>>>>>> Stashed changes
 path="res://.godot/imported/blue_mountaineer_02.png-7da4680568c526902d8089cc45ba951e.ctex"
 metadata={
 "vram_texture": false

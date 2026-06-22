@@ -63,6 +63,5 @@ func _on_play_button_pressed() -> void:
 	var language = settings.gameLanguage
 	var newGame = newGameScene.instantiate()
 	newGame.newGameBuild(selectedCountry, language, isCoopMode)
-	get_tree().change_scene_to_file(
-		"res://Game Scenes and Scripts/world.tscn")
+	get_tree().root.add_child(newGame)
 	pass # Replace with function body.

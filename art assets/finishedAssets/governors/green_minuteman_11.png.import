@@ -2,7 +2,11 @@
 
 importer="texture"
 type="CompressedTexture2D"
+<<<<<<< Updated upstream
 uid="uid://bjipmp2guq341"
+=======
+uid="uid://bttd16g2bemib"
+>>>>>>> Stashed changes
 path="res://.godot/imported/green_minuteman_11.png-b027af5cc61e51ad39b0c04c50c116df.ctex"
 metadata={
 "vram_texture": false

@@ -2,7 +2,11 @@
 
 importer="texture"
 type="CompressedTexture2D"
+<<<<<<< Updated upstream
 uid="uid://buc0qxjhrtlsu"
+=======
+uid="uid://c33vjhoxmf3mj"
+>>>>>>> Stashed changes
 path="res://.godot/imported/harriet_tubman.png-c153c6e4a31f4a5d4eff0361ae5b16ab.ctex"
 metadata={
 "vram_texture": false
