@@ -1099,20 +1099,12 @@ func updateGraphics(mapMode, displayCorruption, playerCountry):
 		activeView = false
 
 func calculateActiveView():
-	print("DEBUG CAV [%d]: activeView=%s discovered=%s ocean=%s" % [EXPTileNumber, str(activeView), str(discovered), str(ocean)])
-	var fow = get_node_or_null("TileFOW")
-	print("DEBUG CAV [%d]: TileFOW=%s" % [EXPTileNumber, str(fow)])
 	if activeView == true:
-		print("DEBUG CAV [%d]: setting FOW invisible" % EXPTileNumber)
 		$TileFOW.visible = false
 	if activeView == false && discovered == true:
-		print("DEBUG CAV [%d]: setting FOW modulate" % EXPTileNumber)
 		$TileFOW.modulate = Color(0,0,0)
-		print("DEBUG CAV [%d]: setting FOW visible" % EXPTileNumber)
 		$TileFOW.visible = true
-		print("DEBUG CAV [%d]: setting FOW alpha" % EXPTileNumber)
 		$TileFOW.self_modulate.a = .6
-	print("DEBUG CAV [%d]: COMPLETE" % EXPTileNumber)
 
 func polisMode():
 	$TileGraphic.visible = false
