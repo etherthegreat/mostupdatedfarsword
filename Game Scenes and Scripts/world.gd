@@ -1677,12 +1677,13 @@ func retrieveOutputs():
 	pass
 
 func matchCountryBuildings():
-	for country in aliveCountriesList:
-		for Tile in $TileController.get_children():
-			if Tile.tileOwner == playerCountry:
-				for building in Tile.tileBuildingsList:
-					playerCountryNode.connectBuilding(building)
-					#building.towerBuilding.connect(signalTowerInTile)
+	if playerCountryNode == null:
+		push_error("matchCountryBuildings: playerCountryNode is null, skipping")
+		return
+	for Tile in $TileController.get_children():
+		if Tile.tileOwner == playerCountry:
+			for building in Tile.tileBuildingsList:
+				playerCountryNode.connectBuilding(building)
 	pass
 
 func _on_food_area_2d_mouse_entered():
