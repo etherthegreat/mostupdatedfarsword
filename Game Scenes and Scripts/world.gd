@@ -157,19 +157,11 @@ const STATE_FULL_NAMES: Dictionary = {
 	"ME": "District of Maine",
 }
 
-var _process_first_frame: bool = true
 func _process(delta: float) -> void:
 	if worldCreation == true:
 		$CanvasLayer/LoadingSprite.rotation += 1
 		return
-	if _process_first_frame:
-		_process_first_frame = false
-		print("world._process FIRST FRAME: playerCountryNode=", playerCountryNode,
-			"  is_instance_valid=", is_instance_valid(playerCountryNode))
-		if playerCountryNode != null and is_instance_valid(playerCountryNode):
-			print("  CID=", playerCountryNode.CID, "  is_inside_tree=", playerCountryNode.is_inside_tree())
 	if not is_instance_valid(playerCountryNode):
-		push_error("world._process: playerCountryNode is null or freed! (was freed=%s)" % str(playerCountryNode != null))
 		return
 	$"CanvasLayer/Resource Bar (TOP)/container/FoodLabel/Label".text = str(playerCountryNode.TotalFood)
 	$"CanvasLayer/Resource Bar (TOP)/container/GoldLabel/Label".text = str(playerCountryNode.TotalDollars)
@@ -271,8 +263,6 @@ func newGameBuild(CID, gameLang, isCoop: bool = false):
 	_build_turn_order()
 	evaluateDateEvents()
 	_seed_opening_journal_entry()
-	print("newGameBuild COMPLETE: playerCountryNode=", playerCountryNode,
-		"  is_instance_valid=", is_instance_valid(playerCountryNode))
 
 # ── BARRACKS COMMANDER GENERATION ───────────────────────────────────────────
 # Assigns a governor to the faction with the fewest current members.

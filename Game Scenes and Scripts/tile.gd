@@ -374,8 +374,6 @@ func build_self() -> void:
 
 	# Connect tile to its path point on the map
 	tileSpawnPoint = get_node_or_null("../../PathControl/PathPointsControl/" + str(tileNumber))
-
-	print(tileName, " | winter: ", get_winter_category(), " (", winterScore, ")")
 # ============================================================
 # LOAD GAME INITIALIZATION
 # ============================================================
