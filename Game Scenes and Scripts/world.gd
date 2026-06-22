@@ -6371,13 +6371,13 @@ func _library_on_event_fired(event_id: String) -> void:
 		return
 
 	# Gallery unlock — all players reach all scenes; no content gate
-	var content_flag: String = event.get("content_flag", "").strip_edges()
-	if content_flag != "" and content_flag != "false":
+	var content_flag: String = str(event.get("content_flag", "")).strip_edges()
+	if content_flag != "" and content_flag != "false" and content_flag != "null":
 		LibraryData.unlock_gallery(event_id)
 
 	# Journal entry — major Ualani or historical events
 	# event_type values come directly from events.csv
-	var event_type: String = event.get("event_type", "")
+	var event_type: String = str(event.get("event_type", ""))
 	const JOURNAL_TYPES := [
 		"ualani_event",          # Ualani personal arc events
 		"white_house_secret",    # White House holiday intimacy events
