@@ -66,20 +66,26 @@ func build_from_csv(eid: String, tile = null, player = null) -> void:
 
 
 func _build_buttons() -> void:
-	for child in $EventPanel/eventButtons.get_children():
+	var btn_container = get_node_or_null("EventPanel/eventButtons")
+	if btn_container == null:
+		push_error("event_scene: eventButtons node not found!")
+		return
+	for child in btn_container.get_children():
 		child.queue_free()
 
+	print("event_scene._build_buttons: ", button_data.size(), " buttons for event '", event_id, "'")
+	var s = get_node_or_null("/root/Settings")
 	for btn_data in button_data:
 		var prereq = btn_data.get("prerequisite_flag", "")
 		if prereq != "" and not _check_prerequisite(prereq):
 			continue
 
 		var btype: String = btn_data.get("button_type", "standard")
-		if btype == "explicit"    and not Settings.content_explicit:
+		if btype == "explicit"    and (s == null or not s.content_explicit):
 			continue
-		if btype == "kinky_lewd"  and not Settings.content_kinky_lewd:
+		if btype == "kinky_lewd"  and (s == null or not s.content_kinky_lewd):
 			continue
-		if btype == "sensual"     and not Settings.content_sensual:
+		if btype == "sensual"     and (s == null or not s.content_sensual):
 			continue
 
 		var newButton = Button.new()
@@ -92,7 +98,8 @@ func _build_buttons() -> void:
 		newButton.set_meta("outcome_amount", btn_data.get("outcome_amount", 0))
 		newButton.set_meta("next_event_id",  btn_data.get("next_event_id", ""))
 		newButton.pressed.connect(_on_button_pressed.bind(newButton))
-		$EventPanel/eventButtons.add_child(newButton)
+		btn_container.add_child(newButton)
+		print("event_scene: added button '", newButton.text, "' to container")
 
 
 func _on_button_pressed(btn: Button) -> void:

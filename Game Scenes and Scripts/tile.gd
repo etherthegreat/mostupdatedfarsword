@@ -1085,6 +1085,8 @@ func updateGraphics(mapMode, displayCorruption, playerCountry):
 				polisMode()
 			"Natural":
 				naturalMode()
+			_:
+				polisMode()
 		if playerCountry == null:
 			activeView = false
 			return
