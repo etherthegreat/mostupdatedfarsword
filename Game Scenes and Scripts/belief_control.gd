@@ -8,6 +8,7 @@ func buildSelf(playerNode):
 	pendingCost = 0
 	$religionData.buildSelf()
 	player = playerNode
+	print("[BeliefControl.buildSelf] player=", player, " availableDocs=", player.availableDocs.size() if is_instance_valid(player) else "NULL", " availableGods=", player.availableGods.size() if is_instance_valid(player) else "NULL")
 
 var beliefButt = load("res://belief_button.tscn")
 var beliefPD = load("res://purchased_doctrine.tscn")
@@ -15,6 +16,7 @@ func updateSelf():
 	if not is_instance_valid(player):
 		push_warning("BeliefControl.updateSelf: player not set yet")
 		return
+	print("[BeliefControl.updateSelf] availableDocs=", player.availableDocs, " availableGods.size=", player.availableGods.size())
 	$BeliefPanel/PurchasePanel.visible = false
 	pendingBelief = ""
 	pendingCost = 0
