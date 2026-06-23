@@ -440,7 +440,7 @@ EVENTS = [
     ("Protector","Minuteman","PROT_16_TAME",
      "THE MINUTEMAN ACKNOWLEDGES CONTINENTAL FORCES — LEXINGTON GREEN ACCESS RESTORED",
      "Branch","PROT_16_SUMMON","→ PROT_16_AGREE (next_event_id)",
-     "FIRST PASS","","Not Started","NO","","0",
+     "FULL COMPLETION","","Not Started","NO","","0",
      "Sets prot_16_tame flag; immediately chains to AGREE"),
     ("Protector","Minuteman","PROT_16_AGREE",
      "THE MINUTEMAN FORMALLY DECLARES FOR THE CONTINENTAL REPUBLIC",
