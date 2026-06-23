@@ -41,6 +41,7 @@ func _on_close_spellbook_pressed() -> void:
 
 signal beliefUpdate
 func _on_belief_panel_button_pressed() -> void:
+	$BeliefControl.buildSelf(playerNode)
 	$BeliefControl.updateSelf()
 	if $BeliefControl.visible == true:
 		$BeliefControl.visible = false
@@ -61,6 +62,7 @@ func _on_factions_button_pressed() -> void:
 
 
 func _on_laws_button_pressed() -> void:
+	$GovernmentControl.buildSelf(playerNode)
 	$GovernmentControl.updateGovernmentPanel()
 	if $GovernmentControl.visible == true:
 		$GovernmentControl.visible = false
