@@ -122,6 +122,8 @@ func updateSelf():
 				newBB.buildSelf("John Brown", $religionData.johnBrownIcon, $religionData.johnBrownBWIcon, false, 200, "He went to Harpers Ferry with 21 men and a plan that required thousands to join him. None did. He held the armory for 36 hours before U.S. Marines broke through. Two months later he was hanged — and the war he predicted started without him. Every time an enemy army falls, his memory bursts through: +250 Manpower, +25 Mandate.", $religionData.border2)
 			"Mary Edwards Walker":
 				newBB.buildSelf("Mary Edwards Walker", $religionData.maryEdwardsWalkerIcon, $religionData.maryEdwardsWalkerBWIcon, false, 180, "The only woman to receive the Medal of Honor for Civil War service. She worked as a battlefield surgeon, crossed enemy lines to treat civilians, was captured as a spy, and wore her medal until the day she died — despite the Army's attempt to revoke it in 1917. Under her patronage, all units recover 15% more manpower through healing each turn.", $religionData.border4)
+			"Mark Twain":
+				newBB.buildSelf("Mark Twain", $religionData.markTwainIcon, $religionData.markTwainBWIcon, false, 150, "The most celebrated American writer of the nineteenth century, who put a slave's humanity on the page when most of his contemporaries wouldn't acknowledge it. Twain's patronage rewards Libraries and the particular American tradition of speaking uncomfortable truth through laughter — your nation's cultural output increases, and dissent finds an audience.", $religionData.border3)
 			# ── Canadian Icons ───────────────────────────────────────────────────
 			"John A. Macdonald":
 				newBB.buildSelf("John A. Macdonald", $religionData.macdonaldIcon, $religionData.macdonaldBWIcon, false, 200, "The Father of Confederation and first Prime Minister of Canada. Built the Republic through coalition, compromise, and the transcontinental railway.", $religionData.border2)
@@ -275,6 +277,8 @@ func buildPD(type):
 			newPD.buildSelf("John Brown", $religionData.johnBrownIcon, "He miscalculated the uprising but not the war. When an enemy army is destroyed: +250 Manpower, +25 Mandate.", false, $religionData.border2)
 		"Mary Edwards Walker":
 			newPD.buildSelf("Mary Edwards Walker", $religionData.maryEdwardsWalkerIcon, "Only woman to receive the Medal of Honor. All units heal +15% more manpower per turn.", false, $religionData.border4)
+		"Mark Twain":
+			newPD.buildSelf("Mark Twain", $religionData.markTwainIcon, "The most celebrated American writer of the nineteenth century. Libraries and cultural output increase; the tradition of uncomfortable truth pays dividends.", false, $religionData.border3)
 		# ── Canadian Icons ───────────────────────────────────────────────────────
 		"John A. Macdonald":
 			newPD.buildSelf("John A. Macdonald", $religionData.macdonaldIcon, "Father of Confederation and first Prime Minister of Canada. Built the Republic through coalition, compromise, and the transcontinental railway.", false, $religionData.border2)
