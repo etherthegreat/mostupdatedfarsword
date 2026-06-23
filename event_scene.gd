@@ -1,5 +1,7 @@
 extends Control
 
+const EventButtonScene = preload("res://event_button.tscn")
+
 var event_id: String
 var event_type: String
 var event_country: String
@@ -86,37 +88,24 @@ func _build_buttons() -> void:
 			continue
 		if btype == "sensual"     and not Settings.content_sensual:
 			continue
-		#if btype == "explicit"    and not Settings.content_explicit:
-			#continue
-		#if btype == "kinky_lewd"  and not Settings.content_kinky_lewd:
-			#continue
-		#if btype == "sensual"     and not Settings.content_sensual:
-		continue
 
-		var newButton = Button.new()
-		newButton.text = btn_data.get("button_text", "Choose")
-		newButton.name = btn_data.get("button_id", "btn")
-		newButton.set_meta("button_id",      btn_data.get("button_id", ""))
-		newButton.set_meta("button_type",    btn_data.get("button_type", "standard"))
-		newButton.set_meta("outcome_type",   btn_data.get("outcome_type", ""))
-		newButton.set_meta("outcome_value",  btn_data.get("outcome_value", ""))
-		newButton.set_meta("outcome_amount", btn_data.get("outcome_amount", 0))
-		newButton.set_meta("next_event_id",  btn_data.get("next_event_id", ""))
-		newButton.pressed.connect(_on_button_pressed.bind(newButton))
-		btn_container.add_child(newButton)
-		print("event_scene: added button '", newButton.text, "' to container")
+		var btn_node = EventButtonScene.instantiate()
+		btn_node.setup(btn_data)
+		btn_node.button_chosen.connect(_on_event_button_chosen)
+		btn_container.add_child(btn_node)
+		print("event_scene: added button '", btn_data.get("button_text", ""), "'")
 
 
-func _on_button_pressed(btn: Button) -> void:
+func _on_event_button_chosen(btn_data: Dictionary) -> void:
+	var btype: String = btn_data.get("button_type", "standard")
 	_pending = {
-		"button_id":      btn.get_meta("button_id"),
-		"button_type":    btn.get_meta("button_type", "standard"),
-		"outcome_type":   btn.get_meta("outcome_type"),
-		"outcome_value":  btn.get_meta("outcome_value"),
-		"outcome_amount": btn.get_meta("outcome_amount"),
-		"next_event_id":  btn.get_meta("next_event_id"),
+		"button_id":      btn_data.get("button_id", ""),
+		"button_type":    btype,
+		"outcome_type":   btn_data.get("outcome_type", ""),
+		"outcome_value":  btn_data.get("outcome_value", ""),
+		"outcome_amount": btn_data.get("outcome_amount", 0),
+		"next_event_id":  btn_data.get("next_event_id", ""),
 	}
-	var btype: String = _pending["button_type"]
 	if btype in ["explicit", "kinky_lewd", "sensual"]:
 		_show_scene_nav()
 	else:
