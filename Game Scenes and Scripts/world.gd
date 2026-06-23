@@ -240,10 +240,6 @@ func newGameBuild(CID, gameLang, isCoop: bool = false):
 	#$TileController.discoverTiles(playerCountryNode)
 	mapMode = "Polis"
 	displayCorruption = true
-	# Diagnostic: confirm tile state before first render
-	for Tile in $TileController.get_children():
-		if Tile.tileNumber <= 3:
-			print("[TILE DIAG] Tile", Tile.tileNumber, " owner=", Tile.tileOwner, " discovered=", Tile.discovered)
 	worldCreation = false
 	$RightClickDetector.visible = true
 	$CanvasLayer/LoadingProgressBar.value = 100

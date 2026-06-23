@@ -321,6 +321,11 @@ func onNewGame():
 	discovered = false
 	undiscovered = true
 	activeView = false
+	# Ensure correct draw order: TileFOW(0) < TileGraphic(2) < Ring(5)
+	var fow_node  = get_node_or_null("TileFOW")
+	var gfx_node  = get_node_or_null("TileGraphic")
+	if fow_node  != null: fow_node.z_index  = 0
+	if gfx_node  != null: gfx_node.z_index  = 2
 	for NodePath in TileNeighborsEXP:
 		var nb = get_node_or_null(NodePath)
 		if nb != null:
