@@ -261,6 +261,7 @@ func newGameBuild(CID, gameLang, isCoop: bool = false):
 	$CanvasLayer/WarRoomPanel.setupAllProtectors($TileController.get_children(), coop_country_id)
 	_assign_vice_president()
 	_build_turn_order()
+	_activate_player(playerCountry)
 	evaluateDateEvents()
 	_seed_opening_journal_entry()
 
