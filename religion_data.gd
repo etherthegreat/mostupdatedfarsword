@@ -48,8 +48,8 @@ var templeHeightLawsIconBW: Texture = load("res://art assets/finishedAssets/reli
 
 # American Icons — placeholder art reusing existing textures until portraits are commissioned
 # Founding Era (tier 1)
-var washingtonIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1156.JPG")
-var washingtonBWIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1156 - Copy.JPG")
+var washingtonIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/george_washington.png")
+var washingtonBWIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/george_washington_bw.png")
 var franklinIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/benjamin_franklin.png")
 var franklinBWIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/benjamin_franklin_bw.png")
 var abigailAdamsIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1158.JPG")
@@ -61,8 +61,8 @@ var phillisWheatleyBWIcon: Texture = load("res://art assets/finishedAssets/relig
 var jeffersonIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1161.JPG")
 var jeffersonBWIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1161 - Copy.JPG")
 # 1800s (tier 2)
-var lincolnIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1194.PNG")
-var lincolnBWIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1755.PNG")
+var lincolnIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/abraham_lincoln.png")
+var lincolnBWIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/abraham_lincoln_bw.png")
 var tubmanIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1199.PNG")
 var tubmanBWIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1199 - Copy.PNG")
 var douglassIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/frederick_douglass.png")
