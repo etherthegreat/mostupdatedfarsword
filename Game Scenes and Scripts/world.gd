@@ -262,7 +262,6 @@ func newGameBuild(CID, gameLang, isCoop: bool = false):
 	_assign_vice_president()
 	_build_turn_order()
 	_activate_player(playerCountry)
-	print("[newGameBuild END] playerCountry=", playerCountry, " playerCountryNode=", playerCountryNode, " valid=", is_instance_valid(playerCountryNode))
 	evaluateDateEvents()
 	_seed_opening_journal_entry()
 
@@ -5701,7 +5700,6 @@ func _trigger_game_over(won: bool, reason: String = "", end_type: String = "") -
 func _on_next_turn_pressed() -> void:
 	if _game_ended:
 		return
-	print("[NextTurn] playerCountry=", playerCountry, " playerCountryNode=", playerCountryNode, " valid=", is_instance_valid(playerCountryNode), " aliveList.size=", aliveCountriesList.size())
 	#AudioManager.play_sfx("end_turn")
 	# End this player's individual turn
 	_end_current_player_turn()

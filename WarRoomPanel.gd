@@ -674,7 +674,7 @@ func _evaluate_protector_prayer(prayer: Dictionary,
 			if playerCountryNode == null:
 				return false
 			for tile in playerCountryNode.OwnedTileList:
-				if tile.get("dmaInvestigationPending", false):
+				if tile.dmaInvestigationPending:
 					return true
 			return false
 
