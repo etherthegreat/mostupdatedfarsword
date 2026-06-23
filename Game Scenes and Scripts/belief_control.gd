@@ -1,18 +1,20 @@
 extends Control
 
 
-var player = country
+var player: country = null
 
 func buildSelf(playerNode):
 	pendingBelief = ""
 	pendingCost = 0
 	$religionData.buildSelf()
 	player = playerNode
-	pass
 
 var beliefButt = load("res://belief_button.tscn")
 var beliefPD = load("res://purchased_doctrine.tscn")
 func updateSelf():
+	if not is_instance_valid(player):
+		push_warning("BeliefControl.updateSelf: player not set yet")
+		return
 	$BeliefPanel/PurchasePanel.visible = false
 	pendingBelief = ""
 	pendingCost = 0
@@ -368,6 +370,8 @@ func _on_belief_button_mouse_exited() -> void:
 	pass # Replace with function body.
 
 func _process(delta: float) -> void:
+	if not is_instance_valid(player):
+		return
 	for beliefButton in $BeliefPanel/DoctrineScrollContainer/DoctrineContainer.get_children():
 		if beliefButton.bbPurchased != true:
 			if beliefButton.bbCost <= player.TotalCulture:

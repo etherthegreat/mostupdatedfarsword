@@ -21,6 +21,9 @@ func buildSelf(homeCountry):
 var lawScene = preload("res://law.tscn")
 
 func updateGovernmentPanel():
+	if not is_instance_valid(playerNode):
+		push_warning("GovernmentControl.updateGovernmentPanel: playerNode not set yet")
+		return
 	implementedLaws.clear()
 	possibleLaws.clear()
 	for law in playerNode.lawsInConstitution:
