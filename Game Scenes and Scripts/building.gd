@@ -2036,9 +2036,6 @@ func _apply_belief_bonuses(bType: String) -> void:
 					mandatePerLevel += 1
 					mandateDic["Icon: Pierre Elliott Trudeau"] = (1 * buildingLevel)
 
-var dollarsTax: float
-var happinessTax: float
-
 func calculateOutputs(playerCountryNode):
 	foodPerLevel = 0
 	woodPerLevel = 0
@@ -2129,55 +2126,6 @@ func calculateOutputs(playerCountryNode):
 	if corruptionLossPerLevel != 0 or corruptionGainPerLevel != 0:
 		corruptionChange = corruptionGainPerLevel - corruptionLossPerLevel
 	_apply_abnormal_modifiers()
-	match buildingType:
-		"Farm":
-			dollarsTax = (totalBuildingFood * (playerCountry.setFarmTaxAmount * .01))
-			happinessTax = (totalBuildingFood * (playerCountry.setFarmTaxAmount * .02))
-		"Camp":
-			dollarsTax = (totalBuildingWood * (playerCountry.setCampTaxAmount * .01))
-			happinessTax = (totalBuildingWood * (playerCountry.setCampTaxAmount * .02))
-		"Mine":
-			dollarsTax = (totalBuildingMetal * (playerCountry.setMineTaxAmount * .01))
-			happinessTax = (totalBuildingMetal * (playerCountry.setMineTaxAmount * .02))
-		"Library":
-			dollarsTax = (totalBuildingScience * (playerCountry.setLibraryTaxAmount * .01))
-			happinessTax = (totalBuildingScience * (playerCountry.setLibraryTaxAmount * .02))
-		"Temple", "Monument":
-			# Both Temple and Monument generate Culture; taxed the same way
-			dollarsTax = (totalBuildingCulture * (playerCountry.setTempleTaxAmount * .01))
-			happinessTax = (totalBuildingCulture * (playerCountry.setTempleTaxAmount * .02))
-		"Tower":
-			dollarsTax = (totalBuildingMagic * (playerCountry.setTowerTaxAmount * .01))
-			happinessTax = (totalBuildingMagic * (playerCountry.setTowerTaxAmount * .02))
-		"Forge":
-			dollarsTax = (totalBuildingWeapons * (playerCountry.setForgeTaxAmount * .01))
-			happinessTax = (totalBuildingWeapons * (playerCountry.setForgeTaxAmount * .02))
-		"Workshop", "Market":
-			# Both Workshop and Market generate Dollars; taxed the same way
-			dollarsTax = (totalBuildingDollars * (playerCountry.setWorkshopTaxAmount * .01))
-			happinessTax = (totalBuildingDollars * (playerCountry.setWorkshopTaxAmount * .02))
-		"Bath", "Resort":
-			# Both Bath and Resort affect Happiness/corruption
-			dollarsTax = (corruptionLossPerLevel * (playerCountry.setBathTaxAmount * .01))
-			happinessTax = (corruptionLossPerLevel * (playerCountry.setBathTaxAmount * .02))
-		"Dock":
-			# Dock tax exempt — food/gold output taxed as trade income via flat exemption
-			dollarsTax = 0
-			happinessTax = 0
-		"Fortress":
-			# Fortress adds defensiveness — no resource tax
-			dollarsTax = 0
-			happinessTax = 0
-		"Courthouse":
-			# Courthouse produces Mandate — taxed at the Temple/culture rate
-			dollarsTax = (totalBuildingMandate * (playerCountry.setTempleTaxAmount * .01))
-			happinessTax = (totalBuildingMandate * (playerCountry.setTempleTaxAmount * .02))
-		"Granary", "Barracks":
-			# Granary provides food storage; Barracks provides manpower — no resource tax
-			dollarsTax = 0
-			happinessTax = 0
-	totalBuildingDollars += dollarsTax
-	totalBuildingHappiness -= happinessTax
 	#print("totalBuildingMagic", totalBuildingMagic)
 	pass
 

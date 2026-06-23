@@ -284,8 +284,6 @@ var buildingScene = load("res://Game Scenes and Scripts/building.tscn")
 var spellToCast: spell
 var spellCostToCast: int
 
-var tileDollarsTax: float
-var tileHappinessTax: float
 var tileFoodDic:      Dictionary = {}
 var tileDollarsDic:   Dictionary = {}
 var tileWoodDic:      Dictionary = {}
@@ -589,8 +587,6 @@ func censusTile(playerCountryNode):
 	buildingHappinessOutput = 0
 	buildingCultureOutput = 0
 	corruptionChange = 0
-	tileDollarsTax = 0
-	tileHappinessTax = 0
 	for building in tileBuildingsList:
 		if not building.enabled:
 			continue
@@ -609,8 +605,6 @@ func censusTile(playerCountryNode):
 		buildingManpowerOutput += building.totalBuildingManpower
 		buildingInfluenceOutput += building.totalBuildingInfluence
 		corruptionChange += building.corruptionChange
-		tileDollarsTax += building.dollarsTax
-		tileHappinessTax += building.happinessTax
 	# Mysterious Ship Raids: -2 dollars per active building per turn
 	if hasMysteriousShipRaids:
 		var active_count: int = 0
@@ -673,8 +667,6 @@ func surveyTile(playerCountryNode):
 	buildingHappinessOutput = 0
 	buildingCultureOutput = 0
 	corruptionChange = 0
-	tileDollarsTax = 0
-	tileHappinessTax = 0
 	for building in tileBuildingsList:
 		if not building.enabled:
 			continue
@@ -693,8 +685,6 @@ func surveyTile(playerCountryNode):
 		buildingManpowerOutput += building.totalBuildingManpower
 		buildingInfluenceOutput += building.totalBuildingInfluence
 		corruptionChange += building.corruptionChange
-		tileDollarsTax += building.dollarsTax
-		tileHappinessTax += building.happinessTax
 		match building.buildingType:
 			"Farm":
 				farmGovernorReq = building.buildingLevel >= 3
