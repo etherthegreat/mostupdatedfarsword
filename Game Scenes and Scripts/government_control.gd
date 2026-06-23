@@ -24,7 +24,6 @@ func updateGovernmentPanel():
 	if not is_instance_valid(playerNode):
 		push_warning("GovernmentControl.updateGovernmentPanel: playerNode not set yet")
 		return
-	print("[GovControl.updateGovernmentPanel] unlockedLaws=", playerNode.unlockedLaws.size(), " lawsInConstitution=", playerNode.lawsInConstitution.size())
 	implementedLaws.clear()
 	possibleLaws.clear()
 	for law in playerNode.lawsInConstitution:
