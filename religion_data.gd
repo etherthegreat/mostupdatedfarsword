@@ -73,6 +73,8 @@ var sojournerTruthIcon: Texture = load("res://art assets/finishedAssets/religiou
 var sojournerTruthBWIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/sojourner_truth_bw.png")
 var markTwainIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/mark_twain.png")
 var markTwainBWIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/mark_twain_bw.png")
+var malcolmXIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/malcolm_x.png")
+var malcolmXBWIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/malcolm_x_bw.png")
 var chiefJosephIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1157.JPG")
 var chiefJosephBWIcon: Texture = load("res://art assets/finishedAssets/religiousIcons/IMG_1157 - Copy.JPG")
 # 20th Century (tier 2)
@@ -153,7 +155,7 @@ func buildSelf():
 	PDTDoc1 = ["Defense Production Act"]
 	genericGods1 = ["George Washington", "Benjamin Franklin", "Abigail Adams", "Alexander Hamilton", "Phillis Wheatley", "Thomas Jefferson"]
 	genericDoc2 = ["Inland Maritime Expertise", "First Amendment", "National Research Act", "Height of Buildings Act"]
-	genericGods2 = ["Abraham Lincoln", "Harriet Tubman", "Frederick Douglass", "Sitting Bull", "Sojourner Truth", "Chief Joseph", "Theodore Roosevelt", "Susan B. Anthony", "Ida B. Wells", "Eleanor Roosevelt", "Martin Luther King Jr.", "Cesar Chavez", "Jimmy Carter", "Dolores Huerta", "John Brown", "Mary Edwards Walker", "Mark Twain"]
+	genericGods2 = ["Abraham Lincoln", "Harriet Tubman", "Frederick Douglass", "Sitting Bull", "Sojourner Truth", "Chief Joseph", "Theodore Roosevelt", "Susan B. Anthony", "Ida B. Wells", "Eleanor Roosevelt", "Martin Luther King Jr.", "Cesar Chavez", "Jimmy Carter", "Dolores Huerta", "John Brown", "Mary Edwards Walker", "Mark Twain", "Malcolm X"]
 	CADoc1 = ["Nature Conservationists", "Canada Council for the Arts Act", "Republic Lands Act", "Historic Sites and Monuments Act", "Combines Investigation Act", "Canada Health Act"]
 	CADoc2 = ["National Parks Act", "Charter of Rights and Freedoms", "Medical Research Council Act", "National Building Code of Canada"]
 	CADocSpecial = ["War Measures Act"]

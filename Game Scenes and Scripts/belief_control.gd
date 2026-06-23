@@ -124,6 +124,8 @@ func updateSelf():
 				newBB.buildSelf("Mary Edwards Walker", $religionData.maryEdwardsWalkerIcon, $religionData.maryEdwardsWalkerBWIcon, false, 180, "The only woman to receive the Medal of Honor for Civil War service. She worked as a battlefield surgeon, crossed enemy lines to treat civilians, was captured as a spy, and wore her medal until the day she died — despite the Army's attempt to revoke it in 1917. Under her patronage, all units recover 15% more manpower through healing each turn.", $religionData.border4)
 			"Mark Twain":
 				newBB.buildSelf("Mark Twain", $religionData.markTwainIcon, $religionData.markTwainBWIcon, false, 150, "The most celebrated American writer of the nineteenth century, who put a slave's humanity on the page when most of his contemporaries wouldn't acknowledge it. Twain's patronage rewards Libraries and the particular American tradition of speaking uncomfortable truth through laughter — your nation's cultural output increases, and dissent finds an audience.", $religionData.border3)
+			"Malcolm X":
+				newBB.buildSelf("Malcolm X", $religionData.malcolmXIcon, $religionData.malcolmXBWIcon, false, 175, "Minister, organizer, and the most uncompromising voice of the Black freedom struggle — who insisted that dignity was not a negotiating position. Malcolm's patronage rewards self-determination: communities under his protection develop faster, resist foreign influence more effectively, and your nation's internal security apparatus gains significant loyalty bonuses.", $religionData.border4)
 			# ── Canadian Icons ───────────────────────────────────────────────────
 			"John A. Macdonald":
 				newBB.buildSelf("John A. Macdonald", $religionData.macdonaldIcon, $religionData.macdonaldBWIcon, false, 200, "The Father of Confederation and first Prime Minister of Canada. Built the Republic through coalition, compromise, and the transcontinental railway.", $religionData.border2)
@@ -279,6 +281,8 @@ func buildPD(type):
 			newPD.buildSelf("Mary Edwards Walker", $religionData.maryEdwardsWalkerIcon, "Only woman to receive the Medal of Honor. All units heal +15% more manpower per turn.", false, $religionData.border4)
 		"Mark Twain":
 			newPD.buildSelf("Mark Twain", $religionData.markTwainIcon, "The most celebrated American writer of the nineteenth century. Libraries and cultural output increase; the tradition of uncomfortable truth pays dividends.", false, $religionData.border3)
+		"Malcolm X":
+			newPD.buildSelf("Malcolm X", $religionData.malcolmXIcon, "Minister and organizer of the Black freedom struggle. Communities develop faster, resist foreign influence, and internal loyalty improves.", false, $religionData.border4)
 		# ── Canadian Icons ───────────────────────────────────────────────────────
 		"John A. Macdonald":
 			newPD.buildSelf("John A. Macdonald", $religionData.macdonaldIcon, "Father of Confederation and first Prime Minister of Canada. Built the Republic through coalition, compromise, and the transcontinental railway.", false, $religionData.border2)
