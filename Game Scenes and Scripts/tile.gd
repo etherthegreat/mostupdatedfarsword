@@ -1116,48 +1116,41 @@ func calculateActiveView():
 		fow.self_modulate.a = .6
 
 func polisMode():
-	var gfx: Node = get_node_or_null("TileGraphic")
+	var gfx:  Node = get_node_or_null("TileGraphic")
+	var ring: Node = get_node_or_null("Ring")
 	if gfx == null:
 		return
-	gfx.visible = false
-	gfx.modulate = Color(1,1,1)
+	# Default: show terrain naturally, Ring white
+	gfx.visible = true
+	gfx.modulate = Color(1, 1, 1)
+	if ring != null:
+		ring.modulate = Color(1, 1, 1)
+	# Country colour applied to both graphic and Ring (z=5)
+	var country_color: Color
 	match tileOwner:
-		"USA":
-			gfx.modulate = Color(0.18, 0.31, 0.65)  # American blue
-			gfx.visible = true
-		"UK":
-			gfx.modulate = Color(0.7, 0.0, 0.1)     # British red
-			gfx.visible = true
-		"CA":
-			gfx.modulate = Color(0.9, 0.15, 0.15)   # Canadian red
-			gfx.visible = true
-		"BA":
-			gfx.modulate = Color(0.0, 0.5, 0.3)     # Bahamian teal
-			gfx.visible = true
-		# Legacy Farsword factions kept in case tiles still reference them
-		"PDT":
-			gfx.modulate = Color(0,1,0)
-			gfx.visible = true
-		"ANL":
-			gfx.modulate = Color(0,0,1)
-			gfx.visible = true
-		"EIG":
-			gfx.modulate = Color(1, 0.078431375, 0.5764706)
-			gfx.visible = true
-		"VTO":
-			gfx.modulate = Color(1, 0.54901963, 0)
-			gfx.visible = true
-		"DUM":
-			gfx.modulate = Color(0.9,1,0.5)
-			gfx.visible = true
+		"USA": country_color = Color(0.35, 0.55, 1.0)    # bright American blue
+		"UK":  country_color = Color(0.9,  0.1,  0.2)    # bright British red
+		"CA":  country_color = Color(1.0,  0.25, 0.25)   # bright Canadian red
+		"BA":  country_color = Color(0.1,  0.8,  0.5)    # bright Bahamian teal
+		# Legacy factions
+		"PDT": country_color = Color(0.2, 1.0, 0.3)
+		"ANL": country_color = Color(0.3, 0.4, 1.0)
+		"EIG": country_color = Color(1.0, 0.2, 0.6)
+		"VTO": country_color = Color(1.0, 0.6, 0.1)
+		"DUM": country_color = Color(0.9, 1.0, 0.5)
+		_:
+			return   # Neutral or unknown — leave white
+	gfx.modulate  = country_color
+	if ring != null:
+		ring.modulate = country_color
 
 func naturalMode():
-	var gfx: Node = get_node_or_null("TileGraphic")
-	var fow: Node = get_node_or_null("TileFOW")
-	if gfx != null:
-		gfx.modulate = Color(1,1,1)
-	if fow != null:
-		fow.self_modulate.a = 0.0
+	var gfx:  Node = get_node_or_null("TileGraphic")
+	var fow:  Node = get_node_or_null("TileFOW")
+	var ring: Node = get_node_or_null("Ring")
+	if gfx  != null: gfx.modulate  = Color(1, 1, 1)
+	if fow  != null: fow.self_modulate.a = 0.0
+	if ring != null: ring.modulate  = Color(1, 1, 1)
 
 
 # ============================================================
