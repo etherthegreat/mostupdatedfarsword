@@ -240,6 +240,10 @@ func newGameBuild(CID, gameLang, isCoop: bool = false):
 	#$TileController.discoverTiles(playerCountryNode)
 	mapMode = "Polis"
 	displayCorruption = true
+	# Diagnostic: confirm tile state before first render
+	for Tile in $TileController.get_children():
+		if Tile.tileNumber <= 3:
+			print("[TILE DIAG] Tile", Tile.tileNumber, " owner=", Tile.tileOwner, " discovered=", Tile.discovered)
 	worldCreation = false
 	$RightClickDetector.visible = true
 	$CanvasLayer/LoadingProgressBar.value = 100
@@ -1586,30 +1590,47 @@ func switchActivePlayer() -> void:
 
 func updatePlayerUI():
 	$CanvasLayer.assignPlayerNode(playerCountryNode)
-	$CanvasLayer/TileInfoPanel.selectThisTile.connect(assignSelectedTile)
-	$CanvasLayer/TileInfoPanel.governorButtonPressed.connect(openGovernorsPanel)
-	$CanvasLayer/TileInfoPanel.confirmThisGovernor.connect(assignGovernor)
+	if not $CanvasLayer/TileInfoPanel.selectThisTile.is_connected(assignSelectedTile):
+		$CanvasLayer/TileInfoPanel.selectThisTile.connect(assignSelectedTile)
+	if not $CanvasLayer/TileInfoPanel.governorButtonPressed.is_connected(openGovernorsPanel):
+		$CanvasLayer/TileInfoPanel.governorButtonPressed.connect(openGovernorsPanel)
+	if not $CanvasLayer/TileInfoPanel.confirmThisGovernor.is_connected(assignGovernor):
+		$CanvasLayer/TileInfoPanel.confirmThisGovernor.connect(assignGovernor)
 	$CanvasLayer/TechTree.buildSelf(playerCountryNode)
-	$CanvasLayer/TechTree.addTechToPlayer.connect(newPlayerTech)
+	if not $CanvasLayer/TechTree.addTechToPlayer.is_connected(newPlayerTech):
+		$CanvasLayer/TechTree.addTechToPlayer.connect(newPlayerTech)
 	$CanvasLayer/BeliefControl.buildSelf(playerCountryNode)
 	$CanvasLayer/BuildingInfoPanel/buildingPanelPanel.player = playerCountryNode
-	$PathControl.activateArmyControlMode.connect(activateArmyControl)
+	if not $PathControl.activateArmyControlMode.is_connected(activateArmyControl):
+		$PathControl.activateArmyControlMode.connect(activateArmyControl)
 	$PathControl.connectPathPoints(playerCountryNode)
-	$PathControl.updateArmy.connect(updateArmyFunc)
-	$PathControl.updatePathPoints.connect(updatePathPointsFunc)
-	$PathControl.updateCivilian.connect(updateCivFunc)
-	$PathControl.tileDevelopment.connect(newTileDevelopment)
-	$PathControl.meleeButtonPressed.connect(meleePressed)
-	$PathControl.rangedButtonPressed.connect(rangedPressed)
+	if not $PathControl.updateArmy.is_connected(updateArmyFunc):
+		$PathControl.updateArmy.connect(updateArmyFunc)
+	if not $PathControl.updatePathPoints.is_connected(updatePathPointsFunc):
+		$PathControl.updatePathPoints.connect(updatePathPointsFunc)
+	if not $PathControl.updateCivilian.is_connected(updateCivFunc):
+		$PathControl.updateCivilian.connect(updateCivFunc)
+	if not $PathControl.tileDevelopment.is_connected(newTileDevelopment):
+		$PathControl.tileDevelopment.connect(newTileDevelopment)
+	if not $PathControl.meleeButtonPressed.is_connected(meleePressed):
+		$PathControl.meleeButtonPressed.connect(meleePressed)
+	if not $PathControl.rangedButtonPressed.is_connected(rangedPressed):
+		$PathControl.rangedButtonPressed.connect(rangedPressed)
 	$CanvasLayer/CivilianControl.loadCivilians(playerCountryNode, playerCountryNode.OwnedTileList)
-	$CanvasLayer/CivilianControl.raiseThisUnit.connect(raiseCivilianUnit)
+	if not $CanvasLayer/CivilianControl.raiseThisUnit.is_connected(raiseCivilianUnit):
+		$CanvasLayer/CivilianControl.raiseThisUnit.connect(raiseCivilianUnit)
 	$CanvasLayer/MilitaryPanelControl.buildSelf(playerCountryNode)
-	$CanvasLayer/MilitaryPanelControl.newArmySignal.connect(buildNewPlayerArmy)
-	playerCountryNode.displayCommander.connect(UICommander)
-	playerCountryNode.checkingOutput.connect(returnOutput)
+	if not $CanvasLayer/MilitaryPanelControl.newArmySignal.is_connected(buildNewPlayerArmy):
+		$CanvasLayer/MilitaryPanelControl.newArmySignal.connect(buildNewPlayerArmy)
+	if not playerCountryNode.displayCommander.is_connected(UICommander):
+		playerCountryNode.displayCommander.connect(UICommander)
+	if not playerCountryNode.checkingOutput.is_connected(returnOutput):
+		playerCountryNode.checkingOutput.connect(returnOutput)
 	$CanvasLayer/GovernmentControl.buildSelf(playerCountryNode)
-	$CanvasLayer/GovernmentControl.addToConstitution.connect(addLawToCountry)
-	$CanvasLayer/FactionControl.newRewardSend.connect(addNewRewards)
+	if not $CanvasLayer/GovernmentControl.addToConstitution.is_connected(addLawToCountry):
+		$CanvasLayer/GovernmentControl.addToConstitution.connect(addLawToCountry)
+	if not $CanvasLayer/FactionControl.newRewardSend.is_connected(addNewRewards):
+		$CanvasLayer/FactionControl.newRewardSend.connect(addNewRewards)
 	for faction in playerCountryNode.countryFactionList:
 			$CanvasLayer/FactionControl.addFaction(
 				faction.factionName,
@@ -1617,25 +1638,29 @@ func updatePlayerUI():
 				faction.factionLeader
 			)
 	$CanvasLayer/SpellSchoolsControl.connectSchools()
-	$CanvasLayer/SpellSchoolsControl.lvlUpSpell.connect(newSpellEvent)
+	if not $CanvasLayer/SpellSchoolsControl.lvlUpSpell.is_connected(newSpellEvent):
+		$CanvasLayer/SpellSchoolsControl.lvlUpSpell.connect(newSpellEvent)
 	#$CanvasLayer/SpellSchoolsControl.askForInfo.connect(giveSpellInfo)
-	$CanvasLayer/Spellbook.spellToUse.connect(activateSpellMapMode)
-	$TileController.spellAssignedToTile.connect(spellPurchased)
+	if not $CanvasLayer/Spellbook.spellToUse.is_connected(activateSpellMapMode):
+		$CanvasLayer/Spellbook.spellToUse.connect(activateSpellMapMode)
+	if not $TileController.spellAssignedToTile.is_connected(spellPurchased):
+		$TileController.spellAssignedToTile.connect(spellPurchased)
 	#$TileController.colonizeTile.connect(updateCountryTiles)
-	$TileController.newTileOwner.connect(tileSiegeWon)
+	if not $TileController.newTileOwner.is_connected(tileSiegeWon):
+		$TileController.newTileOwner.connect(tileSiegeWon)
 	$PathControl.call_deferred("showPathPoints", playerCapitalPathButton)
 	$CanvasLayer/BuildingInfoPanel.buildSelf(playerCountryNode)
-	$CanvasLayer/BuildingInfoPanel.newBuildingInTile.connect(addNewBuildingToTile)
-	$CanvasLayer/TileInfoPanel.retrieveTileOutputs.connect(retrieveOutputs)
+	if not $CanvasLayer/BuildingInfoPanel.newBuildingInTile.is_connected(addNewBuildingToTile):
+		$CanvasLayer/BuildingInfoPanel.newBuildingInTile.connect(addNewBuildingToTile)
+	if not $CanvasLayer/TileInfoPanel.retrieveTileOutputs.is_connected(retrieveOutputs):
+		$CanvasLayer/TileInfoPanel.retrieveTileOutputs.connect(retrieveOutputs)
 	#$PathControl.makeAllContainersPassable()
-	#print("ALL I NEED")
 	# War Room panel wiring
 	$CanvasLayer/WarRoomPanel.buildSelf(playerCountryNode)
 	if not $CanvasLayer/WarRoomPanel.requestEventFire.is_connected(_on_arc_event_requested):
 		$CanvasLayer/WarRoomPanel.requestEventFire.connect(_on_arc_event_requested)
 	if not $CanvasLayer/WarRoomPanel.protectorSummoned.is_connected(_on_protector_summoned):
 		$CanvasLayer/WarRoomPanel.protectorSummoned.connect(_on_protector_summoned)
-	pass
 
 var thisTileNumber: int
 var selectedTile: Tile
