@@ -1503,7 +1503,6 @@ func _activate_player(cid: String) -> void:
 			break
 	$CanvasLayer.assignPlayerNode(playerCountryNode)
 	$CanvasLayer/TechTree.buildSelf(playerCountryNode)
-	$CanvasLayer/BeliefControl.buildSelf(playerCountryNode)
 	$CanvasLayer/BuildingInfoPanel/buildingPanelPanel.player = playerCountryNode
 	$PathControl.connectPathPoints(playerCountryNode)
 	$CanvasLayer/WarRoomPanel.buildSelf(playerCountryNode)
