@@ -74,18 +74,17 @@ func _build_buttons() -> void:
 		child.queue_free()
 
 	print("event_scene._build_buttons: ", button_data.size(), " buttons for event '", event_id, "'")
-	var s = get_node_or_null("/root/Settings")
 	for btn_data in button_data:
 		var prereq = btn_data.get("prerequisite_flag", "")
 		if prereq != "" and not _check_prerequisite(prereq):
 			continue
 
 		var btype: String = btn_data.get("button_type", "standard")
-		if btype == "explicit"    and (s == null or not s.content_explicit):
+		if btype == "explicit"    and not Settings.content_explicit:
 			continue
-		if btype == "kinky_lewd"  and (s == null or not s.content_kinky_lewd):
+		if btype == "kinky_lewd"  and not Settings.content_kinky_lewd:
 			continue
-		if btype == "sensual"     and (s == null or not s.content_sensual):
+		if btype == "sensual"     and not Settings.content_sensual:
 			continue
 		#if btype == "explicit"    and not Settings.content_explicit:
 			#continue
