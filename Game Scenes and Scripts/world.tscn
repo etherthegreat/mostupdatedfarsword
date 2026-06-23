@@ -9380,10 +9380,10 @@ mouse_filter = 2
 
 [node name="EventContainer" type="VBoxContainer" parent="CanvasLayer/EventControl"]
 layout_mode = 0
-offset_left = -556.0
-offset_top = -276.0
-offset_right = 719.0
-offset_bottom = 303.0
+offset_left = 46.0
+offset_top = -73.0
+offset_right = 1321.0
+offset_bottom = 506.0
 mouse_filter = 2
 
 [node name="FactionControl" type="Control" parent="CanvasLayer"]
@@ -10626,6 +10626,7 @@ offset_bottom = 61.0
 text = "10000"
 
 [node name="Button" type="Button" parent="CanvasLayer/Resource Bar (TOP)"]
+z_index = 50
 layout_mode = 0
 offset_left = 2247.58
 offset_top = 15.4179
@@ -11251,6 +11252,7 @@ offset_bottom = 83.0
 text = "July 4, 2026"
 
 [node name="EndingSceneControl" type="Control" parent="CanvasLayer"]
+visible = false
 z_index = 100
 layout_mode = 3
 anchors_preset = 0
@@ -12060,6 +12062,7 @@ shape = SubResource("RectangleShape2D_qt86y")
 [connection signal="mouse_exited" from="CanvasLayer/Resource Bar (TOP)/container/HarmonyControl/HarmonyArea" to="." method="_on_harmony_area_mouse_exited"]
 [connection signal="mouse_entered" from="CanvasLayer/Resource Bar (TOP)/container/InfluenceControl/InfluenceArea" to="." method="_on_influence_area_mouse_entered"]
 [connection signal="mouse_exited" from="CanvasLayer/Resource Bar (TOP)/container/InfluenceControl/InfluenceArea" to="." method="_on_influence_area_mouse_exited"]
+[connection signal="pressed" from="CanvasLayer/Resource Bar (TOP)/Button" to="." method="_on_button_pressed"]
 [connection signal="mouse_entered" from="CanvasLayer/ArmyPanel/ArmyButtonsContainer/MoveButtonControl/MoveButton" to="PathControl" method="_on_move_button_mouse_entered"]
 [connection signal="mouse_exited" from="CanvasLayer/ArmyPanel/ArmyButtonsContainer/MoveButtonControl/MoveButton" to="PathControl" method="_on_move_button_mouse_exited"]
 [connection signal="mouse_entered" from="CanvasLayer/ArmyPanel/ArmyButtonsContainer/WaitButtonControl/WaitButton" to="PathControl" method="_on_wait_button_mouse_entered"]

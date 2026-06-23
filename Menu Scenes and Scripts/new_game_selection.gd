@@ -63,7 +63,7 @@ func _on_play_button_pressed() -> void:
 	get_tree().root.add_child(newGame)
 	newGame.newGameBuild(selectedCountry, language, isCoopMode)
 	# Free the selection menu now that the game is running
-	queue_free()
+	visible = false
 	get_tree().change_scene_to_file(
 		"res://Game Scenes and Scripts/world.tscn")
 	pass # Replace with function body.
