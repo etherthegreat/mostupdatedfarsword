@@ -1328,68 +1328,104 @@ func generateBarracksCommanders() -> void:
 # at level 2-4 with no army yet, then spawns a uniquely-named army drawn from
 # the tile name and the governor's archetype.  Must run after
 # generateBarracksCommanders() so every tile's tileGovernor is already set.
+# Spawns one army per USA-owned tile that has both a Barracks (any level) and
+# a governor.  No random culling — every qualifying tile gets a force.
+# Units use only the three starting weapon types: Cutlass / Smoothbore / Cannon.
+# Armies are created but NOT yet raised; they march out when war is declared.
 func spawnStartingArmies() -> void:
+	# Governor-archetype → army name suffix (courthouse overrides to "National Guard")
 	var ARMY_SUFFIX := {
-		"ARC_01": "Wetlands Rangers",    "ARC_02": "Mountain Militia",
-		"ARC_03": "Volunteer Regiment",  "ARC_04": "Forest Skirmishers",
-		"ARC_05": "Green Mountain Boys", "ARC_06": "Harbor Guard",
-		"ARC_07": "Irregular Rifles",    "ARC_08": "Frontier Militia",
-		"ARC_09": "Liberty Brigade",     "ARC_10": "Ranger Company",
-		"ARC_11": "Sons of Liberty",     "ARC_12": "Continental Corps",
-		"ARC_13": "Naval Infantry",      "ARC_14": "Righteous Rifles",
-		"ARC_15": "Federal Guard",       "ARC_16": "Iron Brigade",
-		"ARC_17": "Freedom Rifles",      "ARC_18": "Bayou Raiders",
-		"ARC_19": "Privateer Corps",     "ARC_20": "Pacific Guard",
-		"ARC_21": "Border Company",      "ARC_22": "Forest Rangers",
-		"ARC_23": "Heritage Guard",      "ARC_24": "Solidarity Regiment",
+		"ARC_01": "Outdoorsmen Militia",     "ARC_02": "Iron Mountain Militia",
+		"ARC_03": "Scholar's Company",       "ARC_04": "Forest Warrior Company",
+		"ARC_05": "Farmer's Rifle Brigade",  "ARC_06": "Harbor Defense Corps",
+		"ARC_07": "Defectors' Regiment",     "ARC_08": "Plainsman's Militia",
+		"ARC_09": "Home Defense Brigade",
+		"ARC_NA_01": "Native Alliance Company",  "ARC_NA_02": "Scout Ranger Company",
+		"ARC_NA_03": "Coastal Ranger Corps",     "ARC_NA_04": "Woodlands Guide Company",
+		"ARC_NA_05": "Tracker Ranger Corps",     "ARC_NA_06": "Mountain Riflemen",
+		"ARC_NA_07": "Creek Warrior Company",    "ARC_NA_08": "Runner Militia",
+		"ARC_NA_09": "War Chief's Company",      "ARC_NA_10": "Piedmont Riflemen",
+		"ARC_11": "Liberty Boys",            "ARC_12": "Field Medical Corps",
+		"ARC_13": "Sea Ranger Company",      "ARC_14": "Righteous Rifles",
+		"ARC_15": "Federal Defense Corps",   "ARC_16": "Industrial Guard",
+		"ARC_17": "Free Company",            "ARC_18": "Bayou Rangers",
+		"ARC_19": "Privateer Corps",         "ARC_20": "Pacific Rifles",
+		"ARC_21": "Border Guard",            "ARC_22": "Forest Ranger Corps",
+		"ARC_23": "Heritage Guard",          "ARC_24": "Liberty Volunteer Corps",
 		"ARC_25": "Showmen's Rifles",
-		"ARC_26": "Harbor Wolves",       "ARC_27": "Gloucester Guard",
-		"ARC_28": "Clockwork Company",   "ARC_29": "Ward Rifles",
-		"ARC_30": "Hex Company",         "ARC_31": "River Gentry",
-		"ARC_32": "Long Rifle Company",  "ARC_33": "Hollow Runners",
-		"ARC_34": "Ridge Wardens",       "ARC_35": "Bay Freedmen",
-		"ARC_36": "Parlor Guard",        "ARC_37": "Sea Island Rangers",
-		"ARC_38": "North Star Company",  "ARC_39": "Cathedral Regiment",
-		"ARC_40": "Red Clay Rifles",     "ARC_41": "Root Brigade",
-		"ARC_42": "Scrub Riders",        "ARC_43": "Iron Hall Brigade",
-		"ARC_44": "Mulberry Street Guard","ARC_45": "Tenement Rifles",
-		"ARC_46": "Blue Water Raiders",  "ARC_47": "Capital Shadows",
+		"ARC_26": "Dockworker's Rifles",     "ARC_27": "Coastal Outdoorsmen",
+		"ARC_28": "Inventors' Company",      "ARC_29": "Ward Rifles",
+		"ARC_30": "Hollow Company",          "ARC_31": "River Gentry",
+		"ARC_32": "Highland Rifles",         "ARC_33": "Ridge Runners",
+		"ARC_34": "Hollow Wardens",          "ARC_35": "Watermen's Brigade",
+		"ARC_36": "Tidewater Rifles",        "ARC_37": "Sea Island Company",
+		"ARC_38": "North Star Company",      "ARC_39": "Cathedral Regiment",
+		"ARC_40": "Red Clay Militia",        "ARC_41": "Root Brigade",
+		"ARC_42": "Scrub Riders",            "ARC_43": "Iron Hall Brigade",
+		"ARC_44": "Neighborhood Guard",      "ARC_45": "Street Company",
+		"ARC_46": "Blue Water Raiders",      "ARC_47": "Capital Shadows",
 	}
 
-	var candidates: Array = []
 	for tile in $TileController.get_children():
 		if tile.tileOwner != playerCountry:
-			continue
-		if tile.tileNumber == 188:            # Washington DC — Ualani's territory
 			continue
 		if not tile.filledGovernorSlot or tile.tileGovernor == null:
 			continue
 		var blvl: int = int(tile.buildings.get("barracks", 0))
-		if blvl < 2 or blvl > 4:
+		if blvl < 1:
 			continue
 		if tile.stationedArmy != null:
 			continue
-		candidates.append(tile)
 
-	candidates.shuffle()
-	var chosen: Array = candidates.slice(0, min(3, candidates.size()))
-
-	for tile in chosen:
 		var gov: governor = tile.tileGovernor
-		var arc_id: String = gov.governorArchetypeId \
-			if gov.governorArchetypeId != "" else "ARC_01"
-		var army_name: String = tile.tileName + " " + ARMY_SUFFIX.get(arc_id, "Militia")
+		var is_executive: bool = (tile.tileNumber == 188)
+		var army_name: String
+
+		if is_executive:
+			army_name = "Executive Guard"
+		elif int(tile.buildings.get("courthouse", 0)) >= 1:
+			army_name = tile.tileName + " National Guard"
+		else:
+			var arc_id: String = gov.governorArchetypeId \
+				if gov.governorArchetypeId != "" else "ARC_01"
+			army_name = tile.tileName + " " + ARMY_SUFFIX.get(arc_id, "Militia")
 
 		playerCountryNode.addArmy(army_name, tile.tileNumber)
-
-		# addArmy() always appends — grab the army we just added and assign its commander
 		var new_army = playerCountryNode.countryArmyList.back()
-		if new_army != null:
-			new_army.addUnitCommander(gov)
-			new_army.updateArmyUI()
+		if new_army == null:
+			continue
+		new_army.addUnitCommander(gov)
+		_spawn_starting_units(new_army, is_executive, blvl)
+		new_army.updateArmyUI()
 
-			  " (barracks lvl ", int(tile.buildings.get("barracks", 0)),
-			  ", ", arc_id, ")")
+
+# Populate a newly created starting army with 1–3 units using only the three
+# launch-day weapons: Cutlass (Cavalry), Smoothbore (Infantry), Cannon (Artillery).
+# Unit size is 100 (size 1) or 200 (size 2) soldiers, level 1 throughout.
+# Executive Guard (Ualani / tile 188) always gets one of each weapon type.
+func _spawn_starting_units(army, is_executive: bool, barracks_level: int) -> void:
+	const WEAPONS    := ["Cutlass", "Smoothbore", "Cannon"]
+	const UNIT_TYPES := {"Cutlass": "Cavalry", "Smoothbore": "Infantry", "Cannon": "Artillery"}
+	const SIZES      := [100, 200]
+
+	if is_executive:
+		for weapon in ["Cannon", "Smoothbore", "Cutlass"]:
+			playerCountryNode.addNewUnit(army, UNIT_TYPES[weapon], 1, weapon, "Iron", "Cloth", 100, 100)
+		return
+
+	var unit_count: int = randi_range(1, mini(barracks_level, 3))
+	for i in range(unit_count):
+		var weapon: String = WEAPONS[randi() % WEAPONS.size()]
+		var size: int      = SIZES[randi() % SIZES.size()]
+		playerCountryNode.addNewUnit(army, UNIT_TYPES[weapon], 1, weapon, "Iron", "Cloth", size, size)
+
+
+# Called when uk_declared_war flag is set.
+# Raises every undeployed player army onto the map simultaneously.
+func _raise_all_player_armies() -> void:
+	for army in playerCountryNode.countryArmyList:
+		if not army.raised and army.inTile != null:
+			raiseArmyFromWorld(army, playerCountryNode, army.inTile)
 
 
 
@@ -2587,6 +2623,8 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 					break
 		"set_flag":
 			playerCountryNode.CountryFlags[outcome_value] = true
+			if outcome_value == "uk_declared_war":
+				_raise_all_player_armies()
 		"clear_flag":
 			playerCountryNode.CountryFlags.erase(outcome_value)
 		"set_mission_flag":
