@@ -157,6 +157,105 @@ const STATE_FULL_NAMES: Dictionary = {
 	"ME": "District of Maine",
 }
 
+func _ready() -> void:
+	_build_pause_menu()
+
+
+func _build_pause_menu() -> void:
+	var pause_layer := CanvasLayer.new()
+	pause_layer.layer = 100
+	add_child(pause_layer)
+
+	_pause_overlay = ColorRect.new()
+	_pause_overlay.color = Color(0, 0, 0, 0.65)
+	_pause_overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_pause_overlay.mouse_filter = Control.MOUSE_FILTER_STOP
+	_pause_overlay.visible = false
+	pause_layer.add_child(_pause_overlay)
+
+	# 600×900 panel, centered on screen
+	var panel := Control.new()
+	panel.set_anchors_preset(Control.PRESET_CENTER)
+	panel.set_offset(SIDE_LEFT,  -300)
+	panel.set_offset(SIDE_TOP,   -450)
+	panel.set_offset(SIDE_RIGHT,  300)
+	panel.set_offset(SIDE_BOTTOM, 450)
+	_pause_overlay.add_child(panel)
+
+	var bg := TextureRect.new()
+	bg.texture = load("res://art assets/finishedAssets/UI/pause_menu_bg.png")
+	bg.stretch_mode = TextureRect.STRETCH_SCALE
+	bg.set_anchors_preset(Control.PRESET_FULL_RECT)
+	panel.add_child(bg)
+
+	var vbox := VBoxContainer.new()
+	vbox.set_anchors_preset(Control.PRESET_FULL_RECT)
+	vbox.set_offset(SIDE_LEFT,   40)
+	vbox.set_offset(SIDE_RIGHT,  -40)
+	vbox.set_offset(SIDE_TOP,    60)
+	vbox.set_offset(SIDE_BOTTOM, -40)
+	vbox.add_theme_constant_override("separation", 20)
+	vbox.alignment = BoxContainer.ALIGNMENT_CENTER
+	panel.add_child(vbox)
+
+	var title := Label.new()
+	title.text = "— PAUSED —"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title.add_theme_font_size_override("font_size", 34)
+	title.add_theme_color_override("font_color", Color(0.95, 0.85, 0.50, 1.0))
+	vbox.add_child(title)
+
+	var spacer := Control.new()
+	spacer.custom_minimum_size = Vector2(0, 28)
+	vbox.add_child(spacer)
+
+	var btn_tex := load("res://art assets/finishedAssets/UI/pause_button.png")
+	var button_defs: Array = [
+		["Continue",            "_on_pause_continue"],
+		["Settings",            "_on_pause_settings"],
+		["Presidential Library","_on_pause_preslib"],
+		["Aftercare",           "_on_pause_aftercare"],
+		["Save and Return",     "_on_pause_save_return"],
+		["Save and Quit",       "_on_pause_save_quit"],
+	]
+	for bdef in button_defs:
+		var btn := Button.new()
+		btn.text = bdef[0]
+		btn.custom_minimum_size = Vector2(0, 78)
+		btn.add_theme_font_size_override("font_size", 22)
+		btn.add_theme_color_override("font_color",         Color(1.00, 1.00, 1.00, 1.0))
+		btn.add_theme_color_override("font_hover_color",   Color(1.00, 0.95, 0.65, 1.0))
+		btn.add_theme_color_override("font_pressed_color", Color(0.75, 0.75, 0.75, 1.0))
+		var style := StyleBoxTexture.new()
+		style.texture = btn_tex
+		btn.add_theme_stylebox_override("normal",  style)
+		btn.add_theme_stylebox_override("hover",   style)
+		btn.add_theme_stylebox_override("pressed", style)
+		btn.add_theme_stylebox_override("focus",   StyleBoxEmpty.new())
+		btn.pressed.connect(Callable(self, bdef[1]))
+		vbox.add_child(btn)
+
+
+func _on_pause_continue() -> void:
+	_pause_overlay.hide()
+
+func _on_pause_settings() -> void:
+	pass  # TODO: settings panel
+
+func _on_pause_preslib() -> void:
+	_pause_overlay.hide()
+	# TODO: open presidential library panel
+
+func _on_pause_aftercare() -> void:
+	pass  # TODO: aftercare content panel
+
+func _on_pause_save_return() -> void:
+	get_tree().change_scene_to_file("res://Menu Scenes and Scripts/main_menu.tscn")
+
+func _on_pause_save_quit() -> void:
+	get_tree().quit()
+
+
 func _process(delta: float) -> void:
 	if worldCreation == true:
 		$CanvasLayer/LoadingSprite.rotation += 1
@@ -192,6 +291,7 @@ func updateMap():
 
 var currentWorldTurn: int = 0
 var playerSpyWins: int = 0
+var _pause_overlay: ColorRect = null
 
 signal calculateSeason
 func newGameBuild(CID, gameLang, isCoop: bool = false):
@@ -2165,7 +2265,8 @@ func _protector_id_to_school(pid: String) -> String:
 	match pid:
 		"PROT_01", "PROT_02", "PROT_03", "PROT_10", "PROT_15": return "cryptid"
 		"PROT_06":                                              return "terror"
-		"PROT_04", "PROT_07":                                   return "storm"
+		"PROT_04":                                              return "storm"
+		"PROT_07":                                              return "spectral"
 		"PROT_05", "PROT_13", "PROT_17":                        return "spectral"
 		"PROT_08", "PROT_09":                                   return "iron"
 		"PROT_11", "PROT_12":                                   return "liberty"
@@ -2181,7 +2282,7 @@ func _protector_id_to_spell(pid: String) -> String:
 		"PROT_04": return "EXECUTIVE WEATHER CONTROL INITIATIVE"
 		"PROT_05": return "CLASSIFIED TACTICAL TERROR BUDGET"
 		"PROT_06": return "GOATMAN'S JUDGEMENT"
-		"PROT_07": return "DEPARTMENT OF PSYCHOLOGICAL OPERATIONS"
+		"PROT_07": return "BELL WITCH'S GIFT"
 		"PROT_08": return "NAVAL SUPERIORITY MAINTENANCE DIRECTIVE"
 		"PROT_09": return "COLD WEATHER RESILIENCE FUNDING ACT"
 		"PROT_10": return "INTER-AGENCY CRYPTID INTEGRATION PROGRAM"
@@ -2691,6 +2792,7 @@ func evaluateDateEvents() -> void:
 		_check_prot16_dma_summon()
 		_check_prot17_dma_summon()
 		_check_prot06_objectives()
+		_check_prot07_objectives()
 		_check_prot16_objectives()
 		_tick_commander_turns()
 		_check_arc01_objectives()
@@ -4905,6 +5007,32 @@ func _on_spy_win_recorded() -> void:
 	print("[Spy] Total spy wins: ", playerSpyWins)
 
 
+func _check_prot07_objectives() -> void:
+	var flags: Dictionary = playerCountryNode.CountryFlags
+	if not flags.has("prot_07_summoned"):
+		return
+	var total := 0
+	for tile in playerCountryNode.OwnedTileList:
+		if tile.get("tileContinent") == "TN":
+			total += tile.buildings.get("farm", 0)
+			total += tile.buildings.get("granary", 0)
+			total += tile.buildings.get("monument", 0)
+			total += tile.buildings.get("theater", 0)
+			total += tile.buildings.get("library", 0)
+			total += tile.buildings.get("resort", 0)
+	if not flags.has("prot_07_tame") and total >= 25:
+		if not _event_on_cooldown("PROT_07_TAME"):
+			_start_cooldown("PROT_07_TAME", 9999)
+			createNewEvent("PROT_07_TAME", null)
+			print("[Protector] PROT_07_TAME fired — TN culture+food: ", total)
+		return
+	if flags.has("prot_07_tame") and not flags.has("prot_07_agreed") and total >= 40:
+		if not _event_on_cooldown("PROT_07_AGREE"):
+			_start_cooldown("PROT_07_AGREE", 9999)
+			createNewEvent("PROT_07_AGREE", null)
+			print("[Protector] PROT_07_AGREE fired — TN culture+food: ", total)
+
+
 func _check_prot06_dma_summon() -> void:
 	if not _is_protector_wild("PROT_06"):
 		return
@@ -6654,6 +6782,5 @@ func _tick_anarchists() -> void:
 
 
 func _on_button_pressed() -> void:
-	#close Game function
-	get_tree().quit()
-	pass # Replace with function body.
+	if _pause_overlay:
+		_pause_overlay.show()
