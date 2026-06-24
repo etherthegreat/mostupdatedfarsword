@@ -248,7 +248,68 @@ func _on_pause_preslib() -> void:
 	# TODO: open presidential library panel
 
 func _on_pause_aftercare() -> void:
-	pass  # TODO: aftercare content panel
+	_pause_overlay.hide()
+	_show_aftercare()
+
+
+func _show_aftercare() -> void:
+	var card: Dictionary = AFTERCARE_CARDS[randi() % AFTERCARE_CARDS.size()]
+	var vp_size: Vector2 = get_viewport().get_visible_rect().size
+
+	# ── full-screen layer above all UI ────────────────────────
+	var layer := CanvasLayer.new()
+	layer.layer = 102
+	add_child(layer)
+
+	# ── black background ──────────────────────────────────────
+	var bg := ColorRect.new()
+	bg.color = Color(0.0, 0.0, 0.0, 0.0)
+	bg.set_anchors_preset(Control.PRESET_FULL_RECT)
+	layer.add_child(bg)
+
+	# ── portrait ──────────────────────────────────────────────
+	var portrait_size: float = min(vp_size.x * 0.55, vp_size.y * 0.60)
+	var portrait := TextureRect.new()
+	portrait.texture = load(card["portrait"])
+	portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	portrait.custom_minimum_size = Vector2(portrait_size, portrait_size)
+	portrait.size = Vector2(portrait_size, portrait_size)
+	portrait.position = Vector2(
+		(vp_size.x - portrait_size) * 0.5,
+		vp_size.y * 0.08
+	)
+	portrait.modulate = Color(1.0, 1.0, 1.0, 0.0)
+	layer.add_child(portrait)
+
+	# ── quote ─────────────────────────────────────────────────
+	var quote_width: float = min(vp_size.x * 0.65, 700.0)
+	var quote := Label.new()
+	quote.text = card["quote"]
+	quote.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	quote.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	quote.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	quote.custom_minimum_size = Vector2(quote_width, 0)
+	quote.size = Vector2(quote_width, 120)
+	quote.position = Vector2(
+		(vp_size.x - quote_width) * 0.5,
+		vp_size.y * 0.08 + portrait_size + 24.0
+	)
+	quote.add_theme_font_size_override("font_size", 22)
+	quote.add_theme_color_override("font_color", Color(0.95, 0.90, 0.80, 1.0))
+	quote.modulate = Color(1.0, 1.0, 1.0, 0.0)
+	layer.add_child(quote)
+
+	# ── tween: fade-in → hold → fade-out → free ───────────────
+	var hold_time: float = randf_range(4.0, 6.0)
+	var tw := create_tween()
+	tw.tween_property(bg,      "color:a",    0.85, 1.0)
+	tw.parallel().tween_property(portrait, "modulate:a", 1.0,  1.0)
+	tw.parallel().tween_property(quote,    "modulate:a", 1.0,  1.0)
+	tw.tween_interval(hold_time)
+	tw.tween_property(bg,      "color:a",    0.0,  1.5)
+	tw.parallel().tween_property(portrait, "modulate:a", 0.0,  1.5)
+	tw.parallel().tween_property(quote,    "modulate:a", 0.0,  1.5)
+	tw.tween_callback(func(): layer.queue_free())
 
 func _on_pause_save_return() -> void:
 	get_tree().change_scene_to_file("res://Menu Scenes and Scripts/main_menu.tscn")
@@ -295,6 +356,69 @@ var playerSpyWins: int = 0
 var _pause_overlay: ColorRect = null
 var _belief_purchased_this_turn: bool = false
 var _armies_shown_this_cycle: Dictionary = {}
+
+const AFTERCARE_CARDS: Array = [
+	{
+		"portrait": "res://art assets/finishedAssets/religiousIcons/harriet_tubman.png",
+		"quote": "You have carried much. It is allowed to set it down for a moment."
+	},
+	{
+		"portrait": "res://art assets/finishedAssets/religiousIcons/abraham_lincoln.png",
+		"quote": "Give yourself the same grace you offer others. You are doing enough."
+	},
+	{
+		"portrait": "res://art assets/finishedAssets/religiousIcons/frederick_douglass.png",
+		"quote": "You are not where you started. That distance is yours. Feel it."
+	},
+	{
+		"portrait": "res://art assets/finishedAssets/religiousIcons/eleanor_roosevelt.png",
+		"quote": "You gain strength every time you look honestly at what you have been through. You are gaining it now."
+	},
+	{
+		"portrait": "res://art assets/finishedAssets/religiousIcons/sojourner_truth.png",
+		"quote": "Truth is powerful and it will prevail. You are part of that. Rest."
+	},
+	{
+		"portrait": "res://art assets/finishedAssets/religiousIcons/martin_luther_king.png",
+		"quote": "You do not need to see the whole staircase. Take a breath. The next step is enough."
+	},
+	{
+		"portrait": "res://art assets/finishedAssets/religiousIcons/malcolm_x.png",
+		"quote": "The future belongs to those who prepare for it. Preparing includes taking care of yourself."
+	},
+	{
+		"portrait": "res://art assets/finishedAssets/religiousIcons/george_washington.png",
+		"quote": "The work endures. The cause does not require your exhaustion."
+	},
+	{
+		"portrait": "res://art assets/finishedAssets/religiousIcons/benjamin_franklin.png",
+		"quote": "An hour of rest is worth more to tomorrow than a second hour of effort tonight."
+	},
+	{
+		"portrait": "res://art assets/finishedAssets/religiousIcons/mark_twain.png",
+		"quote": "Kindness is the language the heart always understands. Start with your own."
+	},
+	{
+		"portrait": "res://art assets/finishedAssets/religiousIcons/mary_edwards_walker.png",
+		"quote": "You are more than what this moment asks of you."
+	},
+	{
+		"portrait": "res://art assets/finishedAssets/religiousIcons/agnes_macphail.png",
+		"quote": "Do not apologize for the space you take up or the time you need."
+	},
+	{
+		"portrait": "res://art assets/finishedAssets/religiousIcons/laura_secord.png",
+		"quote": "The distance feels long from inside it. From the other side, it becomes the beginning of the story."
+	},
+	{
+		"portrait": "res://art assets/finishedAssets/religiousIcons/louis_hippolyte_lafontaine.png",
+		"quote": "What you have built today is real. It will still be there tomorrow."
+	},
+	{
+		"portrait": "res://art assets/finishedAssets/religiousIcons/john_brown.png",
+		"quote": "The ones who change things keep going. Keeping going includes rest."
+	},
+]
 
 signal calculateSeason
 func newGameBuild(CID, gameLang, isCoop: bool = false):
