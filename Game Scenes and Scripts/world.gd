@@ -97,7 +97,7 @@ const USA_PROT_TILES: Dictionary = {
 	"PROT_13":  80,   # Green Mountain Ghost  — Montpelier, VT (Green Mountains)
 
 	"PROT_15": 177,   # Skunk Ape             — Gainesville, FL (Wetlands)
-	"PROT_16":  71,   # Eternal Minuteman     — Springfield, MA (Gun Valley / Armory)
+	"PROT_16":  20,   # Agent 355             — Manhattan, NY (Culper Ring operations)
 	"PROT_17": 188,   # Lincoln's Ghost       — Washington, DC (White House)
 }
 
@@ -2145,7 +2145,7 @@ func _protector_id_to_name(pid: String) -> String:
 		"PROT_12": return "Liberty Bell"
 		"PROT_13": return "Green Mountain Ghost"
 		"PROT_15": return "Skunk Ape"
-		"PROT_16": return "Eternal Minuteman"
+		"PROT_16": return "Agent 355"
 		"PROT_17": return "Lincoln's Ghost"
 		"CA_PROT_01": return "Le Wendigo"
 		"CA_PROT_02": return "Le Loup-Garou"
@@ -2163,8 +2163,9 @@ func _protector_id_to_school(pid: String) -> String:
 		"PROT_01", "PROT_02", "PROT_03", "PROT_10", "PROT_15": return "cryptid"
 		"PROT_04", "PROT_06", "PROT_07":                        return "storm"
 		"PROT_05", "PROT_13", "PROT_17":                        return "spectral"
-		"PROT_08", "PROT_09", "PROT_16":                        return "iron"
+		"PROT_08", "PROT_09":                                   return "iron"
 		"PROT_11", "PROT_12":                                   return "liberty"
+		"PROT_16":                                              return "spectral"
 	return "manifest"
 
 
@@ -2184,7 +2185,7 @@ func _protector_id_to_spell(pid: String) -> String:
 		"PROT_12": return "FREEDOM RESONANCE AMPLIFICATION DECREE"
 		"PROT_13": return "RURAL SPECTRAL INVESTMENT INITIATIVE"
 		"PROT_15": return "FLORIDA CRYPTID INTEGRATION TASK FORCE"
-		"PROT_16": return "PERMANENT READINESS MANDATE (EXPIRES NEVER)"
+		"PROT_16": return "CULPER RING"
 		"PROT_17": return "EMANCIPATION PROCLAMATION 2: STILL EMANCIPATING"
 	return ""
 

@@ -14,7 +14,7 @@ PROT_12,Liberty Bell,fixed,2,PA,Metro,dollars,30,50,4
 PROT_13,Green Mountain Ghost,dynamic,0,VT,Foothills,happiness,20,35,2
 
 PROT_15,Skunk Ape,dynamic,0,FL,Wetlands,food,15,25,2
-PROT_16,Eternal Minuteman,fixed,61,MA,Suburbs,manpower,30,50,3
+PROT_16,Agent 355,fixed,20,NY,Metro,dollars,20,35,3
 PROT_17,Lincoln's Ghost,fixed,188,DC,Metro,mandate,20,35,3
 CA_PROT_01,Le Wendigo,fixed,99,QC,Woods,food,20,35,3
 CA_PROT_02,Le Loup-Garou,fixed,105,QC,Woods,weapons,15,25,2

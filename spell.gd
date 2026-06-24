@@ -109,11 +109,11 @@ func newGameSpellAssignment():
 			spellSprite = load("res://art assets/Placeholder Art/Spells/Draught of Knowledge.PNG")
 			spellCastCost = 35
 			spellShortDescription = "The Skunk Ape has been deployed to your wetlands. He is massive, fragrant, and passionate about swamp sovereignty. Enemy scouts report being overwhelmed on two fronts: the creature's considerable size and its personal scent, which lingers for three turns."
-		"PERMANENT READINESS MANDATE (EXPIRES NEVER)":   # PROT_16 Eternal Minuteman
-			militarySpell = true
-			spellSprite = load("res://art assets/Placeholder Art/Spells/Fireworks.PNG")
-			spellCastCost = 75
-			spellShortDescription = "The Minuteman has stood ready since 1775. His musket is primed, his powder is dry, and his breeches are fastened with the intensity of a man who has been waiting one hundred and fifty years for an excuse to unfasten them."
+		"CULPER RING":   # PROT_16 Agent 355
+			militarySpell = false
+			spellSprite = load("res://art assets/finishedAssets/governors/agent_355.png")
+			spellCastCost = 60
+			spellShortDescription = "The Culper Ring's network is activated on the target tile. All enemy units stationed there suffer -5% shield loss per turn as their movements, supply lines, and communications are exposed. The tile is permanently revealed to Continental intelligence. She does not need to be in the room."
 		"EMANCIPATION PROCLAMATION 2: STILL EMANCIPATING":  # PROT_17 Lincoln's Ghost
 			militarySpell = false
 			spellSprite = load("res://art assets/Placeholder Art/Spells/Health Potion.PNG")

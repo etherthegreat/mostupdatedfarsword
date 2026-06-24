@@ -720,7 +720,7 @@ func surveyTile(playerCountryNode):
 					"Thunderbird", "Chessie", "Bell Witch":
 						stormPointsOutput = (1 * building.buildingLevel)
 					"iron", "elementalist", \
-					"Old Ironsides", "Valley Forge Guardian", "Eternal Minuteman":
+					"Old Ironsides", "Valley Forge Guardian", "Agent 355":
 						ironPointsOutput = (1 * building.buildingLevel)
 					"liberty", "diviner", \
 					"Paul Revere", "Liberty Bell":
@@ -874,7 +874,7 @@ func _resolve_wizard_school(wtype: String) -> String:
 		"Lincoln's Ghost":                                         return "spectral"
 		"Thunderbird", "Chessie", "Bell Witch":                    return "storm"
 		"Old Ironsides", "Valley Forge Guardian", \
-		"Eternal Minuteman":                                       return "iron"
+		"Agent 355":                                               return "spectral"
 		"Paul Revere", "Liberty Bell":                             return "liberty"
 		# Legacy role keys pass through unchanged
 		"alchemist":   return "manifest"

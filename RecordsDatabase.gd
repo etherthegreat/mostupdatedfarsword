@@ -1123,7 +1123,7 @@ func _register_all() -> void:
 		"PROT_15")
 
 	_add_mystery("PROT_16", "Protectors",
-		"There is a musket that fires without being loaded, held by someone who cannot be seen, near the Connecticut River valley.",
+		"Clothing has appeared on a New York clothesline in a pattern that means nothing to most people and everything to those who know the Culper Ring's codes. The DMA is not saying who left it.",
 		"PROT_16")
 
 	_add_mystery("PROT_17", "Protectors",
