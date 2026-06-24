@@ -882,8 +882,8 @@ func _register_all() -> void:
 		"Goatman's Judgement: Instantly removes all remaining shield from any army at 20% shield or below.",
 		{"see_also": ["PROT_06"]})
 
-	_add("milmod_bell_witch", "Military Modifiers", "Bell Witch's Harassment",
-		"Bell Witch's Harassment: +15 Attack, +20 Defence; attackers become Demoralized.",
+	_add("milmod_bell_witch_gift", "Military Modifiers", "Giant Green Futa Dong",
+		"Giant Green Futa Dong: +3 Attack to all units in army for 3 turns.",
 		{"see_also": ["PROT_07"]})
 
 	_add("milmod_old_ironsides", "Military Modifiers", "Old Ironsides' Hull",

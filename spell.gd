@@ -68,11 +68,11 @@ func newGameSpellAssignment():
 			spellSprite = load("res://art assets/finishedAssets/governors/goatman.png")
 			spellCastCost = 50
 			spellShortDescription = "Cast on any army at 20% shield or below. The Goatman emerges from the Maryland treeline and finishes the job. He does not negotiate at this stage. He does not have to."
-		"DEPARTMENT OF PSYCHOLOGICAL OPERATIONS":        # PROT_07 Bell Witch
+		"BELL WITCH'S GIFT":                             # PROT_07 Bell Witch
 			militarySpell = true
-			spellSprite = load("res://art assets/Placeholder Art/Spells/Fireworks.PNG")
+			spellSprite = load("res://art assets/finishedAssets/governors/bell_witch.png")
 			spellCastCost = 55
-			spellShortDescription = "The Bell Witch shall visit enemy commanders in the night and make herself thoroughly unforgettable. What happened to Andrew Jackson in that farmhouse remains classified. He still flinches at bells."
+			spellShortDescription = "Cast on an allied army. The Bell Witch produces a gift from a velvet case that smells of Tennessee cedar. Recipients report +3 Attack across all units for 3 turns. The DMA field report describes the gift only as 'non-standard configuration.' The army reports no complaints. Several enthusiastic ones, actually."
 		"NAVAL SUPERIORITY MAINTENANCE DIRECTIVE":       # PROT_08 Old Ironsides
 			militarySpell = true
 			spellSprite = load("res://art assets/Placeholder Art/Spells/Fireworks.PNG")
