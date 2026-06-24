@@ -33,7 +33,6 @@ func _ready() -> void:
 	technologyName = techID
 	requiredTechs = reqTechs
 	buildSelf()
-	pass
 
 var rewardScene = load("res://tech_reward_icon.tscn")
 
@@ -120,13 +119,11 @@ func buildSelf():
 			addReward("Barracks Upgrade")
 			addReward("Courthouse Upgrade")
 			$Sprite2D.texture = load("res://art assets/finishedAssets/technology images/authority.png")
-	pass
 
 func addReward(type):
 	var newReward = rewardScene.instantiate()
 	newReward.buildSelf(type)
 	$HBoxContainer.add_child(newReward)
-	pass
 
 var blue = Color.LIGHT_BLUE
 var white = Color.WHITE
@@ -177,22 +174,18 @@ func _process(delta: float) -> void:
 		return
 	else:
 		$UnlockButton.add_theme_color_override("icon_normal_color", grey)
-	pass
 
 func purchase():
 	purchased = true
 	$UnlockButton.disabled = true
-	pass
 
 signal newTech
 func unlockTech(change):
 	emit_signal("newTech", techID, self, change)
-	pass
 
 signal selectInvestment
 func _on_unlock_button_pressed() -> void:
 	emit_signal("selectInvestment", self)
-	pass # Replace with function body.
 
 var change: int
 func addScienceInvestment(amount):
@@ -200,4 +193,3 @@ func addScienceInvestment(amount):
 	if techScienceInvestment > technologyCost:
 		change = techScienceInvestment - technologyCost
 		unlockTech(change)
-	pass

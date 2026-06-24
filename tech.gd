@@ -13,4 +13,3 @@ func buildSelf():
 		techUnlockCost = 60
 	if techName == "Tempuring":
 		techUnlockCost = 180  # mid-game metallurgy unlock; enhances SaberCharge and CannonBlast
-	pass

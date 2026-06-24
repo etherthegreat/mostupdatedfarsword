@@ -55,16 +55,13 @@ func buildSelf(type, amount, dictionary):
 			else:
 				formatted_text += "[p]" + "[color=red]" + "-" + str(value) + "[/color]" +  str(sub_key) + "[/p]"
 	$DictionaryLabel.append_text(formatted_text)
-	pass
 
 
 signal manaLook
 
 func _on_areaola_2d_mouse_entered() -> void:
 	emit_signal("manaLook", formatted_text)
-	pass # Replace with function body.
 
 signal closeManaLook
 func _on_areaola_2d_mouse_exited() -> void:
 	emit_signal("closeManaLook")
-	pass # Replace with function body.

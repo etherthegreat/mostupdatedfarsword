@@ -22,7 +22,6 @@ func displaySpells(playerCountry):
 			thisSpellArt.buildSpell(spell.spellType, spell.spellCastCost, playerCountry, spell)
 			thisSpellArt.spellButtonPressed.connect(useThisSpell)
 			$Panel/ArmySpellsGridContainer.add_child(thisSpellArt)
-	pass
 
 signal spellToUse
 func useThisSpell(spell, cost):
@@ -33,4 +32,3 @@ func useThisSpell(spell, cost):
 	$SelectedInfoPanel/Description.text = spell.spellShortDescription
 	$SelectedInfoPanel.visible = true
 	#$Panel/BookSprite.visible = false
-	pass

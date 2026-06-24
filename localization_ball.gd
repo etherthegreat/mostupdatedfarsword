@@ -25,7 +25,6 @@ func buildSelf(eT, eID, eC, eL):
 	eventCountry = eC
 	eventLanguage = eL
 	matchEventLabels()
-	pass
 
 func buildTileEvent(eT, eID, eTile, eC, eL):
 	eventType = eT
@@ -34,7 +33,6 @@ func buildTileEvent(eT, eID, eTile, eC, eL):
 	eventCountry = eC
 	eventLanguage = eL
 	matchEventLabels()
-	pass
 
 func matchEventLabels():
 	match eventCountry:
@@ -157,7 +155,6 @@ func matchEventLabels():
 					pass
 				"magic":
 					pass
-	pass
 
 var eventButtonScene = load("res://event_button.tscn")
 
@@ -175,4 +172,3 @@ func newEventButton(buttonText, buttonID):
 			var buttonOption = eventButtonScene.instantiate()
 			buttonOption.buildSelf(buttonText, buttonID, "spell")
 			eventButtons.append(buttonOption)
-	pass

@@ -7,7 +7,6 @@ var possibleLaws: Array = []
 
 func buildSelf(homeCountry):
 	playerNode = homeCountry
-	pass
 
 var lawScene = preload("res://law.tscn")
 
@@ -37,7 +36,6 @@ func updateGovernmentPanel():
 		newLaw.lawSelectionButtonPressed.connect(closeAllOpenLawTabs)
 		$PossibleContainer.add_child(newLaw)
 	updateQuadrantDisplay()
-	pass
 
 #func _process(delta: float) -> void:
 	#if playerNode != null:
@@ -47,7 +45,6 @@ func updateGovernmentPanel():
 func closeAllOpenLawTabs():
 	for law in $PossibleContainer.get_children():
 		law.closeTab()
-	pass
 
 # Called after updateGovernmentPanel() whenever laws change.
 # Requires a TextureRect named CompassSprite and a ColorRect named Marker
@@ -74,6 +71,5 @@ signal addToConstitution
 func addLawToConstitution(lawType):
 	print("kickass", lawType)
 	emit_signal("addToConstitution", lawType)
-	pass
 
 

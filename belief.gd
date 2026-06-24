@@ -135,4 +135,3 @@ func buildBelief(type):
 			faithBelief = true
 		"Pierre Elliott Trudeau":
 			faithBelief = true
-	pass

@@ -474,7 +474,6 @@ func buildSelf():
 	$spelliconsprite.texture = spellImage
 	$SpellIconSpritepanel.texture = spellImage
 	emit_signal("returnTranslatedInfo", spellType, self)
-	pass
 
 func giveSpellInfo(schoolPoints, turnsUntil, unlocked, spellStr, spellDesc, schoolType):
 	print("RETURN DEBUG GIVESPELL INFO")
@@ -494,7 +493,6 @@ func giveSpellInfo(schoolPoints, turnsUntil, unlocked, spellStr, spellDesc, scho
 	$schoolpointslabel.text = infoDic.schoolPoints
 	$turnsuntillabel.text = infoDic.turnsUntil
 	print("RETURNTTRANSLATED INFO DEBUG")
-	pass
 
 
 func update(amount, amountPerTurn):
@@ -514,7 +512,6 @@ func update(amount, amountPerTurn):
 		if amount > 0:
 			var turnsUntilVar: int = (spellCost - amount) / amountPerTurn
 			$unlocksRichTextLabel2.append_text(str(turnsUntilVar))
-	pass
 
 
 func _on_area_2d_mouse_entered() -> void:
@@ -526,7 +523,6 @@ func _on_area_2d_mouse_entered() -> void:
 	$unlocksRichTextLabel2.visible = true
 	$schoolpointslabel.visible = true
 	$turnsuntillabel.visible = true
-	pass # Replace with function body.
 
 
 func _on_area_2d_mouse_exited() -> void:
@@ -538,4 +534,3 @@ func _on_area_2d_mouse_exited() -> void:
 	$unlocksRichTextLabel2.visible = false
 	$schoolpointslabel.visible = false
 	$turnsuntillabel.visible = false
-	pass # Replace with function body.

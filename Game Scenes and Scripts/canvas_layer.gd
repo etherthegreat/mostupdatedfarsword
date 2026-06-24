@@ -5,7 +5,6 @@ var playerNode: country
 
 func assignPlayerNode(playerCountryNode):
 	playerNode = playerCountryNode
-	pass
 
 func _on_tech_tree_button_pressed() -> void:
 	if $TechTree.visible == true:
@@ -15,12 +14,10 @@ func _on_tech_tree_button_pressed() -> void:
 			if Control.visible == true:
 				Control.visible = false
 		$TechTree.visible = true
-	pass # Replace with function body.
 
 
 func _on_close_button_pressed() -> void:
 	$TechTree.visible = false
-	pass # Replace with function body.
 
 
 func _on_spell_book_button_pressed() -> void:
@@ -32,12 +29,10 @@ func _on_spell_book_button_pressed() -> void:
 			if Control.visible == true:
 				Control.visible = false
 		$Spellbook.visible = true
-	pass # Replace with function body.
 
 
 func _on_close_spellbook_pressed() -> void:
 	$Spellbook.visible = false
-	pass # Replace with function body.
 
 signal beliefUpdate
 func _on_belief_panel_button_pressed() -> void:
@@ -50,7 +45,6 @@ func _on_belief_panel_button_pressed() -> void:
 			if Control.visible == true:
 				Control.visible = false
 		$BeliefControl.visible = true
-	pass # Replace with function body.
 
 
 func _on_factions_button_pressed() -> void:
@@ -58,7 +52,6 @@ func _on_factions_button_pressed() -> void:
 		$FactionControl.visible = false
 	else:
 		$FactionControl.visible = true
-	pass # Replace with function body.
 
 
 func _on_laws_button_pressed() -> void:
@@ -68,7 +61,6 @@ func _on_laws_button_pressed() -> void:
 		$GovernmentControl.visible = false
 	else:
 		$GovernmentControl.visible = true
-	pass # Replace with function body.
 
 
 func _on_open_buildings_button_pressed() -> void:
@@ -76,7 +68,6 @@ func _on_open_buildings_button_pressed() -> void:
 		$BuildingInfoPanel.visible = true
 	else:
 		$BuildingInfoPanel.visible = false
-	pass # Replace with function body.
 
 
 func _on_wizard_button_pressed() -> void:
@@ -89,11 +80,9 @@ func _on_magic_button_pressed() -> void:
 		$SpellSchoolsControl.visible = true
 	else:
 		$SpellSchoolsControl.visible = false
-	pass # Replace with function body.
 
 func _on_pick_tech_pressed() -> void:
 	_on_tech_tree_button_pressed()
-	pass # Replace with function body.
 
 
 func _on_war_room_button_pressed() -> void:
@@ -101,4 +90,3 @@ func _on_war_room_button_pressed() -> void:
 		$WarRoomPanel.visible = true
 	else:
 		$WarRoomPanel.visible = false
-	pass # Replace with function body.

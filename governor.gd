@@ -382,7 +382,6 @@ func buildSelf(gT, gL):
 			governorPosition = "AGITATOR"
 			governorFaction = "Radical"
 			loyalty = 0.0
-	pass
 
 
 func update_loyalty(claim: float) -> void:
@@ -421,8 +420,6 @@ func addMilMod(type, levels):
 			govMilModsLvl3.append(newMM)
 		3:
 			govMilModsLvl3.append(newMM)
-	pass
 
 func hire():
 	hired = true
-	pass

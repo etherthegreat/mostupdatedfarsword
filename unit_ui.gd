@@ -19,7 +19,6 @@ func buildSelf(unit):
 	debugMode = false
 	alwaysFree = false
 	thisUnit = unit
-	pass
 
 func updateUI():
 	$WeaponTypeButton.icon = thisUnit.unitWeapon.weaponImage
@@ -40,7 +39,6 @@ func updateUI():
 	$WeaponsLabel.add_text(newWeaponText)
 	$ManpowerLabel.add_text(newManpowerText)
 	findMilMods()
-	pass
 
 func upgradeButtonCalculation(maxUnitLevel):
 	#print(thisUnit.unitLevel, "thisUnit.unitLevel", maxUnitLevel, "maxUnitLevel")
@@ -49,7 +47,6 @@ func upgradeButtonCalculation(maxUnitLevel):
 			$UpgradeButton.disabled = false
 		elif thisUnit.unitLevel >= maxUnitLevel:
 			$UpgradeButton.disabled = true
-	pass
 
 
 var milModCompare :Array = []
@@ -84,7 +81,6 @@ func findMilMods():
 				#else:
 					#print("NoMilModTypeFound", MilMod.milModType)
 	#print("milModCOmpare", milModCompare, "militarymodifierlist", thisUnit.militaryModifierList)
-	pass
 var weaponButtScene = preload("res://weapon_button.tscn")
 var weaponsList: Array = []
 func _on_weapon_type_button_pressed() -> void:
@@ -105,7 +101,6 @@ func _on_weapon_type_button_pressed() -> void:
 		$WeaponScrollContainer.visible = true
 	else:
 		$WeaponScrollContainer.visible = false
-	pass # Replace with function body.
 
 var oresList: Array = []
 var oreButtonScene = load("res://ore_button.tscn")
@@ -125,20 +120,17 @@ func _on_ore_type_button_pressed() -> void:
 		$OreScrollContainer.visible = true
 	else:
 		$OreScrollContainer.visible = false
-	pass # Replace with function body.
 
 func addOre(oreType):
 	if thisUnit.unitOre != null:
 		thisUnit.changeOre(oreType)
 	$OreScrollContainer.visible = false
-	pass
 
 func addWeapon(weaponType):
 	#print("Weapon Type", weaponType)
 	if thisUnit.unitWeapon != null:
 		thisUnit.changeWeapon(weaponType)
 	$WeaponScrollContainer.visible = false
-	pass
 
 #debug menu operations
 
@@ -151,20 +143,15 @@ func _on_debug_menu_button_pressed() -> void:
 		$Button.visible = false
 		$Button2.visible = false
 		$UpgradeButton.visible = false
-	pass # Replace with function body.
 
 func _on_upgrade_button_pressed():
 	thisUnit.unitLevel +=1
-	pass # Replace with function body.
 
 func _on_button_pressed() -> void:
 	thisUnit.unitCurrentManpower -= 100
-	pass # Replace with function body.
 
 func _on_button_2_pressed() -> void:
 	thisUnit.unitCurrentManpower += 100
-	pass # Replace with function body.
 
 func _on_always_freebutton_pressed() -> void:
 	alwaysFree = true
-	pass # Replace with function body.

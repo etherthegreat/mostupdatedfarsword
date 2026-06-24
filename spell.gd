@@ -119,4 +119,3 @@ func newGameSpellAssignment():
 			spellSprite = load("res://art assets/Placeholder Art/Spells/Health Potion.PNG")
 			spellCastCost = 70
 			spellShortDescription = "The President, speaking from beyond mortality, assures us the work of freedom is never finished. He is still haunting the White House. He has strong opinions about the East Bedroom and will express them in full to anyone who enters, at any hour of the night."
-	pass

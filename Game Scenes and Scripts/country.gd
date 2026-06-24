@@ -360,12 +360,10 @@ func _get_default_army_icon() -> Texture2D:
 
 func discoverTile(pathPointButton):
 	discoveredTilesList.append(pathPointButton)
-	pass
 
 signal updateDiscoveredTiles
 func updateDiscoveredByPlayer():
 	emit_signal("updateDiscoveredTiles", discoveredTilesList)
-	pass
 
 func setStartingMagic():
 	manifestPoints = 0
@@ -380,16 +378,13 @@ func setStartingMagic():
 	stormLevel = 0
 	ironLevel = 0
 	libertyLevel = 0
-	pass
 
 func connectBuilding(building):
 	countryBuildingList.append(building)
 	building.towerBuilding.connect(assignTower)
-	pass
 
 func assignTower():
 	print("ddd")
-	pass
 
 func createFactionReward(rewardType):
 	match rewardType:
@@ -469,18 +464,15 @@ func createFactionReward(rewardType):
 			addGovernmentLaw("Merchant Marine Act")
 		"Maritime Union":
 			pass
-	pass
 
 func addGovernorToGovernorPool(governorType, governorLevel):
 	var newGovernor = governor.new()
 	newGovernor.buildSelf(governorType, governorLevel)
 	unlockedGovernors.append(newGovernor)
-	pass
 
 signal displayCommander
 func showCommander(commander, army):
 	emit_signal("displayCommander", commander, army)
-	pass
 
 func addNewUnit(Army, UnitType, Level, WeaponType, OreType, ArmorType, curMen, curWeapons):
 	var newUnit = Unit.new()
@@ -488,7 +480,6 @@ func addNewUnit(Army, UnitType, Level, WeaponType, OreType, ArmorType, curMen, c
 	newUnit.buildSelf(self, UnitType, Level, WeaponType, OreType, ArmorType, curMen, curWeapons)
 	Army.addUnitToArmy(newUnit)
 	Army.updateArmyUI()
-	pass
 
 func updateUnit(type, unitNode):
 	for MilMod in countryMilModList:
@@ -498,7 +489,6 @@ func updateUnit(type, unitNode):
 			unitNode.addMilMod(MilMod)
 		if MilMod.siegeMod == true && type == "Siege":
 			unitNode.addMilMod(MilMod)
-	pass
 
 func prospectForOres() -> void:
 	# Scans OwnedTileList for geological resources in mine-eligible tiles
@@ -550,12 +540,10 @@ func addMilMod(Type):
 	var milModInstance = milModScene.instantiate()
 	milModInstance.buildSelf(Type)
 	countryMilModList.append(milModInstance)
-	pass
 
 signal raiseThisArmySignal
 func raiseThisArmy(Army, country, Tile):
 	emit_signal("raiseThisArmySignal", Army, country, Tile)
-	pass
 
 func addArmy(Name, TileNumber, icon = null, tags: Array = []):
 	# icon is optional — defaults to CID-based icon if not provided
@@ -594,7 +582,6 @@ func addArmy(Name, TileNumber, icon = null, tags: Array = []):
 			armyInstance.inTile = Tile
 	armyInstance.armyDestroyed.connect(_on_army_destroyed)
 	countryArmyList.append(armyInstance)
-	pass
 
 signal commanderFallen(commander, army_name: String, tile)
 signal countryArmyDestroyed(lost_army: Army)
@@ -689,7 +676,6 @@ func loadBeliefsList(listTitle):
 			var CAGods2Array: Array = $religionData.CAGods2
 			for String in CAGods2Array:
 				availableGods.append(String)
-	pass
 
 const FACTION_GATED_LAWS: Array = [
 	"Voting Rights Act",
@@ -744,7 +730,6 @@ func addGovernmentLaw(Name):
 	var newLaw = law.new()
 	newLaw.lawType = Name
 	unlockedLaws.append(newLaw)
-	pass
 
 func addLawToConstitution(newLaw):
 	for law in unlockedLaws:
@@ -754,13 +739,11 @@ func addLawToConstitution(newLaw):
 	newSelection.lawType = newLaw
 	lawsInConstitution.append(newSelection)
 	recalculateLawQuadrant()
-	pass
 
 func addCulturalTradition(Name):
 	var newTradition = tradition.new()
 	newTradition.traditionType = Name
 	unlockedTraditions.append(newTradition)
-	pass
 	
 var spellScene = load("res://spell.tscn")
 func addSpellToSpellbook(Name, Level, Experience):
@@ -771,7 +754,6 @@ func addSpellToSpellbook(Name, Level, Experience):
 	newSpell.newGameSpellAssignment()
 	unlockedSpells.append(newSpell)
 	#print ("country is", CID, "Spells are:", unlockedSpells)
-	pass
 
 func levelUpSchool(type):
 	match type:
@@ -781,21 +763,18 @@ func levelUpSchool(type):
 		"liberty", "diviner":     libertyLevel  += 1
 		"cryptid", "summoner":    cryptidLevel  += 1
 		"spectral", "illusionist":spectralLevel += 1
-	pass
 
 func addTechnologicalDiscovery(Name):
 	var newTech = Technology.new()
 	newTech.techName = Name
 	newTech.buildSelf()
 	unlockedTechnologies.append(newTech)
-	pass
 
 func addWeaponTemplate(Name):
 	var newWeaponTemplate = WeaponTemplate.new()
 	newWeaponTemplate.weaponType = str(Name)
 	newWeaponTemplate.buildSelf()
 	weaponTemplateList.append(newWeaponTemplate)
-	pass
 
 
 func updateUnlockableAttributes():
@@ -1040,7 +1019,6 @@ func updateUnlockableAttributes():
 	for buildingLevel in buildingLevelList:
 		thingForPrint = str("buildingType", buildingLevel.buildingType, "buildingLevel", buildingLevel.maxLevel)
 		print(thingForPrint)
-	pass
 
 var outputsDict: Dictionary = {}
 
@@ -1090,7 +1068,6 @@ func surveyResources():
 		stormPoints += Tile.stormPointsOutput
 	collectTaxes()
 	payUnitMaintenance()
-	pass
 
 signal checkingOutput
 var tempFPM = 0
@@ -1181,7 +1158,6 @@ func outputCheck(caller):
 		"STORM"    : tempStormPoints,
 	}
 	emit_signal("checkingOutput", outputsDict, caller)
-	pass
 
 func payUnitMaintenance():
 	for Army in countryArmyList:
@@ -1199,7 +1175,6 @@ func payUnitMaintenance():
 		NDT += Army.armyMandateCost
 		NPM += Army.armyInfluenceCost
 		MAN += Army.armyManpowerCost
-	pass
 
 func collectTaxes():
 	TotalDollars += DPM
@@ -1218,7 +1193,6 @@ func collectTaxes():
 	TotalMandate += NDT
 	TotalInfluence += NPM
 	TotalManpower += MAN
-	pass
 
 func calculateUniqueBuildingAttributes():
 	currentFoodStockpile = TotalFood
@@ -1270,7 +1244,6 @@ func calculateUniqueBuildingAttributes():
 		churchLevel = -3  
 	#print("beliefDifference", beliefDifference, "church Level", churchLevel)
 	#here is where the modifier for 
-	pass
 
 func calculateTurn() -> void:
 	match CID:
@@ -1525,7 +1498,6 @@ func setNewTaxAmount(amount, type):
 		"Bath":
 			setBathTaxAmount = amount
 	print(type," changed to ", amount, "DEBUG")
-	pass
 
 func payBill(type, amount):
 	match type:
@@ -1535,7 +1507,6 @@ func payBill(type, amount):
 			TotalDollars -= amount
 		"happiness", "harmony":  # "harmony" kept for backward compat
 			TotalHappiness -= amount
-	pass
 
 var newToolScene = load("res://tool.tscn")
 
@@ -1543,7 +1514,6 @@ func addTool(type):
 	var newToolType = newToolScene.instantiate()
 	newToolType.buildSelf(type)
 	availableTools.append(newToolType)
-	pass
 
 var newKitScene = load("res://kit.tscn")
 
@@ -1553,21 +1523,17 @@ func addBuilding(type):
 	newBuilding.buildingType = type
 	newBuilding.buildBuilding()
 	unlockedBuildings.append(newBuilding)
-	pass
 
 func addKit(type):
 	var newKitType = newKitScene.instantiate()
 	newKitType.buildSelf(type)
 	availableKits.append(newKitType)
-	pass
 
 func addTile(tileToAdd):
 	OwnedTileList.append(tileToAdd)
-	pass
 
 func unlockArmyIcon(icon):
 	armyIconList.append(icon)
-	pass
 
 #=============================================
 #Save Functions

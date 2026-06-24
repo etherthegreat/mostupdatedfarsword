@@ -1289,7 +1289,6 @@ func buildSelf(Type):
 		newArea2D = $Area2D
 		newCollissionArea2D = $Area2D/CollisionShape2D
 	#print("Area2D", newArea2D, "newCollisionarea2d", newCollissionArea2D)
-	pass
 
 var mouseDetected: bool
 
@@ -1298,14 +1297,12 @@ func disableMilModType(ResourceType):
 		disabled = true
 	elif ResourceType == "All":
 		disabled = true
-	pass
 
 func enableMilModType(ResourceType):
 	if ResourceType == milModResource:
 		disabled = false
 	elif ResourceType == "All":
 		disabled = false
-	pass
 
 func _process(delta: float) -> void:
 	if mouseDetected == true:
@@ -1325,9 +1322,7 @@ func _process(delta: float) -> void:
 
 func _on_area_2d_mouse_entered() -> void:
 	mouseDetected = true
-	pass # Replace with function body.
 
 
 func _on_area_2d_mouse_exited() -> void:
 	mouseDetected = false
-	pass # Replace with function body.

@@ -152,7 +152,6 @@ func buildSelf(Name, countryNode, TileNumber, icon):
 	#print("UnitUIContainer 1 Children", $RadicalCoolTestPanel/UnitUIContainer.get_children())
 	for armyCostUI in $resourcescontainer.get_children():
 		armyCostUI.buildSelf()
-	pass
 
 func updateArmyUI(): #call whenever attacked, or just whenever the player opens the screen
 	for Unit in unitsList:
@@ -162,7 +161,9 @@ func updateArmyUI(): #call whenever attacked, or just whenever the player opens 
 	updateUnitUIs()
 	updateCommanderUI()
 	updateFinalTotals()
-	pass
+	var gb := get_node_or_null("VBoxContainer/GuardControl/GuardButton") as CheckButton
+	if gb:
+		gb.set_pressed_no_signal(isGuarding)
 
 func _commander_movement_bonus() -> int:
 	if commander == null:
@@ -241,7 +242,6 @@ func onTurnEnd():
 		if randf() * 100.0 < float(inTile.corruption):
 			apply_status("Diseased", 2)
 	updateArmyUI()
-	pass
 
 func apply_status(type: String, duration: int, magic_cost: int = 0) -> void:
 	for s in armyStatusEffects:
@@ -465,12 +465,10 @@ func addUnitToArmy(unitToAdd):
 	newUnitUI.buildSelf(unitToAdd)
 	$ScrollContainer/UnitUIContainer.add_child(newUnitUI)
 	#updateArmyUI()
-	pass
 
 func updateUnitUIs(): #call after battle, new unit, changed unit, any change to any thing in the army
 	for unitUIScene in $ScrollContainer/UnitUIContainer.get_children():
 		unitUIScene.updateUI()
-	pass
 
 func updateCommanderUI():
 	if commander != null:
@@ -481,7 +479,6 @@ func updateCommanderUI():
 		$CommanderButton.icon = load("res://art assets/finishedAssets/Panels/armypanelfinishedui/IMG_1564.PNG")
 		$CommanderLabel.text = "No Commander"
 		$CommanderButton.modulate = Color.WHITE
-	pass
 
 func _commander_portrait_modulate() -> Color:
 	var ratio: float = 1.0
@@ -557,7 +554,6 @@ func updateFinalTotals():
 		var newMP = manaPanelScene.instantiate()
 		newMP.buildSelf("Faith", armyFaithCost, tempResourcesDict)
 		$ScrollContainer2/VBoxContainer.add_child(newMP)
-	pass
 
 var unitCount: int
 
@@ -720,26 +716,22 @@ func surveySelf():
 		armyPunch   += propagandaBuff
 		armyDefence -= propagandaBuff
 	_apply_status_effects_to_stats()
-	pass
 
 func calculateMaxUnitLevel():
 	if inTile != null:
 		for building in inTile.tileBuildingsList:
 			if building.buildingType == "Barracks":
 				maxUnitLevel = building.buildingLevel
-	pass
 
 signal raisingArmy
 
 func raiseSelf():
 	raised = true
 	emit_signal("raisingArmy", self, parentCountry, inTile)
-	pass
 
 func _on_raise_army_pressed() -> void:
 	raised = true
 	emit_signal("raisingArmy", self, parentCountry, inTile)
-	pass # Replace with function body.
 
 func addUnitCommander(newCommander):
 	commander = newCommander
@@ -752,7 +744,6 @@ func addUnitCommander(newCommander):
 		for MilMod in commander.govMilModsLvl3:
 			commanderModifiers3.append(MilMod)
 	#updateArmyUI()
-	pass
 
 func applyCountryBeliefMilMods() -> void:
 	# Clear previously-applied belief mods from all units before re-applying.
@@ -836,14 +827,12 @@ func commanderCheck():
 				for MilMod in commanderModifiers3:
 					for Unit in unitsList:
 						Unit.addMilMod(MilMod)
-	pass
 
 signal commanderButtonPressed
 func _on_commander_button_pressed() -> void:
 	# Pass both the current commander (may be null) AND this army so the
 	# world can decide whether to show details or open a commander picker.
 	emit_signal("commanderButtonPressed", commander, self)
-	pass # Replace with function body.
 
 signal battleBuilt
 
@@ -855,7 +844,6 @@ func calculateBattle(armyPath, type, attacker, defenderAPF, lastSelectedPathPoin
 	newBattle.sendDefenderResults.connect(calculateDefenderResults)
 	newBattle.sendAttackerResults.connect(calculateAttackerResults)
 	newBattle.deleteBattles.connect(lastSelectedPathPoint.deleteNeighborBattles)
-	pass
 
 func calculateAttackerResults(type: String, manpowerLossAmount: int) -> void:
 	if manpowerLossAmount <= 0:
@@ -897,7 +885,6 @@ func _on_banner_button_pressed() -> void:
 	else:
 		$VBoxContainer/BannerControl/BannerContainer.visible = false
 		$VBoxContainer/BannerControl/Sprite2D.visible = false
-	pass # Replace with function body.
 
 signal changeBanner
 func changeArmyBanner(icon):
@@ -905,7 +892,9 @@ func changeArmyBanner(icon):
 	$VBoxContainer/BannerControl/BannerSprite.texture = armyIcon
 	$VBoxContainer/BannerControl/Sprite2D.visible = false
 	$VBoxContainer/BannerControl/BannerContainer.visible = false
-	pass
+
+func _on_guard_button_toggled(button_pressed: bool) -> void:
+	isGuarding = button_pressed
 
 #=================
 #Helpers

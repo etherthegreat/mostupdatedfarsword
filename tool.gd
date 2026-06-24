@@ -60,4 +60,3 @@ func buildSelf(Name):
 			var newMilMod = milModScene.instantiate()
 			newMilMod.buildSelf("Codebook")
 			toolMilMod = newMilMod
-	pass

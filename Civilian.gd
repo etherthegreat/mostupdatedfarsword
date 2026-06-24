@@ -46,7 +46,6 @@ func buildSelf(toolKey, kitKey, homeTile, spawnNode, playerCountry):
 	stationNode = spawnNode
 	addTool(toolKey)
 	addKit(kitKey)
-	pass
 
 func addTool(toolKey):
 	if civilianTool != null:
@@ -54,7 +53,6 @@ func addTool(toolKey):
 	var newTool = toolScene.instantiate()
 	newTool.buildSelf(toolKey)
 	civilianTool = newTool
-	pass
 
 func addKit(kitKey):
 	if civilianKit != null:
@@ -62,7 +60,6 @@ func addKit(kitKey):
 	var newKit = kitScene.instantiate()
 	newKit.buildSelf(kitKey)
 	civilianKit = newKit
-	pass
 
 var milModScene = load("res://mil_mod.tscn")
 
@@ -81,7 +78,6 @@ func updatePanelUI():
 		newKitMilMod.buildSelf(civilianKit.kitType)
 		$MilModsContainer.add_child(newKitMilMod)
 		$KitButton.icon = civilianKit.kitImage
-	pass
 
 var toolKitButtonScene = load("res://tool_kit_control.tscn")
 
@@ -99,7 +95,6 @@ func displayAvailableKits(playerCountryNode):
 		$ToolsAndKitsChange.visible = true
 	else:
 		$ToolsAndKitsChange.visible = false
-	pass
 
 func displayAvailableTools(playerCountryNode):
 	if $ToolsAndKitsChange/ToolsGridContainer.get_children() != null:
@@ -115,8 +110,6 @@ func displayAvailableTools(playerCountryNode):
 		$ToolsAndKitsChange.visible = true
 	else:
 		$ToolsAndKitsChange.visible = false
-	pass
-	pass
 
 func onTurnEnd():
 	currentActionPoints = maxActionPoints
@@ -134,16 +127,13 @@ func _on_kit_button_pressed() -> void:
 	emit_signal("kitSignal", self)
 	$ToolsAndKitsChange/ToolsGridContainer.visible = false
 	$ToolsAndKitsChange/KitGridContainer.visible = true
-	pass # Replace with function body.
 
 signal toolSignal
 func _on_tool_button_pressed() -> void:
 	emit_signal("toolSignal", self)
 	$ToolsAndKitsChange/KitGridContainer.visible = false
 	$ToolsAndKitsChange/ToolsGridContainer.visible = true
-	pass # Replace with function body.
 
 signal raiseSignal
 func _on_raise_button_pressed() -> void:
 	emit_signal("raiseSignal", self)
-	pass # Replace with function body.

@@ -56,4 +56,3 @@ func updateUI(CID, civ, toolName, kitType, ppbTile):
 		$ColonizeButton.visible = true
 	else:
 		$ColonizeButton.visible = false
-	pass

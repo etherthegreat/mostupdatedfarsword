@@ -161,4 +161,3 @@ func buildSelf():
 	CADocSpecial = ["War Measures Act"]
 	CAGods1 = ["John A. Macdonald", "George-Étienne Cartier", "Wilfrid Laurier", "Agnes Macphail", "Laura Secord", "Louis-Hippolyte LaFontaine"]
 	CAGods2 = ["Tommy Douglas", "Viola Desmond", "Lester B. Pearson", "Louis Riel", "Emily Murphy", "Nellie McClung", "Terry Fox", "Chief Dan George", "Buffy Sainte-Marie", "David Suzuki", "Roméo Dallaire", "Thérèse Casgrain", "Mary Two-Axe Earley", "Pierre Elliott Trudeau"]
-	pass

@@ -67,7 +67,6 @@ func buildSelf(player):
 		if Technology.techName == "Authority":
 			$TechPanel/GridContainer/AurhorityTechUnlockButton.purchase()
 	connectTechButtons()
-	pass
 
 signal addTechToPlayer
 
@@ -81,14 +80,12 @@ func connectTechButtons():
 	for techButton in $TechPanel/UnlockedContainer.get_children():
 		techButton.selectInvestment.connect(selectInvestmentFunc)
 		techButton.newTech.connect(unlockTech)
-	pass
 
 func unlockTech( techID, techButt, change):
 	nextTechChange = change
 	techButt.purchase()
 	emit_signal("addTechToPlayer", techID)
 	investmentTech = null
-	pass
 
 func selectInvestmentFunc(techbutt):
 	investmentTech = techbutt
@@ -96,8 +93,6 @@ func selectInvestmentFunc(techbutt):
 		investInTech(nextTechChange)
 		nextTechChange = 0
 	self.visible = false
-	pass
 
 func investInTech(science):
 	investmentTech.addScienceInvestment(science)
-	pass

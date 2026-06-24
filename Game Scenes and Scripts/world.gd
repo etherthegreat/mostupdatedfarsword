@@ -344,11 +344,9 @@ func _process(delta: float) -> void:
 	else:
 		$CanvasLayer/NextTurnControl/PickTech.visible = false
 		$CanvasLayer/NextTurnControl/NextTurn.visible = true
-	pass
 
 func updateMap():
 	$TileController.updateTiles(mapMode, displayCorruption, playerCountryNode)
-	pass
 
 
 var currentWorldTurn: int = 0
@@ -1691,21 +1689,17 @@ var playerOutput: Dictionary = {}
 func calculatePlayerOutputs(caller):
 	playerOutput.clear()
 	playerCountryNode.outputCheck(caller)
-	pass
 
 func returnOutput(outputsDict, caller):
 	playerOutput = outputsDict
 	caller.returnedOutput(playerOutput)
-	pass
 
 func connectCountrySignals():
 	for country in aliveCountriesList:
 		country.raiseThisArmySignal.connect(raiseArmyFromWorld)
-	pass
 
 func updateBeliefControl():
 	$CanvasLayer/BeliefControl.updateSelf()
-	pass
 
 
 # ── TURN ORDER & PHASE SYSTEM ────────────────────────────────────────────────
@@ -1905,7 +1899,6 @@ var selectedTile: Tile
 
 func manaUpdate(type, amount, dictionary):
 	$CanvasLayer/TileInfoPanel.buildTileOutput(type, amount, dictionary)
-	pass
 
 func tileClicked(tile):
 	#print("Tile", tile.tileNumber, "Clicked")
@@ -1923,11 +1916,9 @@ func tileClicked(tile):
 	#if $CanvasLayer/BuildingInfoPanel.visible == false:
 		#$CanvasLayer/BuildingInfoPanel.visible = true
 	$CanvasLayer/BuildingInfoPanel.displayBuildingInfo(tile)
-	pass
 
 func retrieveOutputs():
 	selectedTile.censusTile(playerCountryNode)
-	pass
 
 func matchCountryBuildings():
 	if playerCountryNode == null:
@@ -1937,7 +1928,6 @@ func matchCountryBuildings():
 		if Tile.tileOwner == playerCountry:
 			for building in Tile.tileBuildingsList:
 				playerCountryNode.connectBuilding(building)
-	pass
 
 func _on_food_area_2d_mouse_entered():
 	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 360
@@ -2000,47 +1990,37 @@ func _on_culture_area_mouse_entered() -> void:
 	$CanvasLayer/ResourceInfoControl.visible = true
 	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
 	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 8)
-	pass # Replace with function body.
 func _on_culture_area_mouse_exited() -> void:
 	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
-	pass # Replace with function body.
 func _on_mandate_area_mouse_entered() -> void:
 	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 1440
 	$CanvasLayer/ResourceInfoControl.visible = true
 	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
 	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 9)
-	pass # Replace with function body.
 func _on_mandate_area_mouse_exited() -> void:
 	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
-	pass # Replace with function body.
 func _on_harmony_area_mouse_entered() -> void:
 	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 1440
 	$CanvasLayer/ResourceInfoControl.visible = true
 	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
 	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 10)
-	pass # Replace with function body.
 func _on_harmony_area_mouse_exited() -> void:
 	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
-	pass # Replace with function body.
 func _on_influence_area_mouse_entered() -> void:
 	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 1440
 	$CanvasLayer/ResourceInfoControl.visible = true
 	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
 	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 11)
-	pass # Replace with function body.
 func _on_influence_area_mouse_exited() -> void:
 	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
-	pass # Replace with function body.
 func _on_manpower_area_mouse_entered() -> void:
 	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 840
 	$CanvasLayer/ResourceInfoControl.visible = true
 	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
 	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 12)
-	pass # Replace with function body.
 
 func _on_manpower_area_mouse_exited() -> void:
 	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
-	pass # Replace with function body.
 
 #oldnext turn function
 func _on_test_resource_button_pressed() -> void:
@@ -2049,7 +2029,6 @@ func _on_test_resource_button_pressed() -> void:
 
 func newPlayerTech(techName) -> void:
 	playerCountryNode.addTechnologicalDiscovery(techName)
-	pass # Replace with function body.
 
 func _on_building_panel_panel_upgrade_building(thisBuilding) -> void:
 	print("thisBuilding", thisBuilding.buildingType, thisBuilding.buildingLevel)
@@ -2059,7 +2038,6 @@ func _on_building_panel_panel_upgrade_building(thisBuilding) -> void:
 			for building in Tile.tileBuildingsList:
 				if building.buildingType == thisBuilding.buildingType:
 					building.upgradeBuilding()
-	pass # Replace with function body.
 
 
 func _on_building_panel_panel_downgrade_building(thisBuilding) -> void:
@@ -2069,7 +2047,6 @@ func _on_building_panel_panel_downgrade_building(thisBuilding) -> void:
 			for building in Tile.tileBuildingsList:
 				if building.buildingType == thisBuilding.buildingType:
 					building.downgradeBuilding()
-	pass # Replace with function body.
 
 
 func assignSelectedTile(tileToSelect):
@@ -2078,7 +2055,6 @@ func assignSelectedTile(tileToSelect):
 
 func addNewRewards(rewardType):
 	playerCountryNode.createFactionReward(rewardType)
-	pass
 
 func assignGovernor(governorToAssign, tileToAssignTo):
 	tileToAssignTo.assignNewGovernor(governorToAssign)
@@ -2089,11 +2065,9 @@ func assignGovernor(governorToAssign, tileToAssignTo):
 	calculateGovernorEvent(governorToAssign)
 	# Register commander arc in War Room
 	$CanvasLayer/WarRoomPanel.registerCommanderArc(governorToAssign, tileToAssignTo)
-	pass
 
 func openGovernorsPanel(tile):
 	$CanvasLayer/TileInfoPanel.calculateAvailableGovernor(playerCountryNode, selectedTile)
-	pass
 
 #Magic Code
 
@@ -2109,7 +2083,6 @@ func newSpellEvent(schoolType, currentLvl):
 func addLawToCountry(lawType):
 	playerCountryNode.addLawToConstitution(lawType)
 	$CanvasLayer/GovernmentControl.updateGovernmentPanel()
-	pass
 
 #Army World Code
 func _on_army_button_pressed() -> void:
@@ -2119,7 +2092,6 @@ func _on_army_button_pressed() -> void:
 			BarracksButton.updateSelf()
 	else:
 		$CanvasLayer/MilitaryPanelControl.visible = false
-	pass # Replace with function body.
 	
 const armyScene = preload("res://Game Scenes and Scripts/army.tscn")
 func buildNewPlayerArmy(barracksBuilding, barracksTile, bbButton, playerNode, newArmyName):
@@ -2157,7 +2129,6 @@ func UICommander(commander, army):
 	else:
 		# No commander yet — open the governor picker so the player can assign one
 		_open_army_commander_picker(army)
-	pass
 
 # ── ARMY COMMANDER PICKER ─────────────────────────────────────────────────────
 # Built entirely in code — no .tscn changes needed.
@@ -2247,15 +2218,12 @@ func raiseArmyFromWorld(Army, country, Tile):
 	else:
 		#here is where we will raise either Demonic or nonPlayer Country AIs
 		$PathControl.raiseComputerArmy(Army, country, Tile, pathPointButtonToSend)
-	pass
 func raiseCivilianUnit(civ, country):
 	var civTile = civ.stationNode.ppbTile if civ.stationNode != null else null
 	$PathControl.raisePlayerCiv(civ, country, civTile)
-	pass
 
 func activateArmyControl():
 	armyMode = true
-	pass
 
 var eventScene = load("res://eventScene.tscn")
 
@@ -2266,13 +2234,11 @@ func activateSpellMapMode(spell, cost):
 		$TileController.spellSelectionMode(spell, cost, playerCountryNode)
 	else:
 		$PathControl.spellSelectionMode(spell, cost, playerCountryNode)
-	pass
 
 func spellPurchased(cost):
 	playerCountryNode.TotalMagic -= cost
 	$TileController.normalMode()
 	$CanvasLayer/Spellbook.displaySpells(playerCountryNode)
-	pass
 
 #EVENT SYSTEM
 
@@ -5721,7 +5687,6 @@ func _is_state_liberated(state_code: String, cid: String) -> bool:
 func _on_right_click_detector_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if Input.is_action_just_pressed('Right Click'):
 		resetUI()
-	pass # Replace with function body.
 
 func resetUI():
 	for Tile in $TileController.get_children():
@@ -5731,7 +5696,6 @@ func resetUI():
 		Control.visible = false
 		$CanvasLayer/PanelOpenerControl.visible = true
 		$"CanvasLayer/Resource Bar (TOP)".visible = true
-	pass
 
 var lastSelectedPathPoint: pathPointButton
 func updateArmyFunc(Army, pathPoint):
@@ -5749,7 +5713,6 @@ func updateArmyFunc(Army, pathPoint):
 	else:
 		$CanvasLayer/ArmyPanel.visible = false
 		lastSelectedPathPoint = null
-	pass
 
 func _on_path_control_show_army_info(key) -> void:
 	match key:
@@ -5790,7 +5753,6 @@ func _on_path_control_show_army_info(key) -> void:
 			$CanvasLayer/ArmyPanel/ActionInfoPanelControl/ActionDescriptionLabel.text = "Grant half of this unit's defense to a nearby unit for this turn."
 		"Close":
 			$CanvasLayer/ArmyPanel/ActionInfoPanelControl.visible = false
-	pass # Replace with function body.
 
 #this is where the battles for melee are calculated
 var calculateMelee: bool
@@ -5808,7 +5770,6 @@ func meleePressed(armyPath, thisArmy) -> void:
 	#if an apf is hovered over while in melee attack calc, build a battle and display results
 	#if an apf is clicked while in melee attack calc, enact the battle and add damage/results
 
-	pass # Replace with function body.
 
 func _army_has_active_marine(army: Army) -> bool:
 	for unit in army.unitsList:
@@ -5823,20 +5784,17 @@ func rangedPressed(armyPath, thisArmy) -> void:
 	if lastSelectedPathPoint != null:
 		for pathPointButton in lastSelectedPathPoint.neighborPathPoints:
 			pathPointButton.calculateBattle(armyPath, "ranged", thisArmy, lastSelectedPathPoint)
-	pass # Replace with function body.
 
 func updatePathPointsFunc(visibility):
 	if visibility == false:
 		$CanvasLayer/ArmyPanel/ArmyButtonsContainer.visible = false
 	else:
 		$CanvasLayer/ArmyPanel/ArmyButtonsContainer.visible = true
-	pass
 
 func newTileDevelopment(tileToDev, devType, devCivilian):
 	for Tile in $TileController.get_children():
 		if Tile.tileNumber == tileToDev.tileNumber:
 			Tile.devChange(devType, devCivilian)
-	pass
 
 
 func giveSpellInfo(type, spellBranch):
@@ -5850,28 +5808,28 @@ func giveSpellInfo(type, spellBranch):
 	var schoolType: String
 	match type:
 		"healingPotion":
-			spellString = LocBallUI.magicDic.manifest
-			spellDesc = LocBallUI.magicDic.manifest
+			spellString = LocBallUI.magicDic.healingPotion
+			spellDesc = LocBallUI.magicDic.healingPotionDesc
 			schoolType = LocBallUI.magicDic.manifest
 		"draughtOfKnowledge":
-			spellString = LocBallUI.magicDic.manifest
-			spellDesc = LocBallUI.magicDic.manifest
+			spellString = LocBallUI.magicDic.draughtOfKnowledge
+			spellDesc = LocBallUI.magicDic.draughtOfKnowledgeDesc
 			schoolType = LocBallUI.magicDic.manifest
 		"fireworks":
-			spellString = LocBallUI.magicDic.manifest
-			spellDesc = LocBallUI.magicDic.manifest
+			spellString = LocBallUI.magicDic.fireworks
+			spellDesc = LocBallUI.magicDic.fireworksDesc
 			schoolType = LocBallUI.magicDic.manifest
 		"fleetingFoot":
-			spellString = LocBallUI.magicDic.manifest
-			spellDesc = LocBallUI.magicDic.manifest
+			spellString = LocBallUI.magicDic.fleetingFoot
+			spellDesc = LocBallUI.magicDic.fleetingFootDesc
 			schoolType = LocBallUI.magicDic.manifest
 		"focusingDust":
-			spellString = LocBallUI.magicDic.manifest
-			spellDesc = LocBallUI.magicDic.manifest
+			spellString = LocBallUI.magicDic.focusDust
+			spellDesc = LocBallUI.magicDic.focusDustDesc
 			schoolType = LocBallUI.magicDic.manifest
 		"goldenTouch":
-			spellString = LocBallUI.magicDic.manifest
-			spellDesc = LocBallUI.magicDic.manifest
+			spellString = LocBallUI.magicDic.goldenTouch
+			spellDesc = LocBallUI.magicDic.goldenTouchDesc
 			schoolType = LocBallUI.magicDic.manifest
 		"paralysis":
 			spellString = LocBallUI.magicDic.paralysis
@@ -5898,7 +5856,6 @@ func giveSpellInfo(type, spellBranch):
 			spellDesc = LocBallUI.magicDic.waterbreathingDesc
 			schoolType = LocBallUI.magicDic.manifest
 	spellBranch.giveSpellInfo(schoolPoints, turnsUntil, unlocked, spellString, spellDesc, schoolType)
-	pass
 
 func _on_belief_control_purchased_belief(beliefName, beliefCost) -> void:
 	playerCountryNode.addReligiousBelief(beliefName)
@@ -5908,12 +5865,10 @@ func _on_belief_control_purchased_belief(beliefName, beliefCost) -> void:
 	for army in playerCountryNode.countryArmyList:
 		if army.parentCountry == playerCountryNode:
 			army.applyCountryBeliefMilMods()
-	pass
 
 
 func _on_government_control_slider_changed(amount, type) -> void:
 	playerCountryNode.setNewTaxAmount(amount, type)
-	pass # Replace with function body.
 
 func _on_civilian_button_pressed() -> void:
 	$CanvasLayer/CivilianControl.updateCivilians()
@@ -5921,7 +5876,6 @@ func _on_civilian_button_pressed() -> void:
 		$CanvasLayer/CivilianControl.visible = false
 	else:
 		$CanvasLayer/CivilianControl.visible = true
-	pass # Replace with function body.
 
 var milModScene = load("res://mil_mod.tscn")
 
@@ -5942,63 +5896,51 @@ func updateCivFunc(civ, pathPoint):
 		$CanvasLayer/CivilianUnitControl.visible = true
 	else:
 		$CanvasLayer/CivilianUnitControl.visible = false
-	pass
 
 func calculateCivilianButtons(civ, ppbTile):
 	$CanvasLayer/CivilianUnitControl/CivilianActionButtons.updateUI(playerCountryNode.CID, civ, civ.civilianTool.toolName, civ.civilianKit.kitType, ppbTile)
-	pass
 
 func _on_colonize_button_pressed() -> void:
 	$CanvasLayer/CivilianUnitControl.visible = false
 	$PathControl.colonizeTile()
-	pass # Replace with function body.
 
 func updateCountryTiles(colonizedTile):
 	if colonizedTile.tileOwner != null:
 		for country in aliveCountriesList:
 			if country.CID == colonizedTile.tileOwner:
 				country.addTile(colonizedTile)
-	pass
 
 func _on_increase_agricultural_development_pressed() -> void:
 	$CanvasLayer/CivilianUnitControl.visible = false
 	$PathControl.agricultureTile()
-	pass # Replace with function body.
 
 func _on_increase_resource_development_pressed() -> void:
 	$CanvasLayer/CivilianUnitControl.visible = false
 	$PathControl.resourceTile()
-	pass # Replace with function body.
 
 func _on_increase_urban_development_pressed() -> void:
 	$CanvasLayer/CivilianUnitControl.visible = false
 	$PathControl.urbanTile()
-	pass # Replace with function body.
 
 func _on_increase_elite_development_pressed() -> void:
 	$CanvasLayer/CivilianUnitControl.visible = false
 	$PathControl.eliteTile()
-	pass # Replace with function body.
 
 func _on_increase_military_development_pressed() -> void:
 	$CanvasLayer/CivilianUnitControl.visible = false
 	$PathControl.militaryTile()
-	pass # Replace with function body.
 
 func _on_clear_corruption_pressed() -> void:
 	$CanvasLayer/CivilianUnitControl.visible = false
 	$PathControl.fightCorruptionTile()
-	pass # Replace with function body.
 
 func _on_discover_nearby_tiles_button_pressed() -> void:
 	$CanvasLayer/CivilianUnitControl.visible = false
 	$PathControl.discoverNearby()
-	pass # Replace with function body.
 
 func _on_building_info_panel_fill_with_unlocked_buildings() -> void:
 	for building in playerCountryNode.unlockedBuildings:
 		$CanvasLayer/BuildingInfoPanel.addNewBuildingButton(building)
-	pass # Replace with function body.
 
 func addNewBuildingToTile(buildingType, goldCalculatedCost, foodCalculatedCost, woodCalculatedCost, metalCalculatedCost, thisTile,player):
 	thisTile.addBuilding(buildingType, 1)
@@ -6008,15 +5950,12 @@ func addNewBuildingToTile(buildingType, goldCalculatedCost, foodCalculatedCost, 
 	playerCountryNode.TotalMetal -= metalCalculatedCost
 	$CanvasLayer/BuildingInfoPanel/AddBuildingControl.visible = false
 	$CanvasLayer/BuildingInfoPanel.displayBuildingInfo(thisTile)
-	pass
 
 func _on_spell_schools_control_ask_for_info(type, SpellUnlock) -> void:
 	giveSpellInfo(type, SpellUnlock)
-	pass # Replace with function body.
 
 func _on_spell_schools_control_calculate_player_outputs(spellSchools) -> void:
 	calculatePlayerOutputs(spellSchools)
-	pass # Replace with function body.
 
 func tileSiegeWon(tile, oldCID: String, newCID: String) -> void:
 	for country in aliveCountriesList:

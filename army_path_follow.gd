@@ -37,7 +37,6 @@ func move(key, keyPath, path):
 			movingBackward = true
 			destinationPathPoint = keyPath
 	emit_signal("movingArmy")
-	pass
 
 signal armyArrived
 signal armyTraveling
@@ -88,7 +87,6 @@ func _process(delta: float) -> void:
 		currentPathPoint.stationedArmy = null
 		thisArmy.queue_free()
 		self.queue_free()
-	pass
 
 func onRaise(Army, country, pathPoint):
 	thisArmy = Army
@@ -97,7 +95,6 @@ func onRaise(Army, country, pathPoint):
 	currentPathPoint.occupied = true
 	$APFButton.icon = Army.armyIcon
 	currentTile = pathPoint.ppbTile   # populate immediately so winter drain/speed is safe on turn 1
-	pass
 
 signal apfSelected
 func _on_apf_button_pressed() -> void:
@@ -106,11 +103,9 @@ func _on_apf_button_pressed() -> void:
 	else:
 		thisArmy.armyCharm = spellToCast
 		spellToCast = null
-	pass # Replace with function body.
 
 func showBattle(battle):
 	$battlecontrol.add_child(battle)
-	pass
 
 func deleteBattle():
 	if $battlecontrol.get_children() != null:
@@ -120,8 +115,6 @@ func deleteBattle():
 
 func prepareMilSpell(spellForCast):
 	spellToCast = spellForCast
-	pass
 
 func emitTileChange():
 	emit_signal("siegeChange", thisArmy, currentPathPoint)
-	pass

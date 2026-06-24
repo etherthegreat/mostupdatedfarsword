@@ -687,7 +687,6 @@ func buildBuilding():
 			dollarsDic["Base Courthouse Dollar Cost"] = (-1 * buildingLevel)
 			cultureDic["Base Courthouse Culture Cost"] = (-1 * buildingLevel)
 			woodDic["Base Courthouse Wood Cost"] = (-1 * buildingLevel)
-	pass
 
 func matchPlayerUnlockables(playerCountryNode):
 	foodDic.clear()
@@ -1450,7 +1449,6 @@ func matchPlayerUnlockables(playerCountryNode):
 					mandateDic["Law: French Cultural Identity Enshrined"] = (-1 * buildingLevel)
 	_apply_axis_bonuses(buildingType)
 	_apply_belief_bonuses(buildingType)
-	pass
 
 func _apply_faction_bonuses(bType: String) -> void:
 	if playerCountry == null:
@@ -2127,7 +2125,6 @@ func calculateOutputs(playerCountryNode):
 		corruptionChange = corruptionGainPerLevel - corruptionLossPerLevel
 	_apply_abnormal_modifiers()
 	#print("totalBuildingMagic", totalBuildingMagic)
-	pass
 
 func _apply_abnormal_modifiers() -> void:
 	# Flat bonuses that don't follow the standard PerLevel × buildingLevel model.
@@ -2180,8 +2177,6 @@ func _apply_abnormal_modifiers() -> void:
 func upgradeBuilding():
 	buildingLevel += 1
 	print("upgrade successful", buildingType, buildingLevel)
-	pass
 
 func downgradeBuilding():
 	buildingLevel -= 1
-	pass

@@ -71,4 +71,3 @@ func buildTileEcoMod():
 			modDescription = "An unmanned warship is raiding coastal trade. All buildings lose $2 per turn until the disturbance is resolved."
 			modSprite = load("res://art assets/Placeholder Art/UI Art/resources/blue water.png")
 			number = -2
-	pass

@@ -19,4 +19,3 @@ func _physics_process(delta: float) -> void:
 			$Camera2D.zoom = 1
 		else:
 			$Camera2D.zoom -= .2
-	pass

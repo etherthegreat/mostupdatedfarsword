@@ -336,11 +336,9 @@ func buildPD(type):
 			$BeliefPanel/purchasedGodsGrid.add_child(newPD)
 	newPD.purchasedDoctrineHover.connect(pdPanelUpdate)
 	newPD.pdExited.connect(closePurchasePanel)
-	pass
 
 func closePurchasePanel():
 	$BeliefPanel/PurchasePanel.visible = false
-	pass
 
 func pdPanelUpdate(title, img, desc, border):
 	$BeliefPanel/PurchasePanel/PPSprite.texture = img
@@ -352,7 +350,6 @@ func pdPanelUpdate(title, img, desc, border):
 	$BeliefPanel/PurchasePanel/Label.text = title
 	$BeliefPanel/PurchasePanel/PPBorderSprite.texture = border
 	$BeliefPanel/PurchasePanel.visible = true
-	pass
 
 var pendingCost: int
 var pendingBelief: String
@@ -369,18 +366,15 @@ func purchasePanel(bbName, bbCost, bbImage, beliefDesc, beliefBorder):
 	pendingBelief = bbName
 	$BeliefPanel/PurchasePanel/PPBorderSprite.texture = beliefBorder
 	$BeliefPanel/PurchasePanel.visible = true
-	pass
 
 func _on_belief_button_mouse_entered() -> void:
 	if $BeliefInfoPanel.visible == false:
 		$BeliefInfoPanel.visible = true
 
-	pass # Replace with function body.
 
 func _on_belief_button_mouse_exited() -> void:
 	if $BeliefInfoPanel.visible == true:
 		$BeliefInfoPanel.visible = false
-	pass # Replace with function body.
 
 func _process(delta: float) -> void:
 	if not is_instance_valid(player):
@@ -416,7 +410,6 @@ func _process(delta: float) -> void:
 			-2: $BeliefPanel/testLabel.text = "Reason II"
 			-3: $BeliefPanel/testLabel.text = "Reason III"
 		matchFaithPointsIcons()
-	pass
 
 func _get_uniform_belief_cost() -> int:
 	if not is_instance_valid(player):
@@ -491,7 +484,6 @@ func matchFaithPointsIcons():
 			$"FaithPoints/-1LevelSpriteBW".visible = false
 			$"FaithPoints/-2LevelSpriteBW".visible = false
 			$"FaithPoints/-3LevelSpriteBW".visible = false
-	pass
 
 
 # ── Reason side (more Icons than Doctrines → negative churchLevel) ──────────

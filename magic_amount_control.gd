@@ -59,14 +59,12 @@ func buildSelf():
 		spellBranchUnlock.returnTranslatedInfo.connect(giveTranslatedInfo)
 		spellBranchUnlock.buildSelf()
 
-	pass
 
 
 signal askSpellBranchInfo
 func giveTranslatedInfo(type, spellBranch):
 	emit_signal("askSpellBranchInfo", type, spellBranch)
 	#print("RETURN DEBUG")
-	pass
 
 func update(playerCountryNode, magicDic):
 	schoolType = schoolTypeEXP
@@ -110,7 +108,6 @@ func update(playerCountryNode, magicDic):
 	for spellBranchUnlock in spellUnlocks:
 		spellBranchUnlock.update(amount, amountPerTurn)
 		pass
-	pass
 
 signal spellSchoolLevelUp
 
@@ -128,4 +125,3 @@ func calculateLevelUp(schoolLevel):
 		pass
 	else:
 		pass
-	pass

@@ -80,4 +80,3 @@ func displayNationalResource(playerCountry, resourceNumber):
 		$ResourceIncomeLab.text = str("Total Manpower Increase: ", playerCountry.MAN)
 		$ResourceExpenseLab.text = str("Total Manpower Losses: ", playerCountry.manpowerEXPM)
 		$ResourceMaxLabel.text = str("")
-	pass

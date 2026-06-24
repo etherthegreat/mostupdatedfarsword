@@ -147,7 +147,6 @@ func updateInspector(building):
 	else:
 		#print("no inspector")
 		pass
-	pass
 
 
 
@@ -155,7 +154,6 @@ func updateInspector(building):
 func _process(delta: float) -> void:
 	if self.visible == true:
 		updateInspector(buildingUnderInspection)
-	pass
 
 func _on_upgrade_pressed() -> void:
 	emit_signal("upgradeBuilding", buildingUnderInspection)
@@ -163,12 +161,10 @@ func _on_upgrade_pressed() -> void:
 	player.TotalWood -= woodUpgradeCost
 	player.TotalDollars -= goldUpgradeCost
 	player.TotalMetal -= metalUpgradeCost
-	pass # Replace with function body.
 
 
 func _on_downgrade_pressed() -> void:
 	emit_signal("downgradeBuilding", buildingUnderInspection)
-	pass # Replace with function body.
 
 var goldUpgradeCost: int
 var foodUpgradeCost: int
@@ -291,4 +287,3 @@ func calculateUpgradeCost(building):
 			goldUpgradeCost += (30 + (30 * building.buildingLevel))
 		return
 	print("no building recognized")
-	pass

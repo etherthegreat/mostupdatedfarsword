@@ -317,6 +317,28 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 9
 text = "Locate On Map"
 
+[node name="GuardControl" type="Control" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="GuardButton" type="CheckButton" parent="VBoxContainer/GuardControl"]
+layout_mode = 0
+offset_left = -38.0
+offset_top = -23.0
+offset_right = 60.0
+offset_bottom = 42.0
+tooltip_text = "Skip this army in the end-of-turn movement cycle."
+
+[node name="Label" type="Label" parent="VBoxContainer/GuardControl"]
+layout_mode = 0
+offset_left = -38.0
+offset_top = -31.0
+offset_right = 79.0
+offset_bottom = -8.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 9
+text = "Guard"
+
 [connection signal="pressed" from="RaiseArmy" to="." method="_on_raise_army_pressed"]
 [connection signal="pressed" from="CommanderButton" to="." method="_on_commander_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/BannerControl/BannerButton" to="." method="_on_banner_button_pressed"]
+[connection signal="toggled" from="VBoxContainer/GuardControl/GuardButton" to="." method="_on_guard_button_toggled"]

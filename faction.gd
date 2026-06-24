@@ -23,7 +23,6 @@ func buildSelf(ID, loyalty, newLeader):
 	factionGovernorsList.append(factionLeader)
 	visualizeSelf()
 	matchFactionRewards()
-	pass
 
 func visualizeSelf():
 	$FactionPanel/ProgressBar.value = factionLoyalty
@@ -31,7 +30,6 @@ func visualizeSelf():
 	$FactionPanel/FactionLeaderNameLabel.text = factionLeader.governorType
 	$FactionPanel/FactionNameLabel.text = factionName
 	$FactionPanel/ProgressBar.value = factionLoyalty
-	pass
 
 var rewardScene = preload("res://faction_reward.tscn")
 
@@ -237,7 +235,6 @@ func matchFactionRewards():
 				"All maritime provinces unite under a single trade charter. Dock output surges.",
 				FR_texture3, 3
 			)
-	pass
 
 func addFactionReward(rewardType, rewardDescription, rewardTexture, slot):
 	var newReward = rewardScene.instantiate()
@@ -252,23 +249,19 @@ func addFactionReward(rewardType, rewardDescription, rewardTexture, slot):
 			factionReward3 = newReward
 	$FactionPanel/FactionRewards.add_child(newReward)
 	factionRewards.append(newReward)
-	pass
 
 signal sendRewardType
 func forwardRewardType(factionRewardType):
 	emit_signal("sendRewardType", factionRewardType)
 	print("faction reward type", factionRewardType)
-	pass
 
 
 func _on_progress_bar_area_2d_mouse_entered() -> void:
 	$FactionPanel/FactionTutorialPanel.visible = true
-	pass # Replace with function body.
 
 
 func _on_progress_bar_area_2d_mouse_exited() -> void:
 	$FactionPanel/FactionTutorialPanel.visible = false
-	pass # Replace with function body.
 
 func upgradeFaction(amount):
 	factionLoyalty += amount
@@ -282,8 +275,6 @@ func upgradeFaction(amount):
 		factionReward3.rewardUnlocked()
 		factionReward3.factionRewardActivated = true
 	visualizeSelf()
-	pass
 
 func _on_upgrade_faction_button_pressed() -> void:
 	upgradeFaction(10)
-	pass # Replace with function body.

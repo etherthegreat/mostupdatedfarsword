@@ -16,7 +16,6 @@ func _on_area_2d_mouse_entered() -> void:
 	$LawPanel/SelectedPanel/LawDescriptionLabel.text = lawDescription
 	$LawPanel/SelectedPanel/LawCostsLabel.text = lawCosts
 	$LawPanel/SelectedPanel.visible = true
-	pass # Replace with function body.
 
 func buildSelf(newLawType, selected):
 	lawType = newLawType
@@ -135,7 +134,6 @@ func buildSelf(newLawType, selected):
 		$LawPanel/LawSelectionButton.visible = false
 		$LawPanel/LawSprite.visible = true
 		$LawPanel/Area2D.visible = true
-	pass
 
 
 #func _on_area_2d_mouse_exited() -> void:
@@ -153,17 +151,14 @@ func _on_law_selection_button_pressed() -> void:
 		$"LawPanel/LawInfoPanel/Add LawLabel".text = lawCosts
 	else:
 		$LawPanel/LawInfoPanel.visible = false
-	pass # Replace with function body.
 
 func closeTab():
 	if $LawPanel/LawInfoPanel != null:
 		if $LawPanel/LawInfoPanel.visible == true:
 			$LawPanel/LawInfoPanel.visible = false
-	pass
 
 func _on_not_now_button_pressed() -> void:
 	$LawPanel/LawInfoPanel.visible = false
-	pass # Replace with function body.
 
 signal selectThisLaw
 func _on_confirm_button_pressed() -> void:
@@ -172,11 +167,9 @@ func _on_confirm_button_pressed() -> void:
 	$LawPanel/LawSprite.visible = true
 	$LawPanel/Area2D.visible = true
 	emit_signal("selectThisLaw", lawType)
-	pass # Replace with function body.
 
 
 
 
 func _on_area_2d_mouse_exited() -> void:
 	$LawPanel/SelectedPanel.visible = false
-	pass # Replace with function body.

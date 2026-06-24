@@ -114,14 +114,11 @@ func buildSelf(type):
 	$Control/DescriptionRichLabel.text = techRewardDescription
 	$Control/TypeLabel.text = techRewardType
 	$TechRewardSprite.texture = techRewardImage
-	pass
 
 
 func _on_area_2d_mouse_entered() -> void:
 	$Control.visible = true
-	pass # Replace with function body.
 
 
 func _on_area_2d_mouse_exited() -> void:
 	$Control.visible = false
-	pass # Replace with function body.
