@@ -90,6 +90,7 @@ func updateSelf(newType: String) -> void:
 		# ============================================================
 		# MUSKETS — ranged primary, bayonet gives limited melee
 		# consumes weapons on ranged attack, has reload delay
+		# Sprites (Flintlock/Brown_Bess/Percussion_Cap/Lever_Repeater) by Sister Spacedesk
 		# ============================================================
 		"Flintlock":
 			weaponClass              = "Musket"
@@ -101,7 +102,7 @@ func updateSelf(newType: String) -> void:
 			reloadTurns              = 2
 			weaponsPerLevel          = 1
 			chargeManpowerCost       = 0.0
-			weaponImage = load("res://art assets/finishedAssets/Weapons/Spear.png")
+			weaponImage = load("res://art assets/finishedAssets/Weapons/Flintlock.png")
 			addWeaponMod("Bayonet")
  
 		"Brown Bess":
@@ -114,7 +115,7 @@ func updateSelf(newType: String) -> void:
 			reloadTurns              = 2
 			weaponsPerLevel          = 1
 			chargeManpowerCost       = 0.0
-			weaponImage = load("res://art assets/finishedAssets/Weapons/Spear.png")
+			weaponImage = load("res://art assets/finishedAssets/Weapons/Brown_Bess.png")
 			addWeaponMod("Bayonet")
 			addWeaponMod("VolleyFire")  # bonus when multiple musket units fire
  
@@ -128,7 +129,7 @@ func updateSelf(newType: String) -> void:
 			reloadTurns              = 1   # faster reload
 			weaponsPerLevel          = 1
 			chargeManpowerCost       = 0.0
-			weaponImage = load("res://art assets/finishedAssets/Weapons/Spear.png")
+			weaponImage = load("res://art assets/finishedAssets/Weapons/Percussion_Cap.png")
 			addWeaponMod("Bayonet")
  
 		"Lever Repeater":
@@ -141,7 +142,7 @@ func updateSelf(newType: String) -> void:
 			reloadTurns              = 0   # no reload — fires every turn
 			weaponsPerLevel          = 2   # burns more ammo
 			chargeManpowerCost       = 0.0
-			weaponImage = load("res://art assets/finishedAssets/Weapons/Spear.png")
+			weaponImage = load("res://art assets/finishedAssets/Weapons/Lever_Repeater.png")
 			addWeaponMod("Bayonet")
 			addWeaponMod("RapidFire")
  
