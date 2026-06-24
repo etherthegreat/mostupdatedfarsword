@@ -48,16 +48,16 @@ func newGameSpellAssignment():
 			spellSprite = load("res://art assets/Placeholder Art/Spells/Draught of Knowledge.PNG")
 			spellCastCost = 25
 			spellShortDescription = "The Jersey Devil holds dominion over these woods. He was born there under highly controversial circumstances and considers the territory personally his. Trespassers are corrected. Vigorously."
-		"PACIFIC NORTHWEST PRIVACY PROTECTION ACT":      # PROT_03 Bigfoot
+		"APPALACHIAN PRIVACY PROTECTION ACT":            # PROT_03 Wood Booger
 			militarySpell = false
 			spellSprite = load("res://art assets/Placeholder Art/Spells/Draught of Knowledge.PNG")
 			spellCastCost = 35
-			spellShortDescription = "Your armies move unseen, like a large hairy man through the ferns. The tracks are enormous, the evidence abundant, and yet the government swears it isn't there. Your scouts learn from the best."
-		"EXECUTIVE WEATHER CONTROL INITIATIVE":          # PROT_04 Thunderbird
+			spellShortDescription = "Your armies move unseen through the Blue Ridge. The Wood Booger is enormous, silent, and extremely private about the Appalachians. The tracks are larger than logic permits. The DMA has no record of anything moving through those ridgelines. Neither will anyone else."
+		"EXECUTIVE WEATHER CONTROL INITIATIVE":          # PROT_04 Pamola
 			militarySpell = true
 			spellSprite = load("res://art assets/Placeholder Art/Spells/Fireworks.PNG")
 			spellCastCost = 50
-			spellShortDescription = "The Thunderbird, when properly aroused, shall release storms of such fury that enemy formations scatter. He is ancient, tremendous, and requires considerable coaxing. The results are worth the effort."
+			spellShortDescription = "Pamola has come down from Katahdin. The storm that arrives does not distinguish between an army and a hillside — it simply arrives, total and sudden, from a direction that was not in any forecast. Enemy formations scatter. The mountain does not file reports."
 		"CLASSIFIED TACTICAL TERROR BUDGET":             # PROT_05 Headless Horseman
 			militarySpell = true
 			spellSprite = load("res://art assets/Placeholder Art/Spells/Fireworks.PNG")
@@ -88,21 +88,21 @@ func newGameSpellAssignment():
 			spellSprite = load("res://art assets/Placeholder Art/Spells/Draught of Knowledge.PNG")
 			spellCastCost = 45
 			spellShortDescription = "A Snallygaster has been assigned to this region and has signed the relevant articles. He is enormous, many-tentacled, and surprisingly diligent. The other clerks avoid his desk area. The smell is distinct."
-		"MIDNIGHT EMERGENCY MOBILIZATION ORDER":         # PROT_11 Paul Revere
-			militarySpell = true
-			spellSprite = load("res://art assets/Placeholder Art/Spells/Fireworks.PNG")
+		"BLACK DOG WATCH PROTOCOL":                      # PROT_11 Black Dog
+			militarySpell = false
+			spellSprite = load("res://art assets/Placeholder Art/Spells/Draught of Knowledge.PNG")
 			spellCastCost = 40
-			spellShortDescription = "Mr. Revere rides through the night in a state of considerable agitation. One if by land, two if by sea, three if everyone should put their breeches on this instant and leave through the back."
-		"FREEDOM RESONANCE AMPLIFICATION DECREE":        # PROT_12 Liberty Bell
+			spellShortDescription = "The Black Dog of the Hanging Hills has been observed in the target area. This is either the first sighting or the third, depending on enemy scouting records. Advise Crown patrols to stop counting their encounters. They are unlikely to do so. The DMA considers this satisfactory."
+		"MERCY BROWN'S COMPACT":                         # PROT_12 Mercy Brown
 			militarySpell = false
 			spellSprite = load("res://art assets/Placeholder Art/Spells/Health Potion.PNG")
 			spellCastCost = 50
-			spellShortDescription = "Ring the bell. Let freedom's resonance stir the passions of free men and women everywhere. They are stirred. Vigorously. No one is taking responsibility for the crack."
-		"RURAL SPECTRAL INVESTMENT INITIATIVE":          # PROT_13 Green Mountain Ghost
+			spellShortDescription = "Mercy Brown's interests in the area have been formalized. She operates nocturnally, which is when Crown supply convoys believe they are unobserved. Crown units in the target area begin filing medical reports describing chronic fatigue of unknown origin. The DMA has stopped asking her to specify what she is doing. She finds the question unnecessary."
+		"LAKE CHAMPLAIN SOVEREIGNTY DECREE":             # PROT_13 Champ
 			militarySpell = false
 			spellSprite = load("res://art assets/Placeholder Art/Spells/Health Potion.PNG")
 			spellCastCost = 30
-			spellShortDescription = "The Green Mountain Ghost haunts your forests in a professional capacity, encouraging settlers to greater productivity through nocturnal visitations. Settlers report working harder, sleeping less, and declining to elaborate on specifics."
+			spellShortDescription = "Lake Champlain is controlled by a large aquatic entity with territorial opinions and first-documented-sighting credentials dating to 1609. Crown vessels attempting transit report structural complications. Champ does not file explanations. The admiralty has stopped requesting them."
 
 		"FLORIDA CRYPTID INTEGRATION TASK FORCE":        # PROT_15 Skunk Ape
 			militarySpell = false

@@ -84,17 +84,17 @@ const PROTECTOR_SUMMON_TURNS: Dictionary = {
 const USA_PROT_TILES: Dictionary = {
 	"PROT_01":  46,   # Mothman               — Harper's Ferry, WV (Appalachian Minerals)
 	"PROT_02":  23,   # Jersey Devil          — Lakewood, NJ (Pine Barrens wetlands)
-	"PROT_03": 145,   # Bigfoot               — Asheville, NC (Blue Ridge Highlands)
-	"PROT_04": 139,   # Thunderbird           — Buffalo, NY (Niagara / Great Lakes storms)
+	"PROT_03": 145,   # Wood Booger           — Asheville, NC (Blue Ridge Highlands)
+	"PROT_04": 118,   # Pamola                — Bar Harbor, ME (Acadia Wilderness)
 	"PROT_05":  17,   # Headless Horseman     — Peekskill, NY (Hudson Valley)
 	"PROT_06":  41,   # Goatman               — Bethesda, MD (Prince George's County corridor)
 	"PROT_07": 165,   # Bell Witch            — Nashville, TN
 	"PROT_08":  65,   # Old Ironsides         — Boston, MA (Charlestown Navy Yard)
 	"PROT_09":   1,   # Valley Forge Guardian — Valley Forge, PA
-	"PROT_10":  42,   # Snallygaster          — Frederick, MD
-	"PROT_11":  61,   # Paul Revere           — Lexington, MA (Lexington Cry)
-	"PROT_12":   2,   # Liberty Bell          — Philadelphia, PA (Liberty Bell)
-	"PROT_13":  80,   # Green Mountain Ghost  — Montpelier, VT (Green Mountains)
+	"PROT_10":  47,   # Snallygaster          — Winchester, VA (Shenandoah Valley)
+	"PROT_11":  59,   # Black Dog             — Hartford, CT (Hanging Hills)
+	"PROT_12":  56,   # Mercy Brown           — Coventry, RI (Exeter)
+	"PROT_13":  80,   # Champ                 — Montpelier, VT (Lake Champlain region)
 
 	"PROT_15": 177,   # Skunk Ape             — Gainesville, FL (Wetlands)
 	"PROT_16":  20,   # Agent 355             — Manhattan, NY (Culper Ring operations)
@@ -2239,17 +2239,17 @@ func _protector_id_to_name(pid: String) -> String:
 	match pid:
 		"PROT_01": return "Mothman"
 		"PROT_02": return "Jersey Devil"
-		"PROT_03": return "Bigfoot"
-		"PROT_04": return "Thunderbird"
+		"PROT_03": return "Wood Booger"
+		"PROT_04": return "Pamola"
 		"PROT_05": return "Headless Horseman"
 		"PROT_06": return "Goatman"
 		"PROT_07": return "Bell Witch"
 		"PROT_08": return "Old Ironsides"
 		"PROT_09": return "Valley Forge Guardian"
 		"PROT_10": return "Snallygaster"
-		"PROT_11": return "Paul Revere"
-		"PROT_12": return "Liberty Bell"
-		"PROT_13": return "Green Mountain Ghost"
+		"PROT_11": return "Black Dog"
+		"PROT_12": return "Mercy Brown"
+		"PROT_13": return "Champ"
 		"PROT_15": return "Skunk Ape"
 		"PROT_16": return "Agent 355"
 		"PROT_17": return "Lincoln's Ghost"
@@ -2266,14 +2266,11 @@ func _protector_id_to_name(pid: String) -> String:
 
 func _protector_id_to_school(pid: String) -> String:
 	match pid:
-		"PROT_01", "PROT_02", "PROT_03", "PROT_10", "PROT_15": return "cryptid"
+		"PROT_01", "PROT_02", "PROT_03", "PROT_10", "PROT_11", "PROT_13", "PROT_15": return "cryptid"
 		"PROT_06":                                              return "terror"
 		"PROT_04":                                              return "storm"
-		"PROT_07":                                              return "spectral"
-		"PROT_05", "PROT_13", "PROT_17":                        return "spectral"
+		"PROT_05", "PROT_07", "PROT_12", "PROT_16", "PROT_17": return "spectral"
 		"PROT_08", "PROT_09":                                   return "iron"
-		"PROT_11", "PROT_12":                                   return "liberty"
-		"PROT_16":                                              return "spectral"
 	return "manifest"
 
 
@@ -2281,7 +2278,7 @@ func _protector_id_to_spell(pid: String) -> String:
 	match pid:
 		"PROT_01": return "FEDERAL ATMOSPHERIC SURVEILLANCE ACT"
 		"PROT_02": return "PINE BARRENS DEVELOPMENT MORATORIUM"
-		"PROT_03": return "PACIFIC NORTHWEST PRIVACY PROTECTION ACT"
+		"PROT_03": return "APPALACHIAN PRIVACY PROTECTION ACT"
 		"PROT_04": return "EXECUTIVE WEATHER CONTROL INITIATIVE"
 		"PROT_05": return "CLASSIFIED TACTICAL TERROR BUDGET"
 		"PROT_06": return "GOATMAN'S JUDGEMENT"
@@ -2289,9 +2286,9 @@ func _protector_id_to_spell(pid: String) -> String:
 		"PROT_08": return "NAVAL SUPERIORITY MAINTENANCE DIRECTIVE"
 		"PROT_09": return "COLD WEATHER RESILIENCE FUNDING ACT"
 		"PROT_10": return "INTER-AGENCY CRYPTID INTEGRATION PROGRAM"
-		"PROT_11": return "MIDNIGHT EMERGENCY MOBILIZATION ORDER"
-		"PROT_12": return "FREEDOM RESONANCE AMPLIFICATION DECREE"
-		"PROT_13": return "RURAL SPECTRAL INVESTMENT INITIATIVE"
+		"PROT_11": return "BLACK DOG WATCH PROTOCOL"
+		"PROT_12": return "MERCY BROWN'S COMPACT"
+		"PROT_13": return "LAKE CHAMPLAIN SOVEREIGNTY DECREE"
 		"PROT_15": return "FLORIDA CRYPTID INTEGRATION TASK FORCE"
 		"PROT_16": return "CULPER RING"
 		"PROT_17": return "EMANCIPATION PROCLAMATION 2: STILL EMANCIPATING"
