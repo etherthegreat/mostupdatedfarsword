@@ -54,8 +54,9 @@ func raisePlayerCiv(civ, country, Tile):
 	newCPF.onRaise(civ, country, civ.stationNode)
 	showPathPoints(civ.stationNode)
 
-func updateTravelingArmy(progressRate, currentPath, Army):
-	pass
+func updateTravelingArmy(_progressRate, _currentPath, _Army):
+	# Visual feedback during travel is handled by army_path_follow._process().
+	# Reserve this callback for future world-level travel notifications.
 
 
 func armyArrivedFunc(pathOfArmy, newPathPointButton, theArmy, apf, contain):

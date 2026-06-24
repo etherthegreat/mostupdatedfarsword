@@ -401,7 +401,7 @@ func createFactionReward(rewardType):
 			addGovernmentLaw("Municipal Reform Act")
 			addGovernmentLaw("Voting Rights Act")
 		"Foreign Diplomacy":
-			pass
+			addGovernmentLaw("National Security Act")
 		"Constitutional Convention":
 			addGovernmentLaw("Voting Rights Act")
 		# Common Cause
@@ -410,7 +410,7 @@ func createFactionReward(rewardType):
 		"The People's Assembly":
 			addGovernmentLaw("Civil Rights Act")
 		"Land Reform":
-			pass
+			addGovernmentLaw("Municipal Reform Act")
 		# Abolitionist League
 		"Freedom Papers":
 			addGovernmentLaw("Civil Rights Act")
@@ -421,7 +421,7 @@ func createFactionReward(rewardType):
 			addGovernmentLaw("Voting Rights Act")
 		# Free Workers Union
 		"Guild Charters":
-			pass
+			addGovernmentLaw("Militia Act")
 		"General Strike":
 			addGovernmentLaw("Americans with Disabilities Act")
 		"Workers Commonwealth":
@@ -433,7 +433,7 @@ func createFactionReward(rewardType):
 			addGovernorToGovernorPool("Pierre Renard", 1)
 		"Republic of Quebec":
 			addGovernmentLaw("Canadian Citizenship Act")
-			addGovernmentLaw("Dominion Elections Act")
+			addGovernmentLaw("Republic Elections Act")
 		# Loyalist Settlers
 		"Crown Defectors":
 			addGovernmentLaw("National Defence Act")
@@ -441,29 +441,29 @@ func createFactionReward(rewardType):
 			addGovernorToGovernorPool("Benjamin Tallmadge", 2)
 		"New Republic Converts":
 			addGovernmentLaw("Canada Shipping Act")
-			addGovernmentLaw("Dominion Elections Act")
+			addGovernmentLaw("Republic Elections Act")
 		# Haudenosaunee Confederacy
 		"Treaty of Friendship":
 			addGovernmentLaw("Canadian Citizenship Act")
 		"Haudenosaunee Alliance":
-			pass
+			addGovernmentLaw("Voting Rights Act")
 		"Sovereign Partnership":
 			addGovernmentLaw("Canadian Citizenship Act")
 			addGovernmentLaw("Accessible Canada Act")
 		# Coureurs des Bois
 		"Trade Routes":
-			pass
+			addGovernmentLaw("Merchant Marine Act")
 		"Frontier Network":
 			addGovernorToGovernorPool("Louis Tremblant", 1)
 		"Continental Reach":
-			pass
+			addGovernmentLaw("Canada Shipping Act")
 		# Maritime Patriots
 		"Port Alliance":
-			pass
+			addGovernmentLaw("Republic Elections Act")
 		"Atlantic Commerce":
 			addGovernmentLaw("Merchant Marine Act")
 		"Maritime Union":
-			pass
+			addGovernmentLaw("Accessible Canada Act")
 
 func addGovernorToGovernorPool(governorType, governorLevel):
 	var newGovernor = governor.new()
@@ -681,7 +681,7 @@ const FACTION_GATED_LAWS: Array = [
 	"Voting Rights Act",
 	"Civil Rights Act",
 	"Americans with Disabilities Act",
-	"Dominion Elections Act",
+	"Republic Elections Act",
 	"Canadian Citizenship Act",
 	"Accessible Canada Act",
 ]
@@ -1449,7 +1449,8 @@ func _uk_retreat_to_supply(army: Army) -> void:
 
 
 func _uk_reinforce(_army: Army) -> void:
-	pass
+	# Passive manpower recovery is handled by onTurnEnd().
+	# Future: add logic to advance into neutral territory or consolidate nearby forces.
 
 
 # ============================================================
