@@ -129,7 +129,6 @@ var deleteMode: bool
 signal armyDestroyed
 
 func buildSelf(Name, countryNode, TileNumber, icon):
-	#print("wowo so cool")
 	$VBoxContainer/BannerControl/BannerSprite.texture = icon
 	enemy = false
 	raised = false
@@ -149,7 +148,6 @@ func buildSelf(Name, countryNode, TileNumber, icon):
 				break
 		if inTile == null:
 			push_warning("army.buildSelf: tile " + str(TileNumber) + " not found in OwnedTileList for " + parentCountry.CID)
-	#print("UnitUIContainer 1 Children", $RadicalCoolTestPanel/UnitUIContainer.get_children())
 	for armyCostUI in $resourcescontainer.get_children():
 		armyCostUI.buildSelf()
 
@@ -812,7 +810,6 @@ func applyCountryBeliefMilMods() -> void:
 func commanderCheck():
 	if commander != null:
 		$CommanderButton.visible = true
-		#print("The commander is in", commander, commander.governorLevel)
 		$CommanderButton.icon = commander.governorTexture
 		match commander.governorLevel:
 			1:

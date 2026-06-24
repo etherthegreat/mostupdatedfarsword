@@ -50,5 +50,4 @@ func returnedOutput(playerOutput):
 
 signal askForInfo
 func askSpellInfo(type, spellBranch):
-	print("RETURN ASKINGFORINFO")
 	emit_signal("askForInfo", type, spellBranch)

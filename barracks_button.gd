@@ -36,7 +36,6 @@ func updateSelf():
 
 func _on_text_edit_text_changed():
 	newArmyName = $NameAndConfirmPanel/TextEdit.text
-	print("text edit changed, new name is ", newArmyName)
 
 
 func _on_confirm_button_pressed():

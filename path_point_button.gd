@@ -29,7 +29,6 @@ func buildSelf():
 
 signal pathPointClicked
 func _on_button_pressed() -> void:
-	print("DEBUG CLICK")
 	#if occupied != true:
 	emit_signal("pathPointClicked", self,neighborPathPoints, ppbTile)
 

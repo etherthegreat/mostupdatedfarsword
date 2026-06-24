@@ -150,20 +150,7 @@ var rDEM #this country's attitude toward the Demon Empire
 var rANL #this country's attitude toward Anlaxia
 #eventually, fill with every country in the game
 
-#MagicSchools
-var manifestPoints: int #alchemy
-var spectralPoints: int #illusion
-var cryptidPoints: int #summoning
-var stormPoints: int #druidism
-var ironPoints: int #elementalism
-var libertyPoints: int #divination
-
-var manifestLevel: int
-var spectralLevel: int
-var cryptidLevel: int
-var stormLevel: int
-var ironLevel: int
-var libertyLevel: int
+var activeCivilianCount: int = 0  # updated each turn by PathControl before surveyResources
 
 var spellBaseCost: int #used to calculate the base cost of all spells
 var spellCostModifier: int #used when debuffs are applied for spell costs
@@ -366,25 +353,13 @@ func updateDiscoveredByPlayer():
 	emit_signal("updateDiscoveredTiles", discoveredTilesList)
 
 func setStartingMagic():
-	manifestPoints = 0
-	spectralPoints = 0
-	cryptidPoints = 0
-	stormPoints = 0
-	ironPoints = 0
-	libertyPoints = 0
-	manifestLevel = 0
-	spectralLevel = 0
-	cryptidLevel = 0
-	stormLevel = 0
-	ironLevel = 0
-	libertyLevel = 0
+	pass  # spell school points removed — protectors unlock spells directly
 
 func connectBuilding(building):
 	countryBuildingList.append(building)
 	building.towerBuilding.connect(assignTower)
 
 func assignTower():
-	print("ddd")
 
 func createFactionReward(rewardType):
 	match rewardType:
@@ -755,15 +730,6 @@ func addSpellToSpellbook(Name, Level, Experience):
 	unlockedSpells.append(newSpell)
 	#print ("country is", CID, "Spells are:", unlockedSpells)
 
-func levelUpSchool(type):
-	match type:
-		"manifest", "alchemy":    manifestLevel += 1
-		"iron", "elementalist":   ironLevel     += 1
-		"storm", "druid":         stormLevel    += 1
-		"liberty", "diviner":     libertyLevel  += 1
-		"cryptid", "summoner":    cryptidLevel  += 1
-		"spectral", "illusionist":spectralLevel += 1
-
 func addTechnologicalDiscovery(Name):
 	var newTech = Technology.new()
 	newTech.techName = Name
@@ -779,9 +745,7 @@ func addWeaponTemplate(Name):
 
 func updateUnlockableAttributes():
 	if unlockedTechnologies == null:
-		print("no Technologies found in UnlockedTechnologist")
 	else:
-		#print("We're toally rocking out with our cocks out and everything")
 		var farmBuildingLevel = buildingLevel.new()
 		farmBuildingLevel.buildingType = "Farm"
 		farmBuildingLevel.maxLevel = 0
@@ -1018,7 +982,6 @@ func updateUnlockableAttributes():
 	var thingForPrint: String
 	for buildingLevel in buildingLevelList:
 		thingForPrint = str("buildingType", buildingLevel.buildingType, "buildingLevel", buildingLevel.maxLevel)
-		print(thingForPrint)
 
 var outputsDict: Dictionary = {}
 
@@ -1038,12 +1001,6 @@ func surveyResources():
 	NDT = 0
 	NPM = 0
 	MAN = 0
-	manifestPoints = 0
-	cryptidPoints = 0
-	ironPoints = 0
-	spectralPoints = 0
-	libertyPoints = 0
-	stormPoints = 0
 	for Tile in OwnedTileList:
 		Tile.surveyTile(self)
 		Tile.calculateSpellChanges()
@@ -1060,12 +1017,6 @@ func surveyResources():
 		NDT += Tile.buildingMandateOutput
 		NPM += Tile.buildingInfluenceOutput
 		MAN += Tile.buildingManpowerOutput
-		manifestPoints += Tile.manifestPointsOutput
-		cryptidPoints += Tile.cryptidPointsOutput
-		ironPoints += Tile.ironPointsOutput
-		spectralPoints += Tile.spectralPointsOutput
-		libertyPoints += Tile.libertyPointsOutput
-		stormPoints += Tile.stormPointsOutput
 	collectTaxes()
 	payUnitMaintenance()
 
@@ -1083,12 +1034,6 @@ var tempHPM = 0
 var tempNDT = 0
 var tempNPM = 0
 var tempMAN = 0
-var tempManifestPoints = 0
-var tempCryptidPoints = 0
-var tempIronPoints = 0
-var tempSpectralPoints = 0
-var tempLibertyPoints = 0
-var tempStormPoints = 0
 
 func outputCheck(caller):
 	calculateUniqueBuildingAttributes()
@@ -1107,12 +1052,6 @@ func outputCheck(caller):
 	tempNDT = 0
 	tempNPM = 0
 	tempMAN = 0
-	tempManifestPoints = 0
-	tempCryptidPoints = 0
-	tempIronPoints = 0
-	tempSpectralPoints = 0
-	tempLibertyPoints = 0
-	tempStormPoints = 0
 	for Tile in OwnedTileList:
 		Tile.surveyTile(self)
 		Tile.calculateSpellChanges()
@@ -1129,13 +1068,6 @@ func outputCheck(caller):
 		tempNDT += Tile.buildingMandateOutput
 		tempNPM += Tile.buildingInfluenceOutput
 		tempMAN += Tile.buildingManpowerOutput
-		tempManifestPoints += Tile.manifestPointsOutput
-		tempCryptidPoints += Tile.cryptidPointsOutput
-		tempIronPoints += Tile.ironPointsOutput
-		tempSpectralPoints += Tile.spectralPointsOutput
-		tempLibertyPoints += Tile.libertyPointsOutput
-		tempStormPoints += Tile.stormPointsOutput
-		print("points", manifestPoints, cryptidPoints, ironPoints, spectralPoints, libertyPoints, stormPoints)
 	outputsDict = {
 		"FPM" : tempFPM,
 		"WPM" : tempWPM,
@@ -1150,12 +1082,6 @@ func outputCheck(caller):
 		"NDT" : tempNDT,
 		"NPM" : tempNPM,
 		"MAN" : tempMAN,
-		"MANIFEST" : tempManifestPoints,
-		"CRYPTID"  : tempCryptidPoints,
-		"IRON"     : tempIronPoints,
-		"SPECTRAL" : tempSpectralPoints,
-		"LIBERTY"  : tempLibertyPoints,
-		"STORM"    : tempStormPoints,
 	}
 	emit_signal("checkingOutput", outputsDict, caller)
 
@@ -1175,6 +1101,8 @@ func payUnitMaintenance():
 		NDT += Army.armyMandateCost
 		NPM += Army.armyInfluenceCost
 		MAN += Army.armyManpowerCost
+	# Flat 4 gold/turn per active civilian (laws can reduce activeCivilianCount via modifiers)
+	DPM -= activeCivilianCount * 4
 
 func collectTaxes():
 	TotalDollars += DPM
@@ -1218,7 +1146,6 @@ func calculateUniqueBuildingAttributes():
 		mandateFromGranaries = true
 	else:
 		mandateFromGranaries = false
-	print(currentFoodStockpile, "currentFoodStockpile", foodStorageMax, "foodStorageMax ", mandateThreshold," mandateThreshold ", mandateFromGranaries," mandateFromGranaries")
 	churchBeliefs = 0
 	faithBeliefs = 0
 	for belief in selectedBeliefs:
@@ -1226,7 +1153,6 @@ func calculateUniqueBuildingAttributes():
 			churchBeliefs +=1
 		elif belief.faithBelief == true:
 			faithBeliefs +=1
-	#print("faith beliefs:", faithBeliefs, "church beliefs", churchBeliefs)
 	var beliefDifference = (churchBeliefs - faithBeliefs)
 	if beliefDifference >= -1 && beliefDifference <= 1:
 		churchLevel = 0
@@ -1242,7 +1168,6 @@ func calculateUniqueBuildingAttributes():
 		churchLevel = -2
 	elif beliefDifference <= -6:
 		churchLevel = -3  
-	#print("beliefDifference", beliefDifference, "church Level", churchLevel)
 	#here is where the modifier for 
 
 func calculateTurn() -> void:
@@ -1251,8 +1176,6 @@ func calculateTurn() -> void:
 			_uk_calculate_turn()
 		"CA":
 			_ca_calculate_turn()
-		"BA":
-			pass  # BA is opportunist — TODO DODK
 		_:
 			# Generic passive AI for all state countries spawned at runtime.
 			# To add per-state behaviour later, insert a match arm above this one:
@@ -1309,7 +1232,6 @@ func _ca_press_uk_borders() -> void:
 			best_target.siegeCalculate(army)
 			if best_target.stationedArmy != null:
 				_resolve_ai_battle(army, best_target.stationedArmy, best_target)
-			print("CA ", army.ArmyName, " presses UK at ", best_target.tileName)
 
 
 # ============================================================
@@ -1355,7 +1277,6 @@ func _apply_supply_attrition(army: Army) -> void:
 		var loss = int(unit.unitCurrentManpower * attrition_rate)
 		unit.unitCurrentManpower = max(0, unit.unitCurrentManpower - loss)
 	army.surveySelf()
-	print(CID, " army ", army.ArmyName, " unsupplied — attrition applied")
 
 
 func is_army_supplied(army: Army) -> bool:
@@ -1414,7 +1335,6 @@ func _uk_attack_tile(army: Army, targetTile) -> void:
 	targetTile.siegeCalculate(army)
 	if targetTile.stationedArmy != null:
 		_resolve_ai_battle(army, targetTile.stationedArmy, targetTile)
-	print("UK ", army.ArmyName, " attacks ", targetTile.tileName)
 
 
 func _resolve_ai_battle(attacker: Army, defender: Army, _tile) -> void:
@@ -1432,7 +1352,6 @@ func _resolve_ai_battle(attacker: Army, defender: Army, _tile) -> void:
 
 	defender.calculateDefenderResults("melee", defender_loss)
 	attacker.calculateDefenderResults("melee", attacker_loss)
-	print("UK battle: attacker loses ", attacker_loss, " defender loses ", defender_loss)
 
 
 func _uk_retreat_to_supply(army: Army) -> void:
@@ -1444,7 +1363,6 @@ func _uk_retreat_to_supply(army: Army) -> void:
 		for neighbor in army.inTile.TileNeighbors:
 			if neighbor == tile and neighbor.tileOwner == CID:
 				army.inTile = neighbor
-				print("UK ", army.ArmyName, " retreats to supply at ", neighbor.tileName)
 				return
 
 
@@ -1498,7 +1416,6 @@ func setNewTaxAmount(amount, type):
 			setWorkshopTaxAmount = amount
 		"Bath":
 			setBathTaxAmount = amount
-	print(type," changed to ", amount, "DEBUG")
 
 func payBill(type, amount):
 	match type:
@@ -1562,14 +1479,6 @@ func save_state() -> Dictionary:
 		"TotalMandate":   TotalMandate,
 		"TotalInfluence": TotalInfluence,
 		"TotalManpower":  TotalManpower,
- 
-		# Magic schools
-		"manifestPoints": manifestPoints, "manifestLevel": manifestLevel,
-		"spectralPoints": spectralPoints, "spectralLevel": spectralLevel,
-		"cryptidPoints": cryptidPoints, "cryptidLevel": cryptidLevel,
-		"stormPoints": stormPoints, "stormLevel": stormLevel,
-		"ironPoints": ironPoints, "ironLevel": ironLevel,
-		"libertyPoints": libertyPoints, "libertyLevel": libertyLevel,
  
 		# Economy settings that can change
 		"armyReinforceRate": armyReinforceRate,
@@ -1696,20 +1605,6 @@ func build_from_save(save_data: Dictionary) -> void:
 	TotalMandate   = save_data.get("TotalMandate",   TotalMandate)
 	TotalInfluence = save_data.get("TotalInfluence", TotalInfluence)
 	TotalManpower  = save_data.get("TotalManpower",  TotalManpower)
- 
-	# Restore magic schools
-	manifestPoints = save_data.get("manifestPoints", 0)
-	manifestLevel  = save_data.get("manifestLevel", 0)
-	spectralPoints = save_data.get("spectralPoints", 0)
-	spectralLevel  = save_data.get("spectralLevel", 0)
-	cryptidPoints = save_data.get("cryptidPoints", 0)
-	cryptidLevel  = save_data.get("cryptidLevel", 0)
-	stormPoints = save_data.get("stormPoints", 0)
-	stormLevel  = save_data.get("stormLevel", 0)
-	ironPoints = save_data.get("ironPoints", 0)
-	ironLevel  = save_data.get("ironLevel", 0)
-	libertyPoints = save_data.get("libertyPoints", 0)
-	libertyLevel  = save_data.get("libertyLevel", 0)
  
 	# Restore economy settings
 	armyReinforceRate = save_data.get("armyReinforceRate", armyReinforceRate)

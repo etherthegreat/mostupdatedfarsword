@@ -41,7 +41,6 @@ func buildSelf():
 			layer2tex = load("res://art assets/Placeholder Art/spellbacks/Purple 2.PNG")
 			layer3tex = load("res://art assets/Placeholder Art/spellbacks/Purple 3.PNG")
 			spellImage = load("res://art assets/Placeholder Art/Spells/Draught of Knowledge.PNG")
-			print("RETURNDEBUG 1221", spellType)
 		"fireworks":
 			spellSchool = "Manifest Doctrine"
 			layer1tex = load("res://art assets/Placeholder Art/spellbacks/Red 1.PNG")
@@ -476,7 +475,6 @@ func buildSelf():
 	emit_signal("returnTranslatedInfo", spellType, self)
 
 func giveSpellInfo(schoolPoints, turnsUntil, unlocked, spellStr, spellDesc, schoolType):
-	print("RETURN DEBUG GIVESPELL INFO")
 	infoDic= {
 		"schoolPoints": schoolPoints,
 		"turnsUntil": turnsUntil,
@@ -485,20 +483,17 @@ func giveSpellInfo(schoolPoints, turnsUntil, unlocked, spellStr, spellDesc, scho
 		"description": spellDesc,
 		"type": schoolType
 	}
-	print("RETURN DESCRIPTION", infoDic.description)
 	if infoDic.description != null:
 		$SpellDescription.append_text(infoDic.description)
 		$SpellNameLabel.text = infoDic.spell
 	
 	$schoolpointslabel.text = infoDic.schoolPoints
 	$turnsuntillabel.text = infoDic.turnsUntil
-	print("RETURNTTRANSLATED INFO DEBUG")
 
 
 func update(amount, amountPerTurn):
 	$SchoolPointsRichTextLabel.clear()
 	$unlocksRichTextLabel2.clear()
-	print("DEBUG RETURN UPDATE")
 	$SchoolPointsRichTextLabel.append_text(str(amount, "/", spellCost))
 	if amount >= spellCost:
 		$unlocksRichTextLabel2.append_text("unlocked")

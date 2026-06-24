@@ -19,7 +19,6 @@ func displayBuildingInfo(tile):
 		#Control.queue_free() #same performance issue here, we're not deleting them, but they are not in the way.  c
 		#could cause clutter and performance issues further along a game.
 	for building in tile.tileBuildingsList:
-		#print( "building list for tile", thisTile.tileNumber, building, building.buildingType)
 		var buildSprite = buildSpriteScene.instantiate()
 		buildSprite.thisBuilding = building
 		buildSprite.updateInspector.connect(inspectBuilding)
@@ -29,7 +28,6 @@ func displayBuildingInfo(tile):
 
 func inspectBuilding(building):
 	#emit_signal("updateBuildingPanelUI", building)
-	#print("get tricked")
 	$buildingPanelPanel.updateInspector(building)
 
 var newBuildingButtonScene = load("res://new_building_button.tscn")

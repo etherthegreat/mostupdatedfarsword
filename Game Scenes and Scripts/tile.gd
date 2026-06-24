@@ -98,16 +98,6 @@ var granaryGovernorReq: bool = false
 var courthouseGovernorReq: bool = false
 
 # ============================================================
-# MAGIC POINTS — school names match protector/tower system
-# ============================================================
-var manifestPointsOutput: int  # Manifest Doctrine  (was alchemy)
-var spectralPointsOutput: int  # Spectrology        (was illusion)
-var cryptidPointsOutput: int   # Cryptidology       (was summoning)
-var stormPointsOutput: int     # Stormcraft         (was druidism)
-var ironPointsOutput: int      # Ironclad Arts      (was elementalism)
-var libertyPointsOutput: int   # Liberty Rites      (was divination)
-
-# ============================================================
 # NEIGHBORS & MOVEMENT
 # ============================================================
 @export var TileNeighborsEXP: Array = []
@@ -707,24 +697,6 @@ func surveyTile(playerCountryNode):
 			"Bath":
 				bathGovernorReq = building.buildingLevel >= 3
 			"Tower":
-				match building.magicOutput:
-					"manifest", "alchemist":
-						manifestPointsOutput = (1 * building.buildingLevel)
-					"cryptid", "summoner", \
-					"Mothman", "Jersey Devil", "Wood Booger", "Snallygaster", "Skunk Ape":
-						cryptidPointsOutput = (1 * building.buildingLevel)
-					"spectral", "illusionist", \
-					"Headless Horseman", "Green Mountain Ghost", "Lincoln's Ghost":
-						spectralPointsOutput = (1 * building.buildingLevel)
-					"storm", "druid", \
-					"Thunderbird", "Chessie", "Bell Witch":
-						stormPointsOutput = (1 * building.buildingLevel)
-					"iron", "elementalist", \
-					"Old Ironsides", "Valley Forge Guardian", "Agent 355":
-						ironPointsOutput = (1 * building.buildingLevel)
-					"liberty", "diviner", \
-					"Paul Revere", "Liberty Bell":
-						libertyPointsOutput = (1 * building.buildingLevel)
 				towerGovernorReq = building.buildingLevel >= 3
 			"Granary":
 				granaryGovernorReq = building.buildingLevel >= 3
@@ -1841,7 +1813,6 @@ func tick_conquest_timer() -> void:
 		for b in tileBuildingsList:
 			if b.buildingType == btype:
 				b.enabled = true
-				print("[Tile] Re-enabled '", btype, "' at ", tileName)
 				break
 	# Courthouse tiles accumulate moral decay over time when unchecked
 	if tileMoralDecay < 100:
@@ -1872,7 +1843,6 @@ func disable_building(type: String, turns: int) -> void:
 		if b.buildingType == type:
 			b.enabled = false
 			disabled_buildings[type] = turns
-			print("[Tile] Disabled '", type, "' for ", turns, " turns at ", tileName)
 			return
 	push_warning("[Tile] disable_building: no building of type '" + type + "' at " + tileName)
 

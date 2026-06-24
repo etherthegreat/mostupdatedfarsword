@@ -115,7 +115,7 @@ func onTurnEnd():
 	currentActionPoints = maxActionPoints
 
 func calculateCivilianCost():
-	pass
+	goldCost = 4  # flat 4 gold/turn; laws in country.gd can reduce activeCivilianCount
 
 func calculateCivilianAttributes():
 	pass

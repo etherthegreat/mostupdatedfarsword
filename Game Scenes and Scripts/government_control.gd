@@ -69,7 +69,6 @@ func updateQuadrantDisplay() -> void:
 
 signal addToConstitution
 func addLawToConstitution(lawType):
-	print("kickass", lawType)
 	emit_signal("addToConstitution", lawType)
 
 

@@ -11,7 +11,6 @@ func _ready() -> void:
 	load_buttons("res://data/event_buttons.csv")
 	load_triggers("res://data/event_triggers.csv")
 	loaded = true
-	print("EventDatabase: Loaded ", events.size(), " events, ",
 		  buttons.size(), " buttons, ", triggers.size(), " triggers.")
 
 

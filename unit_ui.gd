@@ -41,7 +41,6 @@ func updateUI():
 	findMilMods()
 
 func upgradeButtonCalculation(maxUnitLevel):
-	#print(thisUnit.unitLevel, "thisUnit.unitLevel", maxUnitLevel, "maxUnitLevel")
 	if thisUnit != null:
 		if thisUnit.unitLevel < maxUnitLevel && $UpgradeButton.disabled == true:
 			$UpgradeButton.disabled = false
@@ -54,12 +53,10 @@ var milModCompare :Array = []
 
 func findMilMods():
 	milModCompare.clear()
-	print("military modifiers list", thisUnit.militaryModifierList)
 	if thisUnit.militaryModifierList != null:
 		for MilMod in $GridContainer.get_children():
 			milModCompare.append(MilMod)
 		if milModCompare == thisUnit.militaryModifierList:
-			print("It's a god damn miracle")
 			return
 		else:
 			for MilMod in $GridContainer.get_children():
@@ -79,18 +76,13 @@ func findMilMods():
 					milModCompare.append(newMilMod)
 					$GridContainer.add_child(newMilMod)
 				#else:
-					#print("NoMilModTypeFound", MilMod.milModType)
-	#print("milModCOmpare", milModCompare, "militarymodifierlist", thisUnit.militaryModifierList)
 var weaponButtScene = preload("res://weapon_button.tscn")
 var weaponsList: Array = []
 func _on_weapon_type_button_pressed() -> void:
-	#print("weapons list before", weaponsList)
 	if weaponsList != null:
 		for WeaponButton in weaponsList:
 			WeaponButton.queue_free()
 		weaponsList.clear()
-	print(thisUnit.playerCountry.CID, "CID")
-	print(thisUnit.playerCountry.weaponTemplateList, "WTL")
 	for WeaponTemplate in thisUnit.playerCountry.weaponTemplateList:
 		var weaponButton = weaponButtScene.instantiate()
 		weaponButton.buildSelf(WeaponTemplate.weaponType, WeaponTemplate.weaponImage)
@@ -109,7 +101,6 @@ func _on_ore_type_button_pressed() -> void:
 		for OreButton in oresList:
 			OreButton.queue_free()
 		oresList.clear()
-	#print("DEBUG AVAILABLE ORES", thisUnit.playerCountry.availableOres)
 	for ore in thisUnit.playerCountry.availableOres:
 		var newOreButton = oreButtonScene.instantiate()
 		newOreButton.buildSelf(ore.oreType, ore.oreImage)
@@ -127,7 +118,6 @@ func addOre(oreType):
 	$OreScrollContainer.visible = false
 
 func addWeapon(weaponType):
-	#print("Weapon Type", weaponType)
 	if thisUnit.unitWeapon != null:
 		thisUnit.changeWeapon(weaponType)
 	$WeaponScrollContainer.visible = false

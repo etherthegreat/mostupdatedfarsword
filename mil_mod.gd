@@ -40,7 +40,6 @@ var newArea2D: Area2D
 var newCollissionArea2D: CollisionShape2D
 
 func buildSelf(Type):
-	#print("AHHHHHHHHHHHH", Type)
 	milModType = Type
 	infantryMod = false
 	rangedMod = false
@@ -1288,7 +1287,6 @@ func buildSelf(Type):
 		$Sprite2D.texture = milModTexture
 		newArea2D = $Area2D
 		newCollissionArea2D = $Area2D/CollisionShape2D
-	#print("Area2D", newArea2D, "newCollisionarea2d", newCollissionArea2D)
 
 var mouseDetected: bool
 
@@ -1308,7 +1306,6 @@ func _process(delta: float) -> void:
 	if mouseDetected == true:
 		if $Sprite2D/InfoPanel.visible == false:
 			$Sprite2D/InfoPanel.show()
-			#print("what the fuck")
 			return
 		else:
 			return

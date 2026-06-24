@@ -1183,10 +1183,8 @@ func generateBarracksCommanders() -> void:
 				tile.tileGovernor       = jessica
 				tile.filledGovernorSlot = true
 				jessica.hired           = true
-				print("[Commanders] PM Commanda stationed in Ottawa (tile 201).")
 				break
 		if not jessica.hired:
-			print("[Commanders] Ottawa not player-owned at start — Commanda added to pool unassigned.")
 		# Marc Penoit in Quebec City (tile 123) as Deputy Governor
 		var penoit: governor = governor.new()
 		penoit.buildSelf("Marc Penoit", 2)
@@ -1197,10 +1195,8 @@ func generateBarracksCommanders() -> void:
 					tile.tileGovernor       = penoit
 					tile.filledGovernorSlot = true
 					penoit.hired            = true
-					print("[Commanders] Deputy Penoit stationed in Quebec City (tile 123).")
 					break
 		if not penoit.hired:
-			print("[Commanders] Quebec City not available — Penoit added to pool unassigned.")
 	else:
 		# Ualani Carlisle in Washington DC (tile 188)
 		var carlisle: governor = governor.new()
@@ -1211,10 +1207,8 @@ func generateBarracksCommanders() -> void:
 				tile.tileGovernor       = carlisle
 				tile.filledGovernorSlot = true
 				carlisle.hired          = true
-				print("[Commanders] President Carlisle stationed in Washington DC (tile 188).")
 				break
 		if not carlisle.hired:
-			print("[Commanders] Washington DC not player-owned at start — Carlisle added to pool unassigned.")
 		# Secret Service Detail unlocks alongside Carlisle
 		var detail: governor = governor.new()
 		detail.buildSelf("Secret Service Detail", 1)
@@ -1313,10 +1307,8 @@ func generateBarracksCommanders() -> void:
 		$CanvasLayer/WarRoomPanel.registerCommanderArc(new_gov, tile)
 
 		generated += 1
-		#print("[Commanders] Generated: ", full_name, " — ", chosen["name"],
 			#  " (", chosen["id"], ") at ", tile.tileName, " [", tile.terrain, "]")
 
-	print("[Commanders] Barracks scan complete. ", generated, " commanders generated.")
 
 	# ── Auto-assign tile governors to stationed armies ────────────────────────
 	# Every barracks tile that received a governor above also has an army
@@ -1328,9 +1320,7 @@ func generateBarracksCommanders() -> void:
 			army.addUnitCommander(army.inTile.tileGovernor)
 			army.updateArmyUI()
 			assigned += 1
-			print("[Commanders] Assigned ", army.inTile.tileGovernor.governorType,
 				  " as commander of ", army.ArmyName)
-	print("[Commanders] ", assigned, " armies received a starting commander.")
 
 
 # ── STARTING ARMY SPAWNER ─────────────────────────────────────────────────────
@@ -1398,11 +1388,9 @@ func spawnStartingArmies() -> void:
 			new_army.addUnitCommander(gov)
 			new_army.updateArmyUI()
 
-		print("[StartingArmies] '", army_name, "' at ", tile.tileName,
 			  " (barracks lvl ", int(tile.buildings.get("barracks", 0)),
 			  ", ", arc_id, ")")
 
-	print("[StartingArmies] ", chosen.size(), " starting armies placed.")
 
 
 # ── CANADIAN AI BARRACKS COMMANDERS ─────────────────────────────────────────
@@ -1492,10 +1480,8 @@ func _generate_ai_barracks_commanders(country_node: country) -> void:
 			tile.tileGovernor       = jessica
 			tile.filledGovernorSlot = true
 			jessica.hired           = true
-			print("[CA Leaders] Jessica Commanda Odjick stationed at Ottawa (tile 201).")
 			break
 	if not jessica.hired:
-		print("[CA Leaders] Ottawa not CA-owned at start — Jessica added to pool unassigned.")
 
 	# ── Spawn Marc Penoit (deputy/VP) at Saint-Georges, tile 99 ─────────────────
 	# Montreal (tile 94) is UK-occupied at game start; Saint-Georges is the nearest
@@ -1508,10 +1494,8 @@ func _generate_ai_barracks_commanders(country_node: country) -> void:
 			tile.tileGovernor       = mark
 			tile.filledGovernorSlot = true
 			mark.hired              = true
-			print("[CA Leaders] Marc Penoit stationed at Saint-Georges (tile 99).")
 			break
 	if not mark.hired:
-		print("[CA Leaders] Saint-Georges not CA-owned at start — Mark added to pool unassigned.")
 
 	var used_names: Dictionary = {}
 	var generated: int = 0
@@ -1583,7 +1567,6 @@ func _generate_ai_barracks_commanders(country_node: country) -> void:
 		new_gov.hired           = true
 
 		generated += 1
-		print("[CA Commanders] Generated: ", full_name, " — ", chosen_arch["name"],
 			  " at ", tile.tileName, " [", tile.terrain, "]")
 
 	# Assign tile governors to stationed armies
@@ -1593,7 +1576,6 @@ func _generate_ai_barracks_commanders(country_node: country) -> void:
 			army.addUnitCommander(army.inTile.tileGovernor)
 			army.updateArmyUI()
 			assigned += 1
-	print("[CA Commanders] ", generated, " commanders generated, ",
 		  assigned, " armies received a commander.")
 
 
@@ -1637,10 +1619,8 @@ func _spawn_ai_starting_armies(country_node: country) -> void:
 			new_army.addUnitCommander(gov)
 			new_army.updateArmyUI()
 
-		print("[CA Armies] '", army_name, "' at ", tile.tileName,
 			  " (barracks lvl ", int(tile.buildings.get("barracks", 0)), ", ", arc_id, ")")
 
-	print("[CA Armies] ", chosen.size(), " starting armies placed for ", country_node.CID, ".")
 
 
 var countryNode = load("res://Game Scenes and Scripts/country.tscn")
@@ -1681,7 +1661,6 @@ func spawnNewGameCountries(CID: String) -> void:
 	if playerCountryNode == null:
 		push_error("spawnNewGameCountries: playerCountryNode is null! CID='%s' not in CountryDatabase." % playerCountry)
 	else:
-		print("spawnNewGameCountries: playerCountryNode='%s' in_tree=%s" % [playerCountryNode.CID, playerCountryNode.is_inside_tree()])
 
 	# Set player capital camera position
 	if playerCountryNode != null:
@@ -1742,7 +1721,6 @@ func _activate_player(cid: String) -> void:
 	var prot_filter: String = "COOP" if isCoopMode else playerCountry
 	$CanvasLayer/WarRoomPanel.setupAllProtectors($TileController.get_children(), prot_filter)
 	_update_turn_phase_ui()
-	print("[TurnOrder] Active player: ", playerCountry)
 
 
 func _update_turn_phase_ui() -> void:
@@ -1773,13 +1751,14 @@ func _end_current_player_turn() -> void:
 		push_error("[EndTurn] Cannot resolve playerCountryNode for CID: " + playerCountry + " — skipping turn end")
 		return
 	# Per-player end-of-turn processing for the currently active country
+	$PathControl.onTurnEnd()
+	playerCountryNode.activeCivilianCount = $PathControl.raisedPlayerCPFs.size()
 	playerCountryNode.surveyResources()
 	for pathPointButton in $PathControl/PathPointsControl.get_children():
 		if pathPointButton.get_children() != null:
 			for civilianPathFollow in pathPointButton.get_children():
 				if civilianPathFollow.is_class("Button") != true:
 					civilianPathFollow.emitTileChange()
-	$CanvasLayer/SpellSchoolsControl.updateMagicAmounts(playerCountryNode)
 	$CanvasLayer/TechTree.investInTech(playerCountryNode.SPM)
 
 
@@ -1822,7 +1801,6 @@ func switchActivePlayer() -> void:
 	playerCountryNode = coopCountryNode
 	coopCountryNode   = temp
 	playerCountry     = playerCountryNode.CID
-	print("[Coop] Switched active player to: ", playerCountry)
 	updatePlayerUI()
 	$CanvasLayer/WarRoomPanel.buildSelf(playerCountryNode)
 	var coop_country_id: String = "COOP" if isCoopMode else playerCountry
@@ -1881,10 +1859,7 @@ func updatePlayerUI():
 				faction.factionLoyalty,
 				faction.factionLeader
 			)
-	$CanvasLayer/SpellSchoolsControl.connectSchools()
-	if not $CanvasLayer/SpellSchoolsControl.lvlUpSpell.is_connected(newSpellEvent):
-		$CanvasLayer/SpellSchoolsControl.lvlUpSpell.connect(newSpellEvent)
-	#$CanvasLayer/SpellSchoolsControl.askForInfo.connect(giveSpellInfo)
+	$CanvasLayer/SpellSchoolsControl.visible = false
 	if not $CanvasLayer/Spellbook.spellToUse.is_connected(activateSpellMapMode):
 		$CanvasLayer/Spellbook.spellToUse.connect(activateSpellMapMode)
 	if not $TileController.spellAssignedToTile.is_connected(spellPurchased):
@@ -1914,7 +1889,6 @@ func manaUpdate(type, amount, dictionary):
 	$CanvasLayer/TileInfoPanel.buildTileOutput(type, amount, dictionary)
 
 func tileClicked(tile):
-	#print("Tile", tile.tileNumber, "Clicked")
 	selectedTile = tile
 	#$CanvasLayer/TileInfoPanel.thisTile = tile
 	
@@ -2044,10 +2018,8 @@ func newPlayerTech(techName) -> void:
 	playerCountryNode.addTechnologicalDiscovery(techName)
 
 func _on_building_panel_panel_upgrade_building(thisBuilding) -> void:
-	print("thisBuilding", thisBuilding.buildingType, thisBuilding.buildingLevel)
 	for Tile in $TileController.get_children():
 		if Tile.tileNumber == thisBuilding.number:
-			print("tile", Tile.tileNumber)
 			for building in Tile.tileBuildingsList:
 				if building.buildingType == thisBuilding.buildingType:
 					building.upgradeBuilding()
@@ -2056,7 +2028,6 @@ func _on_building_panel_panel_upgrade_building(thisBuilding) -> void:
 func _on_building_panel_panel_downgrade_building(thisBuilding) -> void:
 	for Tile in $TileController.get_children():
 		if Tile.tileNumber == thisBuilding.number:
-			print("tile", Tile.tileNumber)
 			for building in Tile.tileBuildingsList:
 				if building.buildingType == thisBuilding.buildingType:
 					building.downgradeBuilding()
@@ -2113,7 +2084,6 @@ func buildNewPlayerArmy(barracksBuilding, barracksTile, bbButton, playerNode, ne
 	var cost: int = ceili(10.0 * pow(1.2, n))
 	if playerNode.TotalDollars  < cost or playerNode.TotalWeapons < cost \
 			or playerNode.TotalCulture < cost or playerNode.TotalScience < cost:
-		print("[Army] Cannot afford new army — need ", cost,
 			  " each of Dollars / Weapons / Culture / Science (army #", n + 1, ")")
 		return
 	playerNode.TotalDollars  -= cost
@@ -2122,7 +2092,6 @@ func buildNewPlayerArmy(barracksBuilding, barracksTile, bbButton, playerNode, ne
 	playerNode.TotalScience  -= cost
 	playerNode.purchasedArmyCount += 1
 	var next_cost: int = ceili(10.0 * pow(1.2, playerNode.purchasedArmyCount))
-	print("[Army] Army purchased (cost ", cost, " each). Next army costs ", next_cost, " each.")
 	playerNode.addArmy(newArmyName, barracksTile.tileNumber)
 	for Army in playerNode.countryArmyList:
 		if Army.ArmyName == newArmyName:
@@ -2274,12 +2243,10 @@ func _on_protector_summoned(origin_tile, protector_name: String, protector_id: S
 	if origin_tile != null:
 		var school: String = _protector_id_to_school(protector_id)
 		origin_tile.addWizard(protector_name, school)
-		print("[Protectors] Tower: ", protector_name,
 			  " (", school, ") stationed at ", origin_tile.tileName)
 	var spell_name: String = _protector_id_to_spell(protector_id)
 	if spell_name != "":
 		playerCountryNode.addSpellToSpellbook(spell_name, 1, 0)
-		print("[Protectors] Presidential Power unlocked: ", spell_name)
 
 
 # Called when any protector AGREE event button sets a "*_agreed" flag.
@@ -2305,7 +2272,6 @@ func _on_protector_agreed(agreed_flag: String) -> void:
 		# Assign the protector as the tile's wizard so the tower produces their school's magic
 		var school: String = _protector_id_to_school(pid)
 		home_tile.addWizard(prot_name, school)
-		print("[Protectors] ", prot_name, " (", school, ") bound to tower at tile ",
 			  home_tile.tileNumber, " — ", home_tile.tileName)
 	else:
 		push_warning("[Protectors] No home tile mapped for " + pid)
@@ -2314,7 +2280,6 @@ func _on_protector_agreed(agreed_flag: String) -> void:
 	var spell_name: String = _protector_id_to_spell(pid)
 	if spell_name != "":
 		playerCountryNode.addSpellToSpellbook(spell_name, 1, 0)
-		print("[Protectors] Presidential Power unlocked: ", spell_name)
 
 	# PROT_08: grant USS Constitution Support mil mod to all current armies
 	if agreed_flag == "prot_08_agreed":
@@ -2322,7 +2287,6 @@ func _on_protector_agreed(agreed_flag: String) -> void:
 			army.applyCountryBeliefMilMods()
 			army.surveySelf()
 			army.updateArmyUI()
-		print("[Protectors] USS Constitution Support granted to all player armies")
 
 	# Reveal this protector's Records entry globally
 	if get_node_or_null("/root/LibraryData"):
@@ -2550,7 +2514,6 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 				playerCountryNode.changeFactionLoyalty(lc_faction, lc_amount)
 		"add_spell":
 			playerCountryNode.addSpellToSpellbook(outcome_value, outcome_amount, 0)
-			playerCountryNode.levelUpSchool(_get_spell_school(outcome_value))
 		"add_tech":
 			playerCountryNode.addTechnologicalDiscovery(outcome_value)
 		"add_law":
@@ -2574,7 +2537,6 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 					playerCountryNode.changeFactionLoyalty(tile.tileGovernor.governorFaction, 1)
 				if tile.stationedArmy != null:
 					tile.stationedArmy.updateArmyUI()
-				print("[Commander] Commendation issued to ", tile.tileGovernor.governorType)
 		"tile_liberation":
 			if tile != null:
 				tile.record_conquest("USA")
@@ -2585,7 +2547,6 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 		"tile_moral_decay_change":
 			if tile != null:
 				tile.tileMoralDecay = clampi(tile.tileMoralDecay + outcome_amount, 0, 100)
-				print("[MoralDecay] ", tile.tileName, " → ", tile.tileMoralDecay)
 		"add_wizard":
 			if tile != null:
 				tile.addWizard(outcome_value)
@@ -2622,7 +2583,6 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 						playerCountryNode.ALLIED.append(c)
 					if not c.ALLIED.has(playerCountryNode):
 						c.ALLIED.append(playerCountryNode)
-					print("[Alliance] Formal alliance established: ",
 						playerCountryNode.CID, " ↔ ", c.CID)
 					break
 		"set_flag":
@@ -2641,13 +2601,10 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 					var timeout: int = int(outcome_amount)
 					if timeout > 0:
 						_mission_timers[flag_val] = timeout
-						print("[Mission] Activated: ", flag_val, " — expires in ", timeout, " turns")
 					else:
-						print("[Mission] Activated: ", flag_val, " — no timeout")
 		"claim_change":
 			playerCountryNode.presidentialClaim = clampf(
 				playerCountryNode.presidentialClaim + float(outcome_amount), -10.0, 10.0)
-			print("[Claim] Event adjustment: ", outcome_amount, " → now ", playerCountryNode.presidentialClaim)
 		"pardon_state_governors":
 			# Keep governors on their tiles but reset any negative loyalty to 0
 			if tile != null:
@@ -2657,7 +2614,6 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 						t.tileGovernor.loyalty = maxf(t.tileGovernor.loyalty, 0.0)
 				playerCountryNode.presidentialClaim = clampf(
 					playerCountryNode.presidentialClaim + 1.0, -10.0, 10.0)
-				print("[Pardon] Governors in ", sc, " pardoned — loyalty floored at 0")
 		"replace_state_governors":
 			# Remove every governor in the state and generate fresh ones
 			if tile != null:
@@ -2670,7 +2626,6 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 							t.tileGovernor = null
 							t.filledGovernorSlot = false
 						_generate_and_assign_governor(t)
-				print("[Replace] All governors in ", sc, " replaced with fresh appointments")
 		"remove_governor":
 			# Sack the tile's governor and generate a procedural replacement.
 			if tile != null and tile.tileGovernor != null:
@@ -2698,27 +2653,22 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 					var timeout: int = int(outcome_amount)
 					if timeout > 0:
 						_mission_timers[flag_val] = timeout
-						print("[Mission] Activated (own): ", flag_val, " — expires in ", timeout, " turns")
 					else:
-						print("[Mission] Activated (own): ", flag_val, " — no timeout")
 		"governor_loyalty_change":
 			if tile != null and tile.tileGovernor != null:
 				tile.tileGovernor.loyalty = clampf(
 					tile.tileGovernor.loyalty + float(outcome_amount), -20.0, 20.0)
-				print("[GovLoyalty] ", tile.tileGovernor.governorType,
 					" at ", tile.tileName, " → ", tile.tileGovernor.loyalty)
 		"election_pressure_change":
 			if tile != null:
 				tile.electionPressure = clampi(
 					tile.electionPressure + outcome_amount, -100, 100)
-				print("[Election] ", tile.tileName, " pressure → ", tile.electionPressure)
 		"tile_yield":
 			if tile != null:
 				var turns: int = max(outcome_amount, 1)
 				var per_turn: int = _get_tile_resource_output(tile, outcome_value)
 				var total: int = per_turn * turns
 				_apply_resource_change(outcome_value, total)
-				print("[TileYield] ", tile.tileName, " ", outcome_value,
 					" ×", turns, " (", per_turn, "/turn) = ", total)
 			else:
 				push_warning("executeOutcome: tile_yield requires a tile context")
@@ -2731,14 +2681,12 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 				playerCountryNode.CountryFlags["george_peace_rejected"] = true
 			playerCountryNode.presidentialClaim = clampf(
 				playerCountryNode.presidentialClaim + 1.0, -10.0, 10.0)
-			print("[George Peace] Rejected — presidentialClaim +1")
 		"cast_protector_buff":
 			# outcome_value = protector buff name (e.g. "Mothman Presence")
 			# outcome_amount = magic cost per turn (sustain cost)
 			# tile context = apply to the stationed army in that tile
 			if tile != null and tile.stationedArmy != null:
 				tile.stationedArmy.apply_status(outcome_value, 9999, outcome_amount)
-				print("[Protector] ", outcome_value, " cast on army at ", tile.tileName,
 					" — ", outcome_amount, " magic/turn")
 			else:
 				push_warning("cast_protector_buff: no army at tile " + str(tile))
@@ -2751,7 +2699,6 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 						total_levels += b.buildingLevel
 				var total: int = total_levels * outcome_amount
 				_apply_resource_change("mandate", total)
-				print("[MandateSurge] ", tile.tileName, " levels:", total_levels,
 					" ×", outcome_amount, " turns = ", total, " mandate")
 			else:
 				push_warning("tile_building_mandate_surge: requires tile context")
@@ -2763,19 +2710,9 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 				var total: int = per_turn * outcome_amount
 				_apply_resource_change(outcome_value, total)
 				tile.corruption = mini(tile.corruption + 20, 100)
-				print("[CorruptWindfall] ", tile.tileName, " +", total, " ",
 					outcome_value, " | corruption now ", tile.corruption)
 			else:
 				push_warning("corrupt_windfall: requires tile context")
-		"level_all_spell_schools":
-			for i in range(outcome_amount):
-				playerCountryNode.levelUpSchool("manifest")
-				playerCountryNode.levelUpSchool("iron")
-				playerCountryNode.levelUpSchool("storm")
-				playerCountryNode.levelUpSchool("liberty")
-				playerCountryNode.levelUpSchool("cryptid")
-				playerCountryNode.levelUpSchool("spectral")
-			print("[SpellSchools] All 6 schools +", outcome_amount, " levels")
 		"gold_and_army_buff":
 			# outcome_value = buff status name, outcome_amount = turns; also grants 50 gold
 			_apply_resource_change("gold", 50)
@@ -2791,7 +2728,6 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 								total_levels += b.buildingLevel
 				var yield_amount: int = total_levels * outcome_amount
 				_apply_resource_change(outcome_value, yield_amount)
-				print("[StateBuildingYield] ", state, " levels:", total_levels,
 					" ×", outcome_amount, " = ", yield_amount, " ", outcome_value)
 			else:
 				push_warning("state_building_level_yield: requires tile context")
@@ -2799,7 +2735,6 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 			if tile != null and tile.tileGovernor != null:
 				if not tile.tileGovernor.governor_perks.has(outcome_value):
 					tile.tileGovernor.governor_perks.append(outcome_value)
-					print("[GovPerk] ", tile.tileGovernor.governorType,
 						" unlocked perk: ", outcome_value)
 			else:
 				push_warning("set_governor_perk: requires tile with governor")
@@ -2807,7 +2742,6 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 			if tile != null and tile.stationedArmy != null:
 				tile.stationedArmy.manpowerInArmy = tile.stationedArmy.maxManpower
 				tile.stationedArmy.updateArmyUI()
-				print("[ManpowerRefill] ", tile.tileName, " army fully refilled")
 			else:
 				push_warning("tile_army_manpower_refill: no army at tile")
 		"spawn_anarchist":
@@ -2818,7 +2752,6 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 				if t.tileOwner == "UK" or (t.stationedArmy != null and t.stationedArmy.parentCountry != null and t.stationedArmy.parentCountry.CID == "UK"):
 					t.discoverTile()
 					revealed_count += 1
-			print("[RevealBritish] Revealed ", revealed_count, " British tiles")
 		"all_armies_manpower_heal":
 			var pct: float = float(outcome_amount) / 100.0
 			for army in playerCountryNode.countryArmyList:
@@ -2827,15 +2760,12 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 					unit.unitCurrentManpower = mini(unit.unitCurrentManpower + heal, unit.unitMaxManpower)
 				army.surveySelf()
 				army.updateArmyUI()
-			print("[ManpowerHeal] All armies healed ", outcome_amount, "% of max manpower")
 		"halloween_endorsement":
 			# Ghost presidents' blessing: +1 happiness per unit per turn for N turns
 			playerCountryNode.CountryFlags["halloween_endorsement_turns"] = int(outcome_amount)
-			print("[HalloweenEndorsement] Granted for ", outcome_amount, " turns")
 		"cherry_blossom_prayer":
 			# Ualani's prayer at the Washington Monument: permanent +0.01 magic/unit/turn
 			playerCountryNode.CountryFlags["cherry_blossom_prayer"] = true
-			print("[CherryBlossomPrayer] Granted — permanent fractional magic gain active")
 		"nothing":
 			pass
 		_:
@@ -2986,7 +2916,6 @@ func checkPendingMissions() -> void:
 			if condition_met:
 				flags_to_remove.append(flag)
 				events_to_fire.append([event_id, tile])
-				print("[Mission] Condition met (", "own" if own_type else "army", ") — firing ", event_id, " at ", tile.tileName)
 			break
 
 	for flag in flags_to_remove:
@@ -3006,7 +2935,6 @@ func checkCollapseCondition() -> void:
 		if tile.tileOwner == "USA":
 			return  # Still hold at least one American metro — no collapse yet
 	_republic_collapsed = true
-	print("[Collapse] All American metros have fallen. Triggering COLLAPSE_01.")
 	createNewEvent("COLLAPSE_01")
 
 
@@ -3021,7 +2949,6 @@ func checkCaCollapseCondition() -> void:
 			break
 	if not ottawa_held:
 		_ca_collapsed = true
-		print("[CA Collapse] Ottawa has fallen. Triggering CA_COLLAPSE_01.")
 		createNewEvent("CA_COLLAPSE_01")
 		return
 	# Jessica Commanda Odjick must still be alive (in unlockedGovernors)
@@ -3032,7 +2959,6 @@ func checkCaCollapseCondition() -> void:
 			break
 	if not jessica_alive:
 		_ca_collapsed = true
-		print("[CA Collapse] Jessica Commanda Odjick has fallen. Triggering CA_COLLAPSE_JESSICA.")
 		createNewEvent("CA_COLLAPSE_JESSICA")
 
 
@@ -3109,18 +3035,15 @@ func _on_mission_expired(flag: String) -> void:
 		return
 
 	var sc: String = source_tile.tileContinent
-	print("[Mission] EXPIRED — flagging all tiles in '", sc, "' as president_failed for 10 turns")
 	for t in $TileController.get_children():
 		if t.tileContinent == sc:
 			t.presidentFailedTimer = 10
 	playerCountryNode.presidentialClaim = clampf(
 		playerCountryNode.presidentialClaim - 2.0, -10.0, 10.0)
-	print("[Claim] Mission-failure penalty. Claim now: ", playerCountryNode.presidentialClaim)
 
 	# Event-specific expiry effects
 	if event_id.begins_with("CORRUPT_"):
 		source_tile.disable_building("Courthouse", 10)
-		print("[Corrupt] Courthouse disabled 10 turns at ", source_tile.tileName)
 
 
 # ── STATE SECESSION ──────────────────────────────────────────────
@@ -3147,7 +3070,6 @@ func checkStateSecessionConditions() -> void:
 			if tile.tileContinent != state_code or tile.tileOwner != "USA":
 				continue
 			if tile.tileGovernor != null and tile.tileGovernor.loyalty <= -5.0:
-				print("[Secession] All conditions met — ", state_code, " declares independence!")
 				_fire_state_secession(state_code)
 				break
 
@@ -3189,7 +3111,6 @@ func _fire_state_secession(state_code: String) -> void:
 	playerCountryNode.presidentialClaim = clampf(
 		playerCountryNode.presidentialClaim - 3.0, -10.0, 10.0)
 	createNewEvent("STATE_REBEL_01", metro_tile)
-	print("[Secession] ", display_name, " has seceded — ", tiles_to_seize.size(), " tiles lost.")
 
 
 func _fire_state_reintegration(state_code: String, metro_tile) -> void:
@@ -3227,11 +3148,9 @@ func _fire_state_reintegration(state_code: String, metro_tile) -> void:
 	playerCountryNode.presidentialClaim = clampf(
 		playerCountryNode.presidentialClaim + 2.0, -10.0, 10.0)
 	createNewEvent("STATE_REINTEGRATED_01", metro_tile)
-	print("[Reintegration] ", STATE_FULL_NAMES.get(state_code, state_code), " reintegrated!")
 
 
 func _execute_republic_collapse() -> void:
-	print("[Collapse] Executing republic fragmentation...")
 
 	# Find UK so we can hand over coastal tiles and set the peace flag
 	var uk_country = null
@@ -3286,7 +3205,6 @@ func _execute_republic_collapse() -> void:
 		playerCountryNode.OwnedTileList.erase(tile)
 		uk_country.addTile(tile)
 		tile.record_conquest("UK")
-		print("[Collapse] Coastal annexation: ", tile.tileName, " → UK")
 
 	# ── Pass 3: interior tiles → state countries ───────────────────
 	for state_code in state_tile_groups.keys():
@@ -3314,11 +3232,8 @@ func _execute_republic_collapse() -> void:
 					army.parentCountry = state_country
 					army.enemy = false
 
-		print("[Collapse] ", display_name, " (", state_code, ") — ", tiles.size(), " tiles")
 
-	print("[Collapse] USA retains ", playerCountryNode.OwnedTileList.size(), " tile(s):")
 	for tile in playerCountryNode.OwnedTileList:
-		print("[Collapse]   • ", tile.tileName)
 
 	createNewEvent("COLLAPSE_02")
 
@@ -3405,7 +3320,6 @@ func _check_harvest_crisis() -> void:
 	var target: Tile = candidates[randi() % candidates.size()]
 	_start_cooldown("HARVEST_001", 20)
 	createNewEvent("HARVEST_001", target)
-	print("[Harvest] Food crisis — firing HARVEST_001 at ", target.tileName)
 
 
 # ── CHAIN 1: HARBOR THREAT ───────────────────────────────────────
@@ -3425,7 +3339,6 @@ func _check_harbor_threat() -> void:
 	var target: Tile = candidates[randi() % candidates.size()]
 	_start_cooldown("HARBOR_001", 15)
 	createNewEvent("HARBOR_001", target)
-	print("[Harbor] Threat detected — firing HARBOR_001 at ", target.tileName)
 
 
 # ── CHAIN 6: FORGE THREAT ────────────────────────────────────────
@@ -3445,7 +3358,6 @@ func _check_forge_threat() -> void:
 	var target: Tile = candidates[randi() % candidates.size()]
 	_start_cooldown("FORGE_001", 15)
 	createNewEvent("FORGE_001", target)
-	print("[Forge] Threat detected — firing FORGE_001 at ", target.tileName)
 
 
 # ── CHAIN 2: CORRUPTION CRISIS ───────────────────────────────────
@@ -3465,7 +3377,6 @@ func _check_corruption_crisis() -> void:
 	var target: Tile = candidates[randi() % candidates.size()]
 	_start_cooldown("CORRUPT_001", 12)
 	createNewEvent("CORRUPT_001", target)
-	print("[Corrupt] Crisis — moral decay ", target.tileMoralDecay, " at ", target.tileName)
 
 
 # ── CHAIN 9: BORDER DISPUTE ──────────────────────────────────────
@@ -3489,7 +3400,6 @@ func _check_border_dispute() -> void:
 	var target: Tile = candidates[randi() % candidates.size()]
 	_start_cooldown("BORDER_001", 15)
 	createNewEvent("BORDER_001", target)
-	print("[Border] Dispute detected — firing BORDER_001 at ", target.tileName)
 
 
 # ── CHAIN 3: STARVING GARRISON ───────────────────────────────────
@@ -3504,7 +3414,6 @@ func _check_garrison_hunger() -> void:
 		if army.manpowerInArmy < 50:
 			_start_cooldown("GARRISON_001", 12)
 			createNewEvent("GARRISON_001", army.inTile)
-			print("[Garrison] Starving army at ", army.inTile.tileName)
 			return
 
 
@@ -3516,7 +3425,6 @@ func _check_legitimacy_crisis() -> void:
 		return
 	_start_cooldown("CRISIS_CLAIM_001", 20)
 	createNewEvent("CRISIS_CLAIM_001")
-	print("[Crisis] Legitimacy crisis — claim at ", playerCountryNode.presidentialClaim)
 
 
 # ── CHAIN 4: TURNED GENERAL ──────────────────────────────────────
@@ -3534,7 +3442,6 @@ func _check_turncoat_general() -> void:
 		return
 	_start_cooldown("TURNCOAT_001", 15)
 	createNewEvent("TURNCOAT_001", suspect_tile)
-	print("[Turncoat] Suspicious commander: ", suspect_tile.tileGovernor.governorType,
 		" at ", suspect_tile.tileName)
 
 
@@ -3595,7 +3502,6 @@ func _check_ualani_ambush() -> void:
 		return
 	_start_cooldown("UALANI_AMBUSH_01", 15)
 	createNewEvent("UALANI_AMBUSH_01", tile)
-	print("[Ualani] Ambush event at ", tile.tileName)
 
 
 func _check_ualani_dignitary() -> void:
@@ -3617,7 +3523,6 @@ func _check_ualani_dignitary() -> void:
 		return
 	_start_cooldown("UALANI_DIGNITARY_01", 18)
 	createNewEvent("UALANI_DIGNITARY_01", tile)
-	print("[Ualani] Dignitary reception at ", tile.tileName)
 
 
 func _check_ualani_memorial() -> void:
@@ -3630,7 +3535,6 @@ func _check_ualani_memorial() -> void:
 		return
 	_start_cooldown("UALANI_MEMORIAL_01", 20)
 	createNewEvent("UALANI_MEMORIAL_01", tile)
-	print("[Ualani] Memorial address at ", tile.tileName)
 
 
 func _check_ualani_wounded() -> void:
@@ -3646,7 +3550,6 @@ func _check_ualani_wounded() -> void:
 		return
 	_start_cooldown("UALANI_WOUNDED_01", 12)
 	createNewEvent("UALANI_WOUNDED_01", tile)
-	print("[Ualani] Wounded visit at ", tile.tileName,
 		" (", army.manpowerInArmy, "/", army.maxManpower, ")")
 
 
@@ -3664,7 +3567,6 @@ func _check_ualani_winter() -> void:
 		return
 	_start_cooldown("UALANI_WINTER_01", 20)
 	createNewEvent("UALANI_WINTER_01", tile)
-	print("[Ualani] Winter march at ", tile.tileName)
 
 
 func _check_ualani_forge() -> void:
@@ -3682,7 +3584,6 @@ func _check_ualani_forge() -> void:
 		return
 	_start_cooldown("UALANI_FORGE_01", 15)
 	createNewEvent("UALANI_FORGE_01", tile)
-	print("[Ualani] Forge inspection at ", tile.tileName)
 
 
 func _check_ualani_dock() -> void:
@@ -3700,7 +3601,6 @@ func _check_ualani_dock() -> void:
 		return
 	_start_cooldown("UALANI_DOCK_01", 15)
 	createNewEvent("UALANI_DOCK_01", tile)
-	print("[Ualani] Harbor survey at ", tile.tileName)
 
 
 func _check_ualani_farm() -> void:
@@ -3713,7 +3613,6 @@ func _check_ualani_farm() -> void:
 		return
 	_start_cooldown("UALANI_FARM_01", 15)
 	createNewEvent("UALANI_FARM_01", tile)
-	print("[Ualani] Farmland visit at ", tile.tileName)
 
 
 func _check_ualani_barracks() -> void:
@@ -3733,7 +3632,6 @@ func _check_ualani_barracks() -> void:
 		return
 	_start_cooldown("UALANI_BARRACKS_01", 15)
 	createNewEvent("UALANI_BARRACKS_01", tile)
-	print("[Ualani] Regimental review at ", tile.tileName)
 
 
 func _check_ualani_courthouse() -> void:
@@ -3751,7 +3649,6 @@ func _check_ualani_courthouse() -> void:
 		return
 	_start_cooldown("UALANI_COURTHOUSE_01", 15)
 	createNewEvent("UALANI_COURTHOUSE_01", tile)
-	print("[Ualani] Town hall at ", tile.tileName)
 
 
 func _uk_plant_spies() -> void:
@@ -3770,7 +3667,6 @@ func _uk_plant_spies() -> void:
 		return
 	var target: Tile = candidates[randi() % candidates.size()]
 	target.record_espionage("UK")
-	print("[Espionage] UK planted spy at ", target.tileName)
 
 
 func _check_espionage_discovery() -> void:
@@ -3787,7 +3683,6 @@ func _check_espionage_discovery() -> void:
 	target.clear_espionage()
 	_start_cooldown("ESPIONAGE_DISCOVERY_01", 15)
 	createNewEvent("ESPIONAGE_DISCOVERY_01", target)
-	print("[Espionage] Spy caught at ", target.tileName)
 
 
 func _check_winter_siege() -> void:
@@ -3807,7 +3702,6 @@ func _check_winter_siege() -> void:
 	var target: Tile = candidates[randi() % candidates.size()]
 	_start_cooldown("WINTER_SIEGE_01", 12)
 	createNewEvent("WINTER_SIEGE_01", target)
-	print("[Winter] Siege conditions — firing WINTER_SIEGE_01 at ", target.tileName)
 
 
 func _check_spring_offensive() -> void:
@@ -3827,7 +3721,6 @@ func _check_spring_offensive() -> void:
 	var target: Tile = candidates[randi() % candidates.size()]
 	_start_cooldown("SPRING_OFFENSIVE_01", 20)
 	createNewEvent("SPRING_OFFENSIVE_01", target)
-	print("[Spring] Crown offensive — firing SPRING_OFFENSIVE_01 at ", target.tileName)
 
 
 func _check_ualani_culper() -> void:
@@ -3840,7 +3733,6 @@ func _check_ualani_culper() -> void:
 		return
 	_start_cooldown("UALANI_CULPER_01", 18)
 	createNewEvent("UALANI_CULPER_01", tile)
-	print("[Ualani] Culper meeting at ", tile.tileName)
 
 
 func _check_ualani_alliance() -> void:
@@ -3865,7 +3757,6 @@ func _check_ualani_alliance() -> void:
 		return
 	_start_cooldown("UALANI_ALLIANCE_01", 18)
 	createNewEvent("UALANI_ALLIANCE_01", ally_tile)
-	print("[Ualani] Alliance meeting at ", ally_tile.tileName,
 		" with ", ally_tile.tileGovernor.governorType)
 
 
@@ -3881,7 +3772,6 @@ func _check_ualani_frontier() -> void:
 		if neighbor.tileContinent.begins_with("CA - "):
 			_start_cooldown("UALANI_FRONTIER_01", 20)
 			createNewEvent("UALANI_FRONTIER_01", tile)
-			print("[Ualani] Frontier at ", tile.tileName,
 				" bordering ", neighbor.tileContinent)
 			return
 
@@ -3914,7 +3804,6 @@ func _check_white_house_secrets() -> void:
 		return
 	_start_cooldown(event_id, 999)
 	createNewEvent(event_id, ualani_tile)
-	print("[WHSecrets] ", event_id, " fired — Ualani in DC, month ", month)
 
 
 # ── CHALCHIUHTOTOLIN PROTECTOR ARC ──────────────────────────────────────────
@@ -3943,7 +3832,6 @@ func _check_chalch_summon() -> void:
 	if not playerCountryNode.CountryFlags.has("chalch_summoned"):
 		playerCountryNode.CountryFlags["chalch_summoned"] = true
 	createNewEvent("CHALCH_SUMMON", ualani_tile)
-	print("[Chalch] CHALCH_SUMMON fired — Ualani at Plymouth, month 11")
 
 
 func _check_chalch_quests() -> void:
@@ -3957,7 +3845,6 @@ func _check_chalch_quests() -> void:
 			if not playerCountryNode.CountryFlags.has("chalch_q1_done"):
 				playerCountryNode.CountryFlags["chalch_q1_done"] = true
 			createNewEvent("CHALCH_Q1", _find_ualani_tile())
-			print("[Chalch] CHALCH_Q1 fired — 3+ farms")
 			return
 
 	# Q2: 150+ food stockpile (requires Q1 done)
@@ -3968,7 +3855,6 @@ func _check_chalch_quests() -> void:
 			if not playerCountryNode.CountryFlags.has("chalch_q2_done"):
 				playerCountryNode.CountryFlags["chalch_q2_done"] = true
 			createNewEvent("CHALCH_Q2", _find_ualani_tile())
-			print("[Chalch] CHALCH_Q2 fired — 150+ food")
 			return
 
 	# Q3: 5+ farms (requires Q2 done)
@@ -3979,7 +3865,6 @@ func _check_chalch_quests() -> void:
 			if not playerCountryNode.CountryFlags.has("chalch_q3_done"):
 				playerCountryNode.CountryFlags["chalch_q3_done"] = true
 			createNewEvent("CHALCH_Q3", _find_ualani_tile())
-			print("[Chalch] CHALCH_Q3 fired — 5+ farms")
 			return
 
 	# AGREE: all quests done
@@ -3987,7 +3872,6 @@ func _check_chalch_quests() -> void:
 			and not _event_on_cooldown("CHALCH_AGREE"):
 		_start_cooldown("CHALCH_AGREE", 999)
 		createNewEvent("CHALCH_AGREE", _find_ualani_tile())
-		print("[Chalch] CHALCH_AGREE fired — all quests complete")
 
 
 # ── VICE PRESIDENT EVENTS ────────────────────────────────────────
@@ -4013,7 +3897,6 @@ func _fire_vp_event(event_id: String, vp_tile: Tile) -> bool:
 	_start_cooldown(event_id, 999)
 	_start_cooldown("VP_EVENTS", 13)
 	createNewEvent(event_id, vp_tile)
-	print("[VP] Event fired: ", event_id)
 	return true
 
 
@@ -4137,7 +4020,6 @@ func _ca_fire_vp_event(event_id: String, pm_tile) -> bool:
 	_start_cooldown(event_id, 999)
 	_start_cooldown("CA_PM_EVENTS", 13)
 	createNewEvent(event_id, pm_tile)
-	print("[CA PM] Event fired: ", event_id)
 	return true
 
 
@@ -4257,7 +4139,6 @@ func _fire_usa_alliance_event(event_id: String) -> bool:
 	_start_cooldown(event_id, 999)
 	_start_cooldown("USA_ALLIANCE_EVENTS", 3)
 	createNewEvent(event_id, null)
-	print("[USA Alliance] Event fired: ", event_id)
 	return true
 
 
@@ -4320,7 +4201,6 @@ func _try_ca_alone() -> bool:
 func _fire_war_event(event_id: String) -> bool:
 	_start_cooldown(event_id, 999)
 	createNewEvent(event_id, null)
-	print("[War] Event fired: ", event_id)
 	return true
 
 
@@ -4328,7 +4208,6 @@ func _fire_can_event(event_id: String) -> bool:
 	_start_cooldown(event_id, 999)
 	_start_cooldown("CAN_EVENTS", 3)
 	createNewEvent(event_id, null)
-	print("[Canada] Event fired: ", event_id)
 	return true
 
 
@@ -4485,7 +4364,6 @@ func _assign_vice_president() -> void:
 	_vp_governor = candidates[randi() % candidates.size()]
 	_vp_governor.isVicePresident = true
 	_vp_faction = VP_FACTION_MAP.get(_vp_governor.governorType, "")
-	print("[VP] Assigned: ", _vp_governor.governorType,
 		" | Faction: ", _vp_faction)
 
 
@@ -4499,7 +4377,6 @@ func _assign_ca_vice_president() -> void:
 			_ca_vp_governor = gov
 			_ca_vp_faction  = "French Habitants"
 			gov.isVicePresident = true
-			print("[CA PM] Marc Penoit (at tile ", tile.tileName, ") assigned as Deputy Governor.")
 			return
 	# Fallback: search unlockedGovernors pool
 	for gov in playerCountryNode.unlockedGovernors:
@@ -4507,7 +4384,6 @@ func _assign_ca_vice_president() -> void:
 			_ca_vp_governor = gov
 			_ca_vp_faction  = "French Habitants"
 			gov.isVicePresident = true
-			print("[CA PM] Marc Penoit (unassigned) set as Deputy Governor.")
 			return
 
 
@@ -4550,7 +4426,6 @@ func _check_stump_speech() -> void:
 		return
 	_start_cooldown("STUMP_SPEECH_01", 2)
 	createNewEvent("STUMP_SPEECH_01", tile)
-	print("[Election] Stump speech available at ", tile.tileName)
 
 
 func _check_election_season() -> void:
@@ -4561,14 +4436,12 @@ func _check_election_season() -> void:
 	_start_cooldown("ELECTION_SEASON", 999)
 	createNewEvent("ELECTION_SEASON", null)
 	_grant_election_season_mods()
-	print("[Election] Election season event fired on turn ", currentWorldTurn)
 
 func _grant_election_season_mods() -> void:
 	# Give Election Season mod to Ualani and the current VP (the ticket)
 	for gov in playerCountryNode.unlockedGovernors:
 		if gov.governorType == "Ualani Carlisle" or gov.isVicePresident:
 			gov.addMilMod("Election Season", 123)
-			print("[Election] Election Season mod granted to ", gov.governorType)
 
 
 func _check_end_game() -> void:
@@ -4598,22 +4471,18 @@ func _check_end_game() -> void:
 	if total <= 0:
 		# British puppet wins the election
 		createNewEvent("ELECTION_NIGHT_LOSE", null)
-		print("[EndGame] Crown wins election — pressure total: ", total)
 		_trigger_game_over(false, "A Crown puppet has taken the White House.", "britishWhiteHouse")
 	elif peace_signed and uk_tiles_remain:
 		# Peace signed but UK still holds land — stalemate
 		createNewEvent("ELECTION_NIGHT_WIN", null)
-		print("[EndGame] Stalemate — peace signed, UK holds land, turn ", currentWorldTurn)
 		_trigger_game_over(false, "Peace was signed, but the Crown holds its ground.", "stalemate")
 	elif not peace_signed and uk_tiles_remain:
 		# War still raging at turn limit — endless battle
 		createNewEvent("ELECTION_NIGHT_WIN", null)
-		print("[EndGame] Endless battle — war ongoing at turn ", currentWorldTurn)
 		_trigger_game_over(false, "The war grinds on. No end in sight.", "endlessBattle")
 	else:
 		# Liberty wins clean
 		createNewEvent("ELECTION_NIGHT_WIN", null)
-		print("[EndGame] Liberty Coalition wins — pressure total: ", total)
 		_trigger_game_over(true, "The Liberty Coalition has won. The Republic endures.")
 
 
@@ -4905,7 +4774,6 @@ func _check_cmd_recognition() -> void:
 			tile.stationedArmy.updateArmyUI()
 		_start_cooldown("CMD_RECOGNITION", 10)
 		createNewEvent("CMD_RECOGNITION", tile)
-		print("[Commander] CMD_RECOGNITION fired for ", gov.governorType, " (XP: ", gov.xp, ")")
 		return
 
 
@@ -4926,7 +4794,6 @@ func _check_cmd_thanks() -> void:
 			tile.stationedArmy.updateArmyUI()
 		_start_cooldown("CMD_THANKS", 999)
 		createNewEvent("CMD_THANKS", tile)
-		print("[Commander] CMD_THANKS fired for ", gov.governorType, " (XP: ", gov.xp, ")")
 		return
 
 
@@ -5009,7 +4876,6 @@ func _tick_wild_protectors() -> void:
 		if randf() < 0.25:
 			var target: Tile = owned_tiles[randi() % owned_tiles.size()]
 			target.corruption = clampi(target.corruption + 1, 0, 100)
-			print("[WildProt] ", pid, " added +1 corruption to ", target.tileName)
 
 
 func _check_protector_summons() -> void:
@@ -5026,7 +4892,6 @@ func _check_protector_summons() -> void:
 			continue
 		_start_cooldown(summon_id, 20)
 		createNewEvent(summon_id, null)
-		print("[Protector] SUMMON fired: ", summon_id, " on turn ", currentWorldTurn)
 		return
 
 
@@ -5046,7 +4911,6 @@ func _check_prot08_dma_summon() -> void:
 		return
 	_start_cooldown("PROT_08_SUMMON", 9999)  # fires once
 	createNewEvent("PROT_08_SUMMON", dma_tile)
-	print("[Protector] PROT_08_SUMMON fired via DMA investigation at ", dma_tile.tileName)
 
 
 func _check_prot17_dma_summon() -> void:
@@ -5065,7 +4929,6 @@ func _check_prot17_dma_summon() -> void:
 		return
 	_start_cooldown("PROT_17_SUMMON", 9999)  # fires once
 	createNewEvent("PROT_17_SUMMON", dma_tile)
-	print("[Protector] PROT_17_SUMMON fired via DMA investigation at ", dma_tile.tileName)
 
 
 func _check_prot16_dma_summon() -> void:
@@ -5085,7 +4948,6 @@ func _check_prot16_dma_summon() -> void:
 		return
 	_start_cooldown("PROT_16_SUMMON", 9999)  # fires once
 	createNewEvent("PROT_16_SUMMON", dma_tile)
-	print("[Protector] PROT_16_SUMMON fired via DMA investigation at ", dma_tile.tileName)
 
 
 func _check_prot16_objectives() -> void:
@@ -5096,18 +4958,15 @@ func _check_prot16_objectives() -> void:
 		if not _event_on_cooldown("PROT_16_TAME"):
 			_start_cooldown("PROT_16_TAME", 9999)
 			createNewEvent("PROT_16_TAME", null)
-			print("[Protector] PROT_16_TAME fired — spy wins: ", playerSpyWins)
 		return
 	if flags.has("prot_16_tame") and not flags.has("prot_16_agreed") and playerSpyWins >= 6:
 		if not _event_on_cooldown("PROT_16_AGREE"):
 			_start_cooldown("PROT_16_AGREE", 9999)
 			createNewEvent("PROT_16_AGREE", null)
-			print("[Protector] PROT_16_AGREE fired — spy wins: ", playerSpyWins)
 
 
 func _on_spy_win_recorded() -> void:
 	playerSpyWins += 1
-	print("[Spy] Total spy wins: ", playerSpyWins)
 
 
 func _check_prot07_objectives() -> void:
@@ -5127,13 +4986,11 @@ func _check_prot07_objectives() -> void:
 		if not _event_on_cooldown("PROT_07_TAME"):
 			_start_cooldown("PROT_07_TAME", 9999)
 			createNewEvent("PROT_07_TAME", null)
-			print("[Protector] PROT_07_TAME fired — TN culture+food: ", total)
 		return
 	if flags.has("prot_07_tame") and not flags.has("prot_07_agreed") and total >= 40:
 		if not _event_on_cooldown("PROT_07_AGREE"):
 			_start_cooldown("PROT_07_AGREE", 9999)
 			createNewEvent("PROT_07_AGREE", null)
-			print("[Protector] PROT_07_AGREE fired — TN culture+food: ", total)
 
 
 func _check_prot06_dma_summon() -> void:
@@ -5162,7 +5019,6 @@ func _check_prot06_dma_summon() -> void:
 	playerCountryNode.CountryFlags["prot_06_bar_target"] = bar_now + 2
 	_start_cooldown("PROT_06_SUMMON", 9999)
 	createNewEvent("PROT_06_SUMMON", dma_tile)
-	print("[Protector] PROT_06_SUMMON fired via DMA investigation at ", dma_tile.tileName)
 
 
 func _check_prot06_objectives() -> void:
@@ -5182,7 +5038,6 @@ func _check_prot06_objectives() -> void:
 			if not _event_on_cooldown("PROT_06_TAME"):
 				_start_cooldown("PROT_06_TAME", 9999)
 				createNewEvent("PROT_06_TAME", null)
-				print("[Protector] PROT_06_TAME fired — MD libs: ", lib_now, " bars: ", bar_now)
 		return
 	if flags.has("prot_06_tame") and not flags.has("prot_06_agreed"):
 		var total := 0
@@ -5194,7 +5049,6 @@ func _check_prot06_objectives() -> void:
 			if not _event_on_cooldown("PROT_06_AGREE"):
 				_start_cooldown("PROT_06_AGREE", 9999)
 				createNewEvent("PROT_06_AGREE", null)
-				print("[Protector] PROT_06_AGREE fired — MD total buildings: ", total)
 
 
 # ── CANADIAN PROTECTOR CHECKS ────────────────────────────────────────────────
@@ -5242,7 +5096,6 @@ func _tick_wild_ca_protectors() -> void:
 		if randf() < 0.25:
 			var target = ca_country.OwnedTileList[randi() % ca_country.OwnedTileList.size()]
 			target.corruption = clampi(target.corruption + 1, 0, 100)
-			print("[CA WildProt] ", pid, " added +1 corruption to ", target.tileName)
 
 
 func _check_ca_protectors() -> void:
@@ -5262,7 +5115,6 @@ func _check_ca_protectors() -> void:
 		var prot_tile = _get_ca_prot_tile(pid)
 		_start_cooldown(summon_id, 15)
 		createNewEvent(summon_id, prot_tile)
-		print("[CA Protector] SUMMON fired: ", summon_id,
 			  " at tile ", CA_PROT_TILES.get(pid, 0), " turn ", currentWorldTurn)
 		return
 
@@ -5282,7 +5134,6 @@ func _check_ca_own_protectors() -> void:
 		var prot_tile = _get_ca_prot_tile(pid)
 		_start_cooldown(summon_id, 15)
 		createNewEvent(summon_id, prot_tile)
-		print("[CA Own Protector] SUMMON fired: ", summon_id,
 			  " at tile ", CA_PROT_TILES.get(pid, 0), " turn ", currentWorldTurn)
 		return
 
@@ -5311,7 +5162,6 @@ func _check_loyal_governor_events() -> void:
 			continue
 		playerCountryNode.CountryFlags[fired_flag] = true
 		createNewEvent("GOV_LOYAL_" + gov.governorArchetypeId, tile)
-		print("[LoyalGov] ", gov.governorType, " (", gov.governorArchetypeId,
 			") loyal event fired at ", tile.tileName)
 		return  # one per turn max
 
@@ -5332,7 +5182,6 @@ func _check_arc03_honorary_event() -> void:
 			continue
 		playerCountryNode.CountryFlags[flag] = true
 		createNewEvent("ARC_03_HONORARY", tile)
-		print("[ARC_03] Honorary degree event fired at ", tile.tileName)
 		return
 
 
@@ -5352,7 +5201,6 @@ func _check_arc11_monarchist_event() -> void:
 			continue
 		playerCountryNode.CountryFlags[flag] = true
 		createNewEvent("ARC_11_MONARCHISTS", tile)
-		print("[ARC_11] Monarchist mob event fired at ", tile.tileName)
 		return
 
 
@@ -5398,7 +5246,6 @@ func _check_george_peace_offer() -> void:
 
 	_start_cooldown("GEORGE_PEACE_01", 999)
 	createNewEvent("GEORGE_PEACE_01", null)
-	print("[George Peace] Turn ", currentWorldTurn, " — peace offer fired")
 
 
 func _apply_george_peace() -> void:
@@ -5427,7 +5274,6 @@ func _apply_george_peace() -> void:
 	if not playerCountryNode.CountryFlags.has("george_peace_accepted"):
 		playerCountryNode.CountryFlags["george_peace_accepted"] = true
 
-	print("[George Peace] Accepted — uk_usa_peace set",
 		" + uk_ca_peace (allied)" if is_allied else " (USA only)")
 
 
@@ -5506,14 +5352,12 @@ func _execute_allied_peace(uk_country, peace_tile) -> void:
 			c.CountryFlags["uk_ca_peace"] = true
 			break
 	createNewEvent("PEACE_ALLIED_01", peace_tile)
-	print("[Peace] Allied peace signed — PEACE_ALLIED_01 fired")
 
 
 func _execute_usa_peace(uk_country, peace_tile) -> void:
 	if not uk_country.CountryFlags.has("uk_usa_peace"):
 		uk_country.CountryFlags["uk_usa_peace"] = true
 	createNewEvent("PEACE_USA_01", peace_tile)
-	print("[Peace] USA separate peace signed — PEACE_USA_01 fired")
 
 
 func _execute_ca_peace(uk_country, peace_tile) -> void:
@@ -5524,7 +5368,6 @@ func _execute_ca_peace(uk_country, peace_tile) -> void:
 			c.CountryFlags["uk_ca_peace"] = true
 			break
 	createNewEvent("PEACE_CA_AI_01", peace_tile)
-	print("[Peace] CA separate peace signed — PEACE_CA_AI_01 fired")
 
 
 func _check_win_conditions() -> void:
@@ -5608,7 +5451,6 @@ func _generate_and_assign_governor(tile: Tile) -> void:
 	tile.tileGovernor      = new_gov
 	tile.filledGovernorSlot = true
 	$CanvasLayer/WarRoomPanel.registerCommanderArc(new_gov, tile)
-	print("[Fort] Replacement governor generated: ", full_name, " at ", tile.tileName)
 
 func evaluateTileEvents(tile) -> void:
 	var to_fire = EventDatabase.evaluate_tile_triggers(tile, currentWorldTurn)
@@ -5649,7 +5491,6 @@ func _apply_resource_change(resource: String, amount: int) -> void:
 func _apply_morale_boost(amount: int, tile = null) -> void:
 	if tile != null and tile.tileGovernor != null:
 		tile.tileGovernor.morale = clampi(tile.tileGovernor.morale + amount, 0, 100)
-		print("[Morale] ", tile.tileGovernor.governorType, " at ", tile.tileName,
 			" morale → ", tile.tileGovernor.morale)
 	else:
 		for t in playerCountryNode.OwnedTileList:
@@ -5666,7 +5507,6 @@ func _apply_army_buff(buff_type: String, duration: int, tile) -> void:
 		army.apply_status(buff_type, duration)
 		army.surveySelf()
 		army.updateArmyUI()
-	print("[ArmyBuff] ", buff_type, " (", duration, " turns) applied to ",
 		targets.size(), " army/armies")
 
 func _summon_protector(protector_id: String, tile) -> void:
@@ -5826,11 +5666,9 @@ func newTileDevelopment(tileToDev, devType, devCivilian):
 
 
 func giveSpellInfo(type, spellBranch):
-	print("RETURN GIVE SPELL")
 	var schoolPoints: String = LocBallUI.magicDic.schoolPoints
 	var turnsUntil: String = LocBallUI.magicDic.turnsUntil
 	var unlocked: String = LocBallUI.magicDic.spellUnlocked
-	print("RETURN GIVE SPELL")
 	var spellString: String
 	var spellDesc: String
 	var schoolType: String
@@ -6008,14 +5846,12 @@ func tileSiegeWon(tile, oldCID: String, newCID: String) -> void:
 		var mem_flag: String = "memorial_mission_" + str(tile.tileNumber)
 		if not playerCountryNode.CountryFlags.has(mem_flag):
 			createNewEvent("MEMORIAL_001", tile)
-			print("[Memorial] UK occupied special feature tile: ", tile.tileName)
 
 func _trigger_game_over(won: bool, reason: String = "", end_type: String = "") -> void:
 	if _game_ended:
 		return
 	_game_ended = true
 	#AudioManager.play_sfx("victory" if won else "defeat")
-	print("[GameOver] won=", won, "  reason=", reason, "  end_type=", end_type)
 	if not won and end_type != "":
 		var ending = get_node_or_null("CanvasLayer/EndingSceneControl")
 		if ending != null:
@@ -6234,7 +6070,6 @@ func _spawn_storm(origin: Tile) -> void:
 
 	# Spread to all neighbors
 	_spread_storm(origin, storm_id, storm_type, duration, intensity)
-	print("[Storm] ", storm_type, " spawned at tile ", origin.tileNumber,
 		  " — intensity ", intensity, ", duration ", duration, " turns.")
 
 func _spread_storm(origin: Tile, storm_id: String, storm_type: String,
@@ -6357,7 +6192,6 @@ func _on_commander_fallen(commander, army_name: String, tile) -> void:
 
 func _handle_president_death(commander, army_name: String, tile) -> void:
 	var name: String = commander.governorType if commander.governorType != "" else "the President"
-	print("[GAME OVER] President ", name, " has been killed.")
 	var data: Dictionary = {
 		"event_id":    "DYNAMIC_PRESIDENT_DEATH",
 		"event_type":  "standard",
@@ -6571,7 +6405,6 @@ func _on_vp_governor_selected(new_vp, overlay: ColorRect, panel: PanelContainer)
 	new_vp.isVicePresident = true
 	_vp_governor = new_vp
 	_vp_faction  = VP_FACTION_MAP.get(new_vp.governorType, "")
-	print("[VP Succession] New Vice President: ", new_vp.governorType,
 		  " | Faction: ", _vp_faction)
 
 	# Close picker UI
@@ -6679,7 +6512,6 @@ func saveCountryStatesToFile() -> void:
 	if save_file:
 		save_file.store_string(JSON.stringify(country_states))
 		save_file.close()
-		print("World: Country states saved.")
 	else:
 		push_error("World: Could not save country states.")
  
@@ -6761,7 +6593,6 @@ func save_army_states_to_file(aliveCountriesList: Array) -> void:
 	if save_file:
 		save_file.store_string(JSON.stringify(all_armies))
 		save_file.close()
-		print("ArmyDatabase: ", all_armies.size(), " armies saved.")
 	else:
 		push_error("ArmyDatabase: Could not write army save file.")
 
@@ -6867,7 +6698,6 @@ func _spawn_anarchist_army(source_tile) -> void:
 	armyInstance.armyDestroyed.connect(_on_anarchist_destroyed.bind(armyInstance))
 	_anarchist_armies.append(armyInstance)
 	armyInstance.updateArmyUI()
-	print("[Anarchist] Cell spawned at ", uk_tile.tileName)
 
 func _on_anarchist_destroyed(army: Army) -> void:
 	_anarchist_armies.erase(army)
@@ -6894,7 +6724,6 @@ func _tick_anarchists() -> void:
 			var defender_loss: int = randi_range(30, 80)
 			army.manpowerInArmy = maxi(army.manpowerInArmy - attacker_loss, 0)
 			uk_army.manpowerInArmy = maxi(uk_army.manpowerInArmy - defender_loss, 0)
-			print("[Anarchist] ", army.ArmyName, " raids ", target.tileName,
 				" — loses ", attacker_loss, ", UK loses ", defender_loss)
 			army.updateArmyUI()
 			uk_army.updateArmyUI()

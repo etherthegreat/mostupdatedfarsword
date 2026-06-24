@@ -35,7 +35,6 @@ func _on_spell_button_pressed() -> void:
 
 
 func _on_spell_button_mouse_entered() -> void:
-	print("mouse detected")
 	$DescriptionPanel/SpellNameLabel.text = spellType
 	$DescriptionPanel/DescriptionLabel.text = description
 	var costForDisplay: int

@@ -17,7 +17,6 @@ func buildSelf(player):
 	for Technology in player.unlockedTechnologies:
 		unlockedTechs.append(Technology)
 	for Technology in unlockedTechs:
-		#print("Winner Winner Tech Tech," , Technology.techName)
 		if Technology.techName == "Language":
 			$TechPanel/InsititutionContainer/LanguageUnlockButton.purchase()
 		if Technology.techName == "Writing":

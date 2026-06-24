@@ -61,7 +61,6 @@ func updateTravelingArmy(_progressRate, _currentPath, _Army):
 
 func armyArrivedFunc(pathOfArmy, newPathPointButton, theArmy, apf, contain):
 	#use this to resume 
-	print("ARMYARRIVEDDEBUG")
 	removeFromUpdateArmyPaths()
 	for pathPointButton in $PathPointsControl.get_children():
 		if pathPointButton == newPathPointButton:
@@ -76,7 +75,6 @@ func armyArrivedFunc(pathOfArmy, newPathPointButton, theArmy, apf, contain):
 
 func civilianArrivedFunc(pathOfCivilian, newPathPointButton, theCivilian, cpf, contain):
 	#use this to resume 
-	print("CIVILIANARRIVEDDEBUG")
 	removeFromUpdateArmyPaths()
 	for pathPointButton in $PathPointsControl.get_children():
 		if pathPointButton == newPathPointButton:
@@ -178,13 +176,11 @@ var startingPoint: pathPointButton#come back and fix this
 #incoming pathPointButtonSelf is different from the selectedAPF.  if we give the selectedAPF it's own
 #pathPointButton, we could compare them.
 func calculateArmyMovement(endPathPoint, endNodes, startNodes, neighborPathPoints, curTile):
-	print("DEBUG Calculate", endNodes)
 	if selectedAPF != null:
 		startingPoint = selectedAPF.currentPathPoint
 		var army: Army = selectedAPF.thisArmy
 		# Sabotage blocks all movement for the affected turn
 		if army != null and army.sabotaged:
-			print("MOVEMENT BLOCKED: This army has been sabotaged and cannot move.")
 			return
 		# Movement point gate — terrain cost consumed from army's pool
 		var dest_tile: Tile = endPathPoint.ppbTile
@@ -201,7 +197,6 @@ func calculateArmyMovement(endPathPoint, endNodes, startNodes, neighborPathPoint
 		# Action point gate — civilians spend 1 point per tile moved
 		if selectedCPF.thisCivilian != null:
 			if selectedCPF.thisCivilian.currentActionPoints <= 0:
-				print("MOVEMENT BLOCKED: No action points remaining for this civilian.")
 				return
 			selectedCPF.thisCivilian.currentActionPoints -= 1
 	$PathsControl/Path.set_point_position(1, startingPoint.position)
@@ -212,7 +207,6 @@ func moveArmy(newContainer, String, endPoint):
 	if selectedAPF!= null:
 		match String:
 			"start":
-				print("ControlDEBUG", newContainer)
 				var apfParent = selectedAPF.get_parent()
 				updatingArmyPathFollow = newContainer.get_parent()
 				var path = updatingArmyPathFollow.get_parent()
@@ -223,7 +217,6 @@ func moveArmy(newContainer, String, endPoint):
 	else:
 		match String:
 			"start":
-				print("ControlDEBUG", newContainer)
 				var cpfParent = selectedCPF.get_parent()
 				updatingArmyPathFollow = newContainer.get_parent()
 				var path = updatingArmyPathFollow.get_parent()
@@ -390,24 +383,20 @@ func _on_spy_action_performed(action_type: String, tile, civilian) -> void:
 		return
 	var target_army: Army = tile.stationedArmy
 	if target_army == null or not target_army.enemy:
-		print("SPY: No enemy army in tile ", tile.tileName if tile else "?")
 		raisedPlayerCPFs.erase(civilian)
 		return
 	match action_type:
 		"Sabotage":
 			target_army.sabotaged = true
 			target_army.sabotageTimer = 1
-			print("SPY: Sabotage — ", target_army.ArmyName, " in ", tile.tileName, " cannot act next turn.")
 		"ContactTurncoats":
 			var siphon := int(target_army.manpowerInArmy * 0.20)
 			target_army.manpowerInArmy -= siphon
 			if playerCountry != null:
 				playerCountry.TotalManpower += siphon
-			print("SPY: Contact Turncoats — siphoned ", siphon, " manpower from ", target_army.ArmyName)
 		"Reconnaissance":
 			target_army.reconDebuffed = true
 			target_army.reconDebuffTimer = 3
-			print("SPY: Reconnaissance — ", target_army.ArmyName, " defence debuffed for 3 turns.")
 	emit_signal("spyWinRecorded")
 	# Remove the now-consumed CPF from the tracking list
 	raisedPlayerCPFs.erase(civilian)

@@ -55,5 +55,4 @@ func updateUI(tile):
 				$Button.icon = load("res://art assets/finishedAssets/buildingsketches/barracks.png")
 
 func updateBuildingInspector():
-	print("heeeeeeeeee")
 	emit_signal("updateInspector", thisBuilding)

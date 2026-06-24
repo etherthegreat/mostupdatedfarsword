@@ -19,7 +19,6 @@ var eventButtons: Array = []
 var eventTile: Tile
 
 func buildSelf(eT, eID, eC, eL):
-	print(eT, eID, eC, eL, "kangaroo")
 	eventType = eT
 	eventID = eID
 	eventCountry = eC

@@ -132,7 +132,6 @@ var grey = Color.DARK_GRAY
 var black = Color.BLACK
 
 func _process(delta: float) -> void:
-	#print("highestAvailable", technologyName, highestAvailable)
 	highestAvailable = true
 	if purchased == true:
 		$UnlockButton.add_theme_color_override("icon_normal_color", blue)
@@ -169,7 +168,6 @@ func _process(delta: float) -> void:
 		return
 	if highestAvailable == true && self.purchased == false:
 		$UnlockButton.add_theme_color_override("icon_normal_color", white)
-		#print("baller", technologyName)
 		
 		return
 	else:

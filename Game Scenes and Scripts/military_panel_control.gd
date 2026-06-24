@@ -14,7 +14,6 @@ func buildSelf(playerCountryNode):
 			playerBarracks.append(building)
  
 	if playerBarracks.is_empty():
-		print("MilitaryPanelControl: no barracks found for ", playerNode.CID)
 		return
 
 	# Pre-build a tileNumber → stationedArmy lookup so the sort can check army

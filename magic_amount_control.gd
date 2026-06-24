@@ -26,7 +26,6 @@ var amountPerTurn: int
 
 func buildSelf():
 	schoolType = schoolTypeEXP
-	print("RETURN DEBUG12,", schoolType)
 	match schoolType:
 		"storm", "druid":
 			$SchoolTreeSprite.texture = load("res://art assets/finishedAssets/spellschools/IMG_1255.PNG")
@@ -64,7 +63,6 @@ func buildSelf():
 signal askSpellBranchInfo
 func giveTranslatedInfo(type, spellBranch):
 	emit_signal("askSpellBranchInfo", type, spellBranch)
-	#print("RETURN DEBUG")
 
 func update(playerCountryNode, magicDic):
 	schoolType = schoolTypeEXP
@@ -118,5 +116,4 @@ func calculateLevelUp(schoolLevel):
 		cost = ((cost * schoolLevel)+15)
 		finalCost = (cost - (cost * (discountModifier * .01)) + (cost * (costModifier * .01)))
 	if amount >= finalCost:
-		print("big big big big", schoolType)
 		emit_signal("spellSchoolLevelUp", schoolType, schoolLevel)

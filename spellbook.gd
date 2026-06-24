@@ -10,7 +10,6 @@ func displaySpells(playerCountry):
 		#for Control in $Panel/ArmySpellsGridContainer.get_children():
 		#	Control.queue_free()
 	for spell in playerCountry.unlockedSpells:
-		print("spells in playerCountry.unlockedSpells", spell.spellType)
 		if spell.militarySpell == false:
 			var thisSpellArt = spellArtScene.instantiate()
 			thisSpellArt.buildSpell(spell.spellType, spell.spellCastCost, playerCountry, spell)

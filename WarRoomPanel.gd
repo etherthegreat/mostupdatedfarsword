@@ -265,7 +265,6 @@ func setupAllProtectors(allTiles: Array, country_id: String = "") -> void:
 			arcData["prot17_phase"] = "waiting_summon"
 		activeProtectorArcs.append(arcData)
 	_populate_presidential_tab()
-	print("[Protectors] ", activeProtectorArcs.size(), " protector arcs registered.")
 
 
 func _load_protector_objectives() -> Array:
@@ -1018,11 +1017,9 @@ func _find_held_terrain_tile(terrain: String):
 # ============================================================
 
 func _on_commander_objective_completed(arc_id: String, obj_num: int) -> void:
-	print("Commander arc ", arc_id, " objective ", obj_num, " complete!")
 
 
 func _on_protector_devotion_completed(protector_id: String) -> void:
-	print("Protector ", protector_id, " prayers fulfilled!")
 	var gov_name: String = PROTECTOR_GOVERNOR_UNLOCKS.get(protector_id, "")
 	if gov_name == "" or playerCountryNode == null:
 		return

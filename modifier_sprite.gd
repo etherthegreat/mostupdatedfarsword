@@ -15,7 +15,6 @@ func buildModifier(tileEcoModifier):
 	self.texture = tileEcoModifier.modSprite
 
 func _on_area_2d_mouse_entered() -> void:
-	print("hell ya")
 	if modifierName == "Summer":
 		$Panel/Label.text = str("Summer:  This holiday is warm!")
 		$Panel.visible = true

@@ -14,7 +14,6 @@ var white = Color(1.0,1.0,1.0,1.0)
 var green = Color(0, 1, 0, 1)
 
 func updateInspector(building):
-	print("dkdkdkdkdkd")
 	self.visible = true
 	buildingUnderInspection = building
 	if buildingUnderInspection != null:
@@ -135,7 +134,6 @@ func updateInspector(building):
 		else:
 			$Panel/GoldLabel.set("theme_override_colors/font_color",white)
 			$Panel/Upgrade.disabled = false
-		print("Success")
 		bPPLevelList = player.buildingLevelList
 		for buildingLevel in bPPLevelList:
 			if buildingLevel.buildingType == buildingUnderInspection.buildingType:
@@ -145,7 +143,6 @@ func updateInspector(building):
 				if buildingUnderInspection.buildingLevel < buildingLevel.maxLevel:
 					$Panel/Upgrade.disabled = false
 	else:
-		#print("no inspector")
 		pass
 
 
@@ -286,4 +283,3 @@ func calculateUpgradeCost(building):
 			woodUpgradeCost += (15 + (15 * building.buildingLevel))
 			goldUpgradeCost += (30 + (30 * building.buildingLevel))
 		return
-	print("no building recognized")

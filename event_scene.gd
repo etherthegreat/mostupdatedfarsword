@@ -51,11 +51,6 @@ func build_from_csv(eid: String, tile = null, player = null) -> void:
 		return
 
 	# ── Console preview ────────────────────────────────────────────────────────
-	print("=== EVENT FIRED: " + eid + " ===")
-	print("HEADLINE:   " + event_data.get("headline",   ""))
-	print("SHORT DESC: " + event_data.get("short_desc", ""))
-	print("LONG DESC:  " + event_data.get("long_desc",  ""))
-	print("================================")
 
 	event_type    = event_data.get("event_type", "standard")
 	event_country = event_data.get("country_cid", "GEN")
@@ -75,7 +70,6 @@ func _build_buttons() -> void:
 	for child in btn_container.get_children():
 		child.queue_free()
 
-	print("event_scene._build_buttons: ", button_data.size(), " buttons for event '", event_id, "'")
 	for btn_data in button_data:
 		var prereq = btn_data.get("prerequisite_flag", "")
 		if prereq != "" and not _check_prerequisite(prereq):
@@ -93,7 +87,6 @@ func _build_buttons() -> void:
 		btn_node.setup(btn_data)
 		btn_node.button_chosen.connect(_on_event_button_chosen)
 		btn_container.add_child(btn_node)
-		print("event_scene: added button '", btn_data.get("button_text", ""), "'")
 
 
 func _on_event_button_chosen(btn_data: Dictionary) -> void:

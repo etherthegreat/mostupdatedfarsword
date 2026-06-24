@@ -524,7 +524,6 @@ func buildBuilding():
 			woodPurchaseCost = 125
 			metalPurchaseCost = 75
 			emit_signal("towerBuilding")
-			print("building type in", tile.tileName)
 		"Library":
 			buildingSprite = load("res://art assets/finishedAssets/buildingsketches/library.png")
 			dollarsCostPerLevel += 1
@@ -970,7 +969,6 @@ func matchPlayerUnlockables(playerCountryNode):
 						dollarsPerLevel += 1
 						metalPerLevel   += 1
 			else:
-				print("no assigned wizard to tile:", tile.tileNumber)
 			for Technology in playerCountry.unlockedTechnologies:
 				if Technology.techName == "Optician's Art":
 					magicPerLevel += 1
@@ -2123,7 +2121,6 @@ func calculateOutputs(playerCountryNode):
 	if corruptionLossPerLevel != 0 or corruptionGainPerLevel != 0:
 		corruptionChange = corruptionGainPerLevel - corruptionLossPerLevel
 	_apply_abnormal_modifiers()
-	#print("totalBuildingMagic", totalBuildingMagic)
 
 func _apply_abnormal_modifiers() -> void:
 	# Flat bonuses that don't follow the standard PerLevel × buildingLevel model.
@@ -2175,7 +2172,6 @@ func _apply_abnormal_modifiers() -> void:
 
 func upgradeBuilding():
 	buildingLevel += 1
-	print("upgrade successful", buildingType, buildingLevel)
 
 func downgradeBuilding():
 	buildingLevel -= 1

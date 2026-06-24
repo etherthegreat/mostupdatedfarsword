@@ -34,7 +34,6 @@ func visualizeSelf():
 var rewardScene = preload("res://faction_reward.tscn")
 
 func matchFactionRewards():
-	print(factionLoyalty, "faction Loyalty")
 	match factionName:
 		"Sons of Liberty":
 			var FR_texture1 = preload("res://art assets/ModifierIcons/milMods/green cross.png")
@@ -253,7 +252,6 @@ func addFactionReward(rewardType, rewardDescription, rewardTexture, slot):
 signal sendRewardType
 func forwardRewardType(factionRewardType):
 	emit_signal("sendRewardType", factionRewardType)
-	print("faction reward type", factionRewardType)
 
 
 func _on_progress_bar_area_2d_mouse_entered() -> void:

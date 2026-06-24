@@ -31,7 +31,6 @@ func initializeTiles(is_new_game: bool, save_data: Dictionary = {}) -> void:
 			else:
 				tile.build_self_from_save(tile_save)
 
-	print("TileController: All ", allTilesList.size(), " tiles initialized.")
 
 
 # ============================================================
@@ -72,7 +71,6 @@ func connectEventSignal(tile) -> void:
 signal transfer
 
 func transferTileEvent(tile, type) -> void:
-	print("yippie")
 	emit_signal("transfer", tile, type)
 
 

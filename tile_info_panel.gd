@@ -19,7 +19,6 @@ func TilesCalculated():
 		#displayTileInfo()
 	#else:
 		#return
-		#print("still calculating tiles")
 	#pass
 
 var selectedTile
@@ -166,8 +165,6 @@ func matchTileNaturals():
 func calculateAvailableGovernor(playerNode, tile):
 	var tileReplica: Tile
 	tileReplica = tile
-	#print(tile, "fyycjcjjc")
-	#print(tileReplica.tileNumber, "fucuucuuc")
 	if $governorTileControlPanel/governorVBox.get_children() != null:
 		for governorSelectionScene in $governorTileControlPanel/governorVBox.get_children():
 			governorSelectionScene.queue_free()

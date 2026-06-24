@@ -145,7 +145,6 @@ signal lawSelectionButtonPressed
 func _on_law_selection_button_pressed() -> void:
 	if $LawPanel/LawInfoPanel.visible == false:
 		emit_signal("lawSelectionButtonPressed")
-		print("lawtype", lawType, "law Description", lawDescription, "lawCosts", lawCosts)
 		$LawPanel/LawInfoPanel.visible = true
 		$LawPanel/LawInfoPanel/LawInfoLabel.text = lawDescription
 		$"LawPanel/LawInfoPanel/Add LawLabel".text = lawCosts
