@@ -240,12 +240,22 @@ func _build_pause_menu() -> void:
 func _on_pause_continue() -> void:
 	_pause_overlay.hide()
 
+var _settings_panel = null
+var _settings_scene = preload("res://SettingsPanel.tscn")
 func _on_pause_settings() -> void:
-	pass  # TODO: settings panel
+	_pause_overlay.hide()
+	if _settings_panel == null:
+		_settings_panel = _settings_scene.instantiate()
+		$CanvasLayer.add_child(_settings_panel)
+	_settings_panel.visible = true
 
+var _pres_lib_scene = preload("res://PresidentialLibraryPanel.tscn")
 func _on_pause_preslib() -> void:
 	_pause_overlay.hide()
-	# TODO: open presidential library panel
+	if _pres_lib_panel == null:
+		_pres_lib_panel = _pres_lib_scene.instantiate()
+		$CanvasLayer.add_child(_pres_lib_panel)
+	_pres_lib_panel.open_library("RECORDS")
 
 func _on_pause_aftercare() -> void:
 	_pause_overlay.hide()
@@ -352,6 +362,7 @@ func updateMap():
 var currentWorldTurn: int = 0
 var playerSpyWins: int = 0
 var _pause_overlay: ColorRect = null
+var _pres_lib_panel = null
 var _belief_purchased_this_turn: bool = false
 var _armies_shown_this_cycle: Dictionary = {}
 
