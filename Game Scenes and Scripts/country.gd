@@ -109,6 +109,10 @@ var ALLIED: Array = []
 var unlockedLaws: Array = []
 var lawsInConstitution: Array = []
 var lawsRecentlyRevoked: Array = []
+# Political compass position derived from enacted laws.
+# X: Reformatory(+1) vs Conservatory(-1)   Y: Revolutionary(+1) vs Liberator(-1)
+var lawQuadrantX: float = 0.0
+var lawQuadrantY: float = 0.0
 
 #Country Religion and Faith
 var selectedBeliefs: Array = []
@@ -707,6 +711,28 @@ func _initialize_purchasable_laws() -> void:
 			addGovernmentLaw("Municipal Elections Act")
 			addGovernmentLaw("Militia Act")
 
+func recalculateLawQuadrant() -> void:
+	var rev := 0
+	var ref := 0
+	var con := 0
+	var lib := 0
+	for l in lawsInConstitution:
+		var tempLaw = law.new()
+		tempLaw.lawType = l.lawType
+		tempLaw.buildSelf(l.lawType, true)
+		match tempLaw.quadrant:
+			"Revolutionary": rev += 1
+			"Reformatory":   ref += 1
+			"Conservatory":  con += 1
+			"Liberator":     lib += 1
+	var total := float(rev + ref + con + lib)
+	if total == 0:
+		lawQuadrantX = 0.0
+		lawQuadrantY = 0.0
+	else:
+		lawQuadrantX = (ref - con) / total
+		lawQuadrantY = (rev - lib) / total
+
 func addGovernmentLaw(Name):
 	for existing in unlockedLaws:
 		if existing.lawType == Name:
@@ -726,6 +752,7 @@ func addLawToConstitution(newLaw):
 	var newSelection = law.new()
 	newSelection.lawType = newLaw
 	lawsInConstitution.append(newSelection)
+	recalculateLawQuadrant()
 	pass
 
 func addCulturalTradition(Name):
