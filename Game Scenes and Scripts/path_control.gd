@@ -93,6 +93,7 @@ func civilianArrivedFunc(pathOfCivilian, newPathPointButton, theCivilian, cpf, c
 	showPathPoints(newPathPointButton)
 	pass
 
+signal spyWinRecorded
 signal activateArmyControlMode
 func displayapfInfo(thisArmy, apf, currentTile, thisCountry, currentPathPoint):
 	if thisCountry == playerCountry:
@@ -455,6 +456,7 @@ func _on_spy_action_performed(action_type: String, tile, civilian) -> void:
 			target_army.reconDebuffed = true
 			target_army.reconDebuffTimer = 3
 			print("SPY: Reconnaissance — ", target_army.ArmyName, " defence debuffed for 3 turns.")
+	emit_signal("spyWinRecorded")
 	# Remove the now-consumed CPF from the tracking list
 	raisedPlayerCPFs.erase(civilian)
 

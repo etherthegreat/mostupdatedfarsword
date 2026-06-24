@@ -191,6 +191,7 @@ func updateMap():
 
 
 var currentWorldTurn: int = 0
+var playerSpyWins: int = 0
 
 signal calculateSeason
 func newGameBuild(CID, gameLang, isCoop: bool = false):
@@ -1623,6 +1624,8 @@ func updatePlayerUI():
 		$PathControl.meleeButtonPressed.connect(meleePressed)
 	if not $PathControl.rangedButtonPressed.is_connected(rangedPressed):
 		$PathControl.rangedButtonPressed.connect(rangedPressed)
+	if not $PathControl.spyWinRecorded.is_connected(_on_spy_win_recorded):
+		$PathControl.spyWinRecorded.connect(_on_spy_win_recorded)
 	$CanvasLayer/CivilianControl.loadCivilians(playerCountryNode, playerCountryNode.OwnedTileList)
 	if not $CanvasLayer/CivilianControl.raiseThisUnit.is_connected(raiseCivilianUnit):
 		$CanvasLayer/CivilianControl.raiseThisUnit.connect(raiseCivilianUnit)
@@ -2683,7 +2686,9 @@ func evaluateDateEvents() -> void:
 		_tick_wild_ca_protectors()
 		_check_protector_summons()
 		_check_prot08_dma_summon()
+		_check_prot16_dma_summon()
 		_check_prot17_dma_summon()
+		_check_prot16_objectives()
 		_tick_commander_turns()
 		_check_arc01_objectives()
 		_tick_arc03_cultural_corps()
@@ -4801,7 +4806,7 @@ func _tick_wild_protectors() -> void:
 
 func _check_protector_summons() -> void:
 	for pid in PROTECTOR_IDS:
-		if pid == "PROT_08" or pid == "PROT_17":
+		if pid == "PROT_08" or pid == "PROT_16" or pid == "PROT_17":
 			continue  # DMA-investigation gated — handled by dedicated summon functions
 		if not _is_protector_wild(pid):
 			continue
@@ -4853,6 +4858,48 @@ func _check_prot17_dma_summon() -> void:
 	_start_cooldown("PROT_17_SUMMON", 9999)  # fires once
 	createNewEvent("PROT_17_SUMMON", dma_tile)
 	print("[Protector] PROT_17_SUMMON fired via DMA investigation at ", dma_tile.tileName)
+
+
+func _check_prot16_dma_summon() -> void:
+	if not _is_protector_wild("PROT_16"):
+		return
+	if _event_on_cooldown("PROT_16_SUMMON"):
+		return
+	# Tiles 20 (Manhattan), 190 (Hicksville/LI), 191 (Montauk/LI)
+	var culper_tiles: Array = [20, 190, 191]
+	var dma_tile = null
+	for tile in $TileController.get_children():
+		if tile.tileNumber in culper_tiles and tile.get("dmaInvestigationPending"):
+			dma_tile = tile
+			tile.dmaInvestigationPending = false
+			break
+	if dma_tile == null:
+		return
+	_start_cooldown("PROT_16_SUMMON", 9999)  # fires once
+	createNewEvent("PROT_16_SUMMON", dma_tile)
+	print("[Protector] PROT_16_SUMMON fired via DMA investigation at ", dma_tile.tileName)
+
+
+func _check_prot16_objectives() -> void:
+	var flags: Dictionary = playerCountryNode.CountryFlags
+	if not flags.has("prot_16_summoned"):
+		return
+	if not flags.has("prot_16_tame") and playerSpyWins >= 3:
+		if not _event_on_cooldown("PROT_16_TAME"):
+			_start_cooldown("PROT_16_TAME", 9999)
+			createNewEvent("PROT_16_TAME", null)
+			print("[Protector] PROT_16_TAME fired — spy wins: ", playerSpyWins)
+		return
+	if flags.has("prot_16_tame") and not flags.has("prot_16_agreed") and playerSpyWins >= 6:
+		if not _event_on_cooldown("PROT_16_AGREE"):
+			_start_cooldown("PROT_16_AGREE", 9999)
+			createNewEvent("PROT_16_AGREE", null)
+			print("[Protector] PROT_16_AGREE fired — spy wins: ", playerSpyWins)
+
+
+func _on_spy_win_recorded() -> void:
+	playerSpyWins += 1
+	print("[Spy] Total spy wins: ", playerSpyWins)
 
 
 # ── CANADIAN PROTECTOR CHECKS ────────────────────────────────────────────────
