@@ -991,7 +991,7 @@ func buildSelf(Type):
 			milModDescription = str("[i]Born wrong, fights right. Absolutely territorial.:[/i][color=green] +25 Attack, +10 Ranged, +10 Block[/color]")
 			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
 			milModResource = "None"
-		"Bigfoot's Solidarity":
+		"Wood Booger's Solidarity":
 			commanderMod = true
 			milModDescription = str("[i]Eleven counties of footprints. Solidarity through presence.:[/i][color=green] +30 Block, +15 Attack[/color]")
 			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")

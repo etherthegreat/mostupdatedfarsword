@@ -1,7 +1,7 @@
 protector_id,protector_name,origin_type,origin_tile_id,origin_state,origin_terrain,resource_type,resource_min,resource_max,dev_levels
 PROT_01,Mothman,dynamic,0,WV,Foothills,food,20,35,3
 PROT_02,Jersey Devil,dynamic,0,NJ,Wetlands,weapons,15,25,2
-PROT_03,Bigfoot,dynamic,0,,Woods,wood,25,40,3
+PROT_03,Wood Booger,dynamic,0,,Woods,wood,25,40,3
 PROT_04,Thunderbird,dynamic,0,NY,Woods,culture,20,35,3
 PROT_05,Headless Horseman,dynamic,0,NY,Woods,dollars,25,40,4
 PROT_06,Chessie,dynamic,0,MD,Wetlands,food,30,50,2

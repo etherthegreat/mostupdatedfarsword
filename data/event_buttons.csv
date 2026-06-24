@@ -122,7 +122,7 @@ PROT_03_S_BTN1,PROT_03_SUMMON,Approach Without Weapons,standard,trigger_event,PR
 PROT_03_S_BTN2,PROT_03_SUMMON,Leave Provisions at the Clearing,standard,trigger_event,PROT_03_TAME,0,,,,,
 PROT_03_T_BTN1,PROT_03_TAME,Acknowledge the Deescalation,standard,set_flag,prot_03_tame,0,,,,PROT_03_AGREE,
 PROT_03_T_BTN2,PROT_03_TAME,File the Departmental Report — What Comes Next,standard,set_flag,prot_03_tame,0,,,,PROT_03_AGREE,
-PROT_03_A_BTN1,PROT_03_AGREE,Accept Bigfoot's Guidance Through the Mountains,standard,set_flag,prot_03_agreed,0,,,,,
+PROT_03_A_BTN1,PROT_03_AGREE,Accept Wood Booger's Guidance Through the Mountains,standard,set_flag,prot_03_agreed,0,,,,,
 PROT_03_A_BTN2,PROT_03_AGREE,The Full Mountain Agreement,explicit,set_flag,prot_03_agreed,0,,,,,
 PROT_04_S_BTN1,PROT_04_SUMMON,Request Indigenous Liaison,standard,trigger_event,PROT_04_TAME,0,,,,,
 PROT_04_S_BTN2,PROT_04_SUMMON,Signal a Ceremonial Approach,standard,trigger_event,PROT_04_TAME,0,,,,,

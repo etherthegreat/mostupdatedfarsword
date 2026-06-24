@@ -711,7 +711,7 @@ func surveyTile(playerCountryNode):
 					"manifest", "alchemist":
 						manifestPointsOutput = (1 * building.buildingLevel)
 					"cryptid", "summoner", \
-					"Mothman", "Jersey Devil", "Bigfoot", "Snallygaster", "Skunk Ape":
+					"Mothman", "Jersey Devil", "Wood Booger", "Snallygaster", "Skunk Ape":
 						cryptidPointsOutput = (1 * building.buildingLevel)
 					"spectral", "illusionist", \
 					"Headless Horseman", "Green Mountain Ghost", "Lincoln's Ghost":
@@ -868,7 +868,7 @@ func addWizard(wizardType: String, wizardSchool: String = ""):
 # Maps a wizard/protector name to its school short key.
 func _resolve_wizard_school(wtype: String) -> String:
 	match wtype:
-		"Mothman", "Jersey Devil", "Bigfoot", "Snallygaster", \
+		"Mothman", "Jersey Devil", "Wood Booger", "Snallygaster", \
 		"Skunk Ape":                                               return "cryptid"
 		"Headless Horseman", "Green Mountain Ghost", \
 		"Lincoln's Ghost":                                         return "spectral"

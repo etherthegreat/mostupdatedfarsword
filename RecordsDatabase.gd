@@ -866,8 +866,8 @@ func _register_all() -> void:
 		"Jersey Devil's Fury: +25 Attack, +10 Ranged, +10 Block.",
 		{"see_also": ["PROT_02"]})
 
-	_add("milmod_bigfoot", "Military Modifiers", "Bigfoot's Solidarity",
-		"Bigfoot's Solidarity: +30 Block, +15 Attack.",
+	_add("milmod_wood_booger", "Military Modifiers", "Wood Booger's Solidarity",
+		"Wood Booger's Solidarity: +30 Block, +15 Attack.",
 		{"see_also": ["PROT_03"]})
 
 	_add("milmod_thunderbird", "Military Modifiers", "Thunderbird's Sovereignty",

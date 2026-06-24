@@ -350,7 +350,7 @@ func _apply_status_effects_to_stats() -> void:
 				armyPunch  += 25
 				armyLaunch += 10
 				armyBlock  += 10
-			"Bigfoot's Solidarity":
+			"Wood Booger's Solidarity":
 				armyBlock  += 30
 				armyPunch  += 15
 			"Thunderbird's Sovereignty":
