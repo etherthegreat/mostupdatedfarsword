@@ -232,9 +232,8 @@ func confirmGovernor(confirmedGovernor):
 
 
 func _on_factions_button_pressed() -> void:
-	pass # Replace with function body.
+	pass
 
 
 func _on_building_info_panel_show_new_building_tab() -> void:
-	
-	pass # Replace with function body.
+	pass

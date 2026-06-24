@@ -71,8 +71,9 @@ func _on_open_buildings_button_pressed() -> void:
 
 
 func _on_wizard_button_pressed() -> void:
-	
-	pass # Replace with function body.
+	var wtc := $TileInfoPanel.get_node_or_null("WizardTileControl")
+	if wtc:
+		wtc.visible = not wtc.visible
 
 func _on_magic_button_pressed() -> void:
 	$SpellSchoolsControl.updateMagicAmounts(playerNode)

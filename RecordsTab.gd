@@ -78,12 +78,14 @@ func _show_entry(entry: Dictionary) -> void:
 		else:
 			icon_rect.texture = null
 	if body_lbl:
+		if not body_lbl.meta_clicked.is_connected(_on_body_link_clicked):
+			body_lbl.meta_clicked.connect(_on_body_link_clicked)
 		if is_mystery and not is_unlocked:
 			body_lbl.clear()
 			body_lbl.append_text("[i]" + entry.get("description", "") + "[/i]")
 		else:
 			body_lbl.clear()
-			body_lbl.append_text(entry.get("description", ""))
+			body_lbl.append_text(_process_wikilinks(entry.get("description", "")))
 
 	# See also links
 	if see_links:
@@ -102,6 +104,30 @@ func _show_entry(entry: Dictionary) -> void:
 			link_btn.flat = true
 			link_btn.pressed.connect(_show_entry.bind(related))
 			see_links.add_child(link_btn)
+
+# ── wikilink processing ──────────────────────────────────────────────────────
+
+func _process_wikilinks(text: String) -> String:
+	var result := ""
+	var i := 0
+	while i < text.length():
+		if i + 1 < text.length() and text.substr(i, 2) == "[[":
+			var close := text.find("]]", i + 2)
+			if close == -1:
+				result += text.substr(i)
+				break
+			var entry_id := text.substr(i + 2, close - i - 2)
+			var linked := RecordsDatabase.get_entry(entry_id)
+			var label  := linked.get("name", entry_id) if not linked.is_empty() else entry_id
+			result += "[url=" + entry_id + "]" + label + "[/url]"
+			i = close + 2
+		else:
+			result += text[i]
+			i += 1
+	return result
+
+func _on_body_link_clicked(meta) -> void:
+	select_entry(str(meta))
 
 # ── external navigation ───────────────────────────────────────────────────────
 
