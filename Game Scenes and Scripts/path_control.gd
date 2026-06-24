@@ -359,7 +359,6 @@ func updateTileSiege(army, pathPoint):
 	for pathPointButton in $PathPointsControl.get_children():
 		if pathPointButton == pathPoint:
 			pathPointButton.siegeTile(army)
-		pass
 
 
 func _on_build_road_pressed() -> void:

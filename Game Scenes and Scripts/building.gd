@@ -1017,7 +1017,6 @@ func matchPlayerUnlockables(playerCountryNode):
 				# Gold deposits correlate with ley lines (flavor)
 				magicPerLevel += 1
 				magicDic["Tower: Gold Deposits"] = (1 * buildingLevel)
-			pass
 		"Library":
 			for Technology in playerCountry.unlockedTechnologies:
 				if Technology.techName == "Constitutional Studies":

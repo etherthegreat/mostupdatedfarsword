@@ -113,7 +113,6 @@ func _on_governor_button_pressed() -> void:
 			$GovernorSelection.visible = true
 		else:
 			$GovernorSelection.visible = false
-		pass
 
 var governorSelectionScene = preload("res://governor_selection.tscn")
 func matchTileNaturals():

@@ -111,7 +111,6 @@ func deleteBattle():
 	if $battlecontrol.get_children() != null:
 		for Battle in $battlecontrol.get_children():
 			Battle.queue_free()
-		pass
 
 func prepareMilSpell(spellForCast):
 	spellToCast = spellForCast
