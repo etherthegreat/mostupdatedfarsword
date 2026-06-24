@@ -1830,6 +1830,8 @@ func updatePlayerUI():
 		$CanvasLayer/TechTree.addTechToPlayer.connect(newPlayerTech)
 	$CanvasLayer/BeliefControl.buildSelf(playerCountryNode)
 	$CanvasLayer/BuildingInfoPanel/buildingPanelPanel.player = playerCountryNode
+	if not $PathControl.movement_blocked.is_connected(_on_path_control_movement_blocked):
+		$PathControl.movement_blocked.connect(_on_path_control_movement_blocked)
 	if not $PathControl.activateArmyControlMode.is_connected(activateArmyControl):
 		$PathControl.activateArmyControlMode.connect(activateArmyControl)
 	$PathControl.connectPathPoints(playerCountryNode)
@@ -5683,6 +5685,21 @@ func _is_state_liberated(state_code: String, cid: String) -> bool:
 	return true
 
 
+
+func _on_path_control_movement_blocked(reason: String) -> void:
+	var lbl := Label.new()
+	lbl.text = reason
+	lbl.add_theme_color_override("font_color", Color(1.0, 0.85, 0.2, 1.0))
+	lbl.add_theme_font_size_override("font_size", 18)
+	lbl.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
+	lbl.position.y += 80
+	lbl.modulate.a = 0.0
+	$CanvasLayer.add_child(lbl)
+	var tw := create_tween()
+	tw.tween_property(lbl, "modulate:a", 1.0, 0.2)
+	tw.tween_interval(1.4)
+	tw.tween_property(lbl, "modulate:a", 0.0, 0.3)
+	tw.tween_callback(lbl.queue_free)
 
 func _on_right_click_detector_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if Input.is_action_just_pressed('Right Click'):

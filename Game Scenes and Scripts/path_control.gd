@@ -89,6 +89,7 @@ func civilianArrivedFunc(pathOfCivilian, newPathPointButton, theCivilian, cpf, c
 			#updateArmyPanel(theArmy, newPathPointButton)
 	showPathPoints(newPathPointButton)
 
+signal movement_blocked(reason: String)
 signal spyWinRecorded
 signal activateArmyControlMode
 func displayapfInfo(thisArmy, apf, currentTile, thisCountry, currentPathPoint):
@@ -190,7 +191,7 @@ func calculateArmyMovement(endPathPoint, endNodes, startNodes, neighborPathPoint
 		if dest_tile != null and army != null:
 			var cost: int = dest_tile.get_move_cost(army)
 			if army.currentMovementPoints < cost:
-				# TODO: show a small UI indicator ("Not enough movement points")
+				emit_signal("movement_blocked", "Not enough movement points")
 				return
 			army.currentMovementPoints -= cost
 			army.movedThisTurn = true
