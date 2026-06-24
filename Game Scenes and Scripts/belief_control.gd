@@ -184,7 +184,12 @@ func updateSelf():
 			purchasedDoctrine.queue_free()
 	for belief in player.selectedBeliefs:
 		buildPD(belief.beliefType)
-	pass
+	# Apply uniform escalating cost to every unpurchased button
+	var uniform_cost := _get_uniform_belief_cost()
+	for btn in $BeliefPanel/DoctrineScrollContainer/DoctrineContainer.get_children():
+		btn.bbCost = uniform_cost
+	for btn in $BeliefPanel/GodsScrollContainer/GodsContainer.get_children():
+		btn.bbCost = uniform_cost
 
 func buildPD(type):
 	var newPD = beliefPD.instantiate()
@@ -413,14 +418,20 @@ func _process(delta: float) -> void:
 		matchFaithPointsIcons()
 	pass
 
+func _get_uniform_belief_cost() -> int:
+	if not is_instance_valid(player):
+		return 10
+	return max(10, int(10.0 * pow(1.2, float(player.beliefPurchaseCount))))
+
 signal purchasedBelief
 func _on_purchase_button_pressed() -> void:
-	#print("purchasedBelief", pendingBelief, pendingCost)
 	emit_signal("purchasedBelief", pendingBelief, pendingCost)
+	if is_instance_valid(player):
+		player.beliefPurchaseCount += 1
 	pendingBelief = ""
 	pendingCost = 0
 	$BeliefPanel/PurchasePanel.visible = false
-	pass # Replace with function body.
+	updateSelf()  # refresh button costs for next purchase
 
 func matchFaithPointsIcons():
 	match player.churchLevel:

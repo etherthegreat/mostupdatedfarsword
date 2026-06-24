@@ -119,6 +119,7 @@ var selectedBeliefs: Array = []
 var churchLevel: int #ranges from -3 to 3.  is calculated by finding the church beliefs by faith beliefs
 var faithBeliefs: int
 var churchBeliefs: int
+var beliefPurchaseCount: int = 0   # escalating cost: cost = max(10, int(10 * 1.2^count))
 var availableDocs: Array = []
 var availableGods: Array = []
 

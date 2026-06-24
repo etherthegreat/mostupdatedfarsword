@@ -88,6 +88,7 @@ var propagandaBuff: int = 0       # flat attack bonus (and equivalent defence pe
 var armyStatusEffects: Array = []   # Array of {type: String, turnsLeft: int}
 var attackBlocked: bool = false     # set by Routed/Pacified/Seduced/Love-Struck/Mutinous
 var reinforcementBlocked: bool = false  # set by Supply Cut/Quarantined
+var isGuarding: bool = false        # player-toggled: skip in end-turn army cycle
 
 var armySiegeScore: float
 

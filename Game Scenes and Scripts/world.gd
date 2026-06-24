@@ -159,6 +159,7 @@ const STATE_FULL_NAMES: Dictionary = {
 
 func _ready() -> void:
 	_build_pause_menu()
+	$CanvasLayer/BeliefControl.purchasedBelief.connect(_on_belief_purchased)
 
 
 func _build_pause_menu() -> void:
@@ -292,6 +293,8 @@ func updateMap():
 var currentWorldTurn: int = 0
 var playerSpyWins: int = 0
 var _pause_overlay: ColorRect = null
+var _belief_purchased_this_turn: bool = false
+var _armies_shown_this_cycle: Dictionary = {}
 
 signal calculateSeason
 func newGameBuild(CID, gameLang, isCoop: bool = false):
@@ -5937,11 +5940,67 @@ func _trigger_game_over(won: bool, reason: String = "", end_type: String = "") -
 		push_warning("[GameOver] GameOverPanel not found — result: " + ("WIN" if won else "LOSS"))
 
 
+func _next_belief_cost() -> int:
+	if not is_instance_valid(playerCountryNode):
+		return 10
+	return max(10, int(10.0 * pow(1.2, float(playerCountryNode.beliefPurchaseCount))))
+
+func _build_army_cycle_list() -> Array:
+	if not is_instance_valid(playerCountryNode):
+		return []
+	var result: Array = []
+	for army in playerCountryNode.countryArmyList:
+		if not is_instance_valid(army):
+			continue
+		if army.currentMovementPoints <= 0:
+			continue
+		if army.get("isGuarding") == true:
+			continue
+		result.append(army)
+	return result
+
+func _on_belief_purchased(_bname: String, _bcost: int) -> void:
+	_belief_purchased_this_turn = true
+	$CanvasLayer/BeliefControl.hide()
+
 func _on_next_turn_pressed() -> void:
 	if _game_ended:
 		return
+
+	# ── Gate 1: Tech ────────────────────────────────────────────────────────────
+	# Handled by _process: PickTech replaces NextTurn when investmentTech == null,
+	# so if we reach here, tech is already selected.
+
+	# ── Gate 2: Belief ──────────────────────────────────────────────────────────
+	# When the player can afford a new belief, force them to pick one first.
+	if is_instance_valid(playerCountryNode) and not _belief_purchased_this_turn:
+		if playerCountryNode.TotalCulture >= _next_belief_cost():
+			$CanvasLayer/BeliefControl.show()
+			return
+
+	# ── Gate 3: Army cycling ────────────────────────────────────────────────────
+	# Cycle through armies that have movement points and aren't Guarding.
+	var armies_with_moves := _build_army_cycle_list()
+	var unseen: Array = []
+	for army in armies_with_moves:
+		if not _armies_shown_this_cycle.has(army.get_instance_id()):
+			unseen.append(army)
+	if unseen.size() > 0:
+		var target := unseen[0]
+		_armies_shown_this_cycle[target.get_instance_id()] = true
+		# Center camera on the army's tile
+		if target.inTile != null:
+			var pp = get_node_or_null(
+				"PathControl/PathPointsControl/" + str(target.inTile.tileNumber))
+			if pp:
+				$CameraMovementController/Camera2D.global_position = pp.global_position
+		return
+
+	# ── All gates passed — commit end of turn ───────────────────────────────────
+	_belief_purchased_this_turn = false
+	_armies_shown_this_cycle = {}
+
 	#AudioManager.play_sfx("end_turn")
-	# End this player's individual turn
 	_end_current_player_turn()
 
 	_turn_phase_index += 1
