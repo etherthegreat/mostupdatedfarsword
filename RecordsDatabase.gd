@@ -878,8 +878,8 @@ func _register_all() -> void:
 		"Headless Terror: +20 Attack, +10 Block; attackers become Terrified.",
 		{"see_also": ["PROT_05"]})
 
-	_add("milmod_chessie", "Military Modifiers", "Chessie's Blessing",
-		"Chessie's Blessing: +20 Block, +15 Ranged Defence.",
+	_add("milmod_goatman", "Military Modifiers", "Goatman's Judgement",
+		"Goatman's Judgement: Instantly removes all remaining shield from any army at 20% shield or below.",
 		{"see_also": ["PROT_06"]})
 
 	_add("milmod_bell_witch", "Military Modifiers", "Bell Witch's Harassment",
@@ -1086,7 +1086,7 @@ func _register_all() -> void:
 		"PROT_05")
 
 	_add_mystery("PROT_06", "Protectors",
-		"Chesapeake fishermen have stopped working the deep water. Something beneath the surface watches back.",
+		"Two DMA agents investigating the Prince George's County parkway disappearances have gone missing. Only their binoculars were recovered.",
 		"PROT_06")
 
 	_add_mystery("PROT_07", "Protectors",

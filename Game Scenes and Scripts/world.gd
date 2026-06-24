@@ -87,7 +87,7 @@ const USA_PROT_TILES: Dictionary = {
 	"PROT_03": 145,   # Bigfoot               — Asheville, NC (Blue Ridge Highlands)
 	"PROT_04": 139,   # Thunderbird           — Buffalo, NY (Niagara / Great Lakes storms)
 	"PROT_05":  17,   # Headless Horseman     — Peekskill, NY (Hudson Valley)
-	"PROT_06":  37,   # Chessie               — Baltimore, MD (Chesapeake Shipyards)
+	"PROT_06":  41,   # Goatman               — Bethesda, MD (Prince George's County corridor)
 	"PROT_07": 165,   # Bell Witch            — Nashville, TN
 	"PROT_08":  65,   # Old Ironsides         — Boston, MA (Charlestown Navy Yard)
 	"PROT_09":   1,   # Valley Forge Guardian — Valley Forge, PA
@@ -2139,7 +2139,7 @@ func _protector_id_to_name(pid: String) -> String:
 		"PROT_03": return "Bigfoot"
 		"PROT_04": return "Thunderbird"
 		"PROT_05": return "Headless Horseman"
-		"PROT_06": return "Chessie"
+		"PROT_06": return "Goatman"
 		"PROT_07": return "Bell Witch"
 		"PROT_08": return "Old Ironsides"
 		"PROT_09": return "Valley Forge Guardian"
@@ -2164,7 +2164,8 @@ func _protector_id_to_name(pid: String) -> String:
 func _protector_id_to_school(pid: String) -> String:
 	match pid:
 		"PROT_01", "PROT_02", "PROT_03", "PROT_10", "PROT_15": return "cryptid"
-		"PROT_04", "PROT_06", "PROT_07":                        return "storm"
+		"PROT_06":                                              return "terror"
+		"PROT_04", "PROT_07":                                   return "storm"
 		"PROT_05", "PROT_13", "PROT_17":                        return "spectral"
 		"PROT_08", "PROT_09":                                   return "iron"
 		"PROT_11", "PROT_12":                                   return "liberty"
@@ -2179,7 +2180,7 @@ func _protector_id_to_spell(pid: String) -> String:
 		"PROT_03": return "PACIFIC NORTHWEST PRIVACY PROTECTION ACT"
 		"PROT_04": return "EXECUTIVE WEATHER CONTROL INITIATIVE"
 		"PROT_05": return "CLASSIFIED TACTICAL TERROR BUDGET"
-		"PROT_06": return "CHESAPEAKE WATERS RECLAMATION PROJECT"
+		"PROT_06": return "GOATMAN'S JUDGEMENT"
 		"PROT_07": return "DEPARTMENT OF PSYCHOLOGICAL OPERATIONS"
 		"PROT_08": return "NAVAL SUPERIORITY MAINTENANCE DIRECTIVE"
 		"PROT_09": return "COLD WEATHER RESILIENCE FUNDING ACT"
@@ -2685,9 +2686,11 @@ func evaluateDateEvents() -> void:
 		_tick_wild_protectors()
 		_tick_wild_ca_protectors()
 		_check_protector_summons()
+		_check_prot06_dma_summon()
 		_check_prot08_dma_summon()
 		_check_prot16_dma_summon()
 		_check_prot17_dma_summon()
+		_check_prot06_objectives()
 		_check_prot16_objectives()
 		_tick_commander_turns()
 		_check_arc01_objectives()
@@ -4806,7 +4809,7 @@ func _tick_wild_protectors() -> void:
 
 func _check_protector_summons() -> void:
 	for pid in PROTECTOR_IDS:
-		if pid == "PROT_08" or pid == "PROT_16" or pid == "PROT_17":
+		if pid == "PROT_06" or pid == "PROT_08" or pid == "PROT_16" or pid == "PROT_17":
 			continue  # DMA-investigation gated — handled by dedicated summon functions
 		if not _is_protector_wild(pid):
 			continue
@@ -4900,6 +4903,67 @@ func _check_prot16_objectives() -> void:
 func _on_spy_win_recorded() -> void:
 	playerSpyWins += 1
 	print("[Spy] Total spy wins: ", playerSpyWins)
+
+
+func _check_prot06_dma_summon() -> void:
+	if not _is_protector_wild("PROT_06"):
+		return
+	if _event_on_cooldown("PROT_06_SUMMON"):
+		return
+	# Tiles 40 (Waldorf), 41 (Bethesda), 42 (Frederick) — inland MD / PG County corridor
+	var goatman_tiles: Array = [40, 41, 42]
+	var dma_tile = null
+	for tile in $TileController.get_children():
+		if tile.tileNumber in goatman_tiles and tile.get("dmaInvestigationPending"):
+			dma_tile = tile
+			tile.dmaInvestigationPending = false
+			break
+	if dma_tile == null:
+		return
+	# Record building targets for objectives at moment of summon
+	var lib_now := 0
+	var bar_now := 0
+	for tile in playerCountryNode.OwnedTileList:
+		if tile.get("tileContinent") == "MD":
+			lib_now += tile.buildings.get("library", 0)
+			bar_now += tile.buildings.get("barracks", 0)
+	playerCountryNode.CountryFlags["prot_06_lib_target"] = lib_now + 4
+	playerCountryNode.CountryFlags["prot_06_bar_target"] = bar_now + 2
+	_start_cooldown("PROT_06_SUMMON", 9999)
+	createNewEvent("PROT_06_SUMMON", dma_tile)
+	print("[Protector] PROT_06_SUMMON fired via DMA investigation at ", dma_tile.tileName)
+
+
+func _check_prot06_objectives() -> void:
+	var flags: Dictionary = playerCountryNode.CountryFlags
+	if not flags.has("prot_06_summoned"):
+		return
+	if not flags.has("prot_06_tame"):
+		var lib_target: int = flags.get("prot_06_lib_target", 9999)
+		var bar_target: int = flags.get("prot_06_bar_target", 9999)
+		var lib_now := 0
+		var bar_now := 0
+		for tile in playerCountryNode.OwnedTileList:
+			if tile.get("tileContinent") == "MD":
+				lib_now += tile.buildings.get("library", 0)
+				bar_now += tile.buildings.get("barracks", 0)
+		if lib_now >= lib_target and bar_now >= bar_target:
+			if not _event_on_cooldown("PROT_06_TAME"):
+				_start_cooldown("PROT_06_TAME", 9999)
+				createNewEvent("PROT_06_TAME", null)
+				print("[Protector] PROT_06_TAME fired — MD libs: ", lib_now, " bars: ", bar_now)
+		return
+	if flags.has("prot_06_tame") and not flags.has("prot_06_agreed"):
+		var total := 0
+		for tile in playerCountryNode.OwnedTileList:
+			if tile.get("tileContinent") == "MD":
+				for btype in tile.buildings:
+					total += tile.buildings[btype]
+		if total >= 100:
+			if not _event_on_cooldown("PROT_06_AGREE"):
+				_start_cooldown("PROT_06_AGREE", 9999)
+				createNewEvent("PROT_06_AGREE", null)
+				print("[Protector] PROT_06_AGREE fired — MD total buildings: ", total)
 
 
 # ── CANADIAN PROTECTOR CHECKS ────────────────────────────────────────────────

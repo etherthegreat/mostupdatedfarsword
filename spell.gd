@@ -63,11 +63,11 @@ func newGameSpellAssignment():
 			spellSprite = load("res://art assets/Placeholder Art/Spells/Fireworks.PNG")
 			spellCastCost = 45
 			spellShortDescription = "The Horseman rides at full gallop toward enemy lines. He cannot aim, having no head, but compensates with enthusiasm. Enemy commanders report being unsettled in ways they decline to specify in their reports."
-		"CHESAPEAKE WATERS RECLAMATION PROJECT":         # PROT_06 Chessie
-			militarySpell = false
-			spellSprite = load("res://art assets/Placeholder Art/Spells/Health Potion.PNG")
-			spellCastCost = 40
-			spellShortDescription = "Chessie stirs the deep bay and brings forth rich bounty from her depths. She is ancient, immense, and responded positively to the Secretary's advances. He brought oysters. She appreciated the gesture."
+		"GOATMAN'S JUDGEMENT":                           # PROT_06 Goatman
+			militarySpell = true
+			spellSprite = load("res://art assets/finishedAssets/governors/goatman.png")
+			spellCastCost = 50
+			spellShortDescription = "Cast on any army at 20% shield or below. The Goatman emerges from the Maryland treeline and finishes the job. He does not negotiate at this stage. He does not have to."
 		"DEPARTMENT OF PSYCHOLOGICAL OPERATIONS":        # PROT_07 Bell Witch
 			militarySpell = true
 			spellSprite = load("res://art assets/Placeholder Art/Spells/Fireworks.PNG")
