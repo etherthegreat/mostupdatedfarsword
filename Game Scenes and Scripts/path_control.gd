@@ -175,10 +175,8 @@ func _process(delta: float) -> void:
 				updatingArmyPathFollow.progress_ratio = selectedCPF.progressRate
 			return
 
-var startingPoint: pathPointButton#come back and fix this
-#incoming pathPointButtonSelf is different from the selectedAPF.  if we give the selectedAPF it's own
-#pathPointButton, we could compare them.
-func calculateArmyMovement(endPathPoint, endNodes, startNodes, neighborPathPoints, curTile):
+var startingPoint: pathPointButton
+func calculateArmyMovement(endPathPoint: pathPointButton, _neighborPathPoints, _ppbTile):
 	if selectedAPF != null:
 		startingPoint = selectedAPF.currentPathPoint
 		var army: Army = selectedAPF.thisArmy
@@ -203,8 +201,10 @@ func calculateArmyMovement(endPathPoint, endNodes, startNodes, neighborPathPoint
 			if selectedCPF.thisCivilian.currentActionPoints <= 0:
 				return
 			selectedCPF.thisCivilian.currentActionPoints -= 1
-	$PathsControl/Path.set_point_position(1, startingPoint.position)
-	$PathsControl/Path.set_point_position(2, endPathPoint.position)
+	var curve: Curve2D = $PathsControl/Path.curve
+	curve.clear_points()
+	curve.add_point(startingPoint.position)
+	curve.add_point(endPathPoint.position)
 	moveArmy($PathsControl/Path/PathFollow/Control, "start", endPathPoint)
 
 func moveArmy(newContainer, String, endPoint):
