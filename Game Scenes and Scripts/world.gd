@@ -232,14 +232,13 @@ func newGameBuild(CID, gameLang, isCoop: bool = false):
 	#$CanvasLayer/Spellbook.displaySpells(playerCountryNode)
 	$CanvasLayer/LoadingLabel.text = "Loading UI (Magic)"
 	$CanvasLayer/LoadingProgressBar.value = 75
+	mapMode = "Polis"
+	displayCorruption = true
 	updatePlayerUI()
 	for Tile in $TileController.get_children():
 		Tile.discoverTile()
-	#$TileController.discoverTiles(playerCountryNode)
 	worldCreation = false
 	$RightClickDetector.visible = true
-	mapMode = "Polis"
-	displayCorruption = true
 	$CanvasLayer/LoadingProgressBar.value = 100
 	$CanvasLayer/LoadingBackground.visible = false
 	$CanvasLayer/LoadingSprite.visible = false
@@ -259,6 +258,8 @@ func newGameBuild(CID, gameLang, isCoop: bool = false):
 	$CanvasLayer/WarRoomPanel.setupAllProtectors($TileController.get_children(), coop_country_id)
 	_assign_vice_president()
 	_build_turn_order()
+	$CanvasLayer/MilitaryPanelControl.trimEmptyButtons()
+	updateMap()
 	evaluateDateEvents()
 	_seed_opening_journal_entry()
 
@@ -1152,7 +1153,7 @@ func spawnStartingArmies() -> void:
 		% [dbg_owned, dbg_gov, dbg_barracks, dbg_free, candidates.size()])
 
 	candidates.shuffle()
-	var chosen: Array = candidates.slice(0, min(3, candidates.size()))
+	var chosen: Array = candidates.slice(0, min(18, candidates.size()))
 
 	for tile in chosen:
 		var gov: governor = tile.tileGovernor

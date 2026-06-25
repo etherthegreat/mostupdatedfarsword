@@ -6,7 +6,10 @@ var playerBarracks: Array = []
  
 func buildSelf(playerCountryNode):
 	playerNode = playerCountryNode
-	playerBarracks.clear()  # clear in case buildSelf called more than once
+	playerBarracks.clear()
+	for child in $ScrollContainer/GridContainer.get_children():
+		$ScrollContainer/GridContainer.remove_child(child)
+		child.queue_free()
  
 	# Find all barracks buildings in player's building list
 	for building in playerNode.countryBuildingList:
@@ -64,6 +67,12 @@ func buildSelf(playerCountryNode):
 				if Tile.stationedArmy != null:
 					button.addPrebuiltArmy(Tile.stationedArmy)
  
+func trimEmptyButtons() -> void:
+	for child in $ScrollContainer/GridContainer.get_children():
+		if child.barracksArmy == null:
+			$ScrollContainer/GridContainer.remove_child(child)
+			child.queue_free()
+
 signal newArmySignal
 func buildNewArmy(barracksBuilding, barracksTile, bbButton, newArmyName):
 	# bbButton here is the parameter (specific button instance) — unambiguous now
