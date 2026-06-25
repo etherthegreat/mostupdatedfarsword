@@ -5665,6 +5665,7 @@ var calculateMelee: bool
 func meleePressed(armyPath, thisArmy) -> void:
 	if thisArmy.attackBlocked:
 		return
+	thisArmy.cancelGuard()
 	if lastSelectedPathPoint != null:
 		for pathPointButton in lastSelectedPathPoint.neighborPathPoints:
 			pathPointButton.calculateBattle(armyPath, "melee", thisArmy, lastSelectedPathPoint)
@@ -5687,6 +5688,7 @@ func _army_has_active_marine(army: Army) -> bool:
 func rangedPressed(armyPath, thisArmy) -> void:
 	if thisArmy.attackBlocked:
 		return
+	thisArmy.cancelGuard()
 	if lastSelectedPathPoint != null:
 		for pathPointButton in lastSelectedPathPoint.neighborPathPoints:
 			pathPointButton.calculateBattle(armyPath, "ranged", thisArmy, lastSelectedPathPoint)

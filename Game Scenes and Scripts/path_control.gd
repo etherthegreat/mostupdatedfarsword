@@ -192,6 +192,7 @@ func calculateArmyMovement(endPathPoint, endNodes, startNodes, neighborPathPoint
 			army.currentMovementPoints -= cost
 			army.movedThisTurn = true
 			army.attacksFromCurrentTile = 0
+			army.cancelGuard()
 	elif selectedCPF != null:
 		startingPoint = selectedCPF.currentPathPoint
 		# Action point gate — civilians spend 1 point per tile moved

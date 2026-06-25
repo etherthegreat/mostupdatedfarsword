@@ -433,6 +433,12 @@ func _apply_status_effects_to_stats() -> void:
 			"Le Gougou's Terror":
 				armyPunch   += 15
 				armyDefence += 20
+	# Guard bonus applied last so status-effect penalties don't erase it
+	var glvl: int = _guard_level()
+	if glvl > 0:
+		var guard_mult: float = 1.0 + 0.15 * float(glvl)
+		armyBlock   = int(float(armyBlock)   * guard_mult)
+		armyDefence = int(float(armyDefence) * guard_mult)
 
 func _apply_status_flags() -> void:
 	for s in armyStatusEffects:
@@ -889,6 +895,24 @@ func changeArmyBanner(icon):
 	$VBoxContainer/BannerControl/BannerSprite.texture = armyIcon
 	$VBoxContainer/BannerControl/Sprite2D.visible = false
 	$VBoxContainer/BannerControl/BannerContainer.visible = false
+
+func _guard_level() -> int:
+	if not isGuarding:
+		return 0
+	if parentCountry == null:
+		return 1
+	const MIL_ORG_TECHS := ["Organization", "Logistics", "Tactics", "Authority"]
+	var bonus: int = 0
+	for tech in parentCountry.unlockedTechnologies:
+		if tech.techName in MIL_ORG_TECHS:
+			bonus += 1
+	return clampi(1 + bonus, 1, 4)
+
+func cancelGuard() -> void:
+	isGuarding = false
+	var guard_btn = get_node_or_null("VBoxContainer/GuardButton")
+	if guard_btn != null:
+		guard_btn.set_pressed_no_signal(false)
 
 func _on_guard_button_toggled(button_pressed: bool) -> void:
 	isGuarding = button_pressed
