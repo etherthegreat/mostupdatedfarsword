@@ -818,6 +818,10 @@ func updateUnlockableAttributes():
 		courthouseBuildingLevel.buildingType = "Courthouse"
 		courthouseBuildingLevel.maxLevel = 0
 		buildingLevelList.append(courthouseBuildingLevel)
+		var monumentBuildingLevel = buildingLevel.new()
+		monumentBuildingLevel.buildingType = "Monument"
+		monumentBuildingLevel.maxLevel = 0
+		buildingLevelList.append(monumentBuildingLevel)
 		var rangedTemplate = UnitTemplate.new()
 		rangedTemplate.unitType = "Ranged"
 		rangedTemplate.unitDefensiveScore = 0
@@ -1023,10 +1027,8 @@ func updateUnlockableAttributes():
 					if buildingLevel.buildingType != "Barracks":
 						buildingLevel.maxLevel += 3
 			if Technology.techName == "Agrarian Reform":
-				# Unlocks all common building types
-				for btype in ["Agriculture", "Granary", "Camp", "Mine", "Forge", "Workshop",
-						"Temple", "Library", "Tower", "Bath", "Dock", "Harbor", "Faire",
-					"Market", "Courthouse"]:
+				for btype in ["Farm", "Camp", "Mine", "Forge", "Monument",
+						"Courthouse", "Harbor", "Library", "Market"]:
 					addBuilding(btype)
 				addTool("Seed Bag")
 			if Technology.techName == "Trade Networks":
