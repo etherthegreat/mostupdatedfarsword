@@ -719,6 +719,7 @@ func addBuilding(buildingType, level):
 	newBuild.buildingLevel = level
 	newBuild.tile = self
 	newBuild.number = tileNumber
+	newBuild.enabled = true
 	tileBuildingsList.append(newBuild)
 	self.add_child(newBuild)
 	if newBuild.buildingLevel == 1:
