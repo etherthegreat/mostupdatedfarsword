@@ -37,6 +37,7 @@ func updateSelf(newType: String) -> void:
  
 		# ============================================================
 		# SABERS — melee only, always available, charge costs manpower
+		# Art by Sister Spacedesk
 		# ============================================================
 		"Cutlass":
 			weaponClass              = "Saber"
@@ -48,10 +49,10 @@ func updateSelf(newType: String) -> void:
 			reloadTurns              = 0
 			weaponsPerLevel          = 0   # no ammo
 			chargeManpowerCost       = 0.10
-			weaponImage = load("res://art assets/finishedAssets/Weapons/Macuahuitl.png")
+			weaponImage = load("res://art assets/finishedAssets/Weapons/cutlass.png")
 			addWeaponMod("SaberCharge")
- 
-		"Cavalry Saber":
+
+		"Cavalry Sword":
 			weaponClass              = "Saber"
 			weaponLevel              = 2
 			weaponOffensiveIncrease  = 5
@@ -59,11 +60,11 @@ func updateSelf(newType: String) -> void:
 			reloadTurns              = 0
 			weaponsPerLevel          = 0
 			chargeManpowerCost       = 0.10
-			weaponImage = load("res://art assets/finishedAssets/Weapons/Longsword.png")
+			weaponImage = load("res://art assets/finishedAssets/Weapons/cavalry_sword.png")
 			addWeaponMod("SaberCharge")
 			addWeaponMod("CavalryMorale")  # bonus vs infantry morale
- 
-		"Light Saber":
+
+		"Officer Sword":
 			weaponClass              = "Saber"
 			weaponLevel              = 3
 			weaponOffensiveIncrease  = 7
@@ -71,10 +72,10 @@ func updateSelf(newType: String) -> void:
 			reloadTurns              = 0
 			weaponsPerLevel          = 0
 			chargeManpowerCost       = 0.10
-			weaponImage = load("res://art assets/finishedAssets/Weapons/Shortsword.png")
+			weaponImage = load("res://art assets/finishedAssets/Weapons/officer_sword.png")
 			addWeaponMod("SaberCharge")
- 
-		"Heavy Saber":
+
+		"Marine Mameluke":
 			weaponClass              = "Saber"
 			weaponLevel              = 4
 			weaponOffensiveIncrease  = 9
@@ -82,7 +83,7 @@ func updateSelf(newType: String) -> void:
 			reloadTurns              = 0
 			weaponsPerLevel          = 0
 			chargeManpowerCost       = 0.10
-			weaponImage = load("res://art assets/finishedAssets/Weapons/Double_Axe.png")
+			weaponImage = load("res://art assets/finishedAssets/Weapons/marine_mameluke.png")
 			addWeaponMod("SaberCharge")
 			addWeaponMod("HeavyCharge")  # extra punch damage on charge
  
