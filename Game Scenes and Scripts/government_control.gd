@@ -1,6 +1,6 @@
 extends Control
 
-var playerNode: country
+var playerNode
 
 var implementedLaws: Array = []
 var possibleLaws: Array = []

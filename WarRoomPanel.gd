@@ -22,7 +22,7 @@
 
 extends Control
 
-var playerCountryNode: country
+var playerCountryNode
 var playerCountryID: String = "USA"
 var activeCommanderArcs: Array = []
 var activeProtectorArcs: Array = []
@@ -45,7 +45,7 @@ func _ready() -> void:
 	$PanelBackground/CloseButton.pressed.connect(_on_close_button_pressed)
 
 
-func buildSelf(playerNode: country) -> void:
+func buildSelf(playerNode) -> void:
 	playerCountryNode = playerNode
 	playerCountryID   = playerNode.CID if playerNode != null else "USA"
 	_populate_commander_tab()

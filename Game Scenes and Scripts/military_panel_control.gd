@@ -1,7 +1,7 @@
 extends Control
  
 var bbButtonScene = preload("res://barracks_button.tscn")  # renamed from bbButton
-var playerNode: country = null                              # typed null, not class ref
+var playerNode                      # typed null, not class ref
 var playerBarracks: Array = []
  
 func buildSelf(playerCountryNode):

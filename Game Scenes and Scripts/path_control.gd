@@ -1,7 +1,7 @@
 extends Control
 
 var armyPathFollowScene = preload("res://army_path_follow.tscn")
-var playerCountry: country
+var playerCountry
 var playerTiles: Array
 var updatingArmyPathFollow: PathFollow2D
 

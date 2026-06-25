@@ -1,7 +1,11 @@
 extends Control
 
 
+<<<<<<< Updated upstream
 var player = country
+=======
+var player
+>>>>>>> Stashed changes
 
 func buildSelf(playerNode):
 	pendingBelief = ""

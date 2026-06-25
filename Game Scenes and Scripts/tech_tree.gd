@@ -1,9 +1,13 @@
 extends Control
 
+<<<<<<< Updated upstream
 
 var unlockedTechs: Array = []
 var playerNode: country
 #signal updateTechTree
+=======
+var playerNode
+>>>>>>> Stashed changes
 var investmentTech: techButton
 var costForUnlock: int
 
@@ -71,6 +75,7 @@ func buildSelf(player):
 
 signal addTechToPlayer
 
+<<<<<<< Updated upstream
 func connectTechButtons():
 	for techButton in $TechPanel/GridContainer.get_children():
 		techButton.selectInvestment.connect(selectInvestmentFunc)
@@ -84,6 +89,66 @@ func connectTechButtons():
 	pass
 
 func unlockTech( techID, techButt, change):
+=======
+func buildSelf(player) -> void:
+	playerNode = player
+	_build_grid()
+	_mark_purchased(player)
+	_connect_signals()
+
+func _build_grid() -> void:
+	_buttons.clear()
+	var grid := $TechPanel/GridContainer
+	for child in grid.get_children():
+		grid.remove_child(child)
+		child.queue_free()
+
+	var button_scene := load("res://tech_unlock_button.tscn")
+
+	for row_idx in range(TECH_ROWS.size()):
+		var row_data: Array = TECH_ROWS[row_idx]
+		var row_label_text: String = row_data[0]
+
+		# Column 0: row label
+		var lbl := Label.new()
+		lbl.text = row_label_text
+		lbl.add_theme_font_size_override("font_size", 14)
+		lbl.add_theme_color_override("font_color", Color(0.95, 0.88, 0.62, 1))
+		lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		lbl.custom_minimum_size = Vector2(120, 0)
+		grid.add_child(lbl)
+
+		var row_btns: Array[techButton] = []
+
+		for col_idx in range(1, 5):
+			var tech_name: String = row_data[col_idx]
+			var cost: int = TECH_COSTS[col_idx - 1]
+
+			var btn: techButton = button_scene.instantiate()
+			btn.techID = tech_name
+			btn.techCost = cost
+
+			# Each tech requires only the previous one in the same row
+			if col_idx > 1:
+				btn.reqTechs = [row_btns[col_idx - 2]]
+
+			grid.add_child(btn)
+			row_btns.append(btn)
+			_buttons[tech_name] = btn
+
+func _mark_purchased(player) -> void:
+	for tech in player.unlockedTechnologies:
+		if tech.techName in _buttons:
+			_buttons[tech.techName].purchase()
+
+func _connect_signals() -> void:
+	for btn in _buttons.values():
+		btn.selectInvestment.connect(selectInvestmentFunc)
+		btn.newTech.connect(unlockTech)
+
+func unlockTech(techID: String, techButt: techButton, change: int) -> void:
+>>>>>>> Stashed changes
 	nextTechChange = change
 	techButt.purchase()
 	emit_signal("addTechToPlayer", techID)

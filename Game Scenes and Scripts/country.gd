@@ -1500,6 +1500,11 @@ func _uk_retreat_to_supply(army: Army) -> void:
 
 func _uk_reinforce(_army: Army) -> void:
 	pass
+<<<<<<< Updated upstream
+=======
+	# Passive manpower recovery is handled by onTurnEnd().
+	# Future: add logic to advance into neutral territory or consolidate nearby forces.
+>>>>>>> Stashed changes
 
 
 # ============================================================
@@ -1528,6 +1533,7 @@ func _passive_hold() -> void:
 
 
 func setNewTaxAmount(amount, type):
+<<<<<<< Updated upstream
 	match type:
 		"Farm":
 			setFarmTaxAmount = amount
@@ -1550,6 +1556,10 @@ func setNewTaxAmount(amount, type):
 	print(type," changed to ", amount, "DEBUG")
 	pass
 
+=======
+	pass
+	
+>>>>>>> Stashed changes
 func payBill(type, amount):
 	match type:
 		"faith", "culture":  # "faith" kept for backward compat with existing call sites
