@@ -96,13 +96,7 @@ func _on_weapon_type_button_pressed() -> void:
 		for WeaponButton in weaponsList:
 			WeaponButton.queue_free()
 		weaponsList.clear()
-<<<<<<< Updated upstream
-	print(thisUnit.playerCountry.CID, "CID")
-	print(thisUnit.playerCountry.weaponTemplateList, "WTL")
-	for WeaponTemplate in thisUnit.playerCountry.weaponTemplateList:
-=======
 	for WeaponTemplate in playerCountry.weaponTemplateList:
->>>>>>> Stashed changes
 		var weaponButton = weaponButtScene.instantiate()
 		weaponButton.buildSelf(WeaponTemplate.weaponType, WeaponTemplate.weaponImage)
 		weaponButton.giveWeaponName.connect(addWeapon)
@@ -121,12 +115,7 @@ func _on_ore_type_button_pressed() -> void:
 		for OreButton in oresList:
 			OreButton.queue_free()
 		oresList.clear()
-<<<<<<< Updated upstream
-	#print("DEBUG AVAILABLE ORES", thisUnit.playerCountry.availableOres)
-	for ore in thisUnit.playerCountry.availableOres:
-=======
 	for ore in playerCountry.availableOres:
->>>>>>> Stashed changes
 		var newOreButton = oreButtonScene.instantiate()
 		newOreButton.buildSelf(ore.oreType, ore.oreImage)
 		newOreButton.giveOreName.connect(addOre)
