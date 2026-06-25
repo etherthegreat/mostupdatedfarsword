@@ -1126,34 +1126,66 @@ func spawnStartingArmies() -> void:
 		"ARC_46": "Blue Water Raiders",  "ARC_47": "Capital Shadows",
 	}
 
-	var candidates: Array = []
-	var dbg_owned := 0
-	var dbg_gov := 0
-	var dbg_barracks := 0
-	var dbg_free := 0
+	var all_candidates: Array = []
 	for tile in $TileController.get_children():
 		if tile.tileOwner != playerCountry:
 			continue
 		if tile.tileNumber == 188:
 			continue
-		dbg_owned += 1
 		if not tile.filledGovernorSlot or tile.tileGovernor == null:
 			continue
-		dbg_gov += 1
-		var blvl: int = int(tile.buildings.get("barracks", 0))
-		if blvl < 1:
+		if int(tile.buildings.get("barracks", 0)) < 1:
 			continue
-		dbg_barracks += 1
 		if tile.stationedArmy != null:
 			continue
-		dbg_free += 1
-		candidates.append(tile)
+		all_candidates.append(tile)
 
-	print("[StartingArmies] filter: owned=%d gov=%d barracks=%d free=%d → %d candidates" \
-		% [dbg_owned, dbg_gov, dbg_barracks, dbg_free, candidates.size()])
+	# Group by state; for each state pick the best "capital" tile to get an
+	# army first — Metro terrain wins, then countryCapital flag, then highest
+	# barracks level.  State capitals are seeded first so armies spread across
+	# the map rather than clustering in a single region.
+	var by_state: Dictionary = {}
+	for tile in all_candidates:
+		var s: String = tile.tileContinent if tile.tileContinent != "" else "__none__"
+		if not by_state.has(s):
+			by_state[s] = []
+		by_state[s].append(tile)
 
-	candidates.shuffle()
-	var chosen: Array = candidates.slice(0, min(18, candidates.size()))
+	var capital_tiles: Array = []
+	var other_tiles: Array = []
+	for state in by_state:
+		var group: Array = by_state[state]
+		var best = null
+		for t in group:
+			if t.terrain == "Metro":
+				best = t
+				break
+		if best == null:
+			for t in group:
+				if t.countryCapital:
+					best = t
+					break
+		if best == null:
+			var top_lvl := -1
+			for t in group:
+				var lvl := int(t.buildings.get("barracks", 0))
+				if lvl > top_lvl:
+					top_lvl = lvl
+					best = t
+		capital_tiles.append(best)
+		for t in group:
+			if t != best:
+				other_tiles.append(t)
+
+	capital_tiles.shuffle()
+	other_tiles.shuffle()
+	var chosen: Array = []
+	chosen.append_array(capital_tiles)
+	chosen.append_array(other_tiles)
+	chosen = chosen.slice(0, min(18, chosen.size()))
+
+	print("[StartingArmies] %d state capitals + %d others → %d chosen" \
+		% [capital_tiles.size(), other_tiles.size(), chosen.size()])
 
 	for tile in chosen:
 		var gov: governor = tile.tileGovernor
