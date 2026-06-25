@@ -77,22 +77,22 @@ func _on_audio_changed(value: float, key: String) -> void:
 # ── DISPLAY ───────────────────────────────────────────────────────────────────
 func _on_fullscreen_toggled(enabled: bool) -> void:
 	LibraryData.set_setting("fullscreen", enabled)
-	if enabled:
-		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
-	else:
-		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 
 func _on_resolution_selected(index: int) -> void:
 	var resolutions := ["1920x1080", "1600x900", "1280x720"]
 	if index < resolutions.size():
 		LibraryData.set_setting("resolution", resolutions[index])
-		var parts := resolutions[index].split("x")
+<<<<<<< Updated upstream
+	# TODO: apply actual window size change
+=======
+		var parts = resolutions[index].split("x")
 		if parts.size() == 2:
 			DisplayServer.window_set_size(Vector2i(int(parts[0]), int(parts[1])))
+>>>>>>> Stashed changes
 
 func _on_ui_scale_changed(value: float) -> void:
 	LibraryData.set_setting("ui_scale", int(value))
-	get_tree().root.content_scale_factor = value / 100.0
+	# TODO: apply UI scale via theme or CanvasLayer scale
 
 # ── GAMEPLAY ──────────────────────────────────────────────────────────────────
 func _on_autosave_selected(index: int) -> void:

@@ -78,14 +78,12 @@ func _show_entry(entry: Dictionary) -> void:
 		else:
 			icon_rect.texture = null
 	if body_lbl:
-		if not body_lbl.meta_clicked.is_connected(_on_body_link_clicked):
-			body_lbl.meta_clicked.connect(_on_body_link_clicked)
 		if is_mystery and not is_unlocked:
 			body_lbl.clear()
 			body_lbl.append_text("[i]" + entry.get("description", "") + "[/i]")
 		else:
 			body_lbl.clear()
-			body_lbl.append_text(_process_wikilinks(entry.get("description", "")))
+			body_lbl.append_text(entry.get("description", ""))
 
 	# See also links
 	if see_links:
@@ -105,6 +103,8 @@ func _show_entry(entry: Dictionary) -> void:
 			link_btn.pressed.connect(_show_entry.bind(related))
 			see_links.add_child(link_btn)
 
+<<<<<<< Updated upstream
+=======
 # ── wikilink processing ──────────────────────────────────────────────────────
 
 func _process_wikilinks(text: String) -> String:
@@ -129,7 +129,11 @@ func _process_wikilinks(text: String) -> String:
 func _on_body_link_clicked(meta) -> void:
 	select_entry(str(meta))
 
->>>>>>> origin/etherPushBranch
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+#>>>>>>> origin/etherPushBranch
+>>>>>>> Stashed changes
 # ── external navigation ───────────────────────────────────────────────────────
 
 func select_entry(entry_id: String) -> void:

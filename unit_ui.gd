@@ -5,6 +5,8 @@ class_name UIUnitScene
 var thisUnit: Unit
 var updateControl: bool = false
 
+var playerCountry
+
 var milModList: Array = []
 var modListCompare: Array = []
 
@@ -15,10 +17,12 @@ var delete: bool #flag used by the army to determine if it will be deleted durin
 
 const milModScene = preload("res://mil_mod.tscn")
 
-func buildSelf(unit):
+func buildSelf(unit, player):
+	playerCountry = player
 	debugMode = false
 	alwaysFree = false
 	thisUnit = unit
+	pass
 
 func updateUI():
 	$WeaponTypeButton.icon = thisUnit.unitWeapon.weaponImage
@@ -39,13 +43,16 @@ func updateUI():
 	$WeaponsLabel.add_text(newWeaponText)
 	$ManpowerLabel.add_text(newManpowerText)
 	findMilMods()
+	pass
 
 func upgradeButtonCalculation(maxUnitLevel):
+	#print(thisUnit.unitLevel, "thisUnit.unitLevel", maxUnitLevel, "maxUnitLevel")
 	if thisUnit != null:
 		if thisUnit.unitLevel < maxUnitLevel && $UpgradeButton.disabled == true:
 			$UpgradeButton.disabled = false
 		elif thisUnit.unitLevel >= maxUnitLevel:
 			$UpgradeButton.disabled = true
+	pass
 
 
 var milModCompare :Array = []
@@ -53,10 +60,12 @@ var milModCompare :Array = []
 
 func findMilMods():
 	milModCompare.clear()
+	print("military modifiers list", thisUnit.militaryModifierList)
 	if thisUnit.militaryModifierList != null:
 		for MilMod in $GridContainer.get_children():
 			milModCompare.append(MilMod)
 		if milModCompare == thisUnit.militaryModifierList:
+			print("It's a god damn miracle")
 			return
 		else:
 			for MilMod in $GridContainer.get_children():
@@ -76,14 +85,24 @@ func findMilMods():
 					milModCompare.append(newMilMod)
 					$GridContainer.add_child(newMilMod)
 				#else:
+					#print("NoMilModTypeFound", MilMod.milModType)
+	#print("milModCOmpare", milModCompare, "militarymodifierlist", thisUnit.militaryModifierList)
+	pass
 var weaponButtScene = preload("res://weapon_button.tscn")
 var weaponsList: Array = []
 func _on_weapon_type_button_pressed() -> void:
+	#print("weapons list before", weaponsList)
 	if weaponsList != null:
 		for WeaponButton in weaponsList:
 			WeaponButton.queue_free()
 		weaponsList.clear()
+<<<<<<< Updated upstream
+	print(thisUnit.playerCountry.CID, "CID")
+	print(thisUnit.playerCountry.weaponTemplateList, "WTL")
 	for WeaponTemplate in thisUnit.playerCountry.weaponTemplateList:
+=======
+	for WeaponTemplate in playerCountry.weaponTemplateList:
+>>>>>>> Stashed changes
 		var weaponButton = weaponButtScene.instantiate()
 		weaponButton.buildSelf(WeaponTemplate.weaponType, WeaponTemplate.weaponImage)
 		weaponButton.giveWeaponName.connect(addWeapon)
@@ -93,6 +112,7 @@ func _on_weapon_type_button_pressed() -> void:
 		$WeaponScrollContainer.visible = true
 	else:
 		$WeaponScrollContainer.visible = false
+	pass # Replace with function body.
 
 var oresList: Array = []
 var oreButtonScene = load("res://ore_button.tscn")
@@ -101,7 +121,12 @@ func _on_ore_type_button_pressed() -> void:
 		for OreButton in oresList:
 			OreButton.queue_free()
 		oresList.clear()
+<<<<<<< Updated upstream
+	#print("DEBUG AVAILABLE ORES", thisUnit.playerCountry.availableOres)
 	for ore in thisUnit.playerCountry.availableOres:
+=======
+	for ore in playerCountry.availableOres:
+>>>>>>> Stashed changes
 		var newOreButton = oreButtonScene.instantiate()
 		newOreButton.buildSelf(ore.oreType, ore.oreImage)
 		newOreButton.giveOreName.connect(addOre)
@@ -111,16 +136,20 @@ func _on_ore_type_button_pressed() -> void:
 		$OreScrollContainer.visible = true
 	else:
 		$OreScrollContainer.visible = false
+	pass # Replace with function body.
 
 func addOre(oreType):
 	if thisUnit.unitOre != null:
 		thisUnit.changeOre(oreType)
 	$OreScrollContainer.visible = false
+	pass
 
 func addWeapon(weaponType):
+	#print("Weapon Type", weaponType)
 	if thisUnit.unitWeapon != null:
 		thisUnit.changeWeapon(weaponType)
 	$WeaponScrollContainer.visible = false
+	pass
 
 #debug menu operations
 
@@ -133,15 +162,20 @@ func _on_debug_menu_button_pressed() -> void:
 		$Button.visible = false
 		$Button2.visible = false
 		$UpgradeButton.visible = false
+	pass # Replace with function body.
 
 func _on_upgrade_button_pressed():
 	thisUnit.unitLevel +=1
+	pass # Replace with function body.
 
 func _on_button_pressed() -> void:
 	thisUnit.unitCurrentManpower -= 100
+	pass # Replace with function body.
 
 func _on_button_2_pressed() -> void:
 	thisUnit.unitCurrentManpower += 100
+	pass # Replace with function body.
 
 func _on_always_freebutton_pressed() -> void:
 	alwaysFree = true
+	pass # Replace with function body.

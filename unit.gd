@@ -1,7 +1,7 @@
 extends Control
 class_name Unit
 
-var playerCountry: country
+var playerCountry
 
 var unitType: String
 var unitLevel: int
