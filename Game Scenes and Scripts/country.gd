@@ -1270,6 +1270,13 @@ func calculateTurn() -> void:
 # Respects formal alliances — never enters allied-country tiles.
 # ============================================================
 
+# Emitted when an AI army physically moves to a new tile after a conquest.
+# world.gd listens and repositions the APF node.
+signal armyRepositioned(army, old_tile, new_tile)
+
+# Emitted for every AI attack so world.gd can build a turn summary.
+signal aiCombatEvent(attacker_cid, tile_name, result)
+
 func _ca_calculate_turn() -> void:
 	_passive_hold()
 	_ca_press_uk_borders()
@@ -1307,9 +1314,16 @@ func _ca_press_uk_borders() -> void:
 					best_target = neighbor
 
 		if best_target != null:
+			var old_tile = army.inTile
 			best_target.siegeCalculate(army)
 			if best_target.stationedArmy != null:
 				_resolve_ai_battle(army, best_target.stationedArmy, best_target)
+			var captured: bool = (best_target.tileOwner == CID)
+			emit_signal("aiCombatEvent", CID, best_target.tileName,
+				"captured" if captured else "attacked")
+			if captured and old_tile != null:
+				army.inTile = best_target
+				emit_signal("armyRepositioned", army, old_tile, best_target)
 
 
 # ============================================================
@@ -1366,8 +1380,13 @@ func is_army_supplied(army: Army) -> bool:
 # Pure military. No economy. No buildings.
 # ============================================================
 
+const UK_ARMY_CAP  := 10   # max simultaneous UK field armies
+const UK_SPAWN_INTERVAL := 5  # turns between dock reinforcement drops
+var _uk_spawn_cooldown: int = 0
+
 func _uk_calculate_turn() -> void:
 	_calculate_supply_from_owned()
+	_uk_spawn_reinforcement()
 	for army in countryArmyList:
 		if army.inTile == null:
 			continue
@@ -1410,9 +1429,16 @@ func _find_attack_target(army: Army):
 func _uk_attack_tile(army: Army, targetTile) -> void:
 	if targetTile == null:
 		return
+	var old_tile = army.inTile
 	targetTile.siegeCalculate(army)
 	if targetTile.stationedArmy != null:
 		_resolve_ai_battle(army, targetTile.stationedArmy, targetTile)
+	var captured: bool = (targetTile.tileOwner == CID)
+	emit_signal("aiCombatEvent", CID, targetTile.tileName,
+		"captured" if captured else "attacked")
+	if captured and old_tile != null:
+		army.inTile = targetTile
+		emit_signal("armyRepositioned", army, old_tile, targetTile)
 
 
 func _resolve_ai_battle(attacker: Army, defender: Army, _tile) -> void:
@@ -1444,8 +1470,34 @@ func _uk_retreat_to_supply(army: Army) -> void:
 				return
 
 
-func _uk_reinforce(_army: Army) -> void:
-	pass
+func _uk_reinforce(army: Army) -> void:
+	if army == null or army.inTile == null:
+		return
+	var rate := armyReinforceRate * (2 if army.inTile.has_dock() else 1)
+	army.manpowerInArmy = mini(army.manpowerInArmy + rate, army.maxManpower)
+
+func _uk_spawn_reinforcement() -> void:
+	_uk_spawn_cooldown -= 1
+	if _uk_spawn_cooldown > 0:
+		return
+	_uk_spawn_cooldown = UK_SPAWN_INTERVAL
+	if countryArmyList.size() >= UK_ARMY_CAP:
+		return
+	var dock_tiles: Array = []
+	for tile in OwnedTileList:
+		if tile.has_dock() and tile.stationedArmy == null:
+			dock_tiles.append(tile)
+	if dock_tiles.is_empty():
+		return
+	dock_tiles.shuffle()
+	var spawn_tile = dock_tiles[0]
+	var army_names := ["Crown Landing Force", "Royal Marine Detachment",
+		"King's Own Regiment", "Redcoat Vanguard", "British Expeditionary Force"]
+	var army_name: String = army_names[countryArmyList.size() % army_names.size()]
+	addArmy(army_name, spawn_tile.tileNumber)
+	var new_army = countryArmyList.back()
+	if new_army != null:
+		new_army.raiseSelf()
 
 
 # ============================================================

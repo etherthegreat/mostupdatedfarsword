@@ -45,6 +45,7 @@ var _vp_faction: String = ""           # game faction name belonging to the VP
 var _ca_vp_governor = null             # reference to Marc Penoit as CA Deputy Governor
 var _ca_vp_faction: String = ""        # faction of CA's Deputy Governor
 var _peace_dock_was_uk: Dictionary = {}  # tile_num → bool; tracks UK ownership flip per turn
+var _ai_combat_log: Array = []           # entries collected during AI resolution each round
 var _peace_last_freed_tile = null        # most-recently freed peace dock tile node
 var isCoopMode: bool = false             # true when both USA and CA are player-controlled
 var coopCountryNode    # second player's country in co-op mode
@@ -1534,7 +1535,10 @@ func returnOutput(outputsDict, caller):
 func connectCountrySignals():
 	for country in aliveCountriesList:
 		country.raiseThisArmySignal.connect(raiseArmyFromWorld)
-	pass
+		if not country.armyRepositioned.is_connected(_on_ai_army_repositioned):
+			country.armyRepositioned.connect(_on_ai_army_repositioned)
+		if not country.aiCombatEvent.is_connected(_on_ai_combat_event):
+			country.aiCombatEvent.connect(_on_ai_combat_event)
 
 func _raise_starting_armies() -> void:
 	# Raises every army that was created during NewGameBuild() (CSV-named starting
@@ -1639,6 +1643,7 @@ func _resolve_ai_and_advance_round() -> void:
 	$CanvasLayer/TurnLabel.text = _format_game_date()
 	_apply_ualani_aura()
 	_check_win_conditions()
+	_show_ai_turn_report()
 	# playerCountry/Node now hold last player in order; caller calls _activate_player to restore
 
 
@@ -1987,6 +1992,48 @@ func _close_army_commander_picker() -> void:
 		_commanderPickerPanel = null
 	_armyAwaitingCommander = null
 var pathPointButtonToSend: pathPointButton
+
+# ── ITEM 1: APF REPOSITIONING ────────────────────────────────────────────────
+# Called when an AI army conquers a tile.  Reparents the APF node from the old
+# pathPointButton to the new one so the visual token reflects the move.
+func _on_ai_army_repositioned(army: Army, old_tile: Tile, new_tile: Tile) -> void:
+	if not is_instance_valid(army) or old_tile == null or new_tile == null:
+		return
+	var old_ppb = old_tile.tileSpawnPoint
+	var new_ppb = new_tile.tileSpawnPoint
+	if old_ppb == null or new_ppb == null:
+		return
+	var apf = old_ppb.stationedAPF
+	if apf == null or not is_instance_valid(apf) or apf.thisArmy != army:
+		return
+	old_ppb.remove_child(apf)
+	old_ppb.stationedAPF = null
+	old_ppb.stationedArmy = null
+	old_ppb.occupied = false
+	new_ppb.add_child(apf)
+	new_ppb.stationedAPF = apf
+	new_ppb.stationedArmy = army
+	new_ppb.occupied = true
+	apf.currentPathPoint = new_ppb
+	apf.currentTile = new_tile
+
+# ── ITEM 4: AI COMBAT LOG ─────────────────────────────────────────────────────
+func _on_ai_combat_event(attacker_cid: String, tile_name: String, result: String) -> void:
+	_ai_combat_log.append({"attacker": attacker_cid, "tile": tile_name, "result": result})
+
+func _show_ai_turn_report() -> void:
+	if _ai_combat_log.is_empty():
+		_ai_combat_log.clear()
+		return
+	var lines: PackedStringArray = []
+	for entry in _ai_combat_log:
+		var verb := "captured" if entry.result == "captured" else "attacked"
+		lines.append("%s %s %s" % [entry.attacker, verb, entry.tile])
+	var report := "[b]Enemy Activity[/b]\n" + "\n".join(lines)
+	var label = get_node_or_null("CanvasLayer/TurnLabel")
+	if label != null:
+		label.text = _format_game_date() + "\n" + "\n".join(lines)
+	_ai_combat_log.clear()
 
 func raiseArmyFromWorld(Army, country, Tile):
 	if Tile == null or not is_instance_valid(Tile):
@@ -5487,6 +5534,19 @@ func tileSiegeWon(tile, oldCID: String, newCID: String) -> void:
 		if country.CID == newCID:
 			country.addTile(tile)
 	tile.record_conquest(newCID)
+
+	# ── ITEM 3: clean up any APF belonging to the losing side ────────────────
+	var ppb = tile.tileSpawnPoint
+	if ppb != null and is_instance_valid(ppb) and ppb.stationedAPF != null:
+		var apf = ppb.stationedAPF
+		if is_instance_valid(apf) and apf.thisArmy != null \
+				and apf.thisArmy.parentCountry != null \
+				and apf.thisArmy.parentCountry.CID == oldCID:
+			ppb.stationedAPF = null
+			ppb.stationedArmy = null
+			ppb.occupied = false
+			apf.thisArmy.deleteMode = true   # APF _process() will queue_free both nodes
+
 	evaluateTileEvents(tile)
 	var state_code = tile.tileContinent
 	if state_code != "" and _is_state_liberated(state_code, newCID):
