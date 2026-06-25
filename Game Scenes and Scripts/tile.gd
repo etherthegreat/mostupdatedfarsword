@@ -1034,7 +1034,7 @@ func calculateSpellChanges():
 # GRAPHICS
 # ============================================================
 
-func updateGraphics(mapMode, displayCorruption, playerCountry):
+func updateGraphics(mapMode, displayCorruption, playerCountry, max_val: float = 1.0):
 	var fow: Node = get_node_or_null("TileFOW")
 	var gfx: Node = get_node_or_null("TileGraphic")
 	if fow == null or gfx == null:
@@ -1048,12 +1048,21 @@ func updateGraphics(mapMode, displayCorruption, playerCountry):
 		return
 	if discovered == true:
 		match mapMode:
-			"Polis":
-				polisMode()
-			"Natural":
-				naturalMode()
-			_:
-				polisMode()
+			"Polis":        polisMode()
+			"Natural":      naturalMode()
+			"MapFood":      _resource_map_mode(Color(0.0,  0.5,  0.0),  get_map_mode_value(mapMode), max_val)
+			"MapWood":      _resource_map_mode(Color(0.8,  0.3,  0.0),  get_map_mode_value(mapMode), max_val)
+			"MapMetal":     _resource_map_mode(Color(0.75, 0.75, 0.75), get_map_mode_value(mapMode), max_val)
+			"MapFaith":     _resource_map_mode(Color(0.5,  0.0,  0.8),  get_map_mode_value(mapMode), max_val)
+			"MapHappiness": _resource_map_mode(Color(0.9,  0.8,  0.0),  get_map_mode_value(mapMode), max_val)
+			"MapManpower":  _resource_map_mode(Color(0.8,  0.0,  0.0),  get_map_mode_value(mapMode), max_val)
+			"MapWeapons":   _resource_map_mode(Color(0.45, 0.45, 0.45), get_map_mode_value(mapMode), max_val)
+			"MapDollars":   _resource_map_mode(Color(0.85, 0.7,  0.0),  get_map_mode_value(mapMode), max_val)
+			"MapMagic":     _resource_map_mode(Color(0.9,  0.2,  0.7),  get_map_mode_value(mapMode), max_val)
+			"MapMandate":   _resource_map_mode(Color(0.55, 0.0,  0.0),  get_map_mode_value(mapMode), max_val)
+			"MapArmy":      _resource_map_mode(Color(0.0,  0.5,  0.8),  get_map_mode_value(mapMode), max_val)
+			"MapGovernors": _governors_map_mode()
+			_:              polisMode()
 		if playerCountry == null:
 			activeView = false
 			return
@@ -1118,6 +1127,54 @@ func naturalMode():
 	if gfx  != null: gfx.modulate  = Color(1, 1, 1)
 	if fow  != null: fow.self_modulate.a = 0.0
 	if ring != null: ring.modulate  = Color(1, 1, 1)
+
+func get_map_mode_value(mode: String) -> float:
+	match mode:
+		"MapFood":      return float(buildingFoodOutput     + tileFoodYield)
+		"MapWood":      return float(buildingWoodOutput     + tileWoodYield)
+		"MapMetal":     return float(buildingMetalOutput    + tileMetalYield)
+		"MapFaith":     return float(buildingCultureOutput  + tileCultureYield)
+		"MapHappiness": return float(buildingHappinessOutput+ tileHappinessYield)
+		"MapManpower":  return float(buildingManpowerOutput + tileManpowerYield)
+		"MapWeapons":   return float(buildingWeaponsOutput  + tileWeaponsYield)
+		"MapDollars":   return float(buildingDollarsOutput  + tileDollarsYield)
+		"MapMagic":     return float(buildingMagicOutput    + tileMagicYield)
+		"MapMandate":   return float(buildingMandateOutput  + tileMandateYield)
+		"MapArmy":
+			if stationedArmy != null:
+				return float(stationedArmy.manpowerInArmy)
+	return 0.0
+
+func _resource_map_mode(target_color: Color, value: float, max_val: float) -> void:
+	var gfx:  Node = get_node_or_null("TileGraphic")
+	var ring: Node = get_node_or_null("Ring")
+	if gfx == null:
+		return
+	gfx.visible = true
+	var t: float = clampf(value / maxf(max_val, 1.0), 0.0, 1.0)
+	var c: Color = Color.WHITE.lerp(target_color, t)
+	gfx.modulate  = c
+	if ring != null:
+		ring.modulate = c
+
+func _governors_map_mode() -> void:
+	var gfx:  Node = get_node_or_null("TileGraphic")
+	var ring: Node = get_node_or_null("Ring")
+	if gfx == null:
+		return
+	gfx.visible = true
+	if not filledGovernorSlot or tileGovernor == null:
+		gfx.modulate  = Color(1, 1, 1)
+		if ring != null: ring.modulate = Color(1, 1, 1)
+		return
+	var gov_level: int = get_governor_level()
+	var c: Color
+	match gov_level:
+		1: c = Color(0.8,  0.5,  0.2)   # bronze
+		2: c = Color(0.75, 0.75, 0.8)   # silver
+		_: c = Color(1.0,  0.85, 0.0)   # gold (level 3+)
+	gfx.modulate  = c
+	if ring != null: ring.modulate = c
 
 
 # ============================================================

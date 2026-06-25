@@ -59,8 +59,17 @@ func discoverTiles(playerCountry) -> void:
 
 
 func updateTiles(mapMode, displayCorruption, playerCountry) -> void:
+	var max_val: float = 1.0
+	const GRADIENT_MODES := ["MapFood","MapWood","MapMetal","MapFaith","MapHappiness",
+		"MapManpower","MapWeapons","MapDollars","MapMagic","MapMandate","MapArmy"]
+	if mapMode in GRADIENT_MODES:
+		for t in get_children():
+			if t.has_method("get_map_mode_value"):
+				var v: float = t.get_map_mode_value(mapMode)
+				if v > max_val:
+					max_val = v
 	for Tile in get_children():
-		Tile.updateGraphics(mapMode, displayCorruption, playerCountry)
+		Tile.updateGraphics(mapMode, displayCorruption, playerCountry, max_val)
 		Tile.calculateActiveView()
 
 

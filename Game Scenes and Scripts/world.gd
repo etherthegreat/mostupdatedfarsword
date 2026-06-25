@@ -27,6 +27,7 @@ var playerCapitalPathButton: pathPointButton
 
 var mapMode: String
 var displayCorruption: bool
+var _hover_prev_map_mode: String = ""
 
 # Populated by generateBarracksCommanders() — shared by _generate_and_assign_governor()
 var _usa_archetypes: Array = []
@@ -1952,98 +1953,96 @@ func matchCountryBuildings():
 			for building in Tile.tileBuildingsList:
 				playerCountryNode.connectBuilding(building)
 
+func _enter_hover_map_mode(mode: String) -> void:
+	_hover_prev_map_mode = mapMode
+	mapMode = mode
+	$TileController.updateTiles(mapMode, displayCorruption, playerCountryNode)
+
+func _exit_hover_map_mode() -> void:
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
+	mapMode = _hover_prev_map_mode
+	$TileController.updateTiles(mapMode, displayCorruption, playerCountryNode)
+
+func _show_resource_panel(x_pos: int, resource_index: int) -> void:
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = x_pos
+	$CanvasLayer/ResourceInfoControl.visible = true
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, resource_index)
+
 func _on_food_area_2d_mouse_entered():
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 360
-	$CanvasLayer/ResourceInfoControl.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 1)
+	_show_resource_panel(360, 1)
+	_enter_hover_map_mode("MapFood")
 func _on_food_area_2d_mouse_exited() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
+	_exit_hover_map_mode()
 func _on_wood_area_2d_mouse_entered() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 480
-	$CanvasLayer/ResourceInfoControl.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 2)
+	_show_resource_panel(480, 2)
+	_enter_hover_map_mode("MapWood")
 func _on_wood_area_2d_mouse_exited() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
+	_exit_hover_map_mode()
 func _on_metal_area_2d_mouse_entered() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 600
-	$CanvasLayer/ResourceInfoControl.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 3)
+	_show_resource_panel(600, 3)
+	_enter_hover_map_mode("MapMetal")
 func _on_metal_area_2d_mouse_exited() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
+	_exit_hover_map_mode()
 func _on_gold_area_2d_mouse_entered() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 240
-	$CanvasLayer/ResourceInfoControl.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 0)
+	_show_resource_panel(240, 0)
+	_enter_hover_map_mode("MapDollars")
 func _on_gold_area_2d_mouse_exited() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
+	_exit_hover_map_mode()
 func _on_weapons_area_mouse_entered() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 720
-	$CanvasLayer/ResourceInfoControl.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 4)
+	_show_resource_panel(720, 4)
+	_enter_hover_map_mode("MapWeapons")
 func _on_weapons_area_mouse_exited() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
+	_exit_hover_map_mode()
 func _on_science_area_mouse_entered() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 1000
-	$CanvasLayer/ResourceInfoControl.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 5)
+	_show_resource_panel(1000, 5)
 func _on_science_area_mouse_exited() -> void:
 	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
 func _on_faith_control_mouse_entered() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 1000
-	$CanvasLayer/ResourceInfoControl.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 6)
+	_show_resource_panel(1000, 6)
+	_enter_hover_map_mode("MapFaith")
 func _on_faith_control_mouse_exited() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
+	_exit_hover_map_mode()
 func _on_magic_area_mouse_entered() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 1000
-	$CanvasLayer/ResourceInfoControl.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 7)
+	_show_resource_panel(1000, 7)
+	_enter_hover_map_mode("MapMagic")
 func _on_magic_area_mouse_exited() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
+	_exit_hover_map_mode()
 func _on_culture_area_mouse_entered() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 1000
-	$CanvasLayer/ResourceInfoControl.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 8)
+	_show_resource_panel(1000, 8)
 func _on_culture_area_mouse_exited() -> void:
 	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
 func _on_mandate_area_mouse_entered() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 1440
-	$CanvasLayer/ResourceInfoControl.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 9)
+	_show_resource_panel(1440, 9)
+	_enter_hover_map_mode("MapMandate")
 func _on_mandate_area_mouse_exited() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
+	_exit_hover_map_mode()
 func _on_harmony_area_mouse_entered() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 1440
-	$CanvasLayer/ResourceInfoControl.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 10)
+	_show_resource_panel(1440, 10)
+	_enter_hover_map_mode("MapHappiness")
 func _on_harmony_area_mouse_exited() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
+	_exit_hover_map_mode()
 func _on_influence_area_mouse_entered() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 1440
-	$CanvasLayer/ResourceInfoControl.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 11)
+	_show_resource_panel(1440, 11)
 func _on_influence_area_mouse_exited() -> void:
 	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
 func _on_manpower_area_mouse_entered() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 840
-	$CanvasLayer/ResourceInfoControl.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 12)
-
+	_show_resource_panel(840, 12)
+	_enter_hover_map_mode("MapManpower")
 func _on_manpower_area_mouse_exited() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
+	_exit_hover_map_mode()
+
+func set_map_mode_army() -> void:
+	mapMode = "MapArmy"
+	$TileController.updateTiles(mapMode, displayCorruption, playerCountryNode)
+
+func set_map_mode_governors() -> void:
+	mapMode = "MapGovernors"
+	$TileController.updateTiles(mapMode, displayCorruption, playerCountryNode)
+
+func set_map_mode_polis() -> void:
+	mapMode = "Polis"
+	$TileController.updateTiles(mapMode, displayCorruption, playerCountryNode)
 
 #oldnext turn function
 func _on_test_resource_button_pressed() -> void:
