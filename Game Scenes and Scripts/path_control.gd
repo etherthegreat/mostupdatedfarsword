@@ -143,8 +143,11 @@ func showPathPoints(pathPoint):
 			#pathPointButton.visible = true
 	for pathPointButton in visibleTiles:
 		pathPointButton.visible = true
-	for pathPointButton in pathPoint.neighborPathPoints:
-		pathPointButton.visible = true
+	if pathPoint.neighborPathPoints.size()== 0:
+		return
+	else:
+		for pathPointButton in pathPoint.neighborPathPoints:
+			pathPointButton.visible = true
 #		pathPointButton.enemyCheck()
 	pathPoint.visible = true
 	#for pathPointButton in $PathPointsControl.get_children():
