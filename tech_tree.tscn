@@ -29,6 +29,7 @@ offset_bottom = 1074.0
 color = Color(0.24355, 0.565626, 0.846885, 1)
 
 [node name="Background" type="Sprite2D" parent="TechPanel"]
+modulate = Color(1, 1, 1, 0.12)
 position = Vector2(960.667, 533.5)
 scale = Vector2(1.50417, 1.50417)
 texture = ExtResource("2_hkv5x")
@@ -36,11 +37,20 @@ texture = ExtResource("2_hkv5x")
 [node name="Label" type="Label" parent="TechPanel"]
 layout_mode = 0
 offset_left = 12.0
+<<<<<<< Updated upstream
 offset_top = 29.0
 offset_right = 1374.0
 offset_bottom = 118.0
 theme_override_font_sizes/font_size = 71
 text = "TECHNOLOGY IS COOL!"
+=======
+offset_top = 8.0
+offset_right = 1790.0
+offset_bottom = 72.0
+theme_override_colors/font_color = Color(0.95, 0.88, 0.62, 1)
+theme_override_font_sizes/font_size = 48
+text = "Military & Civic Research"
+>>>>>>> Stashed changes
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
@@ -343,6 +353,7 @@ offset_top = 33.0
 offset_right = 235.0
 offset_bottom = 100.0
 theme_override_font_sizes/normal_font_size = 11
+<<<<<<< Updated upstream
 text = "Granaries: +1 FPL
 Farms: +1 FPL
 Mines +1 MPL
@@ -357,6 +368,9 @@ offset_right = 306.0
 offset_bottom = 119.0
 theme_override_colors/font_color = Color(0.239887, 0.462761, 1, 1)
 text = "100"
+=======
+>>>>>>> Stashed changes
 
+[connection signal="pressed" from="TechPanel/CloseButton" to="." method="_on_close_button_pressed"]
 [connection signal="pressed" from="TechInfoPanel/PurchaseTechButton" to="." method="_on_purchase_tech_button_pressed"]
 [connection signal="pressed" from="TechInfoPanel/ClosePanelButton" to="." method="_on_close_panel_button_pressed"]

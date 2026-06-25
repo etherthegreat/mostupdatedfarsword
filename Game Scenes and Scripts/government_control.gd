@@ -59,6 +59,7 @@ signal addToConstitution
 func addLawToConstitution(lawType):
 	print("kickass", lawType)
 	emit_signal("addToConstitution", lawType)
+<<<<<<< Updated upstream
 	pass
 
 
@@ -219,3 +220,5 @@ func _on_workshop_v_slider_value_changed(value: float) -> void:
 func _on_bath_v_slider_value_changed(value: float) -> void:
 	changedSlider($TaxationControl/BathVSlider.value, "Bath")
 	pass # Replace with function body.
+=======
+>>>>>>> Stashed changes
