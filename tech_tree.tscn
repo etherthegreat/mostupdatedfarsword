@@ -354,6 +354,7 @@ offset_right = 235.0
 offset_bottom = 100.0
 theme_override_font_sizes/normal_font_size = 11
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 text = "Granaries: +1 FPL
 Farms: +1 FPL
 Mines +1 MPL
@@ -371,6 +372,9 @@ text = "100"
 =======
 >>>>>>> Stashed changes
 
+=======
+
+>>>>>>> Stashed changes
 [connection signal="pressed" from="TechPanel/CloseButton" to="." method="_on_close_button_pressed"]
 [connection signal="pressed" from="TechInfoPanel/PurchaseTechButton" to="." method="_on_purchase_tech_button_pressed"]
 [connection signal="pressed" from="TechInfoPanel/ClosePanelButton" to="." method="_on_close_panel_button_pressed"]

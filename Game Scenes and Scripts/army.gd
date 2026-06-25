@@ -36,7 +36,7 @@ var ArmyName: String
 
 var homeTile #each army must be built in a barracks, barracks gives +2 maxUnits to army per level
 #army gets destroyed if homeTile changes hands
-var parentCountry: country #parent country, homeland
+var parentCountry #parent country, homeland
 var parentMilModifiers: Array = [] #list of national modifiers to armies
 var beliefMilMods: Array = []   # mil mods sourced from country beliefs / axis; cleared on update
 var parentWarEnemies: Array = [] #list of all enemies of the parent nation
@@ -457,7 +457,7 @@ func addUnitToArmy(unitToAdd):
 	#unitToAdd.updateArmy.connect(surveySelf)
 	$UnitContainer.add_child(unitToAdd)
 	var newUnitUI = unitUIScene.instantiate()
-	newUnitUI.buildSelf(unitToAdd)
+	newUnitUI.buildSelf(unitToAdd, parentCountry)
 	$ScrollContainer/UnitUIContainer.add_child(newUnitUI)
 	#updateArmyUI()
 	pass

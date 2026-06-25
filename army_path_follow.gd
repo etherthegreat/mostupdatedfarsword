@@ -3,7 +3,7 @@ extends Control
 class_name armyPathFollow
 
 var thisArmy: Army
-var thisCountry: country
+var thisCountry
 var currentTile: Tile
 var currentPath: Path2D
 

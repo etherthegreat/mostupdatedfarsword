@@ -971,10 +971,14 @@ func generateBarracksCommanders() -> void:
 				print("[Commanders] PM Commanda stationed in Ottawa (tile 201).")
 				break
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 		if not jessica.hired:
 			print("[Commanders] Ottawa not player-owned at start — Commanda added to pool unassigned.")
 =======
 		#if not jessica.hired:
+>>>>>>> Stashed changes
+=======
+#		if not jessica.hired:
 >>>>>>> Stashed changes
 		# Marc Penoit in Quebec City (tile 123) as Deputy Governor
 		var penoit: governor = governor.new()
@@ -989,10 +993,14 @@ func generateBarracksCommanders() -> void:
 					print("[Commanders] Deputy Penoit stationed in Quebec City (tile 123).")
 					break
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 		if not penoit.hired:
 			print("[Commanders] Quebec City not available — Penoit added to pool unassigned.")
 =======
 		#if not penoit.hired:
+>>>>>>> Stashed changes
+=======
+#		if not penoit.hired:
 >>>>>>> Stashed changes
 	else:
 		# Ualani Carlisle in Washington DC (tile 188)
@@ -1007,10 +1015,14 @@ func generateBarracksCommanders() -> void:
 				print("[Commanders] President Carlisle stationed in Washington DC (tile 188).")
 				break
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 		if not carlisle.hired:
 			print("[Commanders] Washington DC not player-owned at start — Carlisle added to pool unassigned.")
 =======
 		#if not carlisle.hired:
+>>>>>>> Stashed changes
+=======
+	#	if not carlisle.hired:
 >>>>>>> Stashed changes
 		# Secret Service Detail unlocks alongside Carlisle
 		var detail: governor = governor.new()
@@ -1126,12 +1138,16 @@ func generateBarracksCommanders() -> void:
 			army.updateArmyUI()
 <<<<<<< Updated upstream
 			assigned += 1
+<<<<<<< Updated upstream
 			print("[Commanders] Assigned ", army.inTile.tileGovernor.governorType,
 				  " as commander of ", army.ArmyName)
 	print("[Commanders] ", assigned, " armies received a starting commander.")
 =======
 			#assigned += 1
 				 # " as commander of ", army.ArmyName)
+>>>>>>> Stashed changes
+=======
+				#  " as commander of ", army.ArmyName)
 >>>>>>> Stashed changes
 
 
@@ -1297,10 +1313,14 @@ func _generate_ai_barracks_commanders(country_node: country) -> void:
 			print("[CA Leaders] Jessica Commanda Odjick stationed at Ottawa (tile 201).")
 			break
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 	if not jessica.hired:
 		print("[CA Leaders] Ottawa not CA-owned at start — Jessica added to pool unassigned.")
 =======
 	#if not jessica.hired:
+>>>>>>> Stashed changes
+=======
+#	if not jessica.hired:
 >>>>>>> Stashed changes
 
 	# ── Spawn Marc Penoit (deputy/VP) at Saint-Georges, tile 99 ─────────────────
@@ -1317,10 +1337,14 @@ func _generate_ai_barracks_commanders(country_node: country) -> void:
 			print("[CA Leaders] Marc Penoit stationed at Saint-Georges (tile 99).")
 			break
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 	if not mark.hired:
 		print("[CA Leaders] Saint-Georges not CA-owned at start — Mark added to pool unassigned.")
 =======
 	#if not mark.hired:
+>>>>>>> Stashed changes
+=======
+#	if not mark.hired:
 >>>>>>> Stashed changes
 
 	var used_names: Dictionary = {}
@@ -1394,10 +1418,14 @@ func _generate_ai_barracks_commanders(country_node: country) -> void:
 
 <<<<<<< Updated upstream
 		generated += 1
+<<<<<<< Updated upstream
 		print("[CA Commanders] Generated: ", full_name, " — ", chosen_arch["name"],
 			  " at ", tile.tileName, " [", tile.terrain, "]")
 =======
 		#generated += 1
+			  #" at ", tile.tileName, " [", tile.terrain, "]")
+>>>>>>> Stashed changes
+=======
 			  #" at ", tile.tileName, " [", tile.terrain, "]")
 >>>>>>> Stashed changes
 
@@ -1409,10 +1437,14 @@ func _generate_ai_barracks_commanders(country_node: country) -> void:
 			army.updateArmyUI()
 			assigned += 1
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 	print("[CA Commanders] ", generated, " commanders generated, ",
 		  assigned, " armies received a commander.")
 =======
 			#assigned, " armies received a commander.")
+>>>>>>> Stashed changes
+=======
+		  #assigned, " armies received a commander.")
 >>>>>>> Stashed changes
 
 
@@ -1457,10 +1489,14 @@ func _spawn_ai_starting_armies(country_node: country) -> void:
 			new_army.updateArmyUI()
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 		print("[CA Armies] '", army_name, "' at ", tile.tileName,
 			  " (barracks lvl ", int(tile.buildings.get("barracks", 0)), ", ", arc_id, ")")
 =======
 			  #" (barracks lvl ", int(tile.buildings.get("barracks", 0)), ", ", arc_id, ")")
+>>>>>>> Stashed changes
+=======
+			 # " (barracks lvl ", int(tile.buildings.get("barracks", 0)), ", ", arc_id, ")")
 >>>>>>> Stashed changes
 
 	print("[CA Armies] ", chosen.size(), " starting armies placed for ", country_node.CID, ".")
@@ -1928,11 +1964,15 @@ func buildNewPlayerArmy(barracksBuilding, barracksTile, bbButton, playerNode, ne
 <<<<<<< Updated upstream
 	if playerNode.TotalDollars  < cost or playerNode.TotalWeapons < cost \
 			or playerNode.TotalCulture < cost or playerNode.TotalScience < cost:
+<<<<<<< Updated upstream
 		print("[Army] Cannot afford new army — need ", cost,
 			  " each of Dollars / Weapons / Culture / Science (army #", n + 1, ")")
 =======
 	if playerNode.TotalDollars  < cost or playerNode.TotalWeapons < cost or playerNode.TotalCulture < cost or playerNode.TotalScience < cost:
 		print(" each of Dollars / Weapons / Culture / Science (army #", n + 1, ")")
+>>>>>>> Stashed changes
+=======
+			  #" each of Dollars / Weapons / Culture / Science (army #", n + 1, ")")
 >>>>>>> Stashed changes
 		return
 	playerNode.TotalDollars  -= cost
@@ -2100,10 +2140,14 @@ func _on_protector_summoned(origin_tile, protector_name: String, protector_id: S
 		var school: String = _protector_id_to_school(protector_id)
 		origin_tile.addWizard(protector_name, school)
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 		print("[Protectors] Tower: ", protector_name,
 			  " (", school, ") stationed at ", origin_tile.tileName)
 =======
 			  #" (", school, ") stationed at ", origin_tile.tileName)
+>>>>>>> Stashed changes
+=======
+			 # " (", school, ") stationed at ", origin_tile.tileName)
 >>>>>>> Stashed changes
 	var spell_name: String = _protector_id_to_spell(protector_id)
 	if spell_name != "":
@@ -2135,8 +2179,12 @@ func _on_protector_agreed(agreed_flag: String) -> void:
 		var school: String = _protector_id_to_school(pid)
 		home_tile.addWizard(prot_name, school)
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 		print("[Protectors] ", prot_name, " (", school, ") bound to tower at tile ",
 			  home_tile.tileNumber, " — ", home_tile.tileName)
+=======
+			 # home_tile.tileNumber, " — ", home_tile.tileName)
+>>>>>>> Stashed changes
 =======
 			 # home_tile.tileNumber, " — ", home_tile.tileName)
 >>>>>>> Stashed changes
@@ -2455,8 +2503,12 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 					if not c.ALLIED.has(playerCountryNode):
 						c.ALLIED.append(playerCountryNode)
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 					print("[Alliance] Formal alliance established: ",
 						playerCountryNode.CID, " ↔ ", c.CID)
+=======
+						#playerCountryNode.CID, " ↔ ", c.CID)
+>>>>>>> Stashed changes
 =======
 						#playerCountryNode.CID, " ↔ ", c.CID)
 >>>>>>> Stashed changes
@@ -2478,9 +2530,13 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 					if timeout > 0:
 						_mission_timers[flag_val] = timeout
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 						print("[Mission] Activated: ", flag_val, " — expires in ", timeout, " turns")
 					else:
 						print("[Mission] Activated: ", flag_val, " — no timeout")
+=======
+					#else:
+>>>>>>> Stashed changes
 =======
 					#else:
 >>>>>>> Stashed changes
@@ -2539,9 +2595,13 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 					if timeout > 0:
 						_mission_timers[flag_val] = timeout
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 						print("[Mission] Activated (own): ", flag_val, " — expires in ", timeout, " turns")
 					else:
 						print("[Mission] Activated (own): ", flag_val, " — no timeout")
+=======
+					#else:
+>>>>>>> Stashed changes
 =======
 					#else:
 >>>>>>> Stashed changes
@@ -2550,8 +2610,12 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 				tile.tileGovernor.loyalty = clampf(
 					tile.tileGovernor.loyalty + float(outcome_amount), -20.0, 20.0)
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 				print("[GovLoyalty] ", tile.tileGovernor.governorType,
 					" at ", tile.tileName, " → ", tile.tileGovernor.loyalty)
+=======
+					#" at ", tile.tileName, " → ", tile.tileGovernor.loyalty)
+>>>>>>> Stashed changes
 =======
 					#" at ", tile.tileName, " → ", tile.tileGovernor.loyalty)
 >>>>>>> Stashed changes
@@ -2567,8 +2631,12 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 				var total: int = per_turn * turns
 				_apply_resource_change(outcome_value, total)
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 				print("[TileYield] ", tile.tileName, " ", outcome_value,
 					" ×", turns, " (", per_turn, "/turn) = ", total)
+=======
+					#" ×", turns, " (", per_turn, "/turn) = ", total)
+>>>>>>> Stashed changes
 =======
 					#" ×", turns, " (", per_turn, "/turn) = ", total)
 >>>>>>> Stashed changes
@@ -2591,8 +2659,12 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 			if tile != null and tile.stationedArmy != null:
 				tile.stationedArmy.apply_status(outcome_value, 9999, outcome_amount)
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 				print("[Protector] ", outcome_value, " cast on army at ", tile.tileName,
 					" — ", outcome_amount, " magic/turn")
+=======
+					#" — ", outcome_amount, " magic/turn")
+>>>>>>> Stashed changes
 =======
 					#" — ", outcome_amount, " magic/turn")
 >>>>>>> Stashed changes
@@ -2608,8 +2680,12 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 				var total: int = total_levels * outcome_amount
 				_apply_resource_change("mandate", total)
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 				print("[MandateSurge] ", tile.tileName, " levels:", total_levels,
 					" ×", outcome_amount, " turns = ", total, " mandate")
+=======
+					#" ×", outcome_amount, " turns = ", total, " mandate")
+>>>>>>> Stashed changes
 =======
 					#" ×", outcome_amount, " turns = ", total, " mandate")
 >>>>>>> Stashed changes
@@ -2624,8 +2700,12 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 				_apply_resource_change(outcome_value, total)
 				tile.corruption = mini(tile.corruption + 20, 100)
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 				print("[CorruptWindfall] ", tile.tileName, " +", total, " ",
 					outcome_value, " | corruption now ", tile.corruption)
+=======
+					#outcome_value, " | corruption now ", tile.corruption)
+>>>>>>> Stashed changes
 =======
 					#outcome_value, " | corruption now ", tile.corruption)
 >>>>>>> Stashed changes
@@ -2656,8 +2736,12 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 				var yield_amount: int = total_levels * outcome_amount
 				_apply_resource_change(outcome_value, yield_amount)
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 				print("[StateBuildingYield] ", state, " levels:", total_levels,
 					" ×", outcome_amount, " = ", yield_amount, " ", outcome_value)
+=======
+					#" ×", outcome_amount, " = ", yield_amount, " ", outcome_value)
+>>>>>>> Stashed changes
 =======
 					#" ×", outcome_amount, " = ", yield_amount, " ", outcome_value)
 >>>>>>> Stashed changes
@@ -2668,8 +2752,12 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 				if not tile.tileGovernor.governor_perks.has(outcome_value):
 					tile.tileGovernor.governor_perks.append(outcome_value)
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 					print("[GovPerk] ", tile.tileGovernor.governorType,
 						" unlocked perk: ", outcome_value)
+=======
+						#" unlocked perk: ", outcome_value)
+>>>>>>> Stashed changes
 =======
 						#" unlocked perk: ", outcome_value)
 >>>>>>> Stashed changes
@@ -3176,10 +3264,14 @@ func _execute_republic_collapse() -> void:
 
 		print("[Collapse] ", display_name, " (", state_code, ") — ", tiles.size(), " tiles")
 
+<<<<<<< Updated upstream
 	print("[Collapse] USA retains ", playerCountryNode.OwnedTileList.size(), " tile(s):")
 	for tile in playerCountryNode.OwnedTileList:
 <<<<<<< Updated upstream
 		print("[Collapse]   • ", tile.tileName)
+=======
+	#for tile in playerCountryNode.OwnedTileList:
+>>>>>>> Stashed changes
 
 =======
 		print("playerCountryNode.OwnedTileList")
@@ -3399,8 +3491,12 @@ func _check_turncoat_general() -> void:
 	_start_cooldown("TURNCOAT_001", 15)
 	createNewEvent("TURNCOAT_001", suspect_tile)
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 	print("[Turncoat] Suspicious commander: ", suspect_tile.tileGovernor.governorType,
 		" at ", suspect_tile.tileName)
+=======
+		#" at ", suspect_tile.tileName)
+>>>>>>> Stashed changes
 =======
 		#" at ", suspect_tile.tileName)
 >>>>>>> Stashed changes
@@ -3515,8 +3611,12 @@ func _check_ualani_wounded() -> void:
 	_start_cooldown("UALANI_WOUNDED_01", 12)
 	createNewEvent("UALANI_WOUNDED_01", tile)
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 	print("[Ualani] Wounded visit at ", tile.tileName,
 		" (", army.manpowerInArmy, "/", army.maxManpower, ")")
+=======
+		#" (", army.manpowerInArmy, "/", army.maxManpower, ")")
+>>>>>>> Stashed changes
 =======
 		#" (", army.manpowerInArmy, "/", army.maxManpower, ")")
 >>>>>>> Stashed changes
@@ -3593,8 +3693,12 @@ func _check_ualani_alliance() -> void:
 	_start_cooldown("UALANI_ALLIANCE_01", 18)
 	createNewEvent("UALANI_ALLIANCE_01", ally_tile)
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 	print("[Ualani] Alliance meeting at ", ally_tile.tileName,
 		" with ", ally_tile.tileGovernor.governorType)
+=======
+		#" with ", ally_tile.tileGovernor.governorType)
+>>>>>>> Stashed changes
 =======
 		#" with ", ally_tile.tileGovernor.governorType)
 >>>>>>> Stashed changes
@@ -3613,8 +3717,12 @@ func _check_ualani_frontier() -> void:
 			_start_cooldown("UALANI_FRONTIER_01", 20)
 			createNewEvent("UALANI_FRONTIER_01", tile)
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 			print("[Ualani] Frontier at ", tile.tileName,
 				" bordering ", neighbor.tileContinent)
+=======
+				#" bordering ", neighbor.tileContinent)
+>>>>>>> Stashed changes
 =======
 				#" bordering ", neighbor.tileContinent)
 >>>>>>> Stashed changes
@@ -4221,8 +4329,12 @@ func _assign_vice_president() -> void:
 	_vp_governor.isVicePresident = true
 	_vp_faction = VP_FACTION_MAP.get(_vp_governor.governorType, "")
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 	print("[VP] Assigned: ", _vp_governor.governorType,
 		" | Faction: ", _vp_faction)
+=======
+		#" | Faction: ", _vp_faction)
+>>>>>>> Stashed changes
 =======
 		#" | Faction: ", _vp_faction)
 >>>>>>> Stashed changes
@@ -4873,8 +4985,12 @@ func _check_ca_protectors() -> void:
 		_start_cooldown(summon_id, 15)
 		createNewEvent(summon_id, prot_tile)
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 		print("[CA Protector] SUMMON fired: ", summon_id,
 			  " at tile ", CA_PROT_TILES.get(pid, 0), " turn ", currentWorldTurn)
+=======
+			  #" at tile ", CA_PROT_TILES.get(pid, 0), " turn ", currentWorldTurn)
+>>>>>>> Stashed changes
 =======
 			  #" at tile ", CA_PROT_TILES.get(pid, 0), " turn ", currentWorldTurn)
 >>>>>>> Stashed changes
@@ -4897,8 +5013,12 @@ func _check_ca_own_protectors() -> void:
 		_start_cooldown(summon_id, 15)
 		createNewEvent(summon_id, prot_tile)
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 		print("[CA Own Protector] SUMMON fired: ", summon_id,
 			  " at tile ", CA_PROT_TILES.get(pid, 0), " turn ", currentWorldTurn)
+=======
+			  #" at tile ", CA_PROT_TILES.get(pid, 0), " turn ", currentWorldTurn)
+>>>>>>> Stashed changes
 =======
 			  #" at tile ", CA_PROT_TILES.get(pid, 0), " turn ", currentWorldTurn)
 >>>>>>> Stashed changes
@@ -4930,8 +5050,12 @@ func _check_loyal_governor_events() -> void:
 		playerCountryNode.CountryFlags[fired_flag] = true
 		createNewEvent("GOV_LOYAL_" + gov.governorArchetypeId, tile)
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 		print("[LoyalGov] ", gov.governorType, " (", gov.governorArchetypeId,
 			") loyal event fired at ", tile.tileName)
+=======
+			#") loyal event fired at ", tile.tileName)
+>>>>>>> Stashed changes
 =======
 			#") loyal event fired at ", tile.tileName)
 >>>>>>> Stashed changes
@@ -5050,8 +5174,12 @@ func _apply_george_peace() -> void:
 		playerCountryNode.CountryFlags["george_peace_accepted"] = true
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 	print("[George Peace] Accepted — uk_usa_peace set",
 		" + uk_ca_peace (allied)" if is_allied else " (USA only)")
+=======
+		#" + uk_ca_peace (allied)" if is_allied else " (USA only)")
+>>>>>>> Stashed changes
 =======
 		#" + uk_ca_peace (allied)" if is_allied else " (USA only)")
 >>>>>>> Stashed changes
@@ -5276,8 +5404,12 @@ func _apply_morale_boost(amount: int, tile = null) -> void:
 	if tile != null and tile.tileGovernor != null:
 		tile.tileGovernor.morale = clampi(tile.tileGovernor.morale + amount, 0, 100)
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 		print("[Morale] ", tile.tileGovernor.governorType, " at ", tile.tileName,
 			" morale → ", tile.tileGovernor.morale)
+=======
+			#" morale → ", tile.tileGovernor.morale)
+>>>>>>> Stashed changes
 =======
 			#" morale → ", tile.tileGovernor.morale)
 >>>>>>> Stashed changes
@@ -5297,8 +5429,12 @@ func _apply_army_buff(buff_type: String, duration: int, tile) -> void:
 		army.surveySelf()
 		army.updateArmyUI()
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 	print("[ArmyBuff] ", buff_type, " (", duration, " turns) applied to ",
 		targets.size(), " army/armies")
+=======
+		#targets.size(), " army/armies")
+>>>>>>> Stashed changes
 =======
 		#targets.size(), " army/armies")
 >>>>>>> Stashed changes
@@ -5825,10 +5961,14 @@ func _spawn_storm(origin: Tile) -> void:
 	# Spread to all neighbors
 	_spread_storm(origin, storm_id, storm_type, duration, intensity)
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 	print("[Storm] ", storm_type, " spawned at tile ", origin.tileNumber,
 		  " — intensity ", intensity, ", duration ", duration, " turns.")
 =======
 		  #" — intensity ", intensity, ", duration ", duration, " turns.")
+>>>>>>> Stashed changes
+=======
+		 # " — intensity ", intensity, ", duration ", duration, " turns.")
 >>>>>>> Stashed changes
 
 func _spread_storm(origin: Tile, storm_id: String, storm_type: String,
@@ -6157,10 +6297,14 @@ func _on_vp_governor_selected(new_vp, overlay: ColorRect, panel: PanelContainer)
 	_vp_governor = new_vp
 	_vp_faction  = VP_FACTION_MAP.get(new_vp.governorType, "")
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 	print("[VP Succession] New Vice President: ", new_vp.governorType,
 		  " | Faction: ", _vp_faction)
 =======
 		  #" | Faction: ", _vp_faction)
+>>>>>>> Stashed changes
+=======
+		 # " | Faction: ", _vp_faction)
 >>>>>>> Stashed changes
 
 	# Close picker UI
@@ -6484,10 +6628,14 @@ func _tick_anarchists() -> void:
 			army.manpowerInArmy = maxi(army.manpowerInArmy - attacker_loss, 0)
 			uk_army.manpowerInArmy = maxi(uk_army.manpowerInArmy - defender_loss, 0)
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 			print("[Anarchist] ", army.ArmyName, " raids ", target.tileName,
 				" — loses ", attacker_loss, ", UK loses ", defender_loss)
 =======
 				#" — loses ", attacker_loss, ", UK loses ", defender_loss)
+>>>>>>> Stashed changes
+=======
+			#	" — loses ", attacker_loss, ", UK loses ", defender_loss)
 >>>>>>> Stashed changes
 			army.updateArmyUI()
 			uk_army.updateArmyUI()

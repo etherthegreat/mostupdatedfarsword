@@ -129,6 +129,10 @@ func _process_wikilinks(text: String) -> String:
 func _on_body_link_clicked(meta) -> void:
 	select_entry(str(meta))
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+#>>>>>>> origin/etherPushBranch
 >>>>>>> Stashed changes
 # ── external navigation ───────────────────────────────────────────────────────
 

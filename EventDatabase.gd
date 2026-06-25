@@ -12,9 +12,14 @@ func _ready() -> void:
 	load_triggers("res://data/event_triggers.csv")
 	loaded = true
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 	print("EventDatabase: Loaded ", events.size(), " events, ",
 		  buttons.size(), " buttons, ", triggers.size(), " triggers.")
 =======
+=======
+		  #buttons.size(), " buttons, ", triggers.size(), " triggers.")
+#=======
+>>>>>>> Stashed changes
 		#$buttons.size(), " buttons, ", triggers.size(), " triggers.")
 >>>>>>> Stashed changes
 
