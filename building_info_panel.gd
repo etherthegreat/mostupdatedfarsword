@@ -48,20 +48,15 @@ func newBuildingForTile(buildingType, goldCalculatedCost, foodCalculatedCost, wo
 	emit_signal("newBuildingInTile", buildingType, goldCalculatedCost, foodCalculatedCost, woodCalculatedCost, metalCalculatedCost, thisTile, player)
 
 
-func _process(delta: float) -> void:
-	if $AddBuildingControl.visible == true:
-		if $AddBuildingControl/ScrollContainer/GridContainer.get_children() != null:
-			for buildingButton in $AddBuildingControl/ScrollContainer/GridContainer.get_children():
-				buildingButton.updateUI()
-
 signal fillWithUnlockedBuildings
 func _on_add_building_button_pressed() -> void:
-	if $AddBuildingControl/ScrollContainer/GridContainer.get_children() != null:
-		for buildingButton in $AddBuildingControl/ScrollContainer/GridContainer.get_children():
-			$AddBuildingControl/ScrollContainer/GridContainer.remove_child(buildingButton)
-			buildingButton.queue_free()
+	for buildingButton in $AddBuildingControl/ScrollContainer/GridContainer.get_children():
+		$AddBuildingControl/ScrollContainer/GridContainer.remove_child(buildingButton)
+		buildingButton.queue_free()
 	emit_signal("fillWithUnlockedBuildings")
 	if $AddBuildingControl.visible == true:
 		$AddBuildingControl.visible = false
 	else:
 		$AddBuildingControl.visible = true
+		for buildingButton in $AddBuildingControl/ScrollContainer/GridContainer.get_children():
+			buildingButton.updateUI()

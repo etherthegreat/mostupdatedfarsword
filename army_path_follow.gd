@@ -40,18 +40,17 @@ func move(key, keyPath, path):
 
 signal armyArrived
 signal armyTraveling
-var fuckyou : float
-var tempmanpowerinarmy: float
-var tempMaxManpower: float
+
+func refreshHealthBar() -> void:
+	if thisArmy == null or thisArmy.maxManpower == 0:
+		return
+	$ProgressBar.value = (float(thisArmy.manpowerInArmy) / thisArmy.maxManpower) * 100.0
+	$Label.text = "win" if thisArmy.armyCharm != null else ""
+
 func _process(delta: float) -> void:
+	if thisArmy == null:
+		return
 	if thisArmy.deleteMode == false:
-		tempmanpowerinarmy = thisArmy.manpowerInArmy
-		tempMaxManpower = thisArmy.maxManpower
-		$APFButton.icon = thisArmy.armyIcon
-		fuckyou = ((tempmanpowerinarmy/tempMaxManpower)*100)
-		if thisArmy.armyCharm != null:
-			$Label.text = "win"
-		$ProgressBar.value = fuckyou
 		if movingBackward == true:
 			progressRate -= 0.02
 			if progressRate <= 0:
@@ -94,7 +93,8 @@ func onRaise(Army, country, pathPoint):
 	currentPathPoint = pathPoint
 	currentPathPoint.occupied = true
 	$APFButton.icon = Army.armyIcon
-	currentTile = pathPoint.ppbTile   # populate immediately so winter drain/speed is safe on turn 1
+	currentTile = pathPoint.ppbTile
+	refreshHealthBar()
 
 signal apfSelected
 func _on_apf_button_pressed() -> void:

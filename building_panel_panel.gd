@@ -148,8 +148,8 @@ func updateInspector(building):
 
 
 
-func _process(delta: float) -> void:
-	if self.visible == true:
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_VISIBILITY_CHANGED and self.visible:
 		updateInspector(buildingUnderInspection)
 
 func _on_upgrade_pressed() -> void:

@@ -18,6 +18,7 @@ const TECH_COSTS := [40, 100, 250, 500]
 var _buttons: Dictionary = {}  # techName -> techButton node
 
 signal addTechToPlayer
+signal investmentChanged
 
 func buildSelf(player) -> void:
 	playerNode = player
@@ -87,10 +88,12 @@ func unlockTech(techID: String, techButt: techButton, change: int) -> void:
 	techButt.purchased = true
 	emit_signal("addTechToPlayer", techID)
 	investmentTech = null
+	emit_signal("investmentChanged")
 	_refresh_all()
 
 func selectInvestmentFunc(techbutt: techButton) -> void:
 	investmentTech = techbutt
+	emit_signal("investmentChanged")
 	if nextTechChange > 0:
 		investInTech(nextTechChange)
 		nextTechChange = 0

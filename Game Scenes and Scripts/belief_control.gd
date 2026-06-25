@@ -192,6 +192,8 @@ func updateSelf():
 		btn.bbCost = uniform_cost
 	for btn in $BeliefPanel/GodsScrollContainer/GodsContainer.get_children():
 		btn.bbCost = uniform_cost
+	if self.visible:
+		refreshDisplay()
 
 func buildPD(type):
 	var newPD = beliefPD.instantiate()
@@ -380,7 +382,11 @@ func _on_belief_button_mouse_exited() -> void:
 	if $BeliefInfoPanel.visible == true:
 		$BeliefInfoPanel.visible = false
 
-func _process(delta: float) -> void:
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_VISIBILITY_CHANGED and self.visible:
+		refreshDisplay()
+
+func refreshDisplay() -> void:
 	if not is_instance_valid(player):
 		return
 	for beliefButton in $BeliefPanel/DoctrineScrollContainer/DoctrineContainer.get_children():
@@ -399,21 +405,17 @@ func _process(delta: float) -> void:
 				beliefButton.cantAfford()
 		else:
 			beliefButton.purchased()
-	if pendingBelief != "" && pendingCost != 0:
-		if player.TotalCulture >= pendingCost:
-			$BeliefPanel/PurchasePanel/PurchaseButton.disabled = false
-		else:
-			$BeliefPanel/PurchasePanel/PurchaseButton.disabled = true
-	if self.visible == true:
-		match player.churchLevel:
-			3:  $BeliefPanel/testLabel.text = "Providence III"
-			2:  $BeliefPanel/testLabel.text = "Providence II"
-			1:  $BeliefPanel/testLabel.text = "Providence I"
-			0:  $BeliefPanel/testLabel.text = "Balanced"
-			-1: $BeliefPanel/testLabel.text = "Reason I"
-			-2: $BeliefPanel/testLabel.text = "Reason II"
-			-3: $BeliefPanel/testLabel.text = "Reason III"
-		matchFaithPointsIcons()
+	if pendingBelief != "" and pendingCost != 0:
+		$BeliefPanel/PurchasePanel/PurchaseButton.disabled = player.TotalCulture < pendingCost
+	match player.churchLevel:
+		3:  $BeliefPanel/testLabel.text = "Providence III"
+		2:  $BeliefPanel/testLabel.text = "Providence II"
+		1:  $BeliefPanel/testLabel.text = "Providence I"
+		0:  $BeliefPanel/testLabel.text = "Balanced"
+		-1: $BeliefPanel/testLabel.text = "Reason I"
+		-2: $BeliefPanel/testLabel.text = "Reason II"
+		-3: $BeliefPanel/testLabel.text = "Reason III"
+	matchFaithPointsIcons()
 
 func _get_uniform_belief_cost() -> int:
 	if not is_instance_valid(player):

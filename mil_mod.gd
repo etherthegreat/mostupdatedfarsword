@@ -1288,7 +1288,6 @@ func buildSelf(Type):
 		newArea2D = $Area2D
 		newCollissionArea2D = $Area2D/CollisionShape2D
 
-var mouseDetected: bool
 
 func disableMilModType(ResourceType):
 	if ResourceType == milModResource:
@@ -1302,24 +1301,9 @@ func enableMilModType(ResourceType):
 	elif ResourceType == "All":
 		disabled = false
 
-func _process(delta: float) -> void:
-	if mouseDetected == true:
-		if $Sprite2D/InfoPanel.visible == false:
-			$Sprite2D/InfoPanel.show()
-			return
-		else:
-			return
-	else:
-		if $Sprite2D/InfoPanel.visible == true:
-			$Sprite2D/InfoPanel.hide()
-			return
-		else:
-			return
-
-
 func _on_area_2d_mouse_entered() -> void:
-	mouseDetected = true
+	$Sprite2D/InfoPanel.show()
 
 
 func _on_area_2d_mouse_exited() -> void:
-	mouseDetected = false
+	$Sprite2D/InfoPanel.hide()

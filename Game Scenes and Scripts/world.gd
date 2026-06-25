@@ -158,39 +158,33 @@ const STATE_FULL_NAMES: Dictionary = {
 }
 
 func _process(delta: float) -> void:
-	if worldCreation == true:
+	if worldCreation:
 		$CanvasLayer/LoadingSprite.rotation += 1
-		return
+
+func updateResourceBar() -> void:
 	if playerCountryNode == null:
-		print(playerCountryNode, "playercountryNode")
 		return
-	else:
-		print(playerCountryNode, "playercountryNode", "chill")
 	$"CanvasLayer/Resource Bar (TOP)/container/FoodLabel/Label".text = str(playerCountryNode.TotalFood)
 	$"CanvasLayer/Resource Bar (TOP)/container/GoldLabel/Label".text = str(playerCountryNode.TotalDollars)
 	$"CanvasLayer/Resource Bar (TOP)/container/WoodLabel/Label".text = str(playerCountryNode.TotalWood)
 	$"CanvasLayer/Resource Bar (TOP)/container/MetalLabel/Label".text = str(playerCountryNode.TotalMetal)
 	$"CanvasLayer/Resource Bar (TOP)/container/WeaponsLabel/Label".text = str(playerCountryNode.TotalWeapons)
 	$"CanvasLayer/Resource Bar (TOP)/container/ScienceLabel/Label".text = str(playerCountryNode.SPM)
-	$"CanvasLayer/Resource Bar (TOP)/container/FaithLabel/Label".text = str(playerCountryNode.TotalCulture)  # Faith→Culture
+	$"CanvasLayer/Resource Bar (TOP)/container/FaithLabel/Label".text = str(playerCountryNode.TotalCulture)
 	$"CanvasLayer/Resource Bar (TOP)/container/MagicLabel/Label".text = str(playerCountryNode.TotalMagic)
 	$"CanvasLayer/Resource Bar (TOP)/container/CultureLabel/Label".text = str(playerCountryNode.TotalCulture)
 	$"CanvasLayer/Resource Bar (TOP)/container/MandateLabel/Label".text = str(playerCountryNode.TotalMandate)
-	$"CanvasLayer/Resource Bar (TOP)/container/HarmonyLabel/Label".text = str(playerCountryNode.TotalHappiness)  # Harmony→Happiness
+	$"CanvasLayer/Resource Bar (TOP)/container/HarmonyLabel/Label".text = str(playerCountryNode.TotalHappiness)
 	$"CanvasLayer/Resource Bar (TOP)/container/InfluenceLabel/Label".text = str(playerCountryNode.TotalInfluence)
 	$"CanvasLayer/Resource Bar (TOP)/container/ManpowerLabel/Label".text = str(playerCountryNode.TotalManpower)
-	updateMap()
-	if $CanvasLayer/TechTree.investmentTech == null:
-		$CanvasLayer/NextTurnControl/NextTurn.visible = false
-		$CanvasLayer/NextTurnControl/PickTech.visible = true
-	else:
-		$CanvasLayer/NextTurnControl/PickTech.visible = false
-		$CanvasLayer/NextTurnControl/NextTurn.visible = true
-	pass
+
+func _refresh_next_turn_ui() -> void:
+	var has_tech := $CanvasLayer/TechTree.investmentTech != null
+	$CanvasLayer/NextTurnControl/NextTurn.visible = has_tech
+	$CanvasLayer/NextTurnControl/PickTech.visible = not has_tech
 
 func updateMap():
 	$TileController.updateTiles(mapMode, displayCorruption, playerCountryNode)
-	pass
 
 
 var currentWorldTurn: int = 0
@@ -1538,6 +1532,8 @@ func _activate_player(cid: String) -> void:
 	var prot_filter: String = "COOP" if isCoopMode else playerCountry
 	$CanvasLayer/WarRoomPanel.setupAllProtectors($TileController.get_children(), prot_filter)
 	_update_turn_phase_ui()
+	updateResourceBar()
+	updateMap()
 	print("[TurnOrder] Active player: ", playerCountry)
 
 
@@ -1663,7 +1659,11 @@ func updatePlayerUI():
 		$CanvasLayer/WarRoomPanel.requestEventFire.connect(_on_arc_event_requested)
 	if not $CanvasLayer/WarRoomPanel.protectorSummoned.is_connected(_on_protector_summoned):
 		$CanvasLayer/WarRoomPanel.protectorSummoned.connect(_on_protector_summoned)
-	pass
+	if not $CanvasLayer/TechTree.investmentChanged.is_connected(_refresh_next_turn_ui):
+		$CanvasLayer/TechTree.investmentChanged.connect(_refresh_next_turn_ui)
+	updateResourceBar()
+	_refresh_next_turn_ui()
+	updateMap()
 
 var thisTileNumber: int
 var selectedTile: Tile
