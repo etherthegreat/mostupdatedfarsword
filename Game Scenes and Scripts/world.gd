@@ -1174,7 +1174,7 @@ func spawnStartingArmies() -> void:
 # governor already assigned, generates a procedural governor drawn from
 # Canadian-themed archetypes and name pools.  Does NOT register commanders in
 # the War Room (player-only UI) and does NOT spawn Ualani.
-func _generate_ai_barracks_commanders(country_node: country) -> void:
+func _generate_ai_barracks_commanders(country_node) -> void:
 	var CA_ARCHETYPES := [
 		{"id":"CA_ARC_01",    "name":"Coureur des Bois",            "position":"SCOUT",    "terrain":["Woods","Wetlands"],      "regions":["CA - OT","CA - QB"],                          "pools":["NP_06"]},
 		{"id":"CA_ARC_02",    "name":"Voyageur",                    "position":"DIPLOMAT", "terrain":["Wetlands"],              "regions":["CA - OT","CA - QB"],                          "pools":["NP_06"]},
@@ -1364,7 +1364,7 @@ func _generate_ai_barracks_commanders(country_node: country) -> void:
 # ── CANADIAN AI STARTING ARMIES ──────────────────────────────────────────────
 # Spawns up to 4 armies at CA-owned barracks tiles (level 2+) that already
 # have a governor assigned.  Must run after _generate_ai_barracks_commanders().
-func _spawn_ai_starting_armies(country_node: country) -> void:
+func _spawn_ai_starting_armies(country_node) -> void:
 	var CA_ARMY_SUFFIX := {
 		"CA_ARC_01": "Coureurs Company",   "CA_ARC_02": "River Brigade",
 		"CA_ARC_03": "Forest Trackers",    "CA_ARC_04": "Loyalist Militia",
@@ -2902,7 +2902,7 @@ func _fire_state_secession(state_code: String) -> void:
 		return
 
 	var display_name: String = STATE_FULL_NAMES.get(state_code, "State of " + state_code)
-	var rebel_country: country = _spawn_state_country(state_code, display_name)
+	var rebel_country = _spawn_state_country(state_code, display_name)
 
 	var metro_tile = null
 	for tile in tiles_to_seize:
@@ -3033,7 +3033,7 @@ func _execute_republic_collapse() -> void:
 	for state_code in state_tile_groups.keys():
 		var tiles: Array = state_tile_groups[state_code]
 		var display_name: String = STATE_FULL_NAMES.get(state_code, "State of " + state_code)
-		var state_country: country = _spawn_state_country(state_code, display_name)
+		var state_country = _spawn_state_country(state_code, display_name)
 
 		for tile in tiles:
 			playerCountryNode.OwnedTileList.erase(tile)
@@ -3063,13 +3063,13 @@ func _execute_republic_collapse() -> void:
 	createNewEvent("COLLAPSE_02")
 
 
-func _spawn_state_country(state_code: String, display_name: String) -> country:
+func _spawn_state_country(state_code: String, display_name: String):
 	# Guard: return existing node if somehow called twice for the same state
 	for c in aliveCountriesList:
 		if c.CID == state_code:
 			return c
 
-	var new_country: country = countryNode.instantiate()
+	var new_country = countryNode.instantiate()
 	new_country.name        = state_code + "_state"
 	new_country.CID         = state_code
 	new_country.NatName     = display_name
@@ -6189,7 +6189,7 @@ func _library_on_event_fired(event_id: String) -> void:
 		return
 
 	# Gallery unlock — all players reach all scenes; no content gate
-	var content_flag: String = event.get("content_flag", "").strip()
+	var content_flag: String = event.get("content_flag", "").strip_edges()
 	if content_flag != "" and content_flag != "false":
 		LibraryData.unlock_gallery(event_id)
 

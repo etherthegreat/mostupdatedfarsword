@@ -1,7 +1,7 @@
 extends Control
 
 
-var player: country = null
+var player = null
 
 func buildSelf(playerNode):
 	pendingBelief = ""

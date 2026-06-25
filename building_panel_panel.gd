@@ -8,7 +8,7 @@ signal downgradeBuilding
 signal requestPlayerCountry
 var bPPLevelList: Array = []
 
-var player: country
+var player
 var red = Color(1.0,0.0,0.0,1.0)
 var white = Color(1.0,1.0,1.0,1.0)
 var green = Color(0, 1, 0, 1)

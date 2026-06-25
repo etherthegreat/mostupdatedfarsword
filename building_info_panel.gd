@@ -1,7 +1,7 @@
 extends Control
 
 var open
-var player = country
+var player
 
 var thisTile: Tile
 

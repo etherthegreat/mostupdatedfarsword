@@ -1,7 +1,7 @@
 extends CanvasLayer
 
 
-var playerNode: country
+var playerNode
 
 func assignPlayerNode(playerCountryNode):
 	playerNode = playerCountryNode

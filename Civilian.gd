@@ -4,7 +4,7 @@ class_name Civilian
 
 var civilianTool: Tool
 var civilianKit: kit
-var player: country
+var player
 
 var stationTile: Tile
 var stationNode: pathPointButton

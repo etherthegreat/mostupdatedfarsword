@@ -1436,8 +1436,7 @@ func _uk_retreat_to_supply(army: Army) -> void:
 
 
 func _uk_reinforce(_army: Army) -> void:
-	# Passive manpower recovery is handled by onTurnEnd().
-	# Future: add logic to advance into neutral territory or consolidate nearby forces.
+	pass
 
 
 # ============================================================
@@ -1465,26 +1464,8 @@ func _passive_hold() -> void:
 			TotalManpower -= reinforce
 
 
-func setNewTaxAmount(amount, type):
-	match type:
-		"Farm":
-			setFarmTaxAmount = amount
-		"Camp":
-			setCampTaxAmount = amount
-		"Mine":
-			setMineTaxAmount = amount
-		"Library":
-			setLibraryTaxAmount = amount
-		"Temple":
-			setTempleTaxAmount = amount
-		"Tower":
-			setTowerTaxAmount = amount
-		"Forge":
-			setTowerTaxAmount = amount
-		"Workshop":
-			setWorkshopTaxAmount = amount
-		"Bath":
-			setBathTaxAmount = amount
+func setNewTaxAmount(_amount, _type):
+	pass
 
 func payBill(type, amount):
 	match type:

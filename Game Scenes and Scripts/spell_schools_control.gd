@@ -29,7 +29,7 @@ signal lvlUpSpell
 func spellLevelUp(lvl, type):
 	emit_signal("lvlUpSpell", lvl, type)
 
-var player: country
+var player
 
 signal calculatePlayerOutputs
 func updateMagicAmounts(playerCountryNode):

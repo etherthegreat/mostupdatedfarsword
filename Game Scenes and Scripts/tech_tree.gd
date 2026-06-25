@@ -1,6 +1,6 @@
 extends Control
 
-var playerNode: country
+var playerNode
 var investmentTech: techButton
 var nextTechChange: int = 0
 
@@ -19,11 +19,12 @@ var _buttons: Dictionary = {}  # techName -> techButton node
 
 signal addTechToPlayer
 
-func buildSelf(player: country) -> void:
+func buildSelf(player) -> void:
 	playerNode = player
 	_build_grid()
 	_mark_purchased(player)
 	_connect_signals()
+
 
 func _build_grid() -> void:
 	_buttons.clear()
@@ -66,7 +67,7 @@ func _build_grid() -> void:
 			row_btns.append(btn)
 			_buttons[tech_name] = btn
 
-func _mark_purchased(player: country) -> void:
+func _mark_purchased(player) -> void:
 	for tech in player.unlockedTechnologies:
 		if tech.techName in _buttons:
 			_buttons[tech.techName].purchase()

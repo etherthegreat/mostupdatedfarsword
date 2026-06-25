@@ -1,6 +1,6 @@
 extends Control
 
-var playerCountry: country
+var playerCountry
 
 
 func loadCivilians(player, playerTileList):
