@@ -5885,7 +5885,6 @@ position = Vector2(9, -4)
 polygon = PackedVector2Array(-25, -35, -31, -36, -33, -31, -30, -21, -33, -12, -35, 2, -40, 16, -38, 22, -27, 33, -19, 36, -11, 36, -2, 30, 5, 27, 17, 29, 26, 29, 31, 23, 37, 11, 37, 5, 28, -4, 16, -13, 4, -20, -5, -24, -16, -30)
 
 [node name="PathControl" type="Control" parent="."]
-visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
