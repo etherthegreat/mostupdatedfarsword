@@ -56,7 +56,7 @@ func raisePlayerCiv(civ, country, Tile):
 
 func updateTravelingArmy(_progressRate, _currentPath, _Army):
 	# Visual feedback during travel is handled by army_path_follow._process().
-	# Reserve this callback for future world-level travel notifications.
+	pass
 
 
 func armyArrivedFunc(pathOfArmy, newPathPointButton, theArmy, apf, contain):
