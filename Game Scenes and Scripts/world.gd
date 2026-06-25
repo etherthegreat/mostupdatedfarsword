@@ -27,7 +27,6 @@ var playerCapitalPathButton: pathPointButton
 
 var mapMode: String
 var displayCorruption: bool
-var _hover_prev_map_mode: String = ""
 
 # Populated by generateBarracksCommanders() — shared by _generate_and_assign_governor()
 var _usa_archetypes: Array = []
@@ -47,7 +46,7 @@ var _ca_vp_faction: String = ""        # faction of CA's Deputy Governor
 var _peace_dock_was_uk: Dictionary = {}  # tile_num → bool; tracks UK ownership flip per turn
 var _peace_last_freed_tile = null        # most-recently freed peace dock tile node
 var isCoopMode: bool = false             # true when both USA and CA are player-controlled
-var coopCountryNode: country      # second player's country in co-op mode
+var coopCountryNode    # second player's country in co-op mode
 var _player_turn_order: Array = []       # ordered CIDs of player-controlled countries
 var _turn_phase_index: int = 0           # which slot in _player_turn_order is active
 
@@ -85,20 +84,20 @@ const PROTECTOR_SUMMON_TURNS: Dictionary = {
 const USA_PROT_TILES: Dictionary = {
 	"PROT_01":  46,   # Mothman               — Harper's Ferry, WV (Appalachian Minerals)
 	"PROT_02":  23,   # Jersey Devil          — Lakewood, NJ (Pine Barrens wetlands)
-	"PROT_03": 145,   # Wood Booger           — Asheville, NC (Blue Ridge Highlands)
-	"PROT_04": 118,   # Pamola                — Bar Harbor, ME (Acadia Wilderness)
+	"PROT_03": 145,   # Bigfoot               — Asheville, NC (Blue Ridge Highlands)
+	"PROT_04": 139,   # Thunderbird           — Buffalo, NY (Niagara / Great Lakes storms)
 	"PROT_05":  17,   # Headless Horseman     — Peekskill, NY (Hudson Valley)
-	"PROT_06":  41,   # Goatman               — Bethesda, MD (Prince George's County corridor)
+	"PROT_06":  37,   # Chessie               — Baltimore, MD (Chesapeake Shipyards)
 	"PROT_07": 165,   # Bell Witch            — Nashville, TN
 	"PROT_08":  65,   # Old Ironsides         — Boston, MA (Charlestown Navy Yard)
 	"PROT_09":   1,   # Valley Forge Guardian — Valley Forge, PA
-	"PROT_10":  47,   # Snallygaster          — Winchester, VA (Shenandoah Valley)
-	"PROT_11":  59,   # Black Dog             — Hartford, CT (Hanging Hills)
-	"PROT_12":  56,   # Mercy Brown           — Coventry, RI (Exeter)
-	"PROT_13":  80,   # Champ                 — Montpelier, VT (Lake Champlain region)
+	"PROT_10":  42,   # Snallygaster          — Frederick, MD
+	"PROT_11":  61,   # Paul Revere           — Lexington, MA (Lexington Cry)
+	"PROT_12":   2,   # Liberty Bell          — Philadelphia, PA (Liberty Bell)
+	"PROT_13":  80,   # Green Mountain Ghost  — Montpelier, VT (Green Mountains)
 
 	"PROT_15": 177,   # Skunk Ape             — Gainesville, FL (Wetlands)
-	"PROT_16":  20,   # Agent 355             — Manhattan, NY (Culper Ring operations)
+	"PROT_16":  71,   # Eternal Minuteman     — Springfield, MA (Gun Valley / Armory)
 	"PROT_17": 188,   # Lincoln's Ghost       — Washington, DC (White House)
 }
 
@@ -158,183 +157,15 @@ const STATE_FULL_NAMES: Dictionary = {
 	"ME": "District of Maine",
 }
 
-func _ready() -> void:
-	_build_pause_menu()
-	$CanvasLayer/BeliefControl.purchasedBelief.connect(_on_belief_purchased)
-
-
-func _build_pause_menu() -> void:
-	var pause_layer := CanvasLayer.new()
-	pause_layer.layer = 100
-	add_child(pause_layer)
-
-	_pause_overlay = ColorRect.new()
-	_pause_overlay.color = Color(0, 0, 0, 0.65)
-	_pause_overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
-	_pause_overlay.mouse_filter = Control.MOUSE_FILTER_STOP
-	_pause_overlay.visible = false
-	pause_layer.add_child(_pause_overlay)
-
-	# 600×900 panel, centered on screen
-	var panel := Control.new()
-	panel.set_anchors_preset(Control.PRESET_CENTER)
-	panel.set_offset(SIDE_LEFT,  -300)
-	panel.set_offset(SIDE_TOP,   -450)
-	panel.set_offset(SIDE_RIGHT,  300)
-	panel.set_offset(SIDE_BOTTOM, 450)
-	_pause_overlay.add_child(panel)
-
-	var bg := TextureRect.new()
-	bg.texture = load("res://art assets/finishedAssets/UI/pause_menu_bg.png")
-	bg.stretch_mode = TextureRect.STRETCH_SCALE
-	bg.set_anchors_preset(Control.PRESET_FULL_RECT)
-	panel.add_child(bg)
-
-	var vbox := VBoxContainer.new()
-	vbox.set_anchors_preset(Control.PRESET_FULL_RECT)
-	vbox.set_offset(SIDE_LEFT,   40)
-	vbox.set_offset(SIDE_RIGHT,  -40)
-	vbox.set_offset(SIDE_TOP,    60)
-	vbox.set_offset(SIDE_BOTTOM, -40)
-	vbox.add_theme_constant_override("separation", 20)
-	vbox.alignment = BoxContainer.ALIGNMENT_CENTER
-	panel.add_child(vbox)
-
-	var title := Label.new()
-	title.text = "— PAUSED —"
-	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	title.add_theme_font_size_override("font_size", 34)
-	title.add_theme_color_override("font_color", Color(0.95, 0.85, 0.50, 1.0))
-	vbox.add_child(title)
-
-	var spacer := Control.new()
-	spacer.custom_minimum_size = Vector2(0, 28)
-	vbox.add_child(spacer)
-
-	var btn_tex := load("res://art assets/finishedAssets/UI/pause_button.png")
-	var button_defs: Array = [
-		["Continue",            "_on_pause_continue"],
-		["Settings",            "_on_pause_settings"],
-		["Presidential Library","_on_pause_preslib"],
-		["Aftercare",           "_on_pause_aftercare"],
-		["Save and Return",     "_on_pause_save_return"],
-		["Save and Quit",       "_on_pause_save_quit"],
-	]
-	for bdef in button_defs:
-		var btn := Button.new()
-		btn.text = bdef[0]
-		btn.custom_minimum_size = Vector2(0, 78)
-		btn.add_theme_font_size_override("font_size", 22)
-		btn.add_theme_color_override("font_color",         Color(1.00, 1.00, 1.00, 1.0))
-		btn.add_theme_color_override("font_hover_color",   Color(1.00, 0.95, 0.65, 1.0))
-		btn.add_theme_color_override("font_pressed_color", Color(0.75, 0.75, 0.75, 1.0))
-		var style := StyleBoxTexture.new()
-		style.texture = btn_tex
-		btn.add_theme_stylebox_override("normal",  style)
-		btn.add_theme_stylebox_override("hover",   style)
-		btn.add_theme_stylebox_override("pressed", style)
-		btn.add_theme_stylebox_override("focus",   StyleBoxEmpty.new())
-		btn.pressed.connect(Callable(self, bdef[1]))
-		vbox.add_child(btn)
-
-
-func _on_pause_continue() -> void:
-	_pause_overlay.hide()
-
-var _settings_panel = null
-var _settings_scene = preload("res://SettingsPanel.tscn")
-func _on_pause_settings() -> void:
-	_pause_overlay.hide()
-	if _settings_panel == null:
-		_settings_panel = _settings_scene.instantiate()
-		$CanvasLayer.add_child(_settings_panel)
-	_settings_panel.visible = true
-
-var _pres_lib_scene = preload("res://PresidentialLibraryPanel.tscn")
-func _on_pause_preslib() -> void:
-	_pause_overlay.hide()
-	if _pres_lib_panel == null:
-		_pres_lib_panel = _pres_lib_scene.instantiate()
-		$CanvasLayer.add_child(_pres_lib_panel)
-	_pres_lib_panel.open_library("RECORDS")
-
-func _on_pause_aftercare() -> void:
-	_pause_overlay.hide()
-	_show_aftercare()
-
-
-func _show_aftercare() -> void:
-	var card: Dictionary = AFTERCARE_CARDS[randi() % AFTERCARE_CARDS.size()]
-	var vp_size: Vector2 = get_viewport().get_visible_rect().size
-
-	# ── full-screen layer above all UI ────────────────────────
-	var layer := CanvasLayer.new()
-	layer.layer = 102
-	add_child(layer)
-
-	# ── black background ──────────────────────────────────────
-	var bg := ColorRect.new()
-	bg.color = Color(0.0, 0.0, 0.0, 0.0)
-	bg.set_anchors_preset(Control.PRESET_FULL_RECT)
-	layer.add_child(bg)
-
-	# ── portrait ──────────────────────────────────────────────
-	var portrait_size: float = min(vp_size.x * 0.55, vp_size.y * 0.60)
-	var portrait := TextureRect.new()
-	portrait.texture = load(card["portrait"])
-	portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	portrait.custom_minimum_size = Vector2(portrait_size, portrait_size)
-	portrait.size = Vector2(portrait_size, portrait_size)
-	portrait.position = Vector2(
-		(vp_size.x - portrait_size) * 0.5,
-		vp_size.y * 0.08
-	)
-	portrait.modulate = Color(1.0, 1.0, 1.0, 0.0)
-	layer.add_child(portrait)
-
-	# ── quote ─────────────────────────────────────────────────
-	var quote_width: float = min(vp_size.x * 0.65, 700.0)
-	var quote := Label.new()
-	quote.text = card["quote"]
-	quote.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	quote.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	quote.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	quote.custom_minimum_size = Vector2(quote_width, 0)
-	quote.size = Vector2(quote_width, 120)
-	quote.position = Vector2(
-		(vp_size.x - quote_width) * 0.5,
-		vp_size.y * 0.08 + portrait_size + 24.0
-	)
-	quote.add_theme_font_size_override("font_size", 22)
-	quote.add_theme_color_override("font_color", Color(0.95, 0.90, 0.80, 1.0))
-	quote.modulate = Color(1.0, 1.0, 1.0, 0.0)
-	layer.add_child(quote)
-
-	# ── tween: fade-in → hold → fade-out → free ───────────────
-	var hold_time: float = randf_range(4.0, 6.0)
-	var tw := create_tween()
-	tw.tween_property(bg,      "color:a",    0.85, 1.0)
-	tw.parallel().tween_property(portrait, "modulate:a", 1.0,  1.0)
-	tw.parallel().tween_property(quote,    "modulate:a", 1.0,  1.0)
-	tw.tween_interval(hold_time)
-	tw.tween_property(bg,      "color:a",    0.0,  1.5)
-	tw.parallel().tween_property(portrait, "modulate:a", 0.0,  1.5)
-	tw.parallel().tween_property(quote,    "modulate:a", 0.0,  1.5)
-	tw.tween_callback(func(): layer.queue_free())
-
-func _on_pause_save_return() -> void:
-	get_tree().change_scene_to_file("res://Menu Scenes and Scripts/main_menu.tscn")
-
-func _on_pause_save_quit() -> void:
-	get_tree().quit()
-
-
 func _process(delta: float) -> void:
 	if worldCreation == true:
 		$CanvasLayer/LoadingSprite.rotation += 1
 		return
-	if not is_instance_valid(playerCountryNode):
+	if playerCountryNode == null:
+		print(playerCountryNode, "playercountryNode")
 		return
+	else:
+		print(playerCountryNode, "playercountryNode", "chill")
 	$"CanvasLayer/Resource Bar (TOP)/container/FoodLabel/Label".text = str(playerCountryNode.TotalFood)
 	$"CanvasLayer/Resource Bar (TOP)/container/GoldLabel/Label".text = str(playerCountryNode.TotalDollars)
 	$"CanvasLayer/Resource Bar (TOP)/container/WoodLabel/Label".text = str(playerCountryNode.TotalWood)
@@ -355,80 +186,14 @@ func _process(delta: float) -> void:
 	else:
 		$CanvasLayer/NextTurnControl/PickTech.visible = false
 		$CanvasLayer/NextTurnControl/NextTurn.visible = true
+	pass
 
 func updateMap():
 	$TileController.updateTiles(mapMode, displayCorruption, playerCountryNode)
+	pass
 
 
 var currentWorldTurn: int = 0
-var playerSpyWins: int = 0
-var _pause_overlay: ColorRect = null
-var _pres_lib_panel = null
-var _belief_purchased_this_turn: bool = false
-var _armies_shown_this_cycle: Dictionary = {}
-
-const AFTERCARE_CARDS: Array = [
-	{
-		"portrait": "res://art assets/finishedAssets/religiousIcons/harriet_tubman.png",
-		"quote": "You have carried much. It is allowed to set it down for a moment."
-	},
-	{
-		"portrait": "res://art assets/finishedAssets/religiousIcons/abraham_lincoln.png",
-		"quote": "Give yourself the same grace you offer others. You are doing enough."
-	},
-	{
-		"portrait": "res://art assets/finishedAssets/religiousIcons/frederick_douglass.png",
-		"quote": "You are not where you started. That distance is yours. Feel it."
-	},
-	{
-		"portrait": "res://art assets/finishedAssets/religiousIcons/eleanor_roosevelt.png",
-		"quote": "You gain strength every time you look honestly at what you have been through. You are gaining it now."
-	},
-	{
-		"portrait": "res://art assets/finishedAssets/religiousIcons/sojourner_truth.png",
-		"quote": "Truth is powerful and it will prevail. You are part of that. Rest."
-	},
-	{
-		"portrait": "res://art assets/finishedAssets/religiousIcons/martin_luther_king.png",
-		"quote": "You do not need to see the whole staircase. Take a breath. The next step is enough."
-	},
-	{
-		"portrait": "res://art assets/finishedAssets/religiousIcons/malcolm_x.png",
-		"quote": "The future belongs to those who prepare for it. Preparing includes taking care of yourself."
-	},
-	{
-		"portrait": "res://art assets/finishedAssets/religiousIcons/george_washington.png",
-		"quote": "The work endures. The cause does not require your exhaustion."
-	},
-	{
-		"portrait": "res://art assets/finishedAssets/religiousIcons/benjamin_franklin.png",
-		"quote": "An hour of rest is worth more to tomorrow than a second hour of effort tonight."
-	},
-	{
-		"portrait": "res://art assets/finishedAssets/religiousIcons/mark_twain.png",
-		"quote": "Kindness is the language the heart always understands. Start with your own."
-	},
-	{
-		"portrait": "res://art assets/finishedAssets/religiousIcons/mary_edwards_walker.png",
-		"quote": "You are more than what this moment asks of you."
-	},
-	{
-		"portrait": "res://art assets/finishedAssets/religiousIcons/agnes_macphail.png",
-		"quote": "Do not apologize for the space you take up or the time you need."
-	},
-	{
-		"portrait": "res://art assets/finishedAssets/religiousIcons/laura_secord.png",
-		"quote": "The distance feels long from inside it. From the other side, it becomes the beginning of the story."
-	},
-	{
-		"portrait": "res://art assets/finishedAssets/religiousIcons/louis_hippolyte_lafontaine.png",
-		"quote": "What you have built today is real. It will still be there tomorrow."
-	},
-	{
-		"portrait": "res://art assets/finishedAssets/religiousIcons/john_brown.png",
-		"quote": "The ones who change things keep going. Keeping going includes rest."
-	},
-]
 
 signal calculateSeason
 func newGameBuild(CID, gameLang, isCoop: bool = false):
@@ -476,10 +241,10 @@ func newGameBuild(CID, gameLang, isCoop: bool = false):
 	for Tile in $TileController.get_children():
 		Tile.discoverTile()
 	#$TileController.discoverTiles(playerCountryNode)
-	mapMode = "Polis"
-	displayCorruption = true
 	worldCreation = false
 	$RightClickDetector.visible = true
+	mapMode = "Polis"
+	displayCorruption = true
 	$CanvasLayer/LoadingProgressBar.value = 100
 	$CanvasLayer/LoadingBackground.visible = false
 	$CanvasLayer/LoadingSprite.visible = false
@@ -499,7 +264,6 @@ func newGameBuild(CID, gameLang, isCoop: bool = false):
 	$CanvasLayer/WarRoomPanel.setupAllProtectors($TileController.get_children(), coop_country_id)
 	_assign_vice_president()
 	_build_turn_order()
-	_activate_player(playerCountry)
 	evaluateDateEvents()
 	_seed_opening_journal_entry()
 
@@ -1184,9 +948,11 @@ func generateBarracksCommanders() -> void:
 				tile.tileGovernor       = jessica
 				tile.filledGovernorSlot = true
 				jessica.hired           = true
+				print("[Commanders] PM Commanda stationed in Ottawa (tile 201).")
 				break
-		if not jessica.hired:
-	pass
+		#if not jessica.hired:
+=======
+#		if not jessica.hired:
 		# Marc Penoit in Quebec City (tile 123) as Deputy Governor
 		var penoit: governor = governor.new()
 		penoit.buildSelf("Marc Penoit", 2)
@@ -1197,9 +963,11 @@ func generateBarracksCommanders() -> void:
 					tile.tileGovernor       = penoit
 					tile.filledGovernorSlot = true
 					penoit.hired            = true
+					print("[Commanders] Deputy Penoit stationed in Quebec City (tile 123).")
 					break
-		if not penoit.hired:
-	pass
+		#if not penoit.hired:
+=======
+#		if not penoit.hired:
 	else:
 		# Ualani Carlisle in Washington DC (tile 188)
 		var carlisle: governor = governor.new()
@@ -1210,9 +978,11 @@ func generateBarracksCommanders() -> void:
 				tile.tileGovernor       = carlisle
 				tile.filledGovernorSlot = true
 				carlisle.hired          = true
+				print("[Commanders] President Carlisle stationed in Washington DC (tile 188).")
 				break
-		if not carlisle.hired:
-	pass
+		#if not carlisle.hired:
+=======
+	#	if not carlisle.hired:
 		# Secret Service Detail unlocks alongside Carlisle
 		var detail: governor = governor.new()
 		detail.buildSelf("Secret Service Detail", 1)
@@ -1311,8 +1081,10 @@ func generateBarracksCommanders() -> void:
 		$CanvasLayer/WarRoomPanel.registerCommanderArc(new_gov, tile)
 
 		generated += 1
+		#print("[Commanders] Generated: ", full_name, " — ", chosen["name"],
 			#  " (", chosen["id"], ") at ", tile.tileName, " [", tile.terrain, "]")
 
+	print("[Commanders] Barracks scan complete. ", generated, " commanders generated.")
 
 	# ── Auto-assign tile governors to stationed armies ────────────────────────
 	# Every barracks tile that received a governor above also has an army
@@ -1323,8 +1095,10 @@ func generateBarracksCommanders() -> void:
 		if army.inTile != null and army.inTile.tileGovernor != null:
 			army.addUnitCommander(army.inTile.tileGovernor)
 			army.updateArmyUI()
-			assigned += 1
-				  # " as commander of ", army.ArmyName)
+			#assigned += 1
+				 # " as commander of ", army.ArmyName)
+=======
+				#  " as commander of ", army.ArmyName)
 
 
 # ── STARTING ARMY SPAWNER ─────────────────────────────────────────────────────
@@ -1332,105 +1106,71 @@ func generateBarracksCommanders() -> void:
 # at level 2-4 with no army yet, then spawns a uniquely-named army drawn from
 # the tile name and the governor's archetype.  Must run after
 # generateBarracksCommanders() so every tile's tileGovernor is already set.
-# Spawns one army per USA-owned tile that has both a Barracks (any level) and
-# a governor.  No random culling — every qualifying tile gets a force.
-# Units use only the three starting weapon types: Cutlass / Smoothbore / Cannon.
-# Armies are created but NOT yet raised; they march out when war is declared.
 func spawnStartingArmies() -> void:
-	# Governor-archetype → army name suffix (courthouse overrides to "National Guard")
 	var ARMY_SUFFIX := {
-		"ARC_01": "Outdoorsmen Militia",     "ARC_02": "Iron Mountain Militia",
-		"ARC_03": "Scholar's Company",       "ARC_04": "Forest Warrior Company",
-		"ARC_05": "Farmer's Rifle Brigade",  "ARC_06": "Harbor Defense Corps",
-		"ARC_07": "Defectors' Regiment",     "ARC_08": "Plainsman's Militia",
-		"ARC_09": "Home Defense Brigade",
-		"ARC_NA_01": "Native Alliance Company",  "ARC_NA_02": "Scout Ranger Company",
-		"ARC_NA_03": "Coastal Ranger Corps",     "ARC_NA_04": "Woodlands Guide Company",
-		"ARC_NA_05": "Tracker Ranger Corps",     "ARC_NA_06": "Mountain Riflemen",
-		"ARC_NA_07": "Creek Warrior Company",    "ARC_NA_08": "Runner Militia",
-		"ARC_NA_09": "War Chief's Company",      "ARC_NA_10": "Piedmont Riflemen",
-		"ARC_11": "Liberty Boys",            "ARC_12": "Field Medical Corps",
-		"ARC_13": "Sea Ranger Company",      "ARC_14": "Righteous Rifles",
-		"ARC_15": "Federal Defense Corps",   "ARC_16": "Industrial Guard",
-		"ARC_17": "Free Company",            "ARC_18": "Bayou Rangers",
-		"ARC_19": "Privateer Corps",         "ARC_20": "Pacific Rifles",
-		"ARC_21": "Border Guard",            "ARC_22": "Forest Ranger Corps",
-		"ARC_23": "Heritage Guard",          "ARC_24": "Liberty Volunteer Corps",
+		"ARC_01": "Wetlands Rangers",    "ARC_02": "Mountain Militia",
+		"ARC_03": "Volunteer Regiment",  "ARC_04": "Forest Skirmishers",
+		"ARC_05": "Green Mountain Boys", "ARC_06": "Harbor Guard",
+		"ARC_07": "Irregular Rifles",    "ARC_08": "Frontier Militia",
+		"ARC_09": "Liberty Brigade",     "ARC_10": "Ranger Company",
+		"ARC_11": "Sons of Liberty",     "ARC_12": "Continental Corps",
+		"ARC_13": "Naval Infantry",      "ARC_14": "Righteous Rifles",
+		"ARC_15": "Federal Guard",       "ARC_16": "Iron Brigade",
+		"ARC_17": "Freedom Rifles",      "ARC_18": "Bayou Raiders",
+		"ARC_19": "Privateer Corps",     "ARC_20": "Pacific Guard",
+		"ARC_21": "Border Company",      "ARC_22": "Forest Rangers",
+		"ARC_23": "Heritage Guard",      "ARC_24": "Solidarity Regiment",
 		"ARC_25": "Showmen's Rifles",
-		"ARC_26": "Dockworker's Rifles",     "ARC_27": "Coastal Outdoorsmen",
-		"ARC_28": "Inventors' Company",      "ARC_29": "Ward Rifles",
-		"ARC_30": "Hollow Company",          "ARC_31": "River Gentry",
-		"ARC_32": "Highland Rifles",         "ARC_33": "Ridge Runners",
-		"ARC_34": "Hollow Wardens",          "ARC_35": "Watermen's Brigade",
-		"ARC_36": "Tidewater Rifles",        "ARC_37": "Sea Island Company",
-		"ARC_38": "North Star Company",      "ARC_39": "Cathedral Regiment",
-		"ARC_40": "Red Clay Militia",        "ARC_41": "Root Brigade",
-		"ARC_42": "Scrub Riders",            "ARC_43": "Iron Hall Brigade",
-		"ARC_44": "Neighborhood Guard",      "ARC_45": "Street Company",
-		"ARC_46": "Blue Water Raiders",      "ARC_47": "Capital Shadows",
+		"ARC_26": "Harbor Wolves",       "ARC_27": "Gloucester Guard",
+		"ARC_28": "Clockwork Company",   "ARC_29": "Ward Rifles",
+		"ARC_30": "Hex Company",         "ARC_31": "River Gentry",
+		"ARC_32": "Long Rifle Company",  "ARC_33": "Hollow Runners",
+		"ARC_34": "Ridge Wardens",       "ARC_35": "Bay Freedmen",
+		"ARC_36": "Parlor Guard",        "ARC_37": "Sea Island Rangers",
+		"ARC_38": "North Star Company",  "ARC_39": "Cathedral Regiment",
+		"ARC_40": "Red Clay Rifles",     "ARC_41": "Root Brigade",
+		"ARC_42": "Scrub Riders",        "ARC_43": "Iron Hall Brigade",
+		"ARC_44": "Mulberry Street Guard","ARC_45": "Tenement Rifles",
+		"ARC_46": "Blue Water Raiders",  "ARC_47": "Capital Shadows",
 	}
 
+	var candidates: Array = []
 	for tile in $TileController.get_children():
 		if tile.tileOwner != playerCountry:
+			continue
+		if tile.tileNumber == 188:            # Washington DC — Ualani's territory
 			continue
 		if not tile.filledGovernorSlot or tile.tileGovernor == null:
 			continue
 		var blvl: int = int(tile.buildings.get("barracks", 0))
-		if blvl < 1:
+		if blvl < 2 or blvl > 4:
 			continue
 		if tile.stationedArmy != null:
 			continue
+		candidates.append(tile)
 
+	candidates.shuffle()
+	var chosen: Array = candidates.slice(0, min(3, candidates.size()))
+
+	for tile in chosen:
 		var gov: governor = tile.tileGovernor
-		var is_executive: bool = (tile.tileNumber == 188)
-		var army_name: String
-
-		if is_executive:
-			army_name = "Executive Guard"
-		elif int(tile.buildings.get("courthouse", 0)) >= 1:
-			army_name = tile.tileName + " National Guard"
-		else:
-			var arc_id: String = gov.governorArchetypeId \
-				if gov.governorArchetypeId != "" else "ARC_01"
-			army_name = tile.tileName + " " + ARMY_SUFFIX.get(arc_id, "Militia")
+		var arc_id: String = gov.governorArchetypeId \
+			if gov.governorArchetypeId != "" else "ARC_01"
+		var army_name: String = tile.tileName + " " + ARMY_SUFFIX.get(arc_id, "Militia")
 
 		playerCountryNode.addArmy(army_name, tile.tileNumber)
+
+		# addArmy() always appends — grab the army we just added and assign its commander
 		var new_army = playerCountryNode.countryArmyList.back()
-		if new_army == null:
-			continue
-		new_army.addUnitCommander(gov)
-		_spawn_starting_units(new_army, is_executive, blvl)
-		new_army.updateArmyUI()
+		if new_army != null:
+			new_army.addUnitCommander(gov)
+			new_army.updateArmyUI()
 
+		print("[StartingArmies] '", army_name, "' at ", tile.tileName,
+			  " (barracks lvl ", int(tile.buildings.get("barracks", 0)),
+			  ", ", arc_id, ")")
 
-# Populate a newly created starting army with 1–3 units using only the three
-# launch-day weapons: Cutlass (Cavalry), Smoothbore (Infantry), Cannon (Artillery).
-# Unit size is 100 (size 1) or 200 (size 2) soldiers, level 1 throughout.
-# Executive Guard (Ualani / tile 188) always gets one of each weapon type.
-func _spawn_starting_units(army, is_executive: bool, barracks_level: int) -> void:
-	const WEAPONS    := ["Cutlass", "Smoothbore", "Cannon"]
-	const UNIT_TYPES := {"Cutlass": "Cavalry", "Smoothbore": "Infantry", "Cannon": "Artillery"}
-	const SIZES      := [100, 200]
-
-	if is_executive:
-		for weapon in ["Cannon", "Smoothbore", "Cutlass"]:
-			playerCountryNode.addNewUnit(army, UNIT_TYPES[weapon], 1, weapon, "Iron", "Cloth", 100, 100)
-		return
-
-	var unit_count: int = randi_range(1, mini(barracks_level, 3))
-	for i in range(unit_count):
-		var weapon: String = WEAPONS[randi() % WEAPONS.size()]
-		var size: int      = SIZES[randi() % SIZES.size()]
-		playerCountryNode.addNewUnit(army, UNIT_TYPES[weapon], 1, weapon, "Iron", "Cloth", size, size)
-
-
-# Called when uk_declared_war flag is set.
-# Raises every undeployed player army onto the map simultaneously.
-func _raise_all_player_armies() -> void:
-	for army in playerCountryNode.countryArmyList:
-		if not army.raised and army.inTile != null:
-			raiseArmyFromWorld(army, playerCountryNode, army.inTile)
-
+	print("[StartingArmies] ", chosen.size(), " starting armies placed.")
 
 
 # ── CANADIAN AI BARRACKS COMMANDERS ─────────────────────────────────────────
@@ -1520,9 +1260,11 @@ func _generate_ai_barracks_commanders(country_node: country) -> void:
 			tile.tileGovernor       = jessica
 			tile.filledGovernorSlot = true
 			jessica.hired           = true
+			print("[CA Leaders] Jessica Commanda Odjick stationed at Ottawa (tile 201).")
 			break
-	if not jessica.hired:
-	pass
+	#if not jessica.hired:
+=======
+#	if not jessica.hired:
 
 	# ── Spawn Marc Penoit (deputy/VP) at Saint-Georges, tile 99 ─────────────────
 	# Montreal (tile 94) is UK-occupied at game start; Saint-Georges is the nearest
@@ -1535,9 +1277,11 @@ func _generate_ai_barracks_commanders(country_node: country) -> void:
 			tile.tileGovernor       = mark
 			tile.filledGovernorSlot = true
 			mark.hired              = true
+			print("[CA Leaders] Marc Penoit stationed at Saint-Georges (tile 99).")
 			break
-	if not mark.hired:
-	pass
+	#if not mark.hired:
+=======
+#	if not mark.hired:
 
 	var used_names: Dictionary = {}
 	var generated: int = 0
@@ -1608,8 +1352,10 @@ func _generate_ai_barracks_commanders(country_node: country) -> void:
 		tile.filledGovernorSlot = true
 		new_gov.hired           = true
 
-		generated += 1
-			  # " at ", tile.tileName, " [", tile.terrain, "]")
+		#generated += 1
+			  #" at ", tile.tileName, " [", tile.terrain, "]")
+=======
+			  #" at ", tile.tileName, " [", tile.terrain, "]")
 
 	# Assign tile governors to stationed armies
 	var assigned: int = 0
@@ -1618,7 +1364,9 @@ func _generate_ai_barracks_commanders(country_node: country) -> void:
 			army.addUnitCommander(army.inTile.tileGovernor)
 			army.updateArmyUI()
 			assigned += 1
-		  # assigned, " armies received a commander.")
+			#assigned, " armies received a commander.")
+=======
+		  #assigned, " armies received a commander.")
 
 
 # ── CANADIAN AI STARTING ARMIES ──────────────────────────────────────────────
@@ -1661,20 +1409,23 @@ func _spawn_ai_starting_armies(country_node: country) -> void:
 			new_army.addUnitCommander(gov)
 			new_army.updateArmyUI()
 
-			  # " (barracks lvl ", int(tile.buildings.get("barracks", 0)), ", ", arc_id, ")")
+			  #" (barracks lvl ", int(tile.buildings.get("barracks", 0)), ", ", arc_id, ")")
+=======
+			 # " (barracks lvl ", int(tile.buildings.get("barracks", 0)), ", ", arc_id, ")")
 
+	print("[CA Armies] ", chosen.size(), " starting armies placed for ", country_node.CID, ".")
 
 
 var countryNode = load("res://Game Scenes and Scripts/country.tscn")
 
 func spawnNewGameCountries(CID: String) -> void:
 	playerCountry = CID
-
+ 
 	# Spawn all countries defined in countries.csv
 	for countryCID in CountryDatabase.get_all_CIDs():
 		var newCountry = countryNode.instantiate()
 		newCountry.CID = countryCID
-
+ 
 		# Assign player flag
 		if countryCID == playerCountry:
 			newCountry.Player = true
@@ -1687,13 +1438,12 @@ func spawnNewGameCountries(CID: String) -> void:
 			newCountry.commanderFallen.connect(_on_commander_fallen)
 		else:
 			newCountry.Player = false
-			newCountry.countryArmyDestroyed.connect(_on_enemy_army_defeated)
-
+ 
 		# Assign tiles that belong to this country
 		for Tile in $TileController.get_children():
 			if Tile.tileOwner == countryCID:
 				newCountry.OwnedTileList.append(Tile)
-
+ 
 		# Build country from CSV data
 		newCountry.NewGameBuild()
 		aliveCountriesList.append(newCountry)
@@ -1702,7 +1452,7 @@ func spawnNewGameCountries(CID: String) -> void:
 	# Verify player country was found
 	if playerCountryNode == null:
 		push_error("spawnNewGameCountries: playerCountryNode is null! CID='%s' not in CountryDatabase." % playerCountry)
-	else:
+	#else:
 
 	# Set player capital camera position
 	if playerCountryNode != null:
@@ -1721,17 +1471,21 @@ var playerOutput: Dictionary = {}
 func calculatePlayerOutputs(caller):
 	playerOutput.clear()
 	playerCountryNode.outputCheck(caller)
+	pass
 
 func returnOutput(outputsDict, caller):
 	playerOutput = outputsDict
 	caller.returnedOutput(playerOutput)
+	pass
 
 func connectCountrySignals():
 	for country in aliveCountriesList:
 		country.raiseThisArmySignal.connect(raiseArmyFromWorld)
+	pass
 
 func updateBeliefControl():
 	$CanvasLayer/BeliefControl.updateSelf()
+	pass
 
 
 # ── TURN ORDER & PHASE SYSTEM ────────────────────────────────────────────────
@@ -1757,12 +1511,14 @@ func _activate_player(cid: String) -> void:
 			break
 	$CanvasLayer.assignPlayerNode(playerCountryNode)
 	$CanvasLayer/TechTree.buildSelf(playerCountryNode)
+	$CanvasLayer/BeliefControl.buildSelf(playerCountryNode)
 	$CanvasLayer/BuildingInfoPanel/buildingPanelPanel.player = playerCountryNode
 	$PathControl.connectPathPoints(playerCountryNode)
 	$CanvasLayer/WarRoomPanel.buildSelf(playerCountryNode)
 	var prot_filter: String = "COOP" if isCoopMode else playerCountry
 	$CanvasLayer/WarRoomPanel.setupAllProtectors($TileController.get_children(), prot_filter)
 	_update_turn_phase_ui()
+	print("[TurnOrder] Active player: ", playerCountry)
 
 
 func _update_turn_phase_ui() -> void:
@@ -1781,26 +1537,14 @@ func _update_turn_phase_ui() -> void:
 
 
 func _end_current_player_turn() -> void:
-	# Re-resolve playerCountryNode if it became stale (should not normally happen)
-	if not is_instance_valid(playerCountryNode):
-		push_warning("[EndTurn] playerCountryNode was invalid; re-resolving from aliveCountriesList")
-		for c in aliveCountriesList:
-			if c.CID == playerCountry:
-				playerCountryNode = c
-				$CanvasLayer.assignPlayerNode(playerCountryNode)
-				break
-	if not is_instance_valid(playerCountryNode):
-		push_error("[EndTurn] Cannot resolve playerCountryNode for CID: " + playerCountry + " — skipping turn end")
-		return
 	# Per-player end-of-turn processing for the currently active country
-	$PathControl.onTurnEnd()
-	playerCountryNode.activeCivilianCount = $PathControl.raisedPlayerCPFs.size()
 	playerCountryNode.surveyResources()
 	for pathPointButton in $PathControl/PathPointsControl.get_children():
 		if pathPointButton.get_children() != null:
 			for civilianPathFollow in pathPointButton.get_children():
 				if civilianPathFollow.is_class("Button") != true:
 					civilianPathFollow.emitTileChange()
+	$CanvasLayer/SpellSchoolsControl.updateMagicAmounts(playerCountryNode)
 	$CanvasLayer/TechTree.investInTech(playerCountryNode.SPM)
 
 
@@ -1829,7 +1573,6 @@ func _resolve_ai_and_advance_round() -> void:
 		evaluateDateEvents()
 	for tile in $TileController.get_children():
 		tile.tick_conquest_timer()
-	_uk_plant_spies()
 	$CanvasLayer/TurnLabel.text = _format_game_date()
 	_apply_ualani_aura()
 	_check_win_conditions()
@@ -1843,6 +1586,7 @@ func switchActivePlayer() -> void:
 	playerCountryNode = coopCountryNode
 	coopCountryNode   = temp
 	playerCountry     = playerCountryNode.CID
+	print("[Coop] Switched active player to: ", playerCountry)
 	updatePlayerUI()
 	$CanvasLayer/WarRoomPanel.buildSelf(playerCountryNode)
 	var coop_country_id: String = "COOP" if isCoopMode else playerCountry
@@ -1850,78 +1594,56 @@ func switchActivePlayer() -> void:
 
 func updatePlayerUI():
 	$CanvasLayer.assignPlayerNode(playerCountryNode)
-	if not $CanvasLayer/TileInfoPanel.selectThisTile.is_connected(assignSelectedTile):
-		$CanvasLayer/TileInfoPanel.selectThisTile.connect(assignSelectedTile)
-	if not $CanvasLayer/TileInfoPanel.governorButtonPressed.is_connected(openGovernorsPanel):
-		$CanvasLayer/TileInfoPanel.governorButtonPressed.connect(openGovernorsPanel)
-	if not $CanvasLayer/TileInfoPanel.confirmThisGovernor.is_connected(assignGovernor):
-		$CanvasLayer/TileInfoPanel.confirmThisGovernor.connect(assignGovernor)
+	$CanvasLayer/TileInfoPanel.selectThisTile.connect(assignSelectedTile)
+	$CanvasLayer/TileInfoPanel.governorButtonPressed.connect(openGovernorsPanel)
+	$CanvasLayer/TileInfoPanel.confirmThisGovernor.connect(assignGovernor)
 	$CanvasLayer/TechTree.buildSelf(playerCountryNode)
-	if not $CanvasLayer/TechTree.addTechToPlayer.is_connected(newPlayerTech):
-		$CanvasLayer/TechTree.addTechToPlayer.connect(newPlayerTech)
+	$CanvasLayer/TechTree.addTechToPlayer.connect(newPlayerTech)
 	$CanvasLayer/BeliefControl.buildSelf(playerCountryNode)
 	$CanvasLayer/BuildingInfoPanel/buildingPanelPanel.player = playerCountryNode
-	if not $PathControl.movement_blocked.is_connected(_on_path_control_movement_blocked):
-		$PathControl.movement_blocked.connect(_on_path_control_movement_blocked)
-	if not $PathControl.activateArmyControlMode.is_connected(activateArmyControl):
-		$PathControl.activateArmyControlMode.connect(activateArmyControl)
+	$PathControl.activateArmyControlMode.connect(activateArmyControl)
 	$PathControl.connectPathPoints(playerCountryNode)
-	if not $PathControl.updateArmy.is_connected(updateArmyFunc):
-		$PathControl.updateArmy.connect(updateArmyFunc)
-	if not $PathControl.updatePathPoints.is_connected(updatePathPointsFunc):
-		$PathControl.updatePathPoints.connect(updatePathPointsFunc)
-	if not $PathControl.updateCivilian.is_connected(updateCivFunc):
-		$PathControl.updateCivilian.connect(updateCivFunc)
-	if not $PathControl.tileDevelopment.is_connected(newTileDevelopment):
-		$PathControl.tileDevelopment.connect(newTileDevelopment)
-	if not $PathControl.meleeButtonPressed.is_connected(meleePressed):
-		$PathControl.meleeButtonPressed.connect(meleePressed)
-	if not $PathControl.rangedButtonPressed.is_connected(rangedPressed):
-		$PathControl.rangedButtonPressed.connect(rangedPressed)
-	if not $PathControl.spyWinRecorded.is_connected(_on_spy_win_recorded):
-		$PathControl.spyWinRecorded.connect(_on_spy_win_recorded)
+	$PathControl.updateArmy.connect(updateArmyFunc)
+	$PathControl.updatePathPoints.connect(updatePathPointsFunc)
+	$PathControl.updateCivilian.connect(updateCivFunc)
+	$PathControl.tileDevelopment.connect(newTileDevelopment)
+	$PathControl.meleeButtonPressed.connect(meleePressed)
+	$PathControl.rangedButtonPressed.connect(rangedPressed)
 	$CanvasLayer/CivilianControl.loadCivilians(playerCountryNode, playerCountryNode.OwnedTileList)
-	if not $CanvasLayer/CivilianControl.raiseThisUnit.is_connected(raiseCivilianUnit):
-		$CanvasLayer/CivilianControl.raiseThisUnit.connect(raiseCivilianUnit)
+	$CanvasLayer/CivilianControl.raiseThisUnit.connect(raiseCivilianUnit)
 	$CanvasLayer/MilitaryPanelControl.buildSelf(playerCountryNode)
-	if not $CanvasLayer/MilitaryPanelControl.newArmySignal.is_connected(buildNewPlayerArmy):
-		$CanvasLayer/MilitaryPanelControl.newArmySignal.connect(buildNewPlayerArmy)
-	if not playerCountryNode.displayCommander.is_connected(UICommander):
-		playerCountryNode.displayCommander.connect(UICommander)
-	if not playerCountryNode.checkingOutput.is_connected(returnOutput):
-		playerCountryNode.checkingOutput.connect(returnOutput)
+	$CanvasLayer/MilitaryPanelControl.newArmySignal.connect(buildNewPlayerArmy)
+	playerCountryNode.displayCommander.connect(UICommander)
+	playerCountryNode.checkingOutput.connect(returnOutput)
 	$CanvasLayer/GovernmentControl.buildSelf(playerCountryNode)
-	if not $CanvasLayer/GovernmentControl.addToConstitution.is_connected(addLawToCountry):
-		$CanvasLayer/GovernmentControl.addToConstitution.connect(addLawToCountry)
-	if not $CanvasLayer/FactionControl.newRewardSend.is_connected(addNewRewards):
-		$CanvasLayer/FactionControl.newRewardSend.connect(addNewRewards)
+	$CanvasLayer/GovernmentControl.addToConstitution.connect(addLawToCountry)
+	$CanvasLayer/FactionControl.newRewardSend.connect(addNewRewards)
 	for faction in playerCountryNode.countryFactionList:
 			$CanvasLayer/FactionControl.addFaction(
 				faction.factionName,
 				faction.factionLoyalty,
 				faction.factionLeader
 			)
-	$CanvasLayer/SpellSchoolsControl.visible = false
-	if not $CanvasLayer/Spellbook.spellToUse.is_connected(activateSpellMapMode):
-		$CanvasLayer/Spellbook.spellToUse.connect(activateSpellMapMode)
-	if not $TileController.spellAssignedToTile.is_connected(spellPurchased):
-		$TileController.spellAssignedToTile.connect(spellPurchased)
+	$CanvasLayer/SpellSchoolsControl.connectSchools()
+	$CanvasLayer/SpellSchoolsControl.lvlUpSpell.connect(newSpellEvent)
+	#$CanvasLayer/SpellSchoolsControl.askForInfo.connect(giveSpellInfo)
+	$CanvasLayer/Spellbook.spellToUse.connect(activateSpellMapMode)
+	$TileController.spellAssignedToTile.connect(spellPurchased)
 	#$TileController.colonizeTile.connect(updateCountryTiles)
-	if not $TileController.newTileOwner.is_connected(tileSiegeWon):
-		$TileController.newTileOwner.connect(tileSiegeWon)
+	$TileController.newTileOwner.connect(tileSiegeWon)
 	$PathControl.call_deferred("showPathPoints", playerCapitalPathButton)
 	$CanvasLayer/BuildingInfoPanel.buildSelf(playerCountryNode)
-	if not $CanvasLayer/BuildingInfoPanel.newBuildingInTile.is_connected(addNewBuildingToTile):
-		$CanvasLayer/BuildingInfoPanel.newBuildingInTile.connect(addNewBuildingToTile)
-	if not $CanvasLayer/TileInfoPanel.retrieveTileOutputs.is_connected(retrieveOutputs):
-		$CanvasLayer/TileInfoPanel.retrieveTileOutputs.connect(retrieveOutputs)
+	$CanvasLayer/BuildingInfoPanel.newBuildingInTile.connect(addNewBuildingToTile)
+	$CanvasLayer/TileInfoPanel.retrieveTileOutputs.connect(retrieveOutputs)
 	#$PathControl.makeAllContainersPassable()
+	#print("ALL I NEED")
 	# War Room panel wiring
 	$CanvasLayer/WarRoomPanel.buildSelf(playerCountryNode)
 	if not $CanvasLayer/WarRoomPanel.requestEventFire.is_connected(_on_arc_event_requested):
 		$CanvasLayer/WarRoomPanel.requestEventFire.connect(_on_arc_event_requested)
 	if not $CanvasLayer/WarRoomPanel.protectorSummoned.is_connected(_on_protector_summoned):
 		$CanvasLayer/WarRoomPanel.protectorSummoned.connect(_on_protector_summoned)
+	pass
 
 var thisTileNumber: int
 var selectedTile: Tile
@@ -1929,8 +1651,10 @@ var selectedTile: Tile
 
 func manaUpdate(type, amount, dictionary):
 	$CanvasLayer/TileInfoPanel.buildTileOutput(type, amount, dictionary)
+	pass
 
 func tileClicked(tile):
+	#print("Tile", tile.tileNumber, "Clicked")
 	selectedTile = tile
 	#$CanvasLayer/TileInfoPanel.thisTile = tile
 	
@@ -1945,109 +1669,123 @@ func tileClicked(tile):
 	#if $CanvasLayer/BuildingInfoPanel.visible == false:
 		#$CanvasLayer/BuildingInfoPanel.visible = true
 	$CanvasLayer/BuildingInfoPanel.displayBuildingInfo(tile)
+	pass
 
 func retrieveOutputs():
 	selectedTile.censusTile(playerCountryNode)
+	pass
 
 func matchCountryBuildings():
-	if playerCountryNode == null:
-		push_error("matchCountryBuildings: playerCountryNode is null, skipping")
-		return
-	for Tile in $TileController.get_children():
-		if Tile.tileOwner == playerCountry:
-			for building in Tile.tileBuildingsList:
-				playerCountryNode.connectBuilding(building)
-
-func _enter_hover_map_mode(mode: String) -> void:
-	_hover_prev_map_mode = mapMode
-	mapMode = mode
-	$TileController.updateTiles(mapMode, displayCorruption, playerCountryNode)
-
-func _exit_hover_map_mode() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
-	mapMode = _hover_prev_map_mode
-	$TileController.updateTiles(mapMode, displayCorruption, playerCountryNode)
-
-func _show_resource_panel(x_pos: int, resource_index: int) -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = x_pos
-	$CanvasLayer/ResourceInfoControl.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, resource_index)
+	for country in aliveCountriesList:
+		for Tile in $TileController.get_children():
+			if Tile.tileOwner == playerCountry:
+				for building in Tile.tileBuildingsList:
+					playerCountryNode.connectBuilding(building)
+					#building.towerBuilding.connect(signalTowerInTile)
+	pass
 
 func _on_food_area_2d_mouse_entered():
-	_show_resource_panel(360, 1)
-	_enter_hover_map_mode("MapFood")
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 360
+	$CanvasLayer/ResourceInfoControl.visible = true
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 1)
 func _on_food_area_2d_mouse_exited() -> void:
-	_exit_hover_map_mode()
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
 func _on_wood_area_2d_mouse_entered() -> void:
-	_show_resource_panel(480, 2)
-	_enter_hover_map_mode("MapWood")
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 480
+	$CanvasLayer/ResourceInfoControl.visible = true
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 2)
 func _on_wood_area_2d_mouse_exited() -> void:
-	_exit_hover_map_mode()
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
 func _on_metal_area_2d_mouse_entered() -> void:
-	_show_resource_panel(600, 3)
-	_enter_hover_map_mode("MapMetal")
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 600
+	$CanvasLayer/ResourceInfoControl.visible = true
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 3)
 func _on_metal_area_2d_mouse_exited() -> void:
-	_exit_hover_map_mode()
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
 func _on_gold_area_2d_mouse_entered() -> void:
-	_show_resource_panel(240, 0)
-	_enter_hover_map_mode("MapDollars")
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 240
+	$CanvasLayer/ResourceInfoControl.visible = true
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 0)
 func _on_gold_area_2d_mouse_exited() -> void:
-	_exit_hover_map_mode()
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
 func _on_weapons_area_mouse_entered() -> void:
-	_show_resource_panel(720, 4)
-	_enter_hover_map_mode("MapWeapons")
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 720
+	$CanvasLayer/ResourceInfoControl.visible = true
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 4)
 func _on_weapons_area_mouse_exited() -> void:
-	_exit_hover_map_mode()
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
 func _on_science_area_mouse_entered() -> void:
-	_show_resource_panel(1000, 5)
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 1000
+	$CanvasLayer/ResourceInfoControl.visible = true
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 5)
 func _on_science_area_mouse_exited() -> void:
 	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
 func _on_faith_control_mouse_entered() -> void:
-	_show_resource_panel(1000, 6)
-	_enter_hover_map_mode("MapFaith")
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 1000
+	$CanvasLayer/ResourceInfoControl.visible = true
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 6)
 func _on_faith_control_mouse_exited() -> void:
-	_exit_hover_map_mode()
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
 func _on_magic_area_mouse_entered() -> void:
-	_show_resource_panel(1000, 7)
-	_enter_hover_map_mode("MapMagic")
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 1000
+	$CanvasLayer/ResourceInfoControl.visible = true
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 7)
 func _on_magic_area_mouse_exited() -> void:
-	_exit_hover_map_mode()
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
 func _on_culture_area_mouse_entered() -> void:
-	_show_resource_panel(1000, 8)
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 1000
+	$CanvasLayer/ResourceInfoControl.visible = true
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 8)
+	pass # Replace with function body.
 func _on_culture_area_mouse_exited() -> void:
 	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
+	pass # Replace with function body.
 func _on_mandate_area_mouse_entered() -> void:
-	_show_resource_panel(1440, 9)
-	_enter_hover_map_mode("MapMandate")
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 1440
+	$CanvasLayer/ResourceInfoControl.visible = true
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 9)
+	pass # Replace with function body.
 func _on_mandate_area_mouse_exited() -> void:
-	_exit_hover_map_mode()
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
+	pass # Replace with function body.
 func _on_harmony_area_mouse_entered() -> void:
-	_show_resource_panel(1440, 10)
-	_enter_hover_map_mode("MapHappiness")
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 1440
+	$CanvasLayer/ResourceInfoControl.visible = true
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 10)
+	pass # Replace with function body.
 func _on_harmony_area_mouse_exited() -> void:
-	_exit_hover_map_mode()
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
+	pass # Replace with function body.
 func _on_influence_area_mouse_entered() -> void:
-	_show_resource_panel(1440, 11)
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 1440
+	$CanvasLayer/ResourceInfoControl.visible = true
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 11)
+	pass # Replace with function body.
 func _on_influence_area_mouse_exited() -> void:
 	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
+	pass # Replace with function body.
 func _on_manpower_area_mouse_entered() -> void:
-	_show_resource_panel(840, 12)
-	_enter_hover_map_mode("MapManpower")
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 840
+	$CanvasLayer/ResourceInfoControl.visible = true
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 12)
+	pass # Replace with function body.
+
 func _on_manpower_area_mouse_exited() -> void:
-	_exit_hover_map_mode()
-
-func set_map_mode_army() -> void:
-	mapMode = "MapArmy"
-	$TileController.updateTiles(mapMode, displayCorruption, playerCountryNode)
-
-func set_map_mode_governors() -> void:
-	mapMode = "MapGovernors"
-	$TileController.updateTiles(mapMode, displayCorruption, playerCountryNode)
-
-func set_map_mode_polis() -> void:
-	mapMode = "Polis"
-	$TileController.updateTiles(mapMode, displayCorruption, playerCountryNode)
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
+	pass # Replace with function body.
 
 #oldnext turn function
 func _on_test_resource_button_pressed() -> void:
@@ -2056,21 +1794,27 @@ func _on_test_resource_button_pressed() -> void:
 
 func newPlayerTech(techName) -> void:
 	playerCountryNode.addTechnologicalDiscovery(techName)
+	pass # Replace with function body.
 
 func _on_building_panel_panel_upgrade_building(thisBuilding) -> void:
+	print("thisBuilding", thisBuilding.buildingType, thisBuilding.buildingLevel)
 	for Tile in $TileController.get_children():
 		if Tile.tileNumber == thisBuilding.number:
+			print("tile", Tile.tileNumber)
 			for building in Tile.tileBuildingsList:
 				if building.buildingType == thisBuilding.buildingType:
 					building.upgradeBuilding()
+	pass # Replace with function body.
 
 
 func _on_building_panel_panel_downgrade_building(thisBuilding) -> void:
 	for Tile in $TileController.get_children():
 		if Tile.tileNumber == thisBuilding.number:
+			print("tile", Tile.tileNumber)
 			for building in Tile.tileBuildingsList:
 				if building.buildingType == thisBuilding.buildingType:
 					building.downgradeBuilding()
+	pass # Replace with function body.
 
 
 func assignSelectedTile(tileToSelect):
@@ -2079,6 +1823,7 @@ func assignSelectedTile(tileToSelect):
 
 func addNewRewards(rewardType):
 	playerCountryNode.createFactionReward(rewardType)
+	pass
 
 func assignGovernor(governorToAssign, tileToAssignTo):
 	tileToAssignTo.assignNewGovernor(governorToAssign)
@@ -2089,9 +1834,11 @@ func assignGovernor(governorToAssign, tileToAssignTo):
 	calculateGovernorEvent(governorToAssign)
 	# Register commander arc in War Room
 	$CanvasLayer/WarRoomPanel.registerCommanderArc(governorToAssign, tileToAssignTo)
+	pass
 
 func openGovernorsPanel(tile):
 	$CanvasLayer/TileInfoPanel.calculateAvailableGovernor(playerCountryNode, selectedTile)
+	pass
 
 #Magic Code
 
@@ -2107,6 +1854,7 @@ func newSpellEvent(schoolType, currentLvl):
 func addLawToCountry(lawType):
 	playerCountryNode.addLawToConstitution(lawType)
 	$CanvasLayer/GovernmentControl.updateGovernmentPanel()
+	pass
 
 #Army World Code
 func _on_army_button_pressed() -> void:
@@ -2116,15 +1864,17 @@ func _on_army_button_pressed() -> void:
 			BarracksButton.updateSelf()
 	else:
 		$CanvasLayer/MilitaryPanelControl.visible = false
+	pass # Replace with function body.
 	
 const armyScene = preload("res://Game Scenes and Scripts/army.tscn")
 func buildNewPlayerArmy(barracksBuilding, barracksTile, bbButton, playerNode, newArmyName):
 	# Cost scales +20% per previously purchased army (game-start armies not counted).
 	var n: int  = playerNode.purchasedArmyCount
 	var cost: int = ceili(10.0 * pow(1.2, n))
-	if playerNode.TotalDollars  < cost or playerNode.TotalWeapons < cost \
-			or playerNode.TotalCulture < cost or playerNode.TotalScience < cost:
-			  # " each of Dollars / Weapons / Culture / Science (army #", n + 1, ")")
+	if playerNode.TotalDollars  < cost or playerNode.TotalWeapons < cost or playerNode.TotalCulture < cost or playerNode.TotalScience < cost:
+		print(" each of Dollars / Weapons / Culture / Science (army #", n + 1, ")")
+=======
+			  #" each of Dollars / Weapons / Culture / Science (army #", n + 1, ")")
 		return
 	playerNode.TotalDollars  -= cost
 	playerNode.TotalWeapons  -= cost
@@ -2132,6 +1882,7 @@ func buildNewPlayerArmy(barracksBuilding, barracksTile, bbButton, playerNode, ne
 	playerNode.TotalScience  -= cost
 	playerNode.purchasedArmyCount += 1
 	var next_cost: int = ceili(10.0 * pow(1.2, playerNode.purchasedArmyCount))
+	print("[Army] Army purchased (cost ", cost, " each). Next army costs ", next_cost, " each.")
 	playerNode.addArmy(newArmyName, barracksTile.tileNumber)
 	for Army in playerNode.countryArmyList:
 		if Army.ArmyName == newArmyName:
@@ -2151,6 +1902,7 @@ func UICommander(commander, army):
 	else:
 		# No commander yet — open the governor picker so the player can assign one
 		_open_army_commander_picker(army)
+	pass
 
 # ── ARMY COMMANDER PICKER ─────────────────────────────────────────────────────
 # Built entirely in code — no .tscn changes needed.
@@ -2240,12 +1992,15 @@ func raiseArmyFromWorld(Army, country, Tile):
 	else:
 		#here is where we will raise either Demonic or nonPlayer Country AIs
 		$PathControl.raiseComputerArmy(Army, country, Tile, pathPointButtonToSend)
+	pass
 func raiseCivilianUnit(civ, country):
 	var civTile = civ.stationNode.ppbTile if civ.stationNode != null else null
 	$PathControl.raisePlayerCiv(civ, country, civTile)
+	pass
 
 func activateArmyControl():
 	armyMode = true
+	pass
 
 var eventScene = load("res://eventScene.tscn")
 
@@ -2256,11 +2011,13 @@ func activateSpellMapMode(spell, cost):
 		$TileController.spellSelectionMode(spell, cost, playerCountryNode)
 	else:
 		$PathControl.spellSelectionMode(spell, cost, playerCountryNode)
+	pass
 
 func spellPurchased(cost):
 	playerCountryNode.TotalMagic -= cost
 	$TileController.normalMode()
 	$CanvasLayer/Spellbook.displaySpells(playerCountryNode)
+	pass
 
 #EVENT SYSTEM
 
@@ -2283,10 +2040,13 @@ func _on_protector_summoned(origin_tile, protector_name: String, protector_id: S
 	if origin_tile != null:
 		var school: String = _protector_id_to_school(protector_id)
 		origin_tile.addWizard(protector_name, school)
-			  # " (", school, ") stationed at ", origin_tile.tileName)
+			  #" (", school, ") stationed at ", origin_tile.tileName)
+=======
+			 # " (", school, ") stationed at ", origin_tile.tileName)
 	var spell_name: String = _protector_id_to_spell(protector_id)
 	if spell_name != "":
 		playerCountryNode.addSpellToSpellbook(spell_name, 1, 0)
+		print("[Protectors] Presidential Power unlocked: ", spell_name)
 
 
 # Called when any protector AGREE event button sets a "*_agreed" flag.
@@ -2312,7 +2072,9 @@ func _on_protector_agreed(agreed_flag: String) -> void:
 		# Assign the protector as the tile's wizard so the tower produces their school's magic
 		var school: String = _protector_id_to_school(pid)
 		home_tile.addWizard(prot_name, school)
-			  home_tile.tileNumber, " — ", home_tile.tileName)
+			 # home_tile.tileNumber, " — ", home_tile.tileName)
+=======
+			 # home_tile.tileNumber, " — ", home_tile.tileName)
 	else:
 		push_warning("[Protectors] No home tile mapped for " + pid)
 
@@ -2320,6 +2082,7 @@ func _on_protector_agreed(agreed_flag: String) -> void:
 	var spell_name: String = _protector_id_to_spell(pid)
 	if spell_name != "":
 		playerCountryNode.addSpellToSpellbook(spell_name, 1, 0)
+		print("[Protectors] Presidential Power unlocked: ", spell_name)
 
 	# PROT_08: grant USS Constitution Support mil mod to all current armies
 	if agreed_flag == "prot_08_agreed":
@@ -2327,6 +2090,7 @@ func _on_protector_agreed(agreed_flag: String) -> void:
 			army.applyCountryBeliefMilMods()
 			army.surveySelf()
 			army.updateArmyUI()
+		print("[Protectors] USS Constitution Support granted to all player armies")
 
 	# Reveal this protector's Records entry globally
 	if get_node_or_null("/root/LibraryData"):
@@ -2346,19 +2110,19 @@ func _protector_id_to_name(pid: String) -> String:
 	match pid:
 		"PROT_01": return "Mothman"
 		"PROT_02": return "Jersey Devil"
-		"PROT_03": return "Wood Booger"
-		"PROT_04": return "Pamola"
+		"PROT_03": return "Bigfoot"
+		"PROT_04": return "Thunderbird"
 		"PROT_05": return "Headless Horseman"
-		"PROT_06": return "Goatman"
+		"PROT_06": return "Chessie"
 		"PROT_07": return "Bell Witch"
 		"PROT_08": return "Old Ironsides"
 		"PROT_09": return "Valley Forge Guardian"
 		"PROT_10": return "Snallygaster"
-		"PROT_11": return "Black Dog"
-		"PROT_12": return "Mercy Brown"
-		"PROT_13": return "Champ"
+		"PROT_11": return "Paul Revere"
+		"PROT_12": return "Liberty Bell"
+		"PROT_13": return "Green Mountain Ghost"
 		"PROT_15": return "Skunk Ape"
-		"PROT_16": return "Agent 355"
+		"PROT_16": return "Eternal Minuteman"
 		"PROT_17": return "Lincoln's Ghost"
 		"CA_PROT_01": return "Le Wendigo"
 		"CA_PROT_02": return "Le Loup-Garou"
@@ -2373,11 +2137,11 @@ func _protector_id_to_name(pid: String) -> String:
 
 func _protector_id_to_school(pid: String) -> String:
 	match pid:
-		"PROT_01", "PROT_02", "PROT_03", "PROT_10", "PROT_11", "PROT_13", "PROT_15": return "cryptid"
-		"PROT_06":                                              return "terror"
-		"PROT_04":                                              return "storm"
-		"PROT_05", "PROT_07", "PROT_12", "PROT_16", "PROT_17": return "spectral"
-		"PROT_08", "PROT_09":                                   return "iron"
+		"PROT_01", "PROT_02", "PROT_03", "PROT_10", "PROT_15": return "cryptid"
+		"PROT_04", "PROT_06", "PROT_07":                        return "storm"
+		"PROT_05", "PROT_13", "PROT_17":                        return "spectral"
+		"PROT_08", "PROT_09", "PROT_16":                        return "iron"
+		"PROT_11", "PROT_12":                                   return "liberty"
 	return "manifest"
 
 
@@ -2385,19 +2149,19 @@ func _protector_id_to_spell(pid: String) -> String:
 	match pid:
 		"PROT_01": return "FEDERAL ATMOSPHERIC SURVEILLANCE ACT"
 		"PROT_02": return "PINE BARRENS DEVELOPMENT MORATORIUM"
-		"PROT_03": return "APPALACHIAN PRIVACY PROTECTION ACT"
+		"PROT_03": return "PACIFIC NORTHWEST PRIVACY PROTECTION ACT"
 		"PROT_04": return "EXECUTIVE WEATHER CONTROL INITIATIVE"
 		"PROT_05": return "CLASSIFIED TACTICAL TERROR BUDGET"
-		"PROT_06": return "GOATMAN'S JUDGEMENT"
-		"PROT_07": return "BELL WITCH'S GIFT"
+		"PROT_06": return "CHESAPEAKE WATERS RECLAMATION PROJECT"
+		"PROT_07": return "DEPARTMENT OF PSYCHOLOGICAL OPERATIONS"
 		"PROT_08": return "NAVAL SUPERIORITY MAINTENANCE DIRECTIVE"
 		"PROT_09": return "COLD WEATHER RESILIENCE FUNDING ACT"
 		"PROT_10": return "INTER-AGENCY CRYPTID INTEGRATION PROGRAM"
-		"PROT_11": return "BLACK DOG WATCH PROTOCOL"
-		"PROT_12": return "MERCY BROWN'S COMPACT"
-		"PROT_13": return "LAKE CHAMPLAIN SOVEREIGNTY DECREE"
+		"PROT_11": return "MIDNIGHT EMERGENCY MOBILIZATION ORDER"
+		"PROT_12": return "FREEDOM RESONANCE AMPLIFICATION DECREE"
+		"PROT_13": return "RURAL SPECTRAL INVESTMENT INITIATIVE"
 		"PROT_15": return "FLORIDA CRYPTID INTEGRATION TASK FORCE"
-		"PROT_16": return "CULPER RING"
+		"PROT_16": return "PERMANENT READINESS MANDATE (EXPIRES NEVER)"
 		"PROT_17": return "EMANCIPATION PROCLAMATION 2: STILL EMANCIPATING"
 	return ""
 
@@ -2414,7 +2178,6 @@ func createNewEvent(event_id: String, tile = null) -> void:
 		newEvent.build_from_csv(event_id, tile, playerCountryNode)
 	newEvent.eventButtonPressed.connect(_on_event_button_pressed)
 	newEvent.tileEventButtonPressed.connect(_on_tile_event_button_pressed)
-	AudioManager.play_sfx("event_shown")
 	#AudioManager.play_sfx("event_shown")
 	$CanvasLayer/EventControl/EventContainer.add_child(newEvent)
 	EventDatabase.mark_event_fired(event_id, currentWorldTurn)
@@ -2554,6 +2317,7 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 				playerCountryNode.changeFactionLoyalty(lc_faction, lc_amount)
 		"add_spell":
 			playerCountryNode.addSpellToSpellbook(outcome_value, outcome_amount, 0)
+			playerCountryNode.levelUpSchool(_get_spell_school(outcome_value))
 		"add_tech":
 			playerCountryNode.addTechnologicalDiscovery(outcome_value)
 		"add_law":
@@ -2577,6 +2341,7 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 					playerCountryNode.changeFactionLoyalty(tile.tileGovernor.governorFaction, 1)
 				if tile.stationedArmy != null:
 					tile.stationedArmy.updateArmyUI()
+				print("[Commander] Commendation issued to ", tile.tileGovernor.governorType)
 		"tile_liberation":
 			if tile != null:
 				tile.record_conquest("USA")
@@ -2587,6 +2352,7 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 		"tile_moral_decay_change":
 			if tile != null:
 				tile.tileMoralDecay = clampi(tile.tileMoralDecay + outcome_amount, 0, 100)
+				print("[MoralDecay] ", tile.tileName, " → ", tile.tileMoralDecay)
 		"add_wizard":
 			if tile != null:
 				tile.addWizard(outcome_value)
@@ -2623,12 +2389,12 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 						playerCountryNode.ALLIED.append(c)
 					if not c.ALLIED.has(playerCountryNode):
 						c.ALLIED.append(playerCountryNode)
-						playerCountryNode.CID, " ↔ ", c.CID)
+						#playerCountryNode.CID, " ↔ ", c.CID)
+=======
+						#playerCountryNode.CID, " ↔ ", c.CID)
 					break
 		"set_flag":
 			playerCountryNode.CountryFlags[outcome_value] = true
-			if outcome_value == "uk_declared_war":
-				_raise_all_player_armies()
 		"clear_flag":
 			playerCountryNode.CountryFlags.erase(outcome_value)
 		"set_mission_flag":
@@ -2643,10 +2409,13 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 					var timeout: int = int(outcome_amount)
 					if timeout > 0:
 						_mission_timers[flag_val] = timeout
-					else:
+					#else:
+=======
+					#else:
 		"claim_change":
 			playerCountryNode.presidentialClaim = clampf(
 				playerCountryNode.presidentialClaim + float(outcome_amount), -10.0, 10.0)
+			print("[Claim] Event adjustment: ", outcome_amount, " → now ", playerCountryNode.presidentialClaim)
 		"pardon_state_governors":
 			# Keep governors on their tiles but reset any negative loyalty to 0
 			if tile != null:
@@ -2656,6 +2425,7 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 						t.tileGovernor.loyalty = maxf(t.tileGovernor.loyalty, 0.0)
 				playerCountryNode.presidentialClaim = clampf(
 					playerCountryNode.presidentialClaim + 1.0, -10.0, 10.0)
+				print("[Pardon] Governors in ", sc, " pardoned — loyalty floored at 0")
 		"replace_state_governors":
 			# Remove every governor in the state and generate fresh ones
 			if tile != null:
@@ -2668,6 +2438,7 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 							t.tileGovernor = null
 							t.filledGovernorSlot = false
 						_generate_and_assign_governor(t)
+				print("[Replace] All governors in ", sc, " replaced with fresh appointments")
 		"remove_governor":
 			# Sack the tile's governor and generate a procedural replacement.
 			if tile != null and tile.tileGovernor != null:
@@ -2695,23 +2466,30 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 					var timeout: int = int(outcome_amount)
 					if timeout > 0:
 						_mission_timers[flag_val] = timeout
-					else:
+					#else:
+=======
+					#else:
 		"governor_loyalty_change":
 			if tile != null and tile.tileGovernor != null:
 				tile.tileGovernor.loyalty = clampf(
 					tile.tileGovernor.loyalty + float(outcome_amount), -20.0, 20.0)
-					# " at ", tile.tileName, " → ", tile.tileGovernor.loyalty)
+					#" at ", tile.tileName, " → ", tile.tileGovernor.loyalty)
+=======
+					#" at ", tile.tileName, " → ", tile.tileGovernor.loyalty)
 		"election_pressure_change":
 			if tile != null:
 				tile.electionPressure = clampi(
 					tile.electionPressure + outcome_amount, -100, 100)
+				print("[Election] ", tile.tileName, " pressure → ", tile.electionPressure)
 		"tile_yield":
 			if tile != null:
 				var turns: int = max(outcome_amount, 1)
 				var per_turn: int = _get_tile_resource_output(tile, outcome_value)
 				var total: int = per_turn * turns
 				_apply_resource_change(outcome_value, total)
-					# " ×", turns, " (", per_turn, "/turn) = ", total)
+					#" ×", turns, " (", per_turn, "/turn) = ", total)
+=======
+					#" ×", turns, " (", per_turn, "/turn) = ", total)
 			else:
 				push_warning("executeOutcome: tile_yield requires a tile context")
 		"trigger_collapse":
@@ -2723,13 +2501,16 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 				playerCountryNode.CountryFlags["george_peace_rejected"] = true
 			playerCountryNode.presidentialClaim = clampf(
 				playerCountryNode.presidentialClaim + 1.0, -10.0, 10.0)
+			print("[George Peace] Rejected — presidentialClaim +1")
 		"cast_protector_buff":
 			# outcome_value = protector buff name (e.g. "Mothman Presence")
 			# outcome_amount = magic cost per turn (sustain cost)
 			# tile context = apply to the stationed army in that tile
 			if tile != null and tile.stationedArmy != null:
 				tile.stationedArmy.apply_status(outcome_value, 9999, outcome_amount)
-					# " — ", outcome_amount, " magic/turn")
+					#" — ", outcome_amount, " magic/turn")
+=======
+					#" — ", outcome_amount, " magic/turn")
 			else:
 				push_warning("cast_protector_buff: no army at tile " + str(tile))
 		"tile_building_mandate_surge":
@@ -2741,7 +2522,9 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 						total_levels += b.buildingLevel
 				var total: int = total_levels * outcome_amount
 				_apply_resource_change("mandate", total)
-					# " ×", outcome_amount, " turns = ", total, " mandate")
+					#" ×", outcome_amount, " turns = ", total, " mandate")
+=======
+					#" ×", outcome_amount, " turns = ", total, " mandate")
 			else:
 				push_warning("tile_building_mandate_surge: requires tile context")
 		"corrupt_windfall":
@@ -2752,9 +2535,20 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 				var total: int = per_turn * outcome_amount
 				_apply_resource_change(outcome_value, total)
 				tile.corruption = mini(tile.corruption + 20, 100)
-					outcome_value, " | corruption now ", tile.corruption)
+					#outcome_value, " | corruption now ", tile.corruption)
+=======
+					#outcome_value, " | corruption now ", tile.corruption)
 			else:
 				push_warning("corrupt_windfall: requires tile context")
+		"level_all_spell_schools":
+			for i in range(outcome_amount):
+				playerCountryNode.levelUpSchool("manifest")
+				playerCountryNode.levelUpSchool("iron")
+				playerCountryNode.levelUpSchool("storm")
+				playerCountryNode.levelUpSchool("liberty")
+				playerCountryNode.levelUpSchool("cryptid")
+				playerCountryNode.levelUpSchool("spectral")
+			print("[SpellSchools] All 6 schools +", outcome_amount, " levels")
 		"gold_and_army_buff":
 			# outcome_value = buff status name, outcome_amount = turns; also grants 50 gold
 			_apply_resource_change("gold", 50)
@@ -2770,20 +2564,25 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 								total_levels += b.buildingLevel
 				var yield_amount: int = total_levels * outcome_amount
 				_apply_resource_change(outcome_value, yield_amount)
-					# " ×", outcome_amount, " = ", yield_amount, " ", outcome_value)
+					#" ×", outcome_amount, " = ", yield_amount, " ", outcome_value)
+=======
+					#" ×", outcome_amount, " = ", yield_amount, " ", outcome_value)
 			else:
 				push_warning("state_building_level_yield: requires tile context")
 		"set_governor_perk":
 			if tile != null and tile.tileGovernor != null:
 				if not tile.tileGovernor.governor_perks.has(outcome_value):
 					tile.tileGovernor.governor_perks.append(outcome_value)
-						# " unlocked perk: ", outcome_value)
+						#" unlocked perk: ", outcome_value)
+=======
+						#" unlocked perk: ", outcome_value)
 			else:
 				push_warning("set_governor_perk: requires tile with governor")
 		"tile_army_manpower_refill":
 			if tile != null and tile.stationedArmy != null:
 				tile.stationedArmy.manpowerInArmy = tile.stationedArmy.maxManpower
 				tile.stationedArmy.updateArmyUI()
+				print("[ManpowerRefill] ", tile.tileName, " army fully refilled")
 			else:
 				push_warning("tile_army_manpower_refill: no army at tile")
 		"spawn_anarchist":
@@ -2794,6 +2593,7 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 				if t.tileOwner == "UK" or (t.stationedArmy != null and t.stationedArmy.parentCountry != null and t.stationedArmy.parentCountry.CID == "UK"):
 					t.discoverTile()
 					revealed_count += 1
+			print("[RevealBritish] Revealed ", revealed_count, " British tiles")
 		"all_armies_manpower_heal":
 			var pct: float = float(outcome_amount) / 100.0
 			for army in playerCountryNode.countryArmyList:
@@ -2802,12 +2602,15 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 					unit.unitCurrentManpower = mini(unit.unitCurrentManpower + heal, unit.unitMaxManpower)
 				army.surveySelf()
 				army.updateArmyUI()
+			print("[ManpowerHeal] All armies healed ", outcome_amount, "% of max manpower")
 		"halloween_endorsement":
 			# Ghost presidents' blessing: +1 happiness per unit per turn for N turns
 			playerCountryNode.CountryFlags["halloween_endorsement_turns"] = int(outcome_amount)
+			print("[HalloweenEndorsement] Granted for ", outcome_amount, " turns")
 		"cherry_blossom_prayer":
 			# Ualani's prayer at the Washington Monument: permanent +0.01 magic/unit/turn
 			playerCountryNode.CountryFlags["cherry_blossom_prayer"] = true
+			print("[CherryBlossomPrayer] Granted — permanent fractional magic gain active")
 		"nothing":
 			pass
 		_:
@@ -2845,13 +2648,6 @@ func evaluateDateEvents() -> void:
 		_check_ualani_wounded()
 		_check_ualani_winter()
 		_check_ualani_forge()
-		_check_ualani_dock()
-		_check_ualani_farm()
-		_check_ualani_barracks()
-		_check_ualani_courthouse()
-		_check_espionage_discovery()
-		_check_winter_siege()
-		_check_spring_offensive()
 		_check_ualani_culper()
 		_check_ualani_alliance()
 		_check_ualani_frontier()
@@ -2862,13 +2658,8 @@ func evaluateDateEvents() -> void:
 		_tick_wild_protectors()
 		_tick_wild_ca_protectors()
 		_check_protector_summons()
-		_check_prot06_dma_summon()
 		_check_prot08_dma_summon()
-		_check_prot16_dma_summon()
 		_check_prot17_dma_summon()
-		_check_prot06_objectives()
-		_check_prot07_objectives()
-		_check_prot16_objectives()
 		_tick_commander_turns()
 		_check_arc01_objectives()
 		_tick_arc03_cultural_corps()
@@ -2958,6 +2749,7 @@ func checkPendingMissions() -> void:
 			if condition_met:
 				flags_to_remove.append(flag)
 				events_to_fire.append([event_id, tile])
+				print("[Mission] Condition met (", "own" if own_type else "army", ") — firing ", event_id, " at ", tile.tileName)
 			break
 
 	for flag in flags_to_remove:
@@ -2977,6 +2769,7 @@ func checkCollapseCondition() -> void:
 		if tile.tileOwner == "USA":
 			return  # Still hold at least one American metro — no collapse yet
 	_republic_collapsed = true
+	print("[Collapse] All American metros have fallen. Triggering COLLAPSE_01.")
 	createNewEvent("COLLAPSE_01")
 
 
@@ -2991,6 +2784,7 @@ func checkCaCollapseCondition() -> void:
 			break
 	if not ottawa_held:
 		_ca_collapsed = true
+		print("[CA Collapse] Ottawa has fallen. Triggering CA_COLLAPSE_01.")
 		createNewEvent("CA_COLLAPSE_01")
 		return
 	# Jessica Commanda Odjick must still be alive (in unlockedGovernors)
@@ -3001,6 +2795,7 @@ func checkCaCollapseCondition() -> void:
 			break
 	if not jessica_alive:
 		_ca_collapsed = true
+		print("[CA Collapse] Jessica Commanda Odjick has fallen. Triggering CA_COLLAPSE_JESSICA.")
 		createNewEvent("CA_COLLAPSE_JESSICA")
 
 
@@ -3077,15 +2872,18 @@ func _on_mission_expired(flag: String) -> void:
 		return
 
 	var sc: String = source_tile.tileContinent
+	print("[Mission] EXPIRED — flagging all tiles in '", sc, "' as president_failed for 10 turns")
 	for t in $TileController.get_children():
 		if t.tileContinent == sc:
 			t.presidentFailedTimer = 10
 	playerCountryNode.presidentialClaim = clampf(
 		playerCountryNode.presidentialClaim - 2.0, -10.0, 10.0)
+	print("[Claim] Mission-failure penalty. Claim now: ", playerCountryNode.presidentialClaim)
 
 	# Event-specific expiry effects
 	if event_id.begins_with("CORRUPT_"):
 		source_tile.disable_building("Courthouse", 10)
+		print("[Corrupt] Courthouse disabled 10 turns at ", source_tile.tileName)
 
 
 # ── STATE SECESSION ──────────────────────────────────────────────
@@ -3112,6 +2910,7 @@ func checkStateSecessionConditions() -> void:
 			if tile.tileContinent != state_code or tile.tileOwner != "USA":
 				continue
 			if tile.tileGovernor != null and tile.tileGovernor.loyalty <= -5.0:
+				print("[Secession] All conditions met — ", state_code, " declares independence!")
 				_fire_state_secession(state_code)
 				break
 
@@ -3153,6 +2952,7 @@ func _fire_state_secession(state_code: String) -> void:
 	playerCountryNode.presidentialClaim = clampf(
 		playerCountryNode.presidentialClaim - 3.0, -10.0, 10.0)
 	createNewEvent("STATE_REBEL_01", metro_tile)
+	print("[Secession] ", display_name, " has seceded — ", tiles_to_seize.size(), " tiles lost.")
 
 
 func _fire_state_reintegration(state_code: String, metro_tile) -> void:
@@ -3190,9 +2990,11 @@ func _fire_state_reintegration(state_code: String, metro_tile) -> void:
 	playerCountryNode.presidentialClaim = clampf(
 		playerCountryNode.presidentialClaim + 2.0, -10.0, 10.0)
 	createNewEvent("STATE_REINTEGRATED_01", metro_tile)
+	print("[Reintegration] ", STATE_FULL_NAMES.get(state_code, state_code), " reintegrated!")
 
 
 func _execute_republic_collapse() -> void:
+	print("[Collapse] Executing republic fragmentation...")
 
 	# Find UK so we can hand over coastal tiles and set the peace flag
 	var uk_country = null
@@ -3247,6 +3049,7 @@ func _execute_republic_collapse() -> void:
 		playerCountryNode.OwnedTileList.erase(tile)
 		uk_country.addTile(tile)
 		tile.record_conquest("UK")
+		print("[Collapse] Coastal annexation: ", tile.tileName, " → UK")
 
 	# ── Pass 3: interior tiles → state countries ───────────────────
 	for state_code in state_tile_groups.keys():
@@ -3274,9 +3077,12 @@ func _execute_republic_collapse() -> void:
 					army.parentCountry = state_country
 					army.enemy = false
 
+		print("[Collapse] ", display_name, " (", state_code, ") — ", tiles.size(), " tiles")
 
-	for tile in playerCountryNode.OwnedTileList:
+	#for tile in playerCountryNode.OwnedTileList:
 
+=======
+		print("playerCountryNode.OwnedTileList")
 	createNewEvent("COLLAPSE_02")
 
 
@@ -3362,6 +3168,7 @@ func _check_harvest_crisis() -> void:
 	var target: Tile = candidates[randi() % candidates.size()]
 	_start_cooldown("HARVEST_001", 20)
 	createNewEvent("HARVEST_001", target)
+	print("[Harvest] Food crisis — firing HARVEST_001 at ", target.tileName)
 
 
 # ── CHAIN 1: HARBOR THREAT ───────────────────────────────────────
@@ -3381,6 +3188,7 @@ func _check_harbor_threat() -> void:
 	var target: Tile = candidates[randi() % candidates.size()]
 	_start_cooldown("HARBOR_001", 15)
 	createNewEvent("HARBOR_001", target)
+	print("[Harbor] Threat detected — firing HARBOR_001 at ", target.tileName)
 
 
 # ── CHAIN 6: FORGE THREAT ────────────────────────────────────────
@@ -3400,6 +3208,7 @@ func _check_forge_threat() -> void:
 	var target: Tile = candidates[randi() % candidates.size()]
 	_start_cooldown("FORGE_001", 15)
 	createNewEvent("FORGE_001", target)
+	print("[Forge] Threat detected — firing FORGE_001 at ", target.tileName)
 
 
 # ── CHAIN 2: CORRUPTION CRISIS ───────────────────────────────────
@@ -3419,6 +3228,7 @@ func _check_corruption_crisis() -> void:
 	var target: Tile = candidates[randi() % candidates.size()]
 	_start_cooldown("CORRUPT_001", 12)
 	createNewEvent("CORRUPT_001", target)
+	print("[Corrupt] Crisis — moral decay ", target.tileMoralDecay, " at ", target.tileName)
 
 
 # ── CHAIN 9: BORDER DISPUTE ──────────────────────────────────────
@@ -3442,6 +3252,7 @@ func _check_border_dispute() -> void:
 	var target: Tile = candidates[randi() % candidates.size()]
 	_start_cooldown("BORDER_001", 15)
 	createNewEvent("BORDER_001", target)
+	print("[Border] Dispute detected — firing BORDER_001 at ", target.tileName)
 
 
 # ── CHAIN 3: STARVING GARRISON ───────────────────────────────────
@@ -3456,6 +3267,7 @@ func _check_garrison_hunger() -> void:
 		if army.manpowerInArmy < 50:
 			_start_cooldown("GARRISON_001", 12)
 			createNewEvent("GARRISON_001", army.inTile)
+			print("[Garrison] Starving army at ", army.inTile.tileName)
 			return
 
 
@@ -3467,6 +3279,7 @@ func _check_legitimacy_crisis() -> void:
 		return
 	_start_cooldown("CRISIS_CLAIM_001", 20)
 	createNewEvent("CRISIS_CLAIM_001")
+	print("[Crisis] Legitimacy crisis — claim at ", playerCountryNode.presidentialClaim)
 
 
 # ── CHAIN 4: TURNED GENERAL ──────────────────────────────────────
@@ -3484,7 +3297,9 @@ func _check_turncoat_general() -> void:
 		return
 	_start_cooldown("TURNCOAT_001", 15)
 	createNewEvent("TURNCOAT_001", suspect_tile)
-		" at ", suspect_tile.tileName)
+		#" at ", suspect_tile.tileName)
+=======
+		#" at ", suspect_tile.tileName)
 
 
 # ── UALANI EVENTS ──────────────────────────────────────────────
@@ -3544,6 +3359,7 @@ func _check_ualani_ambush() -> void:
 		return
 	_start_cooldown("UALANI_AMBUSH_01", 15)
 	createNewEvent("UALANI_AMBUSH_01", tile)
+	print("[Ualani] Ambush event at ", tile.tileName)
 
 
 func _check_ualani_dignitary() -> void:
@@ -3565,6 +3381,7 @@ func _check_ualani_dignitary() -> void:
 		return
 	_start_cooldown("UALANI_DIGNITARY_01", 18)
 	createNewEvent("UALANI_DIGNITARY_01", tile)
+	print("[Ualani] Dignitary reception at ", tile.tileName)
 
 
 func _check_ualani_memorial() -> void:
@@ -3577,6 +3394,7 @@ func _check_ualani_memorial() -> void:
 		return
 	_start_cooldown("UALANI_MEMORIAL_01", 20)
 	createNewEvent("UALANI_MEMORIAL_01", tile)
+	print("[Ualani] Memorial address at ", tile.tileName)
 
 
 func _check_ualani_wounded() -> void:
@@ -3592,7 +3410,9 @@ func _check_ualani_wounded() -> void:
 		return
 	_start_cooldown("UALANI_WOUNDED_01", 12)
 	createNewEvent("UALANI_WOUNDED_01", tile)
-		" (", army.manpowerInArmy, "/", army.maxManpower, ")")
+		#" (", army.manpowerInArmy, "/", army.maxManpower, ")")
+=======
+		#" (", army.manpowerInArmy, "/", army.maxManpower, ")")
 
 
 func _check_ualani_winter() -> void:
@@ -3609,6 +3429,7 @@ func _check_ualani_winter() -> void:
 		return
 	_start_cooldown("UALANI_WINTER_01", 20)
 	createNewEvent("UALANI_WINTER_01", tile)
+	print("[Ualani] Winter march at ", tile.tileName)
 
 
 func _check_ualani_forge() -> void:
@@ -3626,143 +3447,7 @@ func _check_ualani_forge() -> void:
 		return
 	_start_cooldown("UALANI_FORGE_01", 15)
 	createNewEvent("UALANI_FORGE_01", tile)
-
-
-func _check_ualani_dock() -> void:
-	if _event_on_cooldown("UALANI_DOCK_01"):
-		return
-	var tile: Tile = _find_ualani_tile()
-	if tile == null:
-		return
-	var has_dock: bool = false
-	for b in tile.tileBuildingsList:
-		if b.buildingType == "Dock" and b.enabled:
-			has_dock = true
-			break
-	if not has_dock:
-		return
-	_start_cooldown("UALANI_DOCK_01", 15)
-	createNewEvent("UALANI_DOCK_01", tile)
-
-
-func _check_ualani_farm() -> void:
-	if _event_on_cooldown("UALANI_FARM_01"):
-		return
-	var tile: Tile = _find_ualani_tile()
-	if tile == null:
-		return
-	if tile.terrain != "Farmlands":
-		return
-	_start_cooldown("UALANI_FARM_01", 15)
-	createNewEvent("UALANI_FARM_01", tile)
-
-
-func _check_ualani_barracks() -> void:
-	if _event_on_cooldown("UALANI_BARRACKS_01"):
-		return
-	var tile: Tile = _find_ualani_tile()
-	if tile == null:
-		return
-	if tile.stationedArmy == null:
-		return
-	var has_barracks: bool = false
-	for b in tile.tileBuildingsList:
-		if b.buildingType == "Barracks" and b.enabled:
-			has_barracks = true
-			break
-	if not has_barracks:
-		return
-	_start_cooldown("UALANI_BARRACKS_01", 15)
-	createNewEvent("UALANI_BARRACKS_01", tile)
-
-
-func _check_ualani_courthouse() -> void:
-	if _event_on_cooldown("UALANI_COURTHOUSE_01"):
-		return
-	var tile: Tile = _find_ualani_tile()
-	if tile == null:
-		return
-	var has_courthouse: bool = false
-	for b in tile.tileBuildingsList:
-		if b.buildingType == "Courthouse" and b.enabled:
-			has_courthouse = true
-			break
-	if not has_courthouse:
-		return
-	_start_cooldown("UALANI_COURTHOUSE_01", 15)
-	createNewEvent("UALANI_COURTHOUSE_01", tile)
-
-
-func _uk_plant_spies() -> void:
-	if playerCountryNode == null:
-		return
-	if randf() > 0.20:
-		return
-	var candidates: Array = []
-	for tile in playerCountryNode.OwnedTileList:
-		if not tile.is_spy_vulnerable():
-			continue
-		if not tile.has_neighbor_owned_by("UK"):
-			continue
-		candidates.append(tile)
-	if candidates.is_empty():
-		return
-	var target: Tile = candidates[randi() % candidates.size()]
-	target.record_espionage("UK")
-
-
-func _check_espionage_discovery() -> void:
-	if _event_on_cooldown("ESPIONAGE_DISCOVERY_01"):
-		return
-	var candidates: Array = []
-	for tile in playerCountryNode.OwnedTileList:
-		if not tile.is_counterintelligence_ready():
-			continue
-		candidates.append(tile)
-	if candidates.is_empty():
-		return
-	var target: Tile = candidates[randi() % candidates.size()]
-	target.clear_espionage()
-	_start_cooldown("ESPIONAGE_DISCOVERY_01", 15)
-	createNewEvent("ESPIONAGE_DISCOVERY_01", target)
-
-
-func _check_winter_siege() -> void:
-	if _event_on_cooldown("WINTER_SIEGE_01"):
-		return
-	if month not in [11, 12, 1, 2]:
-		return
-	var candidates: Array = []
-	for tile in playerCountryNode.OwnedTileList:
-		if tile.winterScore < 3:
-			continue
-		if tile.stationedArmy == null:
-			continue
-		candidates.append(tile)
-	if candidates.is_empty():
-		return
-	var target: Tile = candidates[randi() % candidates.size()]
-	_start_cooldown("WINTER_SIEGE_01", 12)
-	createNewEvent("WINTER_SIEGE_01", target)
-
-
-func _check_spring_offensive() -> void:
-	if _event_on_cooldown("SPRING_OFFENSIVE_01"):
-		return
-	if month not in [3, 4]:
-		return
-	var candidates: Array = []
-	for tile in playerCountryNode.OwnedTileList:
-		if not tile.has_neighbor_owned_by("UK"):
-			continue
-		if tile.stationedArmy == null:
-			continue
-		candidates.append(tile)
-	if candidates.is_empty():
-		return
-	var target: Tile = candidates[randi() % candidates.size()]
-	_start_cooldown("SPRING_OFFENSIVE_01", 20)
-	createNewEvent("SPRING_OFFENSIVE_01", target)
+	print("[Ualani] Forge inspection at ", tile.tileName)
 
 
 func _check_ualani_culper() -> void:
@@ -3775,6 +3460,7 @@ func _check_ualani_culper() -> void:
 		return
 	_start_cooldown("UALANI_CULPER_01", 18)
 	createNewEvent("UALANI_CULPER_01", tile)
+	print("[Ualani] Culper meeting at ", tile.tileName)
 
 
 func _check_ualani_alliance() -> void:
@@ -3799,7 +3485,9 @@ func _check_ualani_alliance() -> void:
 		return
 	_start_cooldown("UALANI_ALLIANCE_01", 18)
 	createNewEvent("UALANI_ALLIANCE_01", ally_tile)
-		" with ", ally_tile.tileGovernor.governorType)
+		#" with ", ally_tile.tileGovernor.governorType)
+=======
+		#" with ", ally_tile.tileGovernor.governorType)
 
 
 func _check_ualani_frontier() -> void:
@@ -3814,7 +3502,9 @@ func _check_ualani_frontier() -> void:
 		if neighbor.tileContinent.begins_with("CA - "):
 			_start_cooldown("UALANI_FRONTIER_01", 20)
 			createNewEvent("UALANI_FRONTIER_01", tile)
-				# " bordering ", neighbor.tileContinent)
+				#" bordering ", neighbor.tileContinent)
+=======
+				#" bordering ", neighbor.tileContinent)
 			return
 
 
@@ -3846,6 +3536,7 @@ func _check_white_house_secrets() -> void:
 		return
 	_start_cooldown(event_id, 999)
 	createNewEvent(event_id, ualani_tile)
+	print("[WHSecrets] ", event_id, " fired — Ualani in DC, month ", month)
 
 
 # ── CHALCHIUHTOTOLIN PROTECTOR ARC ──────────────────────────────────────────
@@ -3874,6 +3565,7 @@ func _check_chalch_summon() -> void:
 	if not playerCountryNode.CountryFlags.has("chalch_summoned"):
 		playerCountryNode.CountryFlags["chalch_summoned"] = true
 	createNewEvent("CHALCH_SUMMON", ualani_tile)
+	print("[Chalch] CHALCH_SUMMON fired — Ualani at Plymouth, month 11")
 
 
 func _check_chalch_quests() -> void:
@@ -3887,6 +3579,7 @@ func _check_chalch_quests() -> void:
 			if not playerCountryNode.CountryFlags.has("chalch_q1_done"):
 				playerCountryNode.CountryFlags["chalch_q1_done"] = true
 			createNewEvent("CHALCH_Q1", _find_ualani_tile())
+			print("[Chalch] CHALCH_Q1 fired — 3+ farms")
 			return
 
 	# Q2: 150+ food stockpile (requires Q1 done)
@@ -3897,6 +3590,7 @@ func _check_chalch_quests() -> void:
 			if not playerCountryNode.CountryFlags.has("chalch_q2_done"):
 				playerCountryNode.CountryFlags["chalch_q2_done"] = true
 			createNewEvent("CHALCH_Q2", _find_ualani_tile())
+			print("[Chalch] CHALCH_Q2 fired — 150+ food")
 			return
 
 	# Q3: 5+ farms (requires Q2 done)
@@ -3907,6 +3601,7 @@ func _check_chalch_quests() -> void:
 			if not playerCountryNode.CountryFlags.has("chalch_q3_done"):
 				playerCountryNode.CountryFlags["chalch_q3_done"] = true
 			createNewEvent("CHALCH_Q3", _find_ualani_tile())
+			print("[Chalch] CHALCH_Q3 fired — 5+ farms")
 			return
 
 	# AGREE: all quests done
@@ -3914,6 +3609,7 @@ func _check_chalch_quests() -> void:
 			and not _event_on_cooldown("CHALCH_AGREE"):
 		_start_cooldown("CHALCH_AGREE", 999)
 		createNewEvent("CHALCH_AGREE", _find_ualani_tile())
+		print("[Chalch] CHALCH_AGREE fired — all quests complete")
 
 
 # ── VICE PRESIDENT EVENTS ────────────────────────────────────────
@@ -3939,6 +3635,7 @@ func _fire_vp_event(event_id: String, vp_tile: Tile) -> bool:
 	_start_cooldown(event_id, 999)
 	_start_cooldown("VP_EVENTS", 13)
 	createNewEvent(event_id, vp_tile)
+	print("[VP] Event fired: ", event_id)
 	return true
 
 
@@ -4062,6 +3759,7 @@ func _ca_fire_vp_event(event_id: String, pm_tile) -> bool:
 	_start_cooldown(event_id, 999)
 	_start_cooldown("CA_PM_EVENTS", 13)
 	createNewEvent(event_id, pm_tile)
+	print("[CA PM] Event fired: ", event_id)
 	return true
 
 
@@ -4181,6 +3879,7 @@ func _fire_usa_alliance_event(event_id: String) -> bool:
 	_start_cooldown(event_id, 999)
 	_start_cooldown("USA_ALLIANCE_EVENTS", 3)
 	createNewEvent(event_id, null)
+	print("[USA Alliance] Event fired: ", event_id)
 	return true
 
 
@@ -4243,6 +3942,7 @@ func _try_ca_alone() -> bool:
 func _fire_war_event(event_id: String) -> bool:
 	_start_cooldown(event_id, 999)
 	createNewEvent(event_id, null)
+	print("[War] Event fired: ", event_id)
 	return true
 
 
@@ -4250,6 +3950,7 @@ func _fire_can_event(event_id: String) -> bool:
 	_start_cooldown(event_id, 999)
 	_start_cooldown("CAN_EVENTS", 3)
 	createNewEvent(event_id, null)
+	print("[Canada] Event fired: ", event_id)
 	return true
 
 
@@ -4406,7 +4107,9 @@ func _assign_vice_president() -> void:
 	_vp_governor = candidates[randi() % candidates.size()]
 	_vp_governor.isVicePresident = true
 	_vp_faction = VP_FACTION_MAP.get(_vp_governor.governorType, "")
-		" | Faction: ", _vp_faction)
+		#" | Faction: ", _vp_faction)
+=======
+		#" | Faction: ", _vp_faction)
 
 
 func _assign_ca_vice_president() -> void:
@@ -4419,6 +4122,7 @@ func _assign_ca_vice_president() -> void:
 			_ca_vp_governor = gov
 			_ca_vp_faction  = "French Habitants"
 			gov.isVicePresident = true
+			print("[CA PM] Marc Penoit (at tile ", tile.tileName, ") assigned as Deputy Governor.")
 			return
 	# Fallback: search unlockedGovernors pool
 	for gov in playerCountryNode.unlockedGovernors:
@@ -4426,6 +4130,7 @@ func _assign_ca_vice_president() -> void:
 			_ca_vp_governor = gov
 			_ca_vp_faction  = "French Habitants"
 			gov.isVicePresident = true
+			print("[CA PM] Marc Penoit (unassigned) set as Deputy Governor.")
 			return
 
 
@@ -4468,6 +4173,7 @@ func _check_stump_speech() -> void:
 		return
 	_start_cooldown("STUMP_SPEECH_01", 2)
 	createNewEvent("STUMP_SPEECH_01", tile)
+	print("[Election] Stump speech available at ", tile.tileName)
 
 
 func _check_election_season() -> void:
@@ -4478,12 +4184,14 @@ func _check_election_season() -> void:
 	_start_cooldown("ELECTION_SEASON", 999)
 	createNewEvent("ELECTION_SEASON", null)
 	_grant_election_season_mods()
+	print("[Election] Election season event fired on turn ", currentWorldTurn)
 
 func _grant_election_season_mods() -> void:
 	# Give Election Season mod to Ualani and the current VP (the ticket)
 	for gov in playerCountryNode.unlockedGovernors:
 		if gov.governorType == "Ualani Carlisle" or gov.isVicePresident:
 			gov.addMilMod("Election Season", 123)
+			print("[Election] Election Season mod granted to ", gov.governorType)
 
 
 func _check_end_game() -> void:
@@ -4513,18 +4221,22 @@ func _check_end_game() -> void:
 	if total <= 0:
 		# British puppet wins the election
 		createNewEvent("ELECTION_NIGHT_LOSE", null)
+		print("[EndGame] Crown wins election — pressure total: ", total)
 		_trigger_game_over(false, "A Crown puppet has taken the White House.", "britishWhiteHouse")
 	elif peace_signed and uk_tiles_remain:
 		# Peace signed but UK still holds land — stalemate
 		createNewEvent("ELECTION_NIGHT_WIN", null)
+		print("[EndGame] Stalemate — peace signed, UK holds land, turn ", currentWorldTurn)
 		_trigger_game_over(false, "Peace was signed, but the Crown holds its ground.", "stalemate")
 	elif not peace_signed and uk_tiles_remain:
 		# War still raging at turn limit — endless battle
 		createNewEvent("ELECTION_NIGHT_WIN", null)
+		print("[EndGame] Endless battle — war ongoing at turn ", currentWorldTurn)
 		_trigger_game_over(false, "The war grinds on. No end in sight.", "endlessBattle")
 	else:
 		# Liberty wins clean
 		createNewEvent("ELECTION_NIGHT_WIN", null)
+		print("[EndGame] Liberty Coalition wins — pressure total: ", total)
 		_trigger_game_over(true, "The Liberty Coalition has won. The Republic endures.")
 
 
@@ -4816,6 +4528,7 @@ func _check_cmd_recognition() -> void:
 			tile.stationedArmy.updateArmyUI()
 		_start_cooldown("CMD_RECOGNITION", 10)
 		createNewEvent("CMD_RECOGNITION", tile)
+		print("[Commander] CMD_RECOGNITION fired for ", gov.governorType, " (XP: ", gov.xp, ")")
 		return
 
 
@@ -4836,6 +4549,7 @@ func _check_cmd_thanks() -> void:
 			tile.stationedArmy.updateArmyUI()
 		_start_cooldown("CMD_THANKS", 999)
 		createNewEvent("CMD_THANKS", tile)
+		print("[Commander] CMD_THANKS fired for ", gov.governorType, " (XP: ", gov.xp, ")")
 		return
 
 
@@ -4918,11 +4632,12 @@ func _tick_wild_protectors() -> void:
 		if randf() < 0.25:
 			var target: Tile = owned_tiles[randi() % owned_tiles.size()]
 			target.corruption = clampi(target.corruption + 1, 0, 100)
+			print("[WildProt] ", pid, " added +1 corruption to ", target.tileName)
 
 
 func _check_protector_summons() -> void:
 	for pid in PROTECTOR_IDS:
-		if pid == "PROT_06" or pid == "PROT_08" or pid == "PROT_16" or pid == "PROT_17":
+		if pid == "PROT_08" or pid == "PROT_17":
 			continue  # DMA-investigation gated — handled by dedicated summon functions
 		if not _is_protector_wild(pid):
 			continue
@@ -4934,6 +4649,7 @@ func _check_protector_summons() -> void:
 			continue
 		_start_cooldown(summon_id, 20)
 		createNewEvent(summon_id, null)
+		print("[Protector] SUMMON fired: ", summon_id, " on turn ", currentWorldTurn)
 		return
 
 
@@ -4953,6 +4669,7 @@ func _check_prot08_dma_summon() -> void:
 		return
 	_start_cooldown("PROT_08_SUMMON", 9999)  # fires once
 	createNewEvent("PROT_08_SUMMON", dma_tile)
+	print("[Protector] PROT_08_SUMMON fired via DMA investigation at ", dma_tile.tileName)
 
 
 func _check_prot17_dma_summon() -> void:
@@ -4971,126 +4688,7 @@ func _check_prot17_dma_summon() -> void:
 		return
 	_start_cooldown("PROT_17_SUMMON", 9999)  # fires once
 	createNewEvent("PROT_17_SUMMON", dma_tile)
-
-
-func _check_prot16_dma_summon() -> void:
-	if not _is_protector_wild("PROT_16"):
-		return
-	if _event_on_cooldown("PROT_16_SUMMON"):
-		return
-	# Tiles 20 (Manhattan), 190 (Hicksville/LI), 191 (Montauk/LI)
-	var culper_tiles: Array = [20, 190, 191]
-	var dma_tile = null
-	for tile in $TileController.get_children():
-		if tile.tileNumber in culper_tiles and tile.get("dmaInvestigationPending"):
-			dma_tile = tile
-			tile.dmaInvestigationPending = false
-			break
-	if dma_tile == null:
-		return
-	_start_cooldown("PROT_16_SUMMON", 9999)  # fires once
-	createNewEvent("PROT_16_SUMMON", dma_tile)
-
-
-func _check_prot16_objectives() -> void:
-	var flags: Dictionary = playerCountryNode.CountryFlags
-	if not flags.has("prot_16_summoned"):
-		return
-	if not flags.has("prot_16_tame") and playerSpyWins >= 3:
-		if not _event_on_cooldown("PROT_16_TAME"):
-			_start_cooldown("PROT_16_TAME", 9999)
-			createNewEvent("PROT_16_TAME", null)
-		return
-	if flags.has("prot_16_tame") and not flags.has("prot_16_agreed") and playerSpyWins >= 6:
-		if not _event_on_cooldown("PROT_16_AGREE"):
-			_start_cooldown("PROT_16_AGREE", 9999)
-			createNewEvent("PROT_16_AGREE", null)
-
-
-func _on_spy_win_recorded() -> void:
-	playerSpyWins += 1
-
-
-func _check_prot07_objectives() -> void:
-	var flags: Dictionary = playerCountryNode.CountryFlags
-	if not flags.has("prot_07_summoned"):
-		return
-	var total := 0
-	for tile in playerCountryNode.OwnedTileList:
-		if tile.get("tileContinent") == "TN":
-			total += tile.buildings.get("farm", 0)
-			total += tile.buildings.get("granary", 0)
-			total += tile.buildings.get("monument", 0)
-			total += tile.buildings.get("theater", 0)
-			total += tile.buildings.get("library", 0)
-			total += tile.buildings.get("resort", 0)
-	if not flags.has("prot_07_tame") and total >= 25:
-		if not _event_on_cooldown("PROT_07_TAME"):
-			_start_cooldown("PROT_07_TAME", 9999)
-			createNewEvent("PROT_07_TAME", null)
-		return
-	if flags.has("prot_07_tame") and not flags.has("prot_07_agreed") and total >= 40:
-		if not _event_on_cooldown("PROT_07_AGREE"):
-			_start_cooldown("PROT_07_AGREE", 9999)
-			createNewEvent("PROT_07_AGREE", null)
-
-
-func _check_prot06_dma_summon() -> void:
-	if not _is_protector_wild("PROT_06"):
-		return
-	if _event_on_cooldown("PROT_06_SUMMON"):
-		return
-	# Tiles 40 (Waldorf), 41 (Bethesda), 42 (Frederick) — inland MD / PG County corridor
-	var goatman_tiles: Array = [40, 41, 42]
-	var dma_tile = null
-	for tile in $TileController.get_children():
-		if tile.tileNumber in goatman_tiles and tile.get("dmaInvestigationPending"):
-			dma_tile = tile
-			tile.dmaInvestigationPending = false
-			break
-	if dma_tile == null:
-		return
-	# Record building targets for objectives at moment of summon
-	var lib_now := 0
-	var bar_now := 0
-	for tile in playerCountryNode.OwnedTileList:
-		if tile.get("tileContinent") == "MD":
-			lib_now += tile.buildings.get("library", 0)
-			bar_now += tile.buildings.get("barracks", 0)
-	playerCountryNode.CountryFlags["prot_06_lib_target"] = lib_now + 4
-	playerCountryNode.CountryFlags["prot_06_bar_target"] = bar_now + 2
-	_start_cooldown("PROT_06_SUMMON", 9999)
-	createNewEvent("PROT_06_SUMMON", dma_tile)
-
-
-func _check_prot06_objectives() -> void:
-	var flags: Dictionary = playerCountryNode.CountryFlags
-	if not flags.has("prot_06_summoned"):
-		return
-	if not flags.has("prot_06_tame"):
-		var lib_target: int = flags.get("prot_06_lib_target", 9999)
-		var bar_target: int = flags.get("prot_06_bar_target", 9999)
-		var lib_now := 0
-		var bar_now := 0
-		for tile in playerCountryNode.OwnedTileList:
-			if tile.get("tileContinent") == "MD":
-				lib_now += tile.buildings.get("library", 0)
-				bar_now += tile.buildings.get("barracks", 0)
-		if lib_now >= lib_target and bar_now >= bar_target:
-			if not _event_on_cooldown("PROT_06_TAME"):
-				_start_cooldown("PROT_06_TAME", 9999)
-				createNewEvent("PROT_06_TAME", null)
-		return
-	if flags.has("prot_06_tame") and not flags.has("prot_06_agreed"):
-		var total := 0
-		for tile in playerCountryNode.OwnedTileList:
-			if tile.get("tileContinent") == "MD":
-				for btype in tile.buildings:
-					total += tile.buildings[btype]
-		if total >= 100:
-			if not _event_on_cooldown("PROT_06_AGREE"):
-				_start_cooldown("PROT_06_AGREE", 9999)
-				createNewEvent("PROT_06_AGREE", null)
+	print("[Protector] PROT_17_SUMMON fired via DMA investigation at ", dma_tile.tileName)
 
 
 # ── CANADIAN PROTECTOR CHECKS ────────────────────────────────────────────────
@@ -5138,6 +4736,7 @@ func _tick_wild_ca_protectors() -> void:
 		if randf() < 0.25:
 			var target = ca_country.OwnedTileList[randi() % ca_country.OwnedTileList.size()]
 			target.corruption = clampi(target.corruption + 1, 0, 100)
+			print("[CA WildProt] ", pid, " added +1 corruption to ", target.tileName)
 
 
 func _check_ca_protectors() -> void:
@@ -5157,7 +4756,9 @@ func _check_ca_protectors() -> void:
 		var prot_tile = _get_ca_prot_tile(pid)
 		_start_cooldown(summon_id, 15)
 		createNewEvent(summon_id, prot_tile)
-			  # " at tile ", CA_PROT_TILES.get(pid, 0), " turn ", currentWorldTurn)
+			  #" at tile ", CA_PROT_TILES.get(pid, 0), " turn ", currentWorldTurn)
+=======
+			  #" at tile ", CA_PROT_TILES.get(pid, 0), " turn ", currentWorldTurn)
 		return
 
 
@@ -5176,7 +4777,9 @@ func _check_ca_own_protectors() -> void:
 		var prot_tile = _get_ca_prot_tile(pid)
 		_start_cooldown(summon_id, 15)
 		createNewEvent(summon_id, prot_tile)
-			  # " at tile ", CA_PROT_TILES.get(pid, 0), " turn ", currentWorldTurn)
+			  #" at tile ", CA_PROT_TILES.get(pid, 0), " turn ", currentWorldTurn)
+=======
+			  #" at tile ", CA_PROT_TILES.get(pid, 0), " turn ", currentWorldTurn)
 		return
 
 
@@ -5204,7 +4807,9 @@ func _check_loyal_governor_events() -> void:
 			continue
 		playerCountryNode.CountryFlags[fired_flag] = true
 		createNewEvent("GOV_LOYAL_" + gov.governorArchetypeId, tile)
-			") loyal event fired at ", tile.tileName)
+			#") loyal event fired at ", tile.tileName)
+=======
+			#") loyal event fired at ", tile.tileName)
 		return  # one per turn max
 
 
@@ -5224,6 +4829,7 @@ func _check_arc03_honorary_event() -> void:
 			continue
 		playerCountryNode.CountryFlags[flag] = true
 		createNewEvent("ARC_03_HONORARY", tile)
+		print("[ARC_03] Honorary degree event fired at ", tile.tileName)
 		return
 
 
@@ -5243,6 +4849,7 @@ func _check_arc11_monarchist_event() -> void:
 			continue
 		playerCountryNode.CountryFlags[flag] = true
 		createNewEvent("ARC_11_MONARCHISTS", tile)
+		print("[ARC_11] Monarchist mob event fired at ", tile.tileName)
 		return
 
 
@@ -5288,6 +4895,7 @@ func _check_george_peace_offer() -> void:
 
 	_start_cooldown("GEORGE_PEACE_01", 999)
 	createNewEvent("GEORGE_PEACE_01", null)
+	print("[George Peace] Turn ", currentWorldTurn, " — peace offer fired")
 
 
 func _apply_george_peace() -> void:
@@ -5316,7 +4924,9 @@ func _apply_george_peace() -> void:
 	if not playerCountryNode.CountryFlags.has("george_peace_accepted"):
 		playerCountryNode.CountryFlags["george_peace_accepted"] = true
 
-		" + uk_ca_peace (allied)" if is_allied else " (USA only)")
+		#" + uk_ca_peace (allied)" if is_allied else " (USA only)")
+=======
+		#" + uk_ca_peace (allied)" if is_allied else " (USA only)")
 
 
 # ── PEACE CONDITIONS ─────────────────────────────────────────────────────────
@@ -5394,12 +5004,14 @@ func _execute_allied_peace(uk_country, peace_tile) -> void:
 			c.CountryFlags["uk_ca_peace"] = true
 			break
 	createNewEvent("PEACE_ALLIED_01", peace_tile)
+	print("[Peace] Allied peace signed — PEACE_ALLIED_01 fired")
 
 
 func _execute_usa_peace(uk_country, peace_tile) -> void:
 	if not uk_country.CountryFlags.has("uk_usa_peace"):
 		uk_country.CountryFlags["uk_usa_peace"] = true
 	createNewEvent("PEACE_USA_01", peace_tile)
+	print("[Peace] USA separate peace signed — PEACE_USA_01 fired")
 
 
 func _execute_ca_peace(uk_country, peace_tile) -> void:
@@ -5410,6 +5022,7 @@ func _execute_ca_peace(uk_country, peace_tile) -> void:
 			c.CountryFlags["uk_ca_peace"] = true
 			break
 	createNewEvent("PEACE_CA_AI_01", peace_tile)
+	print("[Peace] CA separate peace signed — PEACE_CA_AI_01 fired")
 
 
 func _check_win_conditions() -> void:
@@ -5493,6 +5106,7 @@ func _generate_and_assign_governor(tile: Tile) -> void:
 	tile.tileGovernor      = new_gov
 	tile.filledGovernorSlot = true
 	$CanvasLayer/WarRoomPanel.registerCommanderArc(new_gov, tile)
+	print("[Fort] Replacement governor generated: ", full_name, " at ", tile.tileName)
 
 func evaluateTileEvents(tile) -> void:
 	var to_fire = EventDatabase.evaluate_tile_triggers(tile, currentWorldTurn)
@@ -5533,7 +5147,9 @@ func _apply_resource_change(resource: String, amount: int) -> void:
 func _apply_morale_boost(amount: int, tile = null) -> void:
 	if tile != null and tile.tileGovernor != null:
 		tile.tileGovernor.morale = clampi(tile.tileGovernor.morale + amount, 0, 100)
-			" morale → ", tile.tileGovernor.morale)
+			#" morale → ", tile.tileGovernor.morale)
+=======
+			#" morale → ", tile.tileGovernor.morale)
 	else:
 		for t in playerCountryNode.OwnedTileList:
 			if t.tileGovernor != null:
@@ -5549,7 +5165,9 @@ func _apply_army_buff(buff_type: String, duration: int, tile) -> void:
 		army.apply_status(buff_type, duration)
 		army.surveySelf()
 		army.updateArmyUI()
-		targets.size(), " army/armies")
+		#targets.size(), " army/armies")
+=======
+		#targets.size(), " army/armies")
 
 func _summon_protector(protector_id: String, tile) -> void:
 	createNewEvent("PROT_" + protector_id + "_SUMMON", tile)
@@ -5579,24 +5197,10 @@ func _is_state_liberated(state_code: String, cid: String) -> bool:
 
 
 
-func _on_path_control_movement_blocked(reason: String) -> void:
-	var lbl := Label.new()
-	lbl.text = reason
-	lbl.add_theme_color_override("font_color", Color(1.0, 0.85, 0.2, 1.0))
-	lbl.add_theme_font_size_override("font_size", 18)
-	lbl.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
-	lbl.position.y += 80
-	lbl.modulate.a = 0.0
-	$CanvasLayer.add_child(lbl)
-	var tw := create_tween()
-	tw.tween_property(lbl, "modulate:a", 1.0, 0.2)
-	tw.tween_interval(1.4)
-	tw.tween_property(lbl, "modulate:a", 0.0, 0.3)
-	tw.tween_callback(lbl.queue_free)
-
 func _on_right_click_detector_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if Input.is_action_just_pressed('Right Click'):
 		resetUI()
+	pass # Replace with function body.
 
 func resetUI():
 	for Tile in $TileController.get_children():
@@ -5606,6 +5210,7 @@ func resetUI():
 		Control.visible = false
 		$CanvasLayer/PanelOpenerControl.visible = true
 		$"CanvasLayer/Resource Bar (TOP)".visible = true
+	pass
 
 var lastSelectedPathPoint: pathPointButton
 func updateArmyFunc(Army, pathPoint):
@@ -5623,6 +5228,7 @@ func updateArmyFunc(Army, pathPoint):
 	else:
 		$CanvasLayer/ArmyPanel.visible = false
 		lastSelectedPathPoint = null
+	pass
 
 func _on_path_control_show_army_info(key) -> void:
 	match key:
@@ -5663,13 +5269,13 @@ func _on_path_control_show_army_info(key) -> void:
 			$CanvasLayer/ArmyPanel/ActionInfoPanelControl/ActionDescriptionLabel.text = "Grant half of this unit's defense to a nearby unit for this turn."
 		"Close":
 			$CanvasLayer/ArmyPanel/ActionInfoPanelControl.visible = false
+	pass # Replace with function body.
 
 #this is where the battles for melee are calculated
 var calculateMelee: bool
 func meleePressed(armyPath, thisArmy) -> void:
 	if thisArmy.attackBlocked:
 		return
-	thisArmy.cancelGuard()
 	if lastSelectedPathPoint != null:
 		for pathPointButton in lastSelectedPathPoint.neighborPathPoints:
 			pathPointButton.calculateBattle(armyPath, "melee", thisArmy, lastSelectedPathPoint)
@@ -5681,6 +5287,7 @@ func meleePressed(armyPath, thisArmy) -> void:
 	#if an apf is hovered over while in melee attack calc, build a battle and display results
 	#if an apf is clicked while in melee attack calc, enact the battle and add damage/results
 
+	pass # Replace with function body.
 
 func _army_has_active_marine(army: Army) -> bool:
 	for unit in army.unitsList:
@@ -5692,54 +5299,58 @@ func _army_has_active_marine(army: Army) -> bool:
 func rangedPressed(armyPath, thisArmy) -> void:
 	if thisArmy.attackBlocked:
 		return
-	thisArmy.cancelGuard()
 	if lastSelectedPathPoint != null:
 		for pathPointButton in lastSelectedPathPoint.neighborPathPoints:
 			pathPointButton.calculateBattle(armyPath, "ranged", thisArmy, lastSelectedPathPoint)
+	pass # Replace with function body.
 
 func updatePathPointsFunc(visibility):
 	if visibility == false:
 		$CanvasLayer/ArmyPanel/ArmyButtonsContainer.visible = false
 	else:
 		$CanvasLayer/ArmyPanel/ArmyButtonsContainer.visible = true
+	pass
 
 func newTileDevelopment(tileToDev, devType, devCivilian):
 	for Tile in $TileController.get_children():
 		if Tile.tileNumber == tileToDev.tileNumber:
 			Tile.devChange(devType, devCivilian)
+	pass
 
 
 func giveSpellInfo(type, spellBranch):
+	print("RETURN GIVE SPELL")
 	var schoolPoints: String = LocBallUI.magicDic.schoolPoints
 	var turnsUntil: String = LocBallUI.magicDic.turnsUntil
 	var unlocked: String = LocBallUI.magicDic.spellUnlocked
+	print("RETURN GIVE SPELL")
 	var spellString: String
 	var spellDesc: String
 	var schoolType: String
 	match type:
 		"healingPotion":
-			spellString = LocBallUI.magicDic.healingPotion
-			spellDesc = LocBallUI.magicDic.healingPotionDesc
+			spellString = LocBallUI.magicDic.manifest
+			spellDesc = LocBallUI.magicDic.manifest
 			schoolType = LocBallUI.magicDic.manifest
 		"draughtOfKnowledge":
-			spellString = LocBallUI.magicDic.draughtOfKnowledge
-			spellDesc = LocBallUI.magicDic.draughtOfKnowledgeDesc
+			spellString = LocBallUI.magicDic.manifest
+			spellDesc = LocBallUI.magicDic.manifest
 			schoolType = LocBallUI.magicDic.manifest
 		"fireworks":
-			spellString = LocBallUI.magicDic.fireworks
-			spellDesc = LocBallUI.magicDic.fireworksDesc
+			spellString = LocBallUI.magicDic.manifest
+			spellDesc = LocBallUI.magicDic.manifest
 			schoolType = LocBallUI.magicDic.manifest
 		"fleetingFoot":
-			spellString = LocBallUI.magicDic.fleetingFoot
-			spellDesc = LocBallUI.magicDic.fleetingFootDesc
+			spellString = LocBallUI.magicDic.manifest
+			spellDesc = LocBallUI.magicDic.manifest
 			schoolType = LocBallUI.magicDic.manifest
 		"focusingDust":
-			spellString = LocBallUI.magicDic.focusDust
-			spellDesc = LocBallUI.magicDic.focusDustDesc
+			spellString = LocBallUI.magicDic.manifest
+			spellDesc = LocBallUI.magicDic.manifest
 			schoolType = LocBallUI.magicDic.manifest
 		"goldenTouch":
-			spellString = LocBallUI.magicDic.goldenTouch
-			spellDesc = LocBallUI.magicDic.goldenTouchDesc
+			spellString = LocBallUI.magicDic.manifest
+			spellDesc = LocBallUI.magicDic.manifest
 			schoolType = LocBallUI.magicDic.manifest
 		"paralysis":
 			spellString = LocBallUI.magicDic.paralysis
@@ -5766,6 +5377,7 @@ func giveSpellInfo(type, spellBranch):
 			spellDesc = LocBallUI.magicDic.waterbreathingDesc
 			schoolType = LocBallUI.magicDic.manifest
 	spellBranch.giveSpellInfo(schoolPoints, turnsUntil, unlocked, spellString, spellDesc, schoolType)
+	pass
 
 func _on_belief_control_purchased_belief(beliefName, beliefCost) -> void:
 	playerCountryNode.addReligiousBelief(beliefName)
@@ -5775,10 +5387,12 @@ func _on_belief_control_purchased_belief(beliefName, beliefCost) -> void:
 	for army in playerCountryNode.countryArmyList:
 		if army.parentCountry == playerCountryNode:
 			army.applyCountryBeliefMilMods()
+	pass
 
 
 func _on_government_control_slider_changed(amount, type) -> void:
 	playerCountryNode.setNewTaxAmount(amount, type)
+	pass # Replace with function body.
 
 func _on_civilian_button_pressed() -> void:
 	$CanvasLayer/CivilianControl.updateCivilians()
@@ -5786,6 +5400,7 @@ func _on_civilian_button_pressed() -> void:
 		$CanvasLayer/CivilianControl.visible = false
 	else:
 		$CanvasLayer/CivilianControl.visible = true
+	pass # Replace with function body.
 
 var milModScene = load("res://mil_mod.tscn")
 
@@ -5806,51 +5421,63 @@ func updateCivFunc(civ, pathPoint):
 		$CanvasLayer/CivilianUnitControl.visible = true
 	else:
 		$CanvasLayer/CivilianUnitControl.visible = false
+	pass
 
 func calculateCivilianButtons(civ, ppbTile):
 	$CanvasLayer/CivilianUnitControl/CivilianActionButtons.updateUI(playerCountryNode.CID, civ, civ.civilianTool.toolName, civ.civilianKit.kitType, ppbTile)
+	pass
 
 func _on_colonize_button_pressed() -> void:
 	$CanvasLayer/CivilianUnitControl.visible = false
 	$PathControl.colonizeTile()
+	pass # Replace with function body.
 
 func updateCountryTiles(colonizedTile):
 	if colonizedTile.tileOwner != null:
 		for country in aliveCountriesList:
 			if country.CID == colonizedTile.tileOwner:
 				country.addTile(colonizedTile)
+	pass
 
 func _on_increase_agricultural_development_pressed() -> void:
 	$CanvasLayer/CivilianUnitControl.visible = false
 	$PathControl.agricultureTile()
+	pass # Replace with function body.
 
 func _on_increase_resource_development_pressed() -> void:
 	$CanvasLayer/CivilianUnitControl.visible = false
 	$PathControl.resourceTile()
+	pass # Replace with function body.
 
 func _on_increase_urban_development_pressed() -> void:
 	$CanvasLayer/CivilianUnitControl.visible = false
 	$PathControl.urbanTile()
+	pass # Replace with function body.
 
 func _on_increase_elite_development_pressed() -> void:
 	$CanvasLayer/CivilianUnitControl.visible = false
 	$PathControl.eliteTile()
+	pass # Replace with function body.
 
 func _on_increase_military_development_pressed() -> void:
 	$CanvasLayer/CivilianUnitControl.visible = false
 	$PathControl.militaryTile()
+	pass # Replace with function body.
 
 func _on_clear_corruption_pressed() -> void:
 	$CanvasLayer/CivilianUnitControl.visible = false
 	$PathControl.fightCorruptionTile()
+	pass # Replace with function body.
 
 func _on_discover_nearby_tiles_button_pressed() -> void:
 	$CanvasLayer/CivilianUnitControl.visible = false
 	$PathControl.discoverNearby()
+	pass # Replace with function body.
 
 func _on_building_info_panel_fill_with_unlocked_buildings() -> void:
 	for building in playerCountryNode.unlockedBuildings:
 		$CanvasLayer/BuildingInfoPanel.addNewBuildingButton(building)
+	pass # Replace with function body.
 
 func addNewBuildingToTile(buildingType, goldCalculatedCost, foodCalculatedCost, woodCalculatedCost, metalCalculatedCost, thisTile,player):
 	thisTile.addBuilding(buildingType, 1)
@@ -5860,12 +5487,15 @@ func addNewBuildingToTile(buildingType, goldCalculatedCost, foodCalculatedCost, 
 	playerCountryNode.TotalMetal -= metalCalculatedCost
 	$CanvasLayer/BuildingInfoPanel/AddBuildingControl.visible = false
 	$CanvasLayer/BuildingInfoPanel.displayBuildingInfo(thisTile)
+	pass
 
 func _on_spell_schools_control_ask_for_info(type, SpellUnlock) -> void:
 	giveSpellInfo(type, SpellUnlock)
+	pass # Replace with function body.
 
 func _on_spell_schools_control_calculate_player_outputs(spellSchools) -> void:
 	calculatePlayerOutputs(spellSchools)
+	pass # Replace with function body.
 
 func tileSiegeWon(tile, oldCID: String, newCID: String) -> void:
 	for country in aliveCountriesList:
@@ -5890,12 +5520,14 @@ func tileSiegeWon(tile, oldCID: String, newCID: String) -> void:
 		var mem_flag: String = "memorial_mission_" + str(tile.tileNumber)
 		if not playerCountryNode.CountryFlags.has(mem_flag):
 			createNewEvent("MEMORIAL_001", tile)
+			print("[Memorial] UK occupied special feature tile: ", tile.tileName)
 
 func _trigger_game_over(won: bool, reason: String = "", end_type: String = "") -> void:
 	if _game_ended:
 		return
 	_game_ended = true
 	#AudioManager.play_sfx("victory" if won else "defeat")
+	print("[GameOver] won=", won, "  reason=", reason, "  end_type=", end_type)
 	if not won and end_type != "":
 		var ending = get_node_or_null("CanvasLayer/EndingSceneControl")
 		if ending != null:
@@ -5908,67 +5540,11 @@ func _trigger_game_over(won: bool, reason: String = "", end_type: String = "") -
 		push_warning("[GameOver] GameOverPanel not found — result: " + ("WIN" if won else "LOSS"))
 
 
-func _next_belief_cost() -> int:
-	if not is_instance_valid(playerCountryNode):
-		return 10
-	return max(10, int(10.0 * pow(1.2, float(playerCountryNode.beliefPurchaseCount))))
-
-func _build_army_cycle_list() -> Array:
-	if not is_instance_valid(playerCountryNode):
-		return []
-	var result: Array = []
-	for army in playerCountryNode.countryArmyList:
-		if not is_instance_valid(army):
-			continue
-		if army.currentMovementPoints <= 0:
-			continue
-		if army.get("isGuarding") == true:
-			continue
-		result.append(army)
-	return result
-
-func _on_belief_purchased(_bname: String, _bcost: int) -> void:
-	_belief_purchased_this_turn = true
-	$CanvasLayer/BeliefControl.hide()
-
 func _on_next_turn_pressed() -> void:
 	if _game_ended:
 		return
-
-	# ── Gate 1: Tech ────────────────────────────────────────────────────────────
-	# Handled by _process: PickTech replaces NextTurn when investmentTech == null,
-	# so if we reach here, tech is already selected.
-
-	# ── Gate 2: Belief ──────────────────────────────────────────────────────────
-	# When the player can afford a new belief, force them to pick one first.
-	if is_instance_valid(playerCountryNode) and not _belief_purchased_this_turn:
-		if playerCountryNode.TotalCulture >= _next_belief_cost():
-			$CanvasLayer/BeliefControl.show()
-			return
-
-	# ── Gate 3: Army cycling ────────────────────────────────────────────────────
-	# Cycle through armies that have movement points and aren't Guarding.
-	var armies_with_moves := _build_army_cycle_list()
-	var unseen: Array = []
-	for army in armies_with_moves:
-		if not _armies_shown_this_cycle.has(army.get_instance_id()):
-			unseen.append(army)
-	if unseen.size() > 0:
-		var target := unseen[0]
-		_armies_shown_this_cycle[target.get_instance_id()] = true
-		# Center camera on the army's tile
-		if target.inTile != null:
-			var pp = get_node_or_null(
-				"PathControl/PathPointsControl/" + str(target.inTile.tileNumber))
-			if pp:
-				$CameraMovementController/Camera2D.global_position = pp.global_position
-		return
-
-	# ── All gates passed — commit end of turn ───────────────────────────────────
-	_belief_purchased_this_turn = false
-	_armies_shown_this_cycle = {}
-
 	#AudioManager.play_sfx("end_turn")
+	# End this player's individual turn
 	_end_current_player_turn()
 
 	_turn_phase_index += 1
@@ -6114,7 +5690,9 @@ func _spawn_storm(origin: Tile) -> void:
 
 	# Spread to all neighbors
 	_spread_storm(origin, storm_id, storm_type, duration, intensity)
-		  # " — intensity ", intensity, ", duration ", duration, " turns.")
+		  #" — intensity ", intensity, ", duration ", duration, " turns.")
+=======
+		 # " — intensity ", intensity, ", duration ", duration, " turns.")
 
 func _spread_storm(origin: Tile, storm_id: String, storm_type: String,
 				   duration: int, intensity: int) -> void:
@@ -6211,15 +5789,6 @@ const _ARCHETYPE_FLAVOR: Dictionary = {
 	"ARC_25": "An orator who treated every battle as a performance. The curtain has fallen.",
 }
 
-func _on_enemy_army_defeated(_lost_army: Army) -> void:
-	if not is_instance_valid(playerCountryNode):
-		return
-	if not playerCountryNode.selectedBeliefs.any(func(b): return b.beliefType == "John Brown"):
-		return
-	playerCountryNode.TotalManpower += 250
-	playerCountryNode.TotalMandatePoints += 25
-
-
 func _on_commander_fallen(commander, army_name: String, tile) -> void:
 	# Priority 1: head of state death → game over (Ualani for USA)
 	if commander.isLeader:
@@ -6236,6 +5805,7 @@ func _on_commander_fallen(commander, army_name: String, tile) -> void:
 
 func _handle_president_death(commander, army_name: String, tile) -> void:
 	var name: String = commander.governorType if commander.governorType != "" else "the President"
+	print("[GAME OVER] President ", name, " has been killed.")
 	var data: Dictionary = {
 		"event_id":    "DYNAMIC_PRESIDENT_DEATH",
 		"event_type":  "standard",
@@ -6449,7 +6019,9 @@ func _on_vp_governor_selected(new_vp, overlay: ColorRect, panel: PanelContainer)
 	new_vp.isVicePresident = true
 	_vp_governor = new_vp
 	_vp_faction  = VP_FACTION_MAP.get(new_vp.governorType, "")
-		  " | Faction: ", _vp_faction)
+		  #" | Faction: ", _vp_faction)
+=======
+		 # " | Faction: ", _vp_faction)
 
 	# Close picker UI
 	overlay.queue_free()
@@ -6556,6 +6128,7 @@ func saveCountryStatesToFile() -> void:
 	if save_file:
 		save_file.store_string(JSON.stringify(country_states))
 		save_file.close()
+		print("World: Country states saved.")
 	else:
 		push_error("World: Could not save country states.")
  
@@ -6637,6 +6210,7 @@ func save_army_states_to_file(aliveCountriesList: Array) -> void:
 	if save_file:
 		save_file.store_string(JSON.stringify(all_armies))
 		save_file.close()
+		print("ArmyDatabase: ", all_armies.size(), " armies saved.")
 	else:
 		push_error("ArmyDatabase: Could not write army save file.")
 
@@ -6651,13 +6225,13 @@ func _library_on_event_fired(event_id: String) -> void:
 		return
 
 	# Gallery unlock — all players reach all scenes; no content gate
-	var content_flag: String = str(event.get("content_flag", "")).strip_edges()
-	if content_flag != "" and content_flag != "false" and content_flag != "null":
+	var content_flag: String = event.get("content_flag", "").strip()
+	if content_flag != "" and content_flag != "false":
 		LibraryData.unlock_gallery(event_id)
 
 	# Journal entry — major Ualani or historical events
 	# event_type values come directly from events.csv
-	var event_type: String = str(event.get("event_type", ""))
+	var event_type: String = event.get("event_type", "")
 	const JOURNAL_TYPES := [
 		"ualani_event",          # Ualani personal arc events
 		"white_house_secret",    # White House holiday intimacy events
@@ -6742,6 +6316,7 @@ func _spawn_anarchist_army(source_tile) -> void:
 	armyInstance.armyDestroyed.connect(_on_anarchist_destroyed.bind(armyInstance))
 	_anarchist_armies.append(armyInstance)
 	armyInstance.updateArmyUI()
+	print("[Anarchist] Cell spawned at ", uk_tile.tileName)
 
 func _on_anarchist_destroyed(army: Army) -> void:
 	_anarchist_armies.erase(army)
@@ -6768,7 +6343,9 @@ func _tick_anarchists() -> void:
 			var defender_loss: int = randi_range(30, 80)
 			army.manpowerInArmy = maxi(army.manpowerInArmy - attacker_loss, 0)
 			uk_army.manpowerInArmy = maxi(uk_army.manpowerInArmy - defender_loss, 0)
-				" — loses ", attacker_loss, ", UK loses ", defender_loss)
+				#" — loses ", attacker_loss, ", UK loses ", defender_loss)
+=======
+			#	" — loses ", attacker_loss, ", UK loses ", defender_loss)
 			army.updateArmyUI()
 			uk_army.updateArmyUI()
 			if army.manpowerInArmy <= 0:
@@ -6799,8 +6376,3 @@ func _tick_anarchists() -> void:
 #     var countryStates = loadCountryStatesFromFile()
 #     var armyStates    = ArmyDatabase.load_army_states_from_file()
 #     # ... then initialize tiles, countries, then restore armies
-
-
-func _on_button_pressed() -> void:
-	if _pause_overlay:
-		_pause_overlay.show()
