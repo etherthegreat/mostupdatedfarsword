@@ -22,8 +22,8 @@ signal addTechToPlayer
 func buildSelf(player) -> void:
 	playerNode = player
 	_build_grid()
-	_mark_purchased(player)
 	_connect_signals()
+	_mark_purchased(player)
 
 
 func _build_grid() -> void:
@@ -70,18 +70,24 @@ func _build_grid() -> void:
 func _mark_purchased(player) -> void:
 	for tech in player.unlockedTechnologies:
 		if tech.techName in _buttons:
-			_buttons[tech.techName].purchase()
+			_buttons[tech.techName].purchased = true
+	_refresh_all()
 
 func _connect_signals() -> void:
 	for btn in _buttons.values():
 		btn.selectInvestment.connect(selectInvestmentFunc)
 		btn.newTech.connect(unlockTech)
 
+func _refresh_all() -> void:
+	for btn in _buttons.values():
+		btn.refresh_visual()
+
 func unlockTech(techID: String, techButt: techButton, change: int) -> void:
 	nextTechChange = change
-	techButt.purchase()
+	techButt.purchased = true
 	emit_signal("addTechToPlayer", techID)
 	investmentTech = null
+	_refresh_all()
 
 func selectInvestmentFunc(techbutt: techButton) -> void:
 	investmentTech = techbutt

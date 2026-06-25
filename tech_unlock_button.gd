@@ -4,42 +4,24 @@ class_name techButton
 
 @export var techCost: int
 @export var techID: String
-var techScienceInvestment: int
-var technologyCost: int
-var technologyName: String
-var highestAvailable: bool
 @export var techDesc: String
-var technologyDescription: String 
-
 @export var institutionTech: bool
-var institutionTechnology: bool
-var institutionUnlockNumber: int
-var purchasedTechInTier: int
-
 @export var reqTechs: Array[techButton]
 
-var requiredTechs: Array[techButton]
-
-var purchased: bool
+var techScienceInvestment: int
+var purchased: bool = false
 
 func _ready() -> void:
-	institutionTechnology = institutionTech
-	if techDesc != null:
-		technologyDescription = techDesc
-	if institutionTechnology == true:
-		institutionUnlockNumber == 0
 	purchased = false
-	technologyCost = techCost
-	technologyName = techID
-	requiredTechs = reqTechs
 	buildSelf()
+	refresh_visual()
 
 var rewardScene = load("res://tech_reward_icon.tscn")
 
 func buildSelf():
-	$Label.text = technologyName
-	$CostLabel.text = str(technologyCost)
-	match technologyName:
+	$Label.text = techID
+	$CostLabel.text = str(techCost)
+	match techID:
 		# --- SABRE row ---
 		"Swordsmanship":
 			addReward("Cutlass Unlock")
@@ -100,57 +82,36 @@ func addReward(type):
 	newReward.buildSelf(type)
 	$HBoxContainer.add_child(newReward)
 
-var blue = Color.LIGHT_BLUE
-var white = Color.WHITE
-var yellow = Color.YELLOW_GREEN
-var grey = Color.DARK_GRAY
-var black = Color.BLACK
+const COLOR_PURCHASED := Color.LIGHT_BLUE
+const COLOR_AVAILABLE := Color.WHITE
+const COLOR_LOCKED    := Color.DARK_GRAY
 
-func _process(delta: float) -> void:
-	highestAvailable = true
-	if purchased == true:
-		$UnlockButton.add_theme_color_override("icon_normal_color", blue)
-		return
-	if institutionTechnology == true && purchased != true:
-		institutionUnlockNumber = 0
-		for techButton in requiredTechs:
-			if techButton.purchased == true:
-				institutionUnlockNumber += 1
-		if institutionUnlockNumber < 3:
-			highestAvailable = false
-			$UnlockButton.add_theme_color_override("icon_normal_color", grey)
-			return
-		else:
-			if purchased != true:
-				$UnlockButton.add_theme_color_override("icon_normal_color", white)
-				return
-			else:
-				$UnlockButton.add_theme_color_override("icon_normal_color", blue)
-				return
-	for techButton in requiredTechs:
-		if requiredTechs == null:
-			if self.purchased == true:
-				highestAvailable = false
-				add_theme_color_override("icon_normal_color", grey)
-				return
-		elif techButton.purchased == false:
-			highestAvailable = false
-			$UnlockButton.add_theme_color_override("icon_normal_color", grey)
-			return
-	if self.purchased == true:
-		highestAvailable = false
-		$UnlockButton.add_theme_color_override("icon_normal_color", blue)
-		return
-	if highestAvailable == true && self.purchased == false:
-		$UnlockButton.add_theme_color_override("icon_normal_color", white)
-		
-		return
+func _requirements_met() -> bool:
+	if institutionTech:
+		var count := 0
+		for btn in reqTechs:
+			if btn.purchased:
+				count += 1
+		return count >= 3
+	for btn in reqTechs:
+		if not btn.purchased:
+			return false
+	return true
+
+func refresh_visual() -> void:
+	if purchased:
+		$UnlockButton.disabled = true
+		$UnlockButton.add_theme_color_override("icon_normal_color", COLOR_PURCHASED)
+	elif _requirements_met():
+		$UnlockButton.disabled = false
+		$UnlockButton.add_theme_color_override("icon_normal_color", COLOR_AVAILABLE)
 	else:
-		$UnlockButton.add_theme_color_override("icon_normal_color", grey)
+		$UnlockButton.disabled = true
+		$UnlockButton.add_theme_color_override("icon_normal_color", COLOR_LOCKED)
 
-func purchase():
+func purchase() -> void:
 	purchased = true
-	$UnlockButton.disabled = true
+	refresh_visual()
 
 signal newTech
 func unlockTech(change):
@@ -160,9 +121,7 @@ signal selectInvestment
 func _on_unlock_button_pressed() -> void:
 	emit_signal("selectInvestment", self)
 
-var change: int
-func addScienceInvestment(amount):
+func addScienceInvestment(amount: int) -> void:
 	techScienceInvestment += amount
-	if techScienceInvestment > technologyCost:
-		change = techScienceInvestment - technologyCost
-		unlockTech(change)
+	if techScienceInvestment > techCost:
+		unlockTech(techScienceInvestment - techCost)
