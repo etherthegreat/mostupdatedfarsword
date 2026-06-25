@@ -5,7 +5,7 @@ var gameLanguage: String
 var LocBallUI
 
 var playerCountry: String
-var playerCountryNode
+var playerCountryNode: country
 var playerOutputDict: Dictionary
 var paused: bool #determines if game is paused or not
 var date: int #date of the in-game world
@@ -47,7 +47,7 @@ var _ca_vp_faction: String = ""        # faction of CA's Deputy Governor
 var _peace_dock_was_uk: Dictionary = {}  # tile_num → bool; tracks UK ownership flip per turn
 var _peace_last_freed_tile = null        # most-recently freed peace dock tile node
 var isCoopMode: bool = false             # true when both USA and CA are player-controlled
-var coopCountryNode      # second player's country in co-op mode
+var coopCountryNode: country      # second player's country in co-op mode
 var _player_turn_order: Array = []       # ordered CIDs of player-controlled countries
 var _turn_phase_index: int = 0           # which slot in _player_turn_order is active
 

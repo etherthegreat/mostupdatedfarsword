@@ -360,6 +360,7 @@ func connectBuilding(building):
 	building.towerBuilding.connect(assignTower)
 
 func assignTower():
+	pass
 
 func createFactionReward(rewardType):
 	match rewardType:
@@ -745,6 +746,7 @@ func addWeaponTemplate(Name):
 
 func updateUnlockableAttributes():
 	if unlockedTechnologies == null:
+		pass
 	else:
 		var farmBuildingLevel = buildingLevel.new()
 		farmBuildingLevel.buildingType = "Farm"
