@@ -1273,6 +1273,7 @@ func calculateTurn() -> void:
 # Emitted when an AI army physically moves to a new tile after a conquest.
 # world.gd listens and repositions the APF node.
 signal armyRepositioned(army, old_tile, new_tile)
+signal battleResolved(tile, atk_loss, def_loss)
 
 # Emitted for every AI attack so world.gd can build a turn summary.
 signal aiCombatEvent(attacker_cid, tile_name, result)
@@ -1441,7 +1442,7 @@ func _uk_attack_tile(army: Army, targetTile) -> void:
 		emit_signal("armyRepositioned", army, old_tile, targetTile)
 
 
-func _resolve_ai_battle(attacker: Army, defender: Army, _tile) -> void:
+func _resolve_ai_battle(attacker: Army, defender: Army, tile) -> void:
 	var raw_attack = float(attacker.armyPunch)
 	var block_ratio = clamp(
 		float(defender.armyBlock) / max(1.0, float(defender.unitsList.size())),
@@ -1456,6 +1457,7 @@ func _resolve_ai_battle(attacker: Army, defender: Army, _tile) -> void:
 
 	defender.calculateDefenderResults("melee", defender_loss)
 	attacker.calculateDefenderResults("melee", attacker_loss)
+	emit_signal("battleResolved", tile, attacker_loss, defender_loss)
 
 
 func _uk_retreat_to_supply(army: Army) -> void:

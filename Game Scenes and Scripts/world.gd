@@ -46,6 +46,7 @@ var _ca_vp_governor = null             # reference to Marc Penoit as CA Deputy G
 var _ca_vp_faction: String = ""        # faction of CA's Deputy Governor
 var _peace_dock_was_uk: Dictionary = {}  # tile_num → bool; tracks UK ownership flip per turn
 var _ai_combat_log: Array = []           # entries collected during AI resolution each round
+var _floating_damage_scene = preload("res://floating_damage_number.tscn")
 var _peace_last_freed_tile = null        # most-recently freed peace dock tile node
 var isCoopMode: bool = false             # true when both USA and CA are player-controlled
 var coopCountryNode    # second player's country in co-op mode
@@ -1539,6 +1540,8 @@ func connectCountrySignals():
 			country.armyRepositioned.connect(_on_ai_army_repositioned)
 		if not country.aiCombatEvent.is_connected(_on_ai_combat_event):
 			country.aiCombatEvent.connect(_on_ai_combat_event)
+		if not country.battleResolved.is_connected(_on_battle_resolved):
+			country.battleResolved.connect(_on_battle_resolved)
 
 func _raise_starting_armies() -> void:
 	# Raises every army that was created during NewGameBuild() (CSV-named starting
@@ -2034,6 +2037,22 @@ func _show_ai_turn_report() -> void:
 	if label != null:
 		label.text = _format_game_date() + "\n" + "\n".join(lines)
 	_ai_combat_log.clear()
+
+# ── FLOATING DAMAGE NUMBERS ───────────────────────────────────────────────────
+func _spawn_damage_number(amount: int, color: Color, world_pos: Vector2, x_offset: float) -> void:
+	if amount <= 0:
+		return
+	var node = _floating_damage_scene.instantiate()
+	add_child(node)
+	node.global_position = world_pos + Vector2(x_offset, 0.0)
+	node.setup(amount, color)
+
+func _on_battle_resolved(tile, atk_loss: int, def_loss: int) -> void:
+	if tile == null or tile.tileSpawnPoint == null:
+		return
+	var base_pos: Vector2 = tile.tileSpawnPoint.global_position
+	_spawn_damage_number(atk_loss, Color(1.0, 0.4, 0.1), base_pos, -28.0)
+	_spawn_damage_number(def_loss, Color(1.0, 0.85, 0.1), base_pos, 28.0)
 
 func raiseArmyFromWorld(Army, country, Tile):
 	if Tile == null or not is_instance_valid(Tile):
