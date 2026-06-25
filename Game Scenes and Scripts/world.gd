@@ -224,6 +224,7 @@ func newGameBuild(CID, gameLang, isCoop: bool = false):
 	$CanvasLayer/LoadingProgressBar.value = 25
 	spawnNewGameCountries(CID)
 	connectCountrySignals()
+	_raise_starting_armies()
 	$CanvasLayer/BuildingInfoPanel/buildingPanelPanel.player = playerCountryNode
 	$CanvasLayer/LoadingLabel.text = "Prospecting for Ores"
 	$CanvasLayer/LoadingProgressBar.value = 50
@@ -1139,7 +1140,7 @@ func spawnStartingArmies() -> void:
 		if not tile.filledGovernorSlot or tile.tileGovernor == null:
 			continue
 		var blvl: int = int(tile.buildings.get("barracks", 0))
-		if blvl < 2 or blvl > 4:
+		if blvl < 1:
 			continue
 		if tile.stationedArmy != null:
 			continue
@@ -1156,11 +1157,11 @@ func spawnStartingArmies() -> void:
 
 		playerCountryNode.addArmy(army_name, tile.tileNumber)
 
-		# addArmy() always appends — grab the army we just added and assign its commander
 		var new_army = playerCountryNode.countryArmyList.back()
 		if new_army != null:
 			new_army.addUnitCommander(gov)
 			new_army.updateArmyUI()
+			new_army.raiseSelf()
 
 		print("[StartingArmies] '", army_name, "' at ", tile.tileName,
 			  " (barracks lvl ", int(tile.buildings.get("barracks", 0)),
@@ -1380,7 +1381,7 @@ func _spawn_ai_starting_armies(country_node) -> void:
 		if not tile.filledGovernorSlot or tile.tileGovernor == null:
 			continue
 		var blvl: int = int(tile.buildings.get("barracks", 0))
-		if blvl < 2 or blvl > 4:
+		if blvl < 1:
 			continue
 		if tile.stationedArmy != null:
 			continue
@@ -1400,9 +1401,7 @@ func _spawn_ai_starting_armies(country_node) -> void:
 		if new_army != null:
 			new_army.addUnitCommander(gov)
 			new_army.updateArmyUI()
-
-			  #" (barracks lvl ", int(tile.buildings.get("barracks", 0)), ", ", arc_id, ")")
-			 # " (barracks lvl ", int(tile.buildings.get("barracks", 0)), ", ", arc_id, ")")
+			new_army.raiseSelf()
 
 	print("[CA Armies] ", chosen.size(), " starting armies placed for ", country_node.CID, ".")
 
@@ -1473,6 +1472,14 @@ func connectCountrySignals():
 	for country in aliveCountriesList:
 		country.raiseThisArmySignal.connect(raiseArmyFromWorld)
 	pass
+
+func _raise_starting_armies() -> void:
+	# Raises every army that was created during NewGameBuild() (CSV-named starting
+	# armies like the Continental Army). Must be called AFTER connectCountrySignals()
+	# so raiseThisArmySignal is wired before the emit fires.
+	for country in aliveCountriesList:
+		for army in country.countryArmyList:
+			army.raiseSelf()
 
 func updateBeliefControl():
 	$CanvasLayer/BeliefControl.updateSelf()

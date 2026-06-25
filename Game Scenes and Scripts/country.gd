@@ -534,6 +534,7 @@ func addArmy(Name, TileNumber, icon = null, tags: Array = []):
 	if not tags.is_empty():
 		armyInstance.armyTags = tags
 	var templates = ArmyDatabase.get_templates_for_country(CID)
+	var template_matched := false
 	for template in templates:
 		if template.get("armyName", "") == Name:
 			if tags.is_empty():
@@ -545,12 +546,17 @@ func addArmy(Name, TileNumber, icon = null, tags: Array = []):
 					unitData.get("unitType",    "Infantry"),
 					unitData.get("level",       1),
 					unitData.get("weaponType",  "Flintlock"),
-					"Iron",                              # OreType — default for all starting armies
-					unitData.get("uniformType", "Cloth"),# ArmorType maps to uniform cosmetic
+					"Iron",
+					unitData.get("uniformType", "Cloth"),
 					unitData.get("manpower",    100),
 					unitData.get("weapons",     100)
 				)
+			template_matched = true
 			break
+	# Fallback: procedural armies that don't match a CSV template get a small militia
+	if not template_matched:
+		addNewUnit(armyInstance, "Infantry", 1, "Flintlock", "Iron", "Cloth", 150, 150)
+		addNewUnit(armyInstance, "Infantry", 1, "Flintlock", "Iron", "Cloth", 150, 150)
 	# ── Tile placement ────────────────────────────────────────────────────────
 	for Tile in OwnedTileList:
 		if Tile.tileNumber == TileNumber:
