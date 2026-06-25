@@ -987,6 +987,7 @@ func updateUnlockableAttributes():
 						buildingLevel.maxLevel +=3
 			if Technology.techName == "Tempuring":
 				addTool("Steel Tools")
+			# --- SABRE row ---
 			if Technology.techName == "Swordsmanship":
 				addWeaponTemplate("Cutlass")
 			if Technology.techName == "Cavalry Drills":
@@ -995,52 +996,54 @@ func updateUnlockableAttributes():
 				addWeaponTemplate("Officer Sword")
 			if Technology.techName == "Marine Discipline":
 				addWeaponTemplate("Marine Mameluke")
+			# --- RIFLES row ---
 			if Technology.techName == "Musket Drilling":
-				addWeaponTemplate("Musket")
+				addWeaponTemplate("Flintlock")
 			if Technology.techName == "Volley Tactics":
 				for UnitTemplate in unitTemplateList:
 					if UnitTemplate.unitType == "Ranged":
 						UnitTemplate.unitOffensiveScore += 3
 			if Technology.techName == "Percussion Ignition":
-				addWeaponTemplate("Rifle")
+				addWeaponTemplate("Breechloader")
 			if Technology.techName == "Repeating Mechanisms":
-				addWeaponTemplate("Repeating Rifle")
+				addWeaponTemplate("Lever Repeater")
+			# --- ARTILLERY row ---
 			if Technology.techName == "Field Gunnery":
 				addWeaponTemplate("Field Gun")
-			if Technology.techName == "Artillery Corps":
-				for UnitTemplate in unitTemplateList:
-					if UnitTemplate.unitType == "Siege":
-						UnitTemplate.unitOffensiveScore += 5
 			if Technology.techName == "Siege Works":
 				addWeaponTemplate("Siege Cannon")
 			if Technology.techName == "Mortar Tactics":
 				addWeaponTemplate("Mortar")
+			if Technology.techName == "Rocket Artillery":
+				addWeaponTemplate("Early Rockets")
+			# --- CIVILIAN row ---
+			# Every civilian tech gives all non-Barracks buildings +3 max level
+			if Technology.techName in ["Agrarian Reform", "Trade Networks", "Industrialization", "Infrastructure"]:
+				for buildingLevel in buildingLevelList:
+					if buildingLevel.buildingType != "Barracks":
+						buildingLevel.maxLevel += 3
 			if Technology.techName == "Agrarian Reform":
-				for buildingLevel in buildingLevelList:
-					if buildingLevel.buildingType == "Farm":
-						buildingLevel.maxLevel += 3
-					if buildingLevel.buildingType == "Granary":
-						buildingLevel.maxLevel += 3
+				# Unlocks all common building types
+				for btype in ["Agriculture", "Granary", "Camp", "Mine", "Forge", "Workshop",
+						"Temple", "Library", "Tower", "Bath", "Dock", "Harbor", "Faire",
+					"Market", "Courthouse"]:
+					addBuilding(btype)
+				addTool("Seed Bag")
 			if Technology.techName == "Trade Networks":
-				for buildingLevel in buildingLevelList:
-					if buildingLevel.buildingType == "Market":
-						buildingLevel.maxLevel += 3
-					if buildingLevel.buildingType == "Faire":
-						buildingLevel.maxLevel += 3
-				addBuilding("Market")
+				addTool("Accountant Books")
 			if Technology.techName == "Industrialization":
-				for buildingLevel in buildingLevelList:
-					if buildingLevel.buildingType == "Workshop":
-						buildingLevel.maxLevel += 3
-					if buildingLevel.buildingType == "Forge":
-						buildingLevel.maxLevel += 3
+				addTool("Foundry Kit")
 			if Technology.techName == "Infrastructure":
+				addTool("Rails and Engines")
+			# --- DEFENSE row (Tactics and Authority barracks bonuses) ---
+			if Technology.techName == "Tactics":
 				for buildingLevel in buildingLevelList:
-					if buildingLevel.buildingType == "Bath":
+					if buildingLevel.buildingType == "Barracks":
 						buildingLevel.maxLevel += 3
-					if buildingLevel.buildingType == "Courthouse":
-						buildingLevel.maxLevel += 3
-				addBuilding("Courthouse")
+			if Technology.techName == "Authority":
+				for buildingLevel in buildingLevelList:
+					if buildingLevel.buildingType == "Barracks":
+						buildingLevel.maxLevel += 5
 	var thingForPrint: String
 	for buildingLevel in buildingLevelList:
 		thingForPrint = str("buildingType", buildingLevel.buildingType, "buildingLevel", buildingLevel.maxLevel)

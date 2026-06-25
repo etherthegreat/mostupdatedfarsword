@@ -52,35 +52,35 @@ func buildSelf():
 			addReward("Marine Mameluke Unlock")
 		# --- RIFLES row ---
 		"Musket Drilling":
-			addReward("Musket Unlock")
+			addReward("Flintlock Unlock")
 		"Volley Tactics":
 			addReward("Volley Bonus")
 		"Percussion Ignition":
-			addReward("Rifle Unlock")
+			addReward("Breechloader Unlock")
 		"Repeating Mechanisms":
-			addReward("Repeating Rifle Unlock")
+			addReward("Lever Repeater Unlock")
 		# --- ARTILLERY row ---
 		"Field Gunnery":
 			addReward("Field Gun Unlock")
-		"Artillery Corps":
-			addReward("Artillery Upgrade")
 		"Siege Works":
 			addReward("Siege Cannon Unlock")
 		"Mortar Tactics":
 			addReward("Mortar Unlock")
+		"Rocket Artillery":
+			addReward("Early Rockets Unlock")
 		# --- CIVILIAN row ---
 		"Agrarian Reform":
-			addReward("Farm Upgrade")
-			addReward("Granary Upgrade")
+			addReward("All Buildings Unlock")
+			addReward("Seed Bag Tool")
 		"Trade Networks":
-			addReward("Market Upgrade")
-			addReward("Faire Upgrade")
+			addReward("Building Upgrade")
+			addReward("Accountant Books Tool")
 		"Industrialization":
-			addReward("Workshop Upgrade")
-			addReward("Forge Upgrade")
+			addReward("Building Upgrade")
+			addReward("Foundry Kit Tool")
 		"Infrastructure":
-			addReward("Road Upgrade")
-			addReward("Bath Upgrade")
+			addReward("Building Upgrade")
+			addReward("Rails and Engines Tool")
 		# --- DEFENSE row ---
 		"Organization":
 			$Sprite2D.texture = load("res://art assets/finishedAssets/technology images/organization.png")

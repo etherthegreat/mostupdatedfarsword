@@ -8,7 +8,7 @@ var nextTechChange: int = 0
 const TECH_ROWS := [
 	["SABRE",    "Swordsmanship",    "Cavalry Drills",   "Officer Training",     "Marine Discipline"],
 	["RIFLES",   "Musket Drilling",  "Volley Tactics",   "Percussion Ignition",  "Repeating Mechanisms"],
-	["ARTILLERY","Field Gunnery",    "Artillery Corps",  "Siege Works",          "Mortar Tactics"],
+	["ARTILLERY","Field Gunnery",    "Siege Works",      "Mortar Tactics",       "Rocket Artillery"],
 	["CIVILIAN", "Agrarian Reform",  "Trade Networks",   "Industrialization",    "Infrastructure"],
 	["DEFENSE",  "Organization",     "Logistics",        "Tactics",              "Authority"],
 ]

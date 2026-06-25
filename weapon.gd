@@ -133,6 +133,19 @@ func updateSelf(newType: String) -> void:
 			weaponImage = load("res://art assets/finishedAssets/Weapons/Percussion_Cap.png")
 			addWeaponMod("Bayonet")
  
+		"Breechloader":
+			weaponClass              = "Musket"
+			weaponLevel              = 3
+			weaponOffensiveIncrease  = 2
+			weaponDefensiveIncrease  = 2
+			rangedOffensiveIncrease  = 10
+			rangedDefensiveIncrease  = 2
+			reloadTurns              = 1
+			weaponsPerLevel          = 1
+			chargeManpowerCost       = 0.0
+			weaponImage = load("res://art assets/finishedAssets/Weapons/Percussion_Cap.png")
+			addWeaponMod("Bayonet")
+
 		"Lever Repeater":
 			weaponClass              = "Musket"
 			weaponLevel              = 4
@@ -193,20 +206,48 @@ func updateSelf(newType: String) -> void:
 			addWeaponMod("CannonBlast")
 			addWeaponMod("AreaDamage")
  
-		"Mortar":
+		"Siege Cannon":
 			weaponClass              = "Artillery"
-			weaponLevel              = 4
+			weaponLevel              = 2
 			weaponOffensiveIncrease  = 0
 			weaponDefensiveIncrease  = 0
-			rangedOffensiveIncrease  = 35
+			rangedOffensiveIncrease  = 22
+			rangedDefensiveIncrease  = 0
+			reloadTurns              = 4
+			weaponsPerLevel          = 4
+			chargeManpowerCost       = 0.0
+			weaponImage = load("res://art assets/finishedAssets/Weapons/Club.png")
+			addWeaponMod("CannonBlast")
+			addWeaponMod("Siege")
+
+		"Mortar":
+			weaponClass              = "Artillery"
+			weaponLevel              = 3
+			weaponOffensiveIncrease  = 0
+			weaponDefensiveIncrease  = 0
+			rangedOffensiveIncrease  = 30
 			rangedDefensiveIncrease  = 0
 			reloadTurns              = 2
-			weaponsPerLevel          = 5
+			weaponsPerLevel          = 4
 			chargeManpowerCost       = 0.0
 			weaponImage = load("res://art assets/finishedAssets/Weapons/Club.png")
 			addWeaponMod("CannonBlast")
 			addWeaponMod("AreaDamage")
-			addWeaponMod("Siege")  # bonus vs fortified tiles
+			addWeaponMod("Siege")
+
+		"Early Rockets":
+			weaponClass              = "Artillery"
+			weaponLevel              = 4
+			weaponOffensiveIncrease  = 0
+			weaponDefensiveIncrease  = 0
+			rangedOffensiveIncrease  = 45
+			rangedDefensiveIncrease  = 0
+			reloadTurns              = 3
+			weaponsPerLevel          = 6
+			chargeManpowerCost       = 0.0
+			weaponImage = load("res://art assets/finishedAssets/Weapons/Club.png")
+			addWeaponMod("RocketBarrage")
+			addWeaponMod("AreaDamage")
  
  
 		# ============================================================
