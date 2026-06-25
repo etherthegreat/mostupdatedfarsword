@@ -690,19 +690,6 @@ func buildBuilding():
 			woodDic["Base Courthouse Wood Cost"] = (-1 * buildingLevel)
 
 func matchPlayerUnlockables(playerCountryNode):
-	foodDic.clear()
-	dollarsDic.clear()
-	woodDic.clear()
-	metalDic.clear()
-	happinessDic.clear()
-	influenceDic.clear()
-	mandateDic.clear()
-	weaponsDic.clear()
-	manpowerDic.clear()
-	scienceDic.clear()
-	# cultureDic removed — merged into cultureDic
-	magicDic.clear()
-	cultureDic.clear()
 	playerCountry = playerCountryNode
 	match buildingType:
 		"Farm":
@@ -2070,6 +2057,18 @@ func calculateOutputs(playerCountryNode):
 	manpowerCostPerLevel = 0
 	corruptionGainPerLevel = 0
 	moralDecayReductionPerLevel = 0
+	foodDic.clear()
+	dollarsDic.clear()
+	woodDic.clear()
+	metalDic.clear()
+	happinessDic.clear()
+	influenceDic.clear()
+	mandateDic.clear()
+	weaponsDic.clear()
+	manpowerDic.clear()
+	scienceDic.clear()
+	magicDic.clear()
+	cultureDic.clear()
 	buildBuilding()
 	matchPlayerUnlockables(playerCountryNode)
 	totalBuildingDollars = 0
