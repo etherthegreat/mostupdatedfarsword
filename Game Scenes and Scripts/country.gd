@@ -810,6 +810,14 @@ func updateUnlockableAttributes():
 		templeBuildingLevel.buildingType = "Temple"
 		templeBuildingLevel.maxLevel = 0
 		buildingLevelList.append(templeBuildingLevel)
+		var marketBuildingLevel = buildingLevel.new()
+		marketBuildingLevel.buildingType = "Market"
+		marketBuildingLevel.maxLevel = 0
+		buildingLevelList.append(marketBuildingLevel)
+		var courthouseBuildingLevel = buildingLevel.new()
+		courthouseBuildingLevel.buildingType = "Courthouse"
+		courthouseBuildingLevel.maxLevel = 0
+		buildingLevelList.append(courthouseBuildingLevel)
 		var rangedTemplate = UnitTemplate.new()
 		rangedTemplate.unitType = "Ranged"
 		rangedTemplate.unitDefensiveScore = 0
@@ -979,6 +987,60 @@ func updateUnlockableAttributes():
 						buildingLevel.maxLevel +=3
 			if Technology.techName == "Tempuring":
 				addTool("Steel Tools")
+			if Technology.techName == "Swordsmanship":
+				addWeaponTemplate("Cutlass")
+			if Technology.techName == "Cavalry Drills":
+				addWeaponTemplate("Cavalry Sword")
+			if Technology.techName == "Officer Training":
+				addWeaponTemplate("Officer Sword")
+			if Technology.techName == "Marine Discipline":
+				addWeaponTemplate("Marine Mameluke")
+			if Technology.techName == "Musket Drilling":
+				addWeaponTemplate("Musket")
+			if Technology.techName == "Volley Tactics":
+				for UnitTemplate in unitTemplateList:
+					if UnitTemplate.unitType == "Ranged":
+						UnitTemplate.unitOffensiveScore += 3
+			if Technology.techName == "Percussion Ignition":
+				addWeaponTemplate("Rifle")
+			if Technology.techName == "Repeating Mechanisms":
+				addWeaponTemplate("Repeating Rifle")
+			if Technology.techName == "Field Gunnery":
+				addWeaponTemplate("Field Gun")
+			if Technology.techName == "Artillery Corps":
+				for UnitTemplate in unitTemplateList:
+					if UnitTemplate.unitType == "Siege":
+						UnitTemplate.unitOffensiveScore += 5
+			if Technology.techName == "Siege Works":
+				addWeaponTemplate("Siege Cannon")
+			if Technology.techName == "Mortar Tactics":
+				addWeaponTemplate("Mortar")
+			if Technology.techName == "Agrarian Reform":
+				for buildingLevel in buildingLevelList:
+					if buildingLevel.buildingType == "Farm":
+						buildingLevel.maxLevel += 3
+					if buildingLevel.buildingType == "Granary":
+						buildingLevel.maxLevel += 3
+			if Technology.techName == "Trade Networks":
+				for buildingLevel in buildingLevelList:
+					if buildingLevel.buildingType == "Market":
+						buildingLevel.maxLevel += 3
+					if buildingLevel.buildingType == "Faire":
+						buildingLevel.maxLevel += 3
+				addBuilding("Market")
+			if Technology.techName == "Industrialization":
+				for buildingLevel in buildingLevelList:
+					if buildingLevel.buildingType == "Workshop":
+						buildingLevel.maxLevel += 3
+					if buildingLevel.buildingType == "Forge":
+						buildingLevel.maxLevel += 3
+			if Technology.techName == "Infrastructure":
+				for buildingLevel in buildingLevelList:
+					if buildingLevel.buildingType == "Bath":
+						buildingLevel.maxLevel += 3
+					if buildingLevel.buildingType == "Courthouse":
+						buildingLevel.maxLevel += 3
+				addBuilding("Courthouse")
 	var thingForPrint: String
 	for buildingLevel in buildingLevelList:
 		thingForPrint = str("buildingType", buildingLevel.buildingType, "buildingLevel", buildingLevel.maxLevel)

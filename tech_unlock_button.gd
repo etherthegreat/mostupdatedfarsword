@@ -40,81 +40,56 @@ func buildSelf():
 	$Label.text = technologyName
 	$CostLabel.text = str(technologyCost)
 	match technologyName:
-		"Language":
-			$Sprite2D.texture = load("res://art assets/finishedAssets/technology images/language.png")
-		"Agriculture":
+		# --- SABRE row ---
+		"Swordsmanship":
+			addReward("Cutlass Unlock")
+			addReward("Cavalry Sword Unlock")
+		"Cavalry Drills":
+			addReward("Cavalry Sword Upgrade")
+		"Officer Training":
+			addReward("Officer Sword Unlock")
+		"Marine Discipline":
+			addReward("Marine Mameluke Unlock")
+		# --- RIFLES row ---
+		"Musket Drilling":
+			addReward("Musket Unlock")
+		"Volley Tactics":
+			addReward("Volley Bonus")
+		"Percussion Ignition":
+			addReward("Rifle Unlock")
+		"Repeating Mechanisms":
+			addReward("Repeating Rifle Unlock")
+		# --- ARTILLERY row ---
+		"Field Gunnery":
+			addReward("Field Gun Unlock")
+		"Artillery Corps":
+			addReward("Artillery Upgrade")
+		"Siege Works":
+			addReward("Siege Cannon Unlock")
+		"Mortar Tactics":
+			addReward("Mortar Unlock")
+		# --- CIVILIAN row ---
+		"Agrarian Reform":
 			addReward("Farm Upgrade")
-		"Copper Working":
-			addReward("Camp Upgrade")
-			addReward("Mine Upgrade")
-			$Label.text = "Craftmanship"
-			$Sprite2D.texture = load("res://art assets/finishedAssets/technology images/craftmanship.png")
-		"Artistry":
-			addReward("Temple Upgrade")
+			addReward("Granary Upgrade")
+		"Trade Networks":
+			addReward("Market Upgrade")
+			addReward("Faire Upgrade")
+		"Industrialization":
 			addReward("Workshop Upgrade")
-		"Sailing":
-			addReward("Dock Upgrade")
+			addReward("Forge Upgrade")
+		"Infrastructure":
+			addReward("Road Upgrade")
+			addReward("Bath Upgrade")
+		# --- DEFENSE row ---
 		"Organization":
 			$Sprite2D.texture = load("res://art assets/finishedAssets/technology images/organization.png")
 			addReward("Barracks Upgrade")
-		"Writing":
-			addReward("Library Upgrade")
-			$Sprite2D.texture = load("res://art assets/finishedAssets/technology images/writing.png")
-		"Calendar":
-			addReward("Tower Upgrade")
-			addReward("Granary Upgrade")
-		"Bronze Working":
-			$Sprite2D.texture = load("res://art assets/finishedAssets/technology images/metal casting.png")
-			addReward("Forge Upgrade")
-			addReward("Camp Upgrade")
-			$Label.text = "Metal Casting"
-		"Masonry":
-			addReward("Bath Upgrade")
-			addReward("Temple Upgrade")
-		"Statecraft":
-			addReward("Courthouse Upgrade")
-			addReward("Faire Upgrade")
 		"Logistics":
 			addReward("Barracks Upgrade")
-			addReward("Dock Upgrade")
 			$Sprite2D.texture = load("res://art assets/finishedAssets/technology images/logistics.png")
-		"Alphabet":
-			addReward("Library Upgrade")
-			$Sprite2D.texture = load("res://art assets/finishedAssets/technology images/alphabet.png")
-		"Irrigation":
-			addReward("Farm Upgrade")
-			addReward("Bath Upgrade")
-		"Iron Working":
-			addReward("Mine Upgrade")
-			addReward("Forge Upgrade")
-			$Label.text = "Forging"
-		"Architecture":
-			addReward("Workshop Upgrade")
-			addReward("Temple Upgrade")
-		"Shipbuilding":
-			addReward("Dock Upgrade")
-			$Sprite2D.texture = load("res://art assets/finishedAssets/technology images/shipbuilding.png")
 		"Tactics":
 			addReward("Barracks Upgrade")
-		"Mathematics":
-			addReward("Library Upgrade")
-			$Sprite2D.texture = load("res://art assets/finishedAssets/technology images/mathematics.png")
-		"Engineering":
-			addReward("Farm Upgrade")
-			addReward("Camp Upgrade")
-			addReward("Faire Upgrade")
-			addReward("Bath Upgrade")
-		"Tempuring":
-			addReward("Workshop Upgrade")
-			addReward("Forge Upgrade")
-			addReward("SaberCharge Enhanced")
-			addReward("CannonBlast Enhanced")
-		"Banking":
-			addReward("Banking Upgrade 1")
-			$Sprite2D.texture = load("res://art assets/finishedAssets/technology images/banking.png")
-		"Lenscraft":
-			addReward("Tower Upgrade")
-			addReward("Dock Upgrade")
 		"Authority":
 			addReward("Barracks Upgrade")
 			addReward("Courthouse Upgrade")
