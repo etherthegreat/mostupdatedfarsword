@@ -27,6 +27,7 @@ var playerCapitalPathButton: pathPointButton
 
 var mapMode: String
 var displayCorruption: bool
+var _hover_saved_mapMode: String = ""
 
 # Populated by generateBarracksCommanders() — shared by _generate_and_assign_governor()
 var _usa_archetypes: Array = []
@@ -1743,108 +1744,49 @@ func matchCountryBuildings():
 					#building.towerBuilding.connect(signalTowerInTile)
 	pass
 
-func _on_food_area_2d_mouse_entered():
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 360
+func _resource_hover_enter(panel_x: int, resource_index: int, mode: String) -> void:
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = panel_x
 	$CanvasLayer/ResourceInfoControl.visible = true
 	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 1)
-func _on_food_area_2d_mouse_exited() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
-func _on_wood_area_2d_mouse_entered() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 480
-	$CanvasLayer/ResourceInfoControl.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 2)
-func _on_wood_area_2d_mouse_exited() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
-func _on_metal_area_2d_mouse_entered() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 600
-	$CanvasLayer/ResourceInfoControl.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 3)
-func _on_metal_area_2d_mouse_exited() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
-func _on_gold_area_2d_mouse_entered() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 240
-	$CanvasLayer/ResourceInfoControl.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 0)
-func _on_gold_area_2d_mouse_exited() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
-func _on_weapons_area_mouse_entered() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 720
-	$CanvasLayer/ResourceInfoControl.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 4)
-func _on_weapons_area_mouse_exited() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
-func _on_science_area_mouse_entered() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 1000
-	$CanvasLayer/ResourceInfoControl.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 5)
-func _on_science_area_mouse_exited() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
-func _on_faith_control_mouse_entered() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 1000
-	$CanvasLayer/ResourceInfoControl.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 6)
-func _on_faith_control_mouse_exited() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
-func _on_magic_area_mouse_entered() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 1000
-	$CanvasLayer/ResourceInfoControl.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 7)
-func _on_magic_area_mouse_exited() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
-func _on_culture_area_mouse_entered() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 1000
-	$CanvasLayer/ResourceInfoControl.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 8)
-	pass # Replace with function body.
-func _on_culture_area_mouse_exited() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
-	pass # Replace with function body.
-func _on_mandate_area_mouse_entered() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 1440
-	$CanvasLayer/ResourceInfoControl.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 9)
-	pass # Replace with function body.
-func _on_mandate_area_mouse_exited() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
-	pass # Replace with function body.
-func _on_harmony_area_mouse_entered() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 1440
-	$CanvasLayer/ResourceInfoControl.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 10)
-	pass # Replace with function body.
-func _on_harmony_area_mouse_exited() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
-	pass # Replace with function body.
-func _on_influence_area_mouse_entered() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 1440
-	$CanvasLayer/ResourceInfoControl.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 11)
-	pass # Replace with function body.
-func _on_influence_area_mouse_exited() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
-	pass # Replace with function body.
-func _on_manpower_area_mouse_entered() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 840
-	$CanvasLayer/ResourceInfoControl.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 12)
-	pass # Replace with function body.
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, resource_index)
+	if mode != "":
+		_hover_saved_mapMode = mapMode
+		mapMode = mode
+		updateMap()
 
-func _on_manpower_area_mouse_exited() -> void:
+func _resource_hover_exit() -> void:
 	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
-	pass # Replace with function body.
+	if _hover_saved_mapMode != "":
+		mapMode = _hover_saved_mapMode
+		_hover_saved_mapMode = ""
+		updateMap()
+
+func _on_food_area_2d_mouse_entered():    _resource_hover_enter(360,  1, "MapFood")
+func _on_food_area_2d_mouse_exited():     _resource_hover_exit()
+func _on_wood_area_2d_mouse_entered():    _resource_hover_enter(480,  2, "MapWood")
+func _on_wood_area_2d_mouse_exited():     _resource_hover_exit()
+func _on_metal_area_2d_mouse_entered():   _resource_hover_enter(600,  3, "MapMetal")
+func _on_metal_area_2d_mouse_exited():    _resource_hover_exit()
+func _on_gold_area_2d_mouse_entered():    _resource_hover_enter(240,  0, "MapDollars")
+func _on_gold_area_2d_mouse_exited():     _resource_hover_exit()
+func _on_weapons_area_mouse_entered():    _resource_hover_enter(720,  4, "MapWeapons")
+func _on_weapons_area_mouse_exited():     _resource_hover_exit()
+func _on_science_area_mouse_entered():    _resource_hover_enter(1000, 5, "")
+func _on_science_area_mouse_exited():     _resource_hover_exit()
+func _on_faith_control_mouse_entered():   _resource_hover_enter(1000, 6, "MapFaith")
+func _on_faith_control_mouse_exited():    _resource_hover_exit()
+func _on_magic_area_mouse_entered():      _resource_hover_enter(1000, 7, "MapMagic")
+func _on_magic_area_mouse_exited():       _resource_hover_exit()
+func _on_culture_area_mouse_entered():    _resource_hover_enter(1000, 8, "MapFaith")
+func _on_culture_area_mouse_exited():     _resource_hover_exit()
+func _on_mandate_area_mouse_entered():    _resource_hover_enter(1440, 9, "MapMandate")
+func _on_mandate_area_mouse_exited():     _resource_hover_exit()
+func _on_harmony_area_mouse_entered():    _resource_hover_enter(1440, 10, "MapHappiness")
+func _on_harmony_area_mouse_exited():     _resource_hover_exit()
+func _on_influence_area_mouse_entered():  _resource_hover_enter(1440, 11, "")
+func _on_influence_area_mouse_exited():   _resource_hover_exit()
+func _on_manpower_area_mouse_entered():   _resource_hover_enter(840,  12, "MapManpower")
+func _on_manpower_area_mouse_exited():    _resource_hover_exit()
 
 #oldnext turn function
 func _on_test_resource_button_pressed() -> void:
