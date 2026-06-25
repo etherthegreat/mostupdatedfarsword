@@ -23,19 +23,24 @@ func buildSelf(playerCountryNode):
 		army_by_tile[tile.tileNumber] = tile.stationedArmy
 
 	# Sort order:
-	#   1. Ualani Carlisle's barracks — pinned to the top always
-	#   2. Occupied barracks (army present), highest level → lowest
-	#   3. Unoccupied barracks, highest level → lowest
-	# TODO: add visual category separator labels between groups once UI nodes exist.
+	#   0. Ualani Carlisle — pinned first always
+	#   1. Vice President — pinned second
+	#   2. Occupied barracks (other), largest army (manpower) first
+	#   3. Unoccupied barracks, highest barracks level first
 	playerBarracks.sort_custom(func(a, b):
-		var a_ualani := _is_ualani_tile(a.tile)
-		var b_ualani := _is_ualani_tile(b.tile)
-		if a_ualani != b_ualani:
-			return a_ualani
-		var a_army := army_by_tile.get(a.tile.tileNumber, null) != null
-		var b_army := army_by_tile.get(b.tile.tileNumber, null) != null
-		if a_army != b_army:
-			return a_army
+		var _key := func(building) -> int:
+			if _is_ualani_tile(building.tile):    return 0
+			if _is_vp_tile(building.tile):        return 1
+			if army_by_tile.get(building.tile.tileNumber, null) != null: return 2
+			return 3
+		var ak: int = _key.call(a)
+		var bk: int = _key.call(b)
+		if ak != bk:
+			return ak < bk
+		if ak == 2:
+			var aa = army_by_tile.get(a.tile.tileNumber, null)
+			var ba = army_by_tile.get(b.tile.tileNumber, null)
+			return (aa.manpowerInArmy if aa else 0) > (ba.manpowerInArmy if ba else 0)
 		return a.buildingLevel > b.buildingLevel
 	)
 
@@ -69,3 +74,8 @@ func _is_ualani_tile(tile) -> bool:
 	return tile != null \
 		and tile.tileGovernor != null \
 		and tile.tileGovernor.governorType == "Ualani Carlisle"
+
+func _is_vp_tile(tile) -> bool:
+	return tile != null \
+		and tile.tileGovernor != null \
+		and tile.tileGovernor.isVicePresident
