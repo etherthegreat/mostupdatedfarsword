@@ -562,6 +562,9 @@ func addArmy(Name, TileNumber, icon = null, tags: Array = []):
 		if Tile.tileNumber == TileNumber:
 			Tile.addStationedArmy(armyInstance)
 			armyInstance.inTile = Tile
+			break
+	if armyInstance.inTile == null:
+		push_warning("addArmy('%s'): tile #%d not found in OwnedTileList for %s — army has no spawn tile" % [Name, TileNumber, CID])
 	armyInstance.armyDestroyed.connect(_on_army_destroyed)
 	countryArmyList.append(armyInstance)
 

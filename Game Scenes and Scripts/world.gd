@@ -1979,17 +1979,17 @@ func _close_army_commander_picker() -> void:
 var pathPointButtonToSend: pathPointButton
 
 func raiseArmyFromWorld(Army, country, Tile):
-	
-	#this is how the armies spawn into the world, will need a redo soon
-	#literally just add a system where tiles have a reference to their pathPointButton instead of this
-	#demon AI system will spawn units using raiseArmyFromWorld
+	if Tile == null or not is_instance_valid(Tile):
+		push_warning("raiseArmyFromWorld: Tile is null for army '%s' — skipped" % Army.ArmyName)
+		return
 	pathPointButtonToSend = Tile.tileSpawnPoint
+	if pathPointButtonToSend == null:
+		push_warning("raiseArmyFromWorld: no spawn point on tile '%s' for army '%s' — skipped" % [Tile.tileName, Army.ArmyName])
+		return
 	if country == playerCountryNode:
 		$PathControl.raisePlayerArmy(Army, country, Tile, pathPointButtonToSend)
 	else:
-		#here is where we will raise either Demonic or nonPlayer Country AIs
 		$PathControl.raiseComputerArmy(Army, country, Tile, pathPointButtonToSend)
-	pass
 func raiseCivilianUnit(civ, country):
 	var civTile = civ.stationNode.ppbTile if civ.stationNode != null else null
 	$PathControl.raisePlayerCiv(civ, country, civTile)

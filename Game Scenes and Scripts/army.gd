@@ -730,10 +730,16 @@ func calculateMaxUnitLevel():
 signal raisingArmy
 
 func raiseSelf():
+	if inTile == null:
+		push_warning("Army '%s': raiseSelf() skipped — inTile is null" % ArmyName)
+		return
 	raised = true
 	emit_signal("raisingArmy", self, parentCountry, inTile)
 
 func _on_raise_army_pressed() -> void:
+	if inTile == null:
+		push_warning("Army '%s': raise pressed but inTile is null" % ArmyName)
+		return
 	raised = true
 	emit_signal("raisingArmy", self, parentCountry, inTile)
 
