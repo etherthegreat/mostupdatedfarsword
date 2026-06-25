@@ -5,14 +5,14 @@ var buttons: Dictionary = {}
 var triggers: Array = []
 var loaded: bool = false
 
-
 func _ready() -> void:
 	load_events("res://data/events.csv")
 	load_buttons("res://data/event_buttons.csv")
 	load_triggers("res://data/event_triggers.csv")
 	loaded = true
 		  buttons.size(), " buttons, ", triggers.size(), " triggers.")
-
+=======
+		#$buttons.size(), " buttons, ", triggers.size(), " triggers.")
 
 func load_events(path: String) -> void:
 	var file = FileAccess.open(path, FileAccess.READ)
@@ -33,7 +33,6 @@ func load_events(path: String) -> void:
 		entry["_last_fired"]    = -999
 		events[entry["event_id"]] = entry
 	file.close()
-
 
 func load_buttons(path: String) -> void:
 	var file = FileAccess.open(path, FileAccess.READ)
@@ -61,7 +60,6 @@ func load_buttons(path: String) -> void:
 			events[eid]["_buttons"].append(entry["button_id"])
 	file.close()
 
-
 func load_triggers(path: String) -> void:
 	var file = FileAccess.open(path, FileAccess.READ)
 	if not file:
@@ -84,7 +82,6 @@ func load_triggers(path: String) -> void:
 		triggers.append(entry)
 	file.close()
 	triggers.sort_custom(func(a, b): return a["priority"] < b["priority"])
-
 
 # ── GETTERS ──────────────────────────────────────────────────
 
@@ -121,7 +118,6 @@ func mark_event_fired(event_id: String, current_turn: int) -> void:
 		events[event_id]["_fire_count"] += 1
 		events[event_id]["_last_fired"] = current_turn
 
-
 # ── TRIGGER EVALUATION ───────────────────────────────────────
 
 func evaluate_tile_triggers(tile, current_turn: int) -> Array:
@@ -145,7 +141,6 @@ func evaluate_tile_triggers(tile, current_turn: int) -> Array:
 		to_fire.append(event_id)
 	return to_fire
 
-
 func evaluate_date_triggers(current_turn: int, month: int) -> Array:
 	var to_fire = []
 	for trigger in triggers:
@@ -168,7 +163,6 @@ func evaluate_date_triggers(current_turn: int, month: int) -> Array:
 					to_fire.append(event_id)
 	return to_fire
 
-
 func evaluate_state_triggers(state_code: String, current_turn: int) -> Array:
 	var to_fire = []
 	for trigger in triggers:
@@ -180,7 +174,6 @@ func evaluate_state_triggers(state_code: String, current_turn: int) -> Array:
 		if event_can_fire(event_id, current_turn):
 			to_fire.append(event_id)
 	return to_fire
-
 
 func evaluate_commander_triggers(archetype_id: String,
 		objective_num: int, current_turn: int) -> Array:
@@ -196,7 +189,6 @@ func evaluate_commander_triggers(archetype_id: String,
 		if event_can_fire(event_id, current_turn):
 			to_fire.append(event_id)
 	return to_fire
-
 
 func evaluate_protector_triggers(protector_id: String,
 		trigger_type: String, current_turn: int) -> Array:

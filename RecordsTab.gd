@@ -118,7 +118,7 @@ func _process_wikilinks(text: String) -> String:
 				break
 			var entry_id := text.substr(i + 2, close - i - 2)
 			var linked := RecordsDatabase.get_entry(entry_id)
-			var label  := linked.get("name", entry_id) if not linked.is_empty() else entry_id
+			var label  = linked.get("name", entry_id) if not linked.is_empty() else entry_id
 			result += "[url=" + entry_id + "]" + label + "[/url]"
 			i = close + 2
 		else:
@@ -129,6 +129,7 @@ func _process_wikilinks(text: String) -> String:
 func _on_body_link_clicked(meta) -> void:
 	select_entry(str(meta))
 
+>>>>>>> origin/etherPushBranch
 # ── external navigation ───────────────────────────────────────────────────────
 
 func select_entry(entry_id: String) -> void:

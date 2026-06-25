@@ -5885,6 +5885,7 @@ position = Vector2(9, -4)
 polygon = PackedVector2Array(-25, -35, -31, -36, -33, -31, -30, -21, -33, -12, -35, 2, -40, 16, -38, 22, -27, 33, -19, 36, -11, 36, -2, 30, 5, 27, 17, 29, 26, 29, 31, 23, 37, 11, 37, 5, 28, -4, 16, -13, 4, -20, -5, -24, -16, -30)
 
 [node name="PathControl" type="Control" parent="."]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
@@ -9463,6 +9464,7 @@ theme_override_constants/v_separation = 140
 columns = 4
 
 [node name="TaxationControl" type="Control" parent="CanvasLayer/GovernmentControl"]
+visible = false
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
@@ -11327,6 +11329,7 @@ text = "Turn 100"
 horizontal_alignment = 2
 
 [node name="GameOverPanel" parent="CanvasLayer" instance=ExtResource("405_gov01")]
+mouse_filter = 2
 
 [node name="CameraMovementController" type="Control" parent="."]
 layout_mode = 3
@@ -11990,15 +11993,11 @@ shape = SubResource("RectangleShape2D_qt86y")
 [connection signal="input_event" from="TileController/Tile201/Area2D" to="TileController/Tile201" method="_on_area_2d_input_event"]
 [connection signal="mouse_entered" from="TileController/Tile201/Area2D" to="TileController/Tile201" method="_on_area_2d_mouse_entered"]
 [connection signal="mouse_exited" from="TileController/Tile201/Area2D" to="TileController/Tile201" method="_on_area_2d_mouse_exited"]
-[connection signal="meleeButtonPressed" from="PathControl" to="." method="_on_path_control_melee_button_pressed"]
-[connection signal="showArmyInfo" from="PathControl" to="." method="_on_path_control_show_army_info"]
 [connection signal="pressed" from="CanvasLayer/NextTurnControl/NextTurn" to="." method="_on_next_turn_pressed"]
 [connection signal="pressed" from="CanvasLayer/NextTurnControl/PickTech" to="CanvasLayer" method="_on_pick_tech_pressed"]
 [connection signal="pressed" from="CanvasLayer/TileInfoPanel/governorButton" to="CanvasLayer/TileInfoPanel" method="_on_governor_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/TileInfoPanel/OpenBuildingsButton" to="CanvasLayer" method="_on_open_buildings_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/TileInfoPanel/WizardButton" to="CanvasLayer" method="_on_wizard_button_pressed"]
-[connection signal="fillWithUnlockedBuildings" from="CanvasLayer/BuildingInfoPanel" to="." method="_on_building_info_panel_fill_with_unlocked_buildings"]
-[connection signal="purchasedBelief" from="CanvasLayer/BeliefControl" to="." method="_on_belief_control_purchased_belief"]
 [connection signal="pressed" from="CanvasLayer/BeliefControl/BeliefPanel/PurchasePanel/PurchaseButton" to="CanvasLayer/BeliefControl" method="_on_purchase_button_pressed"]
 [connection signal="mouse_entered" from="CanvasLayer/BeliefControl/FaithPoints/faith1area2d" to="CanvasLayer/BeliefControl" method="_on_faith_1_area_2d_mouse_entered"]
 [connection signal="mouse_exited" from="CanvasLayer/BeliefControl/FaithPoints/faith1area2d" to="CanvasLayer/BeliefControl" method="_on_faith_1_area_2d_mouse_exited"]
@@ -12014,9 +12013,6 @@ shape = SubResource("RectangleShape2D_qt86y")
 [connection signal="mouse_exited" from="CanvasLayer/BeliefControl/FaithPoints/church3area2d" to="CanvasLayer/BeliefControl" method="_on_church_3_area_2d_mouse_exited"]
 [connection signal="mouse_entered" from="CanvasLayer/BeliefControl/FaithPoints/balanceArea2D" to="CanvasLayer/BeliefControl" method="_on_balance_area_2d_mouse_entered"]
 [connection signal="mouse_exited" from="CanvasLayer/BeliefControl/FaithPoints/balanceArea2D" to="CanvasLayer/BeliefControl" method="_on_balance_area_2d_mouse_exited"]
-[connection signal="addTechToPlayer" from="CanvasLayer/TechTree" to="." method="_on_tech_tree_add_tech_to_player"]
-[connection signal="askForInfo" from="CanvasLayer/SpellSchoolsControl" to="." method="_on_spell_schools_control_ask_for_info"]
-[connection signal="calculatePlayerOutputs" from="CanvasLayer/SpellSchoolsControl" to="." method="_on_spell_schools_control_calculate_player_outputs"]
 [connection signal="pressed" from="CanvasLayer/Spellbook/CloseSpellbook" to="CanvasLayer" method="_on_close_spellbook_pressed"]
 [connection signal="value_changed" from="CanvasLayer/GovernmentControl/TaxationControl/FarmVSlider" to="CanvasLayer/GovernmentControl" method="_on_farm_v_slider_value_changed"]
 [connection signal="value_changed" from="CanvasLayer/GovernmentControl/TaxationControl/CampVSlider" to="CanvasLayer/GovernmentControl" method="_on_camp_v_slider_value_changed"]
