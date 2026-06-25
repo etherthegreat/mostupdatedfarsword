@@ -1156,22 +1156,28 @@ func spawnStartingArmies() -> void:
 	for state in by_state:
 		var group: Array = by_state[state]
 		var best = null
+		# Capitals are identified by having a courthouse; highest courthouse
+		# level wins when multiple tiles in the state qualify.
+		var top_court := -1
 		for t in group:
-			if t.terrain == "Metro":
+			var clvl := int(t.buildings.get("courthouse", 0))
+			if clvl > top_court:
+				top_court = clvl
 				best = t
-				break
-		if best == null:
+		if top_court < 1:
+			# Fallback: countryCapital flag, then highest barracks level
+			best = null
 			for t in group:
 				if t.countryCapital:
 					best = t
 					break
-		if best == null:
-			var top_lvl := -1
-			for t in group:
-				var lvl := int(t.buildings.get("barracks", 0))
-				if lvl > top_lvl:
-					top_lvl = lvl
-					best = t
+			if best == null:
+				var top_lvl := -1
+				for t in group:
+					var lvl := int(t.buildings.get("barracks", 0))
+					if lvl > top_lvl:
+						top_lvl = lvl
+						best = t
 		capital_tiles.append(best)
 		for t in group:
 			if t != best:
