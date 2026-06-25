@@ -1132,19 +1132,30 @@ func spawnStartingArmies() -> void:
 	}
 
 	var candidates: Array = []
+	var dbg_owned := 0
+	var dbg_gov := 0
+	var dbg_barracks := 0
+	var dbg_free := 0
 	for tile in $TileController.get_children():
 		if tile.tileOwner != playerCountry:
 			continue
-		if tile.tileNumber == 188:            # Washington DC — Ualani's territory
+		if tile.tileNumber == 188:
 			continue
+		dbg_owned += 1
 		if not tile.filledGovernorSlot or tile.tileGovernor == null:
 			continue
+		dbg_gov += 1
 		var blvl: int = int(tile.buildings.get("barracks", 0))
 		if blvl < 1:
 			continue
+		dbg_barracks += 1
 		if tile.stationedArmy != null:
 			continue
+		dbg_free += 1
 		candidates.append(tile)
+
+	print("[StartingArmies] filter: owned=%d gov=%d barracks=%d free=%d → %d candidates" \
+		% [dbg_owned, dbg_gov, dbg_barracks, dbg_free, candidates.size()])
 
 	candidates.shuffle()
 	var chosen: Array = candidates.slice(0, min(3, candidates.size()))
@@ -1158,6 +1169,11 @@ func spawnStartingArmies() -> void:
 		playerCountryNode.addArmy(army_name, tile.tileNumber)
 
 		var new_army = playerCountryNode.countryArmyList.back()
+		print("[StartingArmies] created '%s' — inTile=%s spawnPt=%s" % [
+			army_name,
+			str(new_army.inTile) if new_army != null else "NULL ARMY",
+			str(new_army.inTile.tileSpawnPoint) if new_army != null and new_army.inTile != null else "N/A"
+		])
 		if new_army != null:
 			new_army.addUnitCommander(gov)
 			new_army.updateArmyUI()
