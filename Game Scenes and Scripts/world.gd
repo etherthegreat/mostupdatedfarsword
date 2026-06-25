@@ -184,7 +184,14 @@ func _refresh_next_turn_ui() -> void:
 	$CanvasLayer/NextTurnControl/NextTurn.visible = has_tech
 	$CanvasLayer/NextTurnControl/PickTech.visible = not has_tech
 
-func updateMap():
+const RESOURCE_MAP_MODES := ["MapFood","MapWood","MapMetal","MapFaith","MapHappiness",
+	"MapManpower","MapWeapons","MapDollars","MapMagic","MapMandate"]
+
+func updateMap() -> void:
+	if mapMode in RESOURCE_MAP_MODES:
+		for tile in $TileController.get_children():
+			if tile.tileOwner == playerCountry:
+				tile.calculateOutputsForMap(playerCountryNode)
 	$TileController.updateTiles(mapMode, displayCorruption, playerCountryNode)
 
 

@@ -643,6 +643,41 @@ func censusTile(playerCountryNode):
 	if not tileInfluenceDic.is_empty(): emit_signal("censusComplete", "Influence", buildingInfluenceOutput, tileInfluenceDic)
 
 
+# Silent output calculation for resource map modes — no eco changes, no dics,
+# no censusComplete signals. Called by updateMap() across all player tiles so
+# get_map_mode_value() returns current values without spamming the TileInfoPanel.
+func calculateOutputsForMap(playerCountryNode) -> void:
+	buildingFoodOutput = 0
+	buildingWoodOutput = 0
+	buildingDollarsOutput = 0
+	buildingMetalOutput = 0
+	buildingWeaponsOutput = 0
+	buildingScienceOutput = 0
+	buildingMagicOutput = 0
+	buildingMandateOutput = 0
+	buildingInfluenceOutput = 0
+	buildingManpowerOutput = 0
+	buildingHappinessOutput = 0
+	buildingCultureOutput = 0
+	for building in tileBuildingsList:
+		if not building.enabled:
+			continue
+		building.calculateOutputs(playerCountryNode)
+		buildingFoodOutput    += building.totalBuildingFood
+		buildingWoodOutput    += building.totalBuildingWood
+		buildingDollarsOutput += building.totalBuildingDollars
+		buildingMetalOutput   += building.totalBuildingMetal
+		buildingWeaponsOutput += building.totalBuildingWeapons
+		buildingScienceOutput += building.totalBuildingScience
+		buildingMagicOutput   += building.totalBuildingMagic
+		buildingCultureOutput += building.totalBuildingCulture
+		buildingMandateOutput += building.totalBuildingMandate
+		buildingHappinessOutput += building.totalBuildingHappiness
+		buildingManpowerOutput  += building.totalBuildingManpower
+		buildingInfluenceOutput += building.totalBuildingInfluence
+	_apply_output_reductions()
+
+
 func surveyTile(playerCountryNode):
 	calculateDailyTileEcoChanges()
 	buildingFoodOutput = 0
