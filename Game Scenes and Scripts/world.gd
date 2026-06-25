@@ -1186,6 +1186,7 @@ func generateBarracksCommanders() -> void:
 				jessica.hired           = true
 				break
 		if not jessica.hired:
+	pass
 		# Marc Penoit in Quebec City (tile 123) as Deputy Governor
 		var penoit: governor = governor.new()
 		penoit.buildSelf("Marc Penoit", 2)
@@ -1198,6 +1199,7 @@ func generateBarracksCommanders() -> void:
 					penoit.hired            = true
 					break
 		if not penoit.hired:
+	pass
 	else:
 		# Ualani Carlisle in Washington DC (tile 188)
 		var carlisle: governor = governor.new()
@@ -1210,6 +1212,7 @@ func generateBarracksCommanders() -> void:
 				carlisle.hired          = true
 				break
 		if not carlisle.hired:
+	pass
 		# Secret Service Detail unlocks alongside Carlisle
 		var detail: governor = governor.new()
 		detail.buildSelf("Secret Service Detail", 1)
@@ -1321,7 +1324,7 @@ func generateBarracksCommanders() -> void:
 			army.addUnitCommander(army.inTile.tileGovernor)
 			army.updateArmyUI()
 			assigned += 1
-				  " as commander of ", army.ArmyName)
+				  # " as commander of ", army.ArmyName)
 
 
 # ── STARTING ARMY SPAWNER ─────────────────────────────────────────────────────
@@ -1519,6 +1522,7 @@ func _generate_ai_barracks_commanders(country_node: country) -> void:
 			jessica.hired           = true
 			break
 	if not jessica.hired:
+	pass
 
 	# ── Spawn Marc Penoit (deputy/VP) at Saint-Georges, tile 99 ─────────────────
 	# Montreal (tile 94) is UK-occupied at game start; Saint-Georges is the nearest
@@ -1533,6 +1537,7 @@ func _generate_ai_barracks_commanders(country_node: country) -> void:
 			mark.hired              = true
 			break
 	if not mark.hired:
+	pass
 
 	var used_names: Dictionary = {}
 	var generated: int = 0
@@ -1604,7 +1609,7 @@ func _generate_ai_barracks_commanders(country_node: country) -> void:
 		new_gov.hired           = true
 
 		generated += 1
-			  " at ", tile.tileName, " [", tile.terrain, "]")
+			  # " at ", tile.tileName, " [", tile.terrain, "]")
 
 	# Assign tile governors to stationed armies
 	var assigned: int = 0
@@ -1613,7 +1618,7 @@ func _generate_ai_barracks_commanders(country_node: country) -> void:
 			army.addUnitCommander(army.inTile.tileGovernor)
 			army.updateArmyUI()
 			assigned += 1
-		  assigned, " armies received a commander.")
+		  # assigned, " armies received a commander.")
 
 
 # ── CANADIAN AI STARTING ARMIES ──────────────────────────────────────────────
@@ -1656,7 +1661,7 @@ func _spawn_ai_starting_armies(country_node: country) -> void:
 			new_army.addUnitCommander(gov)
 			new_army.updateArmyUI()
 
-			  " (barracks lvl ", int(tile.buildings.get("barracks", 0)), ", ", arc_id, ")")
+			  # " (barracks lvl ", int(tile.buildings.get("barracks", 0)), ", ", arc_id, ")")
 
 
 
@@ -2119,7 +2124,7 @@ func buildNewPlayerArmy(barracksBuilding, barracksTile, bbButton, playerNode, ne
 	var cost: int = ceili(10.0 * pow(1.2, n))
 	if playerNode.TotalDollars  < cost or playerNode.TotalWeapons < cost \
 			or playerNode.TotalCulture < cost or playerNode.TotalScience < cost:
-			  " each of Dollars / Weapons / Culture / Science (army #", n + 1, ")")
+			  # " each of Dollars / Weapons / Culture / Science (army #", n + 1, ")")
 		return
 	playerNode.TotalDollars  -= cost
 	playerNode.TotalWeapons  -= cost
@@ -2278,7 +2283,7 @@ func _on_protector_summoned(origin_tile, protector_name: String, protector_id: S
 	if origin_tile != null:
 		var school: String = _protector_id_to_school(protector_id)
 		origin_tile.addWizard(protector_name, school)
-			  " (", school, ") stationed at ", origin_tile.tileName)
+			  # " (", school, ") stationed at ", origin_tile.tileName)
 	var spell_name: String = _protector_id_to_spell(protector_id)
 	if spell_name != "":
 		playerCountryNode.addSpellToSpellbook(spell_name, 1, 0)
@@ -2695,7 +2700,7 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 			if tile != null and tile.tileGovernor != null:
 				tile.tileGovernor.loyalty = clampf(
 					tile.tileGovernor.loyalty + float(outcome_amount), -20.0, 20.0)
-					" at ", tile.tileName, " → ", tile.tileGovernor.loyalty)
+					# " at ", tile.tileName, " → ", tile.tileGovernor.loyalty)
 		"election_pressure_change":
 			if tile != null:
 				tile.electionPressure = clampi(
@@ -2706,7 +2711,7 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 				var per_turn: int = _get_tile_resource_output(tile, outcome_value)
 				var total: int = per_turn * turns
 				_apply_resource_change(outcome_value, total)
-					" ×", turns, " (", per_turn, "/turn) = ", total)
+					# " ×", turns, " (", per_turn, "/turn) = ", total)
 			else:
 				push_warning("executeOutcome: tile_yield requires a tile context")
 		"trigger_collapse":
@@ -2724,7 +2729,7 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 			# tile context = apply to the stationed army in that tile
 			if tile != null and tile.stationedArmy != null:
 				tile.stationedArmy.apply_status(outcome_value, 9999, outcome_amount)
-					" — ", outcome_amount, " magic/turn")
+					# " — ", outcome_amount, " magic/turn")
 			else:
 				push_warning("cast_protector_buff: no army at tile " + str(tile))
 		"tile_building_mandate_surge":
@@ -2736,7 +2741,7 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 						total_levels += b.buildingLevel
 				var total: int = total_levels * outcome_amount
 				_apply_resource_change("mandate", total)
-					" ×", outcome_amount, " turns = ", total, " mandate")
+					# " ×", outcome_amount, " turns = ", total, " mandate")
 			else:
 				push_warning("tile_building_mandate_surge: requires tile context")
 		"corrupt_windfall":
@@ -2765,14 +2770,14 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 								total_levels += b.buildingLevel
 				var yield_amount: int = total_levels * outcome_amount
 				_apply_resource_change(outcome_value, yield_amount)
-					" ×", outcome_amount, " = ", yield_amount, " ", outcome_value)
+					# " ×", outcome_amount, " = ", yield_amount, " ", outcome_value)
 			else:
 				push_warning("state_building_level_yield: requires tile context")
 		"set_governor_perk":
 			if tile != null and tile.tileGovernor != null:
 				if not tile.tileGovernor.governor_perks.has(outcome_value):
 					tile.tileGovernor.governor_perks.append(outcome_value)
-						" unlocked perk: ", outcome_value)
+						# " unlocked perk: ", outcome_value)
 			else:
 				push_warning("set_governor_perk: requires tile with governor")
 		"tile_army_manpower_refill":
@@ -3809,7 +3814,7 @@ func _check_ualani_frontier() -> void:
 		if neighbor.tileContinent.begins_with("CA - "):
 			_start_cooldown("UALANI_FRONTIER_01", 20)
 			createNewEvent("UALANI_FRONTIER_01", tile)
-				" bordering ", neighbor.tileContinent)
+				# " bordering ", neighbor.tileContinent)
 			return
 
 
@@ -5152,7 +5157,7 @@ func _check_ca_protectors() -> void:
 		var prot_tile = _get_ca_prot_tile(pid)
 		_start_cooldown(summon_id, 15)
 		createNewEvent(summon_id, prot_tile)
-			  " at tile ", CA_PROT_TILES.get(pid, 0), " turn ", currentWorldTurn)
+			  # " at tile ", CA_PROT_TILES.get(pid, 0), " turn ", currentWorldTurn)
 		return
 
 
@@ -5171,7 +5176,7 @@ func _check_ca_own_protectors() -> void:
 		var prot_tile = _get_ca_prot_tile(pid)
 		_start_cooldown(summon_id, 15)
 		createNewEvent(summon_id, prot_tile)
-			  " at tile ", CA_PROT_TILES.get(pid, 0), " turn ", currentWorldTurn)
+			  # " at tile ", CA_PROT_TILES.get(pid, 0), " turn ", currentWorldTurn)
 		return
 
 
@@ -6109,7 +6114,7 @@ func _spawn_storm(origin: Tile) -> void:
 
 	# Spread to all neighbors
 	_spread_storm(origin, storm_id, storm_type, duration, intensity)
-		  " — intensity ", intensity, ", duration ", duration, " turns.")
+		  # " — intensity ", intensity, ", duration ", duration, " turns.")
 
 func _spread_storm(origin: Tile, storm_id: String, storm_type: String,
 				   duration: int, intensity: int) -> void:
