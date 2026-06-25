@@ -86,6 +86,8 @@ func updateSelf():
 				newBB.buildSelf("Abigail Adams", $religionData.abigailAdamsIcon, $religionData.abigailAdamsBWIcon, false, 120, "She told John to 'remember the ladies' and he absolutely did not listen. Nevertheless, Abigail's sharp political mind inspires dissent, scholarship, and the particular American art of telling power what it doesn't want to hear.", $religionData.border1)
 			"Alexander Hamilton":
 				newBB.buildSelf("Alexander Hamilton", $religionData.hamiltonIcon, $religionData.hamiltonBWIcon, false, 180, "The immigrant orphan who built America's financial system through sheer will and an inability to let anything go. Hamilton's patronage boosts Banks, Workshops, and any structure that turns ambition into wealth.", $religionData.border5)
+			"Eliza Schuyler Hamilton":
+				newBB.buildSelf("Eliza Schuyler Hamilton", $religionData.elizaHamiltonIcon, $religionData.elizaHamiltonBWIcon, false, 160, "She put herself back in the room. After Hamilton fell at Weehawken, Eliza outlived him by fifty years and spent every one of them preserving his legacy, founding orphanages, and refusing to let the story be lost. Under her patronage, Markets generate Mandate — commerce has a conscience — and Courthouses resist moral decay, because justice, tended carefully, does not rot.", $religionData.border5)
 			"Phillis Wheatley":
 				newBB.buildSelf("Phillis Wheatley", $religionData.phillisWheatleyIcon, $religionData.phillisWheatleyBWIcon, false, 100, "The first enslaved African American to publish a book of poetry in the colonies — she proved that genius laughs at chains. Wheatley's patronage inspires Libraries and Temples wherever her memory is honored.", $religionData.border1)
 			"Thomas Jefferson":
@@ -248,6 +250,8 @@ func buildPD(type):
 			newPD.buildSelf("Abigail Adams", $religionData.abigailAdamsIcon, "She told John to 'remember the ladies' and he absolutely did not listen. Abigail inspires dissent, scholarship, and telling power what it doesn't want to hear.", false, $religionData.border1)
 		"Alexander Hamilton":
 			newPD.buildSelf("Alexander Hamilton", $religionData.hamiltonIcon, "The immigrant orphan who built America's financial system through sheer will. Hamilton's patronage boosts Banks, Workshops, and any structure that turns ambition into wealth.", false, $religionData.border5)
+		"Eliza Schuyler Hamilton":
+			newPD.buildSelf("Eliza Schuyler Hamilton", $religionData.elizaHamiltonIcon, "She outlived him by fifty years and refused to let the story be lost. Under her patronage, Markets generate Mandate and Courthouses resist moral decay.", false, $religionData.border5)
 		"Phillis Wheatley":
 			newPD.buildSelf("Phillis Wheatley", $religionData.phillisWheatleyIcon, "The first enslaved African American to publish a book of poetry in the colonies. Genius laughs at chains — Libraries and Temples thrive wherever her memory is honored.", false, $religionData.border1)
 		"Thomas Jefferson":

@@ -145,6 +145,7 @@ var buildingMandateOutput
 var buildingHappinessOutput: float # renamed from buildingHappinessOutput
 var buildingManpowerOutput
 var buildingInfluenceOutput
+var buildingMoralDecayReduction: int = 0
 
 # Building expenses
 var buildingDollarsExpense: float  # renamed from buildingDollarsExpense
@@ -594,6 +595,7 @@ func censusTile(playerCountryNode):
 		buildingHappinessOutput += building.totalBuildingHappiness
 		buildingManpowerOutput += building.totalBuildingManpower
 		buildingInfluenceOutput += building.totalBuildingInfluence
+		buildingMoralDecayReduction += building.totalBuildingMoralDecayReduction
 		corruptionChange += building.corruptionChange
 	# Mysterious Ship Raids: -2 dollars per active building per turn
 	if hasMysteriousShipRaids:
@@ -656,6 +658,7 @@ func surveyTile(playerCountryNode):
 	buildingManpowerOutput = 0
 	buildingHappinessOutput = 0
 	buildingCultureOutput = 0
+	buildingMoralDecayReduction = 0
 	corruptionChange = 0
 	for building in tileBuildingsList:
 		if not building.enabled:
@@ -674,6 +677,7 @@ func surveyTile(playerCountryNode):
 		buildingHappinessOutput += building.totalBuildingHappiness
 		buildingManpowerOutput += building.totalBuildingManpower
 		buildingInfluenceOutput += building.totalBuildingInfluence
+		buildingMoralDecayReduction += building.totalBuildingMoralDecayReduction
 		corruptionChange += building.corruptionChange
 		match building.buildingType:
 			"Farm":
@@ -1871,11 +1875,11 @@ func tick_conquest_timer() -> void:
 			if b.buildingType == btype:
 				b.enabled = true
 				break
-	# Courthouse tiles accumulate moral decay over time when unchecked
+	# Courthouse tiles accumulate moral decay over time; Eliza Hamilton doctrine reduces it
 	if tileMoralDecay < 100:
 		for b in tileBuildingsList:
 			if b.buildingType == "Courthouse":
-				tileMoralDecay += 1
+				tileMoralDecay = clampi(tileMoralDecay + 1 - buildingMoralDecayReduction, 0, 100)
 				break
 
 func _apply_output_reductions() -> void:

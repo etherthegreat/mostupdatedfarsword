@@ -58,6 +58,7 @@ var happinessCostPerLevel: float = 0 # renamed from happinessCostPerLevel
 var manpowerCostPerLevel: int = 0
 var influenceCostPerLevel: int = 0
 var corruptionGainPerLevel: int = 0
+var moralDecayReductionPerLevel: int = 0
 
 #the balance of resourcePerLevel - resourceCostPerLevel
 var totalBuildingFood: int = 0
@@ -74,6 +75,7 @@ var totalBuildingInfluence: int = 0
 var totalBuildingManpower: int = 0
 var totalBuildingHappiness: float = 0 # renamed from totalBuildingHappiness
 var totalBuildingDefensiveness: int = 0  # how much defensiveness this building gives the province
+var totalBuildingMoralDecayReduction: int = 0
 var corruptionChange: int #corruption difference
 #storage capacity buildings - used to increase max national storage capacity of resource
 var foodStorageIncrease: int #granaries
@@ -1791,6 +1793,12 @@ func _apply_belief_bonuses(bType: String) -> void:
 				if bType == "Market" or bType == "Workshop":
 					dollarsPerLevel += 1
 					dollarsDic["Icon: Alexander Hamilton"] = (1 * buildingLevel)
+			"Eliza Schuyler Hamilton":
+				if bType == "Market":
+					mandatePerLevel += 1
+					mandateDic["Icon: Eliza Schuyler Hamilton"] = (1 * buildingLevel)
+				if bType == "Courthouse":
+					moralDecayReductionPerLevel += 1
 			"Phillis Wheatley":
 				if bType == "Library":
 					culturePerLevel += 1
@@ -2060,6 +2068,7 @@ func calculateOutputs(playerCountryNode):
 	influenceCostPerLevel = 0
 	manpowerCostPerLevel = 0
 	corruptionGainPerLevel = 0
+	moralDecayReductionPerLevel = 0
 	buildBuilding()
 	matchPlayerUnlockables(playerCountryNode)
 	totalBuildingDollars = 0
@@ -2120,6 +2129,7 @@ func calculateOutputs(playerCountryNode):
 		totalBuildingDefensiveness = defensivenessPerLevel * buildingLevel
 	if corruptionLossPerLevel != 0 or corruptionGainPerLevel != 0:
 		corruptionChange = corruptionGainPerLevel - corruptionLossPerLevel
+	totalBuildingMoralDecayReduction = moralDecayReductionPerLevel * buildingLevel
 	_apply_abnormal_modifiers()
 
 func _apply_abnormal_modifiers() -> void:
