@@ -1017,6 +1017,7 @@ func _find_held_terrain_tile(terrain: String):
 # ============================================================
 
 func _on_commander_objective_completed(arc_id: String, obj_num: int) -> void:
+	pass
 
 
 func _on_protector_devotion_completed(protector_id: String) -> void:

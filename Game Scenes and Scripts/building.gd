@@ -971,6 +971,7 @@ func matchPlayerUnlockables(playerCountryNode):
 						dollarsPerLevel += 1
 						metalPerLevel   += 1
 			else:
+				pass
 			for Technology in playerCountry.unlockedTechnologies:
 				if Technology.techName == "Optician's Art":
 					magicPerLevel += 1
