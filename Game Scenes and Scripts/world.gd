@@ -1175,6 +1175,12 @@ func spawnStartingArmies() -> void:
 			str(new_army.inTile.tileSpawnPoint) if new_army != null and new_army.inTile != null else "N/A"
 		])
 		if new_army != null:
+			# Wire the army to its BarracksButton before updateArmyUI so $Node
+			# paths inside the Army scene resolve correctly (Army must be in tree).
+			for bb in $CanvasLayer/MilitaryPanelControl/ScrollContainer/GridContainer.get_children():
+				if bb.barracksTile != null and bb.barracksTile.tileNumber == tile.tileNumber and bb.barracksArmy == null:
+					bb.addPrebuiltArmy(new_army)
+					break
 			new_army.addUnitCommander(gov)
 			new_army.updateArmyUI()
 			new_army.raiseSelf()
