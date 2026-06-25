@@ -132,51 +132,51 @@ var damagedBuildingsList: Array = []
 var tileOutput: float
 
 # Building outputs
-var buildingDollarsOutput: float   # renamed from buildingDollarsOutput
-var buildingFoodOutput
-var buildingWoodOutput
-var buildingMetalOutput
-var buildingMagicOutput
-var buildingCultureOutput          # now covers old Faith + Culture
+var buildingDollarsOutput: float
+var buildingFoodOutput: float
+var buildingWoodOutput: float
+var buildingMetalOutput: float
+var buildingMagicOutput: float
+var buildingCultureOutput: float       # now covers old Faith + Culture
 # buildingFaithOutput removed — merged into buildingCultureOutput
-var buildingWeaponsOutput
-var buildingScienceOutput
-var buildingMandateOutput
-var buildingHappinessOutput: float # renamed from buildingHappinessOutput
-var buildingManpowerOutput
-var buildingInfluenceOutput
+var buildingWeaponsOutput: float
+var buildingScienceOutput: float
+var buildingMandateOutput: float
+var buildingHappinessOutput: float
+var buildingManpowerOutput: float
+var buildingInfluenceOutput: float
 var buildingMoralDecayReduction: int = 0
 
 # Building expenses
-var buildingDollarsExpense: float  # renamed from buildingDollarsExpense
-var buildingFoodExpense
-var buildingWoodExpense
-var buildingMetalExpense
-var buildingMagicExpense
-var buildingCultureExpense         # covers old Faith + Culture
+var buildingDollarsExpense: float
+var buildingFoodExpense: float
+var buildingWoodExpense: float
+var buildingMetalExpense: float
+var buildingMagicExpense: float
+var buildingCultureExpense: float      # covers old Faith + Culture
 # buildingFaithExpense removed
-var buildingScienceExpense
-var buildingWeaponsExpense
-var buildingMandateExpense
-var buildingHappinessExpense: float # renamed from buildingHappinessExpense
-var buildingManpowerExpense
-var buildingInfluenceExpense
+var buildingScienceExpense: float
+var buildingWeaponsExpense: float
+var buildingMandateExpense: float
+var buildingHappinessExpense: float
+var buildingManpowerExpense: float
+var buildingInfluenceExpense: float
 
 # Monthly yields
-var tileFoodYield
-var tileWoodYield
-var tileDollarsYield: float   # renamed from tileDollarsYield
-var tileMetalYield
-var tileMagicYield
-var tileCultureYield          # covers old Faith + Culture
+var tileFoodYield: float
+var tileWoodYield: float
+var tileDollarsYield: float
+var tileMetalYield: float
+var tileMagicYield: float
+var tileCultureYield: float            # covers old Faith + Culture
 # tileFaithYield removed
-var tileWeaponsYield
-var tileScienceYield
-var tileMandateYield
-var tileHappinessYield: float # renamed from tileHappinessYield
-var tileBoatsYield: int       # new Boats resource
-var tileManpowerYield
-var tileInfluenceYield
+var tileWeaponsYield: float
+var tileScienceYield: float
+var tileMandateYield: float
+var tileHappinessYield: float
+var tileBoatsYield: int
+var tileManpowerYield: float
+var tileInfluenceYield: float
 
 # ============================================================
 # FILLABLE SLOTS
