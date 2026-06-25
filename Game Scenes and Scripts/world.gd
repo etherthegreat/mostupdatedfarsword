@@ -1680,6 +1680,7 @@ func updatePlayerUI():
 	$PathControl.tileDevelopment.connect(newTileDevelopment)
 	$PathControl.meleeButtonPressed.connect(meleePressed)
 	$PathControl.rangedButtonPressed.connect(rangedPressed)
+	$PathControl.playerBattleResolved.connect(_on_player_battle_resolved)
 	$CanvasLayer/CivilianControl.loadCivilians(playerCountryNode, playerCountryNode.OwnedTileList)
 	$CanvasLayer/CivilianControl.raiseThisUnit.connect(raiseCivilianUnit)
 	$CanvasLayer/MilitaryPanelControl.buildSelf(playerCountryNode)
@@ -2053,6 +2054,9 @@ func _on_battle_resolved(tile, atk_loss: int, def_loss: int) -> void:
 	var base_pos: Vector2 = tile.tileSpawnPoint.global_position
 	_spawn_damage_number(atk_loss, Color(1.0, 0.4, 0.1), base_pos, -28.0)
 	_spawn_damage_number(def_loss, Color(1.0, 0.85, 0.1), base_pos, 28.0)
+
+func _on_player_battle_resolved(tile, atk_loss: int, def_loss: int) -> void:
+	_on_battle_resolved(tile, atk_loss, def_loss)
 
 func raiseArmyFromWorld(Army, country, Tile):
 	if Tile == null or not is_instance_valid(Tile):
@@ -5320,21 +5324,11 @@ func _on_path_control_show_army_info(key) -> void:
 			$CanvasLayer/ArmyPanel/ActionInfoPanelControl.visible = false
 	pass # Replace with function body.
 
-#this is where the battles for melee are calculated
-var calculateMelee: bool
-func meleePressed(armyPath, thisArmy) -> void:
-	if thisArmy.attackBlocked:
-		return
-	if lastSelectedPathPoint != null:
-		for pathPointButton in lastSelectedPathPoint.neighborPathPoints:
-			pathPointButton.calculateBattle(armyPath, "melee", thisArmy, lastSelectedPathPoint)
-		if _army_has_active_marine(thisArmy):
-			for pathPointButton in lastSelectedPathPoint.navalPathPoints:
-				pathPointButton.calculateBattle(armyPath, "melee", thisArmy, lastSelectedPathPoint)
-	#set all apfs that are not neighbors to 'disabled' which makes them unclickable
-	#set the world to 'melee attack calc' bool
-	#if an apf is hovered over while in melee attack calc, build a battle and display results
-	#if an apf is clicked while in melee attack calc, enact the battle and add damage/results
+# Attack animation system — melee button sets path_control.melee_mode = true,
+# then the next right-click on a neighboring enemy PPB triggers _initiate_attack().
+# Battle resolves inline at the animation midpoint via _on_attack_midpoint().
+func meleePressed(_armyPath, _thisArmy) -> void:
+	pass  # melee_mode flag already set in path_control._on_melee_attack_button_pressed
 
 	pass # Replace with function body.
 

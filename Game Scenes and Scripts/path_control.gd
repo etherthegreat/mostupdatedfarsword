@@ -11,6 +11,10 @@ var selectedCPF: civilianPathFollow
 var raisedPlayerAPFs: Array = []
 var raisedPlayerCPFs: Array = []
 
+var melee_mode: bool = false   # true after player presses melee — next PPB click is an attack
+
+signal playerBattleResolved(tile, atk_loss, def_loss)
+
 func raisePlayerArmy(Army, country, Tile, pathPointToSend):
 	var newAPF = armyPathFollowScene.instantiate()
 	pathPointToSend.add_child(newAPF)
@@ -21,6 +25,8 @@ func raisePlayerArmy(Army, country, Tile, pathPointToSend):
 	newAPF.armyArrived.connect(armyArrivedFunc)
 	newAPF.siegeChange.connect(updateTileSiege)
 	newAPF.armyTraveling.connect(updateTravelingArmy)
+	newAPF.attackMidpoint.connect(_on_attack_midpoint)
+	newAPF.attackRetreated.connect(_on_attack_retreated)
 	newAPF.onRaise(Army, country, pathPointToSend)
 	showPathPoints(pathPointToSend)
 	pathPointToSend.stationedAPF = newAPF
@@ -35,6 +41,8 @@ func raiseComputerArmy(Army, country, Tile, pathPointToSend):
 	newAPF.armyArrived.connect(armyArrivedFunc)
 	newAPF.siegeChange.connect(updateTileSiege)
 	newAPF.armyTraveling.connect(updateTravelingArmy)
+	newAPF.attackMidpoint.connect(_on_attack_midpoint)
+	newAPF.attackRetreated.connect(_on_attack_retreated)
 	newAPF.onRaise(Army, country, pathPointToSend)
 	showPathPoints(pathPointToSend)
 	pathPointToSend.stationedAPF = newAPF
@@ -178,6 +186,12 @@ func _process(delta: float) -> void:
 var startingPoint: pathPointButton
 func calculateArmyMovement(endPathPoint: pathPointButton, _neighborPathPoints, _ppbTile):
 	if selectedAPF != null:
+		# Melee attack: route to attack animation instead of normal movement
+		if melee_mode and endPathPoint.stationedArmy != null and endPathPoint.stationedArmy.enemy:
+			melee_mode = false
+			_initiate_attack(endPathPoint)
+			return
+		melee_mode = false
 		startingPoint = selectedAPF.currentPathPoint
 		var army: Army = selectedAPF.thisArmy
 		# Sabotage blocks all movement for the affected turn
@@ -206,6 +220,69 @@ func calculateArmyMovement(endPathPoint: pathPointButton, _neighborPathPoints, _
 	curve.add_point(startingPoint.position)
 	curve.add_point(endPathPoint.position)
 	moveArmy($PathsControl/Path/PathFollow/Control, "start", endPathPoint)
+
+# ── ATTACK ANIMATION ─────────────────────────────────────────────────────────
+
+func _initiate_attack(targetPPB: pathPointButton) -> void:
+	if selectedAPF == null:
+		return
+	var curve: Curve2D = $PathsControl/Path.curve
+	curve.clear_points()
+	curve.add_point(selectedAPF.currentPathPoint.position)
+	curve.add_point(targetPPB.position)
+	var pathFollow: PathFollow2D = $PathsControl/Path/PathFollow
+	var container: Control = $PathsControl/Path/PathFollow/Control
+	updatingArmyPathFollow = pathFollow
+	var apfParent = selectedAPF.get_parent()
+	apfParent.call_deferred("remove_child", selectedAPF)
+	container.call_deferred("add_child", selectedAPF)
+	selectedAPF.beginAttack(targetPPB, $PathsControl/Path)
+
+func _on_attack_midpoint(apf: armyPathFollow) -> void:
+	var targetPPB: pathPointButton = apf.destinationPathPoint
+	if targetPPB == null or not is_instance_valid(targetPPB):
+		apf.resolveAttack(false)
+		return
+	var attacker: Army = apf.thisArmy
+	var defender: Army = targetPPB.stationedArmy
+	if defender == null or not is_instance_valid(defender) or not defender.enemy:
+		apf.resolveAttack(false)
+		return
+	# Resolve battle inline (same formula as AI _resolve_ai_battle)
+	var raw_atk := float(attacker.armyPunch)
+	var def_block := clamp(
+		float(defender.armyBlock) / max(1.0, float(defender.unitsList.size())),
+		0.0, 0.9)
+	var def_loss := int(raw_atk * (1.0 - def_block))
+	var raw_counter := float(defender.armyPunch)
+	var atk_block := clamp(
+		float(attacker.armyBlock) / max(1.0, float(attacker.unitsList.size())),
+		0.0, 0.9)
+	var atk_loss := int(raw_counter * (1.0 - atk_block))
+	defender.calculateDefenderResults("melee", def_loss)
+	attacker.calculateDefenderResults("melee", atk_loss)
+	# Also update siege on the target tile
+	targetPPB.siegeTile(attacker)
+	# Emit for floating damage numbers
+	var tile = targetPPB.ppbTile
+	emit_signal("playerBattleResolved", tile, atk_loss, def_loss)
+	# Conquered if defender is gone
+	var conquered: bool = (not is_instance_valid(defender) or defender.manpowerInArmy <= 0)
+	if conquered:
+		# Clear the defender's PPB before the attacker arrives
+		if targetPPB.stationedAPF != null and is_instance_valid(targetPPB.stationedAPF):
+			targetPPB.stationedAPF.thisArmy.deleteMode = true
+		targetPPB.stationedAPF = null
+		targetPPB.stationedArmy = null
+		targetPPB.occupied = false
+	apf.resolveAttack(conquered)
+
+func _on_attack_retreated(apf: armyPathFollow, returnPoint: pathPointButton) -> void:
+	removeFromUpdateArmyPaths()
+	var container = apf.get_parent()
+	container.call_deferred("remove_child", apf)
+	returnPoint.call_deferred("add_child", apf)
+	showPathPoints(returnPoint)
 
 func moveArmy(newContainer, String, endPoint):
 	if selectedAPF!= null:
@@ -340,7 +417,11 @@ func _on_spells_and_powers_button_mouse_exited() -> void:
 signal meleeButtonPressed
 func _on_melee_attack_button_pressed() -> void:
 	if selectedAPF != null:
-		emit_signal("meleeButtonPressed", selectedAPF, selectedAPF.thisArmy)
+		var army: Army = selectedAPF.thisArmy
+		if army != null and army.attackBlocked:
+			return
+		melee_mode = true
+		emit_signal("meleeButtonPressed", selectedAPF, army)
 
 signal rangedButtonPressed
 func _on_ranged_attack_button_pressed():
