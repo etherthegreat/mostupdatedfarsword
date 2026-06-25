@@ -227,4 +227,3 @@ func _on_workshop_v_slider_value_changed(value: float) -> void:
 func _on_bath_v_slider_value_changed(value: float) -> void:
 	changedSlider($TaxationControl/BathVSlider.value, "Bath")
 	pass # Replace with function body.
->>>>>>> origin/etherPushBranch
