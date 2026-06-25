@@ -1146,7 +1146,7 @@ func polisMode():
 	match tileOwner:
 		"USA": country_color = Color(0.35, 0.55, 1.0)    # bright American blue
 		"UK":  country_color = Color(0.9,  0.1,  0.2)    # bright British red
-		"CA":  country_color = Color(1.0,  0.25, 0.25)   # bright Canadian red
+		"CA":  country_color = Color(0.82, 0.93, 1.0)    # arctic cold white-blue
 		"BA":  country_color = Color(0.1,  0.8,  0.5)    # bright Bahamian teal
 		# Legacy factions
 		"PDT": country_color = Color(0.2, 1.0, 0.3)
