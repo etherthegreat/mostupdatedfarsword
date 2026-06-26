@@ -155,7 +155,8 @@ func showPathPoints(pathPoint):
 		return
 	else:
 		for pathPointButton in pathPoint.neighborPathPoints:
-			pathPointButton.visible = true
+			if is_instance_valid(pathPointButton):
+				pathPointButton.visible = true
 #		pathPointButton.enemyCheck()
 	pathPoint.visible = true
 	#for pathPointButton in $PathPointsControl.get_children():
