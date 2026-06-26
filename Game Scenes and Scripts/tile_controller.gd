@@ -68,8 +68,14 @@ func updateTiles(mapMode, displayCorruption, playerCountry) -> void:
 				var v: float = t.get_map_mode_value(mapMode)
 				if v > max_val:
 					max_val = v
+	# Pass 1: reset all activeView so neighbor cascades start from a clean slate
+	for Tile in get_children():
+		Tile.activeView = false
+	# Pass 2: updateGraphics sets player/army tiles + cascades visibility to neighbors
 	for Tile in get_children():
 		Tile.updateGraphics(mapMode, displayCorruption, playerCountry, max_val)
+	# Pass 3: apply FOW now that all activeView values are final
+	for Tile in get_children():
 		Tile.calculateActiveView()
 
 

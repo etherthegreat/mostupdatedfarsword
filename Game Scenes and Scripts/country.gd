@@ -553,18 +553,23 @@ func addArmy(Name, TileNumber, icon = null, tags: Array = []):
 				)
 			template_matched = true
 			break
-	# Fallback: procedural armies that don't match a CSV template get randomized level-1 units
+	# Fallback: procedural armies that don't match a CSV template get default units
 	if not template_matched:
-		match randi() % 3:
-			0: # Rifles
-				addNewUnit(armyInstance, "Infantry",  1, "Flintlock",    "Iron", "Cloth", 150, 150)
-				addNewUnit(armyInstance, "Infantry",  1, "Flintlock",    "Iron", "Cloth", 150, 150)
-			1: # Sabres
-				addNewUnit(armyInstance, "Cavalry",   1, "Cutlass",      "Iron", "Cloth", 150, 0)
-				addNewUnit(armyInstance, "Cavalry",   1, "Cutlass",      "Iron", "Cloth", 150, 0)
-			2: # Artillery
-				addNewUnit(armyInstance, "Artillery", 1, "Field Cannon", "Iron", "Cloth", 100, 150)
-				addNewUnit(armyInstance, "Infantry",  1, "Flintlock",    "Iron", "Cloth", 150, 150)
+		if CID == "UK":
+			# UK reinforcements always get standard redcoat loadout at level 2
+			addNewUnit(armyInstance, "Infantry",  2, "Brown Bess", "Iron", "Redcoat",        200, 200)
+			addNewUnit(armyInstance, "Artillery", 2, "Howitzer",   "Iron", "Artillery Corps", 200, 200)
+		else:
+			match randi() % 3:
+				0: # Rifles
+					addNewUnit(armyInstance, "Infantry",  1, "Flintlock",    "Copper", "Militia", 150, 150)
+					addNewUnit(armyInstance, "Infantry",  1, "Flintlock",    "Copper", "Militia", 150, 150)
+				1: # Sabres
+					addNewUnit(armyInstance, "Cavalry",   1, "Cutlass",      "Copper", "Militia", 150, 0)
+					addNewUnit(armyInstance, "Cavalry",   1, "Cutlass",      "Copper", "Militia", 150, 0)
+				2: # Artillery
+					addNewUnit(armyInstance, "Artillery", 1, "Field Cannon", "Copper", "Militia", 100, 150)
+					addNewUnit(armyInstance, "Infantry",  1, "Flintlock",    "Copper", "Militia", 150, 150)
 	# ── Tile placement ────────────────────────────────────────────────────────
 	for Tile in OwnedTileList:
 		if Tile.tileNumber == TileNumber:
@@ -1407,6 +1412,7 @@ func _uk_calculate_turn() -> void:
 			continue
 		if army.deleteMode:
 			continue
+		army.onTurnEnd()  # tick status effects, reload timers, reinforcement
 		var supplied = is_army_supplied(army)
 		if not supplied:
 			_uk_retreat_to_supply(army)
@@ -1414,8 +1420,9 @@ func _uk_calculate_turn() -> void:
 			var target = _find_attack_target(army)
 			if target != null:
 				_uk_attack_tile(army, target)
-			else:
-				_uk_reinforce(army)
+			elif not _uk_try_advance(army):
+				# No target and couldn't advance — hold position
+				army.isGuarding = true
 
 
 func _find_attack_target(army: Army):
@@ -1424,20 +1431,22 @@ func _find_attack_target(army: Army):
 		return null
 	if army.inTile == null:
 		return null
+	# UK is aggressive — attack any adjacent USA tile regardless of relative strength
 	var best_target = null
 	var lowest_defender_strength = INF
 	for neighbor in army.inTile.TileNeighbors:
+		if neighbor == null:
+			continue
 		if neighbor.tileOwner != "USA":
 			continue
 		var defender_strength = 0
-		if neighbor.stationedArmy != null:
+		if neighbor.stationedArmy != null and is_instance_valid(neighbor.stationedArmy):
 			defender_strength = neighbor.stationedArmy.manpowerInArmy
 		else:
 			defender_strength = int(neighbor.get_siege_difficulty() * 50)
-		if army.manpowerInArmy > defender_strength:
-			if defender_strength < lowest_defender_strength:
-				lowest_defender_strength = defender_strength
-				best_target = neighbor
+		if defender_strength < lowest_defender_strength:
+			lowest_defender_strength = defender_strength
+			best_target = neighbor
 	return best_target
 
 
@@ -1457,20 +1466,64 @@ func _uk_attack_tile(army: Army, targetTile) -> void:
 
 
 func _resolve_ai_battle(attacker: Army, defender: Army, tile) -> void:
-	var raw_attack = float(attacker.armyPunch)
-	var block_ratio = clamp(
-		float(defender.armyBlock) / max(1.0, float(defender.unitsList.size())),
-		0.0, 0.9)
-	var defender_loss = int(raw_attack * (1.0 - block_ratio))
+	# Mirrors battle.gd: prefer ranged if attacker has ready ranged units
+	var use_ranged: bool = attacker.has_ready_ranged_units() and attacker.armyLaunch > 0
+	var battle_type: String = "ranged" if use_ranged else "melee"
 
-	var counter = float(defender.armyPunch)
-	var attacker_block = clamp(
-		float(attacker.armyBlock) / max(1.0, float(attacker.unitsList.size())),
-		0.0, 0.9)
-	var attacker_loss = int(counter * (1.0 - attacker_block))
+	var defender_loss: int = 0
+	var attacker_loss: int = 0
 
-	defender.calculateDefenderResults("melee", defender_loss)
-	attacker.calculateDefenderResults("melee", attacker_loss)
+	if use_ranged:
+		var effective_launch := float(attacker.armyLaunch)
+		var ranged_block := clamp(
+			float(defender.armyDefence) / max(1.0, float(defender.unitsList.size())),
+			0.0, 0.9)
+		var net := effective_launch * (1.0 - ranged_block)
+		# CannonBlast bonus vs unshielded
+		if defender.armyShield <= 0 and attacker._army_has_active_mod("CannonBlast"):
+			net *= 3.0
+		var shield_hit := int(min(float(defender.armyShield), net))
+		defender.armyShield = max(0, defender.armyShield - shield_hit)
+		defender_loss = int(net - float(shield_hit))
+		# Counter-ranged if defender can fire
+		if defender.has_ready_ranged_units() and defender.armyLaunch > 0:
+			var counter_launch := float(defender.armyLaunch)
+			var atk_block := clamp(
+				float(attacker.armyDefence) / max(1.0, float(attacker.unitsList.size())),
+				0.0, 0.9)
+			var counter_net := counter_launch * (1.0 - atk_block)
+			var atk_shield_hit := int(min(float(attacker.armyShield), counter_net))
+			attacker.armyShield = max(0, attacker.armyShield - atk_shield_hit)
+			attacker_loss = int(counter_net - float(atk_shield_hit))
+		# Trigger reload on attacker's ranged units
+		attacker.tick_all_reloads()
+		for unit in attacker.unitsList:
+			if unit.unitWeapon != null and (unit.unitWeapon.is_musket() or unit.unitWeapon.is_artillery()):
+				if not unit.is_reloading():
+					unit.start_reload()
+	else:
+		var raw_attack := float(attacker.armyPunch)
+		var block_ratio := clamp(
+			float(defender.armyBlock) / max(1.0, float(defender.unitsList.size())),
+			0.0, 0.9)
+		var net := raw_attack * (1.0 - block_ratio)
+		var shield_hit := int(min(float(defender.armyShield), net))
+		defender.armyShield = max(0, defender.armyShield - shield_hit)
+		defender_loss = int(net - float(shield_hit))
+		# Counter-melee
+		var counter := float(defender.armyPunch)
+		var attacker_block := clamp(
+			float(attacker.armyBlock) / max(1.0, float(attacker.unitsList.size())),
+			0.0, 0.9)
+		var counter_net := counter * (1.0 - attacker_block)
+		var atk_shield_hit := int(min(float(attacker.armyShield), counter_net))
+		attacker.armyShield = max(0, attacker.armyShield - atk_shield_hit)
+		attacker_loss = int(counter_net - float(atk_shield_hit))
+
+	if defender_loss > 0:
+		defender.calculateDefenderResults(battle_type, defender_loss)
+	if attacker_loss > 0:
+		attacker.calculateDefenderResults(battle_type, attacker_loss)
 	emit_signal("battleResolved", tile, attacker_loss, defender_loss)
 
 
@@ -1491,6 +1544,29 @@ func _uk_reinforce(army: Army) -> void:
 		return
 	var rate := armyReinforceRate * (2 if army.inTile.has_dock() else 1)
 	army.manpowerInArmy = mini(army.manpowerInArmy + rate, army.maxManpower)
+
+func _uk_try_advance(army: Army) -> bool:
+	# Move into an adjacent UK-owned tile that has no army — pushes front forward
+	if army.inTile == null:
+		return false
+	for neighbor in army.inTile.TileNeighbors:
+		if neighbor == null:
+			continue
+		if neighbor.tileOwner != CID:
+			continue
+		if neighbor.stationedArmy != null and is_instance_valid(neighbor.stationedArmy):
+			continue
+		# Found an open UK tile — move there
+		var old_tile = army.inTile
+		army.inTile = neighbor
+		if neighbor.tileSpawnPoint != null:
+			neighbor.tileSpawnPoint.stationedArmy = army
+		if old_tile.tileSpawnPoint != null:
+			old_tile.tileSpawnPoint.stationedArmy = null
+		emit_signal("armyRepositioned", army, old_tile, neighbor)
+		army.isGuarding = false
+		return true
+	return false
 
 func _uk_spawn_reinforcement() -> void:
 	_uk_spawn_cooldown -= 1

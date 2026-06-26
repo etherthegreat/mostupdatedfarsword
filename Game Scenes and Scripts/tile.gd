@@ -1121,7 +1121,10 @@ func updateGraphics(mapMode, displayCorruption, playerCountry, max_val: float = 
 					if neighbor != null:
 						neighbor.activeView = true
 				return
-		activeView = false
+		# Do NOT explicitly set activeView = false here.
+		# tile_controller pre-resets all tiles to false before calling updateGraphics(),
+		# so any tile not matched above keeps false — but neighbor cascades from player
+		# tiles are preserved (would be overwritten if we set false unconditionally).
 
 func calculateActiveView():
 	var fow: Node = get_node_or_null("TileFOW")
