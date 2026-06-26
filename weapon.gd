@@ -202,7 +202,7 @@ func updateSelf(newType: String) -> void:
 			reloadTurns              = 2
 			weaponsPerLevel          = 4
 			chargeManpowerCost       = 0.0
-			weaponImage = load("res://art assets/finishedAssets/Weapons/Club.png")
+			weaponImage = load("res://art assets/finishedAssets/Weapons/Howitzer.png")
 			addWeaponMod("CannonBlast")
 			addWeaponMod("AreaDamage")
  
@@ -230,7 +230,7 @@ func updateSelf(newType: String) -> void:
 			reloadTurns              = 2
 			weaponsPerLevel          = 4
 			chargeManpowerCost       = 0.0
-			weaponImage = load("res://art assets/finishedAssets/Weapons/Club.png")
+			weaponImage = load("res://art assets/finishedAssets/Weapons/Mortar.png")
 			addWeaponMod("CannonBlast")
 			addWeaponMod("AreaDamage")
 			addWeaponMod("Siege")
@@ -245,7 +245,7 @@ func updateSelf(newType: String) -> void:
 			reloadTurns              = 3
 			weaponsPerLevel          = 6
 			chargeManpowerCost       = 0.0
-			weaponImage = load("res://art assets/finishedAssets/Weapons/Club.png")
+			weaponImage = load("res://art assets/finishedAssets/Weapons/Early_Rockets.png")
 			addWeaponMod("RocketBarrage")
 			addWeaponMod("AreaDamage")
  
