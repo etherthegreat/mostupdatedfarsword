@@ -22,6 +22,7 @@ const CATEGORIES: Array[String] = [
 	"Factions",
 	"Faiths & Doctrines",
 	"American Icons",
+	"Canadian Icons",
 	"Army Units",
 	"Magic Schools & Spells",
 	"Protectors",

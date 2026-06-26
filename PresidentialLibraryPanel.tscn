@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://bpreslib0001a"]
 
-[ext_resource type="Script" uid="uid://cpreslib0001b" path="res://PresidentialLibraryPanel.gd" id="1_plib01"]
+[ext_resource type="Script" uid="uid://cehiioopikvr1" path="res://PresidentialLibraryPanel.gd" id="1_plib01"]
 [ext_resource type="PackedScene" uid="uid://cgaltab001a" path="res://GalleryTab.tscn" id="2_galtab"]
 [ext_resource type="PackedScene" uid="uid://crectab001a" path="res://RecordsTab.tscn" id="3_rectab"]
 [ext_resource type="PackedScene" uid="uid://cjournl001a" path="res://JournalTab.tscn" id="4_journl"]
