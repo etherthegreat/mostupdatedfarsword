@@ -6429,3 +6429,16 @@ func _tick_anarchists() -> void:
 #     var countryStates = loadCountryStatesFromFile()
 #     var armyStates    = ArmyDatabase.load_army_states_from_file()
 #     # ... then initialize tiles, countries, then restore armies
+
+
+func _on_polis_mode_button_pressed() -> void:
+	pass # Replace with function body.
+
+func _on_states_mode_button_pressed() -> void:
+	pass # Replace with function body.
+
+func _on_outputs_mode_button_pressed() -> void:
+	pass # Replace with function body.
+
+func _on_terrain_mode_button_pressed() -> void:
+	pass # Replace with function body.
