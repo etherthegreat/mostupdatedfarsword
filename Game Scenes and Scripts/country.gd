@@ -304,8 +304,19 @@ func NewGameBuild() -> void:
 	if armyName != "" and armyTile != 0:
 		var armyIcon = _get_default_army_icon()
 		addArmy(armyName, armyTile, armyIcon)
- 
- 
+
+	# UK regional deployment — aggressive multi-front presence at game start
+	if CID == "UK":
+		var uk_icon = _get_default_army_icon()
+		addArmy("Southern Crown Force",   151, uk_icon)   # Charleston SC
+		addArmy("Cornwallis's Dragoons",  149, uk_icon)   # Myrtle Beach SC
+		addArmy("Crown Forces South",     153, uk_icon)   # Port Royal SC
+		addArmy("Florida Crown Guard",    176, uk_icon)   # Jacksonville FL
+		addArmy("Gulf Garrison",          179, uk_icon)   # Tampa FL
+		addArmy("Quebec Crown Guard",     123, uk_icon)   # Quebec City
+		addArmy("Maritime Crown Forces",  114, uk_icon)   # Halifax NS
+
+
 func _find_faction_leader(factionName: String, governorPool: Dictionary) -> governor:
 	# Match faction to its natural leader from the governor pool
 	# Falls back gracefully if no match found

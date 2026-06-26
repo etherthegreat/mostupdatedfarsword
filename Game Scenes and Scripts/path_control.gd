@@ -76,6 +76,8 @@ func armyArrivedFunc(pathOfArmy, newPathPointButton, theArmy, apf, contain):
 			pathPointButton.add_child(theArmy)
 			pathPointButton.stationedArmy = theArmy
 			pathPointButton.add_child(apf)
+			apf.z_as_relative = true
+			apf.z_index = 15
 			newPathPointButton.occupied = true
 			updateArmyPanel(theArmy, newPathPointButton)
 	showPathPoints(newPathPointButton)
@@ -237,6 +239,8 @@ func _initiate_attack(targetPPB: pathPointButton) -> void:
 	var apfParent = selectedAPF.get_parent()
 	apfParent.call_deferred("remove_child", selectedAPF)
 	container.call_deferred("add_child", selectedAPF)
+	selectedAPF.z_as_relative = false
+	selectedAPF.z_index = 100
 	selectedAPF.beginAttack(targetPPB, $PathsControl/Path)
 
 func _on_attack_midpoint(apf: armyPathFollow) -> void:
@@ -283,6 +287,8 @@ func _on_attack_retreated(apf: armyPathFollow, returnPoint: pathPointButton) -> 
 	var container = apf.get_parent()
 	container.call_deferred("remove_child", apf)
 	returnPoint.call_deferred("add_child", apf)
+	apf.z_as_relative = true
+	apf.z_index = 15
 	showPathPoints(returnPoint)
 
 func moveArmy(newContainer, String, endPoint):
@@ -294,6 +300,8 @@ func moveArmy(newContainer, String, endPoint):
 				var path = updatingArmyPathFollow.get_parent()
 				apfParent.call_deferred("remove_child",selectedAPF)
 				newContainer.call_deferred("add_child", selectedAPF)
+				selectedAPF.z_as_relative = false
+				selectedAPF.z_index = 100
 				selectedAPF.move("start", endPoint, path)
 				updatingArmyPathFollow = newContainer.get_parent()
 	else:
