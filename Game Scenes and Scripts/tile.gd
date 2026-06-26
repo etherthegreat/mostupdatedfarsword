@@ -1102,6 +1102,8 @@ func updateGraphics(mapMode, displayCorruption, playerCountry, max_val: float = 
 			"MapMandate":   _resource_map_mode(Color(0.55, 0.0,  0.0),  get_map_mode_value(mapMode), max_val)
 			"MapArmy":      _resource_map_mode(Color(0.0,  0.5,  0.8),  get_map_mode_value(mapMode), max_val)
 			"MapGovernors": _governors_map_mode()
+			"MapStates":    _states_map_mode()
+			"MapOutputs":   _outputs_map_mode(get_map_mode_value("MapOutputs"), max_val)
 			_:              polisMode()
 		if playerCountry == null:
 			activeView = false
@@ -1183,6 +1185,18 @@ func get_map_mode_value(mode: String) -> float:
 		"MapArmy":
 			if stationedArmy != null:
 				return float(stationedArmy.manpowerInArmy)
+		"MapOutputs":
+			return (buildingFoodOutput + tileFoodYield +
+				buildingWoodOutput + tileWoodYield +
+				buildingMetalOutput + tileMetalYield +
+				buildingCultureOutput + tileCultureYield +
+				buildingMagicOutput + tileMagicYield +
+				buildingWeaponsOutput + tileWeaponsYield +
+				buildingDollarsOutput + tileDollarsYield +
+				buildingManpowerOutput + tileManpowerYield +
+				buildingMandateOutput + tileMandateYield +
+				buildingHappinessOutput + tileHappinessYield +
+				buildingInfluenceOutput + tileInfluenceYield)
 	return 0.0
 
 func _resource_map_mode(target_color: Color, value: float, max_val: float) -> void:
@@ -1214,6 +1228,32 @@ func _governors_map_mode() -> void:
 		2: c = Color(0.75, 0.75, 0.8)   # silver
 		_: c = Color(1.0,  0.85, 0.0)   # gold (level 3+)
 	gfx.modulate  = c
+	if ring != null: ring.modulate = c
+
+func _states_map_mode() -> void:
+	var gfx:  Node = get_node_or_null("TileGraphic")
+	var ring: Node = get_node_or_null("Ring")
+	if gfx == null:
+		return
+	gfx.visible = true
+	if tileContinent == null or tileContinent == "":
+		gfx.modulate = Color(0.25, 0.25, 0.25)
+		if ring != null: ring.modulate = Color(0.25, 0.25, 0.25)
+		return
+	var hue: float = fposmod(float(abs(tileContinent.hash())) / 2147483647.0, 1.0)
+	var c: Color = Color.from_hsv(hue, 0.65, 0.85)
+	gfx.modulate = c
+	if ring != null: ring.modulate = c
+
+func _outputs_map_mode(value: float, max_val: float) -> void:
+	var gfx:  Node = get_node_or_null("TileGraphic")
+	var ring: Node = get_node_or_null("Ring")
+	if gfx == null:
+		return
+	gfx.visible = true
+	var t: float = clampf(value / maxf(max_val, 1.0), 0.0, 1.0)
+	var c: Color = Color.BLACK.lerp(Color(0.0, 1.0, 0.15), t)
+	gfx.modulate = c
 	if ring != null: ring.modulate = c
 
 

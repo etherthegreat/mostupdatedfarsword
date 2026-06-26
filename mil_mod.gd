@@ -1301,9 +1301,6 @@ func enableMilModType(ResourceType):
 	elif ResourceType == "All":
 		disabled = false
 
-func _on_area_2d_mouse_entered() -> void:
-	$Sprite2D/InfoPanel.show()
-
-
-func _on_area_2d_mouse_exited() -> void:
-	$Sprite2D/InfoPanel.hide()
+func _on_area_2d_input_event(_viewport, event, _shape_idx) -> void:
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		$Sprite2D/InfoPanel.visible = !$Sprite2D/InfoPanel.visible

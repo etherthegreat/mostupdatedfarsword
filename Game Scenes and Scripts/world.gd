@@ -187,7 +187,7 @@ func _refresh_next_turn_ui() -> void:
 	$CanvasLayer/NextTurnControl/PickTech.visible = not has_tech
 
 const RESOURCE_MAP_MODES := ["MapFood","MapWood","MapMetal","MapFaith","MapHappiness",
-	"MapManpower","MapWeapons","MapDollars","MapMagic","MapMandate"]
+	"MapManpower","MapWeapons","MapDollars","MapMagic","MapMandate","MapOutputs"]
 
 func updateMap() -> void:
 	if mapMode in RESOURCE_MAP_MODES:
@@ -6432,13 +6432,16 @@ func _tick_anarchists() -> void:
 
 
 func _on_polis_mode_button_pressed() -> void:
-	pass # Replace with function body.
+	mapMode = "Polis"
+	updateMap()
 
 func _on_states_mode_button_pressed() -> void:
-	pass # Replace with function body.
+	mapMode = "MapStates"
+	updateMap()
 
 func _on_outputs_mode_button_pressed() -> void:
-	pass # Replace with function body.
+	mapMode = "MapOutputs"
+	updateMap()
 
 func _on_terrain_mode_button_pressed() -> void:
-	pass # Replace with function body.
+	pass # terrain mode TBD
