@@ -2003,17 +2003,31 @@ var pathPointButtonToSend: pathPointButton
 func _on_ai_army_repositioned(army: Army, old_tile: Tile, new_tile: Tile) -> void:
 	if not is_instance_valid(army) or old_tile == null or new_tile == null:
 		return
-	var old_ppb = old_tile.tileSpawnPoint
 	var new_ppb = new_tile.tileSpawnPoint
-	if old_ppb == null or new_ppb == null:
+	if new_ppb == null:
 		return
-	var apf = old_ppb.stationedAPF
-	if apf == null or not is_instance_valid(apf) or apf.thisArmy != army:
+	# Find this army's APF — try old_tile.tileSpawnPoint.stationedAPF first, then
+	# search raisedPlayerAPFs so stale stationedAPF references don't strand the APF.
+	var apf = null
+	var apf_ppb = null
+	var old_ppb = old_tile.tileSpawnPoint
+	if old_ppb != null and old_ppb.stationedAPF != null \
+			and is_instance_valid(old_ppb.stationedAPF) \
+			and old_ppb.stationedAPF.thisArmy == army:
+		apf = old_ppb.stationedAPF
+		apf_ppb = old_ppb
+	else:
+		for candidate in $PathControl.raisedPlayerAPFs:
+			if is_instance_valid(candidate) and candidate.thisArmy == army:
+				apf = candidate
+				apf_ppb = candidate.currentPathPoint
+				break
+	if apf == null or not is_instance_valid(apf_ppb):
 		return
-	old_ppb.remove_child(apf)
-	old_ppb.stationedAPF = null
-	old_ppb.stationedArmy = null
-	old_ppb.occupied = false
+	apf_ppb.remove_child(apf)
+	apf_ppb.stationedAPF = null
+	apf_ppb.stationedArmy = null
+	apf_ppb.occupied = false
 	new_ppb.add_child(apf)
 	new_ppb.stationedAPF = apf
 	new_ppb.stationedArmy = army

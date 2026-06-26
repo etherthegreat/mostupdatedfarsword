@@ -254,16 +254,16 @@ func _on_attack_midpoint(apf: armyPathFollow) -> void:
 		apf.resolveAttack(false)
 		return
 	# Resolve battle inline (same formula as AI _resolve_ai_battle)
-	var raw_atk := float(attacker.armyPunch)
-	var def_block := clamp(
+	var raw_atk = float(attacker.armyPunch)
+	var def_block = clamp(
 		float(defender.armyBlock) / max(1.0, float(defender.unitsList.size())),
 		0.0, 0.9)
-	var def_loss := int(raw_atk * (1.0 - def_block))
-	var raw_counter := float(defender.armyPunch)
-	var atk_block := clamp(
+	var def_loss = int(raw_atk * (1.0 - def_block))
+	var raw_counter = float(defender.armyPunch)
+	var atk_block = clamp(
 		float(attacker.armyBlock) / max(1.0, float(attacker.unitsList.size())),
 		0.0, 0.9)
-	var atk_loss := int(raw_counter * (1.0 - atk_block))
+	var atk_loss = int(raw_counter * (1.0 - atk_block))
 	defender.calculateDefenderResults("melee", def_loss)
 	attacker.calculateDefenderResults("melee", atk_loss)
 	# Also update siege on the target tile
@@ -484,7 +484,7 @@ func _on_spy_action_performed(action_type: String, tile, civilian) -> void:
 			target_army.sabotaged = true
 			target_army.sabotageTimer = 1
 		"ContactTurncoats":
-			var siphon := int(target_army.manpowerInArmy * 0.20)
+			var siphon = int(target_army.manpowerInArmy * 0.20)
 			target_army.manpowerInArmy -= siphon
 			if playerCountry != null:
 				playerCountry.TotalManpower += siphon

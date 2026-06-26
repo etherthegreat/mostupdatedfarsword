@@ -1411,9 +1411,9 @@ func is_army_supplied(army: Army) -> bool:
 # Pure military. No economy. No buildings.
 # ============================================================
 
-const UK_ARMY_CAP  := 10   # max simultaneous UK field armies
-const UK_SPAWN_INTERVAL := 5  # turns between dock reinforcement drops
-var _uk_spawn_cooldown: int = 0
+const UK_ARMY_CAP = 10   # max simultaneous UK field armies
+const UK_SPAWN_INTERVAL = 5  # turns between dock reinforcement drops
+var _uk_spawn_cooldown: int = UK_SPAWN_INTERVAL  # start at cap so turn-1 spawn doesn't fire
 
 func _uk_calculate_turn() -> void:
 	_calculate_supply_from_owned()
@@ -1472,6 +1472,8 @@ func _uk_attack_tile(army: Army, targetTile) -> void:
 	emit_signal("aiCombatEvent", CID, targetTile.tileName,
 		"captured" if captured else "attacked")
 	if captured and old_tile != null:
+		old_tile.stationedArmy = null
+		targetTile.stationedArmy = army
 		army.inTile = targetTile
 		emit_signal("armyRepositioned", army, old_tile, targetTile)
 
@@ -1485,25 +1487,25 @@ func _resolve_ai_battle(attacker: Army, defender: Army, tile) -> void:
 	var attacker_loss: int = 0
 
 	if use_ranged:
-		var effective_launch := float(attacker.armyLaunch)
-		var ranged_block := clamp(
+		var effective_launch = float(attacker.armyLaunch)
+		var ranged_block = clamp(
 			float(defender.armyDefence) / max(1.0, float(defender.unitsList.size())),
 			0.0, 0.9)
-		var net := effective_launch * (1.0 - ranged_block)
+		var net = effective_launch * (1.0 - ranged_block)
 		# CannonBlast bonus vs unshielded
 		if defender.armyShield <= 0 and attacker._army_has_active_mod("CannonBlast"):
 			net *= 3.0
-		var shield_hit := int(min(float(defender.armyShield), net))
+		var shield_hit = int(min(float(defender.armyShield), net))
 		defender.armyShield = max(0, defender.armyShield - shield_hit)
 		defender_loss = int(net - float(shield_hit))
 		# Counter-ranged if defender can fire
 		if defender.has_ready_ranged_units() and defender.armyLaunch > 0:
-			var counter_launch := float(defender.armyLaunch)
-			var atk_block := clamp(
+			var counter_launch = float(defender.armyLaunch)
+			var atk_block = clamp(
 				float(attacker.armyDefence) / max(1.0, float(attacker.unitsList.size())),
 				0.0, 0.9)
-			var counter_net := counter_launch * (1.0 - atk_block)
-			var atk_shield_hit := int(min(float(attacker.armyShield), counter_net))
+			var counter_net = counter_launch * (1.0 - atk_block)
+			var atk_shield_hit = int(min(float(attacker.armyShield), counter_net))
 			attacker.armyShield = max(0, attacker.armyShield - atk_shield_hit)
 			attacker_loss = int(counter_net - float(atk_shield_hit))
 		# Trigger reload on attacker's ranged units
@@ -1513,21 +1515,21 @@ func _resolve_ai_battle(attacker: Army, defender: Army, tile) -> void:
 				if not unit.is_reloading():
 					unit.start_reload()
 	else:
-		var raw_attack := float(attacker.armyPunch)
-		var block_ratio := clamp(
+		var raw_attack = float(attacker.armyPunch)
+		var block_ratio = clamp(
 			float(defender.armyBlock) / max(1.0, float(defender.unitsList.size())),
 			0.0, 0.9)
-		var net := raw_attack * (1.0 - block_ratio)
-		var shield_hit := int(min(float(defender.armyShield), net))
+		var net = raw_attack * (1.0 - block_ratio)
+		var shield_hit = int(min(float(defender.armyShield), net))
 		defender.armyShield = max(0, defender.armyShield - shield_hit)
 		defender_loss = int(net - float(shield_hit))
 		# Counter-melee
-		var counter := float(defender.armyPunch)
-		var attacker_block := clamp(
+		var counter = float(defender.armyPunch)
+		var attacker_block = clamp(
 			float(attacker.armyBlock) / max(1.0, float(attacker.unitsList.size())),
 			0.0, 0.9)
-		var counter_net := counter * (1.0 - attacker_block)
-		var atk_shield_hit := int(min(float(attacker.armyShield), counter_net))
+		var counter_net = counter * (1.0 - attacker_block)
+		var atk_shield_hit = int(min(float(attacker.armyShield), counter_net))
 		attacker.armyShield = max(0, attacker.armyShield - atk_shield_hit)
 		attacker_loss = int(counter_net - float(atk_shield_hit))
 
@@ -1553,7 +1555,7 @@ func _uk_retreat_to_supply(army: Army) -> void:
 func _uk_reinforce(army: Army) -> void:
 	if army == null or army.inTile == null:
 		return
-	var rate := armyReinforceRate * (2 if army.inTile.has_dock() else 1)
+	var rate = armyReinforceRate * (2 if army.inTile.has_dock() else 1)
 	army.manpowerInArmy = mini(army.manpowerInArmy + rate, army.maxManpower)
 
 func _uk_try_advance(army: Army) -> bool:
@@ -1567,9 +1569,14 @@ func _uk_try_advance(army: Army) -> bool:
 			continue
 		if neighbor.stationedArmy != null and is_instance_valid(neighbor.stationedArmy):
 			continue
+		var ppb = neighbor.tileSpawnPoint
+		if ppb != null and ppb.occupied:
+			continue
 		# Found an open UK tile — move there
 		var old_tile = army.inTile
 		army.inTile = neighbor
+		old_tile.stationedArmy = null
+		neighbor.stationedArmy = army
 		if neighbor.tileSpawnPoint != null:
 			neighbor.tileSpawnPoint.stationedArmy = army
 		if old_tile.tileSpawnPoint != null:
@@ -1594,7 +1601,7 @@ func _uk_spawn_reinforcement() -> void:
 		return
 	dock_tiles.shuffle()
 	var spawn_tile = dock_tiles[0]
-	var army_names := ["Crown Landing Force", "Royal Marine Detachment",
+	var army_names = ["Crown Landing Force", "Royal Marine Detachment",
 		"King's Own Regiment", "Redcoat Vanguard", "British Expeditionary Force"]
 	var army_name: String = army_names[countryArmyList.size() % army_names.size()]
 	addArmy(army_name, spawn_tile.tileNumber)
