@@ -1,5 +1,5 @@
 countryCID,armyName,spawnTile,armyMods,units
 USA,Continental Army,1,Minutemen,Infantry:Brown Bess:Continental:3:300:300|Infantry:Flintlock:Minuteman:2:200:200|Cavalry:Cavalry Sword:Cavalry:2:200:0
-UK,Royal Army,14,Redcoats|Naval Power,Infantry:Brown Bess:Redcoat:3:300:300|Infantry:Brown Bess:Heavy Infantry:2:200:200|Artillery:Falconet:Artillery Corps:2:200:200
+UK,Royal Army,14,Redcoats|Naval Power,Infantry:Brown Bess:Redcoat:3:300:300|Infantry:Brown Bess:Heavy Infantry:2:200:200|Artillery:Field Cannon:Artillery Corps:2:200:200
 CA,Colonial Militia,201,Coureurs des Bois|Cold Weather|Ranger,Infantry:Flintlock:Militia:2:200:200|Infantry:Cutlass:Militia:1:100:0
 BA,Nassau Raiders,182,Pirates|Naval Power,Infantry:Cutlass:Militia:2:200:0|Cavalry:Cavalry Sword:Cavalry:1:100:0

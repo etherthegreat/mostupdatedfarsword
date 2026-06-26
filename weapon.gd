@@ -165,7 +165,7 @@ func updateSelf(newType: String) -> void:
 		# ARTILLERY — devastating ranged, zero melee, slow reload
 		# no melee offensive or defensive at all
 		# ============================================================
-		"Falconet":
+		"Field Cannon":
 			weaponClass              = "Artillery"
 			weaponLevel              = 1
 			weaponOffensiveIncrease  = 0   # no melee

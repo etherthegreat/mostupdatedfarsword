@@ -688,7 +688,7 @@ func surveySelf():
 				armyWeaponsCost += (3 * uLV)
 			"War Hammer", "War Axe", "War Sword", "Cavalry Sword", "Flintlock":
 				armyWeaponsCost += (4 * uLV)
-			"Officer Sword", "Brown Bess", "Falconet":
+			"Officer Sword", "Brown Bess", "Field Cannon":
 				armyWeaponsCost += (5 * uLV)
 			"Marine Mameluke", "Percussion Cap", "Field Gun":
 				armyWeaponsCost += (6 * uLV)
