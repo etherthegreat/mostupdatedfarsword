@@ -310,10 +310,10 @@ func onNewGame():
 	discovered = false
 	undiscovered = true
 	activeView = false
-	# Ensure correct draw order: TileFOW(0) < TileGraphic(2) < Ring(5)
+	# Draw order: TileGraphic(2) < TileFOW(3) < Ring(5)
 	var fow_node  = get_node_or_null("TileFOW")
 	var gfx_node  = get_node_or_null("TileGraphic")
-	if fow_node  != null: fow_node.z_index  = 0
+	if fow_node  != null: fow_node.z_index  = 3
 	if gfx_node  != null: gfx_node.z_index  = 2
 	for NodePath in TileNeighborsEXP:
 		var nb = get_node_or_null(NodePath)
@@ -1114,12 +1114,13 @@ func updateGraphics(mapMode, displayCorruption, playerCountry, max_val: float = 
 				if neighbor != null:
 					neighbor.activeView = true
 			return
-		if tileSpawnPoint != null and is_instance_valid(tileSpawnPoint) and tileSpawnPoint.occupied == true:
-			activeView = true
-			for neighbor in TileNeighbors:
-				if neighbor != null:
-					neighbor.activeView = true
-			return
+		if stationedArmy != null and is_instance_valid(stationedArmy):
+			if stationedArmy.parentCountry != null and stationedArmy.parentCountry.CID == playerCountry.CID:
+				activeView = true
+				for neighbor in TileNeighbors:
+					if neighbor != null:
+						neighbor.activeView = true
+				return
 		activeView = false
 
 func calculateActiveView():
@@ -1193,7 +1194,6 @@ func get_map_mode_value(mode: String) -> float:
 				buildingMagicOutput + tileMagicYield +
 				buildingWeaponsOutput + tileWeaponsYield +
 				buildingDollarsOutput + tileDollarsYield +
-				buildingManpowerOutput + tileManpowerYield +
 				buildingMandateOutput + tileMandateYield +
 				buildingHappinessOutput + tileHappinessYield +
 				buildingInfluenceOutput + tileInfluenceYield)
