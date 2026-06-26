@@ -19,23 +19,85 @@ var weaponImage: Texture2D
 func buildSelf():
 	weaponOffensiveIncrease = 0
 	weaponDefensiveIncrease = 0
-	if weaponType == "Atlatl":
-		weaponOffensiveIncrease += 2
-		weaponDefensiveIncrease += 1
-		ranged = true
-		pierce = true
-		weaponImage = load("res://art assets/Placeholder Art/atlatl.png")
-		return
-	if weaponType == "Club":
-		weaponOffensiveIncrease += 2
-		weaponDefensiveIncrease += 2
-		melee = true
-		weaponImage= load("res://art assets/Placeholder Art/club.png")
-		return
-	if weaponType == "Spear":
-		weaponOffensiveIncrease += 3
-		weaponDefensiveIncrease += 3
-		slash = true
-		melee = true
-		weaponImage = load("res://art assets/Placeholder Art/sword.png")
-		return
+	match weaponType:
+		# ── SABRE ────────────────────────────────────────────────────────────
+		"Cutlass":
+			weaponOffensiveIncrease = 2
+			weaponDefensiveIncrease = 1
+			melee = true
+			slash = true
+			weaponImage = load("res://art assets/finishedAssets/Weapons/cutlass.png")
+		"Cavalry Sword":
+			weaponOffensiveIncrease = 3
+			weaponDefensiveIncrease = 2
+			melee = true
+			slash = true
+			weaponImage = load("res://art assets/finishedAssets/Weapons/cavalry_sword.png")
+		"Officer Sword":
+			weaponOffensiveIncrease = 4
+			weaponDefensiveIncrease = 3
+			melee = true
+			slash = true
+			weaponImage = load("res://art assets/finishedAssets/Weapons/officer_sword.png")
+		"Marine Mameluke":
+			weaponOffensiveIncrease = 5
+			weaponDefensiveIncrease = 3
+			melee = true
+			slash = true
+			weaponImage = load("res://art assets/finishedAssets/Weapons/marine_mameluke.png")
+		# ── RIFLES ───────────────────────────────────────────────────────────
+		"Flintlock":
+			weaponOffensiveIncrease = 2
+			weaponDefensiveIncrease = 1
+			ranged = true
+			pierce = true
+			weaponImage = load("res://art assets/finishedAssets/Weapons/Flintlock.png")
+		"Brown Bess":
+			weaponOffensiveIncrease = 3
+			weaponDefensiveIncrease = 1
+			ranged = true
+			pierce = true
+			weaponImage = load("res://art assets/finishedAssets/Weapons/Brown_Bess.png")
+		"Percussion Cap":
+			weaponOffensiveIncrease = 4
+			weaponDefensiveIncrease = 1
+			ranged = true
+			pierce = true
+			weaponImage = load("res://art assets/finishedAssets/Weapons/Percussion_Cap.png")
+		"Breechloader":
+			weaponOffensiveIncrease = 4
+			weaponDefensiveIncrease = 2
+			ranged = true
+			pierce = true
+			weaponImage = load("res://art assets/finishedAssets/Weapons/Percussion_Cap.png")
+		"Lever Repeater":
+			weaponOffensiveIncrease = 5
+			weaponDefensiveIncrease = 2
+			ranged = true
+			pierce = true
+			weaponImage = load("res://art assets/finishedAssets/Weapons/Lever_Repeater.png")
+		# ── ARTILLERY ────────────────────────────────────────────────────────
+		"Field Cannon":
+			weaponOffensiveIncrease = 3
+			weaponDefensiveIncrease = 1
+			ranged = true
+			pierce = true
+			weaponImage = load("res://art assets/finishedAssets/Weapons/Howitzer.png")
+		"Howitzer":
+			weaponOffensiveIncrease = 4
+			weaponDefensiveIncrease = 1
+			ranged = true
+			pierce = true
+			weaponImage = load("res://art assets/finishedAssets/Weapons/Howitzer.png")
+		"Mortar":
+			weaponOffensiveIncrease = 5
+			weaponDefensiveIncrease = 1
+			ranged = true
+			pierce = true
+			weaponImage = load("res://art assets/finishedAssets/Weapons/Mortar.png")
+		"Early Rockets":
+			weaponOffensiveIncrease = 6
+			weaponDefensiveIncrease = 1
+			ranged = true
+			pierce = true
+			weaponImage = load("res://art assets/finishedAssets/Weapons/Early_Rockets.png")

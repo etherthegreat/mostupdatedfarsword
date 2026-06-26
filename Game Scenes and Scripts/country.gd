@@ -871,8 +871,7 @@ func updateUnlockableAttributes():
 					if UnitTemplate.unitType == "Ranged":
 						UnitTemplate.unitDefensiveScore += 3
 						UnitTemplate.unitOffensiveScore += 3
-				addWeaponTemplate("Atlatl")
-				addWeaponTemplate("Club")
+				addWeaponTemplate("Field Cannon")
 				addKit("Adventurer")
 				addKit("Homesteader")
 				addTool("Wooden Tools")
@@ -1023,10 +1022,12 @@ func updateUnlockableAttributes():
 			if Technology.techName == "Musket Drilling":
 				addWeaponTemplate("Flintlock")
 			if Technology.techName == "Volley Tactics":
+				addWeaponTemplate("Brown Bess")
 				for UnitTemplate in unitTemplateList:
 					if UnitTemplate.unitType == "Ranged":
 						UnitTemplate.unitOffensiveScore += 3
 			if Technology.techName == "Percussion Ignition":
+				addWeaponTemplate("Percussion Cap")
 				addWeaponTemplate("Breechloader")
 			if Technology.techName == "Repeating Mechanisms":
 				addWeaponTemplate("Lever Repeater")
