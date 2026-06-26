@@ -1024,11 +1024,13 @@ func updateUnlockableAttributes():
 				addWeaponTemplate("Lever Repeater")
 			# --- ARTILLERY row ---
 			if Technology.techName == "Field Gunnery":
-				addWeaponTemplate("Field Gun")
+				addWeaponTemplate("Howitzer")
 			if Technology.techName == "Siege Works":
-				addWeaponTemplate("Siege Cannon")
-			if Technology.techName == "Mortar Tactics":
 				addWeaponTemplate("Mortar")
+			if Technology.techName == "Explosive Charges":
+				for UnitTemplate in unitTemplateList:
+					if UnitTemplate.unitType == "Siege" or UnitTemplate.unitType == "Artillery":
+						UnitTemplate.unitOffensiveScore += 5
 			if Technology.techName == "Rocket Artillery":
 				addWeaponTemplate("Early Rockets")
 			# --- CIVILIAN row ---

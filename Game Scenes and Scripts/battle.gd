@@ -403,7 +403,7 @@ func _apply_combat_status_effects() -> void:
 				defender.apply_status("Terrified", 2)
 			"Colt Revolver":
 				defender.apply_status("Shaken", 1)
-			"Rocket Artillery":
+			"Early Rockets":
 				defender.apply_status("Burning", 2)
 				defender.apply_status("Suppressed", 1)
 			"Trebuchet":
