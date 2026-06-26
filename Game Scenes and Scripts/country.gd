@@ -755,6 +755,9 @@ func addTechnologicalDiscovery(Name):
 	unlockedTechnologies.append(newTech)
 
 func addWeaponTemplate(Name):
+	for existing in weaponTemplateList:
+		if existing.weaponType == Name:
+			return
 	var newWeaponTemplate = WeaponTemplate.new()
 	newWeaponTemplate.weaponType = str(Name)
 	newWeaponTemplate.buildSelf()
@@ -871,7 +874,7 @@ func updateUnlockableAttributes():
 					if UnitTemplate.unitType == "Ranged":
 						UnitTemplate.unitDefensiveScore += 3
 						UnitTemplate.unitOffensiveScore += 3
-				addWeaponTemplate("Field Cannon")
+				pass
 				addKit("Adventurer")
 				addKit("Homesteader")
 				addTool("Wooden Tools")

@@ -77,12 +77,6 @@ func buildSelf():
 			pierce = true
 			weaponImage = load("res://art assets/finishedAssets/Weapons/Lever_Repeater.png")
 		# ── ARTILLERY ────────────────────────────────────────────────────────
-		"Field Cannon":
-			weaponOffensiveIncrease = 3
-			weaponDefensiveIncrease = 1
-			ranged = true
-			pierce = true
-			weaponImage = load("res://art assets/finishedAssets/Weapons/Howitzer.png")
 		"Howitzer":
 			weaponOffensiveIncrease = 4
 			weaponDefensiveIncrease = 1
