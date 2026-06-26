@@ -72,10 +72,16 @@ func refreshHealthBar() -> void:
 		return
 	$ProgressBar.value = (float(thisArmy.manpowerInArmy) / thisArmy.maxManpower) * 100.0
 	$Label.text = "win" if thisArmy.armyCharm != null else ""
+	if thisArmy.armyMaxShield > 0:
+		$ShieldBar.visible = true
+		$ShieldBar.value = (float(thisArmy.armyShield) / float(thisArmy.armyMaxShield)) * 100.0
+	else:
+		$ShieldBar.visible = false
 
 func _process(_delta: float) -> void:
 	if thisArmy == null:
 		return
+	refreshHealthBar()
 	if thisArmy.deleteMode == false:
 		if attack_mode:
 			_process_attack()

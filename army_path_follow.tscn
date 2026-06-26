@@ -1,8 +1,14 @@
-[gd_scene load_steps=4 format=3 uid="uid://dp5wfq012517s"]
+[gd_scene load_steps=6 format=3 uid="uid://dp5wfq012517s"]
 
 [ext_resource type="Script" uid="uid://cgsub3tu82rgw" path="res://army_path_follow.gd" id="1_dkk2m"]
 [ext_resource type="Texture2D" uid="uid://b1xe61qas3y7u" path="res://art assets/finishedAssets/armyicons/test/9.png" id="2_odqi8"]
 [ext_resource type="Texture2D" uid="uid://cf41vsdq7n11f" path="res://art assets/Placeholder Art/UI Art/resources/clubsmall.png" id="2_yunp4"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_shield_bg"]
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_shield_fill"]
+bg_color = Color(0.1, 0.45, 1, 0.6)
 
 [node name="ArmyPathFollow" type="Control"]
 z_index = 15
@@ -40,6 +46,17 @@ offset_top = 74.0
 offset_right = 74.0
 offset_bottom = 101.0
 show_percentage = false
+
+[node name="ShieldBar" type="ProgressBar" parent="."]
+layout_mode = 0
+offset_left = -62.0
+offset_top = 74.0
+offset_right = 74.0
+offset_bottom = 101.0
+mouse_filter = 2
+show_percentage = false
+theme_override_styles/background = SubResource("StyleBoxFlat_shield_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_shield_fill")
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 0
