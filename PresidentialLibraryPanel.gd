@@ -18,6 +18,15 @@ extends Control
 #     └── CloseButton   (Button, "CLOSE", top-right corner)
 # ============================================================
 
+<<<<<<< Updated upstream
+=======
+const _GALLERY_SCENE = preload("res://GalleryTab.tscn")
+const _RECORDS_SCENE = preload("res://RecordsTab.tscn")
+const _JOURNAL_SCENE = preload("res://JournalTab.tscn")
+
+const _TC_PATH := "LibraryContainer/OuterVBox/TabContainer"
+
+>>>>>>> Stashed changes
 func _ready() -> void:
 	visible = false
 

@@ -17,7 +17,7 @@ extends Control
 #     └── CloseButton     (Button, "✕", top-right)
 # ============================================================
 
-const GALLERY_CATALOG := [
+const GALLERY_CATALOG = [
 	# ── WHITE HOUSE SECRETS (sensual / explicit) ───────────────────────────
 	{
 		"event_id": "WH_SECRET_01",

@@ -220,7 +220,73 @@ func calculateArmyMovement(endPathPoint, endNodes, startNodes, neighborPathPoint
 	$PathsControl/Path.set_point_position(1, startingPoint.position)
 	$PathsControl/Path.set_point_position(2, endPathPoint.position)
 	moveArmy($PathsControl/Path/PathFollow/Control, "start", endPathPoint)
+<<<<<<< Updated upstream
 	pass
+=======
+
+# ── ATTACK ANIMATION ─────────────────────────────────────────────────────────
+
+func _initiate_attack(targetPPB: pathPointButton) -> void:
+	if selectedAPF == null:
+		return
+	var curve: Curve2D = $PathsControl/Path.curve
+	curve.clear_points()
+	curve.add_point(selectedAPF.currentPathPoint.position)
+	curve.add_point(targetPPB.position)
+	var pathFollow: PathFollow2D = $PathsControl/Path/PathFollow
+	var container: Control = $PathsControl/Path/PathFollow/Control
+	updatingArmyPathFollow = pathFollow
+	var apfParent = selectedAPF.get_parent()
+	apfParent.call_deferred("remove_child", selectedAPF)
+	container.call_deferred("add_child", selectedAPF)
+	selectedAPF.beginAttack(targetPPB, $PathsControl/Path)
+
+func _on_attack_midpoint(apf: armyPathFollow) -> void:
+	var targetPPB: pathPointButton = apf.destinationPathPoint
+	if targetPPB == null or not is_instance_valid(targetPPB):
+		apf.resolveAttack(false)
+		return
+	var attacker: Army = apf.thisArmy
+	var defender: Army = targetPPB.stationedArmy
+	if defender == null or not is_instance_valid(defender) or not defender.enemy:
+		apf.resolveAttack(false)
+		return
+	# Resolve battle inline (same formula as AI _resolve_ai_battle)
+	var raw_atk := float(attacker.armyPunch)
+	var def_block = clamp(
+		float(defender.armyBlock) / max(1.0, float(defender.unitsList.size())),
+		0.0, 0.9)
+	var def_loss := int(raw_atk * (1.0 - def_block))
+	var raw_counter := float(defender.armyPunch)
+	var atk_block = clamp(
+		float(attacker.armyBlock) / max(1.0, float(attacker.unitsList.size())),
+		0.0, 0.9)
+	var atk_loss := int(raw_counter * (1.0 - atk_block))
+	defender.calculateDefenderResults("melee", def_loss)
+	attacker.calculateDefenderResults("melee", atk_loss)
+	# Also update siege on the target tile
+	targetPPB.siegeTile(attacker)
+	# Emit for floating damage numbers
+	var tile = targetPPB.ppbTile
+	emit_signal("playerBattleResolved", tile, atk_loss, def_loss)
+	# Conquered if defender is gone
+	var conquered: bool = (not is_instance_valid(defender) or defender.manpowerInArmy <= 0)
+	if conquered:
+		# Clear the defender's PPB before the attacker arrives
+		if targetPPB.stationedAPF != null and is_instance_valid(targetPPB.stationedAPF):
+			targetPPB.stationedAPF.thisArmy.deleteMode = true
+		targetPPB.stationedAPF = null
+		targetPPB.stationedArmy = null
+		targetPPB.occupied = false
+	apf.resolveAttack(conquered)
+
+func _on_attack_retreated(apf: armyPathFollow, returnPoint: pathPointButton) -> void:
+	removeFromUpdateArmyPaths()
+	var container = apf.get_parent()
+	container.call_deferred("remove_child", apf)
+	returnPoint.call_deferred("add_child", apf)
+	showPathPoints(returnPoint)
+>>>>>>> Stashed changes
 
 func moveArmy(newContainer, String, endPoint):
 	if selectedAPF!= null:

@@ -6,13 +6,13 @@
 [ext_resource type="PackedScene" uid="uid://cjournl001a" path="res://JournalTab.tscn" id="4_journl"]
 
 [node name="PresidentialLibraryPanel" type="Control"]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-visible = false
 script = ExtResource("1_plib01")
 
 [node name="DarkOverlay" type="ColorRect" parent="."]
@@ -43,12 +43,12 @@ layout_mode = 2
 theme_override_constants/separation = 0
 
 [node name="HeaderRow" type="HBoxContainer" parent="LibraryContainer/OuterVBox"]
-layout_mode = 2
 custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
 
 [node name="SealSprite" type="TextureRect" parent="LibraryContainer/OuterVBox/HeaderRow"]
-layout_mode = 2
 custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
 expand_mode = 1
 stretch_mode = 5
 
@@ -61,8 +61,8 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="CloseButton" type="Button" parent="LibraryContainer/OuterVBox/HeaderRow"]
-layout_mode = 2
 custom_minimum_size = Vector2(64, 60)
+layout_mode = 2
 theme_override_font_sizes/font_size = 22
 text = "X"
 
@@ -70,9 +70,11 @@ text = "X"
 layout_mode = 2
 size_flags_vertical = 3
 tab_alignment = 1
+current_tab = 0
 
 [node name="GALLERY" type="Control" parent="LibraryContainer/OuterVBox/TabContainer"]
 layout_mode = 2
+<<<<<<< Updated upstream
 
 [node name="GalleryTab" parent="LibraryContainer/OuterVBox/TabContainer/GALLERY" instance=ExtResource("2_galtab")]
 layout_mode = 1
@@ -81,9 +83,14 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+=======
+metadata/_tab_index = 0
+>>>>>>> Stashed changes
 
 [node name="RECORDS" type="Control" parent="LibraryContainer/OuterVBox/TabContainer"]
+visible = false
 layout_mode = 2
+<<<<<<< Updated upstream
 
 [node name="RecordsTab" parent="LibraryContainer/OuterVBox/TabContainer/RECORDS" instance=ExtResource("3_rectab")]
 layout_mode = 1
@@ -92,9 +99,14 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+=======
+metadata/_tab_index = 1
+>>>>>>> Stashed changes
 
 [node name="JOURNAL" type="Control" parent="LibraryContainer/OuterVBox/TabContainer"]
+visible = false
 layout_mode = 2
+<<<<<<< Updated upstream
 
 [node name="JournalTab" parent="LibraryContainer/OuterVBox/TabContainer/JOURNAL" instance=ExtResource("4_journl")]
 layout_mode = 1
@@ -103,5 +115,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+=======
+metadata/_tab_index = 2
+>>>>>>> Stashed changes
 
 [connection signal="pressed" from="LibraryContainer/OuterVBox/HeaderRow/CloseButton" to="." method="_on_close_button_pressed"]
