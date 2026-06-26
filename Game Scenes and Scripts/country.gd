@@ -553,10 +553,18 @@ func addArmy(Name, TileNumber, icon = null, tags: Array = []):
 				)
 			template_matched = true
 			break
-	# Fallback: procedural armies that don't match a CSV template get a small militia
+	# Fallback: procedural armies that don't match a CSV template get randomized level-1 units
 	if not template_matched:
-		addNewUnit(armyInstance, "Infantry", 1, "Flintlock", "Iron", "Cloth", 150, 150)
-		addNewUnit(armyInstance, "Infantry", 1, "Flintlock", "Iron", "Cloth", 150, 150)
+		match randi() % 3:
+			0: # Rifles
+				addNewUnit(armyInstance, "Infantry",  1, "Flintlock",    "Iron", "Cloth", 150, 150)
+				addNewUnit(armyInstance, "Infantry",  1, "Flintlock",    "Iron", "Cloth", 150, 150)
+			1: # Sabres
+				addNewUnit(armyInstance, "Cavalry",   1, "Cutlass",      "Iron", "Cloth", 150, 0)
+				addNewUnit(armyInstance, "Cavalry",   1, "Cutlass",      "Iron", "Cloth", 150, 0)
+			2: # Artillery
+				addNewUnit(armyInstance, "Artillery", 1, "Field Cannon", "Iron", "Cloth", 100, 150)
+				addNewUnit(armyInstance, "Infantry",  1, "Flintlock",    "Iron", "Cloth", 150, 150)
 	# ── Tile placement ────────────────────────────────────────────────────────
 	for Tile in OwnedTileList:
 		if Tile.tileNumber == TileNumber:
