@@ -158,11 +158,9 @@ func _calculate_ranged_damage() -> void:
 	var ranged_block_ratio = clamp(defender.armyDefence / max(1.0, float(defender.unitsList.size())), 0.0, 0.9)
 	var net_ranged = effective_launch * (1.0 - ranged_block_ratio)
 
-	# ── CannonBlast: half damage vs shielded; 3x (5x w/ Tempering) vs unshielded ──
+	# ── CannonBlast: bonus vs unshielded (×3, ×5 w/ Tempering); no penalty vs shield ──
 	if _army_has_siege_mod(attacker, "CannonBlast"):
-		if defenderCurrentShield > 0:
-			net_ranged *= 0.5   # cannons barely scratch shields
-		else:
+		if defenderCurrentShield <= 0:
 			net_ranged *= 5.0 if _army_has_tempering(attacker) else 3.0
 
 	defenderShieldLoss   = int(min(defenderCurrentShield, net_ranged))

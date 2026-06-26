@@ -42,8 +42,8 @@ func updateSelf(newType: String) -> void:
 		"Cutlass":
 			weaponClass              = "Saber"
 			weaponLevel              = 1
-			weaponOffensiveIncrease  = 3
-			weaponDefensiveIncrease  = 2
+			weaponOffensiveIncrease  = 25
+			weaponDefensiveIncrease  = 10
 			rangedOffensiveIncrease  = 0
 			rangedDefensiveIncrease  = 0
 			reloadTurns              = 0
@@ -55,8 +55,8 @@ func updateSelf(newType: String) -> void:
 		"Cavalry Sword":
 			weaponClass              = "Saber"
 			weaponLevel              = 2
-			weaponOffensiveIncrease  = 5
-			weaponDefensiveIncrease  = 3
+			weaponOffensiveIncrease  = 40
+			weaponDefensiveIncrease  = 15
 			reloadTurns              = 0
 			weaponsPerLevel          = 0
 			chargeManpowerCost       = 0.10
@@ -67,8 +67,8 @@ func updateSelf(newType: String) -> void:
 		"Officer Sword":
 			weaponClass              = "Saber"
 			weaponLevel              = 3
-			weaponOffensiveIncrease  = 7
-			weaponDefensiveIncrease  = 4
+			weaponOffensiveIncrease  = 55
+			weaponDefensiveIncrease  = 20
 			reloadTurns              = 0
 			weaponsPerLevel          = 0
 			chargeManpowerCost       = 0.10
@@ -78,8 +78,8 @@ func updateSelf(newType: String) -> void:
 		"Marine Mameluke":
 			weaponClass              = "Saber"
 			weaponLevel              = 4
-			weaponOffensiveIncrease  = 9
-			weaponDefensiveIncrease  = 5
+			weaponOffensiveIncrease  = 70
+			weaponDefensiveIncrease  = 25
 			reloadTurns              = 0
 			weaponsPerLevel          = 0
 			chargeManpowerCost       = 0.10
@@ -96,50 +96,50 @@ func updateSelf(newType: String) -> void:
 		"Flintlock":
 			weaponClass              = "Musket"
 			weaponLevel              = 1
-			weaponOffensiveIncrease  = 1   # bayonet melee
-			weaponDefensiveIncrease  = 1   # butt of rifle
-			rangedOffensiveIncrease  = 4
-			rangedDefensiveIncrease  = 1
+			weaponOffensiveIncrease  = 8   # bayonet melee (×0.5 penalty = 4 effective)
+			weaponDefensiveIncrease  = 5   # butt of rifle
+			rangedOffensiveIncrease  = 35
+			rangedDefensiveIncrease  = 5
 			reloadTurns              = 2
 			weaponsPerLevel          = 1
 			chargeManpowerCost       = 0.0
 			weaponImage = load("res://art assets/finishedAssets/Weapons/Flintlock.png")
 			addWeaponMod("Bayonet")
- 
+
 		"Brown Bess":
 			weaponClass              = "Musket"
 			weaponLevel              = 2
-			weaponOffensiveIncrease  = 2
-			weaponDefensiveIncrease  = 1
-			rangedOffensiveIncrease  = 6
-			rangedDefensiveIncrease  = 1
+			weaponOffensiveIncrease  = 10
+			weaponDefensiveIncrease  = 5
+			rangedOffensiveIncrease  = 50
+			rangedDefensiveIncrease  = 5
 			reloadTurns              = 2
 			weaponsPerLevel          = 1
 			chargeManpowerCost       = 0.0
 			weaponImage = load("res://art assets/finishedAssets/Weapons/Brown_Bess.png")
 			addWeaponMod("Bayonet")
 			addWeaponMod("VolleyFire")  # bonus when multiple musket units fire
- 
+
 		"Percussion Cap":
 			weaponClass              = "Musket"
 			weaponLevel              = 3
-			weaponOffensiveIncrease  = 2
-			weaponDefensiveIncrease  = 2
-			rangedOffensiveIncrease  = 8
-			rangedDefensiveIncrease  = 2
+			weaponOffensiveIncrease  = 10
+			weaponDefensiveIncrease  = 8
+			rangedOffensiveIncrease  = 65
+			rangedDefensiveIncrease  = 8
 			reloadTurns              = 1   # faster reload
 			weaponsPerLevel          = 1
 			chargeManpowerCost       = 0.0
 			weaponImage = load("res://art assets/finishedAssets/Weapons/Percussion_Cap.png")
 			addWeaponMod("Bayonet")
- 
+
 		"Breechloader":
 			weaponClass              = "Musket"
 			weaponLevel              = 3
-			weaponOffensiveIncrease  = 2
-			weaponDefensiveIncrease  = 2
-			rangedOffensiveIncrease  = 10
-			rangedDefensiveIncrease  = 2
+			weaponOffensiveIncrease  = 10
+			weaponDefensiveIncrease  = 8
+			rangedOffensiveIncrease  = 80
+			rangedDefensiveIncrease  = 8
 			reloadTurns              = 1
 			weaponsPerLevel          = 1
 			chargeManpowerCost       = 0.0
@@ -149,10 +149,10 @@ func updateSelf(newType: String) -> void:
 		"Lever Repeater":
 			weaponClass              = "Musket"
 			weaponLevel              = 4
-			weaponOffensiveIncrease  = 3
-			weaponDefensiveIncrease  = 2
-			rangedOffensiveIncrease  = 10
-			rangedDefensiveIncrease  = 2
+			weaponOffensiveIncrease  = 15
+			weaponDefensiveIncrease  = 10
+			rangedOffensiveIncrease  = 80
+			rangedDefensiveIncrease  = 10
 			reloadTurns              = 0   # no reload — fires every turn
 			weaponsPerLevel          = 2   # burns more ammo
 			chargeManpowerCost       = 0.0
@@ -170,7 +170,7 @@ func updateSelf(newType: String) -> void:
 			weaponLevel              = 1
 			weaponOffensiveIncrease  = 0   # no melee
 			weaponDefensiveIncrease  = 0   # no melee defence
-			rangedOffensiveIncrease  = 12
+			rangedOffensiveIncrease  = 70
 			rangedDefensiveIncrease  = 0
 			reloadTurns              = 3
 			weaponsPerLevel          = 3   # heavy ammo cost
@@ -183,7 +183,7 @@ func updateSelf(newType: String) -> void:
 			weaponLevel              = 2
 			weaponOffensiveIncrease  = 0
 			weaponDefensiveIncrease  = 0
-			rangedOffensiveIncrease  = 18
+			rangedOffensiveIncrease  = 90
 			rangedDefensiveIncrease  = 0
 			reloadTurns              = 3
 			weaponsPerLevel          = 3
@@ -197,7 +197,7 @@ func updateSelf(newType: String) -> void:
 			weaponLevel              = 3
 			weaponOffensiveIncrease  = 0
 			weaponDefensiveIncrease  = 0
-			rangedOffensiveIncrease  = 25
+			rangedOffensiveIncrease  = 120
 			rangedDefensiveIncrease  = 0
 			reloadTurns              = 2
 			weaponsPerLevel          = 4
@@ -205,13 +205,13 @@ func updateSelf(newType: String) -> void:
 			weaponImage = load("res://art assets/finishedAssets/Weapons/Howitzer.png")
 			addWeaponMod("CannonBlast")
 			addWeaponMod("AreaDamage")
- 
+
 		"Siege Cannon":
 			weaponClass              = "Artillery"
 			weaponLevel              = 2
 			weaponOffensiveIncrease  = 0
 			weaponDefensiveIncrease  = 0
-			rangedOffensiveIncrease  = 22
+			rangedOffensiveIncrease  = 100
 			rangedDefensiveIncrease  = 0
 			reloadTurns              = 4
 			weaponsPerLevel          = 4
@@ -225,7 +225,7 @@ func updateSelf(newType: String) -> void:
 			weaponLevel              = 3
 			weaponOffensiveIncrease  = 0
 			weaponDefensiveIncrease  = 0
-			rangedOffensiveIncrease  = 30
+			rangedOffensiveIncrease  = 150
 			rangedDefensiveIncrease  = 0
 			reloadTurns              = 2
 			weaponsPerLevel          = 4
@@ -240,7 +240,7 @@ func updateSelf(newType: String) -> void:
 			weaponLevel              = 4
 			weaponOffensiveIncrease  = 0
 			weaponDefensiveIncrease  = 0
-			rangedOffensiveIncrease  = 45
+			rangedOffensiveIncrease  = 220
 			rangedDefensiveIncrease  = 0
 			reloadTurns              = 3
 			weaponsPerLevel          = 6

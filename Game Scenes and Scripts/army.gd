@@ -462,6 +462,9 @@ func _apply_status_flags() -> void:
 				currentMovementPoints += 4
 
 func addUnitToArmy(unitToAdd):
+	if unitsList.size() >= 2:
+		push_warning("Army '%s': cannot add more than 2 units." % ArmyName)
+		return
 	unitsList.append(unitToAdd)
 	#unitToAdd.updateArmy.connect(surveySelf)
 	$UnitContainer.add_child(unitToAdd)
@@ -568,6 +571,7 @@ func surveySelf():
 	armyBlock = 0
 	armyLaunch = 0
 	armyDefence = 0
+	armyShield = 0
 	armyMaxShield = 0
 	armyMagicDefense = 0
 	maxManpower = 0
