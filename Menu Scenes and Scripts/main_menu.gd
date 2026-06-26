@@ -1,27 +1,20 @@
 extends Control
 # ============================================================
-# SCENE STRUCTURE (build in Godot editor):
+# SCENE STRUCTURE:
 #
-# main_menu (Control, full screen)
-# ├── VideoStreamPlayer   (full screen, autoplay=true, loop=true,
-# │                        stream = res://art assets/<your_menu>.ogv)
-# ├── LeftPanel           (Panel, translucent dark ~360px wide, left-anchored)
-# │   ├── LogoSprite      (TextureRect, game logo, top of panel)
-# │   ├── ButtonsVBox     (VBoxContainer, fills below logo)
-# │   │   ├── NewGameButton      (Button, "NEW GAME")
-# │   │   ├── ContinueButton     (Button, "CONTINUE")
-# │   │   │   └── SaveInfoLabel  (Label, italic small, shows turn/season,
-# │   │   │                       hidden when no save)
-# │   │   ├── LibraryButton      (Button, "PRESIDENTIAL LIBRARY")
-# │   │   ├── SettingsButton     (Button, "SETTINGS")
-# │   │   └── ExitButton         (Button, "EXIT")
-# │   └── VersionLabel    (Label, version string, bottom of panel)
+# MainMenu (Control, full screen)
+# ├── VideoStreamPlayer   (full screen, autoplay, loop)
+# ├── BottomBar           (HBoxContainer, bottom-anchored, full width)
+# │   ├── NewGameButton      (Button, grey panel StyleBox)
+# │   ├── ContinueButton     (Button, grey panel StyleBox)
+# │   │   └── SaveInfoLabel  (Label, turn/season, sits below button)
+# │   ├── LibraryButton      (Button, "PRESIDENTIAL LIBRARY")
+# │   ├── SettingsButton     (Button)
+# │   └── ExitButton         (Button)
+# ├── VersionLabel        (Label, bottom-left corner)
 # ├── LanguageSelection   (Control, shown first-run, full overlay)
 # │   └── GridContainer   (flag buttons for language pick)
-# ├── PresidentialLibraryPanel  (instance PresidentialLibraryPanel.tscn,
-# │                              hidden by default)
-# └── SettingsPanel             (instance SettingsPanel.tscn,
-#                                hidden by default)
+# └── PresidentialLibraryPanel  (instance, hidden by default)
 # ============================================================
 
 const AUTOSAVE_PATH  := "user://autosave.json"
@@ -64,8 +57,8 @@ func _hide_language_picker() -> void:
 
 # ── continue button ───────────────────────────────────────────────────────────
 func _check_continue_button() -> void:
-	var btn       = get_node_or_null("LeftPanel/ButtonsVBox/ContinueButton")
-	var info_lbl  = get_node_or_null("LeftPanel/ButtonsVBox/ContinueButton/SaveInfoLabel")
+	var btn       = get_node_or_null("BottomBar/ContinueButton")
+	var info_lbl  = get_node_or_null("BottomBar/ContinueButton/SaveInfoLabel")
 	if not btn:
 		return
 

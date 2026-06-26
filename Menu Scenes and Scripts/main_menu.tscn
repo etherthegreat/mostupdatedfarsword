@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://dep7mbivwnnvj"]
+[gd_scene load_steps=19 format=3 uid="uid://dep7mbivwnnvj"]
 
 [ext_resource type="Script" uid="uid://b81ynt4qwcsri" path="res://Menu Scenes and Scripts/main_menu.gd" id="1_rf07e"]
 [ext_resource type="VideoStream" uid="uid://by5gw4q8kkt7j" path="res://art assets/AmericanRevolutionArt/menuart/truewinningvideo.ogv" id="2_s0tsv"]
@@ -12,8 +12,39 @@
 [ext_resource type="Texture2D" uid="uid://bye4mrxf5cetf" path="res://art assets/Placeholder Art/UI Art/resources/portuguese.png" id="11_ee3of"]
 [ext_resource type="Texture2D" uid="uid://d385jgaploop4" path="res://art assets/Placeholder Art/UI Art/resources/russian.png" id="12_qlmj1"]
 [ext_resource type="Texture2D" uid="uid://coqvlvmr2swk4" path="res://art assets/Placeholder Art/UI Art/resources/spanish.png" id="13_s4pyd"]
-[ext_resource type="Texture2D" uid="uid://d3e1gu0tab0y2" path="res://art assets/AmericanRevolutionArt/menuart/IMG_1691.PNG" id="17_8x8sx"]
 [ext_resource type="PackedScene" uid="uid://bpreslib0001a" path="res://PresidentialLibraryPanel.tscn" id="19_plib01"]
+[ext_resource type="Texture2D" uid="uid://bgreypanel0001" path="res://art assets/finishedAssets/Panels/grey building panel.png" id="20_grey"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_normal"]
+texture = ExtResource("20_grey")
+content_margin_left = 16.0
+content_margin_right = 16.0
+content_margin_top = 10.0
+content_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hover"]
+texture = ExtResource("20_grey")
+modulate_color = Color(1, 0.92, 0.72, 1)
+content_margin_left = 16.0
+content_margin_right = 16.0
+content_margin_top = 10.0
+content_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_pressed"]
+texture = ExtResource("20_grey")
+modulate_color = Color(0.6, 0.6, 0.6, 1)
+content_margin_left = 16.0
+content_margin_right = 16.0
+content_margin_top = 10.0
+content_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_disabled"]
+texture = ExtResource("20_grey")
+modulate_color = Color(0.45, 0.45, 0.45, 0.6)
+content_margin_left = 16.0
+content_margin_right = 16.0
+content_margin_top = 10.0
+content_margin_bottom = 10.0
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -34,103 +65,109 @@ autoplay = true
 expand = true
 loop = true
 
-[node name="LeftPanel" type="Panel" parent="."]
+[node name="BottomBar" type="HBoxContainer" parent="."]
 layout_mode = 1
-anchors_preset = 9
+anchors_preset = -1
+anchor_left = 0.0
+anchor_top = 1.0
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 380.0
-grow_vertical = 2
+offset_left = 40.0
+offset_top = -118.0
+offset_right = -40.0
+offset_bottom = -14.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 18
 
-[node name="LogoSprite" type="TextureRect" parent="LeftPanel"]
-layout_mode = 0
-offset_left = 20.0
-offset_top = 40.0
-offset_right = 360.0
-offset_bottom = 220.0
-texture = ExtResource("17_8x8sx")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="TitleLabel" type="Label" parent="LeftPanel"]
-layout_mode = 0
-offset_left = 12.0
-offset_top = 224.0
-offset_right = 368.0
-offset_bottom = 270.0
-theme_override_colors/font_color = Color(0.95, 0.9, 0.75, 1)
-theme_override_font_sizes/font_size = 18
-text = "PAX AMERICANA"
-horizontal_alignment = 1
-
-[node name="ButtonsVBox" type="VBoxContainer" parent="LeftPanel"]
-layout_mode = 0
-offset_left = 24.0
-offset_top = 284.0
-offset_right = 356.0
-offset_bottom = 720.0
-theme_override_constants/separation = 12
-
-[node name="NewGameButton" type="Button" parent="LeftPanel/ButtonsVBox"]
-custom_minimum_size = Vector2(0, 64)
+[node name="NewGameButton" type="Button" parent="BottomBar"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 28
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 90)
+theme_override_colors/font_color = Color(0.95, 0.92, 0.85, 1)
+theme_override_font_sizes/font_size = 26
+theme_override_styles/normal = SubResource("StyleBoxTexture_normal")
+theme_override_styles/hover = SubResource("StyleBoxTexture_hover")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_pressed")
 text = "NEW GAME"
 
-[node name="ContinueButton" type="Button" parent="LeftPanel/ButtonsVBox"]
-custom_minimum_size = Vector2(0, 64)
+[node name="ContinueButton" type="Button" parent="BottomBar"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 28
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 90)
 disabled = true
+theme_override_colors/font_color = Color(0.95, 0.92, 0.85, 1)
+theme_override_colors/font_disabled_color = Color(0.5, 0.5, 0.5, 1)
+theme_override_font_sizes/font_size = 26
+theme_override_styles/normal = SubResource("StyleBoxTexture_normal")
+theme_override_styles/hover = SubResource("StyleBoxTexture_hover")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_pressed")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_disabled")
 text = "CONTINUE"
 
-[node name="SaveInfoLabel" type="Label" parent="LeftPanel/ButtonsVBox/ContinueButton"]
+[node name="SaveInfoLabel" type="Label" parent="BottomBar/ContinueButton"]
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -23.0
-offset_bottom = 22.0
+offset_top = -22.0
+offset_bottom = 18.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 1)
+theme_override_colors/font_color = Color(0.65, 0.65, 0.65, 1)
 theme_override_font_sizes/font_size = 13
 text = "No save found"
 horizontal_alignment = 1
 
-[node name="LibraryButton" type="Button" parent="LeftPanel/ButtonsVBox"]
-custom_minimum_size = Vector2(0, 64)
+[node name="LibraryButton" type="Button" parent="BottomBar"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 24
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 90)
+theme_override_colors/font_color = Color(0.95, 0.92, 0.85, 1)
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxTexture_normal")
+theme_override_styles/hover = SubResource("StyleBoxTexture_hover")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_pressed")
 text = "PRESIDENTIAL LIBRARY"
 
-[node name="SettingsButton" type="Button" parent="LeftPanel/ButtonsVBox"]
-custom_minimum_size = Vector2(0, 64)
+[node name="SettingsButton" type="Button" parent="BottomBar"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 28
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 90)
+theme_override_colors/font_color = Color(0.95, 0.92, 0.85, 1)
+theme_override_font_sizes/font_size = 26
+theme_override_styles/normal = SubResource("StyleBoxTexture_normal")
+theme_override_styles/hover = SubResource("StyleBoxTexture_hover")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_pressed")
 text = "SETTINGS"
 
-[node name="ExitButton" type="Button" parent="LeftPanel/ButtonsVBox"]
-custom_minimum_size = Vector2(0, 64)
+[node name="ExitButton" type="Button" parent="BottomBar"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 28
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 90)
+theme_override_colors/font_color = Color(0.95, 0.92, 0.85, 1)
+theme_override_font_sizes/font_size = 26
+theme_override_styles/normal = SubResource("StyleBoxTexture_normal")
+theme_override_styles/hover = SubResource("StyleBoxTexture_hover")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_pressed")
 text = "EXIT"
 
-[node name="VersionLabel" type="Label" parent="LeftPanel"]
+[node name="VersionLabel" type="Label" parent="."]
 layout_mode = 1
-anchors_preset = 12
+anchors_preset = -1
+anchor_left = 0.0
 anchor_top = 1.0
-anchor_right = 1.0
+anchor_right = 0.0
 anchor_bottom = 1.0
-offset_left = 8.0
-offset_top = -28.0
-offset_right = -8.0
-grow_horizontal = 2
+offset_left = 10.0
+offset_top = -20.0
+offset_right = 280.0
+offset_bottom = 0.0
 grow_vertical = 0
-theme_override_colors/font_color = Color(0.55, 0.55, 0.55, 1)
+theme_override_colors/font_color = Color(0.45, 0.45, 0.45, 1)
 theme_override_font_sizes/font_size = 13
 text = "v0.1 — Early Access"
-horizontal_alignment = 1
 
 [node name="LanguageSelection" type="Control" parent="."]
 visible = false
@@ -204,11 +241,11 @@ expand_icon = true
 [node name="PresidentialLibraryPanel" parent="." instance=ExtResource("19_plib01")]
 layout_mode = 1
 
-[connection signal="pressed" from="LeftPanel/ButtonsVBox/NewGameButton" to="." method="_on_new_game_button_pressed"]
-[connection signal="pressed" from="LeftPanel/ButtonsVBox/ContinueButton" to="." method="_on_continue_button_pressed"]
-[connection signal="pressed" from="LeftPanel/ButtonsVBox/LibraryButton" to="." method="_on_library_button_pressed"]
-[connection signal="pressed" from="LeftPanel/ButtonsVBox/SettingsButton" to="." method="_on_settings_button_pressed"]
-[connection signal="pressed" from="LeftPanel/ButtonsVBox/ExitButton" to="." method="_on_exit_button_pressed"]
+[connection signal="pressed" from="BottomBar/NewGameButton" to="." method="_on_new_game_button_pressed"]
+[connection signal="pressed" from="BottomBar/ContinueButton" to="." method="_on_continue_button_pressed"]
+[connection signal="pressed" from="BottomBar/LibraryButton" to="." method="_on_library_button_pressed"]
+[connection signal="pressed" from="BottomBar/SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="pressed" from="BottomBar/ExitButton" to="." method="_on_exit_button_pressed"]
 [connection signal="pressed" from="LanguageSelection/GridContainer/EnglishButton" to="." method="_on_english_button_pressed"]
 [connection signal="pressed" from="LanguageSelection/GridContainer/FrenchButton" to="." method="_on_french_button_pressed"]
 [connection signal="pressed" from="LanguageSelection/GridContainer/SpanishButton" to="." method="_on_spanish_button_pressed"]
