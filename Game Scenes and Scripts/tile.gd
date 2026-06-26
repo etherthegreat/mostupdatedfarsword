@@ -1166,9 +1166,9 @@ func naturalMode():
 	var gfx:  Node = get_node_or_null("TileGraphic")
 	var fow:  Node = get_node_or_null("TileFOW")
 	var ring: Node = get_node_or_null("Ring")
-	if gfx  != null: gfx.modulate  = Color(1, 1, 1)
+	if gfx  != null: gfx.modulate  = Color(1, 1, 1, 0)
 	if fow  != null: fow.self_modulate.a = 0.0
-	if ring != null: ring.modulate  = Color(1, 1, 1)
+	if ring != null: ring.modulate  = Color(1, 1, 1, 0)
 
 func get_map_mode_value(mode: String) -> float:
 	match mode:
@@ -1230,18 +1230,47 @@ func _governors_map_mode() -> void:
 	gfx.modulate  = c
 	if ring != null: ring.modulate = c
 
+const _STATE_COLORS := {
+	# US Northeast
+	"ME": Color(0.30, 0.50, 0.90),
+	"NH": Color(0.55, 0.25, 0.80),
+	"VT": Color(0.20, 0.72, 0.45),
+	"MA": Color(0.85, 0.40, 0.10),
+	"RI": Color(0.90, 0.20, 0.55),
+	"CT": Color(0.45, 0.18, 0.75),
+	"NY": Color(0.10, 0.62, 0.85),
+	"NJ": Color(0.65, 0.82, 0.18),
+	# US Mid-Atlantic
+	"PA": Color(0.18, 0.52, 0.28),
+	"DE": Color(0.92, 0.72, 0.08),
+	"MD": Color(0.85, 0.18, 0.18),
+	"DC": Color(0.60, 0.60, 0.62),
+	"WV": Color(0.28, 0.72, 0.72),
+	# US South
+	"VA": Color(0.48, 0.82, 0.28),
+	"NC": Color(0.92, 0.52, 0.08),
+	"SC": Color(0.72, 0.18, 0.62),
+	"GA": Color(0.18, 0.82, 0.38),
+	"FL": Color(0.96, 0.88, 0.18),
+	"AL": Color(0.62, 0.28, 0.08),
+	"TN": Color(0.38, 0.58, 0.92),
+	# Canadian provinces
+	"CA - OT":  Color(0.55, 0.88, 0.60),
+	"CA - QB":  Color(0.45, 0.68, 0.92),
+	"CA - NB":  Color(0.92, 0.72, 0.48),
+	"CA - NS":  Color(0.72, 0.48, 0.85),
+	"CA - PEI": Color(0.92, 0.58, 0.68),
+	# British America
+	"BA": Color(0.88, 0.14, 0.14),
+}
+
 func _states_map_mode() -> void:
 	var gfx:  Node = get_node_or_null("TileGraphic")
 	var ring: Node = get_node_or_null("Ring")
 	if gfx == null:
 		return
 	gfx.visible = true
-	if tileContinent == null or tileContinent == "":
-		gfx.modulate = Color(0.25, 0.25, 0.25)
-		if ring != null: ring.modulate = Color(0.25, 0.25, 0.25)
-		return
-	var hue: float = fposmod(float(abs(tileContinent.hash())) / 2147483647.0, 1.0)
-	var c: Color = Color.from_hsv(hue, 0.65, 0.85)
+	var c: Color = _STATE_COLORS.get(tileContinent, Color(0.28, 0.28, 0.28))
 	gfx.modulate = c
 	if ring != null: ring.modulate = c
 
