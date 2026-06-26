@@ -60,8 +60,12 @@ func buildSelf(type, amount, dictionary):
 signal manaLook
 
 func _on_areaola_2d_mouse_entered() -> void:
+	$DictionaryLabel.visible = true
+	$DictionaryPanelSprite.visible = true
 	emit_signal("manaLook", formatted_text)
 
 signal closeManaLook
 func _on_areaola_2d_mouse_exited() -> void:
+	$DictionaryLabel.visible = false
+	$DictionaryPanelSprite.visible = false
 	emit_signal("closeManaLook")

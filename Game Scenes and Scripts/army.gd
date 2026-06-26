@@ -512,51 +512,51 @@ func updateFinalTotals():
 			manaPanel.queue_free()
 	if armyFoodCost != 0:
 		var newMP = manaPanelScene.instantiate()
-		newMP.buildSelf("Food", armyFoodCost, tempResourcesDict)
+		newMP.buildSelf("Food", -armyFoodCost, tempResourcesDict)
 		$ScrollContainer2/VBoxContainer.add_child(newMP)
 	if armyWoodCost != 0:
 		var newMP = manaPanelScene.instantiate()
-		newMP.buildSelf("Wood", armyWoodCost, tempResourcesDict)
+		newMP.buildSelf("Wood", -armyWoodCost, tempResourcesDict)
 		$ScrollContainer2/VBoxContainer.add_child(newMP)
 	if armyGoldCost != 0:
 		var newMP = manaPanelScene.instantiate()
-		newMP.buildSelf("Gold", armyGoldCost, tempResourcesDict)
+		newMP.buildSelf("Gold", -armyGoldCost, tempResourcesDict)
 		$ScrollContainer2/VBoxContainer.add_child(newMP)
 	if armyMetalCost != 0:
 		var newMP = manaPanelScene.instantiate()
-		newMP.buildSelf("Metal", armyMetalCost, tempResourcesDict)
+		newMP.buildSelf("Metal", -armyMetalCost, tempResourcesDict)
 		$ScrollContainer2/VBoxContainer.add_child(newMP)
 	if armyManpowerCost != 0:
 		var newMP = manaPanelScene.instantiate()
-		newMP.buildSelf("Manpower", armyManpowerCost, tempResourcesDict)
+		newMP.buildSelf("Manpower", -armyManpowerCost, tempResourcesDict)
 		$ScrollContainer2/VBoxContainer.add_child(newMP)
 	if armyWeaponsCost != 0:
 		var newMP = manaPanelScene.instantiate()
-		newMP.buildSelf("Weapons", armyWeaponsCost, tempResourcesDict)
+		newMP.buildSelf("Weapons", -armyWeaponsCost, tempResourcesDict)
 		$ScrollContainer2/VBoxContainer.add_child(newMP)
 	if armyMagicCost != 0:
 		var newMP = manaPanelScene.instantiate()
-		newMP.buildSelf("Magic", armyMagicCost, tempResourcesDict)
+		newMP.buildSelf("Magic", -armyMagicCost, tempResourcesDict)
 		$ScrollContainer2/VBoxContainer.add_child(newMP)
 	if armyScienceCost != 0:
 		var newMP = manaPanelScene.instantiate()
-		newMP.buildSelf("Science", armyScienceCost, tempResourcesDict)
+		newMP.buildSelf("Science", -armyScienceCost, tempResourcesDict)
 		$ScrollContainer2/VBoxContainer.add_child(newMP)
 	if armyCultureCost != 0:
 		var newMP = manaPanelScene.instantiate()
-		newMP.buildSelf("Culture", armyCultureCost, tempResourcesDict)
+		newMP.buildSelf("Culture", -armyCultureCost, tempResourcesDict)
 		$ScrollContainer2/VBoxContainer.add_child(newMP)
 	if armyInfluenceCost != 0:
 		var newMP = manaPanelScene.instantiate()
-		newMP.buildSelf("Influence", armyInfluenceCost, tempResourcesDict)
+		newMP.buildSelf("Influence", -armyInfluenceCost, tempResourcesDict)
 		$ScrollContainer2/VBoxContainer.add_child(newMP)
 	if armyHarmonyCost != 0:
 		var newMP = manaPanelScene.instantiate()
-		newMP.buildSelf("Harmony", armyHarmonyCost, tempResourcesDict)
+		newMP.buildSelf("Harmony", -armyHarmonyCost, tempResourcesDict)
 		$ScrollContainer2/VBoxContainer.add_child(newMP)
 	if armyFaithCost != 0:
 		var newMP = manaPanelScene.instantiate()
-		newMP.buildSelf("Faith", armyFaithCost, tempResourcesDict)
+		newMP.buildSelf("Faith", -armyFaithCost, tempResourcesDict)
 		$ScrollContainer2/VBoxContainer.add_child(newMP)
 
 var unitCount: int

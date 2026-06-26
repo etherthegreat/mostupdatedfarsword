@@ -17,25 +17,27 @@ texture = ExtResource("2_d1xk6")
 
 [node name="InfoPanel" type="Panel" parent="Sprite2D"]
 visible = false
-offset_left = -117.0
-offset_top = 10.0
-offset_right = -7.0
-offset_bottom = 78.0
+offset_left = -55.0
+offset_top = -110.0
+offset_right = 65.0
+offset_bottom = -5.0
 mouse_filter = 2
 
 [node name="MilModNameLabel" type="Label" parent="Sprite2D/InfoPanel"]
 layout_mode = 0
-offset_right = 109.0
-offset_bottom = 23.0
-theme_override_font_sizes/font_size = 15
+offset_left = 2.0
+offset_right = 118.0
+offset_bottom = 22.0
+theme_override_font_sizes/font_size = 14
 text = "mil mod name"
 horizontal_alignment = 1
 
 [node name="MilModDescriptionLabel" type="RichTextLabel" parent="Sprite2D/InfoPanel"]
 layout_mode = 0
-offset_top = 23.0
-offset_right = 109.0
-offset_bottom = 92.0
+offset_left = 2.0
+offset_top = 22.0
+offset_right = 118.0
+offset_bottom = 105.0
 mouse_filter = 2
 bbcode_enabled = true
 text = "mil mod description label"

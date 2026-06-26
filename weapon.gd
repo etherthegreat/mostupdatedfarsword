@@ -175,9 +175,9 @@ func updateSelf(newType: String) -> void:
 			reloadTurns              = 3
 			weaponsPerLevel          = 3   # heavy ammo cost
 			chargeManpowerCost       = 0.0
-			weaponImage = load("res://art assets/finishedAssets/Weapons/Club.png")
+			weaponImage = load("res://art assets/finishedAssets/Weapons/Howitzer.png")
 			addWeaponMod("CannonBlast")
- 
+
 		"Field Gun":
 			weaponClass              = "Artillery"
 			weaponLevel              = 2
