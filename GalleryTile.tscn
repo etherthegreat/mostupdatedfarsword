@@ -1,88 +1,74 @@
-[gd_scene load_steps=2 format=3 uid="uid://cgaltile001a"]
+[gd_scene load_steps=4 format=3 uid="uid://bega4v5fh04fe"]
 
-[ext_resource type="Script" uid="uid://clekve2al6udb" path="res://GalleryTile.gd" id="1_gt001"]
+[ext_resource type="Script" uid="uid://clekve2al6udb" path="res://GalleryTile.gd" id="1_m8frq"]
+[ext_resource type="Texture2D" uid="uid://b1nj1le7cj86i" path="res://art assets/finishedAssets/Panels/yellow building panel.png" id="2_4y5be"]
+[ext_resource type="Texture2D" uid="uid://cjh7vwsdb4t0q" path="res://art assets/finishedAssets/armyicons/finished/star1.png" id="3_aptkg"]
 
 [node name="GalleryTile" type="Control"]
 custom_minimum_size = Vector2(160, 200)
-mouse_filter = 0
-script = ExtResource("1_gt001")
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_m8frq")
 
 [node name="Panel" type="Panel" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+custom_minimum_size = Vector2(160, 200)
+layout_mode = 0
+offset_right = 158.0
+offset_bottom = 177.0
 
 [node name="ArtRect" type="TextureRect" parent="Panel"]
-layout_mode = 1
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_bottom = -24.0
+layout_mode = 0
+offset_left = -2.0
+offset_top = -8.0
+offset_right = 163.0
+offset_bottom = 207.0
+mouse_filter = 2
+texture = ExtResource("2_4y5be")
 expand_mode = 1
-stretch_mode = 5
 
 [node name="LockedOverlay" type="ColorRect" parent="Panel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-color = Color(0, 0, 0, 0.85)
+layout_mode = 0
+offset_right = 161.0
+offset_bottom = 199.0
+color = Color(0, 0, 0, 0.00392157)
 
 [node name="LockIcon" type="TextureRect" parent="Panel/LockedOverlay"]
-layout_mode = 1
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -16.0
-offset_top = -24.0
-offset_right = 16.0
-offset_bottom = 8.0
-expand_mode = 1
-stretch_mode = 5
+layout_mode = 0
+offset_left = 1.0
+offset_top = 7.0
+offset_right = 160.0
+offset_bottom = 194.0
+texture = ExtResource("3_aptkg")
+stretch_mode = 3
 
 [node name="LockedTitle" type="Label" parent="Panel/LockedOverlay"]
-layout_mode = 1
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -20.0
-theme_override_colors/font_color = Color(0.7, 0.7, 0.7)
-theme_override_font_sizes/font_size = 12
+layout_mode = 0
+offset_top = 3.0
+offset_right = 161.0
+offset_bottom = 28.0
 text = "???"
 horizontal_alignment = 1
-vertical_alignment = 1
+vertical_alignment = 2
 
 [node name="UnlockedTitle" type="Label" parent="Panel"]
-layout_mode = 1
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -24.0
-theme_override_font_sizes/font_size = 11
-text = ""
+layout_mode = 0
+offset_top = 168.0
+offset_right = 161.0
+offset_bottom = 194.0
+text = "sceneTitle"
 horizontal_alignment = 1
-vertical_alignment = 1
-clip_text = true
-visible = false
+vertical_alignment = 2
 
 [node name="HoverHint" type="PanelContainer" parent="Panel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_bottom = -24.0
 visible = false
+layout_mode = 0
+offset_right = 161.0
+offset_bottom = 200.0
 
-[node name="HintLabel" type="Label" parent="Panel/HoverHint"]
+[node name="Label" type="Label" parent="Panel/HoverHint"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.9, 0.9, 0.9)
-theme_override_font_sizes/font_size = 11
-autowrap_mode = 3
-text = ""
+text = "hinttext"
 horizontal_alignment = 1
-vertical_alignment = 1
-
-[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
-[connection signal="gui_input" from="." to="." method="_on_gui_input"]
+autowrap_mode = 3

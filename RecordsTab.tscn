@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3 uid="uid://crectab001a"]
+[gd_scene load_steps=2 format=3 uid="uid://bku4q3ums7ppc"]
 
 [ext_resource type="Script" uid="uid://c6kwggl8guuj6" path="res://RecordsTab.gd" id="1_rt001"]
 
@@ -7,87 +7,55 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_rt001")
 
 [node name="HSplitContainer" type="HSplitContainer" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-split_offset = 280
+layout_mode = 0
+offset_right = 240.0
+offset_bottom = 135.0
+split_offset = 25
 
-[node name="CategoryScroll" type="ScrollContainer" parent="HSplitContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-custom_minimum_size = Vector2(160, 0)
-
-[node name="CategoryList" type="VBoxContainer" parent="HSplitContainer/CategoryScroll"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 2
-
-[node name="EntryScroll" type="ScrollContainer" parent="HSplitContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="EntryPanel" type="VBoxContainer" parent="HSplitContainer/EntryScroll"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 8
-
-[node name="EntryHeader" type="HBoxContainer" parent="HSplitContainer/EntryScroll/EntryPanel"]
-layout_mode = 2
-custom_minimum_size = Vector2(0, 72)
-theme_override_constants/separation = 12
-
-[node name="EntryIcon" type="TextureRect" parent="HSplitContainer/EntryScroll/EntryPanel/EntryHeader"]
-layout_mode = 2
-custom_minimum_size = Vector2(64, 64)
-expand_mode = 1
-stretch_mode = 5
-
-[node name="EntryMeta" type="VBoxContainer" parent="HSplitContainer/EntryScroll/EntryPanel/EntryHeader"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 4
-
-[node name="EntryName" type="Label" parent="HSplitContainer/EntryScroll/EntryPanel/EntryHeader/EntryMeta"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 22
-text = "Select a category"
-
-[node name="EntryCategory" type="Label" parent="HSplitContainer/EntryScroll/EntryPanel/EntryHeader/EntryMeta"]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.6, 0.6, 0.6)
-theme_override_font_sizes/font_size = 13
-text = ""
-
-[node name="Divider" type="HSeparator" parent="HSplitContainer/EntryScroll/EntryPanel"]
+[node name="ScrollContainer" type="ScrollContainer" parent="HSplitContainer"]
 layout_mode = 2
 
-[node name="EntryBody" type="RichTextLabel" parent="HSplitContainer/EntryScroll/EntryPanel"]
+[node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer/ScrollContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
+
+[node name="EntryPanel" type="VBoxContainer" parent="HSplitContainer"]
+layout_mode = 2
+
+[node name="EntryHeader" type="HBoxContainer" parent="HSplitContainer/EntryPanel"]
+layout_mode = 2
+
+[node name="EntryIcon" type="TextureRect" parent="HSplitContainer/EntryPanel/EntryHeader"]
+layout_mode = 2
+
+[node name="EntryMeta" type="VBoxContainer" parent="HSplitContainer/EntryPanel/EntryHeader"]
+layout_mode = 2
+
+[node name="EntryName" type="Label" parent="HSplitContainer/EntryPanel/EntryHeader/EntryMeta"]
+layout_mode = 2
+
+[node name="EntryCategory" type="Label" parent="HSplitContainer/EntryPanel/EntryHeader/EntryMeta"]
+layout_mode = 2
+
+[node name="Divider" type="HSeparator" parent="HSplitContainer/EntryPanel"]
+layout_mode = 2
+
+[node name="EntryBody" type="RichTextLabel" parent="HSplitContainer/EntryPanel"]
+layout_mode = 2
 bbcode_enabled = true
 fit_content = true
 scroll_active = false
-autowrap_mode = 3
-text = "[i]Choose a category on the left.[/i]"
 
-[node name="SeeAlsoBox" type="HBoxContainer" parent="HSplitContainer/EntryScroll/EntryPanel"]
+[node name="SeeAlsoBox" type="HBoxContainer" parent="HSplitContainer/EntryPanel"]
 layout_mode = 2
-visible = false
-theme_override_constants/separation = 8
 
-[node name="SeeAlsoLabel" type="Label" parent="HSplitContainer/EntryScroll/EntryPanel/SeeAlsoBox"]
+[node name="SeeAlsoLabel" type="Label" parent="HSplitContainer/EntryPanel/SeeAlsoBox"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.6, 0.6, 0.6)
-theme_override_font_sizes/font_size = 13
-text = "See also:"
-vertical_alignment = 1
+text = "See Also:"
 
-[node name="SeeAlsoLinks" type="HBoxContainer" parent="HSplitContainer/EntryScroll/EntryPanel/SeeAlsoBox"]
+[node name="SeeAlsoLinks" type="HBoxContainer" parent="HSplitContainer/EntryPanel/SeeAlsoBox"]
 layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 4

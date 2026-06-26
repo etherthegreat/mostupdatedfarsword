@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://c1fl0atdmgnum"]
 
-[ext_resource type="Script" path="res://floating_damage_number.gd" id="1_fdmgn"]
+[ext_resource type="Script" uid="uid://ceh50tkgyy8gw" path="res://floating_damage_number.gd" id="1_fdmgn"]
 
 [node name="FloatingDamageNumber" type="Node2D"]
 script = ExtResource("1_fdmgn")
