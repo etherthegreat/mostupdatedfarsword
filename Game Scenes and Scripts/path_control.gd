@@ -80,7 +80,7 @@ func armyArrivedFunc(pathOfArmy, newPathPointButton, theArmy, apf, contain):
 			apf.z_index = 15
 			newPathPointButton.occupied = true
 			updateArmyPanel(theArmy, newPathPointButton)
-	showPathPoints(newPathPointButton)
+	emit_signal("updatePathPoints", true)
 	newPathPointButton.stationedAPF = apf
 
 func civilianArrivedFunc(pathOfCivilian, newPathPointButton, theCivilian, cpf, contain):
@@ -103,13 +103,32 @@ signal activateArmyControlMode
 func displayapfInfo(thisArmy, apf, currentTile, thisCountry, currentPathPoint):
 	if thisCountry == playerCountry:
 		updateArmyPanel(thisArmy, currentPathPoint)
-		showPathPoints(currentPathPoint)
 		selectedAPF = apf
 		selectedCPF = null
 		emit_signal("activateArmyControlMode")
-	#else:
-		#display other country information in the army panel
-		#maybe we show less army info depending on some espionage level things
+		emit_signal("updatePathPoints", true)
+	elif selectedAPF != null:
+		# Enemy APF clicked while a player army is selected — attack if neighbor
+		var targetPPB = apf.currentPathPoint
+		if targetPPB != null and targetPPB in selectedAPF.currentPathPoint.neighborPathPoints:
+			_initiate_attack(targetPPB)
+
+# Called from world.gd tileClicked() when an APF is selected.
+# Returns true if the click was consumed (movement or attack initiated).
+func tryMoveSelectedAPFToTile(tile: Tile) -> bool:
+	if selectedAPF == null:
+		return false
+	var targetPPB = tile.tileSpawnPoint
+	if targetPPB == null:
+		return false
+	if targetPPB not in selectedAPF.currentPathPoint.neighborPathPoints:
+		return false
+	# Tile occupied by an enemy → attack; otherwise move
+	if targetPPB.occupied and targetPPB.stationedArmy != null and targetPPB.stationedArmy.enemy:
+		_initiate_attack(targetPPB)
+	else:
+		calculateArmyMovement(targetPPB, targetPPB.neighborPathPoints, tile)
+	return true
 
 func displaycpfInfo(thisCiv, cpf, currentTile, thisCountry, currentPathPoint):
 	if thisCountry == playerCountry:
@@ -289,7 +308,7 @@ func _on_attack_retreated(apf: armyPathFollow, returnPoint: pathPointButton) -> 
 	returnPoint.call_deferred("add_child", apf)
 	apf.z_as_relative = true
 	apf.z_index = 15
-	showPathPoints(returnPoint)
+	emit_signal("updatePathPoints", true)
 
 func moveArmy(newContainer, String, endPoint):
 	if selectedAPF!= null:

@@ -1730,23 +1730,17 @@ func manaUpdate(type, amount, dictionary):
 	pass
 
 func tileClicked(tile):
-	#print("Tile", tile.tileNumber, "Clicked")
 	selectedTile = tile
-	#$CanvasLayer/TileInfoPanel.thisTile = tile
-	
+	# If an army is selected, route the click to movement/attack instead of tile info
+	if $PathControl.tryMoveSelectedAPFToTile(tile):
+		return
 	$CanvasLayer/TileInfoPanel.displayTileInfo(tile)
 	if $CanvasLayer/TileInfoPanel.visible == false:
 		$CanvasLayer.closeAllPanels()
 		$CanvasLayer/TileInfoPanel.visible = true
 	else:
 		$CanvasLayer/TileInfoPanel.visible = false
-	#$CanvasLayer/TileInfoPanel.thisTile = tile
-	#$CanvasLayer/TileInfoPanel.displayTileInfo()
-	#$CanvasLayer/BuildingInfoPanel.thisTile = tile
-	#if $CanvasLayer/BuildingInfoPanel.visible == false:
-		#$CanvasLayer/BuildingInfoPanel.visible = true
 	$CanvasLayer/BuildingInfoPanel.displayBuildingInfo(tile)
-	pass
 
 func retrieveOutputs():
 	selectedTile.censusTile(playerCountryNode)
