@@ -1736,6 +1736,7 @@ func tileClicked(tile):
 	
 	$CanvasLayer/TileInfoPanel.displayTileInfo(tile)
 	if $CanvasLayer/TileInfoPanel.visible == false:
+		$CanvasLayer.closeAllPanels()
 		$CanvasLayer/TileInfoPanel.visible = true
 	else:
 		$CanvasLayer/TileInfoPanel.visible = false
@@ -1876,12 +1877,12 @@ func addLawToCountry(lawType):
 #Army World Code
 func _on_army_button_pressed() -> void:
 	if $CanvasLayer/MilitaryPanelControl.visible == false:
+		$CanvasLayer.closeAllPanels()
 		$CanvasLayer/MilitaryPanelControl.visible = true
 		for BarracksButton in $CanvasLayer/MilitaryPanelControl/ScrollContainer/GridContainer.get_children():
 			BarracksButton.updateSelf()
 	else:
 		$CanvasLayer/MilitaryPanelControl.visible = false
-	pass # Replace with function body.
 	
 const armyScene = preload("res://Game Scenes and Scripts/army.tscn")
 func buildNewPlayerArmy(barracksBuilding, barracksTile, bbButton, playerNode, newArmyName):
@@ -5273,11 +5274,7 @@ func resetUI():
 	for Tile in $TileController.get_children():
 		Tile.visible = true
 	$TileController.normalMode()
-	for Control in $CanvasLayer.get_children():
-		Control.visible = false
-		$CanvasLayer/PanelOpenerControl.visible = true
-		$"CanvasLayer/Resource Bar (TOP)".visible = true
-	pass
+	$CanvasLayer.closeAllPanels()
 
 var lastSelectedPathPoint: pathPointButton
 func updateArmyFunc(Army, pathPoint):
@@ -5290,12 +5287,12 @@ func updateArmyFunc(Army, pathPoint):
 	$CanvasLayer/ArmyPanel/ShieldLabel.text = str(Army.armyShield, " / ", Army.armyMaxShield)
 	#$CanvasLayer/ArmyPanel/LocationLabel.text = str(pathPoint.pathNumber)
 	if $CanvasLayer/ArmyPanel.visible == false:
+		$CanvasLayer.closeAllPanels()
 		$CanvasLayer/ArmyPanel.visible = true
 		lastSelectedPathPoint = pathPoint
 	else:
 		$CanvasLayer/ArmyPanel.visible = false
 		lastSelectedPathPoint = null
-	pass
 
 func _on_path_control_show_army_info(key) -> void:
 	match key:
@@ -5456,8 +5453,8 @@ func _on_civilian_button_pressed() -> void:
 	if $CanvasLayer/CivilianControl.visible == true:
 		$CanvasLayer/CivilianControl.visible = false
 	else:
+		$CanvasLayer.closeAllPanels()
 		$CanvasLayer/CivilianControl.visible = true
-	pass # Replace with function body.
 
 var milModScene = load("res://mil_mod.tscn")
 
@@ -5472,13 +5469,11 @@ func updateCivFunc(civ, pathPoint):
 		newMilMod.buildSelf(MilMod.milModType)
 		$CanvasLayer/CivilianUnitControl/MilModGridContainer.add_child(newMilMod)
 	calculateCivilianButtons(civ, pathPoint.ppbTile)
-	if $CanvasLayer/ArmyPanel.visible == true:
-		$CanvasLayer/ArmyPanel.visible = false
 	if $CanvasLayer/CivilianUnitControl.visible == false:
+		$CanvasLayer.closeAllPanels()
 		$CanvasLayer/CivilianUnitControl.visible = true
 	else:
 		$CanvasLayer/CivilianUnitControl.visible = false
-	pass
 
 func calculateCivilianButtons(civ, ppbTile):
 	$CanvasLayer/CivilianUnitControl/CivilianActionButtons.updateUI(playerCountryNode.CID, civ, civ.civilianTool.toolName, civ.civilianKit.kitType, ppbTile)
