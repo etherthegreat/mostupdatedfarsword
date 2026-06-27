@@ -849,9 +849,8 @@ func _on_commander_button_pressed() -> void:
 
 signal battleBuilt
 
-var battleScene = preload("res://Game Scenes and Scripts/battle.tscn")
 func calculateBattle(armyPath, type, attacker, defenderAPF, lastSelectedPathPoint):
-	var newBattle = battleScene.instantiate()
+	var newBattle = load("res://Game Scenes and Scripts/battle.tscn").instantiate()
 	newBattle.buildSelf(type, attacker, self)
 	defenderAPF.showBattle(newBattle)
 	newBattle.sendDefenderResults.connect(calculateDefenderResults)
