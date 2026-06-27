@@ -5703,6 +5703,8 @@ func _apply_winter_army_drain() -> void:
 		return
 	var total_drain: int = 0
 	for army in playerCountryNode.countryArmyList:
+		if not is_instance_valid(army) or army.deleteMode:
+			continue
 		if army.inTile == null:
 			continue
 		# Negative winterScore = tropical / hurricane territory — no cold drain
@@ -5780,6 +5782,8 @@ func _spread_storm(origin: Tile, storm_id: String, storm_type: String,
 func _apply_storm_debuffs() -> void:
 	for country in aliveCountriesList:
 		for army in country.countryArmyList:
+			if not is_instance_valid(army) or army.deleteMode:
+				continue
 			if army.inTile != null and army.inTile.stormActive:
 				_apply_storm_status_to_army(army, army.inTile.stormType)
 

@@ -1195,6 +1195,8 @@ func outputCheck(caller):
 
 func payUnitMaintenance():
 	for Army in countryArmyList:
+		if not is_instance_valid(Army) or Army.deleteMode:
+			continue
 		Army.onTurnEnd()
 		FPM += Army.armyFoodCost
 		WPM += Army.armyWoodCost
@@ -1419,9 +1421,9 @@ func _uk_calculate_turn() -> void:
 	_calculate_supply_from_owned()
 	_uk_spawn_reinforcement()
 	for army in countryArmyList:
-		if army.inTile == null:
+		if not is_instance_valid(army) or army.deleteMode:
 			continue
-		if army.deleteMode:
+		if army.inTile == null:
 			continue
 		army.onTurnEnd()  # tick status effects, reload timers, reinforcement
 		var supplied = is_army_supplied(army)
