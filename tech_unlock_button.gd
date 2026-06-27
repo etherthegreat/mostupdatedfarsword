@@ -46,7 +46,7 @@ func buildSelf():
 			addReward("Field Gun Unlock")
 		"Siege Works":
 			addReward("Siege Cannon Unlock")
-		"Mortar Tactics":
+		"Explosive Charges":
 			addReward("Mortar Unlock")
 		"Rocket Artillery":
 			addReward("Early Rockets Unlock")

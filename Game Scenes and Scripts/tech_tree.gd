@@ -8,10 +8,10 @@ var _investment_progress: Dictionary = {}  # techID -> accumulated science, surv
 # Row label | Col1 | Col2 | Col3 | Col4
 const TECH_ROWS := [
 	["SABRE",    "Swordsmanship",    "Cavalry Drills",   "Officer Training",     "Marine Discipline"],
-	["RIFLES",   "Musket Drilling",  "Volley Tactics",   "Percussion Ignition",  "Repeating Mechanisms"],
-	["ARTILLERY","Field Gunnery",    "Siege Works",      "Explosive Charges",    "Rocket Artillery"],
-	["CIVILIAN", "Agrarian Reform",  "Trade Networks",   "Industrialization",    "Infrastructure"],
-	["DEFENSE",  "Organization",     "Logistics",        "Tactics",              "Authority"],
+	["RIFLE",   "Musket Drilling",  "Volley Tactics",   "Percussion Ignition",  "Repeating Mechanisms"],
+	["CANNON","Field Gunnery",    "Siege Works",      "Explosive Charges",    "Rocket Artillery"],
+	["DEVELOPMENT", "Agrarian Reform",  "Trade Networks",   "Industrialization",    "Infrastructure"],
+	["UNIFORM",  "Organization",     "Logistics",        "Tactics",              "Authority"],
 ]
 
 const TECH_COSTS := [40, 100, 250, 500]
@@ -34,6 +34,16 @@ func _build_grid() -> void:
 		prev_invest_id = investmentTech.techID
 	_buttons.clear()
 	var grid := $TechPanel/GridContainer
+	grid.columns = 5
+	grid.add_theme_constant_override("h_separation", 40)
+	grid.add_theme_constant_override("v_separation", 30)
+	# Hide leftover generic "old bones" tech containers (Language/Writing/Administration/etc.)
+	var inst = get_node_or_null("TechPanel/InsititutionContainer")
+	if inst:
+		inst.visible = false
+	var unl = get_node_or_null("TechPanel/UnlockedContainer")
+	if unl:
+		unl.visible = false
 	for child in grid.get_children():
 		grid.remove_child(child)
 		child.queue_free()
