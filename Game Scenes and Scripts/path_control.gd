@@ -170,22 +170,22 @@ func showPathPoints(pathPoint):
 	emit_signal("updatePathPoints", true)
 	visibleTiles.clear()
 	for pathPointButton in $PathPointsControl.get_children():
-		pathPointButton.visible = false
+		pathPointButton.setMarkerVisible(false)
 		if pathPointButton.occupied == true:
-			pathPointButton.visible = true
+			pathPointButton.setMarkerVisible(true)
 			#visibleTiles.append(pathPointButton.neighborPathPoints)
 		#if playerTiles.has(pathPointButton.ppbTile):
-			#pathPointButton.visible = true
+			#pathPointButton.setMarkerVisible(true)
 	for pathPointButton in visibleTiles:
-		pathPointButton.visible = true
+		pathPointButton.setMarkerVisible(true)
 	if pathPoint.neighborPathPoints.size()== 0:
 		return
 	else:
 		for pathPointButton in pathPoint.neighborPathPoints:
 			if is_instance_valid(pathPointButton):
-				pathPointButton.visible = true
+				pathPointButton.setMarkerVisible(true)
 #		pathPointButton.enemyCheck()
-	pathPoint.visible = true
+	pathPoint.setMarkerVisible(true)
 	#for pathPointButton in $PathPointsControl.get_children():
 		#if pathPointButton.visible != true:
 			#pathPointButton.hideTile()
@@ -195,7 +195,7 @@ func showPathPoints(pathPoint):
 func hidePathPoints():
 	emit_signal("updatePathPoints", false)
 	for pathPointButton in $PathPointsControl.get_children():
-		pathPointButton.visible = false
+		pathPointButton.setMarkerVisible(false)
 
 func removeFromUpdateArmyPaths():
 	updatingArmyPathFollow = null
@@ -464,7 +464,7 @@ func _on_ranged_attack_button_pressed():
 
 func spellSelectionMode(spell, cost, player):
 	for pathPointButton in $PathPointsControl.get_children():
-		if pathPointButton.occupied == true:
+		if pathPointButton.occupied == true and is_instance_valid(pathPointButton.stationedAPF):
 			pathPointButton.stationedAPF.prepareMilSpell(spell)
 
 func updateTileSiege(army, pathPoint):

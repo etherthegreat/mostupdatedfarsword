@@ -39,15 +39,19 @@ func revealTile():
 	ppbTile.discoverTile()
 
 func calculateBattle(armyPath, type, attackingArmy, lastSelectedPathPoint):
-	if stationedArmy != null:
+	if stationedArmy != null and is_instance_valid(stationedArmy):
 		if stationedArmy.enemy == true:
 			attackingArmy.attacksFromCurrentTile += 1
 			stationedArmy.calculateBattle(armyPath, type, attackingArmy, stationedAPF, lastSelectedPathPoint)
 
 func deleteNeighborBattles():
 	for pathPointButton in neighborPathPoints:
-		if pathPointButton.stationedAPF != null:
+		if pathPointButton.stationedAPF != null and is_instance_valid(pathPointButton.stationedAPF):
 			pathPointButton.stationedAPF.deleteBattle()
 
 func siegeTile(army):
 	ppbTile.siegeCalculate(army)
+
+func setMarkerVisible(v: bool) -> void:
+	if has_node("Button"):
+		$Button.visible = v

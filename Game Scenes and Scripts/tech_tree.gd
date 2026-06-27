@@ -3,6 +3,7 @@ extends Control
 var playerNode
 var investmentTech: techButton
 var nextTechChange: int = 0
+var _investment_progress: Dictionary = {}  # techID -> accumulated science, survives grid rebuilds
 
 # Row label | Col1 | Col2 | Col3 | Col4
 const TECH_ROWS := [
@@ -28,6 +29,9 @@ func buildSelf(player) -> void:
 
 
 func _build_grid() -> void:
+	var prev_invest_id := ""
+	if investmentTech != null and is_instance_valid(investmentTech):
+		prev_invest_id = investmentTech.techID
 	_buttons.clear()
 	var grid := $TechPanel/GridContainer
 	for child in grid.get_children():
@@ -65,8 +69,15 @@ func _build_grid() -> void:
 				btn.reqTechs = [row_btns[col_idx - 2]]
 
 			grid.add_child(btn)
+			btn.techScienceInvestment = int(_investment_progress.get(tech_name, 0))
 			row_btns.append(btn)
 			_buttons[tech_name] = btn
+
+	# Re-point the investment target to the rebuilt button (never a freed reference)
+	if prev_invest_id != "" and _buttons.has(prev_invest_id):
+		investmentTech = _buttons[prev_invest_id]
+	else:
+		investmentTech = null
 
 func _mark_purchased(player) -> void:
 	for tech in player.unlockedTechnologies:
@@ -87,6 +98,7 @@ func unlockTech(techID: String, techButt: techButton, change: int) -> void:
 	nextTechChange = change
 	techButt.purchased = true
 	emit_signal("addTechToPlayer", techID)
+	_investment_progress.erase(techID)
 	investmentTech = null
 	emit_signal("investmentChanged")
 	_refresh_all()
@@ -100,7 +112,13 @@ func selectInvestmentFunc(techbutt: techButton) -> void:
 	self.visible = false
 
 func investInTech(science: int) -> void:
+	if investmentTech == null or not is_instance_valid(investmentTech):
+		return
+	var tid := investmentTech.techID
 	investmentTech.addScienceInvestment(science)
+	# unlockTech() nulls investmentTech on completion; only persist if still investing
+	if investmentTech != null and is_instance_valid(investmentTech) and investmentTech.techID == tid:
+		_investment_progress[tid] = investmentTech.techScienceInvestment
 
 func _on_close_button_pressed() -> void:
 	self.visible = false

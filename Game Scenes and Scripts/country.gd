@@ -1366,6 +1366,7 @@ func _ca_press_uk_borders() -> void:
 # ============================================================
 
 func _calculate_supply_from_owned() -> void:
+	countryArmyList = countryArmyList.filter(func(a): return is_instance_valid(a))
 	for army in countryArmyList:
 		if army.inTile == null:
 			army.set_meta("supplied", false)

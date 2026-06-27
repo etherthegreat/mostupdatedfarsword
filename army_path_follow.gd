@@ -79,6 +79,16 @@ func refreshHealthBar() -> void:
 		$ShieldBar.visible = false
 
 func _process(_delta: float) -> void:
+	if thisArmy != null and not is_instance_valid(thisArmy):
+		# DEBUGLIST P0-1: army was freed without tearing this token down.
+		# Clean our own references and remove ourselves so we stop erroring every frame.
+		if is_instance_valid(currentPathPoint):
+			if currentPathPoint.stationedAPF == self:
+				currentPathPoint.stationedAPF = null
+			currentPathPoint.stationedArmy = null
+			currentPathPoint.occupied = false
+		queue_free()
+		return
 	if thisArmy == null:
 		return
 	refreshHealthBar()
@@ -115,6 +125,8 @@ func _process(_delta: float) -> void:
 	else:
 		currentPathPoint.stationedAPF = null
 		currentPathPoint.stationedArmy = null
+		if thisArmy.parentCountry != null and is_instance_valid(thisArmy.parentCountry):
+			thisArmy.parentCountry.countryArmyList.erase(thisArmy)
 		thisArmy.queue_free()
 		self.queue_free()
 
