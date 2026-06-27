@@ -39,6 +39,7 @@ var tileSpell: spell
 var countryCapital: bool
 
 signal clicked
+signal right_clicked
 var thisTileNumber
 
 # ============================================================
@@ -1298,6 +1299,8 @@ func _on_area_2d_input_event(viewport, event, shape_idx):
 		if Input.is_action_just_pressed('Left Click'):
 			if spellToCast == null:
 				emit_signal("clicked", self)
+		elif Input.is_action_just_pressed('Right Click'):
+			emit_signal("right_clicked", self)
 			else:
 				tileSpell = spellToCast
 				emit_signal("spellAssigned", spellCostToCast)

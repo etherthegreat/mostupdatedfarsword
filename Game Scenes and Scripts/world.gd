@@ -222,6 +222,7 @@ func newGameBuild(CID, gameLang, isCoop: bool = false):
 		Tile.onNewGame()
 		Tile.calculateSeason(month)
 		Tile.clicked.connect(tileClicked)
+		Tile.right_clicked.connect(tileRightClicked)
 		Tile.censusComplete.connect(manaUpdate)
 		Tile.tileSpawnPoint = $PathControl/PathPointsControl.get_node_or_null(str(Tile.EXPTileNumber))
 	$CanvasLayer/LoadingLabel.text = "Spawning Countries"
@@ -1741,6 +1742,11 @@ func tileClicked(tile):
 	else:
 		$CanvasLayer/TileInfoPanel.visible = false
 	$CanvasLayer/BuildingInfoPanel.displayBuildingInfo(tile)
+
+func tileRightClicked(tile):
+	if $PathControl.tryMoveSelectedAPFToTile(tile):
+		return
+	resetUI()
 
 func retrieveOutputs():
 	selectedTile.censusTile(playerCountryNode)
@@ -5261,8 +5267,8 @@ func _is_state_liberated(state_code: String, cid: String) -> bool:
 
 func _on_right_click_detector_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if Input.is_action_just_pressed('Right Click'):
-		resetUI()
-	pass # Replace with function body.
+		if $PathControl.selectedAPF == null:
+			resetUI()
 
 func resetUI():
 	for Tile in $TileController.get_children():
