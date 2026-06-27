@@ -25,6 +25,13 @@ const _TC_PATH := "LibraryContainer/OuterVBox/TabContainer"
 func _ready() -> void:
 	visible = false
 	_spawn_tabs()
+	_wire_header_seal()
+
+func _wire_header_seal() -> void:
+	var seal = get_node_or_null("LibraryContainer/OuterVBox/HeaderRow/SealSprite")
+	var tex := "res://art assets/PresidentialLibrary/eagle_seal_transparent.png"
+	if seal and ResourceLoader.exists(tex):
+		seal.texture = load(tex)
 
 func _spawn_tabs() -> void:
 	var tc := get_node_or_null(_TC_PATH)
