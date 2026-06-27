@@ -100,6 +100,12 @@ func civilianArrivedFunc(pathOfCivilian, newPathPointButton, theCivilian, cpf, c
 signal movement_blocked(reason: String)
 signal spyWinRecorded
 signal activateArmyControlMode
+func deselectAll() -> void:
+	selectedAPF = null
+	selectedCPF = null
+	melee_mode = false
+	emit_signal("updatePathPoints", false)
+
 func displayapfInfo(thisArmy, apf, currentTile, thisCountry, currentPathPoint):
 	if thisCountry == playerCountry:
 		updateArmyPanel(thisArmy, currentPathPoint)

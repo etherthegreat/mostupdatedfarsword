@@ -5266,8 +5266,8 @@ func _on_right_click_detector_input_event(viewport: Node, event: InputEvent, sha
 
 func resetUI():
 	for Tile in $TileController.get_children():
-		Tile.visible = true
-	$TileController.normalMode()
+		Tile.normalMode()
+	$PathControl.deselectAll()
 	$CanvasLayer.closeAllPanels()
 
 var lastSelectedPathPoint: pathPointButton
