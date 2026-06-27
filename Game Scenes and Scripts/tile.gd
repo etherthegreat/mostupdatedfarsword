@@ -1315,7 +1315,11 @@ func _on_area_2d_input_event(viewport, event, shape_idx):
 var _pre_hover_ring_modulate: Color = Color.WHITE
 var _pre_hover_graphic_modulate: Color = Color.WHITE
 
+signal tile_hovered(tile)
+signal tile_unhovered(tile)
+
 func _on_area_2d_mouse_entered() -> void:
+	emit_signal("tile_hovered", self)
 	if tileRing == null or tileGraphic == null: return
 	_pre_hover_ring_modulate = tileRing.modulate
 	_pre_hover_graphic_modulate = tileGraphic.modulate
@@ -1323,6 +1327,7 @@ func _on_area_2d_mouse_entered() -> void:
 	tileGraphic.modulate = Color(0, 0, 1)
 
 func _on_area_2d_mouse_exited() -> void:
+	emit_signal("tile_unhovered", self)
 	if tileRing == null or tileGraphic == null: return
 	tileRing.modulate = _pre_hover_ring_modulate
 	tileGraphic.modulate = _pre_hover_graphic_modulate

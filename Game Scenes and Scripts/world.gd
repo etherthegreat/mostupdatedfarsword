@@ -222,7 +222,8 @@ func newGameBuild(CID, gameLang, isCoop: bool = false):
 		Tile.onNewGame()
 		Tile.calculateSeason(month)
 		Tile.clicked.connect(tileClicked)
-		Tile.right_clicked.connect(tileRightClicked)
+		Tile.tile_hovered.connect(func(t): _hovered_tile = t)
+		Tile.tile_unhovered.connect(func(t): if _hovered_tile == t: _hovered_tile = null)
 		Tile.censusComplete.connect(manaUpdate)
 		Tile.tileSpawnPoint = $PathControl/PathPointsControl.get_node_or_null(str(Tile.EXPTileNumber))
 	$CanvasLayer/LoadingLabel.text = "Spawning Countries"
@@ -1724,6 +1725,7 @@ func updatePlayerUI():
 
 var thisTileNumber: int
 var selectedTile: Tile
+var _hovered_tile: Tile = null
 
 
 func manaUpdate(type, amount, dictionary):
@@ -1732,9 +1734,11 @@ func manaUpdate(type, amount, dictionary):
 
 func tileClicked(tile):
 	selectedTile = tile
-	# If an army is selected, route the click to movement/attack instead of tile info
+	# Left-click while army selected — try to move/attack first
 	if $PathControl.tryMoveSelectedAPFToTile(tile):
 		return
+	# No movement — deselect army and open tile info
+	$PathControl.deselectAll()
 	$CanvasLayer/TileInfoPanel.displayTileInfo(tile)
 	if $CanvasLayer/TileInfoPanel.visible == false:
 		$CanvasLayer.closeAllPanels()
@@ -1742,11 +1746,6 @@ func tileClicked(tile):
 	else:
 		$CanvasLayer/TileInfoPanel.visible = false
 	$CanvasLayer/BuildingInfoPanel.displayBuildingInfo(tile)
-
-func tileRightClicked(tile):
-	if $PathControl.tryMoveSelectedAPFToTile(tile):
-		return
-	resetUI()
 
 func retrieveOutputs():
 	selectedTile.censusTile(playerCountryNode)
@@ -5267,8 +5266,10 @@ func _is_state_liberated(state_code: String, cid: String) -> bool:
 
 func _on_right_click_detector_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if Input.is_action_just_pressed('Right Click'):
-		if $PathControl.selectedAPF == null:
-			resetUI()
+		if _hovered_tile != null and $PathControl.selectedAPF != null:
+			if $PathControl.tryMoveSelectedAPFToTile(_hovered_tile):
+				return
+		resetUI()
 
 func resetUI():
 	for Tile in $TileController.get_children():
