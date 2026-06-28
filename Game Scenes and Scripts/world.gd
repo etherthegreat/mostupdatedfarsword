@@ -3462,14 +3462,21 @@ func _find_jessica_tile() -> Tile:
 
 
 func _apply_ualani_aura() -> void:
-	# George Washington doctrine: armies adjacent to Ualani gain "Spirit of the General" (+15 Attack)
-	# Runs every round. Duration 2 so it expires naturally if Ualani moves away.
-	var has_washington: bool = false
+	# Auras Ualani projects onto adjacent friendly armies. Runs every round;
+	# duration 2 so each expires naturally if Ualani moves away.
+	#   - George Washington doctrine      -> Spirit of the General (+15 Attack)
+	#   - Intro gift Beautiful Flower (flag)   -> +3 Defense to neighbors
+	#   - Intro gift Executive Enforcer (flag) -> +3 Attack to neighbors
+	var auras: Array = []
 	for belief in playerCountryNode.selectedBeliefs:
 		if belief.beliefType == "George Washington":
-			has_washington = true
+			auras.append("Spirit of the General")
 			break
-	if not has_washington:
+	if playerCountryNode.CountryFlags.has("ualani_beautiful_flower"):
+		auras.append("Beautiful Flower")
+	if playerCountryNode.CountryFlags.has("ualani_executive_enforcer"):
+		auras.append("Executive Enforcer")
+	if auras.is_empty():
 		return
 	var ualani_tile: Tile = _find_ualani_tile()
 	if ualani_tile == null:
@@ -3479,7 +3486,8 @@ func _apply_ualani_aura() -> void:
 			continue
 		if neighbor.stationedArmy.parentCountry != playerCountryNode:
 			continue
-		neighbor.stationedArmy.apply_status("Spirit of the General", 2)
+		for aura in auras:
+			neighbor.stationedArmy.apply_status(aura, 2)
 
 
 func _check_ualani_ambush() -> void:

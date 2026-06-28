@@ -1300,6 +1300,10 @@ func matchPlayerUnlockables(playerCountryNode):
 			for tradition in playerCountry.unlockedTraditions:
 				if tradition.traditionType == "Puritan Scholarship":
 					sciencePerLevel += 1
+			# DMA "Monument Blessing" (intro gift): +1 Dollars/level
+			if playerCountry.CountryFlags.has("dma_monument_blessing"):
+				dollarsPerLevel += 1
+				dollarsDic["DMA Monument Blessing (Dollars)"] = (1 * buildingLevel)
 			_apply_governor_archetype_bonus("Monument")
 			# (Romantic/Rational axis bonus now lives on the Courthouse)
 		"Resort":

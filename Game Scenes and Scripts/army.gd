@@ -402,6 +402,11 @@ func _apply_status_effects_to_stats() -> void:
 			# ── DOCTRINE AURA BUFFS ──────────────────────────────────────────────
 			"Spirit of the General":
 				armyPunch += 15
+			# Presidential aura buffs (Ualani's intro gift)
+			"Beautiful Flower":
+				armyDefence += 3
+			"Executive Enforcer":
+				armyPunch += 3
 			# ── LOYAL GOVERNOR BUFFS ─────────────────────────────────────────────
 			"Mercenary Zeal":
 				armyPunch += 2  # Border Mercenary coin pact — timed 10 turns

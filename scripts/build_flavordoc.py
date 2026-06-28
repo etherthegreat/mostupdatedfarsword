@@ -545,6 +545,17 @@ BELIEF_MODS = [
      "December 1776: Washington crossed the Delaware at midnight in sleet and darkness, surprising the Hessians at Trenton. The gambit saved the revolution. Where the Commander stands, the line holds.",
      "FIRST PASS"),
 
+    # ── Ualani's Inauguration Gift (intro choice — the player picks one) ──
+    ("Beautiful Flower", "Intro — Ualani's Inauguration Gift",
+     "ualaniAura", "+3 Defense to all friendly units adjacent to Ualani",
+     "They called her ka pua nani — the beautiful flower — and a flower is a thing soldiers will stand in front of. Where Ualani plants herself, the line does not break.",
+     "FIRST PASS"),
+
+    ("Executive Enforcer", "Intro — Ualani's Inauguration Gift",
+     "ualaniAura", "+3 Attack to all friendly units adjacent to Ualani",
+     "The other face of President Carlisle: not a symbol to be shielded but a will to be obeyed. When she takes the field, hesitation burns off the advance — and the Republic's enemies learn what 'ʻOnipaʻa' costs them.",
+     "FIRST PASS"),
+
     ("Combahee River Raid", "Icon — Harriet Tubman",
      "infantryMod", "+3 Attack per Level (temp — first-round bonus pending full pass)",
      "June 1863: Tubman led Col. James Montgomery's gunboats up the Combahee River, freeing 700+ enslaved people. No hesitation. No casualties on her side.",
@@ -1286,6 +1297,7 @@ def build_belief_mods(wb):
     sections = [
         ("AMERICAN ICON MODS", USA_BG, USA_FG, lambda r: r[1].startswith("Icon — ") and any(
             n in r[1] for n in ["Washington","Tubman","Lincoln","Roosevelt","Douglass","Sitting Bull"])),
+        ("PRESIDENTIAL AURAS — UALANI'S GIFT", "1A4D3A", "FFFFFF", lambda r: r[1].startswith("Intro — ")),
         ("CANADIAN ICON MODS", CA_BG, CA_FG, lambda r: r[1].startswith("Icon — ") and any(
             n in r[1] for n in ["Secord","Riel","Dallaire"])),
         ("DOCTRINE MODS", "2E4057", "FFFFFF", lambda r: r[1].startswith("Doctrine")),
