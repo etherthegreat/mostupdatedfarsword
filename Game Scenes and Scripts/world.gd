@@ -6517,4 +6517,4 @@ func _on_outputs_mode_button_pressed() -> void:
 
 func _on_terrain_mode_button_pressed() -> void:
 	mapMode = "Natural"
-	updateMap(
+	updateMap()
