@@ -27,6 +27,10 @@ const MAIN_TRACK: Array = ["la foret"]
 var _playlist: Array = []
 var _playlist_index: int = 0
 
+# Button click SFX — four custom clicks by ZIBLING (sound artist; credit for record-keeping).
+# One is chosen at random on every button press.
+const BUTTON_CLICKS: Array = ["DartboardClick1", "DartboardClick2", "DartboardClick3", "DartboardClick4"]
+
 func _ready() -> void:
 	_music_player = AudioStreamPlayer.new()
 	_music_player.bus = "Music" if AudioServer.get_bus_index("Music") != -1 else "Master"
@@ -36,6 +40,8 @@ func _ready() -> void:
 		p.bus = "SFX" if AudioServer.get_bus_index("SFX") != -1 else "Master"
 		add_child(p)
 		_sfx_players.append(p)
+	# Global: give every button a click sound + remove the sticky focus highlight
+	get_tree().node_added.connect(_on_node_added)
 
 
 # ── MUSIC ──────────────────────────────────────────────────────────────────
@@ -56,13 +62,18 @@ func play_music(name: String, loop: bool = true) -> void:
 
 # Finds res://audio/music/<name>.{ogg,mp3,wav} — whichever the file actually is
 func _load_music(name: String) -> AudioStream:
+	return _load_audio_any(MUSIC_DIR, name, _music_cache)
+
+
+# Resolves <dir>/<name>.{ogg,mp3,wav} to whichever file actually exists
+func _load_audio_any(dir: String, name: String, cache: Dictionary) -> AudioStream:
 	for ext in [".ogg", ".mp3", ".wav"]:
-		var path = MUSIC_DIR + name + ext
-		if _music_cache.has(path):
-			return _music_cache[path]
+		var path = dir + name + ext
+		if cache.has(path):
+			return cache[path]
 		if ResourceLoader.exists(path):
 			var stream = load(path)
-			_music_cache[path] = stream
+			cache[path] = stream
 			return stream
 	return null
 
@@ -108,7 +119,7 @@ func stop_music() -> void:
 # ── SFX ────────────────────────────────────────────────────────────────────
 
 func play_sfx(name: String, volume_db: float = 0.0) -> void:
-	var stream = _load_audio(SFX_DIR + name + ".ogg", _sfx_cache)
+	var stream = _load_audio_any(SFX_DIR, name, _sfx_cache)
 	if stream == null:
 		push_warning("[AudioManager] sfx not found: " + name)
 		return
@@ -127,6 +138,22 @@ func stop_sfx(name: String) -> void:
 	for p in _sfx_players:
 		if p.stream == stream and p.playing:
 			p.stop()
+
+
+
+# ── BUTTONS (global) ────────────────────────────────────────────────────────
+
+func _on_node_added(node: Node) -> void:
+	if node is BaseButton:
+		node.focus_mode = Control.FOCUS_NONE   # no lingering highlight after a click
+		if not node.pressed.is_connected(_play_button_click):
+			node.pressed.connect(_play_button_click)
+
+
+func _play_button_click() -> void:
+	if BUTTON_CLICKS.is_empty():
+		return
+	play_sfx(BUTTON_CLICKS[randi() % BUTTON_CLICKS.size()])
 
 
 # ── INTERNAL ───────────────────────────────────────────────────────────────
