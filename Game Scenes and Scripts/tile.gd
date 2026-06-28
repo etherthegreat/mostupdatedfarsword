@@ -424,7 +424,7 @@ func build_self_from_save(save_data: Dictionary) -> void:
 		var level = buildings[building_name]
 		addBuilding(building_name.capitalize(), level)
 
-	tileSpawnPoint = get_node("../../PathControl/PathPointsControl/" + str(tileNumber))
+	tileSpawnPoint = get_node_or_null("../../PathControl/PathPointsControl/" + str(tileNumber))
 
 
 # ============================================================

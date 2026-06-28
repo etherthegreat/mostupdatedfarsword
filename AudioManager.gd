@@ -20,13 +20,20 @@ var _sfx_pool_size: int = 8   # concurrent SFX slots
 var _sfx_cache:   Dictionary = {}
 var _music_cache: Dictionary = {}
 
+# ── Music track / playlist ──────────────────────────────────────────────────
+# Add more song filenames (no extension) to MAIN_TRACK. They play in order, then
+# loop back to the first. A single-song track loops that one song gaplessly.
+const MAIN_TRACK: Array = ["la foret"]
+var _playlist: Array = []
+var _playlist_index: int = 0
+
 func _ready() -> void:
 	_music_player = AudioStreamPlayer.new()
-	_music_player.bus = "Music"
+	_music_player.bus = "Music" if AudioServer.get_bus_index("Music") != -1 else "Master"
 	add_child(_music_player)
 	for i in _sfx_pool_size:
 		var p = AudioStreamPlayer.new()
-		p.bus = "SFX"
+		p.bus = "SFX" if AudioServer.get_bus_index("SFX") != -1 else "Master"
 		add_child(p)
 		_sfx_players.append(p)
 
@@ -34,16 +41,64 @@ func _ready() -> void:
 # ── MUSIC ──────────────────────────────────────────────────────────────────
 
 func play_music(name: String, loop: bool = true) -> void:
-	var stream = _load_audio(MUSIC_DIR + name + ".ogg", _music_cache)
+	var stream = _load_music(name)
 	if stream == null:
 		push_warning("[AudioManager] music not found: " + name)
 		return
 	if _music_player.stream == stream and _music_player.playing:
 		return
 	_music_player.stream = stream
-	if stream.has_method("set_loop"):
+	# AudioStreamMP3 / OggVorbis expose `loop` as a property, not a method
+	if "loop" in stream:
 		stream.loop = loop
 	_music_player.play()
+
+
+# Finds res://audio/music/<name>.{ogg,mp3,wav} — whichever the file actually is
+func _load_music(name: String) -> AudioStream:
+	for ext in [".ogg", ".mp3", ".wav"]:
+		var path = MUSIC_DIR + name + ext
+		if _music_cache.has(path):
+			return _music_cache[path]
+		if ResourceLoader.exists(path):
+			var stream = load(path)
+			_music_cache[path] = stream
+			return stream
+	return null
+
+
+func play_main_track() -> void:
+	play_playlist(MAIN_TRACK)
+
+
+func play_playlist(songs: Array, start_index: int = 0) -> void:
+	_playlist = songs
+	_playlist_index = start_index
+	if not _music_player.finished.is_connected(_on_music_finished):
+		_music_player.finished.connect(_on_music_finished)
+	_play_current_playlist_song()
+
+
+func _play_current_playlist_song() -> void:
+	if _playlist.is_empty():
+		return
+	var stream = _load_music(_playlist[_playlist_index])
+	if stream == null:
+		push_warning("[AudioManager] playlist song not found: " + str(_playlist[_playlist_index]))
+		return
+	# Single-song track loops gaplessly; multi-song track advances on `finished`.
+	if "loop" in stream:
+		stream.loop = (_playlist.size() == 1)
+	_music_player.stream = stream
+	_music_player.play()
+
+
+func _on_music_finished() -> void:
+	# Fires only for non-looping streams (multi-song tracks) — advance and wrap around.
+	if _playlist.is_empty():
+		return
+	_playlist_index = (_playlist_index + 1) % _playlist.size()
+	_play_current_playlist_song()
 
 
 func stop_music() -> void:

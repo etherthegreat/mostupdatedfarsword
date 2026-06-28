@@ -27,6 +27,10 @@ signal retrieveTileOutputs
 func displayTileInfo(tile):
 	emit_signal("selectThisTile", tile)
 	selectedTile = tile
+	# Reset transient sub-panels + outputs so nothing lingers from the previously selected tile
+	$Outputs.clear()
+	$GovernorSelection.visible = false
+	$governorTileControlPanel.visible = false
 	if firstTime == false:
 		for ModifierSprite in $TerrainModifiersGridContainer.get_children():
 			$TerrainModifiersGridContainer.remove_child(ModifierSprite)
@@ -59,22 +63,23 @@ func displayTileInfo(tile):
 		modiSprite.buildModifier(tileEcoModifier)
 		modifierControl.add_child(modiSprite)
 		$TerrainModifiersGridContainer.add_child(modifierControl)
-		if selectedTile.tileGovernor != null:
-			if selectedTile.tileGovernor.governorTexture != null:
-				$governorButton.icon = selectedTile.tileGovernor.get_portrait_for_region(selectedTile.tileContinent)
-				$governorButton/govnameLabel.text = str(selectedTile.tileGovernor.governorType)
-				#$governorButton.disabled = true
-			else:
-				$governorButton.icon = load("res://art assets/Placeholder Art/character/8 11 experimental.png")
-				$governorButton/govnameLabel.text = str(selectedTile.tileGovernor.governorType)
-				#$governorButton.disabled = true
+	# Governor + wizard: update once per tile (was nested in the eco-modifier loop -> stale on eco-less tiles)
+	if selectedTile.tileGovernor != null:
+		if selectedTile.tileGovernor.governorTexture != null:
+			$governorButton.icon = selectedTile.tileGovernor.get_portrait_for_region(selectedTile.tileContinent)
+			$governorButton/govnameLabel.text = str(selectedTile.tileGovernor.governorType)
+			#$governorButton.disabled = true
 		else:
 			$governorButton.icon = load("res://art assets/Placeholder Art/character/8 11 experimental.png")
-			$governorButton/govnameLabel.text = "No Assigned Governor"
-		if selectedTile.tileWizard != null:
-			$WizardButton.text = selectedTile.tileWizard.wizardType
-		else:
-			$WizardButton.text = str("no wizard :(")
+			$governorButton/govnameLabel.text = str(selectedTile.tileGovernor.governorType)
+			#$governorButton.disabled = true
+	else:
+		$governorButton.icon = load("res://art assets/Placeholder Art/character/8 11 experimental.png")
+		$governorButton/govnameLabel.text = "No Assigned Governor"
+	if selectedTile.tileWizard != null:
+		$WizardButton.text = selectedTile.tileWizard.wizardType
+	else:
+		$WizardButton.text = str("no wizard :(")
 	if $ManaPanelContainer.get_child_count() > 0:
 		for manaPanel in $ManaPanelContainer.get_children():
 			$ManaPanelContainer.remove_child(manaPanel)
@@ -132,6 +137,9 @@ func matchTileNaturals():
 				$CropSprite.texture = load("res://art assets/finishedAssets/ores/Wereroot.PNG")
 			"Hay":
 				$CropSprite.texture = load("res://art assets/finishedAssets/ores/Wheat.PNG")
+	else:
+		$CropSprite.texture = null
+		$CropPanelSprite.texture = load("res://art assets/finishedAssets/religiousIcons/cropIconEmpty.PNG")
 	if selectedTile.terrain != null:
 		match selectedTile.terrain:
 			"jungle":
@@ -162,6 +170,8 @@ func matchTileNaturals():
 				$TerrainSprite.texture = load("res://art assets/Placeholder Art/UI Art/terrain/IMG_1441.PNG")
 			"taiga":
 				$TerrainSprite.texture = load("res://art assets/Placeholder Art/UI Art/terrain/IMG_1442.PNG")
+	else:
+		$TerrainSprite.texture = null
 func calculateAvailableGovernor(playerNode, tile):
 	var tileReplica: Tile
 	tileReplica = tile

@@ -31,8 +31,14 @@ func buildSelf():
 
 func updateSelf():
 	$Panel/barrackslvl.text = str("Barracks Level: ", barracksBuilding.buildingLevel)
-	if barracksArmy != null:
+	if is_instance_valid(barracksArmy):
 		barracksArmy.updateArmyUI()
+	else:
+		# Army died or was never raised — restore the "Add New Army" affordance
+		barracksArmy = null
+		$AddNewArmyButton.visible = true
+		$Panel/builtArmyInfoPanel.visible = false
+		$Panel/builtArmyInfoPanel/armyName.text = ""
 
 func _on_text_edit_text_changed():
 	newArmyName = $NameAndConfirmPanel/TextEdit.text

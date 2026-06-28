@@ -160,7 +160,8 @@ func connectPathPoints(playerCountryNode):
 	for Tile in playerCountryNode.OwnedTileList:
 		playerTiles.append(Tile)
 	for pathPointButton in $PathPointsControl.get_children():
-		pathPointButton.pathPointClicked.connect(calculateArmyMovement)
+		if not pathPointButton.pathPointClicked.is_connected(calculateArmyMovement):
+			pathPointButton.pathPointClicked.connect(calculateArmyMovement)
 		pathPointButton.buildSelf()
 var visibleTiles: Array
 

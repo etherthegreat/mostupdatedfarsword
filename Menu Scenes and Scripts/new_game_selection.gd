@@ -48,6 +48,7 @@ func updateInfoPanel():
 
 var newGameScene = load("res://Game Scenes and Scripts/world.tscn")
 func _on_play_button_pressed() -> void:
+	AudioManager.play_main_track()   # plays the looping music track (starts with la foret.mp3)
 	var language: String = settings.get("gameLanguage", "eng")
 	var newGame = newGameScene.instantiate()
 	# Add world to the scene tree root — NOT as a child of this menu scene.
