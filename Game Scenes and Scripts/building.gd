@@ -1288,7 +1288,7 @@ func matchPlayerUnlockables(playerCountryNode):
 				dollarsDic["Dock Stockpile Bonus (Gold)"] = (1 * buildingLevel)
 			_apply_governor_archetype_bonus("Dock")
 		"Monument":
-			# Monument is the primary Reason↔Providence axis building.
+			# Monument: civic monument (Romantic↔Rational axis bonus now on Courthouse).
 			for Technology in playerCountry.unlockedTechnologies:
 				if Technology.techName == "Classical Design":
 					woodCostPerLevel += 1
@@ -1301,49 +1301,7 @@ func matchPlayerUnlockables(playerCountryNode):
 				if tradition.traditionType == "Puritan Scholarship":
 					sciencePerLevel += 1
 			_apply_governor_archetype_bonus("Monument")
-			var monAxLvl: int = playerCountry.churchLevel
-			match monAxLvl:
-				3:
-					dollarsPerLevel += 1
-					mandatePerLevel += 1
-					dollarsDic["Axis: Providence III"] = (1 * buildingLevel)
-					mandateDic["Axis: Providence III"] = (1 * buildingLevel)
-				2:
-					dollarsPerLevel += 1
-					mandatePerLevel += 1
-					dollarsDic["Axis: Providence II"] = (1 * buildingLevel)
-					mandateDic["Axis: Providence II"] = (1 * buildingLevel)
-				1:
-					culturePerLevel += 1
-					dollarsPerLevel += 1
-					mandatePerLevel += 1
-					cultureDic["Axis: Providence I"] = (1 * buildingLevel)
-					dollarsDic["Axis: Providence I"] = (1 * buildingLevel)
-					mandateDic["Axis: Providence I"] = (1 * buildingLevel)
-				0:
-					culturePerLevel += 1
-					dollarsPerLevel += 1
-					mandatePerLevel += 1
-					happinessPerLevel += 1
-					cultureDic["Axis: Balanced"] = (1 * buildingLevel)
-					dollarsDic["Axis: Balanced"] = (1 * buildingLevel)
-					mandateDic["Axis: Balanced"] = (1 * buildingLevel)
-					happinessDic["Axis: Balanced"] = (1 * buildingLevel)
-				-1:
-					culturePerLevel += 1
-					dollarsPerLevel += 1
-					happinessPerLevel += 1
-					cultureDic["Axis: Reason I"] = (1 * buildingLevel)
-					dollarsDic["Axis: Reason I"] = (1 * buildingLevel)
-					happinessDic["Axis: Reason I"] = (1 * buildingLevel)
-				-2:
-					culturePerLevel += 1
-					happinessPerLevel += 1
-					cultureDic["Axis: Reason II"] = (1 * buildingLevel)
-					happinessDic["Axis: Reason II"] = (1 * buildingLevel)
-				-3:
-					culturePerLevel += 1
-					cultureDic["Axis: Reason III"] = (1 * buildingLevel)
+			# (Romantic/Rational axis bonus now lives on the Courthouse)
 		"Resort":
 			# Resort produces Happiness — buffed by comfort/hospitality traditions.
 			for Technology in playerCountry.unlockedTechnologies:
@@ -1395,6 +1353,50 @@ func matchPlayerUnlockables(playerCountryNode):
 					dollarsDic["Law: Accessible Canada Act"] = (1 * buildingLevel)
 					cultureDic["Law: Accessible Canada Act"] = (1 * buildingLevel)
 			_apply_governor_archetype_bonus("Courthouse")
+			# Romantic ↔ Rational axis (churchLevel): Balanced = max Mandate; Romantic = Culture+Manpower; Rational = Science+Dollars
+			var axisLvl: int = playerCountry.churchLevel
+			match axisLvl:
+				0:
+					mandatePerLevel += 3
+					mandateDic["Axis: Balanced Republic"] = (3 * buildingLevel)
+				-1:
+					culturePerLevel += 1
+					manpowerPerLevel += 50
+					mandatePerLevel += 2
+					cultureDic["Axis: Romantic I"] = (1 * buildingLevel)
+					manpowerDic["Axis: Romantic I"] = (50 * buildingLevel)
+					mandateDic["Axis: Romantic I"] = (2 * buildingLevel)
+				-2:
+					culturePerLevel += 2
+					manpowerPerLevel += 100
+					mandatePerLevel += 1
+					cultureDic["Axis: Romantic II"] = (2 * buildingLevel)
+					manpowerDic["Axis: Romantic II"] = (100 * buildingLevel)
+					mandateDic["Axis: Romantic II"] = (1 * buildingLevel)
+				-3:
+					culturePerLevel += 3
+					manpowerPerLevel += 150
+					cultureDic["Axis: Romantic III"] = (3 * buildingLevel)
+					manpowerDic["Axis: Romantic III"] = (150 * buildingLevel)
+				1:
+					sciencePerLevel += 1
+					dollarsPerLevel += 1
+					mandatePerLevel += 2
+					scienceDic["Axis: Rational I"] = (1 * buildingLevel)
+					dollarsDic["Axis: Rational I"] = (1 * buildingLevel)
+					mandateDic["Axis: Rational I"] = (2 * buildingLevel)
+				2:
+					sciencePerLevel += 2
+					dollarsPerLevel += 2
+					mandatePerLevel += 1
+					scienceDic["Axis: Rational II"] = (2 * buildingLevel)
+					dollarsDic["Axis: Rational II"] = (2 * buildingLevel)
+					mandateDic["Axis: Rational II"] = (1 * buildingLevel)
+				3:
+					sciencePerLevel += 3
+					dollarsPerLevel += 3
+					scienceDic["Axis: Rational III"] = (3 * buildingLevel)
+					dollarsDic["Axis: Rational III"] = (3 * buildingLevel)
 			for tradition in playerCountry.unlockedTraditions:
 				if tradition.traditionType == "Continental Congress Ledgers":
 					mandatePerLevel += 1
@@ -1601,32 +1603,32 @@ func _apply_axis_bonuses(bType: String) -> void:
 		match bType:
 			"Barracks":
 				manpowerPerLevel += 50
-				manpowerDic["Axis: Providence III (Martial Faith)"] = (50 * buildingLevel)
+				manpowerDic["Axis: Rational III (Martial Faith)"] = (50 * buildingLevel)
 			"Farm":
 				foodPerLevel += 1
-				foodDic["Axis: Providence III (Sacred Harvest)"] = (1 * buildingLevel)
+				foodDic["Axis: Rational III (Sacred Harvest)"] = (1 * buildingLevel)
 			"Fortress":
 				defensivenessPerLevel += 1
 				# no dic for defensiveness — matches existing pattern
 			"Courthouse":
 				mandatePerLevel += 1
-				mandateDic["Axis: Providence III (Divine Law)"] = (1 * buildingLevel)
+				mandateDic["Axis: Rational III (Divine Law)"] = (1 * buildingLevel)
 	elif lvl == -3:
 		match bType:
 			"Library":
 				sciencePerLevel += 1
 				culturePerLevel += 1
-				scienceDic["Axis: Reason III (Secular Learning)"] = (1 * buildingLevel)
-				cultureDic["Axis: Reason III (Secular Learning)"] = (1 * buildingLevel)
+				scienceDic["Axis: Romantic III (Secular Learning)"] = (1 * buildingLevel)
+				cultureDic["Axis: Romantic III (Secular Learning)"] = (1 * buildingLevel)
 			"Market":
 				dollarsPerLevel += 1
-				dollarsDic["Axis: Reason III (Free Commerce)"] = (1 * buildingLevel)
+				dollarsDic["Axis: Romantic III (Free Commerce)"] = (1 * buildingLevel)
 			"Resort":
 				happinessPerLevel += 1
-				happinessDic["Axis: Reason III (Civic Pleasure)"] = (1 * buildingLevel)
+				happinessDic["Axis: Romantic III (Civic Pleasure)"] = (1 * buildingLevel)
 			"Courthouse":
 				mandatePerLevel += 1
-				mandateDic["Axis: Reason III (Secular Law)"] = (1 * buildingLevel)
+				mandateDic["Axis: Romantic III (Secular Law)"] = (1 * buildingLevel)
 
 
 func _apply_belief_bonuses(bType: String) -> void:
@@ -1634,7 +1636,7 @@ func _apply_belief_bonuses(bType: String) -> void:
 		return
 	for belief in playerCountry.selectedBeliefs:
 		match belief.beliefType:
-			# ── American Doctrines (→ Providence) ──────────────────────────────────
+			# ── American Doctrines (→ Rational) ──────────────────────────────────
 			"Social Security Act":
 				if bType == "Resort":
 					happinessPerLevel += 1
@@ -1691,7 +1693,7 @@ func _apply_belief_bonuses(bType: String) -> void:
 					mandatePerLevel += 1
 					cultureDic["Doctrine: Height of Buildings Act"] = (1 * buildingLevel)
 					mandateDic["Doctrine: Height of Buildings Act"] = (1 * buildingLevel)
-			# ── Canadian Doctrines (→ Providence) ───────────────────────────────
+			# ── Canadian Doctrines (→ Rational) ───────────────────────────────
 			# "Nature Conservationists" covers both USA and CA — handled above
 			"Canada Council for the Arts Act":
 				if bType == "Theater" or bType == "Faire":
@@ -1756,7 +1758,7 @@ func _apply_belief_bonuses(bType: String) -> void:
 				if bType == "Library":
 					sciencePerLevel += 1
 					scienceDic["Doctrine: War Measures Act"] = (1 * buildingLevel)
-			# ── American Icons (→ Reason) ────────────────────────────────────────
+			# ── American Icons (→ Romantic) ────────────────────────────────────────
 			"George Washington":
 				if bType == "Barracks":
 					manpowerPerLevel += 50
@@ -1893,7 +1895,7 @@ func _apply_belief_bonuses(bType: String) -> void:
 				if bType == "Farm":
 					foodPerLevel += 1
 					foodDic["Icon: Dolores Huerta"] = (1 * buildingLevel)
-			# ── Canadian Icons (→ Reason) ────────────────────────────────────────
+			# ── Canadian Icons (→ Romantic) ────────────────────────────────────────
 			"John A. Macdonald":
 				if bType == "Courthouse":
 					mandatePerLevel += 1

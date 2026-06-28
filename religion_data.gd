@@ -155,7 +155,7 @@ var border5 = load("res://art assets/finishedAssets/religiousIcons/IMG_1152.PNG"
 func buildSelf():
 	genericDoc1 = ["Nature Conservationists", "Civic Pride", "Pioneer Heritage", "Landmark Heritage", "Sherman Antitrust Act", "Social Security Act"]
 	PDTDoc1 = ["Defense Production Act"]
-	genericGods1 = ["George Washington", "Benjamin Franklin", "Abigail Adams", "Alexander Hamilton", "Phillis Wheatley", "Thomas Jefferson"]
+	genericGods1 = ["George Washington", "Benjamin Franklin", "Abigail Adams", "Alexander Hamilton", "Eliza Schuyler Hamilton", "Phillis Wheatley", "Thomas Jefferson"]
 	genericDoc2 = ["Inland Maritime Expertise", "First Amendment", "National Research Act", "Height of Buildings Act"]
 	genericGods2 = ["Abraham Lincoln", "Harriet Tubman", "Frederick Douglass", "Sitting Bull", "Sojourner Truth", "Chief Joseph", "Theodore Roosevelt", "Susan B. Anthony", "Ida B. Wells", "Eleanor Roosevelt", "Martin Luther King Jr.", "Cesar Chavez", "Jimmy Carter", "Dolores Huerta", "John Brown", "Mary Edwards Walker", "Mark Twain", "Malcolm X"]
 	CADoc1 = ["Nature Conservationists", "Canada Council for the Arts Act", "Republic Lands Act", "Historic Sites and Monuments Act", "Combines Investigation Act", "Canada Health Act"]

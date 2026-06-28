@@ -192,6 +192,11 @@ func updateSelf():
 		btn.bbCost = uniform_cost
 	for btn in $BeliefPanel/GodsScrollContainer/GodsContainer.get_children():
 		btn.bbCost = uniform_cost
+	# Size each grid tall enough that the scrollbar reaches every belief (2 cols, 130px row pitch)
+	var _docRows := int(ceil($BeliefPanel/DoctrineScrollContainer/DoctrineContainer.get_child_count() / 2.0))
+	$BeliefPanel/DoctrineScrollContainer/DoctrineContainer.custom_minimum_size = Vector2(0, _docRows * 130 + 100)
+	var _godRows := int(ceil($BeliefPanel/GodsScrollContainer/GodsContainer.get_child_count() / 2.0))
+	$BeliefPanel/GodsScrollContainer/GodsContainer.custom_minimum_size = Vector2(0, _godRows * 130 + 100)
 	if self.visible:
 		refreshDisplay()
 
@@ -408,13 +413,13 @@ func refreshDisplay() -> void:
 	if pendingBelief != "" and pendingCost != 0:
 		$BeliefPanel/PurchasePanel/PurchaseButton.disabled = player.TotalCulture < pendingCost
 	match player.churchLevel:
-		3:  $BeliefPanel/testLabel.text = "Providence III"
-		2:  $BeliefPanel/testLabel.text = "Providence II"
-		1:  $BeliefPanel/testLabel.text = "Providence I"
+		3:  $BeliefPanel/testLabel.text = "Rational III"
+		2:  $BeliefPanel/testLabel.text = "Rational II"
+		1:  $BeliefPanel/testLabel.text = "Rational I"
 		0:  $BeliefPanel/testLabel.text = "Balanced"
-		-1: $BeliefPanel/testLabel.text = "Reason I"
-		-2: $BeliefPanel/testLabel.text = "Reason II"
-		-3: $BeliefPanel/testLabel.text = "Reason III"
+		-1: $BeliefPanel/testLabel.text = "Romantic I"
+		-2: $BeliefPanel/testLabel.text = "Romantic II"
+		-3: $BeliefPanel/testLabel.text = "Romantic III"
 	matchFaithPointsIcons()
 
 func _get_uniform_belief_cost() -> int:
@@ -492,12 +497,12 @@ func matchFaithPointsIcons():
 			$"FaithPoints/-3LevelSpriteBW".visible = false
 
 
-# ── Reason side (more Icons than Doctrines → negative churchLevel) ──────────
+# ── Romantic side (more Icons than Doctrines → negative churchLevel) ──────────
 
 func _on_faith_1_area_2d_mouse_entered() -> void:
 	$FaithPoints/FaithPointsInfoPanel/FaithPointsInfoSprite/RichTextLabel.clear()
 	$FaithPoints/FaithPointsInfoPanel/FaithPointsInfoSprite/RichTextLabel.append_text(
-		"[b]Reason I — The Enlightened Republic[/b]\n\nCivic patronage begins to guide the republic. Icon veneration exceeds doctrinal study by one degree.\n\n[b]Temple output per level:[/b]\n[color=Green]+1[/color] Culture\n[color=Green]+1[/color] Gold\n[color=Green]+1[/color] Happiness"
+		"[b]Romantic I — The Sentimental Republic[/b]\n\nThe republic leans on its heroes. Iconic devotion edges just ahead of social theory.\n\n[b]Courthouse output per level:[/b]\n[color=Green]+1[/color] Culture\n[color=Green]+50[/color] Manpower\n[color=Green]+2[/color] Mandate"
 	)
 	$FaithPoints/FaithPointsInfoPanel.visible = true
 
@@ -508,7 +513,7 @@ func _on_faith_1_area_2d_mouse_exited() -> void:
 func _on_faith_2_area_2d_mouse_entered() -> void:
 	$FaithPoints/FaithPointsInfoPanel/FaithPointsInfoSprite/RichTextLabel.clear()
 	$FaithPoints/FaithPointsInfoPanel/FaithPointsInfoSprite/RichTextLabel.append_text(
-		"[b]Reason II — The Civic Republic[/b]\n\nThe republic leans toward secular civic values. Icons dominate the public imagination over formal doctrine.\n\n[b]Temple output per level:[/b]\n[color=Green]+1[/color] Culture\n[color=Green]+1[/color] Happiness"
+		"[b]Romantic II — The Impassioned Republic[/b]\n\nStatues and stories move the people more than statutes. Romantic icons shape the public spirit.\n\n[b]Courthouse output per level:[/b]\n[color=Green]+2[/color] Culture\n[color=Green]+100[/color] Manpower\n[color=Green]+1[/color] Mandate"
 	)
 	$FaithPoints/FaithPointsInfoPanel.visible = true
 
@@ -519,7 +524,7 @@ func _on_faith_2_area_2d_mouse_exited() -> void:
 func _on_faith_3_area_2d_mouse_entered() -> void:
 	$FaithPoints/FaithPointsInfoPanel/FaithPointsInfoSprite/RichTextLabel.clear()
 	$FaithPoints/FaithPointsInfoPanel/FaithPointsInfoSprite/RichTextLabel.append_text(
-		"[b]Reason III — The Secular Republic[/b]\n\nThe republic has embraced civic reason entirely. Icons are cultural heritage; doctrine has no political role.\n\n[b]Temple output per level:[/b]\n[color=Green]+1[/color] Culture"
+		"[b]Romantic III — The Heroic Republic[/b]\n\nThe republic is ruled by legend. Icons are its soul; contracts an afterthought.\n\n[b]Courthouse output per level:[/b]\n[color=Green]+3[/color] Culture\n[color=Green]+150[/color] Manpower"
 	)
 	$FaithPoints/FaithPointsInfoPanel.visible = true
 
@@ -527,12 +532,12 @@ func _on_faith_3_area_2d_mouse_exited() -> void:
 	$FaithPoints/FaithPointsInfoPanel.visible = false
 
 
-# ── Providence side (more Doctrines than Icons → positive churchLevel) ───────
+# ── Rational side (more Doctrines than Icons → positive churchLevel) ───────
 
 func _on_church_1_area_2d_mouse_entered() -> void:
 	$FaithPoints/ChurchPointsInfoPanel/ChurchPointsInfoSprite/RichTextLabel.clear()
 	$FaithPoints/ChurchPointsInfoPanel/ChurchPointsInfoSprite/RichTextLabel.append_text(
-		"[b]Providence I — The Faithful Republic[/b]\n\nFormal doctrine holds a modest lead over iconic devotion. The church counsels but does not command.\n\n[b]Temple output per level:[/b]\n[color=Green]+1[/color] Culture\n[color=Green]+1[/color] Gold\n[color=Green]+1[/color] Mandate"
+		"[b]Rational I — The Reasoned Republic[/b]\n\nSocial contracts hold a modest lead. The republic prizes order and method without forgetting its heroes.\n\n[b]Courthouse output per level:[/b]\n[color=Green]+1[/color] Science\n[color=Green]+1[/color] Dollars\n[color=Green]+2[/color] Mandate"
 	)
 	$FaithPoints/ChurchPointsInfoPanel.visible = true
 
@@ -543,7 +548,7 @@ func _on_church_1_area_2d_mouse_exited() -> void:
 func _on_church_2_area_2d_mouse_entered() -> void:
 	$FaithPoints/ChurchPointsInfoPanel/ChurchPointsInfoSprite/RichTextLabel.clear()
 	$FaithPoints/ChurchPointsInfoPanel/ChurchPointsInfoSprite/RichTextLabel.append_text(
-		"[b]Providence II — The Devout Republic[/b]\n\nDoctrinal authority shapes public life. The church's legitimacy reinforces governmental mandate.\n\n[b]Temple output per level:[/b]\n[color=Green]+1[/color] Gold\n[color=Green]+1[/color] Mandate"
+		"[b]Rational II — The Enlightened Republic[/b]\n\nDoctrine and ledger shape public life. The republic runs on reason and revenue.\n\n[b]Courthouse output per level:[/b]\n[color=Green]+2[/color] Science\n[color=Green]+2[/color] Dollars\n[color=Green]+1[/color] Mandate"
 	)
 	$FaithPoints/ChurchPointsInfoPanel.visible = true
 
@@ -554,7 +559,7 @@ func _on_church_2_area_2d_mouse_exited() -> void:
 func _on_church_3_area_2d_mouse_entered() -> void:
 	$FaithPoints/ChurchPointsInfoPanel/ChurchPointsInfoSprite/RichTextLabel.clear()
 	$FaithPoints/ChurchPointsInfoPanel/ChurchPointsInfoSprite/RichTextLabel.append_text(
-		"[b]Providence III — The Orthodox Republic[/b]\n\nThe republic is guided entirely by formal doctrine. Temples are centers of governance as much as worship.\n\n[b]Temple output per level:[/b]\n[color=Green]+1[/color] Gold"
+		"[b]Rational III — The Technocratic Republic[/b]\n\nThe republic is governed entirely by social contract. Reason, science, and commerce rule unchallenged.\n\n[b]Courthouse output per level:[/b]\n[color=Green]+3[/color] Science\n[color=Green]+3[/color] Dollars"
 	)
 	$FaithPoints/ChurchPointsInfoPanel.visible = true
 
@@ -567,7 +572,7 @@ func _on_church_3_area_2d_mouse_exited() -> void:
 func _on_balance_area_2d_mouse_entered() -> void:
 	$FaithPoints/BalancePointsInfoPanel/BalancePointsInfoPanel/RichTextLabel.clear()
 	$FaithPoints/BalancePointsInfoPanel/BalancePointsInfoPanel/RichTextLabel.append_text(
-		"[b]The Balanced Republic[/b]\n\nDoctrines and Icons are in equilibrium. Neither civic reason nor providential doctrine dominates — the republic draws strength from both traditions.\n\n[b]Temple output per level:[/b]\n[color=Green]+1[/color] Culture\n[color=Green]+1[/color] Gold\n[color=Green]+1[/color] Mandate\n[color=Green]+1[/color] Happiness"
+		"[b]The Balanced Republic[/b]\n\nRomantic icons and social contracts hold equal sway. Neither sentiment nor reason dominates — the republic governs with the fullest legitimacy.\n\n[b]Courthouse output per level:[/b]\n[color=Green]+3[/color] Mandate"
 	)
 	$FaithPoints/BalancePointsInfoPanel.visible = true
 

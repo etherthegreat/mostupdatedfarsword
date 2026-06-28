@@ -1299,6 +1299,8 @@ func _on_area_2d_input_event(viewport, event, shape_idx):
 		if Input.is_action_just_pressed('Left Click'):
 			if spellToCast == null:
 				emit_signal("clicked", self)
+		elif Input.is_action_just_pressed('Right Click'):
+			emit_signal("right_clicked", self)
 		else:
 				tileSpell = spellToCast
 				emit_signal("spellAssigned", spellCostToCast)
@@ -1309,8 +1311,7 @@ func _on_area_2d_input_event(viewport, event, shape_idx):
 						freshWater = true
 						tileSpell = null
 				calculateCorruption()
-		elif Input.is_action_just_pressed('Right Click'):
-			emit_signal("right_clicked", self)
+
 
 var _pre_hover_ring_modulate: Color = Color.WHITE
 var _pre_hover_graphic_modulate: Color = Color.WHITE

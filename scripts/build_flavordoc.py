@@ -294,60 +294,60 @@ LAWS = [
 DOCTRINES = [
     # ── USA Tier 1 ───────────────────────────────────────────────────────────
     ("USA", "Tier 1", "Nature Conservationists",      "Lacey Act / Conservation Movement", "1900",
-     "Camp: +1 Culture · −0.1 Corruption/Farm & Camp level/turn", "—", "Providence", "FULL PASS"),
+     "Camp: +1 Culture · −0.1 Corruption/Farm & Camp level/turn", "—", "Rational", "FULL PASS"),
     ("USA", "Tier 1", "Civic Pride",                 "National Endowment for the Arts","1965",
-     "Resort: +1 Culture · Monument: +0.5 Mandate/level/turn","—",       "Providence", "FULL PASS"),
+     "Resort: +1 Culture · Monument: +0.5 Mandate/level/turn","—",       "Rational", "FULL PASS"),
     ("USA", "Tier 1", "Pioneer Heritage",            "Frontier Tradition",         "1800s",
      "Farm: +1 Food · −0.1 Corruption/Farm level/turn · Cost: 100 Culture",
-     "—",       "Providence", "FULL PASS"),
+     "—",       "Rational", "FULL PASS"),
     ("USA", "Tier 1", "Landmark Heritage",           "Antiquities Act",            "1906",
-     "Monument: +1 Mandate",                                  "—",       "Providence", "FULL PASS"),
+     "Monument: +1 Mandate",                                  "—",       "Rational", "FULL PASS"),
     ("USA", "Tier 1", "Sherman Antitrust Act",      "Sherman Antitrust Act",      "1890",
-     "Market: +1 Gold · Mine: +1 Metal",                      "—",       "Providence", "FIRST DRAFT"),
+     "Market: +1 Gold · Mine: +1 Metal",                      "—",       "Rational", "FIRST DRAFT"),
     ("USA", "Tier 1", "Social Security Act",        "Social Security Act",        "1935",
-     "Resort: +1 Happiness · Monument: +1 Culture",           "—",       "Providence", "FIRST DRAFT"),
+     "Resort: +1 Happiness · Monument: +1 Culture",           "—",       "Rational", "FIRST DRAFT"),
 
     # ── USA Tier 2 ───────────────────────────────────────────────────────────
     ("USA", "Tier 2", "Inland Maritime Expertise",   "Inland Maritime Expertise",  "1964",
-     "+1 Movement for units starting a turn on Major River or Major Lake tiles", "Woodsman","Providence", "FIRST DRAFT"),
+     "+1 Movement for units starting a turn on Major River or Major Lake tiles", "Woodsman","Rational", "FIRST DRAFT"),
     ("USA", "Tier 2", "First Amendment",            "1st Amendment (Bill of Rights)","1791",
-     "Monument: +1 Mandate · Courthouse: +1 Mandate",         "—",       "Providence", "FIRST DRAFT"),
+     "Monument: +1 Mandate · Courthouse: +1 Mandate",         "—",       "Rational", "FIRST DRAFT"),
     ("USA", "Tier 2", "National Research Act",      "National Research Act",      "1974",
-     "Library: +1 Science",                                   "—",       "Providence", "FIRST DRAFT"),
+     "Library: +1 Science",                                   "—",       "Rational", "FIRST DRAFT"),
     ("USA", "Tier 2", "Height of Buildings Act",    "Height of Buildings Act",    "1910",
-     "Monument: +1 Culture · +1 Mandate",                     "—",       "Providence", "FIRST DRAFT"),
+     "Monument: +1 Culture · +1 Mandate",                     "—",       "Rational", "FIRST DRAFT"),
 
     # ── USA Special ──────────────────────────────────────────────────────────
     ("USA", "Special", "Defense Production Act",   "Defense Production Act",     "1950",
-     "Tower: +1 Magic · Library: +1 Science",                 "Vanguard","Providence", "FIRST DRAFT"),
+     "Tower: +1 Magic · Library: +1 Science",                 "Vanguard","Rational", "FIRST DRAFT"),
 
     # ── CA Tier 1 ────────────────────────────────────────────────────────────
     ("CA", "Tier 1", "Nature Conservationists",           "Canada Wildlife Act / Conservation Movement", "1973",
-     "Camp: +1 Culture · −0.1 Corruption/Farm & Camp level/turn", "—", "Providence", "FULL PASS"),
+     "Camp: +1 Culture · −0.1 Corruption/Farm & Camp level/turn", "—", "Rational", "FULL PASS"),
     ("CA", "Tier 1", "Canada Council for the Arts Act",  "Canada Council for the Arts",  "1957",
-     "Theater/Faire: +1 Culture · Resort: +1 Happiness",      "—",       "Providence", "IDEA"),
+     "Theater/Faire: +1 Culture · Resort: +1 Happiness",      "—",       "Rational", "IDEA"),
     ("CA", "Tier 1", "Republic Lands Act",               "Republic Lands Act",            "1872",
-     "Farm: +1 Food · Camp: +1 Wood",                         "—",       "Providence", "IDEA"),
+     "Farm: +1 Food · Camp: +1 Wood",                         "—",       "Rational", "IDEA"),
     ("CA", "Tier 1", "Historic Sites and Monuments Act", "Historic Sites Act",            "1953",
-     "Monument: +1 Mandate",                                  "—",       "Providence", "IDEA"),
+     "Monument: +1 Mandate",                                  "—",       "Rational", "IDEA"),
     ("CA", "Tier 1", "Combines Investigation Act",       "Combines Investigation Act",    "1910",
-     "Market: +1 Gold · Mine: +1 Metal",                      "—",       "Providence", "IDEA"),
+     "Market: +1 Gold · Mine: +1 Metal",                      "—",       "Rational", "IDEA"),
     ("CA", "Tier 1", "Canada Health Act",                "Canada Health Act",             "1984",
-     "Resort: +1 Happiness · Monument: +1 Culture",           "—",       "Providence", "IDEA"),
+     "Resort: +1 Happiness · Monument: +1 Culture",           "—",       "Rational", "IDEA"),
 
     # ── CA Tier 2 ────────────────────────────────────────────────────────────
     ("CA", "Tier 2", "National Parks Act",               "National Parks Act",            "1930",
-     "Camp: +1 Wood · Barracks: +50 Manpower",                "Woodsman","Providence", "IDEA"),
+     "Camp: +1 Wood · Barracks: +50 Manpower",                "Woodsman","Rational", "IDEA"),
     ("CA", "Tier 2", "Charter of Rights and Freedoms",   "Canadian Charter of R&F",      "1982",
-     "Monument: +1 Mandate · Courthouse: +1 Mandate",         "—",       "Providence", "IDEA"),
+     "Monument: +1 Mandate · Courthouse: +1 Mandate",         "—",       "Rational", "IDEA"),
     ("CA", "Tier 2", "Medical Research Council Act",     "Medical Research Council Act",  "1969",
-     "Library: +1 Science",                                   "—",       "Providence", "IDEA"),
+     "Library: +1 Science",                                   "—",       "Rational", "IDEA"),
     ("CA", "Tier 2", "National Building Code of Canada", "Nat'l Building Code of Canada", "1941",
-     "Monument: +1 Culture · +1 Mandate",                     "—",       "Providence", "IDEA"),
+     "Monument: +1 Culture · +1 Mandate",                     "—",       "Rational", "IDEA"),
 
     # ── CA Special ───────────────────────────────────────────────────────────
     ("CA", "Special", "War Measures Act",            "War Measures Act",               "1914",
-     "Tower: +1 Magic · Library: +1 Science",                 "Vanguard","Providence", "IDEA"),
+     "Tower: +1 Magic · Library: +1 Science",                 "Vanguard","Rational", "IDEA"),
 ]
 
 # ── ICONS ────────────────────────────────────────────────────────────────────
@@ -612,14 +612,14 @@ BELIEF_MODS = [
      "FIRST PASS"),
 
     # ── Axis Mods (churchLevel ±3) ───────────────────────────────────────────
-    ("Entrenched", "Axis — Providence III (churchLevel +3)",
+    ("Entrenched", "Axis — Rational III (churchLevel +3)",
      "commanderMod (entrenchMod)", "+5 Defense after 3 stationary turns; lost on movement",
-     "A nation deeply committed to Providence digs in and holds. Faith becomes fortification. The Republic will not be moved from ground it has consecrated.",
+     "A republic of pure social contract digs in and holds — system and statute become fortification. It will not be moved from ground it has lawfully organized.",
      "FIRST PASS"),
 
-    ("Sharpshooter", "Axis — Reason III (churchLevel −3)",
+    ("Sharpshooter", "Axis — Romantic III (churchLevel −3)",
      "rangedMod", "Ranged attacks ignore 2 enemy Defense per Level",
-     "An Enlightened Republic trains marksmen, not martyrs. Precision over prayer. The rifle doesn't need divine blessing — it needs a steady hand and a clear eye.",
+     "A republic of heroes makes legends of its marksmen. Every shot carries the memory of a folk hero — precision passed down as myth, the steady hand made immortal.",
      "FIRST PASS"),
 ]
 
@@ -1289,7 +1289,7 @@ def build_belief_mods(wb):
         ("CANADIAN ICON MODS", CA_BG, CA_FG, lambda r: r[1].startswith("Icon — ") and any(
             n in r[1] for n in ["Secord","Riel","Dallaire"])),
         ("DOCTRINE MODS", "2E4057", "FFFFFF", lambda r: r[1].startswith("Doctrine")),
-        ("AXIS MODS — REASON ↔ PROVIDENCE", "4A2060", "FFFFFF", lambda r: r[1].startswith("Axis")),
+        ("AXIS MODS — ROMANTIC ↔ RATIONAL", "4A2060", "FFFFFF", lambda r: r[1].startswith("Axis")),
     ]
 
     r = 2

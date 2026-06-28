@@ -8169,7 +8169,7 @@ offset_right = 757.0
 offset_bottom = 677.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 25
-text = "Divines, Spirits, Prophets, and Great Beasts"
+text = "Romantic Icons"
 
 [node name="OurPantheonLabel" type="Label" parent="CanvasLayer/BeliefControl/BeliefPanel"]
 layout_mode = 0
@@ -8179,7 +8179,7 @@ offset_right = 638.0
 offset_bottom = 395.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 25
-text = "Our Pantheon"
+text = "Romantic Republic"
 horizontal_alignment = 1
 
 [node name="Our ChurchLabel" type="Label" parent="CanvasLayer/BeliefControl/BeliefPanel"]
@@ -8190,7 +8190,7 @@ offset_right = 1780.0
 offset_bottom = 399.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 25
-text = "Our Church"
+text = "Rational Republic"
 horizontal_alignment = 1
 
 [node name="ReligiousBalanceLabel" type="Label" parent="CanvasLayer/BeliefControl/BeliefPanel"]
@@ -8201,7 +8201,7 @@ offset_right = 1218.0
 offset_bottom = 649.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
-text = "RELIGIOUS        BALANCE"
+text = "REPUBLIC        BALANCE"
 horizontal_alignment = 1
 
 [node name="DoctrineLabel" type="Label" parent="CanvasLayer/BeliefControl/BeliefPanel"]
@@ -8212,7 +8212,7 @@ offset_right = 1723.0
 offset_bottom = 704.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 25
-text = "Doctrines, Decrees, Scripture, and Services"
+text = "Social Contracts"
 
 [node name="BeliefInfoPanel" type="Panel" parent="CanvasLayer/BeliefControl"]
 visible = false
