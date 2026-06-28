@@ -1719,13 +1719,13 @@ func updatePlayerUI():
 	$CanvasLayer/SpellSchoolsControl.connectSchools()
 	if not $CanvasLayer/SpellSchoolsControl.lvlUpSpell.is_connected(newSpellEvent):
 		$CanvasLayer/SpellSchoolsControl.lvlUpSpell.connect(newSpellEvent)
-	if not #$CanvasLayer/SpellSchoolsControl.askForInfo.is_connected(giveSpellInfo):
+	#if not #$CanvasLayer/SpellSchoolsControl.askForInfo.is_connected(giveSpellInfo):
 		#$CanvasLayer/SpellSchoolsControl.askForInfo.connect(giveSpellInfo)
 	if not $CanvasLayer/Spellbook.spellToUse.is_connected(activateSpellMapMode):
 		$CanvasLayer/Spellbook.spellToUse.connect(activateSpellMapMode)
 	if not $TileController.spellAssignedToTile.is_connected(spellPurchased):
 		$TileController.spellAssignedToTile.connect(spellPurchased)
-	if not #$TileController.colonizeTile.is_connected(updateCountryTiles):
+	#if not #$TileController.colonizeTile.is_connected(updateCountryTiles):
 		#$TileController.colonizeTile.connect(updateCountryTiles)
 	if not $TileController.newTileOwner.is_connected(tileSiegeWon):
 		$TileController.newTileOwner.connect(tileSiegeWon)
@@ -2466,6 +2466,11 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 			playerCountryNode.addMilMod(outcome_value)
 		"resource_change":
 			_apply_resource_change(outcome_value, outcome_amount)
+		"resource_bundle":
+			for _pair in outcome_value.split(","):
+				var _kv = _pair.split(":")
+				if _kv.size() == 2:
+					_apply_resource_change(_kv[0].strip_edges().to_lower(), int(_kv[1].strip_edges()))
 		"morale_boost":
 			_apply_morale_boost(outcome_amount, tile)
 		"harmony_boost":
@@ -2745,6 +2750,10 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 			push_warning("executeOutcome: Unknown outcome type: " + outcome_type)
 
 func evaluateDateEvents() -> void:
+	if currentWorldTurn == 1:
+		# Turn 1 is the intro chain ONLY — suppress every other event this turn.
+		createNewEvent("INTRO_01")
+		return
 	checkPendingMissions()
 	checkMissionExpiry()
 	checkCollapseCondition()
@@ -6508,4 +6517,4 @@ func _on_outputs_mode_button_pressed() -> void:
 
 func _on_terrain_mode_button_pressed() -> void:
 	mapMode = "Natural"
-	updateMap()
+	updateMap(

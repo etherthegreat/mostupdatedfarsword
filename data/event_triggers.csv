@@ -1,5 +1,4 @@
 trigger_id,event_id,trigger_type,tile_id,tile_owner,min_liberty_score,min_corruption,turn_min,turn_max,state_code,commander_archetype,protector_id,trigger_condition,priority
-TRIG_001,DE_001,game_start,0,,,0,1,1,,,,,1
 TRIG_002,DE_002,annual_date,0,,,0,0,9999,,,,1,3
 TRIG_003,DE_003,annual_date,0,,,0,0,9999,,,,2,3
 TRIG_004,DE_004,annual_date,0,,,0,0,9999,,,,7,3
@@ -14,8 +13,6 @@ TRIG_011,CX_005,tile_lost,11,UK,0,0,0,9999,,,,,2
 TRIG_012,SL_001,state_liberated,0,,0,0,0,9999,PA,,,,2
 TRIG_013,SL_004,state_liberated,0,,0,0,0,9999,VT,,,,2
 TRIG_014,PROT_01_SUMMON,protector_summon,0,,0,0,0,9999,,,PROT_01,,1
-
-
 TRIG_018,PROT_02_SUMMON,protector_summon,0,,0,0,0,9999,,,PROT_02,,1
 TRIG_019,PROT_03_SUMMON,protector_summon,0,,0,0,0,9999,,,PROT_03,,1
 TRIG_020,PROT_04_SUMMON,protector_summon,0,,0,0,0,9999,,,PROT_04,,1

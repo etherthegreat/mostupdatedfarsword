@@ -33,7 +33,7 @@ func build_from_data(data: Dictionary, tile = null, player = null) -> void:
 
 	$EventPanel/EventNameLabel.text             = _substitute(data.get("headline",   ""))
 	$EventPanel/EventShortDescriptionLabel.text = _substitute(data.get("short_desc", ""))
-	$EventPanel/EventLongDescriptionLabel.text  = _substitute(data.get("long_desc",  ""))
+	_apply_long_desc(_substitute(data.get("long_desc",  "")))
 
 	_build_buttons()
 
@@ -57,7 +57,7 @@ func build_from_csv(eid: String, tile = null, player = null) -> void:
 
 	$EventPanel/EventNameLabel.text             = _substitute(event_data.get("headline", ""))
 	$EventPanel/EventShortDescriptionLabel.text = _substitute(event_data.get("short_desc", ""))
-	$EventPanel/EventLongDescriptionLabel.text  = _substitute(event_data.get("long_desc", ""))
+	_apply_long_desc(_substitute(event_data.get("long_desc", "")))
 
 	_build_buttons()
 
@@ -151,7 +151,26 @@ func _check_prerequisite(prereq: String) -> bool:
 	return player_country.CountryFlags.has(prereq)
 
 
+func _apply_long_desc(body: String) -> void:
+	var lbl: Label = $EventPanel/EventLongDescriptionLabel
+	lbl.text = body
+	var n := body.length()
+	var fs := 31
+	if n > 1800: fs = 12
+	elif n > 1300: fs = 15
+	elif n > 900: fs = 19
+	elif n > 500: fs = 24
+	lbl.add_theme_font_size_override("font_size", fs)
+	if n > 500:
+		lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+		lbl.vertical_alignment = VERTICAL_ALIGNMENT_TOP
+	else:
+		lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+
+
 func _substitute(text: String) -> String:
+	text = text.replace("[P]", "\n\n")
 	if target_tile != null:
 		var tile_name: String = target_tile.tileName if target_tile.tileName else "the Fort"
 		text = text.replace("[TILE_NAME]", tile_name)
