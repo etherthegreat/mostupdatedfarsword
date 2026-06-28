@@ -1301,7 +1301,7 @@ func _on_area_2d_input_event(viewport, event, shape_idx):
 				emit_signal("clicked", self)
 		elif Input.is_action_just_pressed('Right Click'):
 			emit_signal("right_clicked", self)
-			else:
+		else:
 				tileSpell = spellToCast
 				emit_signal("spellAssigned", spellCostToCast)
 				spellToCast = null

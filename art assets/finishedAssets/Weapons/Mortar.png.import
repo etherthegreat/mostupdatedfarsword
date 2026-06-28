@@ -2,12 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d1kbt3o1kpywf"
-valid=false
+uid="uid://nu4yl0ld5s2v"
+path="res://.godot/imported/Mortar.png-0a6c30902ee6e3d246c11187e69bd3e4.ctex"
+metadata={
+"vram_texture": false
+}
 
 [deps]
 
 source_file="res://art assets/finishedAssets/Weapons/Mortar.png"
+dest_files=["res://.godot/imported/Mortar.png-0a6c30902ee6e3d246c11187e69bd3e4.ctex"]
 
 [params]
 

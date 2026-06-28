@@ -2,12 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c1ggtsw0ue5oo"
-valid=false
+uid="uid://dfua11trijkst"
+path="res://.godot/imported/Howitzer.png-5a68e46fd3093aecdb2210124e347354.ctex"
+metadata={
+"vram_texture": false
+}
 
 [deps]
 
 source_file="res://art assets/finishedAssets/Weapons/Howitzer.png"
+dest_files=["res://.godot/imported/Howitzer.png-5a68e46fd3093aecdb2210124e347354.ctex"]
 
 [params]
 

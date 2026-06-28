@@ -7,11 +7,12 @@ var _investment_progress: Dictionary = {}  # techID -> accumulated science, surv
 
 # Row label | Col1 | Col2 | Col3 | Col4
 const TECH_ROWS := [
-	["SABRE",    "Swordsmanship",    "Cavalry Drills",   "Officer Training",     "Marine Discipline"],
-	["RIFLE",   "Musket Drilling",  "Volley Tactics",   "Percussion Ignition",  "Repeating Mechanisms"],
-	["CANNON","Field Gunnery",    "Siege Works",      "Explosive Charges",    "Rocket Artillery"],
 	["DEVELOPMENT", "Agrarian Reform",  "Trade Networks",   "Industrialization",    "Infrastructure"],
-	["UNIFORM",  "Organization",     "Logistics",        "Tactics",              "Authority"],
+	["SABRE",    "Swordsmanship",    "Cavalry Drills",   "Officer Training",     "Marine Discipline"],
+	["RIFLE",   "Muskets",          "Breechloaders",    "Rifles",               "Repeaters"],
+	["CANNON","Field Gunnery",    "Siege Works",      "Explosive Charges",    "Rocket Artillery"],
+	["UNIFORM", "Tricorne Hat", "Forage Cap", "Tombstone Cap", "Hardee Hat"],
+	["STRATEGY", "Organization",     "Logistics",        "Tactics",              "Authority"],
 ]
 
 const TECH_COSTS := [40, 100, 250, 500]
@@ -35,8 +36,8 @@ func _build_grid() -> void:
 	_buttons.clear()
 	var grid := $TechPanel/GridContainer
 	grid.columns = 5
-	grid.add_theme_constant_override("h_separation", 40)
-	grid.add_theme_constant_override("v_separation", 30)
+	grid.add_theme_constant_override("h_separation", 68)
+	grid.add_theme_constant_override("v_separation", 20)
 	# Hide leftover generic "old bones" tech containers (Language/Writing/Administration/etc.)
 	var inst = get_node_or_null("TechPanel/InsititutionContainer")
 	if inst:
@@ -79,6 +80,7 @@ func _build_grid() -> void:
 				btn.reqTechs = [row_btns[col_idx - 2]]
 
 			grid.add_child(btn)
+			btn.custom_minimum_size = Vector2(350, 95)  # height forces row size off the button, not the short label
 			btn.techScienceInvestment = int(_investment_progress.get(tech_name, 0))
 			row_btns.append(btn)
 			_buttons[tech_name] = btn

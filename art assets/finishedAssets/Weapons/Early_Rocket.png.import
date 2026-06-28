@@ -2,12 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cafw3uh6byct3"
-valid=false
+uid="uid://32yfp5nrvil"
+path="res://.godot/imported/Early_Rocket.png-c598a8a7f5a409957b434d84c2ff805f.ctex"
+metadata={
+"vram_texture": false
+}
 
 [deps]
 
-source_file="res://art assets/finishedAssets/Weapons/Early_Rockets.png"
+source_file="res://art assets/finishedAssets/Weapons/Early_Rocket.png"
+dest_files=["res://.godot/imported/Early_Rocket.png-c598a8a7f5a409957b434d84c2ff805f.ctex"]
 
 [params]
 

@@ -120,6 +120,24 @@ func updateSelf(newType: String) -> void:
 			armorImage = load("res://art assets/finishedAssets/Weapons/Padded.png") if ResourceLoader.exists("res://art assets/finishedAssets/Weapons/Padded.png") else null
 			addWeaponMod("MinutemanSpirit")  # bonus morale in home territory
 
+		"Tricorne Hat":
+			# Lvl 1 uniform — basic Revolutionary-era cocked hat, light and cheap
+			armorClass       = "Uniform"
+			armorMeleeBlock  = 8
+			armorRangedBlock = 12
+			armorSpellBlock  = 4
+			armorWeaponsPerLevel = 6
+			armorImage = load("res://art assets/finishedAssets/Weapons/Padded.png") if ResourceLoader.exists("res://art assets/finishedAssets/Weapons/Padded.png") else null
+
+		"Forage Cap":
+			# Lvl 2 uniform — soft fatigue cap, light-infantry mobility
+			armorClass       = "Uniform"
+			armorMeleeBlock  = 10
+			armorRangedBlock = 16
+			armorSpellBlock  = 6
+			armorWeaponsPerLevel = 8
+			armorImage = load("res://art assets/finishedAssets/Weapons/Scout.png") if ResourceLoader.exists("res://art assets/finishedAssets/Weapons/Scout.png") else null
+
 		"Tombstone Cap":
 			# Frontier hat — quick-draw specialists, fast on first strike
 			armorClass       = "Uniform"

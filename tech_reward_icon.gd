@@ -11,6 +11,88 @@ var techRewardDescription: String
 func buildSelf(type):
 	techRewardType = type
 	match techRewardType:
+		# ===== Tech-tree unlock rewards (weapons / uniforms / tools) =====
+		"Muskets Unlock":
+			techRewardImage = load("res://art assets/finishedAssets/Weapons/Brown_Bess.png")
+			techRewardDescription = str("[b]Muskets[/b] — smoothbore line-infantry arm. Reliable [color=green]volley fire[/color].")
+		"Breechloaders Unlock":
+			techRewardImage = load("res://art assets/finishedAssets/Weapons/Flintlock.png")
+			techRewardDescription = str("[b]Breechloaders[/b] — load from the rear. [color=green]Faster reload[/color].")
+		"Percussion Unlock":
+			techRewardImage = load("res://art assets/finishedAssets/Weapons/Percussion_Cap.png")
+			techRewardDescription = str("[b]Percussion Rifles[/b] — reliable ignition, [color=green]all-weather[/color] firing.")
+		"Repeater Unlock":
+			techRewardImage = load("res://art assets/finishedAssets/Weapons/Lever_Repeater.png")
+			techRewardDescription = str("[b]Repeaters[/b] — rapid-fire rifle. [color=yellow]Multiple shots[/color] per reload.")
+		"Cutlass Unlock":
+			techRewardImage = load("res://art assets/finishedAssets/Weapons/cutlass.png")
+			techRewardDescription = str("[b]Cutlass[/b] — light infantry sabre. Quick melee; [color=green]bonus vs reloading foes[/color].")
+		"Cavalry Sword Unlock":
+			techRewardImage = load("res://art assets/finishedAssets/Weapons/cavalry_sword.png")
+			techRewardDescription = str("[b]Cavalry Sword[/b] — mounted blade. Amplifies the [color=yellow]Cavalry Charge[/color].")
+		"Cavalry Sword Upgrade":
+			techRewardImage = load("res://art assets/finishedAssets/Weapons/cavalry_sword.png")
+			techRewardDescription = str("[b]Cavalry Sword+[/b] — sharper steel. [color=green]Improved charge damage[/color].")
+		"Officer Sword Unlock":
+			techRewardImage = load("res://art assets/finishedAssets/Weapons/officer_sword.png")
+			techRewardDescription = str("[b]Officer Sword[/b] — command blade. Boosts nearby [color=green]morale[/color].")
+		"Marine Mameluke Unlock":
+			techRewardImage = load("res://art assets/finishedAssets/Weapons/marine_mameluke.png")
+			techRewardDescription = str("[b]Marine Mameluke[/b] — elite marine sabre. Excels in [color=yellow]boarding actions[/color].")
+		"Flintlock Unlock":
+			techRewardImage = load("res://art assets/finishedAssets/Weapons/Flintlock.png")
+			techRewardDescription = str("[b]Flintlock Musket[/b] — standard ranged arm. Reliable [color=green]volley fire[/color].")
+		"Volley Bonus":
+			techRewardImage = load("res://art assets/finishedAssets/Weapons/Brown_Bess.png")
+			techRewardDescription = str("[b]Volley Drill[/b] — massed-fire training. [color=green]+Ranged damage[/color] in formation.")
+		"Breechloader Unlock":
+			techRewardImage = load("res://art assets/finishedAssets/Weapons/Percussion_Cap.png")
+			techRewardDescription = str("[b]Breechloader[/b] — percussion ignition. [color=green]Faster reload[/color], all-weather.")
+		"Lever Repeater Unlock":
+			techRewardImage = load("res://art assets/finishedAssets/Weapons/Lever_Repeater.png")
+			techRewardDescription = str("[b]Lever Repeater[/b] — rapid-fire rifle. [color=yellow]Multiple shots[/color] per reload.")
+		"Field Gun Unlock":
+			techRewardImage = load("res://art assets/finishedAssets/Weapons/Howitzer.png")
+			techRewardDescription = str("[b]Field Gun[/b] — mobile artillery. [color=yellow]Area damage[/color] vs massed infantry.")
+		"Siege Cannon Unlock":
+			techRewardImage = load("res://art assets/finishedAssets/Weapons/Howitzer.png")
+			techRewardDescription = str("[b]Siege Cannon[/b] — heavy gun. [color=green]Bonus siege progress[/color] vs forts.")
+		"Mortar Unlock":
+			techRewardImage = load("res://art assets/finishedAssets/Weapons/Mortar.png")
+			techRewardDescription = str("[b]Mortar[/b] — high-arc shell. [color=yellow]Area + siege[/color] damage.")
+		"Early Rockets Unlock":
+			techRewardImage = load("res://art assets/finishedAssets/Weapons/Early_Rocket.png")
+			techRewardDescription = str("[b]Early Rockets[/b] — incendiary barrage. Wide [color=yellow]area damage[/color].")
+		"All Buildings Unlock":
+			techRewardImage = load("res://art assets/finishedAssets/buildingsketches/farm.png")
+			techRewardDescription = str("[color=green]All buildings unlocked[/color] + each reaches [color=yellow]Level 5[/color].")
+		"Seed Bag Tool":
+			techRewardImage = load("res://art assets/finishedAssets/civilians/civilian_farmer.png")
+			techRewardDescription = str("[b]Seed Bag[/b] — civilian tool. [color=green]Boosts farm output[/color].")
+		"Building Upgrade":
+			techRewardImage = load("res://art assets/finishedAssets/buildingsketches/workshop.png")
+			techRewardDescription = str("[color=green]+5 max Level[/color] for all your buildings.")
+		"Accountant Books Tool":
+			techRewardImage = load("res://art assets/finishedAssets/technology images/banking.png")
+			techRewardDescription = str("[b]Accountant Books[/b] — civilian tool. [color=green]+Gold[/color] from trade.")
+		"Foundry Kit Tool":
+			techRewardImage = load("res://art assets/finishedAssets/technology images/metal casting.png")
+			techRewardDescription = str("[b]Foundry Kit[/b] — civilian tool. [color=green]+Metal & weapons[/color] output.")
+		"Rails and Engines Tool":
+			techRewardImage = load("res://art assets/finishedAssets/technology images/craftmanship.png")
+			techRewardDescription = str("[b]Rails & Engines[/b] — civilian tool. [color=green]Industrial logistics[/color].")
+		"Tricorne Uniform":
+			techRewardImage = load("res://art assets/finishedAssets/governors/green_minuteman_05.png")
+			techRewardDescription = str("[b]Tricorne[/b] uniform (Lvl 1). Melee [color=yellow]8[/color] / Ranged [color=yellow]12[/color] / Magic [color=yellow]4[/color].")
+		"Forage Cap Uniform":
+			techRewardImage = load("res://art assets/finishedAssets/governors/green_minuteman_06.png")
+			techRewardDescription = str("[b]Forage Cap[/b] uniform (Lvl 2). Melee [color=yellow]10[/color] / Ranged [color=yellow]16[/color] / Magic [color=yellow]6[/color].")
+		"Tombstone Uniform":
+			techRewardImage = load("res://art assets/finishedAssets/governors/green_minuteman_07.png")
+			techRewardDescription = str("[b]Tombstone Cap[/b] uniform (Lvl 3). Melee [color=yellow]10[/color] / Ranged [color=yellow]20[/color] / Magic [color=yellow]5[/color].")
+		"Hardee Uniform":
+			techRewardImage = load("res://art assets/finishedAssets/governors/green_minuteman_08.png")
+			techRewardDescription = str("[b]Hardee Hat[/b] uniform (Lvl 4). Melee [color=yellow]15[/color] / Ranged [color=yellow]25[/color] / Magic [color=yellow]10[/color].")
 		"Farm Upgrade":
 			techRewardImage = load("res://art assets/finishedAssets/buildingsketches/farm.png")
 			techRewardDescription = str("Max Farm Level: [color=yellow]+10[/color],
@@ -114,6 +196,14 @@ func buildSelf(type):
 	$Control/DescriptionRichLabel.text = techRewardDescription
 	$Control/TypeLabel.text = techRewardType
 	$TechRewardSprite.texture = techRewardImage
+	$Control/BigSprite.texture = techRewardImage
+	# Shrink lettering for long entries so text never spills past the panel
+	var tlen := techRewardType.length()
+	$Control/TypeLabel.add_theme_font_size_override("font_size", 24 if tlen <= 14 else (20 if tlen <= 18 else 16))
+	var dlen := techRewardDescription.length()
+	var dfont := 12 if dlen <= 55 else (10 if dlen <= 90 else 9)
+	$Control/DescriptionRichLabel.add_theme_font_size_override("normal_font_size", dfont)
+	$Control/DescriptionRichLabel.add_theme_font_size_override("bold_font_size", dfont)
 
 
 func _on_area_2d_mouse_entered() -> void:

@@ -4867,7 +4867,7 @@ texture = ExtResource("326_tr061")
 
 [node name="TileGraphic" type="Sprite2D" parent="TileController/Tile164"]
 visible = false
-position = Vector2(33, -29)
+position = Vector2(-8, -6)
 texture = ExtResource("326_tr061")
 
 [node name="Area2D" type="Area2D" parent="TileController/Tile164"]
@@ -4894,8 +4894,7 @@ position = Vector2(34, -4)
 texture = ExtResource("328_j2112")
 
 [node name="TileGraphic" type="Sprite2D" parent="TileController/Tile165"]
-visible = false
-position = Vector2(33, -29)
+position = Vector2(34, -4)
 texture = ExtResource("328_j2112")
 
 [node name="Area2D" type="Area2D" parent="TileController/Tile165"]
@@ -4923,7 +4922,7 @@ texture = ExtResource("330_6ggyw")
 
 [node name="TileGraphic" type="Sprite2D" parent="TileController/Tile166"]
 visible = false
-position = Vector2(33, -29)
+position = Vector2(34, 18)
 texture = ExtResource("330_6ggyw")
 
 [node name="Area2D" type="Area2D" parent="TileController/Tile166"]
@@ -4950,8 +4949,7 @@ position = Vector2(4, -19)
 texture = ExtResource("332_thj31")
 
 [node name="TileGraphic" type="Sprite2D" parent="TileController/Tile167"]
-visible = false
-position = Vector2(33, -29)
+position = Vector2(4, -19)
 texture = ExtResource("332_thj31")
 
 [node name="Area2D" type="Area2D" parent="TileController/Tile167"]
@@ -4979,7 +4977,7 @@ texture = ExtResource("334_0004d")
 
 [node name="TileGraphic" type="Sprite2D" parent="TileController/Tile168"]
 visible = false
-position = Vector2(33, -29)
+position = Vector2(14, -50)
 texture = ExtResource("334_0004d")
 
 [node name="Area2D" type="Area2D" parent="TileController/Tile168"]
@@ -5005,7 +5003,7 @@ texture = ExtResource("336_nmxke")
 
 [node name="TileGraphic" type="Sprite2D" parent="TileController/Tile169"]
 visible = false
-position = Vector2(33, -29)
+position = Vector2(-1, 9)
 texture = ExtResource("336_nmxke")
 
 [node name="Area2D" type="Area2D" parent="TileController/Tile169"]
@@ -5033,7 +5031,7 @@ texture = ExtResource("338_1oalo")
 
 [node name="TileGraphic" type="Sprite2D" parent="TileController/Tile170"]
 visible = false
-position = Vector2(33, -29)
+position = Vector2(-16, -30)
 texture = ExtResource("338_1oalo")
 
 [node name="Area2D" type="Area2D" parent="TileController/Tile170"]
@@ -5060,8 +5058,7 @@ position = Vector2(3, -43)
 texture = ExtResource("340_7l5jo")
 
 [node name="TileGraphic" type="Sprite2D" parent="TileController/Tile171"]
-visible = false
-position = Vector2(33, -29)
+position = Vector2(3, -43)
 texture = ExtResource("340_7l5jo")
 
 [node name="Area2D" type="Area2D" parent="TileController/Tile171"]
@@ -5089,7 +5086,7 @@ texture = ExtResource("342_4eh3t")
 
 [node name="TileGraphic" type="Sprite2D" parent="TileController/Tile172"]
 visible = false
-position = Vector2(33, -29)
+position = Vector2(-1, -19)
 texture = ExtResource("342_4eh3t")
 
 [node name="Area2D" type="Area2D" parent="TileController/Tile172"]
@@ -5116,8 +5113,7 @@ position = Vector2(0, 20)
 texture = ExtResource("344_87mex")
 
 [node name="TileGraphic" type="Sprite2D" parent="TileController/Tile173"]
-visible = false
-position = Vector2(33, -29)
+position = Vector2(0, 20)
 texture = ExtResource("344_87mex")
 
 [node name="Area2D" type="Area2D" parent="TileController/Tile173"]
@@ -5145,7 +5141,7 @@ texture = ExtResource("346_tayxo")
 
 [node name="TileGraphic" type="Sprite2D" parent="TileController/Tile174"]
 visible = false
-position = Vector2(33, -29)
+position = Vector2(0, -18)
 texture = ExtResource("346_tayxo")
 
 [node name="Area2D" type="Area2D" parent="TileController/Tile174"]
@@ -5173,7 +5169,7 @@ texture = ExtResource("348_nyjka")
 
 [node name="TileGraphic" type="Sprite2D" parent="TileController/Tile175"]
 visible = false
-position = Vector2(33, -29)
+position = Vector2(13, -12)
 texture = ExtResource("348_nyjka")
 
 [node name="Area2D" type="Area2D" parent="TileController/Tile175"]
@@ -5200,8 +5196,7 @@ position = Vector2(1, -35)
 texture = ExtResource("350_wg2n8")
 
 [node name="TileGraphic" type="Sprite2D" parent="TileController/Tile176"]
-visible = false
-position = Vector2(33, -29)
+position = Vector2(1, -35)
 texture = ExtResource("350_wg2n8")
 
 [node name="Area2D" type="Area2D" parent="TileController/Tile176"]
@@ -5229,7 +5224,7 @@ texture = ExtResource("352_5v4e6")
 
 [node name="TileGraphic" type="Sprite2D" parent="TileController/Tile177"]
 visible = false
-position = Vector2(33, -29)
+position = Vector2(-2, -49)
 texture = ExtResource("352_5v4e6")
 
 [node name="Area2D" type="Area2D" parent="TileController/Tile177"]
@@ -5257,7 +5252,7 @@ texture = ExtResource("354_3b5b3")
 
 [node name="TileGraphic" type="Sprite2D" parent="TileController/Tile178"]
 visible = false
-position = Vector2(33, -29)
+position = Vector2(2, -48)
 texture = ExtResource("354_3b5b3")
 
 [node name="Area2D" type="Area2D" parent="TileController/Tile178"]
@@ -5285,7 +5280,7 @@ texture = ExtResource("356_2h1oa")
 
 [node name="TileGraphic" type="Sprite2D" parent="TileController/Tile179"]
 visible = false
-position = Vector2(33, -29)
+position = Vector2(-5, -36)
 texture = ExtResource("356_2h1oa")
 
 [node name="Area2D" type="Area2D" parent="TileController/Tile179"]
@@ -5361,6 +5356,7 @@ position = Vector2(33, -29)
 texture = ExtResource("361_1w1ox")
 
 [node name="TileFOW" type="Sprite2D" parent="TileController/Tile182"]
+visible = false
 position = Vector2(33, -29)
 texture = ExtResource("362_qhxpw")
 
@@ -5392,6 +5388,7 @@ position = Vector2(33, -29)
 texture = ExtResource("364_fsuua")
 
 [node name="TileGraphic" type="Sprite2D" parent="TileController/Tile183"]
+visible = false
 position = Vector2(33, -29)
 texture = ExtResource("364_fsuua")
 

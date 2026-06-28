@@ -30,43 +30,44 @@ offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="Tech Upgrade Info Panel" type="Sprite2D" parent="Control"]
-position = Vector2(-2.99998, -103)
-scale = Vector2(0.2475, 0.558333)
+position = Vector2(0, -140)
+scale = Vector2(0.33, 0.97)
 texture = ExtResource("3_pnrrv")
-
-[node name="DescriptionRichLabel" type="RichTextLabel" parent="Control"]
-layout_mode = 0
-offset_left = -117.0
-offset_top = -136.0
-offset_right = 115.0
-offset_bottom = -33.0
-theme_override_colors/table_border = Color(0, 0, 0, 1)
-theme_override_colors/table_even_row_bg = Color(0, 0, 0, 1)
-theme_override_colors/table_odd_row_bg = Color(0, 0, 0, 1)
-theme_override_colors/default_color = Color(0, 0, 0, 1)
-theme_override_colors/font_selected_color = Color(0, 0, 0, 1)
-theme_override_colors/selection_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/bold_italics_font_size = 11
-theme_override_font_sizes/italics_font_size = 11
-theme_override_font_sizes/mono_font_size = 11
-theme_override_font_sizes/normal_font_size = 11
-theme_override_font_sizes/bold_font_size = 11
-bbcode_enabled = true
-text = "asdf"
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="TypeLabel" type="Label" parent="Control"]
 layout_mode = 0
-offset_left = -157.0
-offset_top = -194.0
-offset_right = 150.0
-offset_bottom = -125.0
+offset_left = -160.0
+offset_top = -275.0
+offset_right = 160.0
+offset_bottom = -228.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 25
+theme_override_font_sizes/font_size = 24
 text = "asdfasdf"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="BigSprite" type="TextureRect" parent="Control"]
+layout_mode = 0
+offset_left = -65.0
+offset_top = -215.0
+offset_right = 65.0
+offset_bottom = -95.0
+expand_mode = 1
+stretch_mode = 5
+
+[node name="DescriptionRichLabel" type="RichTextLabel" parent="Control"]
+layout_mode = 0
+offset_left = -160.0
+offset_top = -85.0
+offset_right = 160.0
+offset_bottom = -8.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/bold_font_size = 12
+theme_override_font_sizes/normal_font_size = 12
+bbcode_enabled = true
+autowrap_mode = 3
+text = "asdf"
 horizontal_alignment = 1
 vertical_alignment = 1
 

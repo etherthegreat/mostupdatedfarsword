@@ -244,6 +244,10 @@ func NewGameBuild() -> void:
 	# Starting technologies
 	for tech in data.get("startingTechs", []):
 		addTechnologicalDiscovery(tech)
+	# Every country also starts with the first tech of each row — nobody spawns without first-row techs
+	for starterTech in ["Agrarian Reform", "Swordsmanship", "Muskets", "Field Gunnery", "Tricorne Hat", "Organization"]:
+		if not unlockedTechnologies.any(func(t): return t.techName == starterTech):
+			addTechnologicalDiscovery(starterTech)
  
 	# Starting beliefs (load belief lists then add selected)
 	match CID:
@@ -462,6 +466,9 @@ func showCommander(commander, army):
 	emit_signal("displayCommander", commander, army)
 
 func addNewUnit(Army, UnitType, Level, WeaponType, OreType, ArmorType, curMen, curWeapons):
+	var bestUniform := getBestUniform()
+	if bestUniform != "":
+		ArmorType = bestUniform  # researched UNIFORM tech auto-upgrades recruits
 	var newUnit = Unit.new()
 	newUnit.getUnitInfo.connect(updateUnit)
 	newUnit.buildSelf(self, UnitType, Level, WeaponType, OreType, ArmorType, curMen, curWeapons)
@@ -769,6 +776,15 @@ func addTechnologicalDiscovery(Name):
 	newTech.techName = Name
 	newTech.buildSelf()
 	unlockedTechnologies.append(newTech)
+
+func getBestUniform() -> String:
+	# Highest researched UNIFORM-row hat = the auto-equipped uniform.
+	# Tiers high to low; "" if none researched (units keep their default uniform).
+	for hat in ["Hardee Hat", "Tombstone Cap", "Forage Cap", "Tricorne Hat"]:
+		for tech in unlockedTechnologies:
+			if tech != null and tech.techName == hat:
+				return hat
+	return ""
 
 func addWeaponTemplate(Name):
 	for existing in weaponTemplateList:

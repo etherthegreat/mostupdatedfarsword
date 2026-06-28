@@ -1,0 +1,17 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://bo2l13yi1lpt1"
+
+[deps]
+
+files=["res://army_stats_reference.WEAPONS — raw stats from weapon.gd.translation"]
+
+source_file="res://army_stats_reference.csv"
+dest_files=["res://army_stats_reference.WEAPONS — raw stats from weapon.gd.translation"]
+
+[params]
+
+compress=true
+delimiter=0

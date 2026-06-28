@@ -42,6 +42,7 @@ mouse_filter = 2
 color = Color(0, 0, 0, 0.82)
 
 [node name="LockIcon" type="TextureRect" parent="Panel/LockedOverlay"]
+modulate = Color(1, 1, 1, 0.5)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -58,7 +59,6 @@ mouse_filter = 2
 texture = ExtResource("2_star")
 expand_mode = 1
 stretch_mode = 5
-modulate = Color(1, 1, 1, 0.5)
 
 [node name="LockedTitle" type="Label" parent="Panel/LockedOverlay"]
 layout_mode = 1
@@ -73,7 +73,6 @@ offset_right = 85.0
 offset_bottom = 54.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
 text = "???"
 horizontal_alignment = 1
 
@@ -86,7 +85,6 @@ anchor_bottom = 1.0
 offset_top = -36.0
 grow_horizontal = 2
 grow_vertical = 0
-mouse_filter = 2
 text = "sceneTitle"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -104,11 +102,10 @@ mouse_filter = 2
 
 [node name="HintLabel" type="Label" parent="Panel/HoverHint"]
 layout_mode = 2
-text = ""
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
-[connection signal="gui_input" from="." to="." method="_on_gui_input"]

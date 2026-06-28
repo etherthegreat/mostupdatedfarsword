@@ -22,32 +22,40 @@ func buildSelf():
 	$Label.text = techID
 	$CostLabel.text = str(techCost)
 	match techID:
+		# --- UNIFORM row (armor hats; effects/icons wired later) ---
+		"Tricorne Hat":
+			addReward("Tricorne Uniform")
+		"Forage Cap":
+			addReward("Forage Cap Uniform")
+		"Tombstone Cap":
+			addReward("Tombstone Uniform")
+		"Hardee Hat":
+			addReward("Hardee Uniform")
 		# --- SABRE row ---
 		"Swordsmanship":
 			addReward("Cutlass Unlock")
-			addReward("Cavalry Sword Unlock")
 		"Cavalry Drills":
-			addReward("Cavalry Sword Upgrade")
+			addReward("Cavalry Sword Unlock")
 		"Officer Training":
 			addReward("Officer Sword Unlock")
 		"Marine Discipline":
 			addReward("Marine Mameluke Unlock")
 		# --- RIFLES row ---
-		"Musket Drilling":
-			addReward("Flintlock Unlock")
-		"Volley Tactics":
-			addReward("Volley Bonus")
-		"Percussion Ignition":
-			addReward("Breechloader Unlock")
-		"Repeating Mechanisms":
-			addReward("Lever Repeater Unlock")
+		"Muskets":
+			addReward("Muskets Unlock")
+		"Breechloaders":
+			addReward("Breechloaders Unlock")
+		"Rifles":
+			addReward("Percussion Unlock")
+		"Repeaters":
+			addReward("Repeater Unlock")
 		# --- ARTILLERY row ---
 		"Field Gunnery":
 			addReward("Field Gun Unlock")
 		"Siege Works":
-			addReward("Siege Cannon Unlock")
-		"Explosive Charges":
 			addReward("Mortar Unlock")
+		"Explosive Charges":
+			addReward("CannonBlast Enhanced")
 		"Rocket Artillery":
 			addReward("Early Rockets Unlock")
 		# --- CIVILIAN row ---
@@ -82,7 +90,7 @@ func addReward(type):
 	newReward.buildSelf(type)
 	$HBoxContainer.add_child(newReward)
 
-const COLOR_PURCHASED := Color.LIGHT_BLUE
+const COLOR_PURCHASED := Color(0.5, 0.45, 0.88)  # deep indigo = owned/selected
 const COLOR_AVAILABLE := Color.WHITE
 const COLOR_LOCKED    := Color.DARK_GRAY
 
@@ -100,12 +108,15 @@ func _requirements_met() -> bool:
 
 func refresh_visual() -> void:
 	if purchased:
+		modulate = COLOR_PURCHASED
 		$UnlockButton.disabled = true
-		$UnlockButton.add_theme_color_override("icon_normal_color", COLOR_PURCHASED)
+		$UnlockButton.add_theme_color_override("icon_normal_color", Color.WHITE)
 	elif _requirements_met():
+		modulate = Color.WHITE
 		$UnlockButton.disabled = false
 		$UnlockButton.add_theme_color_override("icon_normal_color", COLOR_AVAILABLE)
 	else:
+		modulate = Color.WHITE
 		$UnlockButton.disabled = true
 		$UnlockButton.add_theme_color_override("icon_normal_color", COLOR_LOCKED)
 
