@@ -2120,6 +2120,8 @@ func activateArmyControl():
 	pass
 
 var eventScene = load("res://eventScene.tscn")
+var _event_queue: Array = []      # pending events, shown one at a time
+var _event_showing: bool = false # true while an event panel is on screen
 
 var temporaryTile: Tile
 #MAP INTERACTION
@@ -2280,9 +2282,25 @@ func _protector_id_to_spell(pid: String) -> String:
 		"PROT_17": return "EMANCIPATION PROCLAMATION 2: STILL EMANCIPATING"
 	return ""
 
-func createNewEvent(event_id: String, tile = null) -> void:
+func createNewEvent(event_id: String, tile = null, prepend: bool = false) -> void:
 	if not EventDatabase.event_can_fire(event_id, currentWorldTurn):
 		return
+	# Claim + enqueue now; panels are built and shown one at a time by _show_next_event().
+	EventDatabase.mark_event_fired(event_id, currentWorldTurn)
+	_library_on_event_fired(event_id)
+	var item := {"event_id": event_id, "tile": tile}
+	if prepend:
+		_event_queue.push_front(item)   # chained (next_event_id) events jump the line so arcs stay contiguous
+	else:
+		_event_queue.push_back(item)
+	_show_next_event()
+
+func _show_next_event() -> void:
+	if _event_showing or _event_queue.is_empty():
+		return
+	var item: Dictionary = _event_queue.pop_front()
+	var event_id: String = item["event_id"]
+	var tile = item["tile"]
 	var newEvent = eventScene.instantiate()
 	if event_id == "CA_PM_LEGACY":
 		newEvent.build_from_data(_build_ca_pm_legacy_data(), tile, playerCountryNode)
@@ -2293,10 +2311,15 @@ func createNewEvent(event_id: String, tile = null) -> void:
 		newEvent.build_from_csv(event_id, tile, playerCountryNode)
 	newEvent.eventButtonPressed.connect(_on_event_button_pressed)
 	newEvent.tileEventButtonPressed.connect(_on_tile_event_button_pressed)
+	newEvent.tree_exited.connect(_on_event_dismissed)
 	#AudioManager.play_sfx("event_shown")
 	$CanvasLayer/EventControl/EventContainer.add_child(newEvent)
-	EventDatabase.mark_event_fired(event_id, currentWorldTurn)
-	_library_on_event_fired(event_id)
+	_event_showing = true
+
+func _on_event_dismissed() -> void:
+	# Player closed an event (panel queue_free'd itself) — show the next queued one.
+	_event_showing = false
+	_show_next_event()
 
 
 # Assembles CA_PM_LEGACY long_desc dynamically based on the player's CA run flags.
@@ -2399,7 +2422,7 @@ func _on_event_button_pressed(button_id: String, event_id: String,
 		#AudioManager.play_sfx("protector_agree")
 		_on_protector_agreed(outcome_value)
 	if next_event_id != "":
-		createNewEvent(next_event_id)
+		createNewEvent(next_event_id, null, true)
 
 func _on_tile_event_button_pressed(button_id: String, event_id: String,
 		event_country: String, outcome_type: String,
@@ -2411,7 +2434,7 @@ func _on_tile_event_button_pressed(button_id: String, event_id: String,
 		#AudioManager.play_sfx("protector_agree")
 		_on_protector_agreed(outcome_value)
 	if next_event_id != "":
-		createNewEvent(next_event_id, tile)
+		createNewEvent(next_event_id, tile, true)
 
 func executeOutcome(outcome_type: String, outcome_value: String,
 		outcome_amount: int, tile) -> void:
