@@ -71,10 +71,12 @@ func refreshHealthBar() -> void:
 	if thisArmy == null or thisArmy.maxManpower == 0:
 		return
 	$ProgressBar.value = (float(thisArmy.manpowerInArmy) / thisArmy.maxManpower) * 100.0
+	$ProgressBar/ManpowerLabel.text = str(thisArmy.manpowerInArmy) + "/" + str(thisArmy.maxManpower)
 	$Label.text = "win" if thisArmy.armyCharm != null else ""
 	if thisArmy.armyMaxShield > 0:
 		$ShieldBar.visible = true
 		$ShieldBar.value = (float(thisArmy.armyShield) / float(thisArmy.armyMaxShield)) * 100.0
+		$ShieldBar/ShieldLabel.text = str(thisArmy.armyShield) + "/" + str(thisArmy.armyMaxShield)
 	else:
 		$ShieldBar.visible = false
 
