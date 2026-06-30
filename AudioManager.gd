@@ -32,6 +32,7 @@ var _playlist_index: int = 0
 const BUTTON_CLICKS: Array = ["DartboardClick1", "DartboardClick2", "DartboardClick3", "DartboardClick4"]
 
 func _ready() -> void:
+	_ensure_buses()
 	_music_player = AudioStreamPlayer.new()
 	_music_player.bus = "Music" if AudioServer.get_bus_index("Music") != -1 else "Master"
 	add_child(_music_player)
@@ -42,6 +43,39 @@ func _ready() -> void:
 		_sfx_players.append(p)
 	# Global: give every button a click sound + remove the sticky focus highlight
 	get_tree().node_added.connect(_on_node_added)
+	# Apply saved volumes to the buses (created above if missing)
+	apply_saved_volumes()
+
+
+# -- BUSES / VOLUME ----------------------------------------------------------
+func _ensure_buses() -> void:
+	for bus_name in ["Music", "SFX", "Ambient"]:
+		if AudioServer.get_bus_index(bus_name) == -1:
+			var idx := AudioServer.bus_count
+			AudioServer.add_bus(idx)
+			AudioServer.set_bus_name(idx, bus_name)
+			AudioServer.set_bus_send(idx, "Master")
+
+
+func set_bus_volume_pct(bus_name: String, pct: float) -> void:
+	var idx := AudioServer.get_bus_index(bus_name)
+	if idx == -1:
+		idx = AudioServer.get_bus_index("Master")
+	if idx == -1:
+		return
+	pct = clampf(pct, 0.0, 100.0)
+	if pct <= 0.0:
+		AudioServer.set_bus_mute(idx, true)
+	else:
+		AudioServer.set_bus_mute(idx, false)
+		AudioServer.set_bus_volume_db(idx, linear_to_db(pct / 100.0))
+
+
+func apply_saved_volumes() -> void:
+	set_bus_volume_pct("Master",  float(LibraryData.get_setting("master_volume", 80)))
+	set_bus_volume_pct("Music",   float(LibraryData.get_setting("music_volume", 70)))
+	set_bus_volume_pct("SFX",     float(LibraryData.get_setting("sfx_volume", 90)))
+	set_bus_volume_pct("Ambient", float(LibraryData.get_setting("ambient_volume", 60)))
 
 
 # ── MUSIC ──────────────────────────────────────────────────────────────────

@@ -107,3 +107,33 @@ func _on_war_room_button_pressed() -> void:
 	else:
 		closeAllPanels()
 		$WarRoomPanel.visible = true
+
+
+func _ready() -> void:
+	_build_pause_system()
+
+
+func _build_pause_system() -> void:
+	var menu_btn := Button.new()
+	menu_btn.name = "PauseMenuButton"
+	menu_btn.text = "Menu"
+	menu_btn.anchor_left = 1.0
+	menu_btn.anchor_right = 1.0
+	menu_btn.offset_left = -122.0
+	menu_btn.offset_right = -12.0
+	menu_btn.offset_top = 12.0
+	menu_btn.offset_bottom = 50.0
+
+	var settings_panel = preload("res://Game Scenes and Scripts/audio_settings_panel.gd").new()
+	settings_panel.name = "SettingsPanel"
+	settings_panel.visible = false
+
+	var pause_menu = preload("res://Game Scenes and Scripts/pause_menu.gd").new()
+	pause_menu.name = "PauseMenu"
+
+	add_child(menu_btn)
+	add_child(pause_menu)
+	add_child(settings_panel)
+
+	pause_menu.setup(get_parent(), settings_panel)
+	menu_btn.pressed.connect(pause_menu.toggle)

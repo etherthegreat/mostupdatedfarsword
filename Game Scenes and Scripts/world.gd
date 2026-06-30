@@ -6526,3 +6526,15 @@ func _on_outputs_mode_button_pressed() -> void:
 func _on_terrain_mode_button_pressed() -> void:
 	mapMode = "Natural"
 	updateMap()
+
+
+func save_from_pause_menu() -> bool:
+	# Persists country state + writes an autosave summary the main menu reads.
+	# NOTE: full load-on-Continue is a separate task (load path not yet wired).
+	saveCountryStatesToFile()
+	var f := FileAccess.open("user://autosave.json", FileAccess.WRITE)
+	if f:
+		f.store_string(JSON.stringify({"turn": currentWorldTurn}))
+		f.close()
+		return true
+	return false

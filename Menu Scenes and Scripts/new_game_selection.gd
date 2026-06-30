@@ -10,6 +10,11 @@ func _ready() -> void:
 	if FileAccess.file_exists(settingsPath):
 		var file = FileAccess.open(settingsPath, FileAccess.READ)
 		settings = file.get_var()
+	# Canada is not playable in this build — hide its selector.
+	var _ca_btn = get_node_or_null("SelectionPanel/CanadaButton")
+	if _ca_btn: _ca_btn.visible = false
+	var _ca_lbl = get_node_or_null("SelectionPanel/CanadaLabel")
+	if _ca_lbl: _ca_lbl.visible = false
 
 func _on_return_button_pressed() -> void:
 	get_tree().change_scene_to_file("res://Menu Scenes and Scripts/main_menu.tscn")

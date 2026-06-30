@@ -25,6 +25,15 @@ var _game_language: String = "eng"
 func _ready() -> void:
 	_check_language()
 	_check_continue_button()
+	_ensure_settings_panel()
+
+func _ensure_settings_panel() -> void:
+	if get_node_or_null("SettingsPanel"):
+		return
+	var sp = preload("res://Game Scenes and Scripts/audio_settings_panel.gd").new()
+	sp.name = "SettingsPanel"
+	sp.visible = false
+	add_child(sp)
 
 # ── language (first-run) ──────────────────────────────────────────────────────
 func _check_language() -> void:
