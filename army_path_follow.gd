@@ -2,6 +2,12 @@ extends Control
 
 class_name armyPathFollow
 
+const APF_BACKGROUNDS := {
+	"USA": "res://art assets/AmericanRevolutionArt/apfs/apf us backgrounnd.png",
+	"UK":  "res://art assets/AmericanRevolutionArt/apfs/apf uk background.png",
+	"CA":  "res://art assets/AmericanRevolutionArt/apfs/apf ca background.png",
+}
+
 var thisArmy: Army
 var thisCountry
 var currentTile: Tile
@@ -169,9 +175,39 @@ func onRaise(Army, country, pathPoint):
 	thisCountry = country
 	currentPathPoint = pathPoint
 	currentPathPoint.occupied = true
-	$APFButton.icon = Army.armyIcon
 	currentTile = pathPoint.ppbTile
+	_refresh_appearance()
 	refreshHealthBar()
+
+func _refresh_appearance() -> void:
+	# APF button = country panel (US/UK/CA); the army icon rides on top via Sprite2D.
+	var c = thisCountry
+	if c == null and thisArmy != null:
+		c = thisArmy.parentCountry
+	var cid: String = c.CID if c != null else "USA"
+	var bg_path: String = APF_BACKGROUNDS.get(cid, APF_BACKGROUNDS["USA"])
+	if ResourceLoader.exists(bg_path):
+		$APFButton.icon = load(bg_path)
+	if thisArmy != null and thisArmy.armyIcon != null:
+		$Sprite2D.texture = thisArmy.armyIcon
+	_refresh_weapon_icons()
+
+
+func _refresh_weapon_icons() -> void:
+	if thisArmy == null:
+		return
+	var units: Array = thisArmy.unitsList
+	_set_weapon_sprite($Weapon1, units[0] if units.size() > 0 else null)
+	_set_weapon_sprite($Weapon2, units[1] if units.size() > 1 else null)
+
+
+func _set_weapon_sprite(sprite: Sprite2D, unit) -> void:
+	if unit != null and unit.unitWeapon != null and unit.unitWeapon.weaponImage != null:
+		sprite.texture = unit.unitWeapon.weaponImage
+		sprite.visible = true
+	else:
+		sprite.visible = false
+
 
 signal apfSelected
 func _on_apf_button_pressed() -> void:
