@@ -502,7 +502,7 @@ func takeLosses(type: String, amount: float) -> void:
 				unitShield -= shield_absorbed
 				net_damage -= shield_absorbed
 
-			unitCurrentManpower -= int(net_damage)
+			unitCurrentManpower = max(0, unitCurrentManpower - int(net_damage))
 
 		"ranged":
 			var blocked = amount * unitRangedDefence
@@ -513,12 +513,12 @@ func takeLosses(type: String, amount: float) -> void:
 				unitShield -= shield_absorbed
 				net_damage -= shield_absorbed
 
-			unitCurrentManpower -= int(net_damage)
+			unitCurrentManpower = max(0, unitCurrentManpower - int(net_damage))
 
 		"magic":
 			var blocked = amount * unitMagicDefence
 			var net_damage = max(0.0, amount - blocked)
-			unitCurrentManpower -= int(net_damage)
+			unitCurrentManpower = max(0, unitCurrentManpower - int(net_damage))
 
 	# Clamp manpower — can't go below 0
 	unitCurrentManpower = max(0, unitCurrentManpower)

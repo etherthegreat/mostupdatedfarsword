@@ -237,6 +237,8 @@ func calculateArmyMovement(endPathPoint: pathPointButton, _neighborPathPoints, _
 			army.movedThisTurn = true
 			army.attacksFromCurrentTile = 0
 			army.cancelGuard()
+			if army.attackedThisTurn:
+				army.apply_status("Retreat", 2)
 	elif selectedCPF != null:
 		startingPoint = selectedCPF.currentPathPoint
 		# Action point gate — civilians spend 1 point per tile moved
@@ -255,6 +257,16 @@ func calculateArmyMovement(endPathPoint: pathPointButton, _neighborPathPoints, _
 func _initiate_attack(targetPPB: pathPointButton) -> void:
 	if selectedAPF == null:
 		return
+	var atk: Army = selectedAPF.thisArmy
+	if atk != null:
+		if atk.attackBlocked:
+			emit_signal("movement_blocked", "In Retreat — this army can't attack this turn.")
+			return
+		atk.attackedThisTurn = true
+		if atk.movedThisTurn:
+			atk.apply_status("Exhausted", 1)
+			atk.cancelHold()
+			atk.surveySelf()
 	var curve: Curve2D = $PathsControl/Path.curve
 	curve.clear_points()
 	curve.add_point(selectedAPF.currentPathPoint.position)

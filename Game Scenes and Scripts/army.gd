@@ -127,6 +127,9 @@ var enemy: bool #for any non-playable country
 var deleteMode: bool
 
 signal armyDestroyed
+var attackedThisTurn: bool = false  # set when this army attacks; drives Exhausted/Retreat
+var isHolding: bool = false         # combat Hold stance; distinct from isGuarding
+var holdPending: bool = false       # Hold declared after moving -> arms next turn
 
 func buildSelf(Name, countryNode, TileNumber, icon):
 	$VBoxContainer/BannerControl/BannerSprite.texture = icon
@@ -191,6 +194,11 @@ func onTurnEnd():
 	else:
 		stationaryTurns += 1
 	movedThisTurn = false
+	# Combat-economy per-turn reset
+	attackedThisTurn = false
+	if holdPending:
+		isHolding = true
+		holdPending = false
 	# Restore full movement points at the start of each new turn
 	currentMovementPoints = maxMovementPoints + _commander_movement_bonus()
 	# Reset per-turn flags (re-derived below from active statuses)
@@ -260,6 +268,31 @@ func _army_has_active_mod(mod_name: String) -> bool:
 				return true
 	return false
 
+func declareHold() -> void:
+	# Combat Hold: instant if the army has not moved, else arms next turn.
+	if movedThisTurn:
+		holdPending = true
+	else:
+		isHolding = true
+		surveySelf()
+
+
+func cancelHold() -> void:
+	isHolding = false
+	holdPending = false
+
+
+func combat_status_tag() -> String:
+	var tags: Array = []
+	if isHolding:
+		tags.append("HOLD")
+	if _has_status("Exhausted"):
+		tags.append("EXH")
+	if _has_status("Retreat"):
+		tags.append("RET")
+	return " ".join(tags)
+
+
 func _has_status(type: String) -> bool:
 	for s in armyStatusEffects:
 		if s.type == type:
@@ -297,6 +330,9 @@ func _tick_status_effects() -> void:
 func _apply_status_effects_to_stats() -> void:
 	for s in armyStatusEffects:
 		match s.type:
+			"Exhausted":
+				armyPunch = int(armyPunch * 0.9)
+				armyLaunch = int(armyLaunch * 0.9)
 			"Stunned":
 				armyPunch = 0
 			"Suppressed":
@@ -438,6 +474,10 @@ func _apply_status_effects_to_stats() -> void:
 			"Le Gougou's Terror":
 				armyPunch   += 15
 				armyDefence += 20
+	# Combat Hold stance: defensive bonus (distinct from the end-turn Guard toggle)
+	if isHolding:
+		armyBlock += 20
+		armyDefence += 20
 	# Guard bonus applied last so status-effect penalties don't erase it
 	var glvl: int = _guard_level()
 	if glvl > 0:
@@ -449,6 +489,8 @@ func _apply_status_flags() -> void:
 	for s in armyStatusEffects:
 		match s.type:
 			"Routed", "Pacified", "Seduced", "Love-Struck":
+				attackBlocked = true
+			"Retreat":
 				attackBlocked = true
 			"Stunned":
 				attackBlocked = true
@@ -865,8 +907,9 @@ func calculateBattle(armyPath, type, attacker, defenderAPF, lastSelectedPathPoin
 func calculateAttackerResults(type: String, manpowerLossAmount: int) -> void:
 	if manpowerLossAmount <= 0:
 		return
-	var damagePerUnit = int(manpowerLossAmount / max(1, unitCount))
-	for Unit in unitsList:
+	var living = unitsList.filter(func(u): return u.unitCurrentManpower > 0)
+	var damagePerUnit = int(manpowerLossAmount / max(1, living.size()))
+	for Unit in living:
 		Unit.takeLosses(type, float(damagePerUnit))
 	if type == "ranged":
 		for Unit in unitsList:
@@ -878,8 +921,9 @@ func calculateAttackerResults(type: String, manpowerLossAmount: int) -> void:
 func calculateDefenderResults(type: String, manpowerLossAmount: int) -> void:
 	if manpowerLossAmount <= 0:
 		return
-	var damagePerUnit = int(manpowerLossAmount / max(1, unitCount))
-	for Unit in unitsList:
+	var living = unitsList.filter(func(u): return u.unitCurrentManpower > 0)
+	var damagePerUnit = int(manpowerLossAmount / max(1, living.size()))
+	for Unit in living:
 		Unit.takeLosses(type, float(damagePerUnit))
 	surveySelf()
 	if manpowerInArmy <= 0:
