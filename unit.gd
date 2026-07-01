@@ -442,6 +442,21 @@ func can_fire_ranged() -> bool:
 	return false  # sabers can't fire ranged at all
 
 var unitStance: String = "attack"  # attack / hold / charge — set by the army panel
+var unitCurrentAP: int = 1          # action points left this turn
+
+const TWO_AP_WEAPONS := ["Marine Mameluke", "Lever Repeater", "Early Rockets", "Rocket Artillery"]
+
+func get_max_ap() -> int:
+	if unitWeapon != null and unitWeapon.weaponType in TWO_AP_WEAPONS:
+		return 2
+	return 1
+
+
+func spend_ap() -> bool:
+	if unitCurrentAP > 0:
+		unitCurrentAP -= 1
+		return true
+	return false
 
 
 func can_charge_melee() -> bool:

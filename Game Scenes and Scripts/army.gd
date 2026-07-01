@@ -201,6 +201,7 @@ func onTurnEnd():
 		holdPending = false
 	for _u in unitsList:
 		_u.unitStance = "attack"
+		_u.unitCurrentAP = _u.get_max_ap()
 	# Restore full movement points at the start of each new turn
 	currentMovementPoints = maxMovementPoints + _commander_movement_bonus()
 	# Reset per-turn flags (re-derived below from active statuses)

@@ -14,7 +14,6 @@ var alwaysFree: bool
 var debugMode: bool
 
 var delete: bool #flag used by the army to determine if it will be deleted during the army update
-var _stance_buttons: Dictionary = {}  # per-unit Attack/Hold/Charge stance buttons (Phase 2)
 
 const milModScene = preload("res://mil_mod.tscn")
 
@@ -44,7 +43,6 @@ func updateUI():
 	$WeaponsLabel.add_text(newWeaponText)
 	$ManpowerLabel.add_text(newManpowerText)
 	findMilMods()
-	_refresh_stance_buttons()
 	pass
 
 func upgradeButtonCalculation(maxUnitLevel):
@@ -170,37 +168,3 @@ func _on_button_2_pressed() -> void:
 func _on_always_freebutton_pressed() -> void:
 	alwaysFree = true
 	pass # Replace with function body.
-
-
-# ── PHASE 2: per-unit stance buttons (placeholder layout — restyle in the panel redo) ──
-func _refresh_stance_buttons() -> void:
-	if thisUnit == null:
-		return
-	if _stance_buttons.is_empty():
-		var hbox := HBoxContainer.new()
-		hbox.name = "StanceButtons"
-		hbox.position = Vector2(0, 250)
-		add_child(hbox)
-		for st in ["attack", "hold", "charge"]:
-			var b := Button.new()
-			b.text = st.capitalize()
-			b.custom_minimum_size = Vector2(62, 26)
-			b.pressed.connect(_on_stance_pressed.bind(st))
-			hbox.add_child(b)
-			_stance_buttons[st] = b
-	var no_melee: bool = thisUnit.unitWeapon != null and thisUnit.unitWeapon.weaponClass == "Artillery"
-	if thisUnit.is_reloading() and no_melee:
-		thisUnit.unitStance = "hold"
-		_stance_buttons["attack"].disabled = true
-		_stance_buttons["charge"].disabled = true
-	else:
-		_stance_buttons["attack"].disabled = false
-		_stance_buttons["charge"].disabled = not thisUnit.can_charge_melee()
-	for st in _stance_buttons:
-		_stance_buttons[st].modulate = Color(1, 1, 0.4) if thisUnit.unitStance == st else Color(1, 1, 1)
-
-
-func _on_stance_pressed(stance: String) -> void:
-	if thisUnit != null:
-		thisUnit.unitStance = stance
-		_refresh_stance_buttons()
