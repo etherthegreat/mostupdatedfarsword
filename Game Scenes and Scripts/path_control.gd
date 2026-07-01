@@ -314,14 +314,17 @@ func _on_attack_midpoint(apf: armyPathFollow) -> void:
 	# Refresh both so active statuses (Exhausted, Hold, buffs) are reflected in the math.
 	attacker.surveySelf()
 	defender.surveySelf()
-	var raw_atk = float(attacker.armyPunch)
+	# Stances: attack scales by fighting-unit count; charge hits harder; holders add defense.
+	var raw_atk = float(attacker.armyPunch) * attacker.attack_power_factor()
+	if attacker.has_charging_unit():
+		raw_atk *= 1.4
 	var def_block = clamp(
-		float(defender.armyBlock) / max(1.0, float(defender.unitsList.size())),
+		(float(defender.armyBlock) + float(defender.hold_defense_bonus())) / max(1.0, float(defender.unitsList.size())),
 		0.0, 0.9)
 	var def_loss = int(raw_atk * (1.0 - def_block))
-	var raw_counter = float(defender.armyPunch)
+	var raw_counter = float(defender.armyPunch) * defender.attack_power_factor()
 	var atk_block = clamp(
-		float(attacker.armyBlock) / max(1.0, float(attacker.unitsList.size())),
+		(float(attacker.armyBlock) + float(attacker.hold_defense_bonus())) / max(1.0, float(attacker.unitsList.size())),
 		0.0, 0.9)
 	var atk_loss = int(raw_counter * (1.0 - atk_block))
 	defender.calculateDefenderResults("melee", def_loss)

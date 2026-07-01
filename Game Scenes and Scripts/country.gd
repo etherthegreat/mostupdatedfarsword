@@ -1511,7 +1511,7 @@ func _resolve_ai_battle(attacker: Army, defender: Army, tile) -> void:
 	if use_ranged:
 		var effective_launch = float(attacker.armyLaunch)
 		var ranged_block = clamp(
-			float(defender.armyDefence) / max(1.0, float(defender.unitsList.size())),
+			(float(defender.armyDefence) + float(defender.hold_defense_bonus())) / max(1.0, float(defender.unitsList.size())),
 			0.0, 0.9)
 		var net = effective_launch * (1.0 - ranged_block)
 		# CannonBlast bonus vs unshielded
@@ -1539,7 +1539,7 @@ func _resolve_ai_battle(attacker: Army, defender: Army, tile) -> void:
 	else:
 		var raw_attack = float(attacker.armyPunch)
 		var block_ratio = clamp(
-			float(defender.armyBlock) / max(1.0, float(defender.unitsList.size())),
+			(float(defender.armyBlock) + float(defender.hold_defense_bonus())) / max(1.0, float(defender.unitsList.size())),
 			0.0, 0.9)
 		var net = raw_attack * (1.0 - block_ratio)
 		var shield_hit = int(min(float(defender.armyShield), net))
