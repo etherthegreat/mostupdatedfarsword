@@ -218,16 +218,19 @@ func _set_weapon_sprite(sprite: Sprite2D, unit, show_it: bool) -> void:
 		sprite.visible = false
 
 
+signal apfHovered(apf, entered)
 func _on_apf_mouse_entered() -> void:
 	z_index = 60          # bring the hovered token fully to front (fixes cluster overlap)
 	_hover_scale = 1.4
 	_refresh_weapon_icons(true)
+	emit_signal("apfHovered", self, true)
 
 
 func _on_apf_mouse_exited() -> void:
 	z_index = 15
 	_hover_scale = 1.0
 	_refresh_weapon_icons(false)
+	emit_signal("apfHovered", self, false)
 
 
 func _update_token_scale() -> void:

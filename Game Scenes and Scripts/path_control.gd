@@ -24,6 +24,7 @@ func raisePlayerArmy(Army, country, Tile, pathPointToSend):
 	pathPointToSend.stationedArmy = Army
 	newAPF.apfSelected.connect(displayapfInfo)
 	newAPF.apfRightClicked.connect(_on_apf_right_clicked)
+	newAPF.apfHovered.connect(_on_apf_hovered)
 	newAPF.armyArrived.connect(armyArrivedFunc)
 	newAPF.siegeChange.connect(updateTileSiege)
 	newAPF.armyTraveling.connect(updateTravelingArmy)
@@ -41,6 +42,7 @@ func raiseComputerArmy(Army, country, Tile, pathPointToSend):
 	pathPointToSend.stationedArmy = Army
 	newAPF.apfSelected.connect(displayapfInfo)
 	newAPF.apfRightClicked.connect(_on_apf_right_clicked)
+	newAPF.apfHovered.connect(_on_apf_hovered)
 	newAPF.armyArrived.connect(armyArrivedFunc)
 	newAPF.siegeChange.connect(updateTileSiege)
 	newAPF.armyTraveling.connect(updateTravelingArmy)
@@ -104,6 +106,7 @@ signal movement_blocked(reason: String)
 signal spyWinRecorded
 signal activateArmyControlMode
 func deselectAll() -> void:
+	_hide_battle_preview()
 	selectedAPF = null
 	selectedCPF = null
 	hidePathPoints()
@@ -136,6 +139,76 @@ func compute_battle(attacker: Army, defender: Army) -> Dictionary:
 	var a_mblock: float = clamp((float(attacker.armyBlock) + float(attacker.hold_defense_bonus())) / a_units, 0.0, 0.9)
 	var atk_loss: int = int(d_out["ranged"] * (1.0 - a_rblock) + d_out["melee"] * (1.0 - a_mblock))
 	return {"def_loss": def_loss, "atk_loss": atk_loss}
+
+
+var _preview_panel: PanelContainer = null
+var _preview_label: Label = null
+
+func _on_apf_hovered(apf, entered: bool) -> void:
+	# Hover a neighboring enemy APF (army selected) to preview the exact battle outcome.
+	if not entered:
+		_hide_battle_preview()
+		return
+	if selectedAPF == null or apf == selectedAPF or not is_instance_valid(apf):
+		return
+	var defArmy = apf.thisArmy
+	if defArmy == null or not is_instance_valid(defArmy) or not defArmy.enemy:
+		return
+	var targetPPB = apf.currentPathPoint
+	if targetPPB == null or targetPPB not in selectedAPF.currentPathPoint.neighborPathPoints:
+		return
+	var bt: Dictionary = compute_battle(selectedAPF.thisArmy, defArmy)
+	_show_battle_preview(apf, int(bt["def_loss"]), int(bt["atk_loss"]))
+
+func _ensure_preview_panel() -> void:
+	if is_instance_valid(_preview_panel):
+		return
+	var cl = get_parent().get_node_or_null("CanvasLayer")
+	if cl == null:
+		return
+	_preview_panel = PanelContainer.new()
+	_preview_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_preview_panel.z_index = 150
+	var sb := StyleBoxFlat.new()
+	sb.bg_color = Color(0.05, 0.05, 0.08, 0.92)
+	sb.set_border_width_all(1)
+	sb.border_color = Color(0.85, 0.72, 0.3, 0.9)
+	sb.set_corner_radius_all(4)
+	sb.content_margin_left = 8
+	sb.content_margin_right = 8
+	sb.content_margin_top = 6
+	sb.content_margin_bottom = 6
+	_preview_panel.add_theme_stylebox_override("panel", sb)
+	_preview_label = Label.new()
+	_preview_label.add_theme_font_size_override("font_size", 13)
+	_preview_label.add_theme_color_override("font_color", Color(1, 1, 1))
+	_preview_panel.add_child(_preview_label)
+	cl.add_child(_preview_panel)
+	_preview_panel.visible = false
+
+func _show_battle_preview(apf, def_loss: int, atk_loss: int) -> void:
+	_ensure_preview_panel()
+	if not is_instance_valid(_preview_panel):
+		return
+	var atkArmy = selectedAPF.thisArmy
+	var defArmy = apf.thisArmy
+	var enemy_after: int = max(0, defArmy.manpowerInArmy - def_loss)
+	var you_after: int = max(0, atkArmy.manpowerInArmy - atk_loss)
+	var txt := "-- Attack Preview --\n"
+	txt += "Deal %d  (enemy %d/%d)\n" % [def_loss, enemy_after, defArmy.maxManpower]
+	txt += "Take %d  (you %d/%d)" % [atk_loss, you_after, atkArmy.maxManpower]
+	if enemy_after <= 0:
+		txt += "\n>> Destroys the enemy!"
+	elif you_after <= 0:
+		txt += "\n!! You would be wiped !!"
+	_preview_label.text = txt
+	_preview_panel.visible = true
+	var screen_pos: Vector2 = get_viewport().get_canvas_transform() * apf.global_position
+	_preview_panel.position = screen_pos + Vector2(34.0, -46.0)
+
+func _hide_battle_preview() -> void:
+	if is_instance_valid(_preview_panel):
+		_preview_panel.visible = false
 
 
 func displayapfInfo(thisArmy, apf, currentTile, thisCountry, currentPathPoint):
@@ -300,6 +373,7 @@ func calculateArmyMovement(endPathPoint: pathPointButton, _neighborPathPoints, _
 # ── ATTACK ANIMATION ─────────────────────────────────────────────────────────
 
 func _initiate_attack(targetPPB: pathPointButton) -> void:
+	_hide_battle_preview()
 	if selectedAPF == null:
 		return
 	var atk: Army = selectedAPF.thisArmy
