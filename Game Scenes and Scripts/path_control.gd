@@ -4,6 +4,7 @@ var armyPathFollowScene = preload("res://army_path_follow.tscn")
 var playerCountry
 var playerTiles: Array
 var updatingArmyPathFollow: PathFollow2D
+var _travelingFollower = null   # APF/CPF currently animating along the path (selection-independent)
 
 var selectedAPF: armyPathFollow
 var _highlightedTiles: Array = []
@@ -75,6 +76,7 @@ func updateTravelingArmy(_progressRate, _currentPath, _Army):
 func armyArrivedFunc(pathOfArmy, newPathPointButton, theArmy, apf, contain):
 	#use this to resume 
 	removeFromUpdateArmyPaths()
+	_travelingFollower = null
 	for pathPointButton in $PathPointsControl.get_children():
 		if pathPointButton == newPathPointButton:
 			contain.remove_child(apf)
@@ -91,6 +93,7 @@ func armyArrivedFunc(pathOfArmy, newPathPointButton, theArmy, apf, contain):
 func civilianArrivedFunc(pathOfCivilian, newPathPointButton, theCivilian, cpf, contain):
 	#use this to resume 
 	removeFromUpdateArmyPaths()
+	_travelingFollower = null
 	for pathPointButton in $PathPointsControl.get_children():
 		if pathPointButton == newPathPointButton:
 			contain.remove_child(cpf)
@@ -305,16 +308,12 @@ func _clearMovableHighlights() -> void:
 func removeFromUpdateArmyPaths():
 	updatingArmyPathFollow = null
 
-func _process(delta: float) -> void:
-	if updatingArmyPathFollow != null :
-		if selectedAPF != null:
-			if selectedAPF.progressRate != 1 && selectedAPF.progressRate !=0:
-				updatingArmyPathFollow.progress_ratio = selectedAPF.progressRate
-			return
-		if selectedCPF !=null:
-			if selectedCPF.progressRate != 1 && selectedCPF.progressRate !=0:
-				updatingArmyPathFollow.progress_ratio = selectedCPF.progressRate
-			return
+func _process(_delta: float) -> void:
+	# Animate the path follower from whatever is currently traveling (selection-independent).
+	if updatingArmyPathFollow != null and is_instance_valid(_travelingFollower):
+		var pr: float = _travelingFollower.progressRate
+		if pr != 1.0 and pr != 0.0:
+			updatingArmyPathFollow.progress_ratio = pr
 
 var startingPoint: pathPointButton
 func calculateArmyMovement(endPathPoint: pathPointButton, _neighborPathPoints, _ppbTile):
@@ -351,6 +350,12 @@ func calculateArmyMovement(endPathPoint: pathPointButton, _neighborPathPoints, _
 			if selectedCPF.thisCivilian.currentActionPoints <= 0:
 				return
 			selectedCPF.thisCivilian.currentActionPoints -= 1
+	# Reset leftover editor transforms so the curve lines up with the real tile positions.
+	$PathsControl/Path.position = Vector2.ZERO
+	$PathsControl/Path.rotation = 0.0
+	$PathsControl/Path.scale = Vector2.ONE
+	$PathsControl/Path/PathFollow.rotation = 0.0
+	$PathsControl/Path/PathFollow.rotates = false
 	var curve: Curve2D = $PathsControl/Path.curve
 	curve.clear_points()
 	curve.add_point(startingPoint.position)
@@ -439,6 +444,7 @@ func moveArmy(newContainer, String, endPoint):
 				var path = updatingArmyPathFollow.get_parent()
 				apfParent.call_deferred("remove_child",selectedAPF)
 				newContainer.call_deferred("add_child", selectedAPF)
+				_travelingFollower = selectedAPF
 				selectedAPF.z_as_relative = false
 				selectedAPF.z_index = 100
 				selectedAPF.move("start", endPoint, path)
@@ -451,6 +457,7 @@ func moveArmy(newContainer, String, endPoint):
 				var path = updatingArmyPathFollow.get_parent()
 				cpfParent.call_deferred("remove_child",selectedCPF)
 				newContainer.call_deferred("add_child", selectedCPF)
+				_travelingFollower = selectedCPF
 				selectedCPF.move("start", endPoint, path)
 				updatingArmyPathFollow = newContainer.get_parent()
 signal showArmyInfo
