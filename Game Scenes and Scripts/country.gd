@@ -1324,7 +1324,7 @@ signal armyRepositioned(army, old_tile, new_tile)
 signal battleResolved(tile, atk_loss, def_loss)
 
 # Emitted for every AI attack so world.gd can build a turn summary.
-signal aiCombatEvent(attacker_cid, tile_name, result)
+signal aiCombatEvent(attacker_cid, tile, result)
 
 func _ca_calculate_turn() -> void:
 	_passive_hold()
@@ -1368,7 +1368,7 @@ func _ca_press_uk_borders() -> void:
 			if best_target.stationedArmy != null:
 				_resolve_ai_battle(army, best_target.stationedArmy, best_target)
 			var captured: bool = (best_target.tileOwner == CID)
-			emit_signal("aiCombatEvent", CID, best_target.tileName,
+			emit_signal("aiCombatEvent", CID, best_target,
 				"captured" if captured else "attacked")
 			if captured and old_tile != null:
 				army.inTile = best_target
@@ -1484,12 +1484,11 @@ func _uk_attack_tile(army: Army, targetTile) -> void:
 	if targetTile == null:
 		return
 	var old_tile = army.inTile
-	print("[AIDBG] UK attacks ", targetTile.tileName, " | defended=", targetTile.stationedArmy != null)
 	targetTile.siegeCalculate(army)
 	if targetTile.stationedArmy != null:
 		_resolve_ai_battle(army, targetTile.stationedArmy, targetTile)
 	var captured: bool = (targetTile.tileOwner == CID)
-	emit_signal("aiCombatEvent", CID, targetTile.tileName,
+	emit_signal("aiCombatEvent", CID, targetTile,
 		"captured" if captured else "attacked")
 	if captured and old_tile != null:
 		old_tile.stationedArmy = null

@@ -50,6 +50,8 @@ var _ai_playback_queue: Array = []       # AI battles recorded this round, repla
 var _ai_recording_country = null         # which AI country is currently taking its turn
 var _skip_ai_playback: bool = false      # fast-forward the replay
 var _playing_ai: bool = false            # true while the AI-turn replay runs
+var _stashed_atk_loss: int = 0           # losses from a real battle, attached to the next attack record
+var _stashed_def_loss: int = 0
 var _floating_damage_scene = preload("res://floating_damage_number.tscn")
 var _peace_last_freed_tile = null        # most-recently freed peace dock tile node
 var isCoopMode: bool = false             # true when both USA and CA are player-controlled
@@ -2068,8 +2070,17 @@ func _on_ai_army_repositioned(army: Army, old_tile: Tile, new_tile: Tile) -> voi
 	apf.currentTile = new_tile
 
 # ── ITEM 4: AI COMBAT LOG ─────────────────────────────────────────────────────
-func _on_ai_combat_event(attacker_cid: String, tile_name: String, result: String) -> void:
-	_ai_combat_log.append({"attacker": attacker_cid, "tile": tile_name, "result": result})
+func _on_ai_combat_event(attacker_cid: String, tile, result: String) -> void:
+	var tname = tile.tileName if tile != null else "?"
+	_ai_combat_log.append({"attacker": attacker_cid, "tile": tname, "result": result})
+	# Record every AI attack/capture for the replay tour; attach any battle losses stashed above.
+	_ai_playback_queue.append({
+		"tile": tile, "result": result,
+		"atk_loss": _stashed_atk_loss, "def_loss": _stashed_def_loss,
+		"country": _ai_recording_country,
+	})
+	_stashed_atk_loss = 0
+	_stashed_def_loss = 0
 
 func _show_ai_turn_report() -> void:
 	if _ai_combat_log.is_empty():
@@ -2118,12 +2129,9 @@ func _on_player_battle_resolved(tile, atk_loss: int, def_loss: int) -> void:
 
 
 func _on_ai_battle_resolved(tile, atk_loss: int, def_loss: int) -> void:
-	print("[AIDBG] recorder fired (queue was ", _ai_playback_queue.size(), ")")
-	# Record the AI battle for replay instead of flashing it off-screen during the sync turn.
-	_ai_playback_queue.append({
-		"tile": tile, "atk_loss": atk_loss, "def_loss": def_loss,
-		"country": _ai_recording_country,
-	})
+	# A real army-vs-army battle: stash losses so the following aiCombatEvent attaches them.
+	_stashed_atk_loss = atk_loss
+	_stashed_def_loss = def_loss
 
 
 func _play_ai_turn() -> void:
@@ -2148,7 +2156,8 @@ func _play_ai_turn() -> void:
 
 func _show_ai_battle(entry) -> void:
 	# HOOK: entry["country"] is available here for a future 'Jessica's / George III's Turn' banner.
-	_on_battle_resolved(entry["tile"], entry["atk_loss"], entry["def_loss"])
+	if entry["atk_loss"] > 0 or entry["def_loss"] > 0:
+		_on_battle_resolved(entry["tile"], entry["atk_loss"], entry["def_loss"])
 
 
 func _unhandled_input(event: InputEvent) -> void:
