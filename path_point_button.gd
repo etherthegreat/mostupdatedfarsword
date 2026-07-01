@@ -26,6 +26,7 @@ func buildSelf():
 	for NodePath in navalPathPointsEXP:
 		navalPathPoints.append(get_node(NodePath))
 	ppbTile = ppbTileEXP
+	setMarkerVisible(false)
 
 signal pathPointClicked
 func _on_button_pressed() -> void:

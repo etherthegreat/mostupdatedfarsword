@@ -177,6 +177,9 @@ func onRaise(Army, country, pathPoint):
 	currentPathPoint.occupied = true
 	currentTile = pathPoint.ppbTile
 	_refresh_appearance()
+	if not $APFButton.mouse_entered.is_connected(_on_apf_mouse_entered):
+		$APFButton.mouse_entered.connect(_on_apf_mouse_entered)
+		$APFButton.mouse_exited.connect(_on_apf_mouse_exited)
 	refreshHealthBar()
 
 func _refresh_appearance() -> void:
@@ -193,20 +196,30 @@ func _refresh_appearance() -> void:
 	_refresh_weapon_icons()
 
 
-func _refresh_weapon_icons() -> void:
+func _refresh_weapon_icons(show_them: bool = false) -> void:
 	if thisArmy == null:
 		return
 	var units: Array = thisArmy.unitsList
-	_set_weapon_sprite($Weapon1, units[0] if units.size() > 0 else null)
-	_set_weapon_sprite($Weapon2, units[1] if units.size() > 1 else null)
+	_set_weapon_sprite($Weapon1, units[0] if units.size() > 0 else null, show_them)
+	_set_weapon_sprite($Weapon2, units[1] if units.size() > 1 else null, show_them)
 
 
-func _set_weapon_sprite(sprite: Sprite2D, unit) -> void:
+func _set_weapon_sprite(sprite: Sprite2D, unit, show_it: bool) -> void:
 	if unit != null and unit.unitWeapon != null and unit.unitWeapon.weaponImage != null:
 		sprite.texture = unit.unitWeapon.weaponImage
-		sprite.visible = true
+		sprite.visible = show_it
 	else:
 		sprite.visible = false
+
+
+func _on_apf_mouse_entered() -> void:
+	z_index = 60          # bring the hovered token fully to front (fixes cluster overlap)
+	_refresh_weapon_icons(true)
+
+
+func _on_apf_mouse_exited() -> void:
+	z_index = 15
+	_refresh_weapon_icons(false)
 
 
 signal apfSelected

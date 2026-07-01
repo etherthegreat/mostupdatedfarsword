@@ -103,6 +103,7 @@ signal activateArmyControlMode
 func deselectAll() -> void:
 	selectedAPF = null
 	selectedCPF = null
+	hidePathPoints()
 	melee_mode = false
 	emit_signal("updatePathPoints", false)
 
@@ -111,6 +112,7 @@ func displayapfInfo(thisArmy, apf, currentTile, thisCountry, currentPathPoint):
 		updateArmyPanel(thisArmy, currentPathPoint)
 		selectedAPF = apf
 		selectedCPF = null
+		showPathPoints(currentPathPoint)
 		emit_signal("activateArmyControlMode")
 		emit_signal("updatePathPoints", true)
 	elif selectedAPF != null:
@@ -172,9 +174,6 @@ func showPathPoints(pathPoint):
 	visibleTiles.clear()
 	for pathPointButton in $PathPointsControl.get_children():
 		pathPointButton.setMarkerVisible(false)
-		if pathPointButton.occupied == true:
-			pathPointButton.setMarkerVisible(true)
-			#visibleTiles.append(pathPointButton.neighborPathPoints)
 		#if playerTiles.has(pathPointButton.ppbTile):
 			#pathPointButton.setMarkerVisible(true)
 	for pathPointButton in visibleTiles:
