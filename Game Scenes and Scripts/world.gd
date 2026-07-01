@@ -5352,6 +5352,7 @@ func updateArmyFunc(Army, pathPoint):
 	$CanvasLayer/ArmyPanel/RangedDefenseLabel.text = str(Army.armyDefence)
 	$CanvasLayer/ArmyPanel/ManpowerLabel.text = str(Army.manpowerInArmy, " / ", Army.maxManpower)
 	$CanvasLayer/ArmyPanel/ShieldLabel.text = str(Army.armyShield, " / ", Army.armyMaxShield)
+	_refresh_unit_action_uis(Army)
 	#$CanvasLayer/ArmyPanel/LocationLabel.text = str(pathPoint.pathNumber)
 	if $CanvasLayer/ArmyPanel.visible == false:
 		$CanvasLayer.closeAllPanels()
@@ -5360,6 +5361,26 @@ func updateArmyFunc(Army, pathPoint):
 	else:
 		$CanvasLayer/ArmyPanel.visible = false
 		lastSelectedPathPoint = null
+
+var _unit_action_uis: Array = []
+
+func _refresh_unit_action_uis(Army) -> void:
+	var panel = $CanvasLayer/ArmyPanel
+	if _unit_action_uis.is_empty():
+		for i in 2:
+			var ui = preload("res://unit_action_ui.gd").new()
+			ui.name = "UnitActionUI" + str(i)
+			ui.position = Vector2(10, 44 + i * 128)
+			ui.custom_minimum_size = Vector2(300, 120)
+			panel.add_child(ui)
+			_unit_action_uis.append(ui)
+	for i in 2:
+		if i < Army.unitsList.size():
+			_unit_action_uis[i].visible = true
+			_unit_action_uis[i].setup(Army.unitsList[i])
+		else:
+			_unit_action_uis[i].visible = false
+
 
 func _on_path_control_show_army_info(key) -> void:
 	match key:
