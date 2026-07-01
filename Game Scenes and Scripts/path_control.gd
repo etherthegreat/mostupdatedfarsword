@@ -311,6 +311,9 @@ func _on_attack_midpoint(apf: armyPathFollow) -> void:
 		apf.resolveAttack(false)
 		return
 	# Resolve battle inline (same formula as AI _resolve_ai_battle)
+	# Refresh both so active statuses (Exhausted, Hold, buffs) are reflected in the math.
+	attacker.surveySelf()
+	defender.surveySelf()
 	var raw_atk = float(attacker.armyPunch)
 	var def_block = clamp(
 		float(defender.armyBlock) / max(1.0, float(defender.unitsList.size())),

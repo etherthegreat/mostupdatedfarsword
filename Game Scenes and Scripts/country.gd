@@ -1498,6 +1498,9 @@ func _uk_attack_tile(army: Army, targetTile) -> void:
 
 
 func _resolve_ai_battle(attacker: Army, defender: Army, tile) -> void:
+	# Refresh both so active statuses (Hold, buffs) are reflected in the math.
+	attacker.surveySelf()
+	defender.surveySelf()
 	# Mirrors battle.gd: prefer ranged if attacker has ready ranged units
 	var use_ranged: bool = attacker.has_ready_ranged_units() and attacker.armyLaunch > 0
 	var battle_type: String = "ranged" if use_ranged else "melee"
