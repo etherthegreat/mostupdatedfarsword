@@ -1,8 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://dp5wfq012517s"]
+[gd_scene load_steps=8 format=3 uid="uid://dp5wfq012517s"]
 
 [ext_resource type="Script" uid="uid://cgsub3tu82rgw" path="res://army_path_follow.gd" id="1_dkk2m"]
-[ext_resource type="Texture2D" uid="uid://b1xe61qas3y7u" path="res://art assets/finishedAssets/armyicons/test/9.png" id="2_odqi8"]
-[ext_resource type="Texture2D" uid="uid://cf41vsdq7n11f" path="res://art assets/Placeholder Art/UI Art/resources/clubsmall.png" id="2_yunp4"]
+[ext_resource type="Texture2D" uid="uid://dkmqxnu8x8mo7" path="res://art assets/AmericanRevolutionArt/apfs/apf us backgrounnd.png" id="2_8h42w"]
+[ext_resource type="Texture2D" uid="uid://cwj2hvw51pub8" path="res://art assets/finishedAssets/armyicons/finished/heart.png" id="3_tidaj"]
+[ext_resource type="Texture2D" uid="uid://b0w7232x44f13" path="res://art assets/finishedAssets/Weapons/Flintlock.png" id="4_rvcvo"]
+[ext_resource type="Texture2D" uid="uid://dfua11trijkst" path="res://art assets/finishedAssets/Weapons/Howitzer.png" id="5_06dsw"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_shield_bg"]
 bg_color = Color(0, 0, 0, 0)
@@ -14,24 +16,39 @@ bg_color = Color(0.1, 0.45, 1, 0.6)
 z_index = 15
 layout_mode = 3
 anchors_preset = 0
+offset_top = -20.0
+offset_bottom = -20.0
 scale = Vector2(0.5, 0.5)
 script = ExtResource("1_dkk2m")
 
 [node name="APFButton" type="Button" parent="."]
 layout_mode = 0
-offset_left = -64.0
-offset_top = 7.0
-offset_right = 38.0
-offset_bottom = 99.0
+offset_left = -36.0
+offset_top = 32.0
+offset_right = 18.0
+offset_bottom = 87.0
 rotation = -0.843002
-icon = ExtResource("2_odqi8")
+icon = ExtResource("2_8h42w")
+expand_icon = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-visible = false
 z_index = 15
+position = Vector2(2.10227, 31.2076)
 rotation = -0.841249
-scale = Vector2(0.3, 0.3)
-texture = ExtResource("2_yunp4")
+scale = Vector2(0.609719, 0.608066)
+texture = ExtResource("3_tidaj")
+
+[node name="Weapon1" type="Sprite2D" parent="."]
+z_index = 15
+position = Vector2(-24, -10)
+scale = Vector2(0.04, 0.04)
+texture = ExtResource("4_rvcvo")
+
+[node name="Weapon2" type="Sprite2D" parent="."]
+z_index = 15
+position = Vector2(26, -14)
+scale = Vector2(0.04, 0.04)
+texture = ExtResource("5_06dsw")
 
 [node name="battlecontrol" type="Control" parent="."]
 anchors_preset = 0
@@ -41,28 +58,58 @@ offset_bottom = -212.0
 
 [node name="ProgressBar" type="ProgressBar" parent="."]
 layout_mode = 0
-offset_left = -62.0
-offset_top = 74.0
-offset_right = 74.0
-offset_bottom = 101.0
+offset_left = -38.0
+offset_top = 80.0
+offset_right = 42.0
+offset_bottom = 102.0
 show_percentage = false
+
+[node name="ManpowerLabel" type="Label" parent="ProgressBar"]
+layout_mode = 0
+offset_left = -4.0
+offset_top = -2.0
+offset_right = 80.0
+offset_bottom = 24.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 18
+text = "0/0"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="ShieldBar" type="ProgressBar" parent="."]
 layout_mode = 0
-offset_left = -62.0
-offset_top = 74.0
-offset_right = 74.0
-offset_bottom = 101.0
+offset_left = -38.0
+offset_top = 60.0
+offset_right = 42.0
+offset_bottom = 82.0
 mouse_filter = 2
-show_percentage = false
 theme_override_styles/background = SubResource("StyleBoxFlat_shield_bg")
 theme_override_styles/fill = SubResource("StyleBoxFlat_shield_fill")
+show_percentage = false
+
+[node name="ShieldLabel" type="Label" parent="ShieldBar"]
+layout_mode = 0
+offset_left = 12.0
+offset_top = -2.0
+offset_right = 64.0
+offset_bottom = 24.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 18
+text = "0/0"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 0
-offset_left = 30.0
-offset_top = -76.0
-offset_right = 70.0
-offset_bottom = -53.0
+offset_left = -20.0
+offset_top = -48.0
+offset_right = 20.0
+offset_bottom = -25.0
 
 [connection signal="pressed" from="APFButton" to="." method="_on_apf_button_pressed"]
