@@ -2118,6 +2118,7 @@ func _on_player_battle_resolved(tile, atk_loss: int, def_loss: int) -> void:
 
 
 func _on_ai_battle_resolved(tile, atk_loss: int, def_loss: int) -> void:
+	print("[AIDBG] recorder fired (queue was ", _ai_playback_queue.size(), ")")
 	# Record the AI battle for replay instead of flashing it off-screen during the sync turn.
 	_ai_playback_queue.append({
 		"tile": tile, "atk_loss": atk_loss, "def_loss": def_loss,
@@ -2126,6 +2127,7 @@ func _on_ai_battle_resolved(tile, atk_loss: int, def_loss: int) -> void:
 
 
 func _play_ai_turn() -> void:
+	print("[AIDBG] play_ai_turn queue size = ", _ai_playback_queue.size())
 	# Replay this round's recorded AI battles: pan to each, show the numbers, pause.
 	if _ai_playback_queue.is_empty():
 		return

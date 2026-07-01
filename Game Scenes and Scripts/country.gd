@@ -1484,6 +1484,7 @@ func _uk_attack_tile(army: Army, targetTile) -> void:
 	if targetTile == null:
 		return
 	var old_tile = army.inTile
+	print("[AIDBG] UK attacks ", targetTile.tileName, " | defended=", targetTile.stationedArmy != null)
 	targetTile.siegeCalculate(army)
 	if targetTile.stationedArmy != null:
 		_resolve_ai_battle(army, targetTile.stationedArmy, targetTile)
