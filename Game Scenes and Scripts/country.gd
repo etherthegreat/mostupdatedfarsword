@@ -603,6 +603,7 @@ signal commanderFallen(commander, army_name: String, tile)
 signal countryArmyDestroyed(lost_army: Army)
 
 func _on_army_destroyed(army: Army) -> void:
+	print("[ARMYDEATH] ", CID, " '", army.ArmyName, "' destroyed at ", (army.inTile.tileName if army.inTile != null else "?"))
 	if army.commander != null:
 		emit_signal("commanderFallen", army.commander, army.ArmyName, army.inTile)
 	countryArmyList.erase(army)

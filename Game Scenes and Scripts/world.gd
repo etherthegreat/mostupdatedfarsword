@@ -2072,6 +2072,12 @@ func _on_ai_army_repositioned(army: Army, old_tile: Tile, new_tile: Tile) -> voi
 	new_ppb.occupied = true
 	apf.currentPathPoint = new_ppb
 	apf.currentTile = new_tile
+	# Record the move for the AI-turn replay (played back as an animated march).
+	_ai_playback_queue.append({
+		"kind": "move", "apf": apf,
+		"old_tile": old_tile, "new_tile": new_tile,
+		"country": _ai_recording_country,
+	})
 
 # ── ITEM 4: AI COMBAT LOG ─────────────────────────────────────────────────────
 func _on_ai_combat_event(attacker_cid: String, tile, result: String) -> void:
@@ -2079,7 +2085,7 @@ func _on_ai_combat_event(attacker_cid: String, tile, result: String) -> void:
 	_ai_combat_log.append({"attacker": attacker_cid, "tile": tname, "result": result})
 	# Record every AI attack/capture for the replay tour; attach any battle losses stashed above.
 	_ai_playback_queue.append({
-		"tile": tile, "result": result,
+		"kind": "combat", "tile": tile, "result": result,
 		"atk_loss": _stashed_atk_loss, "def_loss": _stashed_def_loss,
 		"country": _ai_recording_country,
 	})
@@ -2139,28 +2145,55 @@ func _on_ai_battle_resolved(tile, atk_loss: int, def_loss: int) -> void:
 
 
 func _play_ai_turn() -> void:
-	# Replay this round's recorded AI battles: pan to each, show the numbers, pause.
+	# Replay the AI round: marches, sieges, and battles with camera + numbers.
 	if _ai_playback_queue.is_empty():
 		return
 	_playing_ai = true
 	_skip_ai_playback = false
 	for entry in _ai_playback_queue:
-		if not _skip_ai_playback:
-			var tile = entry["tile"]
+		if _skip_ai_playback:
+			if entry.get("kind") != "move":
+				_show_ai_battle(entry)
+			continue
+		if entry.get("kind") == "move":
+			await _play_ai_move(entry)
+		else:
+			var tile = entry.get("tile")
 			if is_instance_valid(tile) and tile.tileSpawnPoint != null:
 				focus_camera_on(tile.tileSpawnPoint, 0.35)
 				await get_tree().create_timer(0.4).timeout
-		_show_ai_battle(entry)
-		if not _skip_ai_playback:
-			await get_tree().create_timer(0.6).timeout
+			_show_ai_battle(entry)
+			await get_tree().create_timer(0.5).timeout
 	_ai_playback_queue.clear()
 	_playing_ai = false
 
 
+func _play_ai_move(entry) -> void:
+	var apf = entry["apf"]
+	var old_tile = entry["old_tile"]
+	var new_tile = entry["new_tile"]
+	if not is_instance_valid(apf) or old_tile == null or new_tile == null \
+			or old_tile.tileSpawnPoint == null or new_tile.tileSpawnPoint == null:
+		return
+	var from_pos: Vector2 = old_tile.tileSpawnPoint.global_position
+	var to_pos: Vector2 = new_tile.tileSpawnPoint.global_position
+	focus_camera_on(new_tile.tileSpawnPoint, 0.35)
+	apf.z_as_relative = false
+	apf.z_index = 100
+	apf.global_position = from_pos
+	var tw = create_tween()
+	tw.tween_property(apf, "global_position", to_pos, 0.5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	await tw.finished
+	apf.z_as_relative = true
+	apf.z_index = 15
+
+
 func _show_ai_battle(entry) -> void:
 	# HOOK: entry["country"] is available here for a future 'Jessica's / George III's Turn' banner.
-	if entry["atk_loss"] > 0 or entry["def_loss"] > 0:
-		_on_battle_resolved(entry["tile"], entry["atk_loss"], entry["def_loss"])
+	var al = entry.get("atk_loss", 0)
+	var dl = entry.get("def_loss", 0)
+	if al > 0 or dl > 0:
+		_on_battle_resolved(entry.get("tile"), al, dl)
 
 
 func _unhandled_input(event: InputEvent) -> void:
