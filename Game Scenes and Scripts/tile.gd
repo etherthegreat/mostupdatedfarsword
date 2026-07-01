@@ -1028,10 +1028,11 @@ func devChange(devType, devCivilian):
 func siegeCalculate(army):
 	if tileOwner == "":
 		return
-	if army.parentCountry.CID != tileOwner:
-		currentSiegeProgress += army.armySiegeScore
-	if currentSiegeProgress >= maxSiegeProgress:
-		emit_signal("newSiegeStatus", self, tileOwner, army.parentCountry.CID)
+	if is_instance_valid(army):
+		if army.parentCountry.CID != tileOwner:
+			currentSiegeProgress += army.armySiegeScore
+		if currentSiegeProgress >= maxSiegeProgress:
+			emit_signal("newSiegeStatus", self, tileOwner, army.parentCountry.CID)
 
 
 # ============================================================
@@ -2183,4 +2184,4 @@ func is_counterintelligence_ready() -> bool:
 	# Can this tile catch a spy?
 	# Has barracks + governor + recent espionage activity
 	# Use for: spy capture events
-	return has_governor() and has_barracks() and espionageActive
+	return has_governor() and h
