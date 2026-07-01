@@ -8,6 +8,10 @@ const APF_BACKGROUNDS := {
 	"CA":  "res://art assets/AmericanRevolutionArt/apfs/apf ca background.png",
 }
 
+const APF_BASE_SCALE := 0.6     # resting on-screen size at zoom 1x (one knob to tune)
+var _cam: Camera2D = null
+var _hover_scale: float = 1.0
+
 var thisArmy: Army
 var thisCountry
 var currentTile: Tile
@@ -100,6 +104,7 @@ func _process(_delta: float) -> void:
 	if thisArmy == null:
 		return
 	refreshHealthBar()
+	_update_token_scale()
 	if thisArmy.deleteMode == false:
 		if attack_mode:
 			_process_attack()
@@ -214,12 +219,25 @@ func _set_weapon_sprite(sprite: Sprite2D, unit, show_it: bool) -> void:
 
 func _on_apf_mouse_entered() -> void:
 	z_index = 60          # bring the hovered token fully to front (fixes cluster overlap)
+	_hover_scale = 1.4
 	_refresh_weapon_icons(true)
 
 
 func _on_apf_mouse_exited() -> void:
 	z_index = 15
+	_hover_scale = 1.0
 	_refresh_weapon_icons(false)
+
+
+func _update_token_scale() -> void:
+	# Zoom-responsive: hold a constant on-screen size (inverse of camera zoom) * hover pop.
+	if _cam == null or not is_instance_valid(_cam):
+		_cam = get_viewport().get_camera_2d()
+	var zoomv: float = 1.0
+	if _cam != null and _cam.zoom.x > 0.0:
+		zoomv = _cam.zoom.x
+	var sc: float = (APF_BASE_SCALE / zoomv) * _hover_scale
+	scale = Vector2(sc, sc)
 
 
 signal apfSelected
