@@ -2085,6 +2085,7 @@ func _spawn_damage_number(amount: int, color: Color, world_pos: Vector2, x_offse
 		return
 	var node = _floating_damage_scene.instantiate()
 	add_child(node)
+	node.z_index = 200            # draw above tiles + army tokens
 	node.global_position = world_pos + Vector2(x_offset, 0.0)
 	node.setup(amount, color)
 
