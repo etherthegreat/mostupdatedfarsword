@@ -329,6 +329,7 @@ func _on_attack_midpoint(apf: armyPathFollow) -> void:
 	var atk_loss = int(raw_counter * (1.0 - atk_block))
 	defender.calculateDefenderResults("melee", def_loss)
 	attacker.calculateDefenderResults("melee", atk_loss)
+	attacker.spend_attack_ap()
 	# Also update siege on the target tile
 	targetPPB.siegeTile(attacker)
 	# Emit for floating damage numbers

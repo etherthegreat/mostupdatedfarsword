@@ -200,7 +200,7 @@ func onTurnEnd():
 		isHolding = true
 		holdPending = false
 	for _u in unitsList:
-		_u.unitStance = "attack"
+		_u.unitStance = "fire"
 		_u.unitCurrentAP = _u.get_max_ap()
 	# Restore full movement points at the start of each new turn
 	currentMovementPoints = maxMovementPoints + _commander_movement_bonus()
@@ -292,7 +292,7 @@ func attack_power_factor() -> float:
 	for u in unitsList:
 		if u.unitCurrentManpower > 0:
 			living += 1
-			if u.unitStance != "hold":
+			if u.unitStance != "hold" and u.unitCurrentAP > 0:
 				fighting += 1
 	if living == 0:
 		return 0.0
@@ -305,6 +305,12 @@ func hold_defense_bonus() -> int:
 		if u.unitCurrentManpower > 0 and u.unitStance == "hold":
 			bonus += 20
 	return bonus
+
+
+func spend_attack_ap() -> void:
+	for u in unitsList:
+		if u.unitCurrentManpower > 0 and u.unitStance != "hold":
+			u.spend_ap()
 
 
 func has_charging_unit() -> bool:

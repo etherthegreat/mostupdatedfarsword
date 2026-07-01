@@ -441,7 +441,7 @@ func can_fire_ranged() -> bool:
 		return reloadCounter <= 0
 	return false  # sabers can't fire ranged at all
 
-var unitStance: String = "attack"  # attack / hold / charge — set by the army panel
+var unitStance: String = "fire"  # fire / charge / hold — set by the army panel
 var unitCurrentAP: int = 1          # action points left this turn
 
 const TWO_AP_WEAPONS := ["Marine Mameluke", "Lever Repeater", "Early Rockets", "Rocket Artillery"]
