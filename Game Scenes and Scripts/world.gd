@@ -5635,13 +5635,40 @@ func _on_spell_schools_control_calculate_player_outputs(spellSchools) -> void:
 	calculatePlayerOutputs(spellSchools)
 	pass # Replace with function body.
 
+func _tile_home_nation(tile) -> String:
+	# The tile's rightful owner, derived from its region. Owner-independent.
+	var c: String = tile.tileContinent
+	if c.begins_with("CA -"):
+		return "CA"
+	if c == "BA":
+		return "UK"
+	if c == "" or c == "Neutral":
+		return ""
+	return "USA"
+
+
+func _cids_allied(cid_a: String, cid_b: String) -> bool:
+	for country in aliveCountriesList:
+		if country.CID == cid_a:
+			for ally in country.ALLIED:
+				if is_instance_valid(ally) and ally.CID == cid_b:
+					return true
+	return false
+
+
 func tileSiegeWon(tile, oldCID: String, newCID: String) -> void:
+	# Liberation: a tile freed by an ALLY of its home nation returns to that nation.
+	# Not allied? The conqueror keeps the spoils (opens the door to conquest-run trickery).
+	var finalCID: String = newCID
+	var home: String = _tile_home_nation(tile)
+	if home != "" and home != newCID and _cids_allied(newCID, home):
+		finalCID = home
 	for country in aliveCountriesList:
 		if country.CID == oldCID:
 			country.OwnedTileList.erase(tile)
-		if country.CID == newCID:
+		if country.CID == finalCID:
 			country.addTile(tile)
-	tile.record_conquest(newCID)
+	tile.record_conquest(finalCID)
 
 	# ── ITEM 3: clean up any APF belonging to the losing side ────────────────
 	var ppb = tile.tileSpawnPoint
