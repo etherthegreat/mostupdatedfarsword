@@ -361,6 +361,24 @@ func offensive_output(require_ap: bool, holders_counter: bool) -> Dictionary:
 	return {"ranged": ranged, "melee": melee}
 
 
+func compute_battle_against(defender: Army) -> Dictionary:
+	# Shared attack math for player, AI, and the hover preview. Pure — no side effects.
+	# Fire -> ranged (mitigated by armyDefence); Charge -> melee (mitigated by armyBlock).
+	surveySelf()
+	defender.surveySelf()
+	var d_units: float = max(1.0, float(defender.unitsList.size()))
+	var a_units: float = max(1.0, float(unitsList.size()))
+	var a_out: Dictionary = offensive_output(true, false)
+	var d_rblock: float = clamp((float(defender.armyDefence) + float(defender.hold_defense_bonus())) / d_units, 0.0, 0.9)
+	var d_mblock: float = clamp((float(defender.armyBlock) + float(defender.hold_defense_bonus())) / d_units, 0.0, 0.9)
+	var def_loss: int = int(a_out["ranged"] * (1.0 - d_rblock) + a_out["melee"] * (1.0 - d_mblock))
+	var d_out: Dictionary = defender.offensive_output(false, true)
+	var a_rblock: float = clamp((float(armyDefence) + float(hold_defense_bonus())) / a_units, 0.0, 0.9)
+	var a_mblock: float = clamp((float(armyBlock) + float(hold_defense_bonus())) / a_units, 0.0, 0.9)
+	var atk_loss: int = int(d_out["ranged"] * (1.0 - a_rblock) + d_out["melee"] * (1.0 - a_mblock))
+	return {"def_loss": def_loss, "atk_loss": atk_loss}
+
+
 func has_charging_unit() -> bool:
 	for u in unitsList:
 		if u.unitCurrentManpower > 0 and u.unitStance == "charge":

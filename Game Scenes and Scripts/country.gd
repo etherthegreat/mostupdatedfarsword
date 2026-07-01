@@ -1498,67 +1498,22 @@ func _uk_attack_tile(army: Army, targetTile) -> void:
 
 
 func _resolve_ai_battle(attacker: Army, defender: Army, tile) -> void:
-	# Refresh both so active statuses (Hold, buffs) are reflected in the math.
-	attacker.surveySelf()
-	defender.surveySelf()
-	# Mirrors battle.gd: prefer ranged if attacker has ready ranged units
-	var use_ranged: bool = attacker.has_ready_ranged_units() and attacker.armyLaunch > 0
-	var battle_type: String = "ranged" if use_ranged else "melee"
-
-	var defender_loss: int = 0
-	var attacker_loss: int = 0
-
-	if use_ranged:
-		var effective_launch = float(attacker.armyLaunch)
-		var ranged_block = clamp(
-			(float(defender.armyDefence) + float(defender.hold_defense_bonus())) / max(1.0, float(defender.unitsList.size())),
-			0.0, 0.9)
-		var net = effective_launch * (1.0 - ranged_block)
-		# CannonBlast bonus vs unshielded
-		if defender.armyShield <= 0 and attacker._army_has_active_mod("CannonBlast"):
-			net *= 3.0
-		var shield_hit = int(min(float(defender.armyShield), net))
-		defender.armyShield = max(0, defender.armyShield - shield_hit)
-		defender_loss = int(net - float(shield_hit))
-		# Counter-ranged if defender can fire
-		if defender.has_ready_ranged_units() and defender.armyLaunch > 0:
-			var counter_launch = float(defender.armyLaunch)
-			var atk_block = clamp(
-				float(attacker.armyDefence) / max(1.0, float(attacker.unitsList.size())),
-				0.0, 0.9)
-			var counter_net = counter_launch * (1.0 - atk_block)
-			var atk_shield_hit = int(min(float(attacker.armyShield), counter_net))
-			attacker.armyShield = max(0, attacker.armyShield - atk_shield_hit)
-			attacker_loss = int(counter_net - float(atk_shield_hit))
-		# Trigger reload on attacker's ranged units
-		attacker.tick_all_reloads()
-		for unit in attacker.unitsList:
-			if unit.unitWeapon != null and (unit.unitWeapon.is_musket() or unit.unitWeapon.is_artillery()):
-				if not unit.is_reloading():
-					unit.start_reload()
-	else:
-		var raw_attack = float(attacker.armyPunch)
-		var block_ratio = clamp(
-			(float(defender.armyBlock) + float(defender.hold_defense_bonus())) / max(1.0, float(defender.unitsList.size())),
-			0.0, 0.9)
-		var net = raw_attack * (1.0 - block_ratio)
-		var shield_hit = int(min(float(defender.armyShield), net))
-		defender.armyShield = max(0, defender.armyShield - shield_hit)
-		defender_loss = int(net - float(shield_hit))
-		# Counter-melee
-		var counter = float(defender.armyPunch)
-		var attacker_block = clamp(
-			float(attacker.armyBlock) / max(1.0, float(attacker.unitsList.size())),
-			0.0, 0.9)
-		var counter_net = counter * (1.0 - attacker_block)
-		var atk_shield_hit = int(min(float(attacker.armyShield), counter_net))
-		attacker.armyShield = max(0, attacker.armyShield - atk_shield_hit)
-		attacker_loss = int(counter_net - float(atk_shield_hit))
-
+	# SAME math as the player + hover preview (Army.compute_battle_against), so both sides
+	# fight by identical rules — the player can see exactly why the AI hits as hard as it does.
+	var bt: Dictionary = attacker.compute_battle_against(defender)
+	var defender_loss: int = int(bt["def_loss"])
+	var attacker_loss: int = int(bt["atk_loss"])
 	if defender_loss > 0:
-		defender.calculateDefenderResults(battle_type, defender_loss)
+		defender.calculateDefenderResults("melee", defender_loss)
 	if attacker_loss > 0:
-		attacker.calculateDefenderResults(battle_type, attacker_loss)
+		attacker.calculateDefenderResults("melee", attacker_loss)
+	attacker.spend_attack_ap()
+	# Cycle the attacker's fired ranged units back through reload (unchanged AI behavior).
+	attacker.tick_all_reloads()
+	for unit in attacker.unitsList:
+		if unit.unitWeapon != null and (unit.unitWeapon.is_musket() or unit.unitWeapon.is_artillery()):
+			if not unit.is_reloading():
+				unit.start_reload()
 	emit_signal("battleResolved", tile, attacker_loss, defender_loss)
 
 

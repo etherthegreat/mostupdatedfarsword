@@ -124,21 +124,8 @@ func _on_apf_right_clicked(clickedArmy, apf, currentTile, clickedCountry, curren
 
 
 func compute_battle(attacker: Army, defender: Army) -> Dictionary:
-	# Shared attack math for live resolution AND the hover preview.
-	# Fire -> ranged (mitigated by armyDefence); Charge -> melee (mitigated by armyBlock).
-	attacker.surveySelf()
-	defender.surveySelf()
-	var d_units: float = max(1.0, float(defender.unitsList.size()))
-	var a_units: float = max(1.0, float(attacker.unitsList.size()))
-	var a_out: Dictionary = attacker.offensive_output(true, false)
-	var d_rblock: float = clamp((float(defender.armyDefence) + float(defender.hold_defense_bonus())) / d_units, 0.0, 0.9)
-	var d_mblock: float = clamp((float(defender.armyBlock) + float(defender.hold_defense_bonus())) / d_units, 0.0, 0.9)
-	var def_loss: int = int(a_out["ranged"] * (1.0 - d_rblock) + a_out["melee"] * (1.0 - d_mblock))
-	var d_out: Dictionary = defender.offensive_output(false, true)
-	var a_rblock: float = clamp((float(attacker.armyDefence) + float(attacker.hold_defense_bonus())) / a_units, 0.0, 0.9)
-	var a_mblock: float = clamp((float(attacker.armyBlock) + float(attacker.hold_defense_bonus())) / a_units, 0.0, 0.9)
-	var atk_loss: int = int(d_out["ranged"] * (1.0 - a_rblock) + d_out["melee"] * (1.0 - a_mblock))
-	return {"def_loss": def_loss, "atk_loss": atk_loss}
+	# One formula for player, AI, and the preview — lives on the Army class now.
+	return attacker.compute_battle_against(defender)
 
 
 var _preview_panel: PanelContainer = null
