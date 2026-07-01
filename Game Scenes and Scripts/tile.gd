@@ -2184,4 +2184,4 @@ func is_counterintelligence_ready() -> bool:
 	# Can this tile catch a spy?
 	# Has barracks + governor + recent espionage activity
 	# Use for: spy capture events
-	return has_governor() and h
+	return has_governor()
