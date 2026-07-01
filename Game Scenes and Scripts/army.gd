@@ -299,6 +299,19 @@ func attack_power_factor() -> float:
 	return float(fighting) / float(living)
 
 
+func counter_power_factor() -> float:
+	# Counterfire is a REACTION (no AP needed). Holding units counter at 1.5x — reward for bracing.
+	var living: int = 0
+	var power: float = 0.0
+	for u in unitsList:
+		if u.unitCurrentManpower > 0:
+			living += 1
+			power += 1.5 if u.unitStance == "hold" else 1.0
+	if living == 0:
+		return 0.0
+	return power / float(living)
+
+
 func hold_defense_bonus() -> int:
 	var bonus: int = 0
 	for u in unitsList:

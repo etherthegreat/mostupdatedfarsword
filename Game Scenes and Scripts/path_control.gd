@@ -322,7 +322,7 @@ func _on_attack_midpoint(apf: armyPathFollow) -> void:
 		(float(defender.armyBlock) + float(defender.hold_defense_bonus())) / max(1.0, float(defender.unitsList.size())),
 		0.0, 0.9)
 	var def_loss = int(raw_atk * (1.0 - def_block))
-	var raw_counter = float(defender.armyPunch) * defender.attack_power_factor()
+	var raw_counter = float(defender.armyPunch) * defender.counter_power_factor()
 	var atk_block = clamp(
 		(float(attacker.armyBlock) + float(attacker.hold_defense_bonus())) / max(1.0, float(attacker.unitsList.size())),
 		0.0, 0.9)
