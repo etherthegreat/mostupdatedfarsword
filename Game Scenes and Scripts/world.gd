@@ -46,6 +46,10 @@ var _ca_vp_governor = null             # reference to Marc Penoit as CA Deputy G
 var _ca_vp_faction: String = ""        # faction of CA's Deputy Governor
 var _peace_dock_was_uk: Dictionary = {}  # tile_num → bool; tracks UK ownership flip per turn
 var _ai_combat_log: Array = []           # entries collected during AI resolution each round
+var _ai_playback_queue: Array = []       # AI battles recorded this round, replayed with camera + pauses
+var _ai_recording_country = null         # which AI country is currently taking its turn
+var _skip_ai_playback: bool = false      # fast-forward the replay
+var _playing_ai: bool = false            # true while the AI-turn replay runs
 var _floating_damage_scene = preload("res://floating_damage_number.tscn")
 var _peace_last_freed_tile = null        # most-recently freed peace dock tile node
 var isCoopMode: bool = false             # true when both USA and CA are player-controlled
@@ -1542,8 +1546,8 @@ func connectCountrySignals():
 			country.armyRepositioned.connect(_on_ai_army_repositioned)
 		if not country.aiCombatEvent.is_connected(_on_ai_combat_event):
 			country.aiCombatEvent.connect(_on_ai_combat_event)
-		if not country.battleResolved.is_connected(_on_battle_resolved):
-			country.battleResolved.connect(_on_battle_resolved)
+		if not country.battleResolved.is_connected(_on_ai_battle_resolved):
+			country.battleResolved.connect(_on_ai_battle_resolved)
 
 func _raise_starting_armies() -> void:
 	# Raises every army that was created during NewGameBuild() (CSV-named starting
@@ -1629,10 +1633,15 @@ func _set_active_country_no_ui(cid: String) -> void:
 
 
 func _resolve_ai_and_advance_round() -> void:
-	# All non-player countries take their AI turn
+	# All non-player countries take their AI turn (battles are recorded, shown afterward)
+	_ai_playback_queue.clear()
 	for c in aliveCountriesList:
 		if c.CID not in _player_turn_order:
+			_ai_recording_country = c
 			c.calculateTurn()
+	_ai_recording_country = null
+	# Replay the AI's turn with camera + damage numbers so the player can watch it
+	await _play_ai_turn()
 	$CanvasLayer/WarRoomPanel.checkObjectives($TileController.get_children(), currentWorldTurn)
 	currentWorldTurn += 1
 	_advance_fortnight()
@@ -2106,6 +2115,44 @@ func _on_battle_resolved(tile, atk_loss: int, def_loss: int) -> void:
 
 func _on_player_battle_resolved(tile, atk_loss: int, def_loss: int) -> void:
 	_on_battle_resolved(tile, atk_loss, def_loss)
+
+
+func _on_ai_battle_resolved(tile, atk_loss: int, def_loss: int) -> void:
+	# Record the AI battle for replay instead of flashing it off-screen during the sync turn.
+	_ai_playback_queue.append({
+		"tile": tile, "atk_loss": atk_loss, "def_loss": def_loss,
+		"country": _ai_recording_country,
+	})
+
+
+func _play_ai_turn() -> void:
+	# Replay this round's recorded AI battles: pan to each, show the numbers, pause.
+	if _ai_playback_queue.is_empty():
+		return
+	_playing_ai = true
+	_skip_ai_playback = false
+	for entry in _ai_playback_queue:
+		if not _skip_ai_playback:
+			var tile = entry["tile"]
+			if is_instance_valid(tile) and tile.tileSpawnPoint != null:
+				focus_camera_on(tile.tileSpawnPoint, 0.35)
+				await get_tree().create_timer(0.4).timeout
+		_show_ai_battle(entry)
+		if not _skip_ai_playback:
+			await get_tree().create_timer(0.6).timeout
+	_ai_playback_queue.clear()
+	_playing_ai = false
+
+
+func _show_ai_battle(entry) -> void:
+	# HOOK: entry["country"] is available here for a future 'Jessica's / George III's Turn' banner.
+	_on_battle_resolved(entry["tile"], entry["atk_loss"], entry["def_loss"])
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	# A click or keypress during the AI replay fast-forwards it.
+	if _playing_ai and event.is_pressed():
+		_skip_ai_playback = true
 
 func raiseArmyFromWorld(Army, country, Tile):
 	if Tile == null or not is_instance_valid(Tile):
@@ -5744,7 +5791,7 @@ func _on_next_turn_pressed() -> void:
 	else:
 		# All player turns done — run AI and advance the world
 		_turn_phase_index = 0
-		_resolve_ai_and_advance_round()
+		await _resolve_ai_and_advance_round()
 		# Restore first player as active after round ends
 		if not _game_ended:
 			_activate_player(_player_turn_order[0])
