@@ -60,6 +60,9 @@ func _on_play_button_pressed() -> void:
 	# If world were a child of new_game_selection, freeing the menu would also
 	# free the world and all country nodes (including playerCountryNode).
 	get_tree().root.add_child(newGame)
+	# Make the world the tree's current scene so Quit-to-Menu's change_scene_to_file
+	# can actually free it (otherwise the menu just loads on top of the orphaned game).
+	get_tree().current_scene = newGame
 	newGame.newGameBuild(selectedCountry, language, isCoopMode)
 	# Free this menu — the built world is already in the root tree and fully ready.
 	queue_free()
