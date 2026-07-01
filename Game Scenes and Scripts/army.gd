@@ -199,6 +199,8 @@ func onTurnEnd():
 	if holdPending:
 		isHolding = true
 		holdPending = false
+	for _u in unitsList:
+		_u.unitStance = "attack"
 	# Restore full movement points at the start of each new turn
 	currentMovementPoints = maxMovementPoints + _commander_movement_bonus()
 	# Reset per-turn flags (re-derived below from active statuses)
@@ -280,6 +282,35 @@ func declareHold() -> void:
 func cancelHold() -> void:
 	isHolding = false
 	holdPending = false
+
+
+func attack_power_factor() -> float:
+	# Fraction of living units that are fighting (not holding). Holding a unit trades attack for defense.
+	var living: int = 0
+	var fighting: int = 0
+	for u in unitsList:
+		if u.unitCurrentManpower > 0:
+			living += 1
+			if u.unitStance != "hold":
+				fighting += 1
+	if living == 0:
+		return 0.0
+	return float(fighting) / float(living)
+
+
+func hold_defense_bonus() -> int:
+	var bonus: int = 0
+	for u in unitsList:
+		if u.unitCurrentManpower > 0 and u.unitStance == "hold":
+			bonus += 20
+	return bonus
+
+
+func has_charging_unit() -> bool:
+	for u in unitsList:
+		if u.unitCurrentManpower > 0 and u.unitStance == "charge":
+			return true
+	return false
 
 
 func combat_status_tag() -> String:

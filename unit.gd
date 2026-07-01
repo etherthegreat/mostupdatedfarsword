@@ -441,6 +441,9 @@ func can_fire_ranged() -> bool:
 		return reloadCounter <= 0
 	return false  # sabers can't fire ranged at all
 
+var unitStance: String = "attack"  # attack / hold / charge — set by the army panel
+
+
 func can_charge_melee() -> bool:
 	# Sabers can always charge, muskets can melee with bayonet
 	# Artillery cannot melee
