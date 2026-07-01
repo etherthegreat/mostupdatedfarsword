@@ -211,6 +211,8 @@ func _refresh_weapon_icons(show_them: bool = false) -> void:
 
 
 func _set_weapon_sprite(sprite: Sprite2D, unit, show_it: bool) -> void:
+	if sprite == null:
+		return
 	if unit != null and unit.unitWeapon != null and unit.unitWeapon.weaponImage != null:
 		sprite.texture = unit.unitWeapon.weaponImage
 		sprite.visible = show_it
