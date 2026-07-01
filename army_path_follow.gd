@@ -109,7 +109,7 @@ func _process(_delta: float) -> void:
 		if attack_mode:
 			_process_attack()
 		elif movingBackward == true:
-			progressRate -= 0.02
+			progressRate -= 0.01
 			if progressRate <= 0:
 				movingBackward = false
 				currentPathPoint = destinationPathPoint
@@ -120,7 +120,7 @@ func _process(_delta: float) -> void:
 			else:
 				emit_signal("armyTraveling", progressRate, destinationPathPoint, thisArmy)
 		elif movingForward == true:
-			var march_speed: float = 0.02
+			var march_speed: float = 0.01
 			if currentTile != null and currentTile.winterScore > 0 \
 					and not thisArmy.armyTags.has("Cold Weather"):
 				march_speed *= currentTile.get_winter_army_modifier()
