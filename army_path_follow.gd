@@ -185,6 +185,7 @@ func onRaise(Army, country, pathPoint):
 	if not $APFButton.mouse_entered.is_connected(_on_apf_mouse_entered):
 		$APFButton.mouse_entered.connect(_on_apf_mouse_entered)
 		$APFButton.mouse_exited.connect(_on_apf_mouse_exited)
+		$APFButton.gui_input.connect(_on_apf_gui_input)
 	refreshHealthBar()
 
 func _refresh_appearance() -> void:
@@ -244,6 +245,13 @@ signal apfSelected
 func _on_apf_button_pressed() -> void:
 	if spellToCast == null:
 		emit_signal("apfSelected", thisArmy, self, currentTile, thisCountry, currentPathPoint)
+
+
+signal apfRightClicked
+func _on_apf_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+		emit_signal("apfRightClicked", thisArmy, self, currentTile, thisCountry, currentPathPoint)
+		get_viewport().set_input_as_handled()
 	else:
 		thisArmy.armyCharm = spellToCast
 		spellToCast = null

@@ -1760,10 +1760,7 @@ func manaUpdate(type, amount, dictionary):
 
 func tileClicked(tile):
 	selectedTile = tile
-	# Left-click while army selected — try to move/attack first
-	if $PathControl.tryMoveSelectedAPFToTile(tile):
-		return
-	# No movement — deselect army and open tile info
+	# Left-click a tile: deselect any army + open tile info (movement is right-click).
 	$PathControl.deselectAll()
 	$CanvasLayer/TileInfoPanel.displayTileInfo(tile)
 	if $CanvasLayer/TileInfoPanel.visible == false:

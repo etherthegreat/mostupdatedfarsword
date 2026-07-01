@@ -23,6 +23,7 @@ func raisePlayerArmy(Army, country, Tile, pathPointToSend):
 	pathPointToSend.occupied = true
 	pathPointToSend.stationedArmy = Army
 	newAPF.apfSelected.connect(displayapfInfo)
+	newAPF.apfRightClicked.connect(_on_apf_right_clicked)
 	newAPF.armyArrived.connect(armyArrivedFunc)
 	newAPF.siegeChange.connect(updateTileSiege)
 	newAPF.armyTraveling.connect(updateTravelingArmy)
@@ -39,6 +40,7 @@ func raiseComputerArmy(Army, country, Tile, pathPointToSend):
 	pathPointToSend.occupied = true
 	pathPointToSend.stationedArmy = Army
 	newAPF.apfSelected.connect(displayapfInfo)
+	newAPF.apfRightClicked.connect(_on_apf_right_clicked)
 	newAPF.armyArrived.connect(armyArrivedFunc)
 	newAPF.siegeChange.connect(updateTileSiege)
 	newAPF.armyTraveling.connect(updateTravelingArmy)
@@ -109,6 +111,15 @@ func deselectAll() -> void:
 	melee_mode = false
 	emit_signal("updatePathPoints", false)
 
+func _on_apf_right_clicked(clickedArmy, apf, currentTile, clickedCountry, currentPathPoint):
+	# Right-click an enemy APF to attack it (must neighbor the selected army).
+	if selectedAPF == null or clickedArmy == null or not clickedArmy.enemy:
+		return
+	var targetPPB = apf.currentPathPoint
+	if targetPPB != null and targetPPB in selectedAPF.currentPathPoint.neighborPathPoints:
+		_initiate_attack(targetPPB)
+
+
 func displayapfInfo(thisArmy, apf, currentTile, thisCountry, currentPathPoint):
 	if thisCountry == playerCountry:
 		updateArmyPanel(thisArmy, currentPathPoint)
@@ -117,11 +128,9 @@ func displayapfInfo(thisArmy, apf, currentTile, thisCountry, currentPathPoint):
 		_highlightMovableTiles(currentPathPoint)
 		emit_signal("activateArmyControlMode")
 		emit_signal("updatePathPoints", true)
-	elif selectedAPF != null:
-		# Enemy APF clicked while a player army is selected — attack if neighbor
-		var targetPPB = apf.currentPathPoint
-		if targetPPB != null and targetPPB in selectedAPF.currentPathPoint.neighborPathPoints:
-			_initiate_attack(targetPPB)
+	else:
+		# Left-click a British APF -> its info panel (to be built). Attacks are RIGHT-click.
+		pass
 
 # Called from world.gd tileClicked() when an APF is selected.
 # Returns true if the click was consumed (movement or attack initiated).
@@ -133,11 +142,10 @@ func tryMoveSelectedAPFToTile(tile: Tile) -> bool:
 		return false
 	if targetPPB not in selectedAPF.currentPathPoint.neighborPathPoints:
 		return false
-	# Tile occupied by an enemy → attack; otherwise move
-	if targetPPB.occupied and targetPPB.stationedArmy != null and targetPPB.stationedArmy.enemy:
-		_initiate_attack(targetPPB)
-	else:
-		calculateArmyMovement(targetPPB, targetPPB.neighborPathPoints, tile)
+	# Move only — never onto an occupied tile. Attacks are right-click on the enemy APF.
+	if targetPPB.occupied:
+		return false
+	calculateArmyMovement(targetPPB, targetPPB.neighborPathPoints, tile)
 	return true
 
 func displaycpfInfo(thisCiv, cpf, currentTile, thisCountry, currentPathPoint):
@@ -344,7 +352,8 @@ func _on_attack_midpoint(apf: armyPathFollow) -> void:
 		targetPPB.stationedAPF = null
 		targetPPB.stationedArmy = null
 		targetPPB.occupied = false
-	apf.resolveAttack(conquered)
+	var should_advance: bool = conquered and attacker.all_units_charging()
+	apf.resolveAttack(should_advance)
 
 func _on_attack_retreated(apf: armyPathFollow, returnPoint: pathPointButton) -> void:
 	removeFromUpdateArmyPaths()

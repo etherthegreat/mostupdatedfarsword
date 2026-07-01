@@ -326,6 +326,16 @@ func spend_attack_ap() -> void:
 			u.spend_ap()
 
 
+func all_units_charging() -> bool:
+	var any: bool = false
+	for u in unitsList:
+		if u.unitCurrentManpower > 0:
+			any = true
+			if u.unitStance != "charge":
+				return false
+	return any
+
+
 func has_charging_unit() -> bool:
 	for u in unitsList:
 		if u.unitCurrentManpower > 0 and u.unitStance == "charge":
