@@ -1415,10 +1415,12 @@ func _trace_supply_to_port(startTile) -> bool:
 
 func _apply_supply_attrition(army: Army) -> void:
 	var attrition_rate = 0.05
+	var _before = army.manpowerInArmy
 	for unit in army.unitsList:
 		var loss = int(unit.unitCurrentManpower * attrition_rate)
 		unit.unitCurrentManpower = max(0, unit.unitCurrentManpower - loss)
 	army.surveySelf()
+	print("[ATTRITION] ", CID, " '", army.ArmyName, "' ", _before, " -> ", army.manpowerInArmy, (" *** DIED FROM ATTRITION ***" if army.manpowerInArmy <= 0 else " (unsupplied)"))
 
 
 func is_army_supplied(army: Army) -> bool:

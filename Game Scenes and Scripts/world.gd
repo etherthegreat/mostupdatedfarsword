@@ -1637,6 +1637,7 @@ func _set_active_country_no_ui(cid: String) -> void:
 func _resolve_ai_and_advance_round() -> void:
 	# All non-player countries take their AI turn (battles are recorded, shown afterward)
 	_ai_playback_queue.clear()
+	_defer_events = true
 	for c in aliveCountriesList:
 		if c.CID not in _player_turn_order:
 			_ai_recording_country = c
@@ -1660,6 +1661,9 @@ func _resolve_ai_and_advance_round() -> void:
 	_apply_ualani_aura()
 	_check_win_conditions()
 	_show_ai_turn_report()
+	# Player's turn begins — release the events the AI turn queued so they don't block the replay.
+	_defer_events = false
+	_show_next_event()
 	# playerCountry/Node now hold last player in order; caller calls _activate_player to restore
 
 
@@ -2135,7 +2139,6 @@ func _on_ai_battle_resolved(tile, atk_loss: int, def_loss: int) -> void:
 
 
 func _play_ai_turn() -> void:
-	print("[AIDBG] play_ai_turn queue size = ", _ai_playback_queue.size())
 	# Replay this round's recorded AI battles: pan to each, show the numbers, pause.
 	if _ai_playback_queue.is_empty():
 		return
@@ -2189,6 +2192,7 @@ func activateArmyControl():
 var eventScene = load("res://eventScene.tscn")
 var _event_queue: Array = []      # pending events, shown one at a time
 var _event_showing: bool = false # true while an event panel is on screen
+var _defer_events: bool = false  # true during an AI turn — events queue, then flush at the player's turn
 
 var temporaryTile: Tile
 #MAP INTERACTION
@@ -2363,7 +2367,7 @@ func createNewEvent(event_id: String, tile = null, prepend: bool = false) -> voi
 	_show_next_event()
 
 func _show_next_event() -> void:
-	if _event_showing or _event_queue.is_empty():
+	if _event_showing or _event_queue.is_empty() or _defer_events:
 		return
 	var item: Dictionary = _event_queue.pop_front()
 	var event_id: String = item["event_id"]
