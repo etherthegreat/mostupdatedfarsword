@@ -245,6 +245,10 @@ signal apfSelected
 func _on_apf_button_pressed() -> void:
 	if spellToCast == null:
 		emit_signal("apfSelected", thisArmy, self, currentTile, thisCountry, currentPathPoint)
+	else:
+		# Left-click with a queued spell casts it on this army.
+		thisArmy.armyCharm = spellToCast
+		spellToCast = null
 
 
 signal apfRightClicked
@@ -252,9 +256,6 @@ func _on_apf_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
 		emit_signal("apfRightClicked", thisArmy, self, currentTile, thisCountry, currentPathPoint)
 		get_viewport().set_input_as_handled()
-	else:
-		thisArmy.armyCharm = spellToCast
-		spellToCast = null
 
 func showBattle(battle):
 	$battlecontrol.add_child(battle)

@@ -120,6 +120,24 @@ func _on_apf_right_clicked(clickedArmy, apf, currentTile, clickedCountry, curren
 		_initiate_attack(targetPPB)
 
 
+func compute_battle(attacker: Army, defender: Army) -> Dictionary:
+	# Shared attack math for live resolution AND the hover preview.
+	# Fire -> ranged (mitigated by armyDefence); Charge -> melee (mitigated by armyBlock).
+	attacker.surveySelf()
+	defender.surveySelf()
+	var d_units: float = max(1.0, float(defender.unitsList.size()))
+	var a_units: float = max(1.0, float(attacker.unitsList.size()))
+	var a_out: Dictionary = attacker.offensive_output(true, false)
+	var d_rblock: float = clamp((float(defender.armyDefence) + float(defender.hold_defense_bonus())) / d_units, 0.0, 0.9)
+	var d_mblock: float = clamp((float(defender.armyBlock) + float(defender.hold_defense_bonus())) / d_units, 0.0, 0.9)
+	var def_loss: int = int(a_out["ranged"] * (1.0 - d_rblock) + a_out["melee"] * (1.0 - d_mblock))
+	var d_out: Dictionary = defender.offensive_output(false, true)
+	var a_rblock: float = clamp((float(attacker.armyDefence) + float(attacker.hold_defense_bonus())) / a_units, 0.0, 0.9)
+	var a_mblock: float = clamp((float(attacker.armyBlock) + float(attacker.hold_defense_bonus())) / a_units, 0.0, 0.9)
+	var atk_loss: int = int(d_out["ranged"] * (1.0 - a_rblock) + d_out["melee"] * (1.0 - a_mblock))
+	return {"def_loss": def_loss, "atk_loss": atk_loss}
+
+
 func displayapfInfo(thisArmy, apf, currentTile, thisCountry, currentPathPoint):
 	if thisCountry == playerCountry:
 		updateArmyPanel(thisArmy, currentPathPoint)
@@ -318,23 +336,10 @@ func _on_attack_midpoint(apf: armyPathFollow) -> void:
 	if defender == null or not is_instance_valid(defender) or not defender.enemy:
 		apf.resolveAttack(false)
 		return
-	# Resolve battle inline (same formula as AI _resolve_ai_battle)
-	# Refresh both so active statuses (Exhausted, Hold, buffs) are reflected in the math.
-	attacker.surveySelf()
-	defender.surveySelf()
-	# Stances: attack scales by fighting-unit count; charge hits harder; holders add defense.
-	var raw_atk = float(attacker.armyPunch) * attacker.attack_power_factor()
-	if attacker.has_charging_unit():
-		raw_atk *= 1.4
-	var def_block = clamp(
-		(float(defender.armyBlock) + float(defender.hold_defense_bonus())) / max(1.0, float(defender.unitsList.size())),
-		0.0, 0.9)
-	var def_loss = int(raw_atk * (1.0 - def_block))
-	var raw_counter = float(defender.armyPunch) * defender.counter_power_factor()
-	var atk_block = clamp(
-		(float(attacker.armyBlock) + float(attacker.hold_defense_bonus())) / max(1.0, float(attacker.unitsList.size())),
-		0.0, 0.9)
-	var atk_loss = int(raw_counter * (1.0 - atk_block))
+	# Fire = ranged, Charge = melee. Shared with the hover preview via compute_battle().
+	var _bt: Dictionary = compute_battle(attacker, defender)
+	var def_loss: int = _bt["def_loss"]
+	var atk_loss: int = _bt["atk_loss"]
 	defender.calculateDefenderResults("melee", def_loss)
 	attacker.calculateDefenderResults("melee", atk_loss)
 	attacker.spend_attack_ap()

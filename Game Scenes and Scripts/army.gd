@@ -336,6 +336,31 @@ func all_units_charging() -> bool:
 	return any
 
 
+func offensive_output(require_ap: bool, holders_counter: bool) -> Dictionary:
+	# Fire units deal RANGED (unitRangedOffence); Charge units deal MELEE (unitOffensiveScore x1.4).
+	# require_ap: only units with an action point contribute (the initiating attack); false for reaction counters.
+	# holders_counter: holders still counter at 1.5x in their weapon's native mode (ranged for guns, melee for sabers).
+	var ranged: float = 0.0
+	var melee: float = 0.0
+	for u in unitsList:
+		if u == null or u.unitCurrentManpower <= 0:
+			continue
+		match u.unitStance:
+			"hold":
+				if holders_counter:
+					if u.unitWeapon != null and u.unitWeapon.weaponClass == "Saber":
+						melee += float(u.unitOffensiveScore) * 1.5
+					else:
+						ranged += float(u.unitRangedOffence) * 1.5
+			"fire":
+				if not require_ap or u.unitCurrentAP > 0:
+					ranged += float(u.unitRangedOffence)
+			"charge":
+				if not require_ap or u.unitCurrentAP > 0:
+					melee += float(u.unitOffensiveScore) * 1.4
+	return {"ranged": ranged, "melee": melee}
+
+
 func has_charging_unit() -> bool:
 	for u in unitsList:
 		if u.unitCurrentManpower > 0 and u.unitStance == "charge":
