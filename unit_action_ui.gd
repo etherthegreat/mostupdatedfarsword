@@ -55,7 +55,9 @@ func refresh() -> void:
 	for act in _buttons:
 		var b: Button = _buttons[act]
 		b.visible = act in allow
-		b.disabled = _unit.unitCurrentAP <= 0 and act != "hold"
+		var no_ap: bool = _unit.unitCurrentAP <= 0 and act != "hold"
+		var no_power: bool = (act == "fire" and _unit.unitRangedOffence <= 0) or (act == "charge" and _unit.unitOffensiveScore <= 0)
+		b.disabled = no_ap or no_power
 		b.modulate = Color(1, 1, 0.35) if _unit.unitStance == act else Color(1, 1, 1)
 
 func _allowed_actions(wclass: String) -> Array:
