@@ -6,6 +6,7 @@ var playerTiles: Array
 var updatingArmyPathFollow: PathFollow2D
 
 var selectedAPF: armyPathFollow
+var _highlightedTiles: Array = []
 var selectedCPF: civilianPathFollow
 
 var raisedPlayerAPFs: Array = []
@@ -95,7 +96,7 @@ func civilianArrivedFunc(pathOfCivilian, newPathPointButton, theCivilian, cpf, c
 			#pathPointButton.stationedCivilians.append(cpf)
 			newPathPointButton.occupied = true
 			#updateArmyPanel(theArmy, newPathPointButton)
-	showPathPoints(newPathPointButton)
+	_highlightMovableTiles(newPathPointButton)
 
 signal movement_blocked(reason: String)
 signal spyWinRecorded
@@ -104,6 +105,7 @@ func deselectAll() -> void:
 	selectedAPF = null
 	selectedCPF = null
 	hidePathPoints()
+	_clearMovableHighlights()
 	melee_mode = false
 	emit_signal("updatePathPoints", false)
 
@@ -112,7 +114,7 @@ func displayapfInfo(thisArmy, apf, currentTile, thisCountry, currentPathPoint):
 		updateArmyPanel(thisArmy, currentPathPoint)
 		selectedAPF = apf
 		selectedCPF = null
-		showPathPoints(currentPathPoint)
+		_highlightMovableTiles(currentPathPoint)
 		emit_signal("activateArmyControlMode")
 		emit_signal("updatePathPoints", true)
 	elif selectedAPF != null:
@@ -197,6 +199,23 @@ func hidePathPoints():
 	for pathPointButton in $PathPointsControl.get_children():
 		pathPointButton.setMarkerVisible(false)
 
+
+func _highlightMovableTiles(pathPoint) -> void:
+	_clearMovableHighlights()
+	if pathPoint == null:
+		return
+	for ppb in pathPoint.neighborPathPoints:
+		if is_instance_valid(ppb) and ppb.ppbTile != null:
+			ppb.ppbTile.setMovableHighlight(true)
+			_highlightedTiles.append(ppb.ppbTile)
+
+
+func _clearMovableHighlights() -> void:
+	for t in _highlightedTiles:
+		if is_instance_valid(t):
+			t.setMovableHighlight(false)
+	_highlightedTiles.clear()
+
 func removeFromUpdateArmyPaths():
 	updatingArmyPathFollow = null
 
@@ -238,6 +257,7 @@ func calculateArmyMovement(endPathPoint: pathPointButton, _neighborPathPoints, _
 			army.cancelGuard()
 			if army.attackedThisTurn:
 				army.apply_status("Retreat", 2)
+			_clearMovableHighlights()
 	elif selectedCPF != null:
 		startingPoint = selectedCPF.currentPathPoint
 		# Action point gate — civilians spend 1 point per tile moved

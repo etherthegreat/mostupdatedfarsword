@@ -1294,6 +1294,11 @@ func _outputs_map_mode(value: float, max_val: float) -> void:
 # INPUT
 # ============================================================
 
+func setMovableHighlight(on: bool) -> void:
+	# Non-destructive: the tile's own modulate multiplies the map-mode color.
+	modulate = Color(1.4, 1.4, 0.7) if on else Color(1, 1, 1)
+
+
 func _on_area_2d_input_event(viewport, event, shape_idx):
 	if event is InputEventMouseButton and event.pressed:
 		if Input.is_action_just_pressed('Left Click'):
