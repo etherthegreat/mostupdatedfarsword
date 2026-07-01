@@ -2077,6 +2077,17 @@ func _show_ai_turn_report() -> void:
 	_ai_combat_log.clear()
 
 # ── FLOATING DAMAGE NUMBERS ───────────────────────────────────────────────────
+func focus_camera_on(node, duration: float = 0.45) -> void:
+	# Smoothly pan the map camera to center on a node (tile spawn point, army token, etc.).
+	if node == null or not is_instance_valid(node):
+		return
+	var cam = $CameraMovementController/Camera2D
+	if cam == null:
+		return
+	var tw = create_tween()
+	tw.tween_property(cam, "global_position", node.global_position, duration).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+
+
 func _spawn_damage_number(amount: int, color: Color, world_pos: Vector2, x_offset: float) -> void:
 	if amount <= 0:
 		return
