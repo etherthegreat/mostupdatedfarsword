@@ -1365,14 +1365,21 @@ func _ca_press_uk_borders() -> void:
 
 		if best_target != null:
 			var old_tile = army.inTile
-			best_target.siegeCalculate(army)
-			if best_target.stationedArmy != null:
-				_resolve_ai_battle(army, best_target.stationedArmy, best_target)
-			var captured: bool = (best_target.tileOwner == CID)
-			emit_signal("aiCombatEvent", CID, best_target,
-				"captured" if captured else "attacked")
-			if captured and old_tile != null:
+			var ca_enemy = best_target.stationedArmy
+			var ca_enemy_here: bool = ca_enemy != null and is_instance_valid(ca_enemy) \
+				and ca_enemy.parentCountry != null and ca_enemy.parentCountry.CID != CID
+			if ca_enemy_here:
+				_resolve_ai_battle(army, ca_enemy, best_target)
+				var ca_killed: bool = not is_instance_valid(ca_enemy) or ca_enemy.manpowerInArmy <= 0
+				emit_signal("aiCombatEvent", CID, best_target, "attacked")
+				if ca_killed and old_tile != null:
+					army.inTile = best_target
+					best_target.captureInstant(army)
+					emit_signal("armyRepositioned", army, old_tile, best_target)
+			elif old_tile != null:
 				army.inTile = best_target
+				best_target.captureInstant(army)
+				emit_signal("aiCombatEvent", CID, best_target, "captured")
 				emit_signal("armyRepositioned", army, old_tile, best_target)
 
 
@@ -1487,16 +1494,27 @@ func _uk_attack_tile(army: Army, targetTile) -> void:
 	if targetTile == null:
 		return
 	var old_tile = army.inTile
-	targetTile.siegeCalculate(army)
-	if targetTile.stationedArmy != null:
-		_resolve_ai_battle(army, targetTile.stationedArmy, targetTile)
-	var captured: bool = (targetTile.tileOwner == CID)
-	emit_signal("aiCombatEvent", CID, targetTile,
-		"captured" if captured else "attacked")
-	if captured and old_tile != null:
+	var enemy = targetTile.stationedArmy
+	var enemy_here: bool = enemy != null and is_instance_valid(enemy) \
+		and enemy.parentCountry != null and enemy.parentCountry.CID != CID
+	if enemy_here:
+		# Can't walk through an enemy — attack it; only advance + capture if it dies.
+		_resolve_ai_battle(army, enemy, targetTile)
+		var killed: bool = not is_instance_valid(enemy) or enemy.manpowerInArmy <= 0
+		emit_signal("aiCombatEvent", CID, targetTile, "attacked")
+		if killed and old_tile != null:
+			old_tile.stationedArmy = null
+			targetTile.stationedArmy = army
+			army.inTile = targetTile
+			targetTile.captureInstant(army)
+			emit_signal("armyRepositioned", army, old_tile, targetTile)
+	elif old_tile != null:
+		# Empty tile — walk in and flip it instantly.
 		old_tile.stationedArmy = null
 		targetTile.stationedArmy = army
 		army.inTile = targetTile
+		targetTile.captureInstant(army)
+		emit_signal("aiCombatEvent", CID, targetTile, "captured")
 		emit_signal("armyRepositioned", army, old_tile, targetTile)
 
 

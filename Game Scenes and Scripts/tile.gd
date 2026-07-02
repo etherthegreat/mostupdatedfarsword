@@ -1026,13 +1026,17 @@ func devChange(devType, devCivilian):
 # ============================================================
 
 func siegeCalculate(army):
-	if tileOwner == "":
+	# Sieges removed — tiles now flip instantly on ENTRY (see captureInstant), not by attacking.
+	pass
+
+
+func captureInstant(army) -> void:
+	# Walking an army into a tile flips ownership to that army's country immediately.
+	if not is_instance_valid(army) or army.parentCountry == null:
 		return
-	if is_instance_valid(army):
-		if army.parentCountry.CID != tileOwner:
-			currentSiegeProgress += army.armySiegeScore
-		if currentSiegeProgress >= maxSiegeProgress:
-			emit_signal("newSiegeStatus", self, tileOwner, army.parentCountry.CID)
+	if tileOwner == army.parentCountry.CID:
+		return
+	emit_signal("newSiegeStatus", self, tileOwner, army.parentCountry.CID)
 
 
 # ============================================================

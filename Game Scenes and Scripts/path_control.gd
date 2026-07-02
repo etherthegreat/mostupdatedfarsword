@@ -89,6 +89,9 @@ func armyArrivedFunc(pathOfArmy, newPathPointButton, theArmy, apf, contain):
 			updateArmyPanel(theArmy, newPathPointButton)
 	emit_signal("updatePathPoints", true)
 	newPathPointButton.stationedAPF = apf
+	# Instant capture on entry — walking into a tile flips it to your country.
+	if newPathPointButton.ppbTile != null:
+		newPathPointButton.ppbTile.captureInstant(theArmy)
 
 func civilianArrivedFunc(pathOfCivilian, newPathPointButton, theCivilian, cpf, contain):
 	#use this to resume 
