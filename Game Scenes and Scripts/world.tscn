@@ -12145,4 +12145,9 @@ shape = SubResource("RectangleShape2D_qt86y")
 [connection signal="pressed" from="CanvasLayer/CivilianUnitControl/CivilianActionButtons/IncreaseEliteDevelopment" to="." method="_on_increase_elite_development_pressed"]
 [connection signal="pressed" from="CanvasLayer/CivilianUnitControl/CivilianActionButtons/IncreaseMilitaryDevelopment" to="." method="_on_increase_military_development_pressed"]
 [connection signal="pressed" from="CanvasLayer/CivilianUnitControl/CivilianActionButtons/discoverNearbyTilesButton" to="." method="_on_discover_nearby_tiles_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/CivilianUnitControl/CivilianActionButtons/BuildRoad" to="PathC
+[connection signal="pressed" from="CanvasLayer/CivilianUnitControl/CivilianActionButtons/BuildRoad" to="PathControl" method="_on_build_road_pressed"]
+[connection signal="pressed" from="CanvasLayer/MapModes/PolisModeButton" to="." method="_on_polis_mode_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/MapModes/StatesModeButton" to="." method="_on_states_mode_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/MapModes/OutputsModeButton" to="." method="_on_outputs_mode_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/MapModes/TerrainModeButton" to="." method="_on_terrain_mode_button_pressed"]
+[connection signal="input_event" from="RightClickDetector" to="." method="_on_right_click_detector_input_event"]
