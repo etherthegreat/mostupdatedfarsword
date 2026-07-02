@@ -3437,7 +3437,7 @@ func _fire_state_reintegration(state_code: String, metro_tile) -> void:
 
 	playerCountryNode.presidentialClaim = clampf(
 		playerCountryNode.presidentialClaim + 2.0, -10.0, 10.0)
-	createNewEvent("STATE_REINTEGRATED_01", metro_tile)
+	# createNewEvent("STATE_REINTEGRATED_01", metro_tile)  # reintegration event removed (mechanic kept)
 	print("[Reintegration] ", STATE_FULL_NAMES.get(state_code, state_code), " reintegrated!")
 
 
@@ -5998,10 +5998,11 @@ func tileSiegeWon(tile, oldCID: String, newCID: String) -> void:
 				ppb.occupied = false
 				apf.thisArmy.deleteMode = true   # APF _process() will queue_free both nodes
 
-	evaluateTileEvents(tile)
+	# Tile-fall + state-liberation events removed — they interrupted the fast combat turns.
+	# evaluateTileEvents(tile)
 	var state_code = tile.tileContinent
-	if state_code != "" and _is_state_liberated(state_code, newCID):
-		evaluateStateLiberation(state_code)
+	# if state_code != "" and _is_state_liberated(state_code, newCID):
+	#	evaluateStateLiberation(state_code)
 
 	# Reintegration: USA recaptures a state capitol (Metro + courthouse) from a rebel state
 	if newCID == "USA" and tile.terrain == "Metro" and state_code != "":
@@ -6009,12 +6010,12 @@ func tileSiegeWon(tile, oldCID: String, newCID: String) -> void:
 		if has_courthouse and playerCountryNode.CountryFlags.has("rebel_" + state_code):
 			_fire_state_reintegration(state_code, tile)
 
-	# Memorial: UK captures a tile with special features — fire rescue event
-	if newCID == "UK" and playerCountry == "USA" and tile.tileSpecialFeatures.size() > 0:
-		var mem_flag: String = "memorial_mission_" + str(tile.tileNumber)
-		if not playerCountryNode.CountryFlags.has(mem_flag):
-			createNewEvent("MEMORIAL_001", tile)
-			print("[Memorial] UK occupied special feature tile: ", tile.tileName)
+	# Memorial rescue event removed — it interrupted combat when the UK took a special tile.
+	# if newCID == "UK" and playerCountry == "USA" and tile.tileSpecialFeatures.size() > 0:
+	#	var mem_flag: String = "memorial_mission_" + str(tile.tileNumber)
+	#	if not playerCountryNode.CountryFlags.has(mem_flag):
+	#		createNewEvent("MEMORIAL_001", tile)
+	#		print("[Memorial] UK occupied special feature tile: ", tile.tileName)
 
 func _trigger_game_over(won: bool, reason: String = "", end_type: String = "") -> void:
 	if _game_ended:
