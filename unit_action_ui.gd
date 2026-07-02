@@ -57,7 +57,8 @@ func refresh() -> void:
 		b.visible = act in allow
 		var no_ap: bool = _unit.unitCurrentAP <= 0 and act != "hold"
 		var no_power: bool = (act == "fire" and _unit.unitRangedOffence <= 0) or (act == "charge" and _unit.unitOffensiveScore <= 0)
-		b.disabled = no_ap or no_power
+		var reloading: bool = (act == "fire" and _unit.is_reloading())
+		b.disabled = no_ap or no_power or reloading
 		b.modulate = Color(1, 1, 0.35) if _unit.unitStance == act else Color(1, 1, 1)
 
 func _allowed_actions(wclass: String) -> Array:

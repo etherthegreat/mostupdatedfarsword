@@ -412,6 +412,7 @@ func _on_attack_midpoint(apf: armyPathFollow) -> void:
 	defender.calculateDefenderResults("melee", def_loss, true, _bt.get("shield_pierce", 0))
 	attacker.calculateDefenderResults("melee", atk_loss, true)
 	attacker.spend_attack_ap()
+	attacker.start_fired_reloads()
 	# Also update siege on the target tile
 	targetPPB.siegeTile(attacker)
 	# Emit for floating damage numbers

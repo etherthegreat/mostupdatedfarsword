@@ -1563,12 +1563,8 @@ func _resolve_ai_battle(attacker: Army, defender: Army, tile) -> void:
 	if attacker_loss > 0:
 		attacker.calculateDefenderResults("melee", attacker_loss, true)
 	attacker.spend_attack_ap()
-	# Cycle the attacker's fired ranged units back through reload (unchanged AI behavior).
-	attacker.tick_all_reloads()
-	for unit in attacker.unitsList:
-		if unit.unitWeapon != null and (unit.unitWeapon.is_musket() or unit.unitWeapon.is_artillery()):
-			if not unit.is_reloading():
-				unit.start_reload()
+	# Fired ranged units begin reloading; the per-turn tick happens in onTurnEnd.
+	attacker.start_fired_reloads()
 	emit_signal("battleResolved", tile, attacker_loss, defender_loss)
 
 

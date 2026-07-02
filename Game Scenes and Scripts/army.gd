@@ -202,6 +202,7 @@ func onTurnEnd():
 	for _u in unitsList:
 		_u.unitStance = "fire"
 		_u.unitCurrentAP = _u.get_max_ap()
+		_u.tick_reload()   # count down any pending reload once per turn
 	# Restore full movement points at the start of each new turn
 	currentMovementPoints = maxMovementPoints + _commander_movement_bonus()
 	# Reset per-turn flags (re-derived below from active statuses)
@@ -1110,6 +1111,14 @@ func has_melee_units() -> bool:
 		if Unit.can_charge_melee():
 			return true
 	return false
+
+func start_fired_reloads() -> void:
+	# Units that just FIRED begin reloading (weapons with reloadTurns > 0 only).
+	for u in unitsList:
+		if u.unitCurrentManpower > 0 and u.unitStance == "fire" \
+				and u.unitWeapon != null and u.unitWeapon.reloadTurns > 0 and not u.is_reloading():
+			u.start_reload()
+
 
 func tick_all_reloads() -> void:
 	for Unit in unitsList:
