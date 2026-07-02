@@ -1,4 +1,4 @@
-[gd_scene load_steps=543 format=3 uid="uid://bfbouq3jfwkxl"]
+[gd_scene load_steps=545 format=3 uid="uid://bfbouq3jfwkxl"]
 
 [ext_resource type="Script" uid="uid://dthx176t72xxr" path="res://Game Scenes and Scripts/world.gd" id="1_6bnro"]
 [ext_resource type="Texture2D" uid="uid://co1xqkk2trdfd" path="res://art assets/AmericanRevolutionArt/tileandMaps/maps/usamap-borderless.png" id="2_8oo0e"]
@@ -532,6 +532,8 @@
 [ext_resource type="Texture2D" uid="uid://bosevb7m63nwm" path="res://art assets/finishedAssets/Panels/topbarresources/IMG_1542.PNG" id="522_mfggh"]
 [ext_resource type="Texture2D" uid="uid://cvvmc8beh62sd" path="res://art assets/AmericanRevolutionArt/End Art/IMG_1777.PNG" id="523_jyjnf"]
 [ext_resource type="Texture2D" uid="uid://dnkrgxnl2as5u" path="res://art assets/finishedAssets/armyicons/finished/spade.png" id="525_jyjnf"]
+[ext_resource type="Texture2D" uid="uid://dgywl4h54idwb" path="res://art assets/AmericanRevolutionArt/menuart/UPRISINGS.png" id="526_bnmh2"]
+[ext_resource type="Texture2D" uid="uid://cqravo4gc03b1" path="res://art assets/AmericanRevolutionArt/menuart/PAX AMERICANA.png" id="527_w3klr"]
 [ext_resource type="Texture2D" uid="uid://c7hyc65jbh6rj" path="res://art assets/finishedAssets/ores/Razorberry.PNG" id="530_7ybmk"]
 
 [sub_resource type="Curve2D" id="Curve2D_bg6fe"]
@@ -11236,18 +11238,18 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="TurnLabel" type="Label" parent="CanvasLayer"]
-offset_left = 113.0
+offset_left = 34.0
 offset_top = 60.0
-offset_right = 163.0
+offset_right = 84.0
 offset_bottom = 83.0
 text = "Turn 1"
 
 [node name="DateLabel" type="Label" parent="CanvasLayer"]
-offset_left = 302.0
+offset_left = 382.0
 offset_top = 60.0
-offset_right = 352.0
+offset_right = 469.0
 offset_bottom = 83.0
-text = "July 4, 2026"
+text = "Turn 1"
 
 [node name="EndingSceneControl" type="Control" parent="CanvasLayer"]
 visible = false
@@ -11330,8 +11332,10 @@ mouse_filter = 2
 [node name="MapModes" type="Control" parent="CanvasLayer"]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = 1.0
+offset_top = 725.0
+offset_right = 41.0
+offset_bottom = 765.0
 
 [node name="MapModesBack" type="Sprite2D" parent="CanvasLayer/MapModes"]
 position = Vector2(71.75, 179.25)
@@ -11373,6 +11377,16 @@ offset_right = 130.0
 offset_bottom = 235.0
 icon = ExtResource("525_jyjnf")
 expand_icon = true
+
+[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer"]
+position = Vector2(244, 72)
+scale = Vector2(0.241667, 0.241667)
+texture = ExtResource("526_bnmh2")
+
+[node name="Sprite2D2" type="Sprite2D" parent="CanvasLayer"]
+position = Vector2(1636, 72)
+scale = Vector2(0.241667, 0.241667)
+texture = ExtResource("527_w3klr")
 
 [node name="CameraMovementController" type="Control" parent="."]
 layout_mode = 3
@@ -12131,9 +12145,4 @@ shape = SubResource("RectangleShape2D_qt86y")
 [connection signal="pressed" from="CanvasLayer/CivilianUnitControl/CivilianActionButtons/IncreaseEliteDevelopment" to="." method="_on_increase_elite_development_pressed"]
 [connection signal="pressed" from="CanvasLayer/CivilianUnitControl/CivilianActionButtons/IncreaseMilitaryDevelopment" to="." method="_on_increase_military_development_pressed"]
 [connection signal="pressed" from="CanvasLayer/CivilianUnitControl/CivilianActionButtons/discoverNearbyTilesButton" to="." method="_on_discover_nearby_tiles_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/CivilianUnitControl/CivilianActionButtons/BuildRoad" to="PathControl" method="_on_build_road_pressed"]
-[connection signal="pressed" from="CanvasLayer/MapModes/PolisModeButton" to="." method="_on_polis_mode_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/MapModes/StatesModeButton" to="." method="_on_states_mode_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/MapModes/OutputsModeButton" to="." method="_on_outputs_mode_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/MapModes/TerrainModeButton" to="." method="_on_terrain_mode_button_pressed"]
-[connection signal="input_event" from="RightClickDetector" to="." method="_on_right_click_detector_input_event"]
+[connection signal="pressed" from="CanvasLayer/CivilianUnitControl/CivilianActionButtons/BuildRoad" to="PathC

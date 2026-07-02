@@ -1660,6 +1660,7 @@ func _resolve_ai_and_advance_round() -> void:
 	for tile in $TileController.get_children():
 		tile.tick_conquest_timer()
 	$CanvasLayer/TurnLabel.text = _format_game_date()
+	$CanvasLayer/DateLabel.text = "Turn " + str(currentWorldTurn)
 	_apply_ualani_aura()
 	_check_win_conditions()
 	_show_ai_turn_report()
@@ -2282,7 +2283,7 @@ func _setup_cycle_button() -> void:
 	btn.name = "CycleUnitsButton"
 	btn.text = "\u21bb Unit"
 	btn.tooltip_text = "Select the next unit with moves left (Tab)"
-	btn.position = Vector2(82, 72)
+	btn.position = $CanvasLayer/NextTurnControl.position + Vector2(-6, 38)
 	btn.custom_minimum_size = Vector2(72, 28)
 	btn.pressed.connect(_cycle_to_next_ready_unit)
 	$CanvasLayer.add_child(btn)
