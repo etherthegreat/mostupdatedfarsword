@@ -1488,6 +1488,8 @@ func _tile_occupant(tile):
 		a = tile.tileSpawnPoint.stationedArmy
 	if a != null and (a.deleteMode or a.manpowerInArmy <= 0):
 		return null
+	if a != null and a.inTile != tile:
+		return null   # stale ref — army has actually moved off this tile
 	return a
 
 
@@ -1527,6 +1529,7 @@ func _uk_attack_tile(army: Army, targetTile) -> void:
 		and enemy.parentCountry != null and enemy.parentCountry.CID != CID
 	if enemy_here:
 		# Can't walk through an enemy — attack it; only advance + capture if it dies.
+		print("[UKACT] '", army.ArmyName, "' ATTACK #", targetTile.tileNumber, " '", targetTile.tileName, "' vs '", enemy.ArmyName, "' (enemy.inTile=#", (enemy.inTile.tileNumber if enemy.inTile != null else -1), " mp=", enemy.manpowerInArmy, ")")
 		_resolve_ai_battle(army, enemy, targetTile)
 		var killed: bool = not is_instance_valid(enemy) or enemy.manpowerInArmy <= 0
 		emit_signal("aiCombatEvent", CID, targetTile, "attacked")
@@ -1538,6 +1541,7 @@ func _uk_attack_tile(army: Army, targetTile) -> void:
 			emit_signal("armyRepositioned", army, old_tile, targetTile)
 	elif old_tile != null:
 		# Empty tile — walk in and flip it instantly.
+		print("[UKACT] '", army.ArmyName, "' CAPTURE empty #", targetTile.tileNumber, " '", targetTile.tileName, "'")
 		old_tile.stationedArmy = null
 		targetTile.stationedArmy = army
 		army.inTile = targetTile
@@ -1599,6 +1603,7 @@ func _uk_try_advance(army: Army) -> bool:
 		if ppb != null and ppb.occupied:
 			continue
 		# Found an open UK tile — move there
+		print("[UKACT] '", army.ArmyName, "' ADVANCE to #", neighbor.tileNumber, " '", neighbor.tileName, "'")
 		var old_tile = army.inTile
 		army.inTile = neighbor
 		old_tile.stationedArmy = null
