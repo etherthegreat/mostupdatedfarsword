@@ -3049,7 +3049,7 @@ offset_top = -323.0
 offset_right = 545.0
 offset_bottom = -323.0
 EXPTileNumber = 94
-TileNeighborsEXP = [NodePath("../Tile36"), NodePath("../Tile41"), NodePath("../Tile66"), NodePath("../Tile93"), NodePath("../Tile95")]
+TileNeighborsEXP = [NodePath("../Tile89"), NodePath("../Tile90"), NodePath("../Tile91"), NodePath("../Tile97"), NodePath("../Tile95"), NodePath("../Tile93"), NodePath("../Tile96")]
 
 [node name="Ring" type="Sprite2D" parent="TileController/Tile94"]
 z_index = 5
@@ -7764,22 +7764,22 @@ offset_bottom = 527.0
 [node name="NextTurnControl" type="Control" parent="CanvasLayer"]
 layout_mode = 3
 anchors_preset = 0
-offset_left = 81.9999
-offset_top = 26.0
-offset_right = 122.0
-offset_bottom = 66.0
+offset_left = 1604.0
+offset_top = 792.0
+offset_right = 1644.0
+offset_bottom = 832.0
 
 [node name="nextTurn" type="Sprite2D" parent="CanvasLayer/NextTurnControl"]
-position = Vector2(1708.5, 981.502)
+position = Vector2(104.5, 126.502)
 scale = Vector2(0.0730001, 0.095)
 texture = ExtResource("520_fwltf")
 
 [node name="NextTurn" type="Button" parent="CanvasLayer/NextTurnControl"]
 layout_mode = 0
-offset_left = 1598.0
-offset_top = 928.0
-offset_right = 1828.0
-offset_bottom = 1034.0
+offset_left = -6.0
+offset_top = 73.0
+offset_right = 215.0
+offset_bottom = 179.0
 theme_override_colors/font_disabled_color = Color(0.731385, 0.428597, 0.13852, 1)
 theme_override_colors/font_hover_color = Color(0.749831, 3.85046e-07, 0.386302, 1)
 theme_override_colors/icon_hover_color = Color(0.76998, 0.592736, 0, 1)
@@ -7793,12 +7793,11 @@ autowrap_mode = 3
 expand_icon = true
 
 [node name="PickTech" type="Button" parent="CanvasLayer/NextTurnControl"]
-visible = false
 layout_mode = 0
-offset_left = 1598.0
-offset_top = 928.0
-offset_right = 1828.0
-offset_bottom = 1034.0
+offset_left = -6.0
+offset_top = 73.0
+offset_right = 215.0
+offset_bottom = 179.0
 theme_override_colors/font_disabled_color = Color(0.731385, 0.428597, 0.13852, 1)
 theme_override_colors/font_hover_color = Color(0.749831, 3.85046e-07, 0.386302, 1)
 theme_override_colors/icon_hover_color = Color(0.76998, 0.592736, 0, 1)
@@ -12137,4 +12136,4 @@ shape = SubResource("RectangleShape2D_qt86y")
 [connection signal="pressed" from="CanvasLayer/MapModes/StatesModeButton" to="." method="_on_states_mode_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/MapModes/OutputsModeButton" to="." method="_on_outputs_mode_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/MapModes/TerrainModeButton" to="." method="_on_terrain_mode_button_pressed"]
-[connection signal="input_event" from="RightClickDetector" to="." method="_on_right_click_detector_input_event"]
+[connection signal="input_event" from="RightClickDetector" to="." method="_on_right_cli
