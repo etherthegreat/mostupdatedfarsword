@@ -1455,6 +1455,45 @@ const UK_ARMY_CAP = 10   # max simultaneous UK field armies
 const UK_SPAWN_INTERVAL = 5  # turns between dock reinforcement drops
 var _uk_spawn_cooldown: int = UK_SPAWN_INTERVAL  # start at cap so turn-1 spawn doesn't fire
 
+func _ai_set_stances(army: Army, defensive: bool) -> void:
+	# Per-unit stance choice for AI armies. Defensive armies brace (hold); attackers
+	# fire when they can and charge when they can't (or when melee is their only tool).
+	for u in army.unitsList:
+		if u.unitCurrentManpower <= 0:
+			continue
+		if defensive:
+			u.unitStance = "hold"
+			continue
+		var wclass: String = u.unitWeapon.weaponClass if u.unitWeapon != null else ""
+		match wclass:
+			"Saber":
+				u.unitStance = "charge"
+			"Musket":
+				u.unitStance = "fire" if not u.is_reloading() else "charge"
+			"Artillery":
+				u.unitStance = "fire" if not u.is_reloading() else "hold"
+			"Mythic":
+				u.unitStance = "fire" if (u.unitRangedOffence > 0 and not u.is_reloading()) else "charge"
+			"Legacy":
+				u.unitStance = "charge" if u.unitOffensiveScore > 0 else "fire"
+			_:
+				u.unitStance = "fire"
+
+
+func _stance_summary(army) -> String:
+	var f: int = 0
+	var c: int = 0
+	var h: int = 0
+	for u in army.unitsList:
+		if u.unitCurrentManpower <= 0:
+			continue
+		match u.unitStance:
+			"fire": f += 1
+			"charge": c += 1
+			"hold": h += 1
+	return "%dF/%dC/%dH" % [f, c, h]
+
+
 func _uk_calculate_turn() -> void:
 	_calculate_supply_from_owned()
 	_uk_spawn_reinforcement()
@@ -1466,15 +1505,18 @@ func _uk_calculate_turn() -> void:
 		army.onTurnEnd()  # tick status effects, reload timers, reinforcement
 		var supplied = is_army_supplied(army)
 		if not supplied:
+			_ai_set_stances(army, true)   # brace while retreating
 			_uk_retreat_to_supply(army)
 		else:
 			var target = _find_attack_target(army)
 			if target != null:
+				_ai_set_stances(army, false)   # aggressive: fire + charge
 				_uk_attack_tile(army, target)
-			elif not _uk_try_advance(army):
-				# No target and couldn't advance — hold position
-				army.isGuarding = true
-				print("[UKACT] '", army.ArmyName, "' HOLD @#", army.inTile.tileNumber, " '", army.inTile.tileName, "' (no target, no open advance)")
+			else:
+				_ai_set_stances(army, true)    # no fight this turn — brace
+				if not _uk_try_advance(army):
+					army.isGuarding = true
+					print("[UKACT] '", army.ArmyName, "' HOLD @#", army.inTile.tileNumber, " '", army.inTile.tileName, "' (no target, no open advance)")
 
 
 func _tile_occupant(tile):
@@ -1531,7 +1573,7 @@ func _uk_attack_tile(army: Army, targetTile) -> void:
 	if enemy_here:
 		# Can't walk through an enemy — attack it; only advance + capture if it dies.
 		var _bt: Dictionary = army.compute_battle_against(enemy)
-		print("[UKACT] '", army.ArmyName, "' ATTACK #", targetTile.tileNumber, " '", targetTile.tileName, "' vs '", enemy.ArmyName, "' mp=", enemy.manpowerInArmy, " -> dmg def=", _bt["def_loss"], " atk=", _bt["atk_loss"])
+		print("[UKACT] '", army.ArmyName, "' ATTACK #", targetTile.tileNumber, " '", targetTile.tileName, "' vs '", enemy.ArmyName, "' mp=", enemy.manpowerInArmy, " [", _stance_summary(army), "] -> dmg def=", _bt["def_loss"], " atk=", _bt["atk_loss"])
 		_resolve_ai_battle(army, enemy, targetTile)
 		var killed: bool = not is_instance_valid(enemy) or enemy.manpowerInArmy <= 0
 		emit_signal("aiCombatEvent", CID, targetTile, "attacked")
