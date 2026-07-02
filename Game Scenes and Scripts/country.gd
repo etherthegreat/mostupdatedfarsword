@@ -1365,7 +1365,7 @@ func _ca_press_uk_borders() -> void:
 
 		if best_target != null:
 			var old_tile = army.inTile
-			var ca_enemy = best_target.stationedArmy
+			var ca_enemy = _tile_occupant(best_target)
 			var ca_enemy_here: bool = ca_enemy != null and is_instance_valid(ca_enemy) \
 				and ca_enemy.parentCountry != null and ca_enemy.parentCountry.CID != CID
 			if ca_enemy_here:
@@ -1465,36 +1465,53 @@ func _uk_calculate_turn() -> void:
 				army.isGuarding = true
 
 
+func _tile_occupant(tile):
+	# An army may register on the tile OR on its spawn-point (player armies use the latter).
+	if tile == null:
+		return null
+	var a = null
+	if tile.stationedArmy != null and is_instance_valid(tile.stationedArmy):
+		a = tile.stationedArmy
+	elif tile.tileSpawnPoint != null and tile.tileSpawnPoint.stationedArmy != null \
+			and is_instance_valid(tile.tileSpawnPoint.stationedArmy):
+		a = tile.tileSpawnPoint.stationedArmy
+	if a != null and (a.deleteMode or a.manpowerInArmy <= 0):
+		return null
+	return a
+
+
 func _find_attack_target(army: Army):
 	# Respect the post-collapse peace treaty — UK stops pressing into USA territory
 	if CountryFlags.has("uk_usa_peace"):
 		return null
 	if army.inTile == null:
 		return null
-	# UK is aggressive — attack any adjacent USA tile regardless of relative strength
-	var best_target = null
-	var lowest_defender_strength = INF
+	# ENGAGE an adjacent enemy army first (that's a real war); else take the openest ground.
+	var armed_target = null
+	var open_target = null
+	var lowest_open = INF
 	for neighbor in army.inTile.TileNeighbors:
 		if neighbor == null:
 			continue
 		if neighbor.tileOwner != "USA":
 			continue
-		var defender_strength = 0
-		if neighbor.stationedArmy != null and is_instance_valid(neighbor.stationedArmy):
-			defender_strength = neighbor.stationedArmy.manpowerInArmy
+		var occ = _tile_occupant(neighbor)
+		if occ != null and occ.parentCountry != null and occ.parentCountry.CID != CID:
+			if armed_target == null:
+				armed_target = neighbor
 		else:
-			defender_strength = int(neighbor.get_siege_difficulty() * 50)
-		if defender_strength < lowest_defender_strength:
-			lowest_defender_strength = defender_strength
-			best_target = neighbor
-	return best_target
+			var strength = int(neighbor.get_siege_difficulty() * 50)
+			if strength < lowest_open:
+				lowest_open = strength
+				open_target = neighbor
+	return armed_target if armed_target != null else open_target
 
 
 func _uk_attack_tile(army: Army, targetTile) -> void:
 	if targetTile == null:
 		return
 	var old_tile = army.inTile
-	var enemy = targetTile.stationedArmy
+	var enemy = _tile_occupant(targetTile)
 	var enemy_here: bool = enemy != null and is_instance_valid(enemy) \
 		and enemy.parentCountry != null and enemy.parentCountry.CID != CID
 	if enemy_here:

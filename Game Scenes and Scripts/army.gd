@@ -312,11 +312,11 @@ func counter_power_factor() -> float:
 	return power / float(living)
 
 
-func hold_defense_bonus() -> int:
-	var bonus: int = 0
+func hold_defense_bonus() -> float:
+	var bonus: float = 0.0
 	for u in unitsList:
 		if u.unitCurrentManpower > 0 and u.unitStance == "hold":
-			bonus += 20
+			bonus += 0.10
 	return bonus
 
 
@@ -349,15 +349,15 @@ func offensive_output(require_ap: bool, holders_counter: bool) -> Dictionary:
 			"hold":
 				if holders_counter:
 					if u.unitWeapon != null and u.unitWeapon.weaponClass == "Saber":
-						melee += float(u.unitOffensiveScore) * 1.5
+						melee += float(u.unitOffensiveScore) * 1.2
 					else:
-						ranged += float(u.unitRangedOffence) * 1.5
+						ranged += float(u.unitRangedOffence) * 1.2
 			"fire":
 				if not require_ap or u.unitCurrentAP > 0:
 					ranged += float(u.unitRangedOffence)
 			"charge":
 				if not require_ap or u.unitCurrentAP > 0:
-					melee += float(u.unitOffensiveScore) * 1.4
+					melee += float(u.unitOffensiveScore) * 1.8
 	return {"ranged": ranged, "melee": melee}
 
 
