@@ -2156,7 +2156,7 @@ func _fire_border_warning() -> void:
 	}
 	var ev = eventScene.instantiate()
 	ev.build_from_data(data, null, playerCountryNode)
-	ev.eventButtonPressed.connect(func(bid, _eid, _ec, _ot, _ov, _oa): _on_border_warning_choice(bid))
+	ev.eventButtonPressed.connect(func(bid, _eid, _ec, _ot, _ov, _oa, _nid): _on_border_warning_choice(bid))
 	$CanvasLayer/EventControl/EventContainer.add_child(ev)
 
 

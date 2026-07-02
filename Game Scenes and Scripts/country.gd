@@ -302,23 +302,9 @@ func NewGameBuild() -> void:
 	updateUnlockableAttributes()
 	updateDiscoveredByPlayer()
  
-	# Starting army — build after everything else is set up
-	var armyName = data.get("startingArmyName", "")
-	var armyTile = data.get("startingArmyTile", 0)
-	if armyName != "" and armyTile != 0:
-		var armyIcon = _get_default_army_icon()
-		addArmy(armyName, armyTile, armyIcon)
-
-	# UK regional deployment — aggressive multi-front presence at game start
-	if CID == "UK":
-		var uk_icon = _get_default_army_icon()
-		addArmy("Southern Crown Force",   151, uk_icon)   # Charleston SC
-		addArmy("Cornwallis's Dragoons",  149, uk_icon)   # Myrtle Beach SC
-		addArmy("Crown Forces South",     153, uk_icon)   # Port Royal SC
-		addArmy("Florida Crown Guard",    176, uk_icon)   # Jacksonville FL
-		addArmy("Gulf Garrison",          179, uk_icon)   # Tampa FL
-		addArmy("Quebec Crown Guard",     123, uk_icon)   # Quebec City
-		addArmy("Maritime Crown Forces",  114, uk_icon)   # Halifax NS
+	# Quiet start — no starting armies for anyone. The player mobilizes on turn 9
+	# (National Guard / Citizens) and the UK invasion spawns on turn 10.
+	# (Continental Army + UK regional deployment intentionally disabled for the war-timing feature.)
 
 
 func _find_faction_leader(factionName: String, governorPool: Dictionary) -> governor:
