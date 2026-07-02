@@ -93,10 +93,9 @@ func refreshHealthBar() -> void:
 func _process(_delta: float) -> void:
 	if thisArmy != null and not is_instance_valid(thisArmy):
 		# DEBUGLIST P0-1: army was freed without tearing this token down.
-		# Clean our own references and remove ourselves so we stop erroring every frame.
-		if is_instance_valid(currentPathPoint):
-			if currentPathPoint.stationedAPF == self:
-				currentPathPoint.stationedAPF = null
+		# Only clear the spawn-point if WE still own it — an attacker may have advanced in.
+		if is_instance_valid(currentPathPoint) and currentPathPoint.stationedAPF == self:
+			currentPathPoint.stationedAPF = null
 			currentPathPoint.stationedArmy = null
 			currentPathPoint.occupied = false
 		queue_free()
@@ -136,8 +135,11 @@ func _process(_delta: float) -> void:
 			else:
 				emit_signal("armyTraveling", progressRate, destinationPathPoint, thisArmy)
 	else:
-		currentPathPoint.stationedAPF = null
-		currentPathPoint.stationedArmy = null
+		# deleteMode teardown — guard the spawn-point and don't clobber a new occupant.
+		if is_instance_valid(currentPathPoint) and currentPathPoint.stationedAPF == self:
+			currentPathPoint.stationedAPF = null
+			currentPathPoint.stationedArmy = null
+			currentPathPoint.occupied = false
 		if thisArmy.parentCountry != null and is_instance_valid(thisArmy.parentCountry):
 			thisArmy.parentCountry.countryArmyList.erase(thisArmy)
 		thisArmy.queue_free()

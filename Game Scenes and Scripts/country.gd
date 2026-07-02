@@ -607,8 +607,19 @@ func _on_army_destroyed(army: Army) -> void:
 	if army.commander != null:
 		emit_signal("commanderFallen", army.commander, army.ArmyName, army.inTile)
 	countryArmyList.erase(army)
-	if army.inTile != null:
-		army.inTile.stationedArmy = null
+	# Tear down the army's APF + clear its spawn-point refs NOW, so nothing dereferences
+	# the freed army next frame (this was the combat-death crash).
+	if army.inTile != null and is_instance_valid(army.inTile):
+		if army.inTile.stationedArmy == army:
+			army.inTile.stationedArmy = null
+		var ppb = army.inTile.tileSpawnPoint
+		if ppb != null and is_instance_valid(ppb):
+			if ppb.stationedAPF != null and is_instance_valid(ppb.stationedAPF) \
+					and ppb.stationedAPF.thisArmy == army:
+				ppb.stationedAPF.queue_free()
+				ppb.stationedAPF = null
+				ppb.stationedArmy = null
+				ppb.occupied = false
 	emit_signal("countryArmyDestroyed", army)
 	army.queue_free()
 
