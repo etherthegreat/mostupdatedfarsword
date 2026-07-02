@@ -1637,7 +1637,6 @@ func _set_active_country_no_ui(cid: String) -> void:
 
 
 func _resolve_ai_and_advance_round() -> void:
-	_apply_war_timing()   # peace until turn 10, then open the war + spawn the invasion
 	# All non-player countries take their AI turn (battles are recorded, shown afterward)
 	_ai_playback_queue.clear()
 	_defer_events = true
@@ -1667,6 +1666,7 @@ func _resolve_ai_and_advance_round() -> void:
 	# Player's turn begins — release the events the AI turn queued so they don't block the replay.
 	_defer_events = false
 	_show_next_event()
+	_apply_war_timing()   # turn-9 warning / open the war + spawn the invasion at turn 10
 	# playerCountry/Node now hold last player in order; caller calls _activate_player to restore
 
 
@@ -2129,6 +2129,9 @@ func _apply_war_timing() -> void:
 		if ca != null:
 			ca.CountryFlags["uk_ca_peace"] = true
 		$PathControl.war_active = false
+		if currentWorldTurn == 9 and not _border_warning_fired:
+			_border_warning_fired = true
+			_fire_border_warning()
 	else:
 		if uk != null:
 			uk.CountryFlags.erase("uk_usa_peace")
@@ -2138,6 +2141,80 @@ func _apply_war_timing() -> void:
 		if uk != null and not uk.CountryFlags.get("uk_war_started", false):
 			uk.CountryFlags["uk_war_started"] = true
 			_spawn_uk_border_armies(uk)
+
+
+func _fire_border_warning() -> void:
+	var data := {
+		"event_id":   "BORDER_AMASSING",
+		"headline":   "Redcoats on the Border",
+		"short_desc": "British regulars are massing in the occupied territories.",
+		"long_desc":  "Scouts ride in before dawn with the same report from every watchpost along the line: British columns are gathering in strength inside the occupied border towns — artillery trains, supply wagons, whole regiments forming up under the King's colors.\n\nThey will cross within the fortnight. The Republic must raise its defense NOW. How do we answer the call?",
+		"buttons": [
+			{"button_id":"mobilize_national_guard","button_text":"Call up the National Guard!","button_type":"standard","outcome_type":"none","outcome_value":"","outcome_amount":0,"next_event_id":"","prerequisite_flag":""},
+			{"button_id":"mobilize_citizens","button_text":"Citizens, Rise Up!","button_type":"standard","outcome_type":"none","outcome_value":"","outcome_amount":0,"next_event_id":"","prerequisite_flag":""},
+		],
+	}
+	var ev = eventScene.instantiate()
+	ev.build_from_data(data, null, playerCountryNode)
+	ev.eventButtonPressed.connect(func(bid, _eid, _ec, _ot, _ov, _oa): _on_border_warning_choice(bid))
+	$CanvasLayer/EventControl/EventContainer.add_child(ev)
+
+
+func _on_border_warning_choice(button_id: String) -> void:
+	if button_id == "mobilize_national_guard":
+		_mobilize_national_guard()
+	elif button_id == "mobilize_citizens":
+		_mobilize_citizens()
+
+
+func _raise_player_militia(tile) -> void:
+	if tile == null or not is_instance_valid(tile) or tile.stationedArmy != null:
+		return
+	playerCountryNode.addArmy(tile.tileName + " Militia", tile.tileNumber)
+	var new_army = playerCountryNode.countryArmyList.back()
+	if new_army == null:
+		return
+	# Wire to a barracks button if the tile has one (so it shows in the Military panel).
+	for bb in $CanvasLayer/MilitaryPanelControl/ScrollContainer/GridContainer.get_children():
+		if bb.barracksTile != null and bb.barracksTile.tileNumber == tile.tileNumber and bb.barracksArmy == null:
+			bb.addPrebuiltArmy(new_army)
+			break
+	if tile.tileGovernor != null:
+		new_army.addUnitCommander(tile.tileGovernor)
+	new_army.updateArmyUI()
+	new_army.raiseSelf()
+
+
+func _mobilize_national_guard() -> void:
+	# Raise an army in every player capital (a tile with a courthouse).
+	var count: int = 0
+	for tile in $TileController.get_children():
+		if tile.tileOwner != playerCountry or tile.stationedArmy != null:
+			continue
+		if int(tile.buildings.get("courthouse", 0)) < 1:
+			continue
+		_raise_player_militia(tile)
+		count += 1
+	print("[Mobilize] National Guard: ", count, " armies raised in capitals")
+
+
+func _mobilize_citizens() -> void:
+	# Spawn one army in a non-capital tile of each owned state.
+	var by_state: Dictionary = {}
+	for tile in $TileController.get_children():
+		if tile.tileOwner != playerCountry or tile.stationedArmy != null:
+			continue
+		if int(tile.buildings.get("courthouse", 0)) >= 1:
+			continue
+		var s: String = tile.tileContinent
+		if s == "" or by_state.has(s):
+			continue
+		by_state[s] = tile
+	var count: int = 0
+	for s in by_state:
+		_raise_player_militia(by_state[s])
+		count += 1
+	print("[Mobilize] Citizens Rise Up: ", count, " armies raised across states")
 
 
 func _spawn_uk_border_armies(uk) -> void:
@@ -2318,6 +2395,7 @@ var _event_showing: bool = false # true while an event panel is on screen
 var _defer_events: bool = false  # true during an AI turn — events queue, then flush at the player's turn
 const _ARCS_DISABLED := true      # TEMP: mute commander/protector arcs for a later focused writing pass
 var _cycle_index: int = -1        # last unit index visited by the cycle-units button
+var _border_warning_fired: bool = false
 
 var temporaryTile: Tile
 #MAP INTERACTION
