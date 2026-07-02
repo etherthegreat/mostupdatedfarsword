@@ -5809,10 +5809,14 @@ func tileSiegeWon(tile, oldCID: String, newCID: String) -> void:
 		if is_instance_valid(apf) and apf.thisArmy != null \
 				and apf.thisArmy.parentCountry != null \
 				and apf.thisArmy.parentCountry.CID == oldCID:
-			ppb.stationedAPF = null
-			ppb.stationedArmy = null
-			ppb.occupied = false
-			apf.thisArmy.deleteMode = true   # APF _process() will queue_free both nodes
+			print("[DELETE-TRACE] tileSiegeWon '", tile.tileName, "' old=", oldCID, " new=", newCID, " army='", apf.thisArmy.ArmyName, "' -> ", ("SKIP (no owner change)" if oldCID == newCID else "delete loser"))
+			# Only strand the loser on a REAL ownership change — a same-owner re-trigger
+			# was deleting the capturing army standing on its own freshly-taken tile.
+			if oldCID != newCID:
+				ppb.stationedAPF = null
+				ppb.stationedArmy = null
+				ppb.occupied = false
+				apf.thisArmy.deleteMode = true   # APF _process() will queue_free both nodes
 
 	evaluateTileEvents(tile)
 	var state_code = tile.tileContinent
