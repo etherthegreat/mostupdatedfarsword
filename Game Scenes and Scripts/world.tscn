@@ -12136,4 +12136,4 @@ shape = SubResource("RectangleShape2D_qt86y")
 [connection signal="pressed" from="CanvasLayer/MapModes/StatesModeButton" to="." method="_on_states_mode_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/MapModes/OutputsModeButton" to="." method="_on_outputs_mode_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/MapModes/TerrainModeButton" to="." method="_on_terrain_mode_button_pressed"]
-[connection signal="input_event" from="RightClickDetector" to="." method="_on_right_cli
+[connection signal="input_event" from="RightClickDetector" to="." method="_on_right_click_detector_input_event"]
