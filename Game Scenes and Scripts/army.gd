@@ -186,6 +186,16 @@ func _commander_movement_bonus() -> int:
 						bonus += 1
 	return bonus
 
+func has_moves_left() -> bool:
+	# True if this army can still move (movement points) or act (any unit has an action point).
+	if currentMovementPoints > 0:
+		return true
+	for u in unitsList:
+		if u.unitCurrentManpower > 0 and u.unitCurrentAP > 0:
+			return true
+	return false
+
+
 func onTurnEnd():
 	# Stationary turn tracking — must happen before movement points reset
 	if movedThisTurn:

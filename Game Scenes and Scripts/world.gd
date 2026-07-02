@@ -1762,6 +1762,7 @@ func updatePlayerUI():
 		$CanvasLayer/TechTree.investmentChanged.connect(_refresh_next_turn_ui)
 	updateResourceBar()
 	_refresh_next_turn_ui()
+	_setup_cycle_button()
 	updateMap()
 
 var thisTileNumber: int
@@ -2107,6 +2108,39 @@ func _show_ai_turn_report() -> void:
 	_ai_combat_log.clear()
 
 # ── FLOATING DAMAGE NUMBERS ───────────────────────────────────────────────────
+func _cycle_to_next_ready_unit() -> void:
+	var pc = $PathControl
+	var apfs: Array = pc.raisedPlayerAPFs
+	if apfs.is_empty():
+		return
+	var n: int = apfs.size()
+	for i in range(1, n + 1):
+		var idx: int = (_cycle_index + i) % n
+		var apf = apfs[idx]
+		if not is_instance_valid(apf) or apf.thisArmy == null or not is_instance_valid(apf.thisArmy):
+			continue
+		if apf.thisArmy.enemy or not apf.thisArmy.has_moves_left():
+			continue
+		_cycle_index = idx
+		pc.displayapfInfo(apf.thisArmy, apf, apf.currentTile, pc.playerCountry, apf.currentPathPoint)
+		if apf.currentPathPoint != null:
+			focus_camera_on(apf.currentPathPoint)
+		return
+
+
+func _setup_cycle_button() -> void:
+	if $CanvasLayer.has_node("CycleUnitsButton"):
+		return
+	var btn := Button.new()
+	btn.name = "CycleUnitsButton"
+	btn.text = "\u21bb Unit"
+	btn.tooltip_text = "Select the next unit with moves left (Tab)"
+	btn.position = Vector2(82, 72)
+	btn.custom_minimum_size = Vector2(72, 28)
+	btn.pressed.connect(_cycle_to_next_ready_unit)
+	$CanvasLayer.add_child(btn)
+
+
 func focus_camera_on(node, duration: float = 0.45) -> void:
 	# Smoothly pan the map camera to center on a node (tile spawn point, army token, etc.).
 	if node == null or not is_instance_valid(node):
@@ -2200,6 +2234,9 @@ func _unhandled_input(event: InputEvent) -> void:
 	# A click or keypress during the AI replay fast-forwards it.
 	if _playing_ai and event.is_pressed():
 		_skip_ai_playback = true
+		return
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_TAB:
+		_cycle_to_next_ready_unit()
 
 func raiseArmyFromWorld(Army, country, Tile):
 	if Tile == null or not is_instance_valid(Tile):
@@ -2227,6 +2264,7 @@ var _event_queue: Array = []      # pending events, shown one at a time
 var _event_showing: bool = false # true while an event panel is on screen
 var _defer_events: bool = false  # true during an AI turn — events queue, then flush at the player's turn
 const _ARCS_DISABLED := true      # TEMP: mute commander/protector arcs for a later focused writing pass
+var _cycle_index: int = -1        # last unit index visited by the cycle-units button
 
 var temporaryTile: Tile
 #MAP INTERACTION

@@ -104,6 +104,9 @@ func _process(_delta: float) -> void:
 		return
 	refreshHealthBar()
 	_update_token_scale()
+	# Fade our own token when it has no moves/actions left this turn.
+	if not thisArmy.enemy:
+		modulate = Color(0.5, 0.5, 0.55, 0.6) if not thisArmy.has_moves_left() else Color(1, 1, 1, 1)
 	if thisArmy.deleteMode == false:
 		if attack_mode:
 			_process_attack()
