@@ -89,6 +89,9 @@ func buildSelf(parentCountry, Type, Level, WeaponType, OreType, ArmorType, CurMa
 	unitCurrentWeapons  = CurWeapons
 	reloadCounter       = 0  # start ready to fire
 	getUnitAttributes()
+	# Clamp starting values to the freshly-computed maxes (spawn data can over-specify, e.g. 300/200).
+	unitCurrentManpower = min(unitCurrentManpower, unitMaxManpower)
+	unitCurrentWeapons = min(unitCurrentWeapons, unitMaxWeapons)
 
 
 func getUnitAttributes() -> void:
