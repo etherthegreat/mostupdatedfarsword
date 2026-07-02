@@ -1638,6 +1638,7 @@ func _resolve_ai_and_advance_round() -> void:
 	# All non-player countries take their AI turn (battles are recorded, shown afterward)
 	_ai_playback_queue.clear()
 	_defer_events = true
+	_track_uk_apfs()
 	for c in aliveCountriesList:
 		if c.CID not in _player_turn_order:
 			_ai_recording_country = c
@@ -2107,6 +2108,28 @@ func _show_ai_turn_report() -> void:
 	_ai_combat_log.clear()
 
 # ── FLOATING DAMAGE NUMBERS ───────────────────────────────────────────────────
+func _track_uk_apfs() -> void:
+	var uk = null
+	for c in aliveCountriesList:
+		if c.CID == "UK":
+			uk = c
+			break
+	if uk == null:
+		return
+	print("[APFTRACK] turn ", currentWorldTurn, " — UK armies: ", uk.countryArmyList.size())
+	for army in uk.countryArmyList:
+		if not is_instance_valid(army):
+			print("  [APFTRACK] <freed army still in list>")
+			continue
+		var tname = army.inTile.tileName if army.inTile != null else "NO_TILE"
+		var has_apf = false
+		for apf in $PathControl.raisedPlayerAPFs:
+			if is_instance_valid(apf) and apf.thisArmy == army:
+				has_apf = true
+				break
+		print("  [APFTRACK] '", army.ArmyName, "' @", tname, " mp=", army.manpowerInArmy, " apf=", has_apf, " delete=", army.deleteMode)
+
+
 func focus_camera_on(node, duration: float = 0.45) -> void:
 	# Smoothly pan the map camera to center on a node (tile spawn point, army token, etc.).
 	if node == null or not is_instance_valid(node):
@@ -2226,6 +2249,7 @@ var eventScene = load("res://eventScene.tscn")
 var _event_queue: Array = []      # pending events, shown one at a time
 var _event_showing: bool = false # true while an event panel is on screen
 var _defer_events: bool = false  # true during an AI turn — events queue, then flush at the player's turn
+const _ARCS_DISABLED := true      # TEMP: mute commander/protector arcs for a later focused writing pass
 
 var temporaryTile: Tile
 #MAP INTERACTION
@@ -2387,6 +2411,8 @@ func _protector_id_to_spell(pid: String) -> String:
 	return ""
 
 func createNewEvent(event_id: String, tile = null, prepend: bool = false) -> void:
+	if _ARCS_DISABLED and (event_id.begins_with("CMD_") or event_id.begins_with("ARC_") or event_id.begins_with("PROT_") or event_id.begins_with("CA_PROT_") or event_id.begins_with("CA_PM")):
+		return
 	if not EventDatabase.event_can_fire(event_id, currentWorldTurn):
 		return
 	# Claim + enqueue now; panels are built and shown one at a time by _show_next_event().
