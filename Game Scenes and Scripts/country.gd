@@ -1474,6 +1474,7 @@ func _uk_calculate_turn() -> void:
 			elif not _uk_try_advance(army):
 				# No target and couldn't advance — hold position
 				army.isGuarding = true
+				print("[UKACT] '", army.ArmyName, "' HOLD @#", army.inTile.tileNumber, " '", army.inTile.tileName, "' (no target, no open advance)")
 
 
 func _tile_occupant(tile):
@@ -1529,7 +1530,8 @@ func _uk_attack_tile(army: Army, targetTile) -> void:
 		and enemy.parentCountry != null and enemy.parentCountry.CID != CID
 	if enemy_here:
 		# Can't walk through an enemy — attack it; only advance + capture if it dies.
-		print("[UKACT] '", army.ArmyName, "' ATTACK #", targetTile.tileNumber, " '", targetTile.tileName, "' vs '", enemy.ArmyName, "' (enemy.inTile=#", (enemy.inTile.tileNumber if enemy.inTile != null else -1), " mp=", enemy.manpowerInArmy, ")")
+		var _bt: Dictionary = army.compute_battle_against(enemy)
+		print("[UKACT] '", army.ArmyName, "' ATTACK #", targetTile.tileNumber, " '", targetTile.tileName, "' vs '", enemy.ArmyName, "' mp=", enemy.manpowerInArmy, " -> dmg def=", _bt["def_loss"], " atk=", _bt["atk_loss"])
 		_resolve_ai_battle(army, enemy, targetTile)
 		var killed: bool = not is_instance_valid(enemy) or enemy.manpowerInArmy <= 0
 		emit_signal("aiCombatEvent", CID, targetTile, "attacked")
@@ -1588,21 +1590,54 @@ func _uk_reinforce(army: Army) -> void:
 	var rate = armyReinforceRate * (2 if army.inTile.has_dock() else 1)
 	army.manpowerInArmy = mini(army.manpowerInArmy + rate, army.maxManpower)
 
+func _uk_step_toward_front(start):
+	# BFS to the nearest USA (front) tile; return the neighbor of `start` that steps toward it.
+	if start == null:
+		return null
+	var visited := {start: null}
+	var queue := [start]
+	var goal = null
+	while not queue.is_empty():
+		var t = queue.pop_front()
+		if t != start and t.tileOwner == "USA":
+			goal = t
+			break
+		for n in t.TileNeighbors:
+			if n != null and not visited.has(n):
+				visited[n] = t
+				queue.append(n)
+	if goal == null:
+		return null
+	var step = goal
+	while visited.get(step) != start:
+		step = visited.get(step)
+		if step == null:
+			return null
+	return step
+
+
 func _uk_try_advance(army: Army) -> bool:
-	# Move into an adjacent UK-owned tile that has no army — pushes front forward
+	# Push toward the front: prefer the neighbor that steps toward the nearest USA tile,
+	# then fall back to any open UK-owned tile so no army just stands idle.
 	if army.inTile == null:
 		return false
+	var toward = _uk_step_toward_front(army.inTile)
+	var candidates: Array = []
+	if toward != null:
+		candidates.append(toward)
 	for neighbor in army.inTile.TileNeighbors:
+		if neighbor != null and neighbor != toward:
+			candidates.append(neighbor)
+	for neighbor in candidates:
 		if neighbor == null:
 			continue
 		if neighbor.tileOwner != CID:
 			continue
-		if neighbor.stationedArmy != null and is_instance_valid(neighbor.stationedArmy):
+		if _tile_occupant(neighbor) != null:
 			continue
 		var ppb = neighbor.tileSpawnPoint
 		if ppb != null and ppb.occupied:
 			continue
-		# Found an open UK tile — move there
 		print("[UKACT] '", army.ArmyName, "' ADVANCE to #", neighbor.tileNumber, " '", neighbor.tileName, "'")
 		var old_tile = army.inTile
 		army.inTile = neighbor
