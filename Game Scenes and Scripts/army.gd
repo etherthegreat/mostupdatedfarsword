@@ -1022,13 +1022,22 @@ func calculateAttackerResults(type: String, manpowerLossAmount: int) -> void:
 	if manpowerInArmy <= 0:
 		emit_signal("armyDestroyed", self)
 
-func calculateDefenderResults(type: String, manpowerLossAmount: int) -> void:
+func calculateDefenderResults(type: String, manpowerLossAmount: int, raw: bool = false) -> void:
 	if manpowerLossAmount <= 0:
 		return
 	var living = unitsList.filter(func(u): return u.unitCurrentManpower > 0)
 	var damagePerUnit = int(manpowerLossAmount / max(1, living.size()))
 	for Unit in living:
-		Unit.takeLosses(type, float(damagePerUnit))
+		if raw:
+			# compute_battle already applied block — apply directly (shields still absorb), no re-mitigation.
+			var dmg: int = damagePerUnit
+			if Unit.unitShield > 0:
+				var absorbed: int = min(Unit.unitShield, dmg)
+				Unit.unitShield -= absorbed
+				dmg -= absorbed
+			Unit.unitCurrentManpower = max(0, Unit.unitCurrentManpower - dmg)
+		else:
+			Unit.takeLosses(type, float(damagePerUnit))
 	surveySelf()
 	if manpowerInArmy <= 0:
 		emit_signal("armyDestroyed", self)

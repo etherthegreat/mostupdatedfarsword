@@ -1559,9 +1559,9 @@ func _resolve_ai_battle(attacker: Army, defender: Army, tile) -> void:
 	var defender_loss: int = int(bt["def_loss"])
 	var attacker_loss: int = int(bt["atk_loss"])
 	if defender_loss > 0:
-		defender.calculateDefenderResults("melee", defender_loss)
+		defender.calculateDefenderResults("melee", defender_loss, true)
 	if attacker_loss > 0:
-		attacker.calculateDefenderResults("melee", attacker_loss)
+		attacker.calculateDefenderResults("melee", attacker_loss, true)
 	attacker.spend_attack_ap()
 	# Cycle the attacker's fired ranged units back through reload (unchanged AI behavior).
 	attacker.tick_all_reloads()

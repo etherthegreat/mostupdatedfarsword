@@ -409,8 +409,8 @@ func _on_attack_midpoint(apf: armyPathFollow) -> void:
 	var _bt: Dictionary = compute_battle(attacker, defender)
 	var def_loss: int = _bt["def_loss"]
 	var atk_loss: int = _bt["atk_loss"]
-	defender.calculateDefenderResults("melee", def_loss)
-	attacker.calculateDefenderResults("melee", atk_loss)
+	defender.calculateDefenderResults("melee", def_loss, true)
+	attacker.calculateDefenderResults("melee", atk_loss, true)
 	attacker.spend_attack_ap()
 	# Also update siege on the target tile
 	targetPPB.siegeTile(attacker)
