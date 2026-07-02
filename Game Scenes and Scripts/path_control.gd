@@ -7,6 +7,7 @@ var updatingArmyPathFollow: PathFollow2D
 var _travelingFollower = null   # APF/CPF currently animating along the path (selection-independent)
 
 var selectedAPF: armyPathFollow
+var war_active: bool = false   # false = pre-war ceasefire; player can't strike/enter UK
 var _highlightedTiles: Array = []
 var selectedCPF: civilianPathFollow
 
@@ -124,6 +125,9 @@ func _on_apf_right_clicked(clickedArmy, apf, currentTile, clickedCountry, curren
 	# Right-click an enemy APF to attack it (must neighbor the selected army).
 	if selectedAPF == null or clickedArmy == null or not clickedArmy.enemy:
 		return
+	if not war_active and clickedArmy.parentCountry != null and clickedArmy.parentCountry.CID == "UK":
+		emit_signal("movement_blocked", "The war hasn't begun — you can't strike the British yet.")
+		return
 	var targetPPB = apf.currentPathPoint
 	if targetPPB != null and targetPPB in selectedAPF.currentPathPoint.neighborPathPoints:
 		_initiate_attack(targetPPB)
@@ -220,6 +224,9 @@ func displayapfInfo(thisArmy, apf, currentTile, thisCountry, currentPathPoint):
 # Returns true if the click was consumed (movement or attack initiated).
 func tryMoveSelectedAPFToTile(tile: Tile) -> bool:
 	if selectedAPF == null:
+		return false
+	if not war_active and tile.tileOwner == "UK":
+		emit_signal("movement_blocked", "The war hasn't begun — you can't enter British territory yet.")
 		return false
 	var targetPPB = tile.tileSpawnPoint
 	if targetPPB == null:

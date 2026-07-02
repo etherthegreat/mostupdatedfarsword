@@ -263,15 +263,17 @@ func newGameBuild(CID, gameLang, isCoop: bool = false):
 	$CanvasLayer/LoadingProgressBar.visible = false
 	$CanvasLayer/LoadingLabel.visible = false
 	generateBarracksCommanders()
-	spawnStartingArmies()
-	# Populate AI country commanders and armies at barracks tiles
+	# Quiet start — no field armies until the turn-9 mobilization / turn-10 invasion.
+	# spawnStartingArmies()
+	# Populate AI country commanders only (no start armies during peace).
 	for ai_country in aliveCountriesList:
 		if ai_country.Player:
 			continue
 		match ai_country.CID:
 			"CA":
 				_generate_ai_barracks_commanders(ai_country)
-				_spawn_ai_starting_armies(ai_country)
+				# _spawn_ai_starting_armies(ai_country)
+	_apply_war_timing()   # establish the pre-war ceasefire (peace until turn 10)
 	var coop_country_id: String = "COOP" if isCoopMode else playerCountry
 	$CanvasLayer/WarRoomPanel.setupAllProtectors($TileController.get_children(), coop_country_id)
 	_assign_vice_president()
@@ -1635,6 +1637,7 @@ func _set_active_country_no_ui(cid: String) -> void:
 
 
 func _resolve_ai_and_advance_round() -> void:
+	_apply_war_timing()   # peace until turn 10, then open the war + spawn the invasion
 	# All non-player countries take their AI turn (battles are recorded, shown afterward)
 	_ai_playback_queue.clear()
 	_defer_events = true
@@ -2108,6 +2111,56 @@ func _show_ai_turn_report() -> void:
 	_ai_combat_log.clear()
 
 # ── FLOATING DAMAGE NUMBERS ───────────────────────────────────────────────────
+func _country_by_cid(cid: String):
+	for c in aliveCountriesList:
+		if c != null and c.CID == cid:
+			return c
+	return null
+
+
+func _apply_war_timing() -> void:
+	# Turns 1-9: mutual ceasefire (UK & CA can't attack, player blocked from UK land).
+	# Turn 10: lift peace, flag war started, spawn the UK border invasion.
+	var uk = _country_by_cid("UK")
+	var ca = _country_by_cid("CA")
+	if currentWorldTurn < 10:
+		if uk != null:
+			uk.CountryFlags["uk_usa_peace"] = true
+		if ca != null:
+			ca.CountryFlags["uk_ca_peace"] = true
+		$PathControl.war_active = false
+	else:
+		if uk != null:
+			uk.CountryFlags.erase("uk_usa_peace")
+		if ca != null:
+			ca.CountryFlags.erase("uk_ca_peace")
+		$PathControl.war_active = true
+		if uk != null and not uk.CountryFlags.get("uk_war_started", false):
+			uk.CountryFlags["uk_war_started"] = true
+			_spawn_uk_border_armies(uk)
+
+
+func _spawn_uk_border_armies(uk) -> void:
+	var count: int = 0
+	for tile in $TileController.get_children():
+		if tile.tileOwner != "UK" or tile.stationedArmy != null:
+			continue
+		var is_border: bool = false
+		for n in tile.TileNeighbors:
+			if n != null and n.tileOwner == "USA":
+				is_border = true
+				break
+		if not is_border:
+			continue
+		uk.addArmy(tile.tileName + " Vanguard", tile.tileNumber)
+		var new_army = uk.countryArmyList.back()
+		if new_army != null:
+			new_army.updateArmyUI()
+			new_army.raiseSelf()
+			count += 1
+	print("[War] Turn ", currentWorldTurn, " — UK invasion: ", count, " border armies raised")
+
+
 func _cycle_to_next_ready_unit() -> void:
 	var pc = $PathControl
 	var apfs: Array = pc.raisedPlayerAPFs

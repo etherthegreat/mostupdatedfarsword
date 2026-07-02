@@ -1492,6 +1492,8 @@ func _stance_summary(army) -> String:
 
 
 func _uk_calculate_turn() -> void:
+	if not CountryFlags.get("uk_war_started", false):
+		return   # dormant until the war opens (turn 10)
 	_calculate_supply_from_owned()
 	_uk_spawn_reinforcement()
 	for army in countryArmyList:
