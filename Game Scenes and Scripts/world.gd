@@ -52,6 +52,9 @@ var _skip_ai_playback: bool = false      # fast-forward the replay
 var _playing_ai: bool = false            # true while the AI-turn replay runs
 var _stashed_atk_loss: int = 0           # losses from a real battle, attached to the next attack record
 var _stashed_def_loss: int = 0
+var _stashed_attacker = null
+var _stashed_defender = null
+var _stashed_pierce: int = 0
 var _floating_damage_scene = preload("res://floating_damage_number.tscn")
 var _peace_last_freed_tile = null        # most-recently freed peace dock tile node
 var isCoopMode: bool = false             # true when both USA and CA are player-controlled
@@ -2096,10 +2099,14 @@ func _on_ai_combat_event(attacker_cid: String, tile, result: String) -> void:
 	_ai_playback_queue.append({
 		"kind": "combat", "tile": tile, "result": result,
 		"atk_loss": _stashed_atk_loss, "def_loss": _stashed_def_loss,
+		"attacker": _stashed_attacker, "defender": _stashed_defender, "pierce": _stashed_pierce,
 		"country": _ai_recording_country,
 	})
 	_stashed_atk_loss = 0
 	_stashed_def_loss = 0
+	_stashed_attacker = null
+	_stashed_defender = null
+	_stashed_pierce = 0
 
 func _show_ai_turn_report() -> void:
 	if _ai_combat_log.is_empty():
@@ -2320,10 +2327,13 @@ func _on_player_battle_resolved(tile, atk_loss: int, def_loss: int) -> void:
 	_on_battle_resolved(tile, atk_loss, def_loss)
 
 
-func _on_ai_battle_resolved(tile, atk_loss: int, def_loss: int) -> void:
-	# A real army-vs-army battle: stash losses so the following aiCombatEvent attaches them.
+func _on_ai_battle_resolved(tile, atk_loss: int, def_loss: int, attacker, defender, shield_pierce: int) -> void:
+	# A real army-vs-army battle: stash the deferred damage so the following aiCombatEvent carries it.
 	_stashed_atk_loss = atk_loss
 	_stashed_def_loss = def_loss
+	_stashed_attacker = attacker
+	_stashed_defender = defender
+	_stashed_pierce = shield_pierce
 
 
 func _play_ai_turn() -> void:
@@ -2374,6 +2384,13 @@ func _show_ai_battle(entry) -> void:
 	# HOOK: entry["country"] is available here for a future 'Jessica's / George III's Turn' banner.
 	var al = entry.get("atk_loss", 0)
 	var dl = entry.get("def_loss", 0)
+	# Apply the DEFERRED combat damage now (during the replay) so units fall on-screen.
+	var defr = entry.get("defender")
+	var atkr = entry.get("attacker")
+	if defr != null and is_instance_valid(defr) and dl > 0:
+		defr.calculateDefenderResults("melee", dl, true, entry.get("pierce", 0))
+	if atkr != null and is_instance_valid(atkr) and al > 0:
+		atkr.calculateDefenderResults("melee", al, true)
 	if al > 0 or dl > 0:
 		_on_battle_resolved(entry.get("tile"), al, dl)
 

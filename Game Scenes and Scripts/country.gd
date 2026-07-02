@@ -1318,7 +1318,7 @@ func calculateTurn() -> void:
 # Emitted when an AI army physically moves to a new tile after a conquest.
 # world.gd listens and repositions the APF node.
 signal armyRepositioned(army, old_tile, new_tile)
-signal battleResolved(tile, atk_loss, def_loss)
+signal battleResolved(tile, atk_loss, def_loss, attacker, defender, shield_pierce)
 
 # Emitted for every AI attack so world.gd can build a turn summary.
 signal aiCombatEvent(attacker_cid, tile, result)
@@ -1365,8 +1365,7 @@ func _ca_press_uk_borders() -> void:
 			var ca_enemy_here: bool = ca_enemy != null and is_instance_valid(ca_enemy) \
 				and ca_enemy.parentCountry != null and ca_enemy.parentCountry.CID != CID
 			if ca_enemy_here:
-				_resolve_ai_battle(army, ca_enemy, best_target)
-				var ca_killed: bool = not is_instance_valid(ca_enemy) or ca_enemy.manpowerInArmy <= 0
+				var ca_killed: bool = _resolve_ai_battle(army, ca_enemy, best_target)
 				emit_signal("aiCombatEvent", CID, best_target, "attacked")
 				if ca_killed and old_tile != null:
 					army.inTile = best_target
@@ -1556,8 +1555,7 @@ func _uk_attack_tile(army: Army, targetTile) -> void:
 		and enemy.parentCountry != null and enemy.parentCountry.CID != CID
 	if enemy_here:
 		# Can't walk through an enemy — attack it; only advance + capture if it dies.
-		_resolve_ai_battle(army, enemy, targetTile)
-		var killed: bool = not is_instance_valid(enemy) or enemy.manpowerInArmy <= 0
+		var killed: bool = _resolve_ai_battle(army, enemy, targetTile)
 		emit_signal("aiCombatEvent", CID, targetTile, "attacked")
 		if killed and old_tile != null:
 			old_tile.stationedArmy = null
@@ -1575,20 +1573,17 @@ func _uk_attack_tile(army: Army, targetTile) -> void:
 		emit_signal("armyRepositioned", army, old_tile, targetTile)
 
 
-func _resolve_ai_battle(attacker: Army, defender: Army, tile) -> void:
-	# SAME math as the player + hover preview (Army.compute_battle_against), so both sides
-	# fight by identical rules — the player can see exactly why the AI hits as hard as it does.
+func _resolve_ai_battle(attacker: Army, defender: Army, tile) -> bool:
+	# SAME math as the player + hover preview (Army.compute_battle_against). Damage is DEFERRED
+	# to the replay (world._show_ai_battle) so units fall on-screen during the camera tour, not
+	# instantly at the start of the turn. compute_battle is deterministic, so the prediction holds.
 	var bt: Dictionary = attacker.compute_battle_against(defender)
 	var defender_loss: int = int(bt["def_loss"])
 	var attacker_loss: int = int(bt["atk_loss"])
-	if defender_loss > 0:
-		defender.calculateDefenderResults("melee", defender_loss, true, bt.get("shield_pierce", 0))
-	if attacker_loss > 0:
-		attacker.calculateDefenderResults("melee", attacker_loss, true)
 	attacker.spend_attack_ap()
-	# Fired ranged units begin reloading; the per-turn tick happens in onTurnEnd.
 	attacker.start_fired_reloads()
-	emit_signal("battleResolved", tile, attacker_loss, defender_loss)
+	emit_signal("battleResolved", tile, attacker_loss, defender_loss, attacker, defender, int(bt.get("shield_pierce", 0)))
+	return (defender.manpowerInArmy - defender_loss) <= 0
 
 
 func _uk_retreat_to_supply(army: Army) -> void:
