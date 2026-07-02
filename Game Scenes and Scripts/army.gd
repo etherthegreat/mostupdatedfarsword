@@ -353,7 +353,7 @@ func offensive_output(require_ap: bool, holders_counter: bool) -> Dictionary:
 					else:
 						ranged += float(u.unitRangedOffence) * 1.2
 			"fire":
-				if not require_ap or u.unitCurrentAP > 0:
+				if (not require_ap or u.unitCurrentAP > 0) and not u.is_reloading():
 					ranged += float(u.unitRangedOffence)
 			"charge":
 				if not require_ap or u.unitCurrentAP > 0:
@@ -361,22 +361,27 @@ func offensive_output(require_ap: bool, holders_counter: bool) -> Dictionary:
 	return {"ranged": ranged, "melee": melee}
 
 
+# Combat tuning — attacker risk/reward for charging (no defender reflect for now).
+const CHARGE_SELF_DAMAGE: float = 0.35   # attacker loses this fraction of the melee it commits
+const CHARGE_SHIELD_PIERCE: float = 0.5  # this fraction of charge damage ignores the defender's shield
+
 func compute_battle_against(defender: Army) -> Dictionary:
 	# Shared attack math for player, AI, and the hover preview. Pure — no side effects.
-	# Fire -> ranged (mitigated by armyDefence); Charge -> melee (mitigated by armyBlock).
+	# Fire -> ranged (safe for the attacker); Charge -> melee (costs the attacker, pierces shield).
 	surveySelf()
 	defender.surveySelf()
 	var d_units: float = max(1.0, float(defender.unitsList.size()))
-	var a_units: float = max(1.0, float(unitsList.size()))
 	var a_out: Dictionary = offensive_output(true, false)
 	var d_rblock: float = clamp((float(defender.armyDefence) + float(defender.hold_defense_bonus())) / d_units, 0.0, 0.9)
 	var d_mblock: float = clamp((float(defender.armyBlock) + float(defender.hold_defense_bonus())) / d_units, 0.0, 0.9)
-	var def_loss: int = int(a_out["ranged"] * (1.0 - d_rblock) + a_out["melee"] * (1.0 - d_mblock))
-	var d_out: Dictionary = defender.offensive_output(false, true)
-	var a_rblock: float = clamp((float(armyDefence) + float(hold_defense_bonus())) / a_units, 0.0, 0.9)
-	var a_mblock: float = clamp((float(armyBlock) + float(hold_defense_bonus())) / a_units, 0.0, 0.9)
-	var atk_loss: int = int(d_out["ranged"] * (1.0 - a_rblock) + d_out["melee"] * (1.0 - a_mblock))
-	return {"def_loss": def_loss, "atk_loss": atk_loss}
+	var ranged_dmg: float = a_out["ranged"] * (1.0 - d_rblock)
+	var melee_dmg: float = a_out["melee"] * (1.0 - d_mblock)
+	var def_loss: int = int(ranged_dmg + melee_dmg)
+	# No defender reflect. Firing is free; charging costs a fraction of the melee committed.
+	var atk_loss: int = int(a_out["melee"] * CHARGE_SELF_DAMAGE)
+	# A share of charge damage bypasses the defender's shield, straight to manpower.
+	var shield_pierce: int = int(melee_dmg * CHARGE_SHIELD_PIERCE)
+	return {"def_loss": def_loss, "atk_loss": atk_loss, "shield_pierce": shield_pierce}
 
 
 func has_charging_unit() -> bool:
@@ -1022,20 +1027,23 @@ func calculateAttackerResults(type: String, manpowerLossAmount: int) -> void:
 	if manpowerInArmy <= 0:
 		emit_signal("armyDestroyed", self)
 
-func calculateDefenderResults(type: String, manpowerLossAmount: int, raw: bool = false) -> void:
+func calculateDefenderResults(type: String, manpowerLossAmount: int, raw: bool = false, shield_pierce: int = 0) -> void:
 	if manpowerLossAmount <= 0:
 		return
 	var living = unitsList.filter(func(u): return u.unitCurrentManpower > 0)
 	var damagePerUnit = int(manpowerLossAmount / max(1, living.size()))
+	var pierce_per_unit = int(shield_pierce / max(1, living.size()))
 	for Unit in living:
 		if raw:
-			# compute_battle already applied block — apply directly (shields still absorb), no re-mitigation.
+			# compute_battle already applied block. Pierce portion ignores shield; the rest absorbs it.
 			var dmg: int = damagePerUnit
+			var pierce: int = min(pierce_per_unit, dmg)
+			var normal: int = dmg - pierce
 			if Unit.unitShield > 0:
-				var absorbed: int = min(Unit.unitShield, dmg)
+				var absorbed: int = min(Unit.unitShield, normal)
 				Unit.unitShield -= absorbed
-				dmg -= absorbed
-			Unit.unitCurrentManpower = max(0, Unit.unitCurrentManpower - dmg)
+				normal -= absorbed
+			Unit.unitCurrentManpower = max(0, Unit.unitCurrentManpower - pierce - normal)
 		else:
 			Unit.takeLosses(type, float(damagePerUnit))
 	surveySelf()

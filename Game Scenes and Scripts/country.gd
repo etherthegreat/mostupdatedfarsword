@@ -1559,7 +1559,7 @@ func _resolve_ai_battle(attacker: Army, defender: Army, tile) -> void:
 	var defender_loss: int = int(bt["def_loss"])
 	var attacker_loss: int = int(bt["atk_loss"])
 	if defender_loss > 0:
-		defender.calculateDefenderResults("melee", defender_loss, true)
+		defender.calculateDefenderResults("melee", defender_loss, true, bt.get("shield_pierce", 0))
 	if attacker_loss > 0:
 		attacker.calculateDefenderResults("melee", attacker_loss, true)
 	attacker.spend_attack_ap()
