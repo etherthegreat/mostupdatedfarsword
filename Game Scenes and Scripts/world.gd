@@ -2076,6 +2076,10 @@ func _on_ai_army_repositioned(army: Army, old_tile: Tile, new_tile: Tile) -> voi
 	new_ppb.occupied = true
 	apf.currentPathPoint = new_ppb
 	apf.currentTile = new_tile
+	# Hold the token at its ORIGIN visually until its replay march runs — otherwise the
+	# reparent teleports every redcoat to its destination, then the replay snaps it back.
+	if old_tile.tileSpawnPoint != null and is_instance_valid(old_tile.tileSpawnPoint):
+		apf.global_position = old_tile.tileSpawnPoint.global_position
 	# Record the move for the AI-turn replay (played back as an animated march).
 	_ai_playback_queue.append({
 		"kind": "move", "apf": apf,
