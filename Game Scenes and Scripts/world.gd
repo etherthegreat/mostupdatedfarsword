@@ -1638,7 +1638,6 @@ func _resolve_ai_and_advance_round() -> void:
 	# All non-player countries take their AI turn (battles are recorded, shown afterward)
 	_ai_playback_queue.clear()
 	_defer_events = true
-	_track_uk_apfs()
 	for c in aliveCountriesList:
 		if c.CID not in _player_turn_order:
 			_ai_recording_country = c
@@ -2108,28 +2107,6 @@ func _show_ai_turn_report() -> void:
 	_ai_combat_log.clear()
 
 # ── FLOATING DAMAGE NUMBERS ───────────────────────────────────────────────────
-func _track_uk_apfs() -> void:
-	var uk = null
-	for c in aliveCountriesList:
-		if c.CID == "UK":
-			uk = c
-			break
-	if uk == null:
-		return
-	print("[APFTRACK] turn ", currentWorldTurn, " — UK armies: ", uk.countryArmyList.size())
-	for army in uk.countryArmyList:
-		if not is_instance_valid(army):
-			print("  [APFTRACK] <freed army still in list>")
-			continue
-		var tname = army.inTile.tileName if army.inTile != null else "NO_TILE"
-		var has_apf = false
-		for apf in $PathControl.raisedPlayerAPFs:
-			if is_instance_valid(apf) and apf.thisArmy == army:
-				has_apf = true
-				break
-		print("  [APFTRACK] '", army.ArmyName, "' @", tname, " mp=", army.manpowerInArmy, " apf=", has_apf, " delete=", army.deleteMode)
-
-
 func focus_camera_on(node, duration: float = 0.45) -> void:
 	# Smoothly pan the map camera to center on a node (tile spawn point, army token, etc.).
 	if node == null or not is_instance_valid(node):
@@ -5809,7 +5786,6 @@ func tileSiegeWon(tile, oldCID: String, newCID: String) -> void:
 		if is_instance_valid(apf) and apf.thisArmy != null \
 				and apf.thisArmy.parentCountry != null \
 				and apf.thisArmy.parentCountry.CID == oldCID:
-			print("[DELETE-TRACE] tileSiegeWon '", tile.tileName, "' old=", oldCID, " new=", newCID, " army='", apf.thisArmy.ArmyName, "' -> ", ("SKIP (no owner change)" if oldCID == newCID else "delete loser"))
 			# Only strand the loser on a REAL ownership change — a same-owner re-trigger
 			# was deleting the capturing army standing on its own freshly-taken tile.
 			if oldCID != newCID:

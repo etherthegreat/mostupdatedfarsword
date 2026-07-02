@@ -603,7 +603,6 @@ signal commanderFallen(commander, army_name: String, tile)
 signal countryArmyDestroyed(lost_army: Army)
 
 func _on_army_destroyed(army: Army) -> void:
-	print("[ARMYDEATH] ", CID, " '", army.ArmyName, "' destroyed at ", (army.inTile.tileName if army.inTile != null else "?"))
 	if army.commander != null:
 		emit_signal("commanderFallen", army.commander, army.ArmyName, army.inTile)
 	countryArmyList.erase(army)
@@ -1434,12 +1433,10 @@ func _trace_supply_to_port(startTile) -> bool:
 
 func _apply_supply_attrition(army: Army) -> void:
 	var attrition_rate = 0.05
-	var _before = army.manpowerInArmy
 	for unit in army.unitsList:
 		var loss = int(unit.unitCurrentManpower * attrition_rate)
 		unit.unitCurrentManpower = max(0, unit.unitCurrentManpower - loss)
 	army.surveySelf()
-	print("[ATTRITION] ", CID, " '", army.ArmyName, "' ", _before, " -> ", army.manpowerInArmy, (" *** DIED FROM ATTRITION ***" if army.manpowerInArmy <= 0 else " (unsupplied)"))
 
 
 func is_army_supplied(army: Army) -> bool:
@@ -1516,7 +1513,6 @@ func _uk_calculate_turn() -> void:
 				_ai_set_stances(army, true)    # no fight this turn — brace
 				if not _uk_try_advance(army):
 					army.isGuarding = true
-					print("[UKACT] '", army.ArmyName, "' HOLD @#", army.inTile.tileNumber, " '", army.inTile.tileName, "' (no target, no open advance)")
 
 
 func _tile_occupant(tile):
@@ -1572,8 +1568,6 @@ func _uk_attack_tile(army: Army, targetTile) -> void:
 		and enemy.parentCountry != null and enemy.parentCountry.CID != CID
 	if enemy_here:
 		# Can't walk through an enemy — attack it; only advance + capture if it dies.
-		var _bt: Dictionary = army.compute_battle_against(enemy)
-		print("[UKACT] '", army.ArmyName, "' ATTACK #", targetTile.tileNumber, " '", targetTile.tileName, "' vs '", enemy.ArmyName, "' mp=", enemy.manpowerInArmy, " [", _stance_summary(army), "] -> dmg def=", _bt["def_loss"], " atk=", _bt["atk_loss"])
 		_resolve_ai_battle(army, enemy, targetTile)
 		var killed: bool = not is_instance_valid(enemy) or enemy.manpowerInArmy <= 0
 		emit_signal("aiCombatEvent", CID, targetTile, "attacked")
@@ -1585,7 +1579,6 @@ func _uk_attack_tile(army: Army, targetTile) -> void:
 			emit_signal("armyRepositioned", army, old_tile, targetTile)
 	elif old_tile != null:
 		# Empty tile — walk in and flip it instantly.
-		print("[UKACT] '", army.ArmyName, "' CAPTURE empty #", targetTile.tileNumber, " '", targetTile.tileName, "'")
 		old_tile.stationedArmy = null
 		targetTile.stationedArmy = army
 		army.inTile = targetTile
@@ -1676,7 +1669,6 @@ func _uk_try_advance(army: Army) -> bool:
 		var ppb = neighbor.tileSpawnPoint
 		if ppb != null and ppb.occupied:
 			continue
-		print("[UKACT] '", army.ArmyName, "' ADVANCE to #", neighbor.tileNumber, " '", neighbor.tileName, "'")
 		var old_tile = army.inTile
 		army.inTile = neighbor
 		old_tile.stationedArmy = null
