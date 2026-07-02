@@ -26,11 +26,18 @@ func addPrebuiltArmy(Army):
 	barracksArmy = Army
 
 func buildSelf():
-	$Panel/tileName.text = barracksTile.tileName
-	$Panel/barrackslvl.text = str("Barracks Level: ", barracksBuilding.buildingLevel)
+	if barracksTile != null:
+		$Panel/tileName.text = barracksTile.tileName
+	if barracksBuilding != null:
+		$Panel/barrackslvl.text = str("Barracks Level: ", barracksBuilding.buildingLevel)
+	else:
+		$Panel/barrackslvl.text = "Militia Camp"
 
 func updateSelf():
-	$Panel/barrackslvl.text = str("Barracks Level: ", barracksBuilding.buildingLevel)
+	if barracksBuilding != null:
+		$Panel/barrackslvl.text = str("Barracks Level: ", barracksBuilding.buildingLevel)
+	else:
+		$Panel/barrackslvl.text = "Militia Camp"
 	if is_instance_valid(barracksArmy):
 		barracksArmy.updateArmyUI()
 	else:

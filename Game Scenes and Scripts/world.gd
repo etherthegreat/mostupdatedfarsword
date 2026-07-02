@@ -2167,6 +2167,20 @@ func _on_border_warning_choice(button_id: String) -> void:
 		_mobilize_citizens()
 
 
+func _ensure_barracks_button_for(tile):
+	var grid = $CanvasLayer/MilitaryPanelControl/ScrollContainer/GridContainer
+	for bb in grid.get_children():
+		if bb.barracksTile != null and bb.barracksTile.tileNumber == tile.tileNumber and bb.barracksArmy == null:
+			return bb
+	# No free button on this tile — mint a Militia Camp button bound to it.
+	var newbb = load("res://barracks_button.tscn").instantiate()
+	newbb.barracksTile = tile
+	newbb.barracksBuilding = null
+	grid.add_child(newbb)
+	newbb.buildSelf()
+	return newbb
+
+
 func _raise_player_militia(tile) -> void:
 	if tile == null or not is_instance_valid(tile) or tile.stationedArmy != null:
 		return
@@ -2174,11 +2188,11 @@ func _raise_player_militia(tile) -> void:
 	var new_army = playerCountryNode.countryArmyList.back()
 	if new_army == null:
 		return
-	# Wire to a barracks button if the tile has one (so it shows in the Military panel).
-	for bb in $CanvasLayer/MilitaryPanelControl/ScrollContainer/GridContainer.get_children():
-		if bb.barracksTile != null and bb.barracksTile.tileNumber == tile.tileNumber and bb.barracksArmy == null:
-			bb.addPrebuiltArmy(new_army)
-			break
+	# Wire to a barracks button (create a Militia Camp button if the tile has none) so the
+	# army's panel lives in the Military panel instead of being parented onto the map APF.
+	var bb = _ensure_barracks_button_for(tile)
+	if bb != null:
+		bb.addPrebuiltArmy(new_army)
 	if tile.tileGovernor != null:
 		new_army.addUnitCommander(tile.tileGovernor)
 	new_army.updateArmyUI()
@@ -2232,7 +2246,6 @@ func _spawn_uk_border_armies(uk) -> void:
 		uk.addArmy(tile.tileName + " Vanguard", tile.tileNumber)
 		var new_army = uk.countryArmyList.back()
 		if new_army != null:
-			new_army.updateArmyUI()
 			new_army.raiseSelf()
 			count += 1
 	print("[War] Turn ", currentWorldTurn, " — UK invasion: ", count, " border armies raised")
