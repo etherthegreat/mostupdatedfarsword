@@ -2329,7 +2329,7 @@ func _begin_placement() -> void:
 		_placementPanel.queue_free()
 	var panel := Panel.new()
 	panel.size = Vector2(440, 100)
-	panel.position = Vector2(240, 20)
+	panel.position = Vector2(240, 108)
 	$CanvasLayer.add_child(panel)
 	_placementPanel = panel
 	var lbl := Label.new(); lbl.name = "PlaceLabel"; lbl.position = Vector2(14, 10); panel.add_child(lbl)
