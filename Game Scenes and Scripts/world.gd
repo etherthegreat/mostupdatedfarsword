@@ -1798,6 +1798,9 @@ func manaUpdate(type, amount, dictionary):
 	pass
 
 func tileClicked(tile):
+	if not _muster_place_queue.is_empty():
+		_try_place_at(tile)
+		return
 	selectedTile = tile
 	# Left-click a tile: deselect any army + open tile info (movement is right-click).
 	$PathControl.deselectAll()
@@ -1993,10 +1996,12 @@ var _commanderPickerPanel: Panel = null
 var _armyAwaitingCommander: Army = null
 var _musterPanel: Panel = null
 var _musterCounts: Dictionary = {}
+var _muster_place_queue: Array = []
+var _placementPanel: Panel = null
 const MUSTER_ARCHETYPES := [
-	{"name": "Minutemen", "dollars": 40, "manpower": 200},
-	{"name": "Dragoons", "dollars": 90, "manpower": 250},
-	{"name": "Artillery Battery", "dollars": 120, "manpower": 300},
+	{"name": "Minutemen", "dollars": 40},
+	{"name": "Dragoons", "dollars": 90},
+	{"name": "Artillery Battery", "dollars": 120},
 ]
 
 func _open_army_commander_picker(army: Army) -> void:
@@ -2254,7 +2259,7 @@ func _open_muster_panel() -> void:
 	for a in MUSTER_ARCHETYPES:
 		var nm: String = a["name"]
 		var lbl := Label.new()
-		lbl.text = nm + "   ($" + str(a["dollars"]) + " / " + str(a["manpower"]) + " mp)"
+		lbl.text = nm + "   ($" + str(a["dollars"]) + ")"
 		lbl.position = Vector2(16, y + 6)
 		panel.add_child(lbl)
 		var minus := Button.new(); minus.text = "\u2212"; minus.position = Vector2(330, y); minus.size = Vector2(40, 34); panel.add_child(minus)
@@ -2280,56 +2285,97 @@ func _muster_refresh() -> void:
 	if _musterPanel == null:
 		return
 	var dollars: int = int(playerCountryNode.TotalDollars)
-	var manpower: int = int(playerCountryNode.TotalManpower)
-	_musterPanel.get_node("Budget").text = "Treasury: $" + str(dollars) + "     Manpower: " + str(manpower)
+	_musterPanel.get_node("Budget").text = "Treasury: $" + str(dollars)
 	var td: int = 0
-	var tm: int = 0
 	for a in MUSTER_ARCHETYPES:
 		var nm: String = a["name"]
 		var n: int = int(_musterCounts.get(nm, 0))
 		_musterPanel.get_node("Qty_" + nm).text = str(n)
 		td += n * int(a["dollars"])
-		tm += n * int(a["manpower"])
-	var over: String = ""
-	if td > dollars:
-		over += "   (need $)"
-	if tm > manpower:
-		over += "   (need Manpower)"
-	_musterPanel.get_node("Total").text = "Total: $" + str(td) + "  +  " + str(tm) + " Manpower" + over
+	var over: String = "   (not enough Dollars)" if td > dollars else ""
+	_musterPanel.get_node("Total").text = "Total: $" + str(td) + over
 
 
 func _muster_confirm() -> void:
 	var td: int = 0
-	var tm: int = 0
 	for a in MUSTER_ARCHETYPES:
-		var n: int = int(_musterCounts.get(a["name"], 0))
-		td += n * int(a["dollars"])
-		tm += n * int(a["manpower"])
-	if td <= 0 and tm <= 0:
+		td += int(_musterCounts.get(a["name"], 0)) * int(a["dollars"])
+	if td <= 0:
 		return
-	if td > int(playerCountryNode.TotalDollars) or tm > int(playerCountryNode.TotalManpower):
+	if td > int(playerCountryNode.TotalDollars):
 		return
 	playerCountryNode.TotalDollars -= td
-	playerCountryNode.TotalManpower -= tm
-	var spots: Array = _muster_deploy_spots()
-	var si: int = 0
-	var deployed: int = 0
+	# Build a placement queue; the player then clicks tiles to drop each army.
+	_muster_place_queue = []
 	for a in MUSTER_ARCHETYPES:
 		var nm: String = a["name"]
 		for _i in range(int(_musterCounts.get(nm, 0))):
-			if si >= spots.size():
-				break
-			_raise_archetype_army(spots[si], nm)
-			si += 1
-			deployed += 1
+			_muster_place_queue.append(nm)
 	updateResourceBar()
 	_close_muster_panel()
+	_begin_placement()
 
 
 func _close_muster_panel() -> void:
 	if _musterPanel != null:
 		_musterPanel.queue_free()
 		_musterPanel = null
+
+
+func _begin_placement() -> void:
+	if _muster_place_queue.is_empty():
+		return
+	if _placementPanel != null:
+		_placementPanel.queue_free()
+	var panel := Panel.new()
+	panel.size = Vector2(440, 100)
+	panel.position = Vector2(240, 20)
+	$CanvasLayer.add_child(panel)
+	_placementPanel = panel
+	var lbl := Label.new(); lbl.name = "PlaceLabel"; lbl.position = Vector2(14, 10); panel.add_child(lbl)
+	var auto := Button.new(); auto.text = "Auto-place rest"; auto.position = Vector2(14, 52); auto.size = Vector2(190, 38); panel.add_child(auto)
+	auto.pressed.connect(_auto_place_rest)
+	_update_placement_prompt()
+
+
+func _update_placement_prompt() -> void:
+	if _placementPanel == null:
+		return
+	var nxt: String = str(_muster_place_queue[0]) if not _muster_place_queue.is_empty() else ""
+	_placementPanel.get_node("PlaceLabel").text = "Placing: " + nxt + "   (" + str(_muster_place_queue.size()) + " left)\nClick one of your own empty tiles."
+
+
+func _try_place_at(tile) -> void:
+	if _muster_place_queue.is_empty():
+		return
+	if tile == null or not is_instance_valid(tile) or tile.tileOwner != playerCountry or tile.stationedArmy != null:
+		return   # not a valid drop spot -- ignore the click
+	var archetype: String = _muster_place_queue.pop_front()
+	_raise_archetype_army(tile, archetype)
+	if _muster_place_queue.is_empty():
+		_end_placement()
+	else:
+		_update_placement_prompt()
+
+
+func _auto_place_rest() -> void:
+	var spots: Array = []
+	for tile in $TileController.get_children():
+		if tile.tileOwner == playerCountry and tile.stationedArmy == null:
+			spots.append(tile)
+	var si: int = 0
+	while not _muster_place_queue.is_empty() and si < spots.size():
+		_raise_archetype_army(spots[si], _muster_place_queue.pop_front())
+		si += 1
+	_end_placement()
+
+
+func _end_placement() -> void:
+	_muster_place_queue = []
+	if _placementPanel != null:
+		_placementPanel.queue_free()
+		_placementPanel = null
+	updateResourceBar()
 
 
 func _on_border_warning_choice(button_id: String) -> void:
