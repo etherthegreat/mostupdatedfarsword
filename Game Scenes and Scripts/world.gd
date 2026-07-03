@@ -189,6 +189,22 @@ func updateResourceBar() -> void:
 	$"CanvasLayer/Resource Bar (TOP)/container/HarmonyLabel/Label".text = str(playerCountryNode.TotalHappiness)
 	$"CanvasLayer/Resource Bar (TOP)/container/InfluenceLabel/Label".text = str(playerCountryNode.TotalInfluence)
 	$"CanvasLayer/Resource Bar (TOP)/container/ManpowerLabel/Label".text = str(playerCountryNode.TotalManpower)
+	if RESOURCE_SLIM:
+		# Slim to the five spendable resources — hide the upkeep/flavor meters (data stays intact).
+		for _grp in ["FoodLabel","WoodLabel","MetalLabel","FaithLabel","MagicLabel","MandateLabel","HarmonyLabel","InfluenceLabel"]:
+			var _n = get_node_or_null("CanvasLayer/Resource Bar (TOP)/container/" + _grp)
+			if _n != null:
+				_n.visible = false
+		# Declaw the hidden resources — keep them abundant so they never starve/unrest or block builds.
+		var _pc = playerCountryNode
+		if _pc != null:
+			_pc.TotalFood = max(_pc.TotalFood, 9999)
+			_pc.TotalWood = max(_pc.TotalWood, 9999)
+			_pc.TotalMetal = max(_pc.TotalMetal, 9999)
+			_pc.TotalHappiness = max(_pc.TotalHappiness, 100.0)
+			_pc.TotalMandate = max(_pc.TotalMandate, 100)
+			_pc.TotalInfluence = max(_pc.TotalInfluence, 100)
+			_pc.TotalMagic = max(_pc.TotalMagic, 100)
 
 func _refresh_next_turn_ui() -> void:
 	var has_tech := $CanvasLayer/TechTree.investmentTech != null
@@ -2430,6 +2446,7 @@ var _event_showing: bool = false # true while an event panel is on screen
 var _defer_events: bool = false  # true during an AI turn — events queue, then flush at the player's turn
 const _ARCS_DISABLED := true      # TEMP: mute commander/protector arcs for a later focused writing pass
 const DEMO_MODE := true            # July-4 limited demo: only intro chain + protectors + White House events fire
+const RESOURCE_SLIM := true        # show only Dollars/Manpower/Weapons/Science/Culture; hide the rest
 const DEMO_END_TURN := 20          # demo ends here (war opens turn 10 -> ~10 war turns). Tune freely.
 var _cycle_index: int = -1        # last unit index visited by the cycle-units button
 var _border_warning_fired: bool = false
