@@ -242,7 +242,11 @@ func onTurnEnd():
 		if parentCountry.selectedBeliefs.any(func(b): return b.beliefType == "Mary Edwards Walker"):
 			heal_rate = int(float(heal_rate) * 1.15)
 		for Unit in unitsList:
+			if parentCountry.TotalManpower <= 0:
+				break
+			var _before: int = Unit.unitCurrentManpower
 			Unit.refillManpower(heal_rate)
+			parentCountry.TotalManpower -= (Unit.unitCurrentManpower - _before)   # reinforcement now DRAWS from the Manpower reserve
 	if unit_mods_changed:
 		surveySelf()
 	# Master Baiter: +10% shield recharge per turn
