@@ -1991,6 +1991,9 @@ func UICommander(commander, army):
 const _govSelScene = preload("res://governor_selection.tscn")
 var _commanderPickerPanel: Panel = null
 var _armyAwaitingCommander: Army = null
+var _musterPanel: Panel = null
+var _musterQty: int = 0
+const MUSTER_COST_EACH := 40   # Dollars per mustered militia army
 
 func _open_army_commander_picker(army: Army) -> void:
 	# Close any existing picker first
@@ -2180,6 +2183,7 @@ func _fire_border_warning() -> void:
 		"buttons": [
 			{"button_id":"mobilize_national_guard","button_text":"Call up the National Guard!","button_type":"standard","outcome_type":"none","outcome_value":"","outcome_amount":0,"next_event_id":"","prerequisite_flag":""},
 			{"button_id":"mobilize_citizens","button_text":"Citizens, Rise Up!","button_type":"standard","outcome_type":"none","outcome_value":"","outcome_amount":0,"next_event_id":"","prerequisite_flag":""},
+			{"button_id":"open_muster","button_text":"Muster a force (custom) \u2192","button_type":"standard","outcome_type":"none","outcome_value":"","outcome_amount":0,"next_event_id":"","prerequisite_flag":""},
 		],
 	}
 	var ev = eventScene.instantiate()
@@ -2188,11 +2192,99 @@ func _fire_border_warning() -> void:
 	$CanvasLayer/EventControl/EventContainer.add_child(ev)
 
 
+func _deploy_mustered_armies(count: int) -> void:
+	# Spread `count` militia armies across the player's tiles — capitals first, then one per state.
+	var spots: Array = []
+	for tile in $TileController.get_children():
+		if tile.tileOwner == playerCountry and tile.stationedArmy == null and int(tile.buildings.get("courthouse", 0)) >= 1:
+			spots.append(tile)
+	var by_state: Dictionary = {}
+	for tile in $TileController.get_children():
+		if tile.tileOwner != playerCountry or tile.stationedArmy != null:
+			continue
+		if int(tile.buildings.get("courthouse", 0)) >= 1:
+			continue
+		var s: String = tile.tileContinent
+		if s != "" and not by_state.has(s):
+			by_state[s] = tile
+	for s in by_state:
+		spots.append(by_state[s])
+	var deployed: int = 0
+	for tile in spots:
+		if deployed >= count:
+			break
+		_raise_player_militia(tile)
+		deployed += 1
+	print("[Muster] deployed ", deployed, " of ", count, " requested")
+
+
+func _open_muster_panel() -> void:
+	if _musterPanel != null:
+		_musterPanel.queue_free()
+	_musterQty = 0
+	var panel := Panel.new()
+	panel.size = Vector2(430, 250)
+	panel.position = Vector2(240, 120)
+	$CanvasLayer.add_child(panel)
+	_musterPanel = panel
+	var title := Label.new()
+	title.text = "Muster Your Defense"
+	title.position = Vector2(16, 10)
+	panel.add_child(title)
+	var budget := Label.new(); budget.name = "Budget"; budget.position = Vector2(16, 44); panel.add_child(budget)
+	var minus := Button.new(); minus.text = "\u2212"; minus.position = Vector2(16, 92); minus.size = Vector2(42, 38); panel.add_child(minus)
+	var qty := Label.new(); qty.name = "Qty"; qty.position = Vector2(74, 100); panel.add_child(qty)
+	var plus := Button.new(); plus.text = "+"; plus.position = Vector2(122, 92); plus.size = Vector2(42, 38); panel.add_child(plus)
+	var per := Label.new(); per.text = str(MUSTER_COST_EACH) + " Dollars each militia army"; per.position = Vector2(186, 100); panel.add_child(per)
+	var total := Label.new(); total.name = "Total"; total.position = Vector2(16, 146); panel.add_child(total)
+	var muster := Button.new(); muster.text = "Muster & Deploy"; muster.position = Vector2(16, 190); muster.size = Vector2(190, 42); panel.add_child(muster)
+	var cancel := Button.new(); cancel.text = "Cancel"; cancel.position = Vector2(222, 190); cancel.size = Vector2(130, 42); panel.add_child(cancel)
+	minus.pressed.connect(func(): _muster_adjust(-1))
+	plus.pressed.connect(func(): _muster_adjust(1))
+	muster.pressed.connect(_muster_confirm)
+	cancel.pressed.connect(_close_muster_panel)
+	_muster_refresh()
+
+
+func _muster_adjust(d: int) -> void:
+	_musterQty = max(0, _musterQty + d)
+	_muster_refresh()
+
+
+func _muster_refresh() -> void:
+	if _musterPanel == null:
+		return
+	var dollars: int = int(playerCountryNode.TotalDollars)
+	_musterPanel.get_node("Budget").text = "Treasury: " + str(dollars) + " Dollars"
+	_musterPanel.get_node("Qty").text = str(_musterQty)
+	var total: int = _musterQty * MUSTER_COST_EACH
+	var over: String = "   (not enough Dollars)" if total > dollars else ""
+	_musterPanel.get_node("Total").text = "Total: " + str(total) + " Dollars" + over
+
+
+func _muster_confirm() -> void:
+	var total: int = _musterQty * MUSTER_COST_EACH
+	if _musterQty <= 0 or total > int(playerCountryNode.TotalDollars):
+		return
+	playerCountryNode.TotalDollars -= total
+	_deploy_mustered_armies(_musterQty)
+	updateResourceBar()
+	_close_muster_panel()
+
+
+func _close_muster_panel() -> void:
+	if _musterPanel != null:
+		_musterPanel.queue_free()
+		_musterPanel = null
+
+
 func _on_border_warning_choice(button_id: String) -> void:
 	if button_id == "mobilize_national_guard":
 		_mobilize_national_guard()
 	elif button_id == "mobilize_citizens":
 		_mobilize_citizens()
+	elif button_id == "open_muster":
+		_open_muster_panel()
 
 
 func _ensure_barracks_button_for(tile):
