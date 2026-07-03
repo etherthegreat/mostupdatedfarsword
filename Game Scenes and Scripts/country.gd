@@ -1143,8 +1143,6 @@ func surveyResources():
 		DPM += DEMO_BASE_DOLLARS   # flat treasury income — must run BEFORE collectTaxes folds DPM into Dollars
 	collectTaxes()
 	payUnitMaintenance()
-	if Player:
-		print("[ECONBASE] base rates/turn -> Dollars(DPM)=", DPM, " Manpower=", MAN, " Weapons=", PPM, " Science=", SPM, " Culture=", CPM, "  | totals: $", int(TotalDollars), " Mp", TotalManpower, " Wp", TotalWeapons)
 
 signal checkingOutput
 var tempFPM = 0
