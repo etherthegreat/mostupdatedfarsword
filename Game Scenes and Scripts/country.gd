@@ -55,6 +55,7 @@ var mandateThreshold: int #can be 0 to 100.  almost always starts at 50 for ever
 
 #gains per month
 var DPM: int #dollars per month (renamed from DPM)
+const DEMO_BASE_DOLLARS := 120   # flat treasury income so peace turns build a real Dollars nest egg (tune freely)
 var MPM: int #metal per month
 var WPM: int #wood per month
 var FPM: int #food per month
@@ -1141,6 +1142,7 @@ func surveyResources():
 	collectTaxes()
 	payUnitMaintenance()
 	if Player:
+		DPM += DEMO_BASE_DOLLARS   # flat treasury income so the nest egg grows during peace
 		print("[ECONBASE] base rates/turn -> Dollars(DPM)=", DPM, " Manpower=", MAN, " Weapons=", PPM, " Science=", SPM, " Culture=", CPM, "  | totals: $", int(TotalDollars), " Mp", TotalManpower, " Wp", TotalWeapons)
 
 signal checkingOutput
