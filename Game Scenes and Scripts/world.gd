@@ -2430,6 +2430,7 @@ var _event_showing: bool = false # true while an event panel is on screen
 var _defer_events: bool = false  # true during an AI turn — events queue, then flush at the player's turn
 const _ARCS_DISABLED := true      # TEMP: mute commander/protector arcs for a later focused writing pass
 const DEMO_MODE := true            # July-4 limited demo: only intro chain + protectors + White House events fire
+const DEMO_END_TURN := 20          # demo ends here (war opens turn 10 -> ~10 war turns). Tune freely.
 var _cycle_index: int = -1        # last unit index visited by the cycle-units button
 var _border_warning_fired: bool = false
 
@@ -4662,6 +4663,9 @@ func _grant_election_season_mods() -> void:
 
 func _check_end_game() -> void:
 	if _game_ended or _republic_collapsed or _ca_collapsed:
+		return
+	if DEMO_MODE and currentWorldTurn >= DEMO_END_TURN:
+		_trigger_game_over(true, "Demo Complete — thanks for playing Uprisings! Wishlist to play the full campaign.")
 		return
 	if currentWorldTurn < 100:
 		return
