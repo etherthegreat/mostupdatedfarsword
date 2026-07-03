@@ -2429,6 +2429,7 @@ var _event_queue: Array = []      # pending events, shown one at a time
 var _event_showing: bool = false # true while an event panel is on screen
 var _defer_events: bool = false  # true during an AI turn — events queue, then flush at the player's turn
 const _ARCS_DISABLED := true      # TEMP: mute commander/protector arcs for a later focused writing pass
+const DEMO_MODE := true            # July-4 limited demo: only intro chain + protectors + White House events fire
 var _cycle_index: int = -1        # last unit index visited by the cycle-units button
 var _border_warning_fired: bool = false
 
@@ -2592,7 +2593,12 @@ func _protector_id_to_spell(pid: String) -> String:
 	return ""
 
 func createNewEvent(event_id: String, tile = null, prepend: bool = false) -> void:
-	if _ARCS_DISABLED and (event_id.begins_with("CMD_") or event_id.begins_with("ARC_") or event_id.begins_with("PROT_") or event_id.begins_with("CA_PROT_") or event_id.begins_with("CA_PM")):
+	if DEMO_MODE:
+		# Demo whitelist: only the intro chain, protector arcs, and White House secrets fire.
+		if not (event_id.begins_with("INTRO_") or event_id.begins_with("PROT_") \
+				or event_id.begins_with("CA_PROT_") or event_id.begins_with("WH_SECRET_")):
+			return
+	elif _ARCS_DISABLED and (event_id.begins_with("CMD_") or event_id.begins_with("ARC_") or event_id.begins_with("PROT_") or event_id.begins_with("CA_PROT_") or event_id.begins_with("CA_PM")):
 		return
 	if not EventDatabase.event_can_fire(event_id, currentWorldTurn):
 		return
@@ -3074,57 +3080,66 @@ func evaluateDateEvents() -> void:
 	_update_governor_loyalty()
 	_tick_event_cooldowns()
 	if playerCountry == "USA" and not _republic_collapsed:
-		_check_war_events()
-		_check_can_events()
-		_check_ca_protectors()
-		_check_loyal_governor_events()
-		_check_arc03_honorary_event()
-		_check_arc11_monarchist_event()
-		_check_george_peace_offer()
-		_check_peace_conditions()
-		_check_harvest_crisis()
-		_check_harbor_threat()
-		_check_forge_threat()
-		_check_corruption_crisis()
-		_check_border_dispute()
-		_check_garrison_hunger()
-		_check_legitimacy_crisis()
-		_check_turncoat_general()
-		_check_ualani_ambush()
-		_check_ualani_dignitary()
-		_check_ualani_memorial()
-		_check_ualani_wounded()
-		_check_ualani_winter()
-		_check_ualani_forge()
-		_check_ualani_culper()
-		_check_ualani_alliance()
-		_check_ualani_frontier()
-		_check_white_house_secrets()
-		_check_chalch_summon()
-		_check_chalch_quests()
-		_check_vp_events()
-		_tick_wild_protectors()
-		_tick_wild_ca_protectors()
-		_check_protector_summons()
-		_check_prot08_dma_summon()
-		_check_prot17_dma_summon()
-		_tick_commander_turns()
-		_check_arc01_objectives()
-		_tick_arc03_cultural_corps()
-		_tick_halloween_endorsement()
-		_tick_cherry_blossom_prayer()
-		_tick_pioneer_heritage_corruption()
-		_tick_nature_conservationists_corruption()
-		_tick_inland_maritime_expertise()
-		_tick_french_cultural_identity()
-		_tick_civic_pride_mandate()
-		_check_cmd_merit()
-		_check_cmd_recognition()
-		_check_cmd_thanks()
-		_tick_election_pressure()
-		_check_stump_speech()
-		_check_election_season()
-		_tick_anarchists()
+		if DEMO_MODE:
+			# July-4 demo: only protectors + White House secrets run per turn; the rest is gated.
+			_check_white_house_secrets()
+			_tick_wild_protectors()
+			_tick_wild_ca_protectors()
+			_check_protector_summons()
+			_check_prot08_dma_summon()
+			_check_prot17_dma_summon()
+		else:
+			_check_war_events()
+			_check_can_events()
+			_check_ca_protectors()
+			_check_loyal_governor_events()
+			_check_arc03_honorary_event()
+			_check_arc11_monarchist_event()
+			_check_george_peace_offer()
+			_check_peace_conditions()
+			_check_harvest_crisis()
+			_check_harbor_threat()
+			_check_forge_threat()
+			_check_corruption_crisis()
+			_check_border_dispute()
+			_check_garrison_hunger()
+			_check_legitimacy_crisis()
+			_check_turncoat_general()
+			_check_ualani_ambush()
+			_check_ualani_dignitary()
+			_check_ualani_memorial()
+			_check_ualani_wounded()
+			_check_ualani_winter()
+			_check_ualani_forge()
+			_check_ualani_culper()
+			_check_ualani_alliance()
+			_check_ualani_frontier()
+			_check_white_house_secrets()
+			_check_chalch_summon()
+			_check_chalch_quests()
+			_check_vp_events()
+			_tick_wild_protectors()
+			_tick_wild_ca_protectors()
+			_check_protector_summons()
+			_check_prot08_dma_summon()
+			_check_prot17_dma_summon()
+			_tick_commander_turns()
+			_check_arc01_objectives()
+			_tick_arc03_cultural_corps()
+			_tick_halloween_endorsement()
+			_tick_cherry_blossom_prayer()
+			_tick_pioneer_heritage_corruption()
+			_tick_nature_conservationists_corruption()
+			_tick_inland_maritime_expertise()
+			_tick_french_cultural_identity()
+			_tick_civic_pride_mandate()
+			_check_cmd_merit()
+			_check_cmd_recognition()
+			_check_cmd_thanks()
+			_tick_election_pressure()
+			_check_stump_speech()
+			_check_election_season()
+			_tick_anarchists()
 	elif playerCountry == "CA" and not _ca_collapsed:
 		_check_war_events()
 		_check_usa_alliance_events()
@@ -3154,12 +3169,13 @@ func evaluateDateEvents() -> void:
 		_tick_anarchists()
 		_tick_laura_secord_market()
 	_check_end_game()
-	var to_fire = EventDatabase.evaluate_date_triggers(currentWorldTurn, month)
-	for event_id in to_fire:
-		if event_id == "FORT_001":
-			_fire_fort_disrepair_event()
-		else:
-			createNewEvent(event_id)
+	if not DEMO_MODE:
+		var to_fire = EventDatabase.evaluate_date_triggers(currentWorldTurn, month)
+		for event_id in to_fire:
+			if event_id == "FORT_001":
+				_fire_fort_disrepair_event()
+			else:
+				createNewEvent(event_id)
 
 func checkPendingMissions() -> void:
 	var flags_to_remove: Array = []
