@@ -1139,10 +1139,11 @@ func surveyResources():
 		NDT += Tile.buildingMandateOutput
 		NPM += Tile.buildingInfluenceOutput
 		MAN += Tile.buildingManpowerOutput
+	if Player:
+		DPM += DEMO_BASE_DOLLARS   # flat treasury income — must run BEFORE collectTaxes folds DPM into Dollars
 	collectTaxes()
 	payUnitMaintenance()
 	if Player:
-		DPM += DEMO_BASE_DOLLARS   # flat treasury income so the nest egg grows during peace
 		print("[ECONBASE] base rates/turn -> Dollars(DPM)=", DPM, " Manpower=", MAN, " Weapons=", PPM, " Science=", SPM, " Culture=", CPM, "  | totals: $", int(TotalDollars), " Mp", TotalManpower, " Wp", TotalWeapons)
 
 signal checkingOutput
