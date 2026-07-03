@@ -609,6 +609,13 @@ func changeWeapon(Type: String) -> void:
 	unitWeapon.updateSelf(Type)
 	weaponString = Type
 
+func upgradeWeaponTo(newType: String) -> void:
+	# Hot-swap this unit's weapon and recompute stats (used by the weapon-tech upgrade sweep).
+	if unitWeapon == null or newType == "" or unitWeapon.weaponType == newType:
+		return
+	changeWeapon(newType)
+	getUnitAttributes()
+
 func changeArmor(Type: String) -> void:
 	unitArmor.updateSelf(Type)
 

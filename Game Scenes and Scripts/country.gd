@@ -57,6 +57,27 @@ var mandateThreshold: int #can be 0 to 100.  almost always starts at 50 for ever
 var DPM: int #dollars per month (renamed from DPM)
 const DEMO_BASE_DOLLARS := 120   # flat treasury income so peace turns build a real Dollars nest egg (tune freely)
 const MANPOWER_MAX_TURNS := 30   # Manpower reserve caps at 30 turns of barracks output (barracks-based ceiling)
+const WEAPON_TECH_TABLE := {
+	"Saber": [
+		["Marine Discipline", "Marine Mameluke"],
+		["Officer Training",  "Cavalry Sword"],
+		["Cavalry Drills",    "Officer Sword"],
+		["Swordsmanship",     "Cutlass"],
+	],
+	"Musket": [
+		["Repeaters",     "Lever Repeater"],
+		["Rifles",        "Percussion Cap"],
+		["Breechloaders", "Breechloader"],
+		["Muskets",       "Flintlock"],
+	],
+	"Artillery": [
+		["Rocket Artillery",  "Rocket Artillery"],
+		["Explosive Charges", "Mortar"],
+		["Siege Works",       "Mortar"],
+		["Field Gunnery",     "Field Cannon"],
+	],
+}
+var lastWeaponUpgradeCount: int = 0
 var MPM: int #metal per month
 var WPM: int #wood per month
 var FPM: int #food per month
@@ -460,6 +481,7 @@ func addNewUnit(Army, UnitType, Level, WeaponType, OreType, ArmorType, curMen, c
 	var newUnit = Unit.new()
 	newUnit.getUnitInfo.connect(updateUnit)
 	newUnit.buildSelf(self, UnitType, Level, WeaponType, OreType, ArmorType, curMen, curWeapons)
+	_equip_best_weapon(newUnit)   # researched weapon tech auto-upgrades new recruits
 	Army.addUnitToArmy(newUnit)
 	Army.updateArmyUI()
 
@@ -775,6 +797,7 @@ func addTechnologicalDiscovery(Name):
 	newTech.techName = Name
 	newTech.buildSelf()
 	unlockedTechnologies.append(newTech)
+	upgradeAllWeapons()   # instant re-arm: researched weapon techs upgrade every existing unit now
 
 func getBestUniform() -> String:
 	# Highest researched UNIFORM-row hat = the auto-equipped uniform.
@@ -784,6 +807,58 @@ func getBestUniform() -> String:
 			if tech != null and tech.techName == hat:
 				return hat
 	return ""
+
+
+func _weapon_class_of(unit) -> String:
+	if unit == null or unit.unitWeapon == null:
+		return ""
+	if unit.unitWeapon.is_saber():     return "Saber"
+	if unit.unitWeapon.is_musket():    return "Musket"
+	if unit.unitWeapon.is_artillery(): return "Artillery"
+	return ""   # Legacy / Mythic weapons are not upgraded by tech
+
+
+func getBestWeaponFor(weaponClass: String) -> String:
+	# Highest researched weapon tech in this class -> its weapon type ("" if none).
+	if not WEAPON_TECH_TABLE.has(weaponClass):
+		return ""
+	for pair in WEAPON_TECH_TABLE[weaponClass]:
+		for tech in unlockedTechnologies:
+			if tech != null and tech.techName == pair[0]:
+				return pair[1]
+	return ""
+
+
+func _equip_best_weapon(unit) -> void:
+	var cls := _weapon_class_of(unit)
+	if cls == "":
+		return
+	var best := getBestWeaponFor(cls)
+	if best != "" and best != unit.unitWeapon.weaponType:
+		unit.upgradeWeaponTo(best)
+
+
+func upgradeAllWeapons() -> int:
+	# Re-arm every unit to the best researched weapon of its class. Called the instant a tech lands.
+	var count := 0
+	for army in countryArmyList:
+		if not is_instance_valid(army):
+			continue
+		for unit in army.unitsList:
+			if unit == null or unit.unitWeapon == null:
+				continue
+			var cls := _weapon_class_of(unit)
+			if cls == "":
+				continue
+			var best := getBestWeaponFor(cls)
+			if best != "" and best != unit.unitWeapon.weaponType:
+				unit.upgradeWeaponTo(best)
+				count += 1
+		if is_instance_valid(army):
+			army.updateArmyUI()
+	lastWeaponUpgradeCount = count
+	return count
+
 
 func addWeaponTemplate(Name):
 	for existing in weaponTemplateList:

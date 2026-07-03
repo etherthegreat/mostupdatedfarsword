@@ -4,5 +4,5 @@ UK,Royal Army,14,Redcoats|Naval Power,Infantry:Brown Bess:Redcoat:2:200:200|Arti
 CA,Colonial Militia,201,Coureurs des Bois|Cold Weather|Ranger,Infantry:Flintlock:Militia:2:200:200|Infantry:Cutlass:Militia:1:100:0
 BA,Nassau Raiders,182,Pirates|Naval Power,Infantry:Cutlass:Militia:2:200:0|Cavalry:Cavalry Sword:Cavalry:1:100:0
 USA,Minutemen,0,,Infantry:Flintlock:Minuteman:1:200:200|Infantry:Flintlock:Minuteman:1:200:200
-USA,Dragoons,0,,Cavalry:Cavalry Sword:Cavalry:1:200:0|Cavalry:Cavalry Sword:Cavalry:1:200:0
+USA,Dragoons,0,,Cavalry:Cutlass:Cavalry:1:200:0|Cavalry:Cutlass:Cavalry:1:200:0
 USA,Artillery Battery,0,,Artillery:Field Cannon:Artillery Corps:1:200:200|Infantry:Flintlock:Minuteman:1:200:200
