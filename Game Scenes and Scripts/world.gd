@@ -1992,8 +1992,12 @@ const _govSelScene = preload("res://governor_selection.tscn")
 var _commanderPickerPanel: Panel = null
 var _armyAwaitingCommander: Army = null
 var _musterPanel: Panel = null
-var _musterQty: int = 0
-const MUSTER_COST_EACH := 40   # Dollars per mustered militia army
+var _musterCounts: Dictionary = {}
+const MUSTER_ARCHETYPES := [
+	{"name": "Minutemen", "dollars": 40, "manpower": 200},
+	{"name": "Dragoons", "dollars": 90, "manpower": 250},
+	{"name": "Artillery Battery", "dollars": 120, "manpower": 300},
+]
 
 func _open_army_commander_picker(army: Army) -> void:
 	# Close any existing picker first
@@ -2192,8 +2196,8 @@ func _fire_border_warning() -> void:
 	$CanvasLayer/EventControl/EventContainer.add_child(ev)
 
 
-func _deploy_mustered_armies(count: int) -> void:
-	# Spread `count` militia armies across the player's tiles — capitals first, then one per state.
+func _muster_deploy_spots() -> Array:
+	# Capitals (courthouse) first, then one non-capital tile per state.
 	var spots: Array = []
 	for tile in $TileController.get_children():
 		if tile.tileOwner == playerCountry and tile.stationedArmy == null and int(tile.buildings.get("courthouse", 0)) >= 1:
@@ -2204,50 +2208,71 @@ func _deploy_mustered_armies(count: int) -> void:
 			continue
 		if int(tile.buildings.get("courthouse", 0)) >= 1:
 			continue
-		var s: String = tile.tileContinent
-		if s != "" and not by_state.has(s):
-			by_state[s] = tile
-	for s in by_state:
-		spots.append(by_state[s])
-	var deployed: int = 0
-	for tile in spots:
-		if deployed >= count:
-			break
-		_raise_player_militia(tile)
-		deployed += 1
-	print("[Muster] deployed ", deployed, " of ", count, " requested")
+		var st: String = tile.tileContinent
+		if st != "" and not by_state.has(st):
+			by_state[st] = tile
+	for st in by_state:
+		spots.append(by_state[st])
+	return spots
+
+
+func _raise_archetype_army(tile, archetype: String) -> void:
+	if tile == null or not is_instance_valid(tile) or tile.stationedArmy != null:
+		return
+	# addArmy matches the CSV template named after the archetype -> exact loadout
+	playerCountryNode.addArmy(archetype, tile.tileNumber)
+	var new_army = playerCountryNode.countryArmyList.back()
+	if new_army == null:
+		return
+	new_army.ArmyName = tile.tileName + " " + archetype
+	var bb = _ensure_barracks_button_for(tile)
+	if bb != null:
+		bb.addPrebuiltArmy(new_army)
+	if tile.tileGovernor != null:
+		new_army.addUnitCommander(tile.tileGovernor)
+	new_army.updateArmyUI()
+	new_army.raiseSelf()
 
 
 func _open_muster_panel() -> void:
 	if _musterPanel != null:
 		_musterPanel.queue_free()
-	_musterQty = 0
+	_musterCounts = {}
+	for a in MUSTER_ARCHETYPES:
+		_musterCounts[a["name"]] = 0
 	var panel := Panel.new()
-	panel.size = Vector2(430, 250)
-	panel.position = Vector2(240, 120)
+	panel.size = Vector2(520, 340)
+	panel.position = Vector2(200, 100)
 	$CanvasLayer.add_child(panel)
 	_musterPanel = panel
 	var title := Label.new()
 	title.text = "Muster Your Defense"
 	title.position = Vector2(16, 10)
 	panel.add_child(title)
-	var budget := Label.new(); budget.name = "Budget"; budget.position = Vector2(16, 44); panel.add_child(budget)
-	var minus := Button.new(); minus.text = "\u2212"; minus.position = Vector2(16, 92); minus.size = Vector2(42, 38); panel.add_child(minus)
-	var qty := Label.new(); qty.name = "Qty"; qty.position = Vector2(74, 100); panel.add_child(qty)
-	var plus := Button.new(); plus.text = "+"; plus.position = Vector2(122, 92); plus.size = Vector2(42, 38); panel.add_child(plus)
-	var per := Label.new(); per.text = str(MUSTER_COST_EACH) + " Dollars each militia army"; per.position = Vector2(186, 100); panel.add_child(per)
-	var total := Label.new(); total.name = "Total"; total.position = Vector2(16, 146); panel.add_child(total)
-	var muster := Button.new(); muster.text = "Muster & Deploy"; muster.position = Vector2(16, 190); muster.size = Vector2(190, 42); panel.add_child(muster)
-	var cancel := Button.new(); cancel.text = "Cancel"; cancel.position = Vector2(222, 190); cancel.size = Vector2(130, 42); panel.add_child(cancel)
-	minus.pressed.connect(func(): _muster_adjust(-1))
-	plus.pressed.connect(func(): _muster_adjust(1))
+	var budget := Label.new(); budget.name = "Budget"; budget.position = Vector2(16, 40); panel.add_child(budget)
+	var y: int = 78
+	for a in MUSTER_ARCHETYPES:
+		var nm: String = a["name"]
+		var lbl := Label.new()
+		lbl.text = nm + "   ($" + str(a["dollars"]) + " / " + str(a["manpower"]) + " mp)"
+		lbl.position = Vector2(16, y + 6)
+		panel.add_child(lbl)
+		var minus := Button.new(); minus.text = "\u2212"; minus.position = Vector2(330, y); minus.size = Vector2(40, 34); panel.add_child(minus)
+		var qty := Label.new(); qty.name = "Qty_" + nm; qty.text = "0"; qty.position = Vector2(384, y + 6); panel.add_child(qty)
+		var plus := Button.new(); plus.text = "+"; plus.position = Vector2(420, y); plus.size = Vector2(40, 34); panel.add_child(plus)
+		minus.pressed.connect(_muster_adjust.bind(nm, -1))
+		plus.pressed.connect(_muster_adjust.bind(nm, 1))
+		y += 46
+	var total := Label.new(); total.name = "Total"; total.position = Vector2(16, y + 8); panel.add_child(total)
+	var muster := Button.new(); muster.text = "Muster & Deploy"; muster.position = Vector2(16, y + 44); muster.size = Vector2(190, 40); panel.add_child(muster)
+	var cancel := Button.new(); cancel.text = "Cancel"; cancel.position = Vector2(222, y + 44); cancel.size = Vector2(130, 40); panel.add_child(cancel)
 	muster.pressed.connect(_muster_confirm)
 	cancel.pressed.connect(_close_muster_panel)
 	_muster_refresh()
 
 
-func _muster_adjust(d: int) -> void:
-	_musterQty = max(0, _musterQty + d)
+func _muster_adjust(archetype: String, d: int) -> void:
+	_musterCounts[archetype] = max(0, int(_musterCounts.get(archetype, 0)) + d)
 	_muster_refresh()
 
 
@@ -2255,19 +2280,48 @@ func _muster_refresh() -> void:
 	if _musterPanel == null:
 		return
 	var dollars: int = int(playerCountryNode.TotalDollars)
-	_musterPanel.get_node("Budget").text = "Treasury: " + str(dollars) + " Dollars"
-	_musterPanel.get_node("Qty").text = str(_musterQty)
-	var total: int = _musterQty * MUSTER_COST_EACH
-	var over: String = "   (not enough Dollars)" if total > dollars else ""
-	_musterPanel.get_node("Total").text = "Total: " + str(total) + " Dollars" + over
+	var manpower: int = int(playerCountryNode.TotalManpower)
+	_musterPanel.get_node("Budget").text = "Treasury: $" + str(dollars) + "     Manpower: " + str(manpower)
+	var td: int = 0
+	var tm: int = 0
+	for a in MUSTER_ARCHETYPES:
+		var nm: String = a["name"]
+		var n: int = int(_musterCounts.get(nm, 0))
+		_musterPanel.get_node("Qty_" + nm).text = str(n)
+		td += n * int(a["dollars"])
+		tm += n * int(a["manpower"])
+	var over: String = ""
+	if td > dollars:
+		over += "   (need $)"
+	if tm > manpower:
+		over += "   (need Manpower)"
+	_musterPanel.get_node("Total").text = "Total: $" + str(td) + "  +  " + str(tm) + " Manpower" + over
 
 
 func _muster_confirm() -> void:
-	var total: int = _musterQty * MUSTER_COST_EACH
-	if _musterQty <= 0 or total > int(playerCountryNode.TotalDollars):
+	var td: int = 0
+	var tm: int = 0
+	for a in MUSTER_ARCHETYPES:
+		var n: int = int(_musterCounts.get(a["name"], 0))
+		td += n * int(a["dollars"])
+		tm += n * int(a["manpower"])
+	if td <= 0 and tm <= 0:
 		return
-	playerCountryNode.TotalDollars -= total
-	_deploy_mustered_armies(_musterQty)
+	if td > int(playerCountryNode.TotalDollars) or tm > int(playerCountryNode.TotalManpower):
+		return
+	playerCountryNode.TotalDollars -= td
+	playerCountryNode.TotalManpower -= tm
+	var spots: Array = _muster_deploy_spots()
+	var si: int = 0
+	var deployed: int = 0
+	for a in MUSTER_ARCHETYPES:
+		var nm: String = a["name"]
+		for _i in range(int(_musterCounts.get(nm, 0))):
+			if si >= spots.size():
+				break
+			_raise_archetype_army(spots[si], nm)
+			si += 1
+			deployed += 1
 	updateResourceBar()
 	_close_muster_panel()
 
