@@ -18,6 +18,7 @@ extends Control
 # ============================================================
 
 const AUTOSAVE_PATH  := "user://autosave.json"
+const DEMO_MODE      := true   # July-4 demo: hide Continue (save/load not enabled). Flip with world.gd DEMO_MODE.
 const SETTINGS_PATH  := "user://settings.txt"   # legacy path kept for compat
 
 var _game_language: String = "eng"
@@ -69,6 +70,9 @@ func _check_continue_button() -> void:
 	var btn       = get_node_or_null("BottomBar/ContinueButton")
 	var info_lbl  = get_node_or_null("BottomBar/ContinueButton/SaveInfoLabel")
 	if not btn:
+		return
+	if DEMO_MODE:
+		btn.visible = false   # demo build — New Game only
 		return
 
 	var save_exists := FileAccess.file_exists(AUTOSAVE_PATH)
