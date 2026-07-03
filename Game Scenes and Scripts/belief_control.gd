@@ -1,5 +1,14 @@
 extends Control
 
+# Gods with FINISHED art — the only ones shown in the picker + Library. Add names as art
+# is completed; the religion DATA (availableGods + match cases) stays fully intact.
+const _KEPT_GODS := [
+	"George Washington", "Benjamin Franklin", "Eliza Schuyler Hamilton",
+	"Abraham Lincoln", "Harriet Tubman", "Sojourner Truth", "Frederick Douglass",
+	"Eleanor Roosevelt", "Martin Luther King Jr.", "John Brown",
+	"Mary Edwards Walker", "Mark Twain", "Malcolm X",
+]
+
 
 var player = null
 
@@ -76,6 +85,8 @@ func updateSelf():
 		$BeliefPanel/DoctrineScrollContainer/DoctrineContainer.add_child(newBB)
 		newBB.LabelClicked.connect(purchasePanel)
 	for String in player.availableGods:
+		if not _KEPT_GODS.has(String):
+			continue   # demo: only gods with finished art appear in the picker/Library
 		var newBB = beliefButt.instantiate()
 		match String:
 			"George Washington":
