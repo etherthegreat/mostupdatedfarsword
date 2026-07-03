@@ -2201,26 +2201,6 @@ func _fire_border_warning() -> void:
 	$CanvasLayer/EventControl/EventContainer.add_child(ev)
 
 
-func _muster_deploy_spots() -> Array:
-	# Capitals (courthouse) first, then one non-capital tile per state.
-	var spots: Array = []
-	for tile in $TileController.get_children():
-		if tile.tileOwner == playerCountry and tile.stationedArmy == null and int(tile.buildings.get("courthouse", 0)) >= 1:
-			spots.append(tile)
-	var by_state: Dictionary = {}
-	for tile in $TileController.get_children():
-		if tile.tileOwner != playerCountry or tile.stationedArmy != null:
-			continue
-		if int(tile.buildings.get("courthouse", 0)) >= 1:
-			continue
-		var st: String = tile.tileContinent
-		if st != "" and not by_state.has(st):
-			by_state[st] = tile
-	for st in by_state:
-		spots.append(by_state[st])
-	return spots
-
-
 func _raise_archetype_army(tile, archetype: String) -> void:
 	if tile == null or not is_instance_valid(tile) or tile.stationedArmy != null:
 		return

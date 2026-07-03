@@ -20,7 +20,7 @@ number,tileName,terrain,state,country,corruption,specialFeature,buildings,tileCr
 19,Stamford,Woods,CT,USA,0,,camp:1,apples,38
 20,,,,,,,,,0
 21,Danbury,Woods,CT,USA,0,,camp:1,apples,42
-22,Liberty,Foothills,NY,USA,0,,mine:1,apples,55
+22,Cooperstown,Foothills,NY,USA,0,,mine:1,apples,55
 23,Lakewood,Wetlands,NJ,USA,0,,market:1,corn,28
 24,Vorhees,Suburbs,NJ,USA,0,,market:1|camp:1,corn,30
 25,Vineland,Farmlands,NJ,USA,0,,farm:2,corn,28

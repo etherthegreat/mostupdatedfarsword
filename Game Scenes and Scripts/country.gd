@@ -56,6 +56,7 @@ var mandateThreshold: int #can be 0 to 100.  almost always starts at 50 for ever
 #gains per month
 var DPM: int #dollars per month (renamed from DPM)
 const DEMO_BASE_DOLLARS := 120   # flat treasury income so peace turns build a real Dollars nest egg (tune freely)
+const MANPOWER_MAX_TURNS := 30   # Manpower reserve caps at 30 turns of barracks output (barracks-based ceiling)
 var MPM: int #metal per month
 var WPM: int #wood per month
 var FPM: int #food per month
@@ -1143,6 +1144,9 @@ func surveyResources():
 		DPM += DEMO_BASE_DOLLARS   # flat treasury income — must run BEFORE collectTaxes folds DPM into Dollars
 	collectTaxes()
 	payUnitMaintenance()
+	# Manpower reserve ceiling scales with barracks (MAN is barracks-only output)
+	var _manpowerMax: int = max(MAN * MANPOWER_MAX_TURNS, 2000)
+	TotalManpower = min(TotalManpower, _manpowerMax)
 
 signal checkingOutput
 var tempFPM = 0

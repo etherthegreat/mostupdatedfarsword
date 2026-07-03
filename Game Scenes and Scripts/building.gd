@@ -670,7 +670,7 @@ func buildBuilding():
 			goldPurchaseCost = 30
 			woodPurchaseCost = 30
 			metalPurchaseCost = 90
-			manpowerDic["Base Barracks Manpower Output"] = (50 * buildingLevel)
+			manpowerDic["Base Barracks Manpower Output"] = (4 * buildingLevel)   # ~232/turn at game start (58 barracks-levels)
 			dollarsDic["Base Barracks Dollar Cost"] = (-2 * buildingLevel)
 			woodDic["Base Barracks Wood Cost"] = (-1 * buildingLevel)
 			foodDic["Base Barracks Food Cost"] = (-1 * buildingLevel)
