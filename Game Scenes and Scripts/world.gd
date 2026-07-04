@@ -2194,6 +2194,33 @@ func _apply_war_timing() -> void:
 		if uk != null and not uk.CountryFlags.get("uk_war_started", false):
 			uk.CountryFlags["uk_war_started"] = true
 			_spawn_uk_border_armies(uk)
+		_scale_invader_difficulty()
+
+
+func _scale_invader_difficulty() -> void:
+	# Hard-coded progressive difficulty (no economy): invader infantry re-arm to a tougher
+	# musket as the war drags on. upgradeWeaponTo() no-ops if a unit is already at that tier.
+	var tier := ""
+	if currentWorldTurn >= 20:
+		tier = "Lever Repeater"
+	elif currentWorldTurn >= 17:
+		tier = "Breechloader"
+	elif currentWorldTurn >= 14:
+		tier = "Percussion Cap"
+	if tier == "":
+		return
+	for cid in ["UK", "CA"]:
+		var c = _country_by_cid(cid)
+		if c == null:
+			continue
+		for army in c.countryArmyList:
+			if not is_instance_valid(army):
+				continue
+			for unit in army.unitsList:
+				if unit != null and unit.unitWeapon != null and unit.unitWeapon.is_musket():
+					unit.upgradeWeaponTo(tier)
+			if is_instance_valid(army):
+				army.updateArmyUI()
 
 
 func _fire_border_warning() -> void:
