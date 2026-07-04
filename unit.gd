@@ -447,7 +447,7 @@ func can_fire_ranged() -> bool:
 var unitStance: String = "fire"  # fire / charge / hold — set by the army panel
 var unitCurrentAP: int = 1          # action points left this turn
 
-const TWO_AP_WEAPONS := ["Marine Mameluke", "Lever Repeater", "Early Rockets", "Rocket Artillery"]
+const TWO_AP_WEAPONS := ["Marine Mameluke", "Lever Repeater", "Early Rockets", "Rocket Artillery", "Field Cannon"]
 
 func get_max_ap() -> int:
 	if unitWeapon != null and unitWeapon.weaponType in TWO_AP_WEAPONS:

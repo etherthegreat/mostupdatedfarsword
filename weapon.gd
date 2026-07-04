@@ -12,6 +12,8 @@ var rangedDefensiveIncrease: int
 var weaponsPerLevel: int      # ammo consumed per attack per level
 var chargeManpowerCost: float # saber charge costs this % of current manpower
 var weaponImage: Texture2D
+var weaponRange: int = 1        # tiles a ranged weapon reaches (1 = adjacent, 2 = skip a tile)
+var breaksShield: bool = false  # cannons do bonus shield damage; rockets do not
 var weaponMilMods: Array = []
 var milModScene = preload("res://mil_mod.tscn")
  
@@ -33,6 +35,9 @@ func updateSelf(newType: String) -> void:
 	weaponClass              = "Legacy"
 	weaponLevel              = 1
  
+	weaponRange              = 1
+	breaksShield             = false
+
 	match weaponType:
  
 		# ============================================================
@@ -168,6 +173,7 @@ func updateSelf(newType: String) -> void:
 		"Field Cannon":
 			weaponClass              = "Artillery"
 			weaponLevel              = 1
+			breaksShield             = true
 			weaponOffensiveIncrease  = 0   # no melee
 			weaponDefensiveIncrease  = 0   # no melee defence
 			rangedOffensiveIncrease  = 70
@@ -223,6 +229,8 @@ func updateSelf(newType: String) -> void:
 		"Mortar":
 			weaponClass              = "Artillery"
 			weaponLevel              = 3
+			weaponRange              = 2
+			breaksShield             = true
 			weaponOffensiveIncrease  = 0
 			weaponDefensiveIncrease  = 0
 			rangedOffensiveIncrease  = 150
@@ -403,11 +411,12 @@ func updateSelf(newType: String) -> void:
 			addWeaponMod("CylinderFire")
 
 		"Rocket Artillery":
-			weaponClass              = "Mythic"
+			weaponClass              = "Artillery"
 			weaponLevel              = 4
+			weaponRange              = 2
 			weaponOffensiveIncrease  = 0
 			weaponDefensiveIncrease  = 0
-			rangedOffensiveIncrease = 200
+			rangedOffensiveIncrease  = 140
 			rangedDefensiveIncrease  = 0
 			reloadTurns              = 3
 			weaponsPerLevel          = 6

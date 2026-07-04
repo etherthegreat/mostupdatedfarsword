@@ -2014,7 +2014,7 @@ const BUY_CATALOG := [
 	{"label": "Marine Cavalry — Mameluke",    "template": "Marine Cavalry",    "tech": "Marine Discipline","gold": 150, "weapons": 60, "atk": 70,  "def": 25, "spr1": "marine_mameluke.png","spr2": "marine_mameluke.png"},
 	{"label": "Artillery — Field Cannon",     "template": "Artillery Battery", "tech": "",                 "gold": 120, "weapons": 0,  "atk": 70,  "def": 0,  "spr1": "Howitzer.png",       "spr2": "Flintlock.png"},
 	{"label": "Mortar Battery — Mortar",      "template": "Mortar Battery",    "tech": "Siege Works",      "gold": 150, "weapons": 40, "atk": 150, "def": 0,  "spr1": "Mortar.png",         "spr2": "Flintlock.png"},
-	{"label": "Rocket Battery — Rockets",     "template": "Rocket Battery",    "tech": "Rocket Artillery", "gold": 200, "weapons": 80, "atk": 200,  "def": 0,  "spr1": "res://art assets/AmericanRevolutionArt/technology sprites/Early_Rocket.png",           "spr2": "Flintlock.png"},
+	{"label": "Rocket Battery — Rockets",     "template": "Rocket Battery",    "tech": "Rocket Artillery", "gold": 200, "weapons": 80, "atk": 140,  "def": 0,  "spr1": "res://art assets/AmericanRevolutionArt/technology sprites/Early_Rocket.png",           "spr2": "Flintlock.png"},
 ]
 
 func _open_army_commander_picker(army: Army) -> void:
