@@ -116,12 +116,15 @@ func unlockTech(techID: String, techButt: techButton, change: int) -> void:
 	_refresh_all()
 
 func selectInvestmentFunc(techbutt: techButton) -> void:
-	investmentTech = techbutt
-	emit_signal("investmentChanged")
-	if nextTechChange > 0:
-		investInTech(nextTechChange)
-		nextTechChange = 0
-	self.visible = false
+	# Reclamation token system: clicking a tech spends 1 tech token to unlock it INSTANTLY.
+	if techbutt == null or techbutt.purchased:
+		return
+	if not techbutt._requirements_met():
+		return   # prerequisite tech not yet owned
+	if playerNode == null or playerNode.techTokens <= 0:
+		return   # no tech tokens — liberate a school first
+	playerNode.techTokens -= 1
+	unlockTech(techbutt.techID, techbutt, 0)
 
 func investInTech(science: int) -> void:
 	if investmentTech == null or not is_instance_valid(investmentTech):

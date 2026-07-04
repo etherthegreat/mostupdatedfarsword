@@ -20,7 +20,7 @@ var rewardScene = load("res://tech_reward_icon.tscn")
 
 func buildSelf():
 	$Label.text = techID
-	$CostLabel.text = str(techCost)
+	$CostLabel.text = "1 Token"
 	match techID:
 		# --- UNIFORM row (armor hats; effects/icons wired later) ---
 		"Tricorne Hat":
