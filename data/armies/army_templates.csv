@@ -6,3 +6,11 @@ BA,Nassau Raiders,182,Pirates|Naval Power,Infantry:Cutlass:Militia:2:200:0|Caval
 USA,Minutemen,0,,Infantry:Flintlock:Minuteman:1:200:200|Infantry:Flintlock:Minuteman:1:200:200
 USA,Dragoons,0,,Cavalry:Cutlass:Cavalry:1:200:0|Cavalry:Cutlass:Cavalry:1:200:0
 USA,Artillery Battery,0,,Artillery:Field Cannon:Artillery Corps:1:200:200|Infantry:Flintlock:Minuteman:1:200:200
+USA,Breechloader Line,0,,Infantry:Breechloader:Continental:1:200:200|Infantry:Breechloader:Continental:1:200:200
+USA,Percussion Line,0,,Infantry:Percussion Cap:Continental:1:200:200|Infantry:Percussion Cap:Continental:1:200:200
+USA,Repeater Line,0,,Infantry:Lever Repeater:Continental:1:200:200|Infantry:Lever Repeater:Continental:1:200:200
+USA,Officer Cavalry,0,,Cavalry:Officer Sword:Cavalry:1:200:0|Cavalry:Officer Sword:Cavalry:1:200:0
+USA,Heavy Cavalry,0,,Cavalry:Cavalry Sword:Cavalry:1:200:0|Cavalry:Cavalry Sword:Cavalry:1:200:0
+USA,Marine Cavalry,0,,Cavalry:Marine Mameluke:Cavalry:1:200:0|Cavalry:Marine Mameluke:Cavalry:1:200:0
+USA,Mortar Battery,0,,Artillery:Mortar:Artillery Corps:1:200:200|Infantry:Flintlock:Minuteman:1:200:200
+USA,Rocket Battery,0,,Artillery:Rocket Artillery:Artillery Corps:1:200:200|Infantry:Flintlock:Minuteman:1:200:200

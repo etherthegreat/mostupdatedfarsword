@@ -1997,11 +1997,22 @@ var _armyAwaitingCommander: Army = null
 var _musterPanel: Panel = null
 var _musterCounts: Dictionary = {}
 var _muster_place_queue: Array = []
+var _musterRows: Array = []
 var _placementPanel: Panel = null
-const MUSTER_ARCHETYPES := [
-	{"name": "Minutemen", "dollars": 40},
-	{"name": "Dragoons", "dollars": 90},
-	{"name": "Artillery Battery", "dollars": 120},
+# Buy-store catalog. Each row: label, army template (CSV), tech gate ("" = always available),
+# gold cost, and Weapons-resource cost (0 for base tiers, scaling up for higher tiers).
+const BUY_CATALOG := [
+	{"label": "Minutemen — Flintlock",        "template": "Minutemen",         "tech": "",                 "gold": 40,  "weapons": 0},
+	{"label": "Line Infantry — Breechloader", "template": "Breechloader Line", "tech": "Breechloaders",    "gold": 60,  "weapons": 20},
+	{"label": "Riflemen — Percussion Cap",    "template": "Percussion Line",   "tech": "Rifles",           "gold": 80,  "weapons": 40},
+	{"label": "Repeater Corps — Lever",       "template": "Repeater Line",     "tech": "Repeaters",        "gold": 100, "weapons": 60},
+	{"label": "Dragoons — Cutlass",           "template": "Dragoons",          "tech": "",                 "gold": 90,  "weapons": 0},
+	{"label": "Sabre Cavalry — Officer Sword","template": "Officer Cavalry",   "tech": "Cavalry Drills",   "gold": 110, "weapons": 20},
+	{"label": "Heavy Cavalry — Cavalry Sword","template": "Heavy Cavalry",     "tech": "Officer Training", "gold": 130, "weapons": 40},
+	{"label": "Marine Cavalry — Mameluke",    "template": "Marine Cavalry",    "tech": "Marine Discipline","gold": 150, "weapons": 60},
+	{"label": "Artillery — Field Cannon",     "template": "Artillery Battery", "tech": "",                 "gold": 120, "weapons": 0},
+	{"label": "Mortar Battery — Mortar",      "template": "Mortar Battery",    "tech": "Siege Works",      "gold": 150, "weapons": 40},
+	{"label": "Rocket Battery — Rockets",     "template": "Rocket Battery",    "tech": "Rocket Artillery", "gold": 200, "weapons": 80},
 ]
 
 func _open_army_commander_picker(army: Army) -> void:
@@ -2219,45 +2230,66 @@ func _raise_archetype_army(tile, archetype: String) -> void:
 	new_army.raiseSelf()
 
 
+func _player_has_tech(tech_name: String) -> bool:
+	for t in playerCountryNode.unlockedTechnologies:
+		if t != null and t.techName == tech_name:
+			return true
+	return false
+
+
+func _buy_catalog_visible() -> Array:
+	# Base tiers always show; higher tiers appear once their weapon tech is researched.
+	var rows: Array = []
+	for entry in BUY_CATALOG:
+		if str(entry["tech"]) == "" or _player_has_tech(str(entry["tech"])):
+			rows.append(entry)
+	return rows
+
+
 func _open_muster_panel() -> void:
 	if _musterPanel != null:
 		_musterPanel.queue_free()
+	_musterRows = _buy_catalog_visible()
 	_musterCounts = {}
-	for a in MUSTER_ARCHETYPES:
-		_musterCounts[a["name"]] = 0
+	for i in range(_musterRows.size()):
+		_musterCounts[i] = 0
+	var row_h: int = 40
 	var panel := Panel.new()
-	panel.size = Vector2(520, 340)
-	panel.position = Vector2(200, 100)
+	panel.size = Vector2(600, 150 + _musterRows.size() * row_h)
+	panel.position = Vector2(200, 70)
 	$CanvasLayer.add_child(panel)
 	_musterPanel = panel
 	var title := Label.new()
-	title.text = "Muster Your Defense"
+	title.text = "Buy Units"
 	title.position = Vector2(16, 10)
 	panel.add_child(title)
-	var budget := Label.new(); budget.name = "Budget"; budget.position = Vector2(16, 40); panel.add_child(budget)
-	var y: int = 78
-	for a in MUSTER_ARCHETYPES:
-		var nm: String = a["name"]
+	var budget := Label.new(); budget.name = "Budget"; budget.position = Vector2(16, 38); panel.add_child(budget)
+	var y: int = 72
+	for i in range(_musterRows.size()):
+		var entry = _musterRows[i]
+		var cost_txt := "$" + str(entry["gold"])
+		if int(entry["weapons"]) > 0:
+			cost_txt += " + " + str(entry["weapons"]) + "W"
 		var lbl := Label.new()
-		lbl.text = nm + "   ($" + str(a["dollars"]) + ")"
+		lbl.text = str(entry["label"]) + "   (" + cost_txt + ")"
 		lbl.position = Vector2(16, y + 6)
 		panel.add_child(lbl)
-		var minus := Button.new(); minus.text = "\u2212"; minus.position = Vector2(330, y); minus.size = Vector2(40, 34); panel.add_child(minus)
-		var qty := Label.new(); qty.name = "Qty_" + nm; qty.text = "0"; qty.position = Vector2(384, y + 6); panel.add_child(qty)
-		var plus := Button.new(); plus.text = "+"; plus.position = Vector2(420, y); plus.size = Vector2(40, 34); panel.add_child(plus)
-		minus.pressed.connect(_muster_adjust.bind(nm, -1))
-		plus.pressed.connect(_muster_adjust.bind(nm, 1))
-		y += 46
-	var total := Label.new(); total.name = "Total"; total.position = Vector2(16, y + 8); panel.add_child(total)
-	var muster := Button.new(); muster.text = "Muster & Deploy"; muster.position = Vector2(16, y + 44); muster.size = Vector2(190, 40); panel.add_child(muster)
-	var cancel := Button.new(); cancel.text = "Cancel"; cancel.position = Vector2(222, y + 44); cancel.size = Vector2(130, 40); panel.add_child(cancel)
+		var minus := Button.new(); minus.text = "\u2212"; minus.position = Vector2(430, y); minus.size = Vector2(38, 32); panel.add_child(minus)
+		var qty := Label.new(); qty.name = "Qty_" + str(i); qty.text = "0"; qty.position = Vector2(478, y + 6); panel.add_child(qty)
+		var plus := Button.new(); plus.text = "+"; plus.position = Vector2(512, y); plus.size = Vector2(38, 32); panel.add_child(plus)
+		minus.pressed.connect(_muster_adjust.bind(i, -1))
+		plus.pressed.connect(_muster_adjust.bind(i, 1))
+		y += row_h
+	var total := Label.new(); total.name = "Total"; total.position = Vector2(16, y + 6); panel.add_child(total)
+	var muster := Button.new(); muster.text = "Muster & Deploy"; muster.position = Vector2(16, y + 40); muster.size = Vector2(190, 38); panel.add_child(muster)
+	var cancel := Button.new(); cancel.text = "Cancel"; cancel.position = Vector2(222, y + 40); cancel.size = Vector2(130, 38); panel.add_child(cancel)
 	muster.pressed.connect(_muster_confirm)
 	cancel.pressed.connect(_close_muster_panel)
 	_muster_refresh()
 
 
-func _muster_adjust(archetype: String, d: int) -> void:
-	_musterCounts[archetype] = max(0, int(_musterCounts.get(archetype, 0)) + d)
+func _muster_adjust(idx: int, d: int) -> void:
+	_musterCounts[idx] = max(0, int(_musterCounts.get(idx, 0)) + d)
 	_muster_refresh()
 
 
@@ -2265,32 +2297,45 @@ func _muster_refresh() -> void:
 	if _musterPanel == null:
 		return
 	var dollars: int = int(playerCountryNode.TotalDollars)
-	_musterPanel.get_node("Budget").text = "Treasury: $" + str(dollars)
-	var td: int = 0
-	for a in MUSTER_ARCHETYPES:
-		var nm: String = a["name"]
-		var n: int = int(_musterCounts.get(nm, 0))
-		_musterPanel.get_node("Qty_" + nm).text = str(n)
-		td += n * int(a["dollars"])
-	var over: String = "   (not enough Dollars)" if td > dollars else ""
-	_musterPanel.get_node("Total").text = "Total: $" + str(td) + over
+	var weapons: int = int(playerCountryNode.TotalWeapons)
+	_musterPanel.get_node("Budget").text = "Treasury: $" + str(dollars) + "     Weapons: " + str(weapons)
+	var tg: int = 0
+	var tw: int = 0
+	for i in range(_musterRows.size()):
+		var n: int = int(_musterCounts.get(i, 0))
+		_musterPanel.get_node("Qty_" + str(i)).text = str(n)
+		tg += n * int(_musterRows[i]["gold"])
+		tw += n * int(_musterRows[i]["weapons"])
+	var over: String = ""
+	if tg > dollars:
+		over += "   (need $)"
+	if tw > weapons:
+		over += "   (need Weapons)"
+	var wtxt := ""
+	if tw > 0:
+		wtxt = "  +  " + str(tw) + " Weapons"
+	_musterPanel.get_node("Total").text = "Total: $" + str(tg) + wtxt + over
 
 
 func _muster_confirm() -> void:
-	var td: int = 0
-	for a in MUSTER_ARCHETYPES:
-		td += int(_musterCounts.get(a["name"], 0)) * int(a["dollars"])
-	if td <= 0:
+	var tg: int = 0
+	var tw: int = 0
+	for i in range(_musterRows.size()):
+		var n: int = int(_musterCounts.get(i, 0))
+		tg += n * int(_musterRows[i]["gold"])
+		tw += n * int(_musterRows[i]["weapons"])
+	if tg <= 0 and tw <= 0:
 		return
-	if td > int(playerCountryNode.TotalDollars):
+	if tg > int(playerCountryNode.TotalDollars) or tw > int(playerCountryNode.TotalWeapons):
 		return
-	playerCountryNode.TotalDollars -= td
-	# Build a placement queue; the player then clicks tiles to drop each army.
+	playerCountryNode.TotalDollars -= tg
+	playerCountryNode.TotalWeapons -= tw
+	# Queue the purchased units; the player clicks tiles to place each one.
 	_muster_place_queue = []
-	for a in MUSTER_ARCHETYPES:
-		var nm: String = a["name"]
-		for _i in range(int(_musterCounts.get(nm, 0))):
-			_muster_place_queue.append(nm)
+	for i in range(_musterRows.size()):
+		var tmpl: String = str(_musterRows[i]["template"])
+		for _j in range(int(_musterCounts.get(i, 0))):
+			_muster_place_queue.append(tmpl)
 	updateResourceBar()
 	_close_muster_panel()
 	_begin_placement()

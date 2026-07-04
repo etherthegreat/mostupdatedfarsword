@@ -481,7 +481,6 @@ func addNewUnit(Army, UnitType, Level, WeaponType, OreType, ArmorType, curMen, c
 	var newUnit = Unit.new()
 	newUnit.getUnitInfo.connect(updateUnit)
 	newUnit.buildSelf(self, UnitType, Level, WeaponType, OreType, ArmorType, curMen, curWeapons)
-	_equip_best_weapon(newUnit)   # researched weapon tech auto-upgrades new recruits
 	Army.addUnitToArmy(newUnit)
 	Army.updateArmyUI()
 
@@ -797,7 +796,8 @@ func addTechnologicalDiscovery(Name):
 	newTech.techName = Name
 	newTech.buildSelf()
 	unlockedTechnologies.append(newTech)
-	upgradeAllWeapons()   # instant re-arm: researched weapon techs upgrade every existing unit now
+	# NOTE: weapon techs no longer auto-upgrade fielded units — they unlock new purchasable
+	# tiers in the buy store instead (units keep the weapon they were bought with).
 
 func getBestUniform() -> String:
 	# Highest researched UNIFORM-row hat = the auto-equipped uniform.
