@@ -78,7 +78,7 @@ func _apply_event_image(tag: String) -> void:
 	if spr == null or tag.strip_edges() == "":
 		return
 	var t: String = tag.strip_edges()
-	for dir in [EVENT_ART_DIR, "res://art assets/finishedAssets/civilians/", "res://art assets/finishedAssets/governors/"]:
+	for dir in [EVENT_ART_DIR, "res://art assets/AmericanRevolutionArt/Panel/", "res://art assets/finishedAssets/civilians/", "res://art assets/finishedAssets/governors/"]:
 		var path: String = dir + t + ".png"
 		if ResourceLoader.exists(path):
 			spr.texture = load(path)
@@ -236,5 +236,4 @@ func _substitute(text: String) -> String:
 		text = text.replace("[CMD_REFLEXIVE]",  p.get("reflexive",  "themselves"))
 	# Safety sweep: replace any tokens that survived (tile was null, governor missing, etc.)
 	text = text.replace("[TILE_NAME]",      "the front")
-	text = text.replace("[COMMANDER_NAME]", "the Commander")
-	text = text.r
+	text = text.replace("[
