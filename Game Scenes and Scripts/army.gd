@@ -211,8 +211,14 @@ func onTurnEnd():
 		holdPending = false
 	for _u in unitsList:
 		_u.unitStance = "fire"
+		if _u.unitWeapon != null and _u.unitWeapon.is_artillery():
+			# Artillery reloads ONLY with leftover action points — i.e. choosing to reload
+			# instead of firing or moving. (Non-artillery auto-reload one step per turn.)
+			if _u.reloadCounter > 0 and _u.unitCurrentAP > 0:
+				_u.reloadCounter = max(0, _u.reloadCounter - _u.unitCurrentAP)
+		else:
+			_u.tick_reload()   # count down any pending reload once per turn
 		_u.unitCurrentAP = _u.get_max_ap()
-		_u.tick_reload()   # count down any pending reload once per turn
 	# Restore full movement points at the start of each new turn
 	currentMovementPoints = maxMovementPoints + _commander_movement_bonus()
 	# Reset per-turn flags (re-derived below from active statuses)
@@ -1149,6 +1155,28 @@ func get_army_weapon_classes() -> Dictionary:
 			else:
 				counts[wClass] = 1
 	return counts
+
+func has_artillery() -> bool:
+	for u in unitsList:
+		if u != null and u.unitWeapon != null and u.unitWeapon.is_artillery():
+			return true
+	return false
+
+
+func artillery_can_move() -> bool:
+	# Moving costs the cannon an action point — every artillery unit needs one to spare.
+	for u in unitsList:
+		if u != null and u.unitWeapon != null and u.unitWeapon.is_artillery():
+			if u.unitCurrentAP <= 0:
+				return false
+	return true
+
+
+func spend_artillery_move_ap() -> void:
+	for u in unitsList:
+		if u != null and u.unitWeapon != null and u.unitWeapon.is_artillery():
+			u.spend_ap()
+
 
 func is_pure_artillery() -> bool:
 	var classes = get_army_weapon_classes()

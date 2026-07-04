@@ -370,6 +370,11 @@ func calculateArmyMovement(endPathPoint: pathPointButton, _neighborPathPoints, _
 			if army.currentMovementPoints < cost:
 				emit_signal("movement_blocked", "Not enough movement points")
 				return
+			if army.has_artillery():
+				if not army.artillery_can_move():
+					emit_signal("movement_blocked", "The cannon crew is out of actions this turn")
+					return
+				army.spend_artillery_move_ap()
 			army.currentMovementPoints -= cost
 			army.movedThisTurn = true
 			army.attacksFromCurrentTile = 0
