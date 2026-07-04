@@ -6386,6 +6386,9 @@ func tileSiegeWon(tile, oldCID: String, newCID: String) -> void:
 
 # The 18 tech-unlock tiles (9 Ivy/named schools + 9 spread across South/Mid-Atlantic/FL/Canada).
 const TECH_TILE_NUMBERS := [2, 14, 16, 50, 54, 57, 62, 65, 146, 37, 53, 94, 101, 132, 151, 155, 164, 178]
+const CACHE_CASH := 300
+const CACHE_WEAPONS := 200
+const CACHE_MANPOWER := 1000
 
 
 func _is_tech_tile(tile) -> bool:
@@ -6401,20 +6404,25 @@ func _on_tile_liberated(tile, oldOwner: String, newOwner: String) -> void:
 	var benefits_player: bool = (newOwner == "USA") or (newOwner == "CA" and _cids_allied("USA", "CA"))
 	if not benefits_player:
 		return
-	# ── payout branches (stubbed — wired in Phase 4) ──
+	# ── liberation payouts — all go to the US player (incl. allied Canada's captures) ──
+	var p = playerCountryNode
+	if p == null:
+		return
+	var got: String = ""
 	if _is_tech_tile(tile):
-		pass  # TODO: grant 1 Tech token (unlock any technology)
+		p.techTokens += 1;                          got += " +1 Tech"
 	if int(tile.buildings.get("monument", 0)) > 0:
-		pass  # TODO: grant 1 Culture token (unlock a belief/doctrine)
+		p.cultureTokens += 1;                       got += " +1 Culture"
 	if int(tile.buildings.get("courthouse", 0)) > 0:
-		pass  # TODO: grant 3 Spell tokens
+		p.spellTokens += 3;                         got += " +3 Spell"
 	if int(tile.buildings.get("market", 0)) > 0:
-		pass  # TODO: cash cache
+		p.TotalDollars += CACHE_CASH;               got += " +$" + str(CACHE_CASH)
 	if int(tile.buildings.get("forge", 0)) > 0:
-		pass  # TODO: weapons cache
+		p.TotalWeapons += CACHE_WEAPONS;            got += " +" + str(CACHE_WEAPONS) + "W"
 	if int(tile.buildings.get("barracks", 0)) > 0:
-		pass  # TODO: manpower cache
-	print("[Liberation] ", tile.tileName, "  ", oldOwner, " -> ", newOwner, "  (player benefits)")
+		p.TotalManpower += CACHE_MANPOWER;          got += " +" + str(CACHE_MANPOWER) + "Mp"
+	updateResourceBar()
+	print("[Liberation] ", tile.tileName, " ", oldOwner, "->", newOwner, " |", got)
 
 
 func _trigger_game_over(won: bool, reason: String = "", end_type: String = "") -> void:

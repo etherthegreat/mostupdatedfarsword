@@ -39,6 +39,10 @@ var TotalHappiness: float # renamed from TotalHarmony
 var TotalMandate: int
 var TotalScience: int
 var TotalWeapons: int
+# Reclamation tokens — earned by liberating tiles, spent on unlocks/spells
+var techTokens: int = 0     # spend to instantly unlock any technology (from schools)
+var cultureTokens: int = 0  # spend to unlock a belief/doctrine (from monuments)
+var spellTokens: int = 0    # spend to cast protector spells (from courthouses)
 var TotalInfluence: int
 var TotalManpower: int
 
