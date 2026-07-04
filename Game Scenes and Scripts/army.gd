@@ -32,6 +32,7 @@ var currentMovementPoints: int = 3
 var armyTags: Array = []
 
 var ArmyName: String
+var armyTier: String = ""   # I/II/III/IV shown on the map token
 #var Icon
 
 var homeTile #each army must be built in a barracks, barracks gives +2 maxUnits to army per level

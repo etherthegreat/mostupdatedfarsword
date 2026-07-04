@@ -204,6 +204,8 @@ func _refresh_appearance() -> void:
 		$APFButton.icon = load(bg_path)
 	if thisArmy != null and thisArmy.armyIcon != null:
 		$Sprite2D.texture = thisArmy.armyIcon
+	if thisArmy != null:
+		$Label.text = thisArmy.armyTier   # I/II/III/IV tier numeral
 	_refresh_weapon_icons()
 
 

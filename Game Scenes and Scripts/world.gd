@@ -2004,17 +2004,17 @@ var _placementPanel: Panel = null
 # Weapons-resource cost, display ATK/DEF, and the two weapon sprites in the army.
 const WPN_ART := "res://art assets/finishedAssets/Weapons/"
 const BUY_CATALOG := [
-	{"label": "Minutemen — Flintlock",        "template": "Minutemen",         "tech": "",                 "gold": 40,  "weapons": 0,  "atk": 43,  "def": 10, "spr1": "Flintlock.png",      "spr2": "Flintlock.png"},
-	{"label": "Line Infantry — Breechloader", "template": "Breechloader Line", "tech": "Breechloaders",    "gold": 60,  "weapons": 20, "atk": 65,  "def": 16, "spr1": "Percussion_Cap.png", "spr2": "Percussion_Cap.png"},
-	{"label": "Riflemen — Percussion Cap",    "template": "Percussion Line",   "tech": "Rifles",           "gold": 80,  "weapons": 40, "atk": 85,  "def": 20, "spr1": "Percussion_Cap.png", "spr2": "Percussion_Cap.png"},
-	{"label": "Repeater Corps — Lever",       "template": "Repeater Line",     "tech": "Repeaters",        "gold": 100, "weapons": 60, "atk": 110,  "def": 22, "spr1": "Lever_Repeater.png", "spr2": "Lever_Repeater.png"},
-	{"label": "Dragoons — Cutlass",           "template": "Dragoons",          "tech": "",                 "gold": 90,  "weapons": 0,  "atk": 25,  "def": 10, "spr1": "cutlass.png",        "spr2": "cutlass.png"},
-	{"label": "Sabre Cavalry — Officer Sword","template": "Officer Cavalry",   "tech": "Cavalry Drills",   "gold": 110, "weapons": 20, "atk": 40,  "def": 15, "spr1": "officer_sword.png",  "spr2": "officer_sword.png"},
-	{"label": "Heavy Cavalry — Cavalry Sword","template": "Heavy Cavalry",     "tech": "Officer Training", "gold": 130, "weapons": 40, "atk": 55,  "def": 20, "spr1": "cavalry_sword.png",  "spr2": "cavalry_sword.png"},
-	{"label": "Marine Cavalry — Mameluke",    "template": "Marine Cavalry",    "tech": "Marine Discipline","gold": 150, "weapons": 60, "atk": 70,  "def": 25, "spr1": "marine_mameluke.png","spr2": "marine_mameluke.png"},
-	{"label": "Artillery — Field Cannon",     "template": "Artillery Battery", "tech": "",                 "gold": 120, "weapons": 0,  "atk": 70,  "def": 0,  "spr1": "Howitzer.png",       "spr2": "Flintlock.png"},
-	{"label": "Mortar Battery — Mortar",      "template": "Mortar Battery",    "tech": "Siege Works",      "gold": 150, "weapons": 40, "atk": 150, "def": 0,  "spr1": "Mortar.png",         "spr2": "Flintlock.png"},
-	{"label": "Rocket Battery — Rockets",     "template": "Rocket Battery",    "tech": "Rocket Artillery", "gold": 200, "weapons": 80, "atk": 140,  "def": 0,  "spr1": "res://art assets/AmericanRevolutionArt/technology sprites/Early_Rocket.png",           "spr2": "Flintlock.png"},
+	{"label": "Minutemen — Flintlock",        "template": "Minutemen",         "tech": "",                 "gold": 40,  "weapons": 0,  "atk": 43,  "def": 10, "spr1": "Flintlock.png",      "spr2": "Flintlock.png", "icon": "spade.png", "tier": "I"},
+	{"label": "Line Infantry — Breechloader", "template": "Breechloader Line", "tech": "Breechloaders",    "gold": 60,  "weapons": 20, "atk": 65,  "def": 16, "spr1": "Percussion_Cap.png", "spr2": "Percussion_Cap.png", "icon": "spade.png", "tier": "II"},
+	{"label": "Riflemen — Percussion Cap",    "template": "Percussion Line",   "tech": "Rifles",           "gold": 80,  "weapons": 40, "atk": 85,  "def": 20, "spr1": "Percussion_Cap.png", "spr2": "Percussion_Cap.png", "icon": "spade.png", "tier": "III"},
+	{"label": "Repeater Corps — Lever",       "template": "Repeater Line",     "tech": "Repeaters",        "gold": 100, "weapons": 60, "atk": 110,  "def": 22, "spr1": "Lever_Repeater.png", "spr2": "Lever_Repeater.png", "icon": "spade.png", "tier": "IV"},
+	{"label": "Dragoons — Cutlass",           "template": "Dragoons",          "tech": "",                 "gold": 90,  "weapons": 0,  "atk": 25,  "def": 10, "spr1": "cutlass.png",        "spr2": "cutlass.png", "icon": "horse.png", "tier": "I"},
+	{"label": "Sabre Cavalry — Officer Sword","template": "Officer Cavalry",   "tech": "Cavalry Drills",   "gold": 110, "weapons": 20, "atk": 40,  "def": 15, "spr1": "officer_sword.png",  "spr2": "officer_sword.png", "icon": "horse.png", "tier": "II"},
+	{"label": "Heavy Cavalry — Cavalry Sword","template": "Heavy Cavalry",     "tech": "Officer Training", "gold": 130, "weapons": 40, "atk": 55,  "def": 20, "spr1": "cavalry_sword.png",  "spr2": "cavalry_sword.png", "icon": "horse.png", "tier": "III"},
+	{"label": "Marine Cavalry — Mameluke",    "template": "Marine Cavalry",    "tech": "Marine Discipline","gold": 150, "weapons": 60, "atk": 70,  "def": 25, "spr1": "marine_mameluke.png","spr2": "marine_mameluke.png", "icon": "horse.png", "tier": "IV"},
+	{"label": "Artillery — Field Cannon",     "template": "Artillery Battery", "tech": "",                 "gold": 120, "weapons": 0,  "atk": 70,  "def": 0,  "spr1": "Howitzer.png",       "spr2": "Flintlock.png", "icon": "star.png", "tier": "I"},
+	{"label": "Mortar Battery — Mortar",      "template": "Mortar Battery",    "tech": "Siege Works",      "gold": 150, "weapons": 40, "atk": 150, "def": 0,  "spr1": "Mortar.png",         "spr2": "Flintlock.png", "icon": "star.png", "tier": "II"},
+	{"label": "Rocket Battery — Rockets",     "template": "Rocket Battery",    "tech": "Rocket Artillery", "gold": 200, "weapons": 80, "atk": 140,  "def": 0,  "spr1": "res://art assets/AmericanRevolutionArt/technology sprites/Early_Rocket.png",           "spr2": "Flintlock.png", "icon": "star.png", "tier": "III"},
 ]
 
 func _open_army_commander_picker(army: Army) -> void:
@@ -2293,11 +2293,19 @@ func _raise_archetype_army(tile, archetype: String) -> void:
 	if tile == null or not is_instance_valid(tile) or tile.stationedArmy != null:
 		return
 	# addArmy matches the CSV template named after the archetype -> exact loadout
-	playerCountryNode.addArmy(archetype, tile.tileNumber)
+	var entry: Dictionary = _catalog_entry_for(archetype)
+	var icon_tex = null
+	if entry.has("icon"):
+		var ip: String = "res://art assets/finishedAssets/armyicons/finished/" + str(entry["icon"])
+		if ResourceLoader.exists(ip):
+			icon_tex = load(ip)
+	playerCountryNode.addArmy(archetype, tile.tileNumber, icon_tex)
 	var new_army = playerCountryNode.countryArmyList.back()
 	if new_army == null:
 		return
 	new_army.ArmyName = tile.tileName + " " + archetype
+	if entry.has("tier"):
+		new_army.armyTier = str(entry["tier"])
 	var bb = _ensure_barracks_button_for(tile)
 	if bb != null:
 		bb.addPrebuiltArmy(new_army)
@@ -2325,6 +2333,13 @@ func _buy_catalog_visible() -> Array:
 
 func _wpn_texture(name: String) -> Texture:
 	return load(name if name.begins_with("res://") else WPN_ART + name)
+
+
+func _catalog_entry_for(template: String) -> Dictionary:
+	for e in BUY_CATALOG:
+		if str(e["template"]) == template:
+			return e
+	return {}
 
 
 func _open_muster_panel() -> void:
