@@ -143,6 +143,60 @@ var lawQuadrantY: float = 0.0
 
 #Country Religion and Faith
 var selectedBeliefs: Array = []
+
+# ── Belief effects (data-driven; edit freely) ────────────────────────────────
+# kinds: gold/token/manpower = INSTANT on adopt; attack/defense/move/reinforce = passive.
+# attack "class": all / Musket / Saber / Artillery.
+const BELIEF_EFFECTS := {
+	"George Washington":       {"kind": "attack",    "class": "all",       "amount": 0.10},
+	"Benjamin Franklin":       {"kind": "token",     "amount": 1},
+	"Eliza Schuyler Hamilton": {"kind": "gold",      "amount": 300},
+	"Abraham Lincoln":         {"kind": "defense",   "amount": 0.10},
+	"Harriet Tubman":          {"kind": "move",      "amount": 1},
+	"Sojourner Truth":         {"kind": "manpower",  "amount": 500},
+	"Frederick Douglass":      {"kind": "attack",    "class": "Musket",    "amount": 0.15},
+	"Eleanor Roosevelt":       {"kind": "defense",   "amount": 0.08},
+	"Martin Luther King Jr.":  {"kind": "reinforce", "amount": 0.20},
+	"John Brown":              {"kind": "attack",    "class": "Saber",     "amount": 0.15},
+	"Mary Edwards Walker":     {"kind": "reinforce", "amount": 0.15},
+	"Mark Twain":              {"kind": "attack",    "class": "all",       "amount": 0.06},
+	"Malcolm X":               {"kind": "attack",    "class": "Artillery", "amount": 0.15},
+}
+
+
+func apply_belief_effect(belief_name: String) -> void:
+	var e: Dictionary = BELIEF_EFFECTS.get(belief_name, {})
+	match str(e.get("kind", "")):
+		"gold":     TotalDollars += int(e["amount"])
+		"token":    techTokens += int(e["amount"])
+		"manpower": TotalManpower += int(e["amount"])
+
+
+func _belief_sum(kind: String, weapon_class := "") -> float:
+	var total: float = 0.0
+	for b in selectedBeliefs:
+		var e: Dictionary = BELIEF_EFFECTS.get(b.beliefType, {})
+		if str(e.get("kind", "")) != kind:
+			continue
+		if weapon_class != "":
+			var c: String = str(e.get("class", "all"))
+			if c != "all" and c != weapon_class:
+				continue
+		total += float(e.get("amount", 0))
+	return total
+
+
+func belief_attack_bonus(weapon_class: String) -> float:
+	return _belief_sum("attack", weapon_class)
+
+func belief_defense_bonus() -> float:
+	return _belief_sum("defense")
+
+func belief_reinforce_bonus() -> float:
+	return _belief_sum("reinforce")
+
+func belief_move_bonus() -> int:
+	return int(_belief_sum("move"))
 var churchLevel: int #ranges from -3 to 3.  is calculated by finding the church beliefs by faith beliefs
 var faithBeliefs: int
 var churchBeliefs: int
@@ -661,6 +715,7 @@ func addReligiousBelief(Name):
 	newBelief.beliefType = Name
 	newBelief.buildBelief(Name)
 	selectedBeliefs.append(newBelief)
+	apply_belief_effect(Name)
 	for String in availableDocs:
 		if String == Name:
 			availableDocs.erase(String)

@@ -221,7 +221,7 @@ func onTurnEnd():
 			_u.tick_reload()   # count down any pending reload once per turn
 		_u.unitCurrentAP = _u.get_max_ap()
 	# Restore full movement points at the start of each new turn
-	currentMovementPoints = maxMovementPoints + _commander_movement_bonus()
+	currentMovementPoints = maxMovementPoints + _commander_movement_bonus() + (parentCountry.belief_move_bonus() if parentCountry != null else 0)
 	# Reset per-turn flags (re-derived below from active statuses)
 	attackBlocked = false
 	reinforcementBlocked = false
@@ -246,8 +246,9 @@ func onTurnEnd():
 	# Reinforce only if not supply-cut or quarantined
 	if not reinforcementBlocked and parentCountry.TotalManpower > 0:
 		var heal_rate: int = parentCountry.armyReinforceRate
-		if parentCountry.selectedBeliefs.any(func(b): return b.beliefType == "Mary Edwards Walker"):
-			heal_rate = int(float(heal_rate) * 1.15)
+		var _rb: float = parentCountry.belief_reinforce_bonus()
+		if _rb > 0.0:
+			heal_rate = int(float(heal_rate) * (1.0 + _rb))
 		for Unit in unitsList:
 			if parentCountry.TotalManpower <= 0:
 				break
@@ -358,6 +359,12 @@ func all_units_charging() -> bool:
 	return any
 
 
+func _belief_atk_mult(u) -> float:
+	if parentCountry == null or u == null or u.unitWeapon == null:
+		return 1.0
+	return 1.0 + parentCountry.belief_attack_bonus(u.unitWeapon.weaponClass)
+
+
 func offensive_output(require_ap: bool, holders_counter: bool) -> Dictionary:
 	# Fire units deal RANGED (unitRangedOffence); Charge units deal MELEE (unitOffensiveScore x1.4).
 	# require_ap: only units with an action point contribute (the initiating attack); false for reaction counters.
@@ -376,14 +383,14 @@ func offensive_output(require_ap: bool, holders_counter: bool) -> Dictionary:
 						ranged += float(u.unitRangedOffence) * 1.2
 			"fire":
 				if (not require_ap or u.unitCurrentAP > 0) and not u.is_reloading():
-					ranged += float(u.unitRangedOffence)
+					ranged += float(u.unitRangedOffence) * _belief_atk_mult(u)
 			"charge":
 				if not require_ap or u.unitCurrentAP > 0:
-					melee += float(u.unitOffensiveScore) * 1.8
+					melee += float(u.unitOffensiveScore) * 1.8 * _belief_atk_mult(u)
 			"flank":
 				# Flank is a melee charge; the encirclement multiplier is applied at the attack site.
 				if not require_ap or u.unitCurrentAP > 0:
-					melee += float(u.unitOffensiveScore) * 1.8
+					melee += float(u.unitOffensiveScore) * 1.8 * _belief_atk_mult(u)
 	return {"ranged": ranged, "melee": melee}
 
 
@@ -398,8 +405,9 @@ func compute_battle_against(defender: Army) -> Dictionary:
 	defender.surveySelf()
 	var d_units: float = max(1.0, float(defender.unitsList.size()))
 	var a_out: Dictionary = offensive_output(true, false)
-	var d_rblock: float = clamp((float(defender.armyDefence) + float(defender.hold_defense_bonus())) / d_units, 0.0, 0.9)
-	var d_mblock: float = clamp((float(defender.armyBlock) + float(defender.hold_defense_bonus())) / d_units, 0.0, 0.9)
+	var d_def: float = defender.parentCountry.belief_defense_bonus() if defender.parentCountry != null else 0.0
+	var d_rblock: float = clamp((float(defender.armyDefence) + float(defender.hold_defense_bonus())) / d_units + d_def, 0.0, 0.9)
+	var d_mblock: float = clamp((float(defender.armyBlock) + float(defender.hold_defense_bonus())) / d_units + d_def, 0.0, 0.9)
 	var ranged_dmg: float = a_out["ranged"] * (1.0 - d_rblock)
 	var melee_dmg: float = a_out["melee"] * (1.0 - d_mblock)
 	var def_loss: int = int(ranged_dmg + melee_dmg)
