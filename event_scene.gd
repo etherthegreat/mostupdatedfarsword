@@ -66,6 +66,12 @@ func build_from_csv(eid: String, tile = null, player = null) -> void:
 
 const EVENT_ART_DIR := "res://art assets/AmericanRevolutionArt/EventArt/"
 
+# Display box for event art: any source resolution is scaled down to fit inside
+# this width/height and centered here, so large images never spill over the text
+# or the buttons.  Sits in the right-hand column, above the button row.
+const IMG_BOX := Vector2(350.0, 430.0)
+const IMG_CENTER := Vector2(1095.0, 300.0)
+
 func _apply_event_image(tag: String) -> void:
 	# Per-event illustration by image_tag; searches EventArt, then civilian/governor portraits.
 	var spr = get_node_or_null("EventPanel/EventSprite2D")
@@ -76,7 +82,21 @@ func _apply_event_image(tag: String) -> void:
 		var path: String = dir + t + ".png"
 		if ResourceLoader.exists(path):
 			spr.texture = load(path)
+			_fit_event_sprite(spr)
 			return
+
+
+# Scale the sprite so its texture fits within IMG_BOX (preserving aspect) and
+# recenter it, regardless of the source image's native resolution.
+func _fit_event_sprite(spr) -> void:
+	if spr == null or spr.texture == null:
+		return
+	var tex_size: Vector2 = spr.texture.get_size()
+	if tex_size.x <= 0 or tex_size.y <= 0:
+		return
+	var s: float = min(IMG_BOX.x / tex_size.x, IMG_BOX.y / tex_size.y)
+	spr.scale = Vector2(s, s)
+	spr.position = IMG_CENTER
 
 
 func _build_buttons() -> void:
@@ -217,21 +237,4 @@ func _substitute(text: String) -> String:
 	# Safety sweep: replace any tokens that survived (tile was null, governor missing, etc.)
 	text = text.replace("[TILE_NAME]",      "the front")
 	text = text.replace("[COMMANDER_NAME]", "the Commander")
-	text = text.replace("[GOVERNOR_TITLE]", "Commander")
-	text = text.replace("[CMD_SUBJECT]",    "they")
-	text = text.replace("[CMD_OBJECT]",     "them")
-	text = text.replace("[CMD_POSSESSIVE]", "their")
-	text = text.replace("[CMD_REFLEXIVE]",  "themselves")
-	return text
-
-
-# ── LEGACY WRAPPERS ──────────────────────────────────────────────────────────
-# Keep old-style callers working during transition
-
-func buildSelf(eventType: String, eventID: String,
-		eventCountry: String, _language: String) -> void:
-	build_from_csv(eventID)
-
-func buildTileEventSelf(eventType: String, eventID: String,
-		eventCountry: String, tile: Tile, _language: String) -> void:
-	build_from_csv(eventID, tile)
+	text = text.r
