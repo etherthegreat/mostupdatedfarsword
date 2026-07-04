@@ -24,51 +24,71 @@ func buildSelf():
 	match techID:
 		# --- UNIFORM row (armor hats; effects/icons wired later) ---
 		"Tricorne Hat":
+			$Sprite2D.texture = load("res://art assets/AmericanRevolutionArt/technology sprites/uniform 1.png")
 			addReward("Tricorne Uniform")
 		"Forage Cap":
+			$Sprite2D.texture = load("res://art assets/AmericanRevolutionArt/technology sprites/uniform 2.png")
 			addReward("Forage Cap Uniform")
 		"Tombstone Cap":
+			$Sprite2D.texture = load("res://art assets/AmericanRevolutionArt/technology sprites/uniform 3.png")
 			addReward("Tombstone Uniform")
 		"Hardee Hat":
+			$Sprite2D.texture = load("res://art assets/AmericanRevolutionArt/technology sprites/uniform 4.png")
 			addReward("Hardee Uniform")
 		# --- SABRE row ---
 		"Swordsmanship":
+			$Sprite2D.texture = load("res://art assets/AmericanRevolutionArt/technology sprites/sabre 1.png")
 			addReward("Cutlass Unlock")
 		"Cavalry Drills":
+			$Sprite2D.texture = load("res://art assets/AmericanRevolutionArt/technology sprites/sabre 2.png")
 			addReward("Cavalry Sword Unlock")
 		"Officer Training":
+			$Sprite2D.texture = load("res://art assets/AmericanRevolutionArt/technology sprites/sabre 3.png")
 			addReward("Officer Sword Unlock")
 		"Marine Discipline":
+			$Sprite2D.texture = load("res://art assets/AmericanRevolutionArt/technology sprites/sabre 4.png")
 			addReward("Marine Mameluke Unlock")
 		# --- RIFLES row ---
 		"Muskets":
+			$Sprite2D.texture = load("res://art assets/AmericanRevolutionArt/technology sprites/rifle 1.png")
 			addReward("Muskets Unlock")
 		"Breechloaders":
+			$Sprite2D.texture = load("res://art assets/AmericanRevolutionArt/technology sprites/rifle 2.png")
 			addReward("Breechloaders Unlock")
 		"Rifles":
+			$Sprite2D.texture = load("res://art assets/AmericanRevolutionArt/technology sprites/rifle 3.png")
 			addReward("Percussion Unlock")
 		"Repeaters":
+			$Sprite2D.texture = load("res://art assets/AmericanRevolutionArt/technology sprites/rifle 4.png")
 			addReward("Repeater Unlock")
 		# --- ARTILLERY row ---
 		"Field Gunnery":
+			$Sprite2D.texture = load("res://art assets/AmericanRevolutionArt/technology sprites/arty 1.png")
 			addReward("Field Gun Unlock")
 		"Siege Works":
+			$Sprite2D.texture = load("res://art assets/AmericanRevolutionArt/technology sprites/arty 2.png")
 			addReward("Mortar Unlock")
 		"Explosive Charges":
+			$Sprite2D.texture = load("res://art assets/AmericanRevolutionArt/technology sprites/arty 3.png")
 			addReward("CannonBlast Enhanced")
 		"Rocket Artillery":
+			$Sprite2D.texture = load("res://art assets/AmericanRevolutionArt/technology sprites/arty 4.png")
 			addReward("Early Rockets Unlock")
 		# --- CIVILIAN row ---
 		"Agrarian Reform":
+			$Sprite2D.texture = load("res://art assets/AmericanRevolutionArt/technology sprites/construction I.png")
 			addReward("All Buildings Unlock")
 			addReward("Seed Bag Tool")
 		"Trade Networks":
+			$Sprite2D.texture = load("res://art assets/AmericanRevolutionArt/technology sprites/construction 2.png")
 			addReward("Building Upgrade")
 			addReward("Accountant Books Tool")
 		"Industrialization":
+			$Sprite2D.texture = load("res://art assets/AmericanRevolutionArt/technology sprites/construction 3.png")
 			addReward("Building Upgrade")
 			addReward("Foundry Kit Tool")
 		"Infrastructure":
+			$Sprite2D.texture = load("res://art assets/AmericanRevolutionArt/technology sprites/construction 4.png")
 			addReward("Building Upgrade")
 			addReward("Rails and Engines Tool")
 		# --- DEFENSE row ---

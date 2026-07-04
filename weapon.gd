@@ -412,7 +412,7 @@ func updateSelf(newType: String) -> void:
 			reloadTurns              = 3
 			weaponsPerLevel          = 6
 			chargeManpowerCost       = 0.0
-			weaponImage = load("res://art assets/finishedAssets/Weapons/Club.png")
+			weaponImage = load("res://art assets/AmericanRevolutionArt/technology sprites/Early_Rocket.png")
 			addWeaponMod("RocketBarrage")
 
 		"Trebuchet":

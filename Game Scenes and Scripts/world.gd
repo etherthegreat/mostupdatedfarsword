@@ -2014,7 +2014,7 @@ const BUY_CATALOG := [
 	{"label": "Marine Cavalry — Mameluke",    "template": "Marine Cavalry",    "tech": "Marine Discipline","gold": 150, "weapons": 60, "atk": 70,  "def": 25, "spr1": "marine_mameluke.png","spr2": "marine_mameluke.png"},
 	{"label": "Artillery — Field Cannon",     "template": "Artillery Battery", "tech": "",                 "gold": 120, "weapons": 0,  "atk": 70,  "def": 0,  "spr1": "Howitzer.png",       "spr2": "Flintlock.png"},
 	{"label": "Mortar Battery — Mortar",      "template": "Mortar Battery",    "tech": "Siege Works",      "gold": 150, "weapons": 40, "atk": 150, "def": 0,  "spr1": "Mortar.png",         "spr2": "Flintlock.png"},
-	{"label": "Rocket Battery — Rockets",     "template": "Rocket Battery",    "tech": "Rocket Artillery", "gold": 200, "weapons": 80, "atk": 200,  "def": 0,  "spr1": "Club.png",           "spr2": "Flintlock.png"},
+	{"label": "Rocket Battery — Rockets",     "template": "Rocket Battery",    "tech": "Rocket Artillery", "gold": 200, "weapons": 80, "atk": 200,  "def": 0,  "spr1": "res://art assets/AmericanRevolutionArt/technology sprites/Early_Rocket.png",           "spr2": "Flintlock.png"},
 ]
 
 func _open_army_commander_picker(army: Army) -> void:
@@ -2308,6 +2308,10 @@ func _buy_catalog_visible() -> Array:
 	return rows
 
 
+func _wpn_texture(name: String) -> Texture:
+	return load(name if name.begins_with("res://") else WPN_ART + name)
+
+
 func _open_muster_panel() -> void:
 	if _musterPanel != null:
 		_musterPanel.queue_free()
@@ -2346,13 +2350,13 @@ func _open_muster_panel() -> void:
 		var qty := Label.new(); qty.name = "Qty_" + str(i); qty.text = "0"; qty.position = Vector2(496, y + 12); panel.add_child(qty)
 		var plus := Button.new(); plus.text = "+"; plus.position = Vector2(524, y + 8); plus.size = Vector2(34, 32); panel.add_child(plus)
 		var s1 := TextureRect.new()
-		s1.texture = load(WPN_ART + str(entry["spr1"]))
+		s1.texture = _wpn_texture(str(entry["spr1"]))
 		s1.custom_minimum_size = Vector2(42, 42); s1.size = Vector2(42, 42); s1.position = Vector2(586, y + 6)
 		s1.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		s1.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		panel.add_child(s1)
 		var s2 := TextureRect.new()
-		s2.texture = load(WPN_ART + str(entry["spr2"]))
+		s2.texture = _wpn_texture(str(entry["spr2"]))
 		s2.custom_minimum_size = Vector2(42, 42); s2.size = Vector2(42, 42); s2.position = Vector2(636, y + 6)
 		s2.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		s2.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
