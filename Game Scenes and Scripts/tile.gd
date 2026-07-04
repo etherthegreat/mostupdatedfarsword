@@ -1170,7 +1170,7 @@ func polisMode():
 			return   # Neutral or unknown — leave white
 	gfx.modulate  = country_color
 	if ring != null:
-		ring.modulate = country_color
+		ring.modulate = Color(0, 0, 0)   # black border regardless of owner (fill keeps country colour)
 
 func naturalMode():
 	var gfx:  Node = get_node_or_null("TileGraphic")
