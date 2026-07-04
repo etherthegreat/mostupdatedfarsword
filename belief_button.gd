@@ -23,6 +23,13 @@ func buildSelf(id, image, bwImage, purch, cost, hint, border):
 	bbPurchased = purch
 	bbCost = cost
 	beliefDesc = hint
+	var _cs = get_tree().current_scene
+	if _cs != null:
+		var _pc = _cs.get("playerCountryNode")
+		if _pc != null and _pc.has_method("belief_effect_text"):
+			var _fx: String = _pc.belief_effect_text(id)
+			if _fx != "":
+				beliefDesc = str(hint, "\n", _fx, "  ")
 	borderImage = border
 	$BeliefPanel/BeliefBorderSprite.texture = border
 	$BeliefPanel/BeliefSprite.texture = image

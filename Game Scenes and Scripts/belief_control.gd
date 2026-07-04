@@ -513,7 +513,7 @@ func matchFaithPointsIcons():
 func _on_faith_1_area_2d_mouse_entered() -> void:
 	$FaithPoints/FaithPointsInfoPanel/FaithPointsInfoSprite/RichTextLabel.clear()
 	$FaithPoints/FaithPointsInfoPanel/FaithPointsInfoSprite/RichTextLabel.append_text(
-		"[b]Romantic I — The Sentimental Republic[/b]\n\nThe republic leans on its heroes. Iconic devotion edges just ahead of social theory.\n\n[b]Courthouse output per level:[/b]\n[color=Green]+1[/color] Culture\n[color=Green]+50[/color] Manpower\n[color=Green]+2[/color] Mandate"
+		"[b]Romantic I — The Sentimental Republic[/b]\n\nThe republic leans on its heroes. Iconic devotion edges just ahead of social theory.\n\n[b]Effect:[/b] Balance yields the most Manpower/turn. Leaning Romantic favours your gods (attack); Rational favours doctrines (defense) — trading manpower for their blessings."
 	)
 	$FaithPoints/FaithPointsInfoPanel.visible = true
 
@@ -524,7 +524,7 @@ func _on_faith_1_area_2d_mouse_exited() -> void:
 func _on_faith_2_area_2d_mouse_entered() -> void:
 	$FaithPoints/FaithPointsInfoPanel/FaithPointsInfoSprite/RichTextLabel.clear()
 	$FaithPoints/FaithPointsInfoPanel/FaithPointsInfoSprite/RichTextLabel.append_text(
-		"[b]Romantic II — The Impassioned Republic[/b]\n\nStatues and stories move the people more than statutes. Romantic icons shape the public spirit.\n\n[b]Courthouse output per level:[/b]\n[color=Green]+2[/color] Culture\n[color=Green]+100[/color] Manpower\n[color=Green]+1[/color] Mandate"
+		"[b]Romantic II — The Impassioned Republic[/b]\n\nStatues and stories move the people more than statutes. Romantic icons shape the public spirit.\n\n[b]Effect:[/b] Balance yields the most Manpower/turn. Leaning Romantic favours your gods (attack); Rational favours doctrines (defense) — trading manpower for their blessings."
 	)
 	$FaithPoints/FaithPointsInfoPanel.visible = true
 
@@ -535,7 +535,7 @@ func _on_faith_2_area_2d_mouse_exited() -> void:
 func _on_faith_3_area_2d_mouse_entered() -> void:
 	$FaithPoints/FaithPointsInfoPanel/FaithPointsInfoSprite/RichTextLabel.clear()
 	$FaithPoints/FaithPointsInfoPanel/FaithPointsInfoSprite/RichTextLabel.append_text(
-		"[b]Romantic III — The Heroic Republic[/b]\n\nThe republic is ruled by legend. Icons are its soul; contracts an afterthought.\n\n[b]Courthouse output per level:[/b]\n[color=Green]+3[/color] Culture\n[color=Green]+150[/color] Manpower"
+		"[b]Romantic III — The Heroic Republic[/b]\n\nThe republic is ruled by legend. Icons are its soul; contracts an afterthought.\n\n[b]Effect:[/b] Balance yields the most Manpower/turn. Leaning Romantic favours your gods (attack); Rational favours doctrines (defense) — trading manpower for their blessings."
 	)
 	$FaithPoints/FaithPointsInfoPanel.visible = true
 
@@ -548,7 +548,7 @@ func _on_faith_3_area_2d_mouse_exited() -> void:
 func _on_church_1_area_2d_mouse_entered() -> void:
 	$FaithPoints/ChurchPointsInfoPanel/ChurchPointsInfoSprite/RichTextLabel.clear()
 	$FaithPoints/ChurchPointsInfoPanel/ChurchPointsInfoSprite/RichTextLabel.append_text(
-		"[b]Rational I — The Reasoned Republic[/b]\n\nSocial contracts hold a modest lead. The republic prizes order and method without forgetting its heroes.\n\n[b]Courthouse output per level:[/b]\n[color=Green]+1[/color] Science\n[color=Green]+1[/color] Dollars\n[color=Green]+2[/color] Mandate"
+		"[b]Rational I — The Reasoned Republic[/b]\n\nSocial contracts hold a modest lead. The republic prizes order and method without forgetting its heroes.\n\n[b]Effect:[/b] Balance yields the most Manpower/turn. Leaning Romantic favours your gods (attack); Rational favours doctrines (defense) — trading manpower for their blessings."
 	)
 	$FaithPoints/ChurchPointsInfoPanel.visible = true
 
@@ -559,7 +559,7 @@ func _on_church_1_area_2d_mouse_exited() -> void:
 func _on_church_2_area_2d_mouse_entered() -> void:
 	$FaithPoints/ChurchPointsInfoPanel/ChurchPointsInfoSprite/RichTextLabel.clear()
 	$FaithPoints/ChurchPointsInfoPanel/ChurchPointsInfoSprite/RichTextLabel.append_text(
-		"[b]Rational II — The Enlightened Republic[/b]\n\nDoctrine and ledger shape public life. The republic runs on reason and revenue.\n\n[b]Courthouse output per level:[/b]\n[color=Green]+2[/color] Science\n[color=Green]+2[/color] Dollars\n[color=Green]+1[/color] Mandate"
+		"[b]Rational II — The Enlightened Republic[/b]\n\nDoctrine and ledger shape public life. The republic runs on reason and revenue.\n\n[b]Effect:[/b] Balance yields the most Manpower/turn. Leaning Romantic favours your gods (attack); Rational favours doctrines (defense) — trading manpower for their blessings."
 	)
 	$FaithPoints/ChurchPointsInfoPanel.visible = true
 
@@ -570,7 +570,7 @@ func _on_church_2_area_2d_mouse_exited() -> void:
 func _on_church_3_area_2d_mouse_entered() -> void:
 	$FaithPoints/ChurchPointsInfoPanel/ChurchPointsInfoSprite/RichTextLabel.clear()
 	$FaithPoints/ChurchPointsInfoPanel/ChurchPointsInfoSprite/RichTextLabel.append_text(
-		"[b]Rational III — The Technocratic Republic[/b]\n\nThe republic is governed entirely by social contract. Reason, science, and commerce rule unchallenged.\n\n[b]Courthouse output per level:[/b]\n[color=Green]+3[/color] Science\n[color=Green]+3[/color] Dollars"
+		"[b]Rational III — The Technocratic Republic[/b]\n\nThe republic is governed entirely by social contract. Reason, science, and commerce rule unchallenged.\n\n[b]Effect:[/b] Balance yields the most Manpower/turn. Leaning Romantic favours your gods (attack); Rational favours doctrines (defense) — trading manpower for their blessings."
 	)
 	$FaithPoints/ChurchPointsInfoPanel.visible = true
 
@@ -583,7 +583,7 @@ func _on_church_3_area_2d_mouse_exited() -> void:
 func _on_balance_area_2d_mouse_entered() -> void:
 	$FaithPoints/BalancePointsInfoPanel/BalancePointsInfoPanel/RichTextLabel.clear()
 	$FaithPoints/BalancePointsInfoPanel/BalancePointsInfoPanel/RichTextLabel.append_text(
-		"[b]The Balanced Republic[/b]\n\nRomantic icons and social contracts hold equal sway. Neither sentiment nor reason dominates — the republic governs with the fullest legitimacy.\n\n[b]Courthouse output per level:[/b]\n[color=Green]+3[/color] Mandate"
+		"[b]The Balanced Republic[/b]\n\nRomantic icons and social contracts hold equal sway. Neither sentiment nor reason dominates — the republic governs with the fullest legitimacy.\n\n[b]Effect:[/b] Balance yields the most Manpower/turn. Leaning Romantic favours your gods (attack); Rational favours doctrines (defense) — trading manpower for their blessings."
 	)
 	$FaithPoints/BalancePointsInfoPanel.visible = true
 

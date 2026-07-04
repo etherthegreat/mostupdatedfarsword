@@ -240,6 +240,24 @@ func belief_defense_at(tile) -> float:
 	return d
 
 
+func belief_effect_text(name: String) -> String:
+	var e: Dictionary = BELIEF_EFFECTS.get(name, {})
+	var k: String = str(e.get("kind", ""))
+	var a = e.get("amount", 0)
+	match k:
+		"attack":           return "Effect: +%d%% attack (%s)" % [int(float(a)*100), str(e.get("class","all"))]
+		"defense":          return "Effect: +%d%% defense" % int(float(a)*100)
+		"fort_defense":     return "Effect: +%d%% defense in/next to forts" % int(float(a)*100)
+		"encircle_defense": return "Effect: +%d%% defense per adjacent ally" % int(float(a)*100)
+		"move":             return "Effect: +%d movement" % int(a)
+		"reinforce":        return "Effect: +%d%% reinforcement" % int(float(a)*100)
+		"cost":             return "Effect: %s cost -$%d" % [str(e.get("class","all")), int(a)]
+		"gold":             return "Effect: instant +$%d" % int(a)
+		"token":            return "Effect: instant +%d tech token" % int(a)
+		"manpower":         return "Effect: instant +%d manpower" % int(a)
+	return ""
+
+
 func belief_cost_reduction(weapon_class: String) -> int:
 	var r: int = 0
 	for b in selectedBeliefs:

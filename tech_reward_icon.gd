@@ -83,16 +83,16 @@ func buildSelf(type):
 			techRewardDescription = str("[b]Rails & Engines[/b] — civilian tool. [color=green]Industrial logistics[/color].")
 		"Tricorne Uniform":
 			techRewardImage = load("res://art assets/finishedAssets/governors/green_minuteman_05.png")
-			techRewardDescription = str("[b]Tricorne[/b] uniform (Lvl 1). Melee [color=yellow]8[/color] / Ranged [color=yellow]12[/color] / Magic [color=yellow]4[/color].")
+			techRewardDescription = str("[b]Tricorne[/b] uniform (Lvl 1). Melee [color=yellow]8[/color] / Ranged [color=yellow]12[/color] / Magic [color=yellow]4[/color]. [color=green]Researching instantly armors every troop.[/color]")
 		"Forage Cap Uniform":
 			techRewardImage = load("res://art assets/finishedAssets/governors/green_minuteman_06.png")
-			techRewardDescription = str("[b]Forage Cap[/b] uniform (Lvl 2). Melee [color=yellow]10[/color] / Ranged [color=yellow]16[/color] / Magic [color=yellow]6[/color].")
+			techRewardDescription = str("[b]Forage Cap[/b] uniform (Lvl 2). Melee [color=yellow]10[/color] / Ranged [color=yellow]16[/color] / Magic [color=yellow]6[/color]. [color=green]Researching instantly armors every troop.[/color]")
 		"Tombstone Uniform":
 			techRewardImage = load("res://art assets/finishedAssets/governors/green_minuteman_07.png")
-			techRewardDescription = str("[b]Tombstone Cap[/b] uniform (Lvl 3). Melee [color=yellow]10[/color] / Ranged [color=yellow]20[/color] / Magic [color=yellow]5[/color].")
+			techRewardDescription = str("[b]Tombstone Cap[/b] uniform (Lvl 3). Melee [color=yellow]10[/color] / Ranged [color=yellow]20[/color] / Magic [color=yellow]5[/color]. [color=green]Researching instantly armors every troop.[/color]")
 		"Hardee Uniform":
 			techRewardImage = load("res://art assets/finishedAssets/governors/green_minuteman_08.png")
-			techRewardDescription = str("[b]Hardee Hat[/b] uniform (Lvl 4). Melee [color=yellow]15[/color] / Ranged [color=yellow]25[/color] / Magic [color=yellow]10[/color].")
+			techRewardDescription = str("[b]Hardee Hat[/b] uniform (Lvl 4). Melee [color=yellow]15[/color] / Ranged [color=yellow]25[/color] / Magic [color=yellow]10[/color]. [color=green]Researching instantly armors every troop.[/color]")
 		"Farm Upgrade":
 			techRewardImage = load("res://art assets/finishedAssets/buildingsketches/farm.png")
 			techRewardDescription = str("Max Farm Level: [color=yellow]+10[/color],
