@@ -2172,30 +2172,43 @@ func _country_by_cid(cid: String):
 
 
 func _apply_war_timing() -> void:
-	# Turns 1-9: mutual ceasefire (UK & CA can't attack, player blocked from UK land).
-	# Turn 10: lift peace, flag war started, spawn the UK border invasion.
+	# Reclamation: the war is already lost. You start AT WAR on turn 1 and reclaim outward.
 	var uk = _country_by_cid("UK")
 	var ca = _country_by_cid("CA")
-	if currentWorldTurn < 10:
-		if uk != null:
-			uk.CountryFlags["uk_usa_peace"] = true
-		if ca != null:
-			ca.CountryFlags["uk_ca_peace"] = true
-		$PathControl.war_active = false
-		if currentWorldTurn == 9 and not _border_warning_fired:
-			_border_warning_fired = true
-			_fire_border_warning()
-	else:
-		if uk != null:
-			uk.CountryFlags.erase("uk_usa_peace")
-		if ca != null:
-			ca.CountryFlags.erase("uk_ca_peace")
-		$PathControl.war_active = true
-		if uk != null and not uk.CountryFlags.get("uk_war_started", false):
-			uk.CountryFlags["uk_war_started"] = true
-			_spawn_uk_border_armies(uk)
-		_maintain_ca_force()
-		_scale_invader_difficulty()
+	if uk != null:
+		uk.CountryFlags.erase("uk_usa_peace")
+		uk.CountryFlags["uk_war_started"] = true
+	if ca != null:
+		ca.CountryFlags.erase("uk_ca_peace")
+	$PathControl.war_active = true
+	# One-time: garrison Britain once the tiles are loaded (skips the pre-load call).
+	if uk != null and not uk.CountryFlags.get("garrisons_placed", false) and $TileController.get_child_count() > 0:
+		uk.CountryFlags["garrisons_placed"] = true
+		_spawn_uk_garrisons(uk)
+	_maintain_ca_force()
+	_scale_invader_difficulty()
+
+
+func _spawn_uk_garrisons(uk) -> void:
+	# Britain garrisons every tile bordering allied land, plus its fortresses, so the
+	# player has to fight outward from the pockets. (Density is tunable.)
+	var count: int = 0
+	for tile in $TileController.get_children():
+		if tile.tileOwner != "UK" or tile.stationedArmy != null:
+			continue
+		var is_front: bool = false
+		for n in tile.TileNeighbors:
+			if n != null and (n.tileOwner == "USA" or n.tileOwner == "CA"):
+				is_front = true
+				break
+		if not is_front and int(tile.buildings.get("fortress", 0)) <= 0:
+			continue
+		uk.addArmy(tile.tileName + " Garrison", tile.tileNumber)
+		var a = uk.countryArmyList.back()
+		if a != null:
+			a.raiseSelf()
+			count += 1
+	print("[Reclamation] British garrisons placed: ", count)
 
 
 func _scale_invader_difficulty() -> void:
