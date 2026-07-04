@@ -6323,8 +6323,11 @@ func giveSpellInfo(type, spellBranch):
 	pass
 
 func _on_belief_control_purchased_belief(beliefName, beliefCost) -> void:
+	if playerCountryNode.cultureTokens <= 0:
+		return   # beliefs now cost 1 Culture token (earned by liberating monuments)
+	playerCountryNode.cultureTokens -= 1
 	playerCountryNode.addReligiousBelief(beliefName)
-	playerCountryNode.payBill("faith", beliefCost)
+	updateResourceBar()
 	$CanvasLayer/BeliefControl.updateSelf()
 	# Refresh belief mil mods on all player armies when beliefs change.
 	for army in playerCountryNode.countryArmyList:

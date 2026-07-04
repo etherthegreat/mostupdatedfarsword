@@ -383,7 +383,7 @@ func purchasePanel(bbName, bbCost, bbImage, beliefDesc, beliefBorder):
 	$BeliefPanel/PurchasePanel/RichTextLabel.clear()
 	$BeliefPanel/PurchasePanel/RichTextLabel.append_text(beliefDesc)
 	$BeliefPanel/PurchasePanel/Price.clear()
-	$BeliefPanel/PurchasePanel/Price.append_text(str(bbCost))
+	$BeliefPanel/PurchasePanel/Price.append_text("1 Culture Token")
 	pendingCost = bbCost
 	pendingBelief = bbName
 	$BeliefPanel/PurchasePanel/PPBorderSprite.texture = beliefBorder
