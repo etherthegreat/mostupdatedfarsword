@@ -67,13 +67,16 @@ func build_from_csv(eid: String, tile = null, player = null) -> void:
 const EVENT_ART_DIR := "res://art assets/AmericanRevolutionArt/EventArt/"
 
 func _apply_event_image(tag: String) -> void:
-	# Per-event illustration loaded by image_tag; falls back to the placeholder if art isn't in yet.
+	# Per-event illustration by image_tag; searches EventArt, then civilian/governor portraits.
 	var spr = get_node_or_null("EventPanel/EventSprite2D")
 	if spr == null or tag.strip_edges() == "":
 		return
-	var path: String = EVENT_ART_DIR + tag.strip_edges() + ".png"
-	if ResourceLoader.exists(path):
-		spr.texture = load(path)
+	var t: String = tag.strip_edges()
+	for dir in [EVENT_ART_DIR, "res://art assets/finishedAssets/civilians/", "res://art assets/finishedAssets/governors/"]:
+		var path: String = dir + t + ".png"
+		if ResourceLoader.exists(path):
+			spr.texture = load(path)
+			return
 
 
 func _build_buttons() -> void:
