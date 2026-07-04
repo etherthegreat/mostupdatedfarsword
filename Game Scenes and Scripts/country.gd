@@ -59,7 +59,7 @@ var mandateThreshold: int #can be 0 to 100.  almost always starts at 50 for ever
 
 #gains per month
 var DPM: int #dollars per month (renamed from DPM)
-const DEMO_BASE_DOLLARS := 120   # flat treasury income so peace turns build a real Dollars nest egg (tune freely)
+const DEMO_BASE_DOLLARS := 370   # flat treasury income so peace turns build a real Dollars nest egg (tune freely)
 const MANPOWER_MAX_TURNS := 30   # Manpower reserve caps at 30 turns of barracks output (barracks-based ceiling)
 const WEAPON_TECH_TABLE := {
 	"Saber": [
