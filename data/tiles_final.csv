@@ -185,7 +185,7 @@ number,tileName,terrain,state,country,corruption,specialFeature,buildings,tileCr
 184,Columbus,Woods,GA,UK,45,Sunbelt|Georgia Piedmont,farm:2,peanuts,-15
 185,Wilmington,Wetlands,NC,UK,0,,barracks:1|farm:1,soybeans,-35
 186,Fayetteville,Farmlands,NC,UK,0,,farm:1,soybeans,-10
-187,Florence,Woods,NC,UK,0,Carolina Piedmont,camp:1,soybeans,-20
+187,Florence,Woods,SC,UK,0,Carolina Piedmont,camp:1,soybeans,-20
 188,Washington,Metro,DC,USA,0,National Mall|Pentagon|US Capitol,courthouse:4|monument:3|barracks:2|library:2,corn,32
 189,Allentown,Suburbs,PA,UK,0,Appalachian Minerals,barracks:2|mine:1,corn,45
 190,Hicksville,Suburbs,NY,UK,0,,market:2,corn,35

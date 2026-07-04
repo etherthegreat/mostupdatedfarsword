@@ -8,7 +8,7 @@ const APF_BACKGROUNDS := {
 	"CA":  "res://art assets/AmericanRevolutionArt/apfs/apf ca background.png",
 }
 
-const APF_BASE_SCALE := 0.6     # resting on-screen size at zoom 1x (one knob to tune)
+const APF_BASE_SCALE := 0.75    # resting on-screen size at zoom 1x (+25% for readability)
 var _cam: Camera2D = null
 var _hover_scale: float = 1.0
 

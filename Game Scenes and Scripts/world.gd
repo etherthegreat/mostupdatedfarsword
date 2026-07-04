@@ -2392,17 +2392,21 @@ func _open_muster_panel() -> void:
 		var qty := Label.new(); qty.name = "Qty_" + str(i); qty.text = "0"; qty.position = Vector2(496, y + 12); panel.add_child(qty)
 		var plus := Button.new(); plus.text = "+"; plus.position = Vector2(524, y + 8); plus.size = Vector2(34, 32); panel.add_child(plus)
 		var s1 := TextureRect.new()
-		s1.texture = _wpn_texture(str(entry["spr1"]))
-		s1.custom_minimum_size = Vector2(42, 42); s1.size = Vector2(42, 42); s1.position = Vector2(586, y + 6)
 		s1.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		s1.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		s1.texture = _wpn_texture(str(entry["spr1"]))
+		s1.position = Vector2(590, y + 8)
 		panel.add_child(s1)
+		s1.custom_minimum_size = Vector2(34, 34)
+		s1.size = Vector2(34, 34)
 		var s2 := TextureRect.new()
-		s2.texture = _wpn_texture(str(entry["spr2"]))
-		s2.custom_minimum_size = Vector2(42, 42); s2.size = Vector2(42, 42); s2.position = Vector2(636, y + 6)
 		s2.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		s2.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		s2.texture = _wpn_texture(str(entry["spr2"]))
+		s2.position = Vector2(632, y + 8)
 		panel.add_child(s2)
+		s2.custom_minimum_size = Vector2(34, 34)
+		s2.size = Vector2(34, 34)
 		minus.pressed.connect(_muster_adjust.bind(i, -1))
 		plus.pressed.connect(_muster_adjust.bind(i, 1))
 		y += row_h
