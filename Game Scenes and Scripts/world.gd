@@ -2499,8 +2499,10 @@ func _update_placement_prompt() -> void:
 func _try_place_at(tile) -> void:
 	if _muster_place_queue.is_empty():
 		return
-	if tile == null or not is_instance_valid(tile) or tile.tileOwner != playerCountry or tile.stationedArmy != null:
-		return   # not a valid drop spot -- ignore the click
+	if tile == null or not is_instance_valid(tile) or tile.stationedArmy != null:
+		return
+	if tile.tileOwner != playerCountry and not (tile.tileOwner == "CA" and _cids_allied(playerCountry, "CA")):
+		return   # own tiles, or allied Canada's tiles while the alliance holds
 	var archetype: String = _muster_place_queue.pop_front()
 	_raise_archetype_army(tile, archetype)
 	if _muster_place_queue.is_empty():
@@ -5037,9 +5039,10 @@ func _grant_election_season_mods() -> void:
 func _check_end_game() -> void:
 	if _game_ended or _republic_collapsed or _ca_collapsed:
 		return
-	if DEMO_MODE and currentWorldTurn >= DEMO_END_TURN:
-		_trigger_game_over(true, "Demo Complete — thanks for playing Uprisings! Wishlist to play the full campaign.")
-		return
+	# Full game — demo turn cap removed; play through to turn 100.
+	#if DEMO_MODE and currentWorldTurn >= DEMO_END_TURN:
+	#	_trigger_game_over(true, "Demo Complete — thanks for playing Uprisings! Wishlist to play the full campaign.")
+	#	return
 	if currentWorldTurn < 100:
 		return
 
