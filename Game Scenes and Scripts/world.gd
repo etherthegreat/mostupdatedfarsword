@@ -6038,22 +6038,85 @@ func resetUI():
 
 var lastSelectedPathPoint: pathPointButton
 func updateArmyFunc(Army, pathPoint):
-	$CanvasLayer/ArmyPanel/ArmyNameLabel.text = Army.ArmyName
-	$CanvasLayer/ArmyPanel/AttackLabel.text = str(Army.armyPunch)
-	$CanvasLayer/ArmyPanel/DefenseLabel.text = str(Army.armyBlock)
-	$CanvasLayer/ArmyPanel/RangedAttackLabel.text = str(Army.armyLaunch)
-	$CanvasLayer/ArmyPanel/RangedDefenseLabel.text = str(Army.armyDefence)
-	$CanvasLayer/ArmyPanel/ManpowerLabel.text = str(Army.manpowerInArmy, " / ", Army.maxManpower)
-	$CanvasLayer/ArmyPanel/ShieldLabel.text = str(Army.armyShield, " / ", Army.armyMaxShield)
-	_refresh_unit_action_uis(Army)
-	#$CanvasLayer/ArmyPanel/LocationLabel.text = str(pathPoint.pathNumber)
-	if $CanvasLayer/ArmyPanel.visible == false:
-		$CanvasLayer.closeAllPanels()
-		$CanvasLayer/ArmyPanel.visible = true
-		lastSelectedPathPoint = pathPoint
-	else:
-		$CanvasLayer/ArmyPanel.visible = false
+	# Rebuilt from scratch: a clean, info-only panel. Clicking the same army toggles it off.
+	if _armyInfoPanel != null and is_instance_valid(_armyInfoPanel) and _armyInfoArmy == Army:
+		_close_army_info()
 		lastSelectedPathPoint = null
+		return
+	_show_army_info(Army)
+	lastSelectedPathPoint = pathPoint
+
+
+var _armyInfoPanel: Panel = null
+var _armyInfoArmy = null
+
+
+func _close_army_info() -> void:
+	if _armyInfoPanel != null and is_instance_valid(_armyInfoPanel):
+		_armyInfoPanel.queue_free()
+	_armyInfoPanel = null
+	_armyInfoArmy = null
+
+
+func _army_info_line(panel: Panel, txt: String, y: int, dim: bool = false) -> void:
+	var l := Label.new()
+	l.text = txt
+	l.position = Vector2(14, y)
+	if dim:
+		l.modulate = Color(0.70, 0.78, 0.92)
+	panel.add_child(l)
+
+
+func _army_info_range(army) -> int:
+	var r := 1
+	for u in army.unitsList:
+		if u != null and u.unitWeapon != null and u.unitWeapon.weaponRange > r:
+			r = u.unitWeapon.weaponRange
+	return r
+
+
+func _show_army_info(army) -> void:
+	_close_army_info()
+	if army == null or not is_instance_valid(army):
+		return
+	_armyInfoArmy = army
+	$CanvasLayer.closeAllPanels()
+	var panel := Panel.new()
+	panel.size = Vector2(340, 384)
+	var vp := get_viewport_rect().size
+	panel.position = Vector2(12, vp.y - panel.size.y - 12)
+	$CanvasLayer.add_child(panel)
+	_armyInfoPanel = panel
+	var y: int = 10
+	var title := Label.new()
+	title.text = army.ArmyName + ("    " + army.armyTier if army.armyTier != "" else "")
+	title.position = Vector2(14, y)
+	title.add_theme_font_size_override("font_size", 17)
+	panel.add_child(title)
+	y += 30
+	var loc: String = army.inTile.tileName if army.inTile != null else "—"
+	_army_info_line(panel, "Location: " + loc, y, true); y += 26
+	_army_info_line(panel, "Manpower   " + str(army.manpowerInArmy) + " / " + str(army.maxManpower), y); y += 22
+	if army.armyMaxShield > 0:
+		_army_info_line(panel, "Shield        " + str(army.armyShield) + " / " + str(army.armyMaxShield), y); y += 22
+	_army_info_line(panel, "Melee     ATK " + str(army.armyPunch) + "     DEF " + str(army.armyBlock), y); y += 22
+	_army_info_line(panel, "Ranged    ATK " + str(army.armyLaunch) + "    DEF " + str(army.armyDefence), y); y += 22
+	var rng: int = _army_info_range(army)
+	_army_info_line(panel, "Range " + str(rng) + ("  tiles" if rng > 1 else "  tile") + "      Moves " + str(army.currentMovementPoints) + " / " + str(army.maxMovementPoints), y, true); y += 30
+	var idx: int = 1
+	for u in army.unitsList:
+		if u == null:
+			continue
+		var wt: String = u.unitWeapon.weaponType if u.unitWeapon != null else "—"
+		_army_info_line(panel, str(idx) + ".  " + u.unitType + " — " + wt, y); y += 20
+		var rdy: String = ("Reload " + str(u.reloadCounter)) if u.is_reloading() else "Ready"
+		_army_info_line(panel, "      " + rdy + "     AP " + str(u.unitCurrentAP) + "/" + str(u.get_max_ap()) + "     " + str(u.unitCurrentManpower) + "/" + str(u.unitMaxManpower) + " mp", y, true); y += 24
+		idx += 1
+	var stance: String = ""
+	if army.unitsList.size() > 0 and army.unitsList[0] != null:
+		stance = str(army.unitsList[0].unitStance).capitalize()
+	_army_info_line(panel, "Stance: " + stance, y)
+
 
 var _unit_action_uis: Array = []
 
