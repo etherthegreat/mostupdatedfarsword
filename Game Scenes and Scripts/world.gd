@@ -1786,6 +1786,7 @@ func updatePlayerUI():
 	updateResourceBar()
 	_refresh_next_turn_ui()
 	_setup_cycle_button()
+	_setup_buy_button()
 	updateMap()
 
 var thisTileNumber: int
@@ -2526,6 +2527,19 @@ func _setup_cycle_button() -> void:
 	btn.position = $CanvasLayer/NextTurnControl.position + Vector2(-6, 38)
 	btn.custom_minimum_size = Vector2(72, 28)
 	btn.pressed.connect(_cycle_to_next_ready_unit)
+	$CanvasLayer.add_child(btn)
+
+
+func _setup_buy_button() -> void:
+	if $CanvasLayer.has_node("BuyUnitsButton"):
+		return
+	var btn := Button.new()
+	btn.name = "BuyUnitsButton"
+	btn.text = "Buy Units"
+	btn.tooltip_text = "Open the buy store — purchase and place units with gold (and Weapons for advanced tiers)"
+	btn.position = $CanvasLayer/NextTurnControl.position + Vector2(-6, -34)
+	btn.custom_minimum_size = Vector2(110, 28)
+	btn.pressed.connect(_open_muster_panel)
 	$CanvasLayer.add_child(btn)
 
 
