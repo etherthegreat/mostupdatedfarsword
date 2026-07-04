@@ -2194,6 +2194,7 @@ func _apply_war_timing() -> void:
 		if uk != null and not uk.CountryFlags.get("uk_war_started", false):
 			uk.CountryFlags["uk_war_started"] = true
 			_spawn_uk_border_armies(uk)
+		_maintain_ca_force()
 		_scale_invader_difficulty()
 
 
@@ -2230,6 +2231,29 @@ func _scale_invader_difficulty() -> void:
 					unit.upgradeWeaponTo(arty)
 			if is_instance_valid(army):
 				army.updateArmyUI()
+
+
+func _maintain_ca_force() -> void:
+	# Canada is an ally that keeps a small standing force (~4), topped up on CA-owned tiles.
+	# Its units get re-armed by _scale_invader_difficulty like the invaders do.
+	var ca = _country_by_cid("CA")
+	if ca == null:
+		return
+	var have: int = 0
+	for army in ca.countryArmyList:
+		if is_instance_valid(army):
+			have += 1
+	if have >= 4:
+		return
+	for tile in $TileController.get_children():
+		if have >= 4:
+			break
+		if tile.tileOwner == "CA" and tile.stationedArmy == null:
+			ca.addArmy("Colonial Militia", tile.tileNumber)
+			var a = ca.countryArmyList.back()
+			if a != null:
+				a.raiseSelf()
+			have += 1
 
 
 func _fire_border_warning() -> void:
