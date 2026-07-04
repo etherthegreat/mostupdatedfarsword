@@ -2351,12 +2351,17 @@ var _trailer_agree_fired := false
 # Trailer "monster parade": one protector tame/agree flash per turn so the audience
 # sees that mythic creatures are a core staple. [turn_threshold, event_id].
 const TRAILER_ARC_SCHEDULE := [
-	[6,  "PROT_02_TAME"],    # Jersey Devil — Pine Barrens accord
-	[7,  "PROT_02_AGREE"],   # Jersey Devil — formal endorsement
-	[8,  "PROT_07_TAME"],    # Bell Witch — the haunting of Bell House
-	[9,  "PROT_07_AGREE"],   # Bell Witch — allies with the Republic
-	[10, "PROT_17_TAME"],    # Lincoln's Ghost — rooftop accords
-	[11, "PROT_17_AGREE"],   # Lincoln's Ghost — tours the Mall
+	[6,  "PROT_02_TAME"],           # Jersey Devil — Pine Barrens accord
+	[7,  "PROT_02_AGREE"],          # Jersey Devil — formal endorsement
+	[8,  "PROT_02_AGREE_INTIMATE"], # Jersey Devil — by morning (intimate)
+	[9,  "PROT_07_TAME"],           # Bell Witch — the haunting of Bell House
+	[10, "PROT_07_AGREE"],          # Bell Witch — allies with the Republic
+	[11, "PROT_08_TAME"],           # Old Ironsides — Ualani meets the ship
+	[12, "PROT_08_AGREE"],          # Old Ironsides — the President sets sail
+	[13, "PROT_08_AGREE_INTIMATE"], # Old Ironsides — motion of the ocean (intimate)
+	[14, "PROT_17_TAME"],           # Lincoln's Ghost — rooftop accords
+	[15, "PROT_17_AGREE"],          # Lincoln's Ghost — tours the Mall
+	[16, "PROT_17_AGREE_INTIMATE"], # Lincoln's Ghost — most exclusive club (intimate)
 ]
 var _trailer_arc_index := 0
 
@@ -7533,15 +7538,4 @@ func _spawn_anarchist_army(source_tile) -> void:
 	var anarch_gov = governor.new()
 	anarch_gov.buildSelf("Anarchistic", 1)
 
-	# TileNumber=0 so buildSelf skips the OwnedTileList search (UK tile won't be there)
-	add_child(armyInstance)
-	armyInstance.buildSelf("Anarchist Cell", playerCountryNode, 0, null)
-	armyInstance.is_anarchist = true
-	armyInstance.commander = anarch_gov
-	armyInstance.armyMaxShield = 0
-	armyInstance.armyShield = 0
-
-	playerCountryNode.addNewUnit(armyInstance, "Infantry", 1, "Flintlock", "Iron", "Cloth", 150, 80)
-	armyInstance.surveySelf()
-
-	armyInstance.inTile = u
+	# TileNumber=0 so buildS
