@@ -380,6 +380,10 @@ func offensive_output(require_ap: bool, holders_counter: bool) -> Dictionary:
 			"charge":
 				if not require_ap or u.unitCurrentAP > 0:
 					melee += float(u.unitOffensiveScore) * 1.8
+			"flank":
+				# Flank is a melee charge; the encirclement multiplier is applied at the attack site.
+				if not require_ap or u.unitCurrentAP > 0:
+					melee += float(u.unitOffensiveScore) * 1.8
 	return {"ranged": ranged, "melee": melee}
 
 
@@ -404,6 +408,13 @@ func compute_battle_against(defender: Army) -> Dictionary:
 	# A share of charge damage bypasses the defender's shield, straight to manpower.
 	var shield_pierce: int = int(melee_dmg * CHARGE_SHIELD_PIERCE)
 	return {"def_loss": def_loss, "atk_loss": atk_loss, "shield_pierce": shield_pierce}
+
+
+func is_flanking() -> bool:
+	for u in unitsList:
+		if u != null and u.unitStance == "flank":
+			return true
+	return false
 
 
 func has_charging_unit() -> bool:

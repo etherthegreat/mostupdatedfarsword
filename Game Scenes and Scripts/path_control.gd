@@ -433,6 +433,25 @@ func _initiate_attack(targetPPB: pathPointButton) -> void:
 	selectedAPF.z_index = 100
 	selectedAPF.beginAttack(targetPPB, $PathsControl/Path)
 
+const FLANK_ALLY_BONUS: float = 1.0   # each adjacent US army adds this many base-damage multiples
+
+
+func _flank_ally_count(target_tile, attacker) -> int:
+	if target_tile == null:
+		return 0
+	var n: int = 0
+	for nb in target_tile.TileNeighbors:
+		if nb == null:
+			continue
+		var a = nb.stationedArmy
+		if a == null and nb.tileSpawnPoint != null:
+			a = nb.tileSpawnPoint.stationedArmy
+		if a != null and a != attacker and is_instance_valid(a) and not a.deleteMode \
+				and a.parentCountry != null and a.parentCountry.CID == "USA":
+			n += 1
+	return n
+
+
 func _on_attack_midpoint(apf: armyPathFollow) -> void:
 	var targetPPB: pathPointButton = apf.destinationPathPoint
 	if targetPPB == null or not is_instance_valid(targetPPB):
@@ -447,7 +466,13 @@ func _on_attack_midpoint(apf: armyPathFollow) -> void:
 	var _bt: Dictionary = compute_battle(attacker, defender)
 	var def_loss: int = _bt["def_loss"]
 	var atk_loss: int = _bt["atk_loss"]
-	defender.calculateDefenderResults("melee", def_loss, true, _bt.get("shield_pierce", 0))
+	var pierce: int = int(_bt.get("shield_pierce", 0))
+	if attacker.is_flanking():
+		# Half base alone, +1x base per US army neighbouring the target (encirclement payoff).
+		var mult: float = 0.5 + float(_flank_ally_count(targetPPB.ppbTile, attacker)) * FLANK_ALLY_BONUS
+		def_loss = int(def_loss * mult)
+		pierce = int(pierce * mult)
+	defender.calculateDefenderResults("melee", def_loss, true, pierce)
 	attacker.calculateDefenderResults("melee", atk_loss, true)
 	attacker.spend_attack_ap()
 	attacker.start_fired_reloads()
