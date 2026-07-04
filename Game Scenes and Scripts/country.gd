@@ -61,6 +61,8 @@ var mandateThreshold: int #can be 0 to 100.  almost always starts at 50 for ever
 var DPM: int #dollars per month (renamed from DPM)
 const DEMO_BASE_DOLLARS := 370   # flat treasury income so peace turns build a real Dollars nest egg (tune freely)
 const MANPOWER_MAX_TURNS := 30   # Manpower reserve caps at 30 turns of barracks output (barracks-based ceiling)
+const BALANCE_MANPOWER := 120   # religion dial at Balanced = max manpower/turn; falls off toward the extremes
+const BALANCE_STEP := 35
 const WEAPON_TECH_TABLE := {
 	"Saber": [
 		["Marine Discipline", "Marine Mameluke"],
@@ -161,6 +163,17 @@ const BELIEF_EFFECTS := {
 	"Mary Edwards Walker":     {"kind": "reinforce", "amount": 0.15},
 	"Mark Twain":              {"kind": "cost",      "class": "Musket",    "amount": 20},
 	"Malcolm X":               {"kind": "attack",    "class": "Artillery", "amount": 0.15},
+	# ── Doctrines (defense-leaning, each a distinct lever) ──
+	"Social Security Act":       {"kind": "reinforce",        "amount": 0.15},
+	"Landmark Heritage":         {"kind": "fort_defense",     "amount": 0.12},
+	"Sherman Antitrust Act":     {"kind": "cost",   "class": "Artillery", "amount": 30},
+	"Nature Conservationists":   {"kind": "manpower",         "amount": 400},
+	"Civic Pride":               {"kind": "gold",             "amount": 300},
+	"Pioneer Heritage":          {"kind": "move",             "amount": 1},
+	"Defense Production Act":     {"kind": "defense",          "amount": 0.15},
+	"Inland Maritime Expertise": {"kind": "cost",   "class": "Saber",     "amount": 25},
+	"First Amendment":           {"kind": "token",            "amount": 1},
+	"National Research Act":     {"kind": "encircle_defense", "amount": 0.05},
 }
 
 
