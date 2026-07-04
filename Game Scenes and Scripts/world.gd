@@ -298,10 +298,52 @@ func newGameBuild(CID, gameLang, isCoop: bool = false):
 	$CanvasLayer/WarRoomPanel.setupAllProtectors($TileController.get_children(), coop_country_id)
 	_assign_vice_president()
 	_build_turn_order()
+	_trailer_launch_boost()   # TRAILER: +1000 gold/manpower/weapons + a Secret Service army
 	$CanvasLayer/MilitaryPanelControl.trimEmptyButtons()
 	updateMap()
 	evaluateDateEvents()
 	_seed_opening_journal_entry()
+
+# ── TRAILER LAUNCH BOOST ────────────────────────────────────────────────────
+# One-time kick at game start so there's plenty of ACTION for filming: a fat
+# treasury and a musket-infantry army led by the Secret Service Detail.
+func _trailer_launch_boost() -> void:
+	if playerCountryNode == null:
+		return
+	# Fat treasury for immediate mustering.
+	playerCountryNode.TotalDollars   += 1000
+	playerCountryNode.TotalManpower  += 1000
+	playerCountryNode.TotalWeapons   += 1000
+	updateResourceBar()
+
+	# Spawn the Secret Service Detail — a musket-infantry army (from army_templates.csv)
+	# stationed at Washington DC (tile 188), led by a commander using the agent sprite.
+	const SS_TILE := 188
+	# Only spawn if the player actually owns the DC tile (they do in the reclamation start).
+	var owns_dc: bool = false
+	for t in playerCountryNode.OwnedTileList:
+		if t.tileNumber == SS_TILE:
+			owns_dc = true
+			break
+	if not owns_dc:
+		return
+	playerCountryNode.addArmy("Secret Service Detail", SS_TILE)
+	var ss_army = playerCountryNode.countryArmyList.back()
+	if ss_army == null:
+		return
+	var ss_gov: governor = governor.new()
+	ss_gov.buildSelf("Secret Service Detail", 1)
+	playerCountryNode.unlockedGovernors.append(ss_gov)
+	# Wire to a matching barracks button (if DC has one) so it shows in the panel,
+	# mirroring spawnStartingArmies; the army still displays on the map regardless.
+	for bb in $CanvasLayer/MilitaryPanelControl/ScrollContainer/GridContainer.get_children():
+		if bb.barracksTile != null and bb.barracksTile.tileNumber == SS_TILE and bb.barracksArmy == null:
+			bb.addPrebuiltArmy(ss_army)
+			break
+	ss_army.addUnitCommander(ss_gov)
+	ss_army.updateArmyUI()
+	ss_army.raiseSelf()
+	print("[Trailer] Secret Service Detail spawned at DC (tile 188) + 1000 gold/manpower/weapons granted.")
 
 # ── BARRACKS COMMANDER GENERATION ───────────────────────────────────────────
 # Assigns a governor to the faction with the fewest current members.
@@ -6635,6 +6677,10 @@ func tileSiegeWon(tile, oldCID: String, newCID: String) -> void:
 	#		createNewEvent("MEMORIAL_001", tile)
 	#		print("[Memorial] UK occupied special feature tile: ", tile.tileName)
 
+	# Repaint the map the instant ownership flips so the tile visibly changes
+	# hands the moment the army steps in — no waiting for the end-turn refresh.
+	updateMap()
+
 # The 18 tech-unlock tiles (9 Ivy/named schools + 9 spread across South/Mid-Atlantic/FL/Canada).
 const TECH_TILE_NUMBERS := [2, 14, 16, 50, 54, 57, 62, 65, 146, 37, 53, 94, 101, 132, 151, 155, 164, 178]
 const CACHE_CASH := 300
@@ -7509,68 +7555,4 @@ func _tick_anarchists() -> void:
 		if target != null and target.stationedArmy != null:
 			# Trigger a battle against the UK army
 			var uk_army = target.stationedArmy
-			var attacker_loss: int = randi_range(10, 40)
-			var defender_loss: int = randi_range(30, 80)
-			army.manpowerInArmy = maxi(army.manpowerInArmy - attacker_loss, 0)
-			uk_army.manpowerInArmy = maxi(uk_army.manpowerInArmy - defender_loss, 0)
-				#" — loses ", attacker_loss, ", UK loses ", defender_loss)
-			#	" — loses ", attacker_loss, ", UK loses ", defender_loss)
-			army.updateArmyUI()
-			uk_army.updateArmyUI()
-			if army.manpowerInArmy <= 0:
-				to_remove.append(army)
-				army.queue_free()
-		elif army.inTile.tileOwner == "UK":
-			# Already on UK soil — apply sabotage attrition
-			var loss: int = randi_range(5, 20)
-			army.manpowerInArmy = maxi(army.manpowerInArmy - loss, 0)
-			army.updateArmyUI()
-			if army.manpowerInArmy <= 0:
-				to_remove.append(army)
-				army.queue_free()
-	for a in to_remove:
-		_anarchist_armies.erase(a)
-
-# WORLD.GD ADDITIONS
-# Add to existing save/load functions
-# ============================================================
- 
-# func saveGameState() -> void:
-#     saveTileStatesToFile()          # tiles
-#     saveCountryStatesToFile()       # countries
-#     ArmyDatabase.save_army_states_to_file(aliveCountriesList)  # armies
- 
-# func loadGameState() -> void:
-#     var tileStates    = loadTileStatesFromFile()
-#     var countryStates = loadCountryStatesFromFile()
-#     var armyStates    = ArmyDatabase.load_army_states_from_file()
-#     # ... then initialize tiles, countries, then restore armies
-
-
-func _on_polis_mode_button_pressed() -> void:
-	mapMode = "Polis"
-	updateMap()
-
-func _on_states_mode_button_pressed() -> void:
-	mapMode = "MapStates"
-	updateMap()
-
-func _on_outputs_mode_button_pressed() -> void:
-	mapMode = "MapOutputs"
-	updateMap()
-
-func _on_terrain_mode_button_pressed() -> void:
-	mapMode = "Natural"
-	updateMap()
-
-
-func save_from_pause_menu() -> bool:
-	# Persists country state + writes an autosave summary the main menu reads.
-	# NOTE: full load-on-Continue is a separate task (load path not yet wired).
-	saveCountryStatesToFile()
-	var f := FileAccess.open("user://autosave.json", FileAccess.WRITE)
-	if f:
-		f.store_string(JSON.stringify({"turn": currentWorldTurn}))
-		f.close()
-		return true
-	return false
+			var attacke
