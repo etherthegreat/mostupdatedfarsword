@@ -2186,6 +2186,9 @@ func _apply_war_timing() -> void:
 		_spawn_uk_garrisons(uk)
 	_maintain_ca_force()
 	_scale_invader_difficulty()
+	if not _farmers_fired and currentWorldTurn >= 2:
+		_farmers_fired = true
+		_fire_farmers_event()
 
 
 func _spawn_uk_garrisons(uk) -> void:
@@ -2286,6 +2289,45 @@ func _fire_border_warning() -> void:
 	ev.build_from_data(data, null, playerCountryNode)
 	ev.eventButtonPressed.connect(func(bid, _eid, _ec, _ot, _ov, _oa, _nid): _on_border_warning_choice(bid))
 	$CanvasLayer/EventControl/EventContainer.add_child(ev)
+
+
+var _farmers_fired := false
+
+
+func _fire_farmers_event() -> void:
+	var data := {
+		"event_id":   "FARMERS_RESISTANCE",
+		"headline":   "Farmers Flock to the Resistance",
+		"short_desc": "The Nation's Producers Take Up Arms",
+		"long_desc":  "Hundreds of farmers have arrived in our barracks to support the war against King George III and his redcoat hordes! The nation's producers have taken up arms and will fight with President Ualani and the Minutemen.",
+		"image_tag":  "civilian_farmer",
+		"buttons": [
+			{"button_id":"rally_farmers","button_text":"Welcome them to the ranks!","button_type":"standard","outcome_type":"none","outcome_value":"","outcome_amount":0,"next_event_id":"","prerequisite_flag":""},
+		],
+	}
+	var ev = eventScene.instantiate()
+	ev.build_from_data(data, null, playerCountryNode)
+	ev.eventButtonPressed.connect(func(_bid, _eid, _ec, _ot, _ov, _oa, _nid): _on_farmers_choice())
+	$CanvasLayer/EventControl/EventContainer.add_child(ev)
+
+
+func _on_farmers_choice() -> void:
+	# Spawn a farmer volunteer army at the capital (DC), or the first free US tile.
+	var spot = null
+	for tile in $TileController.get_children():
+		if tile.tileNumber == 188 and tile.tileOwner == playerCountry and tile.stationedArmy == null:
+			spot = tile
+			break
+	if spot == null:
+		for tile in $TileController.get_children():
+			if tile.tileOwner == playerCountry and tile.stationedArmy == null:
+				spot = tile
+				break
+	if spot != null:
+		_raise_archetype_army(spot, "Minutemen")
+		var a = playerCountryNode.countryArmyList.back()
+		if a != null:
+			a.ArmyName = "Farmer Volunteers"
 
 
 func _raise_archetype_army(tile, archetype: String) -> void:
