@@ -2008,17 +2008,17 @@ var _placementPanel: Panel = null
 # Weapons-resource cost, display ATK/DEF, and the two weapon sprites in the army.
 const WPN_ART := "res://art assets/finishedAssets/Weapons/"
 const BUY_CATALOG := [
-	{"label": "Minutemen — Flintlock",        "template": "Minutemen",         "tech": "",                 "gold": 40,  "weapons": 0,  "atk": 43,  "def": 10, "spr1": "Flintlock.png",      "spr2": "Flintlock.png", "icon": "spade.png", "tier": "I"},
-	{"label": "Line Infantry — Breechloader", "template": "Breechloader Line", "tech": "Breechloaders",    "gold": 60,  "weapons": 20, "atk": 65,  "def": 16, "spr1": "Percussion_Cap.png", "spr2": "Percussion_Cap.png", "icon": "spade.png", "tier": "II"},
-	{"label": "Riflemen — Percussion Cap",    "template": "Percussion Line",   "tech": "Rifles",           "gold": 80,  "weapons": 40, "atk": 85,  "def": 20, "spr1": "Percussion_Cap.png", "spr2": "Percussion_Cap.png", "icon": "spade.png", "tier": "III"},
-	{"label": "Repeater Corps — Lever",       "template": "Repeater Line",     "tech": "Repeaters",        "gold": 100, "weapons": 60, "atk": 110,  "def": 22, "spr1": "Lever_Repeater.png", "spr2": "Lever_Repeater.png", "icon": "spade.png", "tier": "IV"},
-	{"label": "Dragoons — Cutlass",           "template": "Dragoons",          "tech": "",                 "gold": 90,  "weapons": 0,  "atk": 25,  "def": 10, "spr1": "cutlass.png",        "spr2": "cutlass.png", "icon": "horse.png", "tier": "I"},
-	{"label": "Sabre Cavalry — Officer Sword","template": "Officer Cavalry",   "tech": "Cavalry Drills",   "gold": 110, "weapons": 20, "atk": 40,  "def": 15, "spr1": "officer_sword.png",  "spr2": "officer_sword.png", "icon": "horse.png", "tier": "II"},
-	{"label": "Heavy Cavalry — Cavalry Sword","template": "Heavy Cavalry",     "tech": "Officer Training", "gold": 130, "weapons": 40, "atk": 55,  "def": 20, "spr1": "cavalry_sword.png",  "spr2": "cavalry_sword.png", "icon": "horse.png", "tier": "III"},
-	{"label": "Marine Cavalry — Mameluke",    "template": "Marine Cavalry",    "tech": "Marine Discipline","gold": 150, "weapons": 60, "atk": 70,  "def": 25, "spr1": "marine_mameluke.png","spr2": "marine_mameluke.png", "icon": "horse.png", "tier": "IV"},
-	{"label": "Artillery — Field Cannon",     "template": "Artillery Battery", "tech": "",                 "gold": 120, "weapons": 0,  "atk": 70,  "def": 0,  "spr1": "Howitzer.png",       "spr2": "Flintlock.png", "icon": "star.png", "tier": "I"},
-	{"label": "Mortar Battery — Mortar",      "template": "Mortar Battery",    "tech": "Siege Works",      "gold": 150, "weapons": 40, "atk": 150, "def": 0,  "spr1": "Mortar.png",         "spr2": "Flintlock.png", "icon": "star.png", "tier": "II"},
-	{"label": "Rocket Battery — Rockets",     "template": "Rocket Battery",    "tech": "Rocket Artillery", "gold": 200, "weapons": 80, "atk": 140,  "def": 0,  "spr1": "res://art assets/AmericanRevolutionArt/technology sprites/Early_Rocket.png",           "spr2": "Flintlock.png", "icon": "star.png", "tier": "III"},
+	{"label": "Minutemen — Flintlock",        "template": "Minutemen",         "tech": "",                 "gold": 40,  "weapons": 0,  "atk": 43,  "def": 10, "spr1": "Flintlock.png",      "spr2": "Flintlock.png", "icon": "spade.png", "tier": "I", "class": "Musket"},
+	{"label": "Line Infantry — Breechloader", "template": "Breechloader Line", "tech": "Breechloaders",    "gold": 60,  "weapons": 20, "atk": 65,  "def": 16, "spr1": "Percussion_Cap.png", "spr2": "Percussion_Cap.png", "icon": "spade.png", "tier": "II", "class": "Musket"},
+	{"label": "Riflemen — Percussion Cap",    "template": "Percussion Line",   "tech": "Rifles",           "gold": 80,  "weapons": 40, "atk": 85,  "def": 20, "spr1": "Percussion_Cap.png", "spr2": "Percussion_Cap.png", "icon": "spade.png", "tier": "III", "class": "Musket"},
+	{"label": "Repeater Corps — Lever",       "template": "Repeater Line",     "tech": "Repeaters",        "gold": 100, "weapons": 60, "atk": 110,  "def": 22, "spr1": "Lever_Repeater.png", "spr2": "Lever_Repeater.png", "icon": "spade.png", "tier": "IV", "class": "Musket"},
+	{"label": "Dragoons — Cutlass",           "template": "Dragoons",          "tech": "",                 "gold": 90,  "weapons": 0,  "atk": 25,  "def": 10, "spr1": "cutlass.png",        "spr2": "cutlass.png", "icon": "horse.png", "tier": "I", "class": "Saber"},
+	{"label": "Sabre Cavalry — Officer Sword","template": "Officer Cavalry",   "tech": "Cavalry Drills",   "gold": 110, "weapons": 20, "atk": 40,  "def": 15, "spr1": "officer_sword.png",  "spr2": "officer_sword.png", "icon": "horse.png", "tier": "II", "class": "Saber"},
+	{"label": "Heavy Cavalry — Cavalry Sword","template": "Heavy Cavalry",     "tech": "Officer Training", "gold": 130, "weapons": 40, "atk": 55,  "def": 20, "spr1": "cavalry_sword.png",  "spr2": "cavalry_sword.png", "icon": "horse.png", "tier": "III", "class": "Saber"},
+	{"label": "Marine Cavalry — Mameluke",    "template": "Marine Cavalry",    "tech": "Marine Discipline","gold": 150, "weapons": 60, "atk": 70,  "def": 25, "spr1": "marine_mameluke.png","spr2": "marine_mameluke.png", "icon": "horse.png", "tier": "IV", "class": "Saber"},
+	{"label": "Artillery — Field Cannon",     "template": "Artillery Battery", "tech": "",                 "gold": 120, "weapons": 0,  "atk": 70,  "def": 0,  "spr1": "Howitzer.png",       "spr2": "Flintlock.png", "icon": "star.png", "tier": "I", "class": "Artillery"},
+	{"label": "Mortar Battery — Mortar",      "template": "Mortar Battery",    "tech": "Siege Works",      "gold": 150, "weapons": 40, "atk": 150, "def": 0,  "spr1": "Mortar.png",         "spr2": "Flintlock.png", "icon": "star.png", "tier": "II", "class": "Artillery"},
+	{"label": "Rocket Battery — Rockets",     "template": "Rocket Battery",    "tech": "Rocket Artillery", "gold": 200, "weapons": 80, "atk": 140,  "def": 0,  "spr1": "res://art assets/AmericanRevolutionArt/technology sprites/Early_Rocket.png",           "spr2": "Flintlock.png", "icon": "star.png", "tier": "III", "class": "Artillery"},
 ]
 
 func _open_army_commander_picker(army: Army) -> void:
@@ -2339,6 +2339,14 @@ func _wpn_texture(name: String) -> Texture:
 	return load(name if name.begins_with("res://") else WPN_ART + name)
 
 
+func _row_gold(entry) -> int:
+	# Gold price after belief cost-reductions for the row's class (Musket/Saber/Artillery).
+	var g: int = int(entry["gold"])
+	if playerCountryNode != null:
+		g = max(0, g - playerCountryNode.belief_cost_reduction(str(entry.get("class", ""))))
+	return g
+
+
 func _catalog_entry_for(template: String) -> Dictionary:
 	for e in BUY_CATALOG:
 		if str(e["template"]) == template:
@@ -2368,7 +2376,7 @@ func _open_muster_panel() -> void:
 	var y: int = 72
 	for i in range(_musterRows.size()):
 		var entry = _musterRows[i]
-		var cost_txt := "$" + str(entry["gold"])
+		var cost_txt := "$" + str(_row_gold(entry))
 		if int(entry["weapons"]) > 0:
 			cost_txt += " + " + str(entry["weapons"]) + "W"
 		var lbl := Label.new()
@@ -2422,7 +2430,7 @@ func _muster_refresh() -> void:
 	for i in range(_musterRows.size()):
 		var n: int = int(_musterCounts.get(i, 0))
 		_musterPanel.get_node("Qty_" + str(i)).text = str(n)
-		tg += n * int(_musterRows[i]["gold"])
+		tg += n * _row_gold(_musterRows[i])
 		tw += n * int(_musterRows[i]["weapons"])
 	var over: String = ""
 	if tg > dollars:
@@ -2440,7 +2448,7 @@ func _muster_confirm() -> void:
 	var tw: int = 0
 	for i in range(_musterRows.size()):
 		var n: int = int(_musterCounts.get(i, 0))
-		tg += n * int(_musterRows[i]["gold"])
+		tg += n * _row_gold(_musterRows[i])
 		tw += n * int(_musterRows[i]["weapons"])
 	if tg <= 0 and tw <= 0:
 		return

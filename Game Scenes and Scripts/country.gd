@@ -155,11 +155,11 @@ const BELIEF_EFFECTS := {
 	"Harriet Tubman":          {"kind": "move",      "amount": 1},
 	"Sojourner Truth":         {"kind": "manpower",  "amount": 500},
 	"Frederick Douglass":      {"kind": "attack",    "class": "Musket",    "amount": 0.15},
-	"Eleanor Roosevelt":       {"kind": "defense",   "amount": 0.08},
-	"Martin Luther King Jr.":  {"kind": "reinforce", "amount": 0.20},
+	"Eleanor Roosevelt":       {"kind": "fort_defense",     "amount": 0.15},
+	"Martin Luther King Jr.":  {"kind": "encircle_defense", "amount": 0.05},
 	"John Brown":              {"kind": "attack",    "class": "Saber",     "amount": 0.15},
 	"Mary Edwards Walker":     {"kind": "reinforce", "amount": 0.15},
-	"Mark Twain":              {"kind": "attack",    "class": "all",       "amount": 0.06},
+	"Mark Twain":              {"kind": "cost",      "class": "Musket",    "amount": 20},
 	"Malcolm X":               {"kind": "attack",    "class": "Artillery", "amount": 0.15},
 }
 
@@ -197,6 +197,45 @@ func belief_reinforce_bonus() -> float:
 
 func belief_move_bonus() -> int:
 	return int(_belief_sum("move"))
+
+
+func belief_defense_at(tile) -> float:
+	# Flat defense + fort defense (on/next to a fortress) + encircle defense (per friendly neighbour).
+	var d: float = belief_defense_bonus()
+	var fort_amt: float = _belief_sum("fort_defense")
+	if fort_amt > 0.0 and tile != null:
+		var near_fort: bool = int(tile.buildings.get("fortress", 0)) > 0
+		if not near_fort:
+			for nb in tile.TileNeighbors:
+				if nb != null and int(nb.buildings.get("fortress", 0)) > 0:
+					near_fort = true
+					break
+		if near_fort:
+			d += fort_amt
+	var enc_amt: float = _belief_sum("encircle_defense")
+	if enc_amt > 0.0 and tile != null:
+		var friends: int = 0
+		for nb in tile.TileNeighbors:
+			if nb == null:
+				continue
+			var occ = nb.stationedArmy
+			if occ == null and nb.tileSpawnPoint != null:
+				occ = nb.tileSpawnPoint.stationedArmy
+			if occ != null and is_instance_valid(occ) and occ.parentCountry == self and not occ.deleteMode:
+				friends += 1
+		d += enc_amt * float(friends)
+	return d
+
+
+func belief_cost_reduction(weapon_class: String) -> int:
+	var r: int = 0
+	for b in selectedBeliefs:
+		var e: Dictionary = BELIEF_EFFECTS.get(b.beliefType, {})
+		if str(e.get("kind", "")) == "cost":
+			var c: String = str(e.get("class", "all"))
+			if c == "all" or c == weapon_class:
+				r += int(e.get("amount", 0))
+	return r
 var churchLevel: int #ranges from -3 to 3.  is calculated by finding the church beliefs by faith beliefs
 var faithBeliefs: int
 var churchBeliefs: int

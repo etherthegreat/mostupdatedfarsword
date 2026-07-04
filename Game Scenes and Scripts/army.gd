@@ -405,7 +405,7 @@ func compute_battle_against(defender: Army) -> Dictionary:
 	defender.surveySelf()
 	var d_units: float = max(1.0, float(defender.unitsList.size()))
 	var a_out: Dictionary = offensive_output(true, false)
-	var d_def: float = defender.parentCountry.belief_defense_bonus() if defender.parentCountry != null else 0.0
+	var d_def: float = defender.parentCountry.belief_defense_at(defender.inTile) if defender.parentCountry != null else 0.0
 	var d_rblock: float = clamp((float(defender.armyDefence) + float(defender.hold_defense_bonus())) / d_units + d_def, 0.0, 0.9)
 	var d_mblock: float = clamp((float(defender.armyBlock) + float(defender.hold_defense_bonus())) / d_units + d_def, 0.0, 0.9)
 	var ranged_dmg: float = a_out["ranged"] * (1.0 - d_rblock)
