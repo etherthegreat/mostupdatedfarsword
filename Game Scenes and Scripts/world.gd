@@ -6333,6 +6333,7 @@ func tileSiegeWon(tile, oldCID: String, newCID: String) -> void:
 		if country.CID == finalCID:
 			country.addTile(tile)
 	tile.record_conquest(finalCID)
+	_on_tile_liberated(tile, oldCID, finalCID)
 
 	# ── ITEM 3: clean up any APF belonging to the losing side ────────────────
 	var ppb = tile.tileSpawnPoint
@@ -6367,6 +6368,39 @@ func tileSiegeWon(tile, oldCID: String, newCID: String) -> void:
 	#	if not playerCountryNode.CountryFlags.has(mem_flag):
 	#		createNewEvent("MEMORIAL_001", tile)
 	#		print("[Memorial] UK occupied special feature tile: ", tile.tileName)
+
+# The 18 tech-unlock tiles (9 Ivy/named schools + 9 spread across South/Mid-Atlantic/FL/Canada).
+const TECH_TILE_NUMBERS := [2, 14, 16, 50, 54, 57, 62, 65, 146, 37, 53, 94, 101, 132, 151, 155, 164, 178]
+
+
+func _is_tech_tile(tile) -> bool:
+	return tile != null and tile.tileNumber in TECH_TILE_NUMBERS
+
+
+func _on_tile_liberated(tile, oldOwner: String, newOwner: String) -> void:
+	# CENTRAL CAPTURE HOOK — every liberation payout hangs off this single call.
+	# Fires whenever a tile changes hands. Phase 4 fills in the token/cache grants.
+	if tile == null or oldOwner == newOwner:
+		return
+	# The US player benefits from its own captures AND from allied Canada's captures.
+	var benefits_player: bool = (newOwner == "USA") or (newOwner == "CA" and _cids_allied("USA", "CA"))
+	if not benefits_player:
+		return
+	# ── payout branches (stubbed — wired in Phase 4) ──
+	if _is_tech_tile(tile):
+		pass  # TODO: grant 1 Tech token (unlock any technology)
+	if int(tile.buildings.get("monument", 0)) > 0:
+		pass  # TODO: grant 1 Culture token (unlock a belief/doctrine)
+	if int(tile.buildings.get("courthouse", 0)) > 0:
+		pass  # TODO: grant 3 Spell tokens
+	if int(tile.buildings.get("market", 0)) > 0:
+		pass  # TODO: cash cache
+	if int(tile.buildings.get("forge", 0)) > 0:
+		pass  # TODO: weapons cache
+	if int(tile.buildings.get("barracks", 0)) > 0:
+		pass  # TODO: manpower cache
+	print("[Liberation] ", tile.tileName, "  ", oldOwner, " -> ", newOwner, "  (player benefits)")
+
 
 func _trigger_game_over(won: bool, reason: String = "", end_type: String = "") -> void:
 	if _game_ended:
