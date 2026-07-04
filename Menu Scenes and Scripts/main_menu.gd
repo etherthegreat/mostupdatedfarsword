@@ -27,6 +27,12 @@ func _ready() -> void:
 	_check_language()
 	_check_continue_button()
 	_ensure_settings_panel()
+	# No keyboard/gamepad focus highlight on the menu buttons.
+	var bar = get_node_or_null("BottomBar")
+	if bar != null:
+		for b in bar.get_children():
+			if b is Button:
+				b.focus_mode = Control.FOCUS_NONE
 
 func _ensure_settings_panel() -> void:
 	if get_node_or_null("SettingsPanel"):

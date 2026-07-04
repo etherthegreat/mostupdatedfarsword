@@ -1812,7 +1812,10 @@ func tileClicked(tile):
 		$CanvasLayer/TileInfoPanel.visible = true
 	else:
 		$CanvasLayer/TileInfoPanel.visible = false
-	$CanvasLayer/BuildingInfoPanel.displayBuildingInfo(tile)
+	# Buildings tab removed for this build (deferred to Farsword) — hide its opener.
+	var _obb = $CanvasLayer/TileInfoPanel.get_node_or_null("OpenBuildingsButton")
+	if _obb != null:
+		_obb.visible = false
 
 func retrieveOutputs():
 	selectedTile.censusTile(playerCountryNode)
