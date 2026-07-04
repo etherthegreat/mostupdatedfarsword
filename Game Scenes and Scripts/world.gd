@@ -207,9 +207,10 @@ func updateResourceBar() -> void:
 			_pc.TotalMagic = max(_pc.TotalMagic, 100)
 
 func _refresh_next_turn_ui() -> void:
-	var has_tech := $CanvasLayer/TechTree.investmentTech != null
-	$CanvasLayer/NextTurnControl/NextTurn.visible = has_tech
-	$CanvasLayer/NextTurnControl/PickTech.visible = not has_tech
+	# Token system: nudge to the tech menu only when a tech token is available to spend.
+	var has_token := playerCountryNode != null and playerCountryNode.techTokens > 0
+	$CanvasLayer/NextTurnControl/NextTurn.visible = not has_token
+	$CanvasLayer/NextTurnControl/PickTech.visible = has_token
 
 const RESOURCE_MAP_MODES := ["MapFood","MapWood","MapMetal","MapFaith","MapHappiness",
 	"MapManpower","MapWeapons","MapDollars","MapMagic","MapMandate","MapOutputs"]
@@ -6424,10 +6425,11 @@ func _on_tile_liberated(tile, oldOwner: String, newOwner: String) -> void:
 	if p == null:
 		return
 	var got: String = ""
+	var earned_culture := false
 	if _is_tech_tile(tile):
 		p.techTokens += 1;                          got += " +1 Tech"
 	if int(tile.buildings.get("monument", 0)) > 0:
-		p.cultureTokens += 1;                       got += " +1 Culture"
+		p.cultureTokens += 1;                       got += " +1 Culture"; earned_culture = true
 	if int(tile.buildings.get("courthouse", 0)) > 0:
 		p.spellTokens += 3;                         got += " +3 Spell"
 	if int(tile.buildings.get("market", 0)) > 0:
@@ -6437,7 +6439,20 @@ func _on_tile_liberated(tile, oldOwner: String, newOwner: String) -> void:
 	if int(tile.buildings.get("barracks", 0)) > 0:
 		p.TotalManpower += CACHE_MANPOWER;          got += " +" + str(CACHE_MANPOWER) + "Mp"
 	updateResourceBar()
+	_refresh_next_turn_ui()
+	if earned_culture and newOwner == "USA":
+		_open_religion_panel()
 	print("[Liberation] ", tile.tileName, " ", oldOwner, "->", newOwner, " |", got)
+
+
+func _open_religion_panel() -> void:
+	var bc = $CanvasLayer.get_node_or_null("BeliefControl")
+	if bc == null:
+		return
+	bc.buildSelf(playerCountryNode)
+	bc.updateSelf()
+	$CanvasLayer.closeAllPanels()
+	bc.visible = true
 
 
 func _trigger_game_over(won: bool, reason: String = "", end_type: String = "") -> void:

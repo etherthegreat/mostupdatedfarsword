@@ -103,8 +103,18 @@ func _season_name(turn: int) -> String:
 
 # ── button handlers ───────────────────────────────────────────────────────────
 func _on_new_game_button_pressed() -> void:
-	get_tree().change_scene_to_file(
-		"res://Menu Scenes and Scripts/new_game_selection.tscn")
+	# Canada is out — skip the selection screen and drop straight into the game as the USA.
+	AudioManager.play_main_track()
+	var settings: Dictionary = {}
+	if FileAccess.file_exists("user://settings.txt"):
+		var file = FileAccess.open("user://settings.txt", FileAccess.READ)
+		settings = file.get_var()
+	var language: String = settings.get("gameLanguage", "eng")
+	var newGame = load("res://Game Scenes and Scripts/world.tscn").instantiate()
+	get_tree().root.add_child(newGame)
+	get_tree().current_scene = newGame
+	newGame.newGameBuild("USA", language, false)
+	queue_free()
 
 func _on_continue_button_pressed() -> void:
 	if not FileAccess.file_exists(AUTOSAVE_PATH):
