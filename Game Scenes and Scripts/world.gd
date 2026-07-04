@@ -2189,6 +2189,12 @@ func _apply_war_timing() -> void:
 	if not _farmers_fired and currentWorldTurn >= 2:
 		_farmers_fired = true
 		_fire_farmers_event()
+	if not _trailer_intimate_fired and currentWorldTurn >= 4:
+		_trailer_intimate_fired = true
+		_fire_csv_event("PROT_01_AGREE_INTIMATE")
+	if not _trailer_agree_fired and currentWorldTurn >= 5:
+		_trailer_agree_fired = true
+		_fire_csv_event("PROT_01_AGREE")
 
 
 func _spawn_uk_garrisons(uk) -> void:
@@ -2292,6 +2298,15 @@ func _fire_border_warning() -> void:
 
 
 var _farmers_fired := false
+var _trailer_intimate_fired := false
+var _trailer_agree_fired := false
+
+
+func _fire_csv_event(eid: String) -> void:
+	# Trailer trigger: pop a CSV event by ID (bypasses the demo whitelist for filming).
+	var ev = eventScene.instantiate()
+	ev.build_from_csv(eid, null, playerCountryNode)
+	$CanvasLayer/EventControl/EventContainer.add_child(ev)
 
 
 func _fire_farmers_event() -> void:
