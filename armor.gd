@@ -127,7 +127,7 @@ func updateSelf(newType: String) -> void:
 			armorRangedBlock = 12
 			armorSpellBlock  = 4
 			armorWeaponsPerLevel = 6
-			armorImage = load("res://art assets/finishedAssets/Weapons/Padded.png") if ResourceLoader.exists("res://art assets/finishedAssets/Weapons/Padded.png") else null
+			armorImage = load("res://art assets/AmericanRevolutionArt/sisterspacedesklanding/tricourne hat.png") if ResourceLoader.exists("res://art assets/AmericanRevolutionArt/sisterspacedesklanding/tricourne hat.png") else null
 
 		"Forage Cap":
 			# Lvl 2 uniform — soft fatigue cap, light-infantry mobility
@@ -136,7 +136,7 @@ func updateSelf(newType: String) -> void:
 			armorRangedBlock = 16
 			armorSpellBlock  = 6
 			armorWeaponsPerLevel = 8
-			armorImage = load("res://art assets/finishedAssets/Weapons/Scout.png") if ResourceLoader.exists("res://art assets/finishedAssets/Weapons/Scout.png") else null
+			armorImage = load("res://art assets/AmericanRevolutionArt/sisterspacedesklanding/forage cap.png") if ResourceLoader.exists("res://art assets/AmericanRevolutionArt/sisterspacedesklanding/forage cap.png") else null
 
 		"Tombstone Cap":
 			# Frontier hat — quick-draw specialists, fast on first strike
@@ -145,7 +145,7 @@ func updateSelf(newType: String) -> void:
 			armorRangedBlock = 20
 			armorSpellBlock  = 5
 			armorWeaponsPerLevel = 12
-			armorImage = load("res://art assets/finishedAssets/Weapons/Scout.png") if ResourceLoader.exists("res://art assets/finishedAssets/Weapons/Scout.png") else null
+			armorImage = load("res://art assets/AmericanRevolutionArt/sisterspacedesklanding/tombstone hat.png") if ResourceLoader.exists("res://art assets/AmericanRevolutionArt/sisterspacedesklanding/tombstone hat.png") else null
 			addWeaponMod("QuickDraw")
 
 		"Hardee Hat":
@@ -155,7 +155,7 @@ func updateSelf(newType: String) -> void:
 			armorRangedBlock = 25
 			armorSpellBlock  = 10
 			armorWeaponsPerLevel = 10
-			armorImage = load("res://art assets/finishedAssets/Weapons/Plate.png") if ResourceLoader.exists("res://art assets/finishedAssets/Weapons/Plate.png") else null
+			armorImage = load("res://art assets/AmericanRevolutionArt/sisterspacedesklanding/hardee hat.png") if ResourceLoader.exists("res://art assets/AmericanRevolutionArt/sisterspacedesklanding/hardee hat.png") else null
 			addWeaponMod("HardeeDisc")
 
 

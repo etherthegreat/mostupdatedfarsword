@@ -800,6 +800,7 @@ func addTechnologicalDiscovery(Name):
 	newTech.techName = Name
 	newTech.buildSelf()
 	unlockedTechnologies.append(newTech)
+	upgradeAllUniforms()   # uniform techs instantly re-armor all troops (more defensive)
 	# NOTE: weapon techs no longer auto-upgrade fielded units — they unlock new purchasable
 	# tiers in the buy store instead (units keep the weapon they were bought with).
 
@@ -862,6 +863,22 @@ func upgradeAllWeapons() -> int:
 			army.updateArmyUI()
 	lastWeaponUpgradeCount = count
 	return count
+
+
+func upgradeAllUniforms() -> void:
+	# Uniform techs INSTANTLY re-armor every fielded troop (blanket defensive buff — no buy store).
+	var best: String = getBestUniform()
+	if best == "":
+		return
+	for army in countryArmyList:
+		if not is_instance_valid(army):
+			continue
+		for unit in army.unitsList:
+			if unit != null:
+				unit.changeArmor(best)
+				unit.getUnitAttributes()
+		if is_instance_valid(army):
+			army.updateArmyUI()
 
 
 func addWeaponTemplate(Name):
