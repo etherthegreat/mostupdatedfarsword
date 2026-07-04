@@ -121,6 +121,30 @@ func deselectAll() -> void:
 	melee_mode = false
 	emit_signal("updatePathPoints", false)
 
+func _army_firing_range(army) -> int:
+	# Longest ranged reach among the army's units (2 for Mortar/Rocket artillery, else 1).
+	var r := 1
+	if army == null:
+		return r
+	for u in army.unitsList:
+		if u != null and u.unitWeapon != null and u.unitWeapon.weaponRange > r:
+			r = u.unitWeapon.weaponRange
+	return r
+
+
+func _in_firing_range(targetPPB) -> bool:
+	if selectedAPF == null or targetPPB == null or selectedAPF.currentPathPoint == null:
+		return false
+	var origin = selectedAPF.currentPathPoint
+	if targetPPB in origin.neighborPathPoints:
+		return true
+	if _army_firing_range(selectedAPF.thisArmy) >= 2:
+		for n in origin.neighborPathPoints:
+			if n != null and targetPPB in n.neighborPathPoints:
+				return true
+	return false
+
+
 func _on_apf_right_clicked(clickedArmy, apf, currentTile, clickedCountry, currentPathPoint):
 	# Right-click an enemy APF to attack it (must neighbor the selected army).
 	if selectedAPF == null or clickedArmy == null or not clickedArmy.enemy:
@@ -129,7 +153,7 @@ func _on_apf_right_clicked(clickedArmy, apf, currentTile, clickedCountry, curren
 		emit_signal("movement_blocked", "The war hasn't begun — you can't strike the British yet.")
 		return
 	var targetPPB = apf.currentPathPoint
-	if targetPPB != null and targetPPB in selectedAPF.currentPathPoint.neighborPathPoints:
+	if _in_firing_range(targetPPB):
 		_initiate_attack(targetPPB)
 
 
@@ -152,7 +176,7 @@ func _on_apf_hovered(apf, entered: bool) -> void:
 	if defArmy == null or not is_instance_valid(defArmy) or not defArmy.enemy:
 		return
 	var targetPPB = apf.currentPathPoint
-	if targetPPB == null or targetPPB not in selectedAPF.currentPathPoint.neighborPathPoints:
+	if not _in_firing_range(targetPPB):
 		return
 	var bt: Dictionary = compute_battle(selectedAPF.thisArmy, defArmy)
 	_show_battle_preview(apf, int(bt["def_loss"]), int(bt["atk_loss"]))
