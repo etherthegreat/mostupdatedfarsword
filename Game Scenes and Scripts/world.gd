@@ -1804,18 +1804,13 @@ func tileClicked(tile):
 		_try_place_at(tile)
 		return
 	selectedTile = tile
-	# Left-click a tile: deselect any army + open tile info (movement is right-click).
+	# Left-click a tile: clean reclamation readout (deselect army; movement stays right-click).
 	$PathControl.deselectAll()
-	$CanvasLayer/TileInfoPanel.displayTileInfo(tile)
-	if $CanvasLayer/TileInfoPanel.visible == false:
-		$CanvasLayer.closeAllPanels()
-		$CanvasLayer/TileInfoPanel.visible = true
-	else:
-		$CanvasLayer/TileInfoPanel.visible = false
-	# Buildings tab removed for this build (deferred to Farsword) — hide its opener.
-	var _obb = $CanvasLayer/TileInfoPanel.get_node_or_null("OpenBuildingsButton")
-	if _obb != null:
-		_obb.visible = false
+	if _tileInfoPanel != null and is_instance_valid(_tileInfoPanel) and _tileInfoTile == tile:
+		_close_tile_info()
+		return
+	$CanvasLayer.closeAllPanels()
+	_show_tile_info(tile)
 
 func retrieveOutputs():
 	selectedTile.censusTile(playerCountryNode)
@@ -6067,6 +6062,74 @@ func updateArmyFunc(Army, pathPoint):
 
 var _armyInfoPanel: Panel = null
 var _armyInfoArmy = null
+
+
+var _tileInfoPanel: Panel = null
+var _tileInfoTile = null
+
+
+func _close_tile_info() -> void:
+	if _tileInfoPanel != null and is_instance_valid(_tileInfoPanel):
+		_tileInfoPanel.queue_free()
+	_tileInfoPanel = null
+	_tileInfoTile = null
+
+
+func _tile_line(panel: Panel, txt: String, y: int, dim: bool = false) -> void:
+	var l := Label.new()
+	l.text = txt
+	l.position = Vector2(16, y)
+	if dim:
+		l.modulate = Color(0.72, 0.80, 0.95)
+	panel.add_child(l)
+
+
+func _show_tile_info(tile) -> void:
+	_close_tile_info()
+	if tile == null or not is_instance_valid(tile):
+		return
+	_tileInfoTile = tile
+	var panel := Panel.new()
+	panel.size = Vector2(340, 350)
+	panel.position = Vector2(12, 100)
+	$CanvasLayer.add_child(panel)
+	_tileInfoPanel = panel
+	var y: int = 12
+	var title := Label.new()
+	title.text = tile.tileName
+	title.position = Vector2(16, y)
+	title.add_theme_font_size_override("font_size", 18)
+	panel.add_child(title)
+	y += 30
+	_tile_line(panel, str(tile.tileContinent) + "   \u2022   " + str(tile.terrain), y, true); y += 26
+	var owner_name: String = {"USA": "United States", "UK": "Britain", "CA": "Canada"}.get(str(tile.tileOwner), str(tile.tileOwner))
+	_tile_line(panel, "Held by: " + owner_name, y); y += 24
+	if tile.tileSpecialFeatures.size() > 0:
+		_tile_line(panel, str(tile.tileSpecialFeatures[0]), y, true); y += 24
+	y += 6
+	if str(tile.tileOwner) == "USA":
+		_tile_line(panel, "Your territory.", y, true)
+	else:
+		_tile_line(panel, "LIBERATE FOR:", y); y += 24
+		var any: bool = false
+		if _is_tech_tile(tile):
+			_tile_line(panel, "  +1 Tech token", y); y += 22; any = true
+		if int(tile.buildings.get("monument", 0)) > 0:
+			_tile_line(panel, "  +1 Culture token", y); y += 22; any = true
+		if int(tile.buildings.get("courthouse", 0)) > 0:
+			_tile_line(panel, "  +3 Spell tokens", y); y += 22; any = true
+		if int(tile.buildings.get("market", 0)) > 0:
+			_tile_line(panel, "  +$" + str(CACHE_CASH) + "   (market)", y); y += 22; any = true
+		if int(tile.buildings.get("forge", 0)) > 0:
+			_tile_line(panel, "  +" + str(CACHE_WEAPONS) + " weapons   (forge)", y); y += 22; any = true
+		if int(tile.buildings.get("barracks", 0)) > 0:
+			_tile_line(panel, "  +" + str(CACHE_MANPOWER) + " manpower   (barracks)", y); y += 22; any = true
+		if not any:
+			_tile_line(panel, "  (open ground \u2014 no special spoils)", y, true); y += 22
+	if tile.tileGovernor != null:
+		var gn = tile.tileGovernor.get("governorName")
+		if gn != null:
+			_tile_line(panel, "Governor: " + str(gn), y)
 
 
 func _close_army_info() -> void:
