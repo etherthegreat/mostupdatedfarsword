@@ -2000,20 +2000,21 @@ var _musterCounts: Dictionary = {}
 var _muster_place_queue: Array = []
 var _musterRows: Array = []
 var _placementPanel: Panel = null
-# Buy-store catalog. Each row: label, army template (CSV), tech gate ("" = always available),
-# gold cost, and Weapons-resource cost (0 for base tiers, scaling up for higher tiers).
+# Buy-store catalog. label, army template (CSV), tech gate ("" = always), gold cost,
+# Weapons-resource cost, display ATK/DEF, and the two weapon sprites in the army.
+const WPN_ART := "res://art assets/finishedAssets/Weapons/"
 const BUY_CATALOG := [
-	{"label": "Minutemen — Flintlock",        "template": "Minutemen",         "tech": "",                 "gold": 40,  "weapons": 0},
-	{"label": "Line Infantry — Breechloader", "template": "Breechloader Line", "tech": "Breechloaders",    "gold": 60,  "weapons": 20},
-	{"label": "Riflemen — Percussion Cap",    "template": "Percussion Line",   "tech": "Rifles",           "gold": 80,  "weapons": 40},
-	{"label": "Repeater Corps — Lever",       "template": "Repeater Line",     "tech": "Repeaters",        "gold": 100, "weapons": 60},
-	{"label": "Dragoons — Cutlass",           "template": "Dragoons",          "tech": "",                 "gold": 90,  "weapons": 0},
-	{"label": "Sabre Cavalry — Officer Sword","template": "Officer Cavalry",   "tech": "Cavalry Drills",   "gold": 110, "weapons": 20},
-	{"label": "Heavy Cavalry — Cavalry Sword","template": "Heavy Cavalry",     "tech": "Officer Training", "gold": 130, "weapons": 40},
-	{"label": "Marine Cavalry — Mameluke",    "template": "Marine Cavalry",    "tech": "Marine Discipline","gold": 150, "weapons": 60},
-	{"label": "Artillery — Field Cannon",     "template": "Artillery Battery", "tech": "",                 "gold": 120, "weapons": 0},
-	{"label": "Mortar Battery — Mortar",      "template": "Mortar Battery",    "tech": "Siege Works",      "gold": 150, "weapons": 40},
-	{"label": "Rocket Battery — Rockets",     "template": "Rocket Battery",    "tech": "Rocket Artillery", "gold": 200, "weapons": 80},
+	{"label": "Minutemen — Flintlock",        "template": "Minutemen",         "tech": "",                 "gold": 40,  "weapons": 0,  "atk": 43,  "def": 10, "spr1": "Flintlock.png",      "spr2": "Flintlock.png"},
+	{"label": "Line Infantry — Breechloader", "template": "Breechloader Line", "tech": "Breechloaders",    "gold": 60,  "weapons": 20, "atk": 90,  "def": 16, "spr1": "Percussion_Cap.png", "spr2": "Percussion_Cap.png"},
+	{"label": "Riflemen — Percussion Cap",    "template": "Percussion Line",   "tech": "Rifles",           "gold": 80,  "weapons": 40, "atk": 75,  "def": 16, "spr1": "Percussion_Cap.png", "spr2": "Percussion_Cap.png"},
+	{"label": "Repeater Corps — Lever",       "template": "Repeater Line",     "tech": "Repeaters",        "gold": 100, "weapons": 60, "atk": 95,  "def": 20, "spr1": "Lever_Repeater.png", "spr2": "Lever_Repeater.png"},
+	{"label": "Dragoons — Cutlass",           "template": "Dragoons",          "tech": "",                 "gold": 90,  "weapons": 0,  "atk": 25,  "def": 10, "spr1": "cutlass.png",        "spr2": "cutlass.png"},
+	{"label": "Sabre Cavalry — Officer Sword","template": "Officer Cavalry",   "tech": "Cavalry Drills",   "gold": 110, "weapons": 20, "atk": 55,  "def": 20, "spr1": "officer_sword.png",  "spr2": "officer_sword.png"},
+	{"label": "Heavy Cavalry — Cavalry Sword","template": "Heavy Cavalry",     "tech": "Officer Training", "gold": 130, "weapons": 40, "atk": 40,  "def": 15, "spr1": "cavalry_sword.png",  "spr2": "cavalry_sword.png"},
+	{"label": "Marine Cavalry — Mameluke",    "template": "Marine Cavalry",    "tech": "Marine Discipline","gold": 150, "weapons": 60, "atk": 70,  "def": 25, "spr1": "marine_mameluke.png","spr2": "marine_mameluke.png"},
+	{"label": "Artillery — Field Cannon",     "template": "Artillery Battery", "tech": "",                 "gold": 120, "weapons": 0,  "atk": 70,  "def": 0,  "spr1": "Howitzer.png",       "spr2": "Flintlock.png"},
+	{"label": "Mortar Battery — Mortar",      "template": "Mortar Battery",    "tech": "Siege Works",      "gold": 150, "weapons": 40, "atk": 150, "def": 0,  "spr1": "Mortar.png",         "spr2": "Flintlock.png"},
+	{"label": "Rocket Battery — Rockets",     "template": "Rocket Battery",    "tech": "Rocket Artillery", "gold": 200, "weapons": 80, "atk": 45,  "def": 0,  "spr1": "Club.png",           "spr2": "Flintlock.png"},
 ]
 
 func _open_army_commander_picker(army: Army) -> void:
@@ -2254,10 +2255,11 @@ func _open_muster_panel() -> void:
 	_musterCounts = {}
 	for i in range(_musterRows.size()):
 		_musterCounts[i] = 0
-	var row_h: int = 40
+	var row_h: int = 54
 	var panel := Panel.new()
-	panel.size = Vector2(600, 150 + _musterRows.size() * row_h)
-	panel.position = Vector2(200, 70)
+	panel.size = Vector2(720, 156 + _musterRows.size() * row_h)
+	var vp := get_viewport_rect().size
+	panel.position = Vector2(max(8.0, (vp.x - panel.size.x) / 2.0), max(20.0, (vp.y - panel.size.y) / 2.0))
 	$CanvasLayer.add_child(panel)
 	_musterPanel = panel
 	var title := Label.new()
@@ -2273,11 +2275,28 @@ func _open_muster_panel() -> void:
 			cost_txt += " + " + str(entry["weapons"]) + "W"
 		var lbl := Label.new()
 		lbl.text = str(entry["label"]) + "   (" + cost_txt + ")"
-		lbl.position = Vector2(16, y + 6)
+		lbl.position = Vector2(16, y + 2)
 		panel.add_child(lbl)
-		var minus := Button.new(); minus.text = "\u2212"; minus.position = Vector2(430, y); minus.size = Vector2(38, 32); panel.add_child(minus)
-		var qty := Label.new(); qty.name = "Qty_" + str(i); qty.text = "0"; qty.position = Vector2(478, y + 6); panel.add_child(qty)
-		var plus := Button.new(); plus.text = "+"; plus.position = Vector2(512, y); plus.size = Vector2(38, 32); panel.add_child(plus)
+		var stats := Label.new()
+		stats.text = "ATK " + str(entry["atk"]) + "     DEF " + str(entry["def"])
+		stats.position = Vector2(16, y + 26)
+		stats.modulate = Color(0.72, 0.82, 0.98)
+		panel.add_child(stats)
+		var minus := Button.new(); minus.text = "\u2212"; minus.position = Vector2(452, y + 8); minus.size = Vector2(34, 32); panel.add_child(minus)
+		var qty := Label.new(); qty.name = "Qty_" + str(i); qty.text = "0"; qty.position = Vector2(496, y + 12); panel.add_child(qty)
+		var plus := Button.new(); plus.text = "+"; plus.position = Vector2(524, y + 8); plus.size = Vector2(34, 32); panel.add_child(plus)
+		var s1 := TextureRect.new()
+		s1.texture = load(WPN_ART + str(entry["spr1"]))
+		s1.custom_minimum_size = Vector2(42, 42); s1.size = Vector2(42, 42); s1.position = Vector2(586, y + 6)
+		s1.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		s1.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		panel.add_child(s1)
+		var s2 := TextureRect.new()
+		s2.texture = load(WPN_ART + str(entry["spr2"]))
+		s2.custom_minimum_size = Vector2(42, 42); s2.size = Vector2(42, 42); s2.position = Vector2(636, y + 6)
+		s2.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		s2.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		panel.add_child(s2)
 		minus.pressed.connect(_muster_adjust.bind(i, -1))
 		plus.pressed.connect(_muster_adjust.bind(i, 1))
 		y += row_h
