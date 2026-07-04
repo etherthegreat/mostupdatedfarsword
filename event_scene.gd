@@ -31,7 +31,7 @@ func build_from_data(data: Dictionary, tile = null, player = null) -> void:
 	else:
 		button_data = EventDatabase.get_buttons_for_event(event_id)
 
-	$EventPanel/EventNameLabel.text             = _substitute(data.get("headline",   ""))
+	_apply_headline(_substitute(data.get("headline",   "")))
 	$EventPanel/EventShortDescriptionLabel.text = _substitute(data.get("short_desc", ""))
 	_apply_long_desc(_substitute(data.get("long_desc",  "")))
 	_apply_event_image(str(data.get("image_tag", "")))
@@ -56,7 +56,7 @@ func build_from_csv(eid: String, tile = null, player = null) -> void:
 	event_type    = event_data.get("event_type", "standard")
 	event_country = event_data.get("country_cid", "GEN")
 
-	$EventPanel/EventNameLabel.text             = _substitute(event_data.get("headline", ""))
+	_apply_headline(_substitute(event_data.get("headline", "")))
 	$EventPanel/EventShortDescriptionLabel.text = _substitute(event_data.get("short_desc", ""))
 	_apply_long_desc(_substitute(event_data.get("long_desc", "")))
 	_apply_event_image(str(event_data.get("image_tag", "")))
@@ -188,6 +188,22 @@ func _check_prerequisite(prereq: String) -> bool:
 	return player_country.CountryFlags.has(prereq)
 
 
+# Shrink the headline so long titles fit on one line within the label instead of
+# spilling across the panel and over the short-description text.
+func _apply_headline(title: String) -> void:
+	var lbl: Label = $EventPanel/EventNameLabel
+	lbl.text = title
+	lbl.clip_text = true                          # hard stop — never overflow the panel
+	lbl.autowrap_mode = TextServer.AUTOWRAP_OFF   # keep it a single line; shrink instead of wrap
+	var n := title.length()
+	var fs := 46
+	if n > 52: fs = 24
+	elif n > 44: fs = 28
+	elif n > 36: fs = 33
+	elif n > 28: fs = 39
+	lbl.add_theme_font_size_override("font_size", fs)
+
+
 func _apply_long_desc(body: String) -> void:
 	var lbl: Label = $EventPanel/EventLongDescriptionLabel
 	lbl.text = body
@@ -227,13 +243,4 @@ func _substitute(text: String) -> String:
 						break
 		text = text.replace("[GOVERNOR_TITLE]", gov_title)
 		# Pronoun tokens — fall back to they/them/their/themselves if no pronouns set
-		var p: Dictionary = {}
-		if target_tile.tileGovernor != null:
-			p = target_tile.tileGovernor.pronouns
-		text = text.replace("[CMD_SUBJECT]",    p.get("subject",    "they"))
-		text = text.replace("[CMD_OBJECT]",     p.get("object",     "them"))
-		text = text.replace("[CMD_POSSESSIVE]", p.get("possessive", "their"))
-		text = text.replace("[CMD_REFLEXIVE]",  p.get("reflexive",  "themselves"))
-	# Safety sweep: replace any tokens that survived (tile was null, governor missing, etc.)
-	text = text.replace("[TILE_NAME]",      "the front")
-	text = text.replace("[
+		var 

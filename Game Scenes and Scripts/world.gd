@@ -2237,6 +2237,11 @@ func _apply_war_timing() -> void:
 	if not _trailer_agree_fired and currentWorldTurn >= 5:
 		_trailer_agree_fired = true
 		_fire_csv_event("PROT_01_AGREE")
+	# Monster parade: fire the next scheduled protector tame/agree flash (one per turn).
+	if _trailer_arc_index < TRAILER_ARC_SCHEDULE.size() \
+			and currentWorldTurn >= int(TRAILER_ARC_SCHEDULE[_trailer_arc_index][0]):
+		_fire_csv_event(str(TRAILER_ARC_SCHEDULE[_trailer_arc_index][1]))
+		_trailer_arc_index += 1
 
 
 func _spawn_uk_garrisons(uk) -> void:
@@ -2342,6 +2347,18 @@ func _fire_border_warning() -> void:
 var _farmers_fired := false
 var _trailer_intimate_fired := false
 var _trailer_agree_fired := false
+
+# Trailer "monster parade": one protector tame/agree flash per turn so the audience
+# sees that mythic creatures are a core staple. [turn_threshold, event_id].
+const TRAILER_ARC_SCHEDULE := [
+	[6,  "PROT_02_TAME"],    # Jersey Devil — Pine Barrens accord
+	[7,  "PROT_02_AGREE"],   # Jersey Devil — formal endorsement
+	[8,  "PROT_07_TAME"],    # Bell Witch — the haunting of Bell House
+	[9,  "PROT_07_AGREE"],   # Bell Witch — allies with the Republic
+	[10, "PROT_17_TAME"],    # Lincoln's Ghost — rooftop accords
+	[11, "PROT_17_AGREE"],   # Lincoln's Ghost — tours the Mall
+]
+var _trailer_arc_index := 0
 
 
 func _fire_csv_event(eid: String) -> void:
@@ -2749,7 +2766,7 @@ func _setup_cycle_button() -> void:
 	btn.name = "CycleUnitsButton"
 	btn.text = "\u21bb Unit"
 	btn.tooltip_text = "Select the next unit with moves left (Tab)"
-	btn.position = $CanvasLayer/NextTurnControl.position + Vector2(-6, 38)
+	btn.position = $CanvasLayer/NextTurnControl.position + Vector2(28, 38)
 	btn.custom_minimum_size = Vector2(72, 28)
 	btn.pressed.connect(_cycle_to_next_ready_unit)
 	$CanvasLayer.add_child(btn)
@@ -2762,7 +2779,7 @@ func _setup_buy_button() -> void:
 	btn.name = "BuyUnitsButton"
 	btn.text = "Buy Units"
 	btn.tooltip_text = "Open the buy store — purchase and place units with gold (and Weapons for advanced tiers)"
-	btn.position = $CanvasLayer/NextTurnControl.position + Vector2(-6, -34)
+	btn.position = $CanvasLayer/NextTurnControl.position + Vector2(28, -34)
 	btn.custom_minimum_size = Vector2(110, 28)
 	btn.pressed.connect(_open_muster_panel)
 	$CanvasLayer.add_child(btn)
@@ -7527,32 +7544,4 @@ func _spawn_anarchist_army(source_tile) -> void:
 	playerCountryNode.addNewUnit(armyInstance, "Infantry", 1, "Flintlock", "Iron", "Cloth", 150, 80)
 	armyInstance.surveySelf()
 
-	armyInstance.inTile = uk_tile
-	uk_tile.addStationedArmy(armyInstance)
-	armyInstance.armyDestroyed.connect(_on_anarchist_destroyed.bind(armyInstance))
-	_anarchist_armies.append(armyInstance)
-	armyInstance.updateArmyUI()
-	print("[Anarchist] Cell spawned at ", uk_tile.tileName)
-
-func _on_anarchist_destroyed(army: Army) -> void:
-	_anarchist_armies.erase(army)
-
-func _tick_anarchists() -> void:
-	var to_remove: Array = []
-	for army in _anarchist_armies:
-		if not is_instance_valid(army):
-			to_remove.append(army)
-			continue
-		if army.inTile == null:
-			to_remove.append(army)
-			continue
-		# Try to attack an adjacent UK tile or fight whatever is in the current tile.
-		var target: Tile = null
-		for neighbor in army.inTile.TileNeighbors:
-			if neighbor.tileOwner == "UK":
-				target = neighbor
-				break
-		if target != null and target.stationedArmy != null:
-			# Trigger a battle against the UK army
-			var uk_army = target.stationedArmy
-			var attacke
+	armyInstance.inTile = u
