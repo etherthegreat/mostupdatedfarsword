@@ -2203,6 +2203,8 @@ func _spawn_uk_garrisons(uk) -> void:
 				break
 		if not is_front and int(tile.buildings.get("fortress", 0)) <= 0:
 			continue
+		if randf() >= 0.40:
+			continue   # only ~40% of eligible tiles garrison at start (gaps to exploit)
 		uk.addArmy(tile.tileName + " Garrison", tile.tileNumber)
 		var a = uk.countryArmyList.back()
 		if a != null:
