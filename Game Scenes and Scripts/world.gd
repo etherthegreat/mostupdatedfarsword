@@ -2242,6 +2242,11 @@ func _apply_war_timing() -> void:
 			and currentWorldTurn >= int(TRAILER_ARC_SCHEDULE[_trailer_arc_index][0]):
 		_fire_csv_event(str(TRAILER_ARC_SCHEDULE[_trailer_arc_index][1]))
 		_trailer_arc_index += 1
+	# Governor reward arc: Ualani's third-rank citation ceremony; its "stay the night"
+	# choice chains into the Lincoln Bedroom aftermath scene.
+	if not _gov_reward_fired and currentWorldTurn >= 17:
+		_gov_reward_fired = true
+		_fire_gov_reward_scene("GOV_LVL3_CEREMONY")
 
 
 func _spawn_uk_garrisons(uk) -> void:
@@ -2364,12 +2369,36 @@ const TRAILER_ARC_SCHEDULE := [
 	[16, "PROT_17_AGREE_INTIMATE"], # Lincoln's Ghost — most exclusive club (intimate)
 ]
 var _trailer_arc_index := 0
+var _gov_reward_fired := false
 
 
 func _fire_csv_event(eid: String) -> void:
 	# Trailer trigger: pop a CSV event by ID (bypasses the demo whitelist for filming).
 	var ev = eventScene.instantiate()
 	ev.build_from_csv(eid, null, playerCountryNode)
+	$CanvasLayer/EventControl/EventContainer.add_child(ev)
+
+
+func _fire_gov_reward_scene(eid: String) -> void:
+	# Governor recognition/reward scenes (GOV_LVL3_CEREMONY -> GOV_REWARD). Fired directly
+	# so it bypasses the demo whitelist, threaded through a player-owned governor tile so
+	# [COMMANDER_NAME] resolves to a real general (preferring a field general over Ualani).
+	var ctx_tile = null
+	for tile in $TileController.get_children():
+		if tile.tileOwner == playerCountry and tile.tileGovernor != null:
+			ctx_tile = tile
+			if tile.tileGovernor.governorType != "Ualani Carlisle":
+				break
+	var ev = eventScene.instantiate()
+	ev.build_from_csv(eid, ctx_tile, playerCountryNode)
+	# Chain the ceremony's "Invite the General to Stay the Night" choice into the aftermath
+	# scene directly (createNewEvent would drop GOV_ under the demo whitelist).
+	ev.tileEventButtonPressed.connect(func(_bid, _eid, _ec, _ot, _ov, _oa, next_id, _t):
+		if next_id != "":
+			_fire_gov_reward_scene(next_id))
+	ev.eventButtonPressed.connect(func(_bid, _eid, _ec, _ot, _ov, _oa, next_id):
+		if next_id != "":
+			_fire_gov_reward_scene(next_id))
 	$CanvasLayer/EventControl/EventContainer.add_child(ev)
 
 
@@ -7503,39 +7532,4 @@ func _journal_classification(event_type: String) -> String:
 	match event_type:
 		"ualani_event":                          return "EYES ONLY"
 		"white_house_secret":                    return "EYES ONLY"
-		"vp_event":                              return "EYES ONLY"
-		"protector_agree", "ca_protector_agree": return "TOP SECRET"
-		"war_declaration", "war_buildup":        return "SECRET"
-		"peace":                                 return "SECRET"
-		"collapse", "secession":                 return "SECRET"
-		"election_season", "election_night_win",\
-		"election_night_lose":                   return "CONFIDENTIAL"
-		"city_lost", "state_liberated",\
-		"city_liberated", "reintegration":       return "CONFIDENTIAL"
-		"commander_complete":                    return "DECLASSIFIED"
-		_:                                       return "DECLASSIFIED"
-
-func _spawn_anarchist_army(source_tile) -> void:
-	# Find a UK-owned tile adjacent to the source tile, or any UK tile in the world.
-	var uk_tile = null
-	if source_tile != null:
-		for neighbor in source_tile.TileNeighbors:
-			if neighbor.tileOwner == "UK":
-				uk_tile = neighbor
-				break
-	if uk_tile == null:
-		for t in $TileController.get_children():
-			if t.tileOwner == "UK":
-				uk_tile = t
-				break
-	if uk_tile == null:
-		push_warning("spawn_anarchist: no UK tile found")
-		return
-
-	# Build the anarchist army on the UK tile via the player country's addArmy machinery,
-	# but as an independent rogue unit we manage ourselves.
-	var armyInstance = load("res://Game Scenes and Scripts/army.tscn").instantiate()
-	var anarch_gov = governor.new()
-	anarch_gov.buildSelf("Anarchistic", 1)
-
-	# TileNumber=0 so buildS
+		"vp_event":                 
