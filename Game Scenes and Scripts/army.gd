@@ -211,7 +211,7 @@ func onTurnEnd():
 		isHolding = true
 		holdPending = false
 	for _u in unitsList:
-		_u.unitStance = "fire"
+		_u.unitStance = "charge" if (_u.unitWeapon != null and _u.unitWeapon.is_saber()) else "fire"
 		if _u.unitWeapon != null and _u.unitWeapon.is_artillery():
 			# Artillery reloads ONLY with leftover action points — i.e. choosing to reload
 			# instead of firing or moving. (Non-artillery auto-reload one step per turn.)

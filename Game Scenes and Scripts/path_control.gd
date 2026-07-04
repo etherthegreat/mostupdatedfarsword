@@ -367,6 +367,8 @@ func calculateArmyMovement(endPathPoint: pathPointButton, _neighborPathPoints, _
 		var dest_tile: Tile = endPathPoint.ppbTile
 		if dest_tile != null and army != null:
 			var cost: int = dest_tile.get_move_cost(army)
+			if army.parentCountry != null and army.parentCountry.CID == "USA":
+				cost = 1   # USA reclamation: every move costs a flat 1 point
 			if army.currentMovementPoints < cost:
 				emit_signal("movement_blocked", "Not enough movement points")
 				return

@@ -6082,7 +6082,7 @@ func _show_army_info(army) -> void:
 	_armyInfoArmy = army
 	$CanvasLayer.closeAllPanels()
 	var panel := Panel.new()
-	panel.size = Vector2(340, 384)
+	panel.size = Vector2(340, 424)
 	var vp := get_viewport_rect().size
 	panel.position = Vector2(12, vp.y - panel.size.y - 12)
 	$CanvasLayer.add_child(panel)
@@ -6115,7 +6115,38 @@ func _show_army_info(army) -> void:
 	var stance: String = ""
 	if army.unitsList.size() > 0 and army.unitsList[0] != null:
 		stance = str(army.unitsList[0].unitStance).capitalize()
-	_army_info_line(panel, "Stance: " + stance, y)
+	_army_info_line(panel, "Stance: " + stance, y); y += 30
+	var stances: Array = ["Fire", "Charge", "Hold"]
+	if _army_has_flank(army):
+		stances.append("Flank")
+	var bx: int = 14
+	for st in stances:
+		var b := Button.new()
+		b.text = st
+		b.position = Vector2(bx, y)
+		b.size = Vector2(74, 28)
+		b.pressed.connect(_set_army_stance.bind(String(st).to_lower()))
+		panel.add_child(b)
+		bx += 80
+
+
+func _army_has_flank(army) -> bool:
+	# Flank unlocks for cavalry at Officer Sword tier (II) and up.
+	if army == null or army.armyTier == "" or army.armyTier == "I":
+		return false
+	for u in army.unitsList:
+		if u != null and u.unitWeapon != null and u.unitWeapon.is_saber():
+			return true
+	return false
+
+
+func _set_army_stance(stance: String) -> void:
+	if _armyInfoArmy == null or not is_instance_valid(_armyInfoArmy):
+		return
+	for u in _armyInfoArmy.unitsList:
+		if u != null:
+			u.unitStance = stance
+	_show_army_info(_armyInfoArmy)
 
 
 var _unit_action_uis: Array = []
