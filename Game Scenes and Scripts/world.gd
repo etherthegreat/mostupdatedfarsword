@@ -2005,16 +2005,16 @@ var _placementPanel: Panel = null
 const WPN_ART := "res://art assets/finishedAssets/Weapons/"
 const BUY_CATALOG := [
 	{"label": "Minutemen — Flintlock",        "template": "Minutemen",         "tech": "",                 "gold": 40,  "weapons": 0,  "atk": 43,  "def": 10, "spr1": "Flintlock.png",      "spr2": "Flintlock.png"},
-	{"label": "Line Infantry — Breechloader", "template": "Breechloader Line", "tech": "Breechloaders",    "gold": 60,  "weapons": 20, "atk": 90,  "def": 16, "spr1": "Percussion_Cap.png", "spr2": "Percussion_Cap.png"},
-	{"label": "Riflemen — Percussion Cap",    "template": "Percussion Line",   "tech": "Rifles",           "gold": 80,  "weapons": 40, "atk": 75,  "def": 16, "spr1": "Percussion_Cap.png", "spr2": "Percussion_Cap.png"},
-	{"label": "Repeater Corps — Lever",       "template": "Repeater Line",     "tech": "Repeaters",        "gold": 100, "weapons": 60, "atk": 95,  "def": 20, "spr1": "Lever_Repeater.png", "spr2": "Lever_Repeater.png"},
+	{"label": "Line Infantry — Breechloader", "template": "Breechloader Line", "tech": "Breechloaders",    "gold": 60,  "weapons": 20, "atk": 65,  "def": 16, "spr1": "Percussion_Cap.png", "spr2": "Percussion_Cap.png"},
+	{"label": "Riflemen — Percussion Cap",    "template": "Percussion Line",   "tech": "Rifles",           "gold": 80,  "weapons": 40, "atk": 85,  "def": 20, "spr1": "Percussion_Cap.png", "spr2": "Percussion_Cap.png"},
+	{"label": "Repeater Corps — Lever",       "template": "Repeater Line",     "tech": "Repeaters",        "gold": 100, "weapons": 60, "atk": 110,  "def": 22, "spr1": "Lever_Repeater.png", "spr2": "Lever_Repeater.png"},
 	{"label": "Dragoons — Cutlass",           "template": "Dragoons",          "tech": "",                 "gold": 90,  "weapons": 0,  "atk": 25,  "def": 10, "spr1": "cutlass.png",        "spr2": "cutlass.png"},
-	{"label": "Sabre Cavalry — Officer Sword","template": "Officer Cavalry",   "tech": "Cavalry Drills",   "gold": 110, "weapons": 20, "atk": 55,  "def": 20, "spr1": "officer_sword.png",  "spr2": "officer_sword.png"},
-	{"label": "Heavy Cavalry — Cavalry Sword","template": "Heavy Cavalry",     "tech": "Officer Training", "gold": 130, "weapons": 40, "atk": 40,  "def": 15, "spr1": "cavalry_sword.png",  "spr2": "cavalry_sword.png"},
+	{"label": "Sabre Cavalry — Officer Sword","template": "Officer Cavalry",   "tech": "Cavalry Drills",   "gold": 110, "weapons": 20, "atk": 40,  "def": 15, "spr1": "officer_sword.png",  "spr2": "officer_sword.png"},
+	{"label": "Heavy Cavalry — Cavalry Sword","template": "Heavy Cavalry",     "tech": "Officer Training", "gold": 130, "weapons": 40, "atk": 55,  "def": 20, "spr1": "cavalry_sword.png",  "spr2": "cavalry_sword.png"},
 	{"label": "Marine Cavalry — Mameluke",    "template": "Marine Cavalry",    "tech": "Marine Discipline","gold": 150, "weapons": 60, "atk": 70,  "def": 25, "spr1": "marine_mameluke.png","spr2": "marine_mameluke.png"},
 	{"label": "Artillery — Field Cannon",     "template": "Artillery Battery", "tech": "",                 "gold": 120, "weapons": 0,  "atk": 70,  "def": 0,  "spr1": "Howitzer.png",       "spr2": "Flintlock.png"},
 	{"label": "Mortar Battery — Mortar",      "template": "Mortar Battery",    "tech": "Siege Works",      "gold": 150, "weapons": 40, "atk": 150, "def": 0,  "spr1": "Mortar.png",         "spr2": "Flintlock.png"},
-	{"label": "Rocket Battery — Rockets",     "template": "Rocket Battery",    "tech": "Rocket Artillery", "gold": 200, "weapons": 80, "atk": 45,  "def": 0,  "spr1": "Club.png",           "spr2": "Flintlock.png"},
+	{"label": "Rocket Battery — Rockets",     "template": "Rocket Battery",    "tech": "Rocket Artillery", "gold": 200, "weapons": 80, "atk": 200,  "def": 0,  "spr1": "Club.png",           "spr2": "Flintlock.png"},
 ]
 
 func _open_army_commander_picker(army: Army) -> void:
@@ -2198,16 +2198,19 @@ func _apply_war_timing() -> void:
 
 
 func _scale_invader_difficulty() -> void:
-	# Hard-coded progressive difficulty (no economy): invader infantry re-arm to a tougher
-	# musket as the war drags on. upgradeWeaponTo() no-ops if a unit is already at that tier.
-	var tier := ""
-	if currentWorldTurn >= 20:
-		tier = "Lever Repeater"
-	elif currentWorldTurn >= 17:
-		tier = "Breechloader"
-	elif currentWorldTurn >= 14:
-		tier = "Percussion Cap"
-	if tier == "":
+	# Hard-coded progressive difficulty (no economy): invader infantry, cavalry, and artillery
+	# re-arm to tougher tiers as the war drags on. upgradeWeaponTo() no-ops if already at tier.
+	var t := currentWorldTurn
+	var musket := ""
+	var sabre := ""
+	var arty := ""
+	if t >= 20:
+		musket = "Lever Repeater"; sabre = "Marine Mameluke"; arty = "Mortar"
+	elif t >= 17:
+		musket = "Percussion Cap"; sabre = "Cavalry Sword"; arty = "Mortar"
+	elif t >= 14:
+		musket = "Breechloader"; sabre = "Officer Sword"
+	if musket == "" and sabre == "" and arty == "":
 		return
 	for cid in ["UK", "CA"]:
 		var c = _country_by_cid(cid)
@@ -2217,8 +2220,14 @@ func _scale_invader_difficulty() -> void:
 			if not is_instance_valid(army):
 				continue
 			for unit in army.unitsList:
-				if unit != null and unit.unitWeapon != null and unit.unitWeapon.is_musket():
-					unit.upgradeWeaponTo(tier)
+				if unit == null or unit.unitWeapon == null:
+					continue
+				if unit.unitWeapon.is_musket():
+					unit.upgradeWeaponTo(musket)
+				elif unit.unitWeapon.is_saber():
+					unit.upgradeWeaponTo(sabre)
+				elif unit.unitWeapon.is_artillery():
+					unit.upgradeWeaponTo(arty)
 			if is_instance_valid(army):
 				army.updateArmyUI()
 

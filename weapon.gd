@@ -55,8 +55,8 @@ func updateSelf(newType: String) -> void:
 		"Cavalry Sword":
 			weaponClass              = "Saber"
 			weaponLevel              = 2
-			weaponOffensiveIncrease  = 40
-			weaponDefensiveIncrease  = 15
+			weaponOffensiveIncrease = 55
+			weaponDefensiveIncrease = 20
 			reloadTurns              = 0
 			weaponsPerLevel          = 0
 			chargeManpowerCost       = 0.10
@@ -67,8 +67,8 @@ func updateSelf(newType: String) -> void:
 		"Officer Sword":
 			weaponClass              = "Saber"
 			weaponLevel              = 3
-			weaponOffensiveIncrease  = 55
-			weaponDefensiveIncrease  = 20
+			weaponOffensiveIncrease = 40
+			weaponDefensiveIncrease = 15
 			reloadTurns              = 0
 			weaponsPerLevel          = 0
 			chargeManpowerCost       = 0.10
@@ -124,9 +124,9 @@ func updateSelf(newType: String) -> void:
 			weaponClass              = "Musket"
 			weaponLevel              = 3
 			weaponOffensiveIncrease  = 10
-			weaponDefensiveIncrease  = 8
-			rangedOffensiveIncrease  = 65
-			rangedDefensiveIncrease  = 8
+			weaponDefensiveIncrease = 10
+			rangedOffensiveIncrease = 75
+			rangedDefensiveIncrease = 10
 			reloadTurns              = 1   # faster reload
 			weaponsPerLevel          = 1
 			chargeManpowerCost       = 0.0
@@ -138,7 +138,7 @@ func updateSelf(newType: String) -> void:
 			weaponLevel              = 3
 			weaponOffensiveIncrease  = 10
 			weaponDefensiveIncrease  = 8
-			rangedOffensiveIncrease  = 80
+			rangedOffensiveIncrease = 55
 			rangedDefensiveIncrease  = 8
 			reloadTurns              = 1
 			weaponsPerLevel          = 1
@@ -151,8 +151,8 @@ func updateSelf(newType: String) -> void:
 			weaponLevel              = 4
 			weaponOffensiveIncrease  = 15
 			weaponDefensiveIncrease  = 10
-			rangedOffensiveIncrease  = 80
-			rangedDefensiveIncrease  = 10
+			rangedOffensiveIncrease = 95
+			rangedDefensiveIncrease = 12
 			reloadTurns              = 0   # no reload — fires every turn
 			weaponsPerLevel          = 2   # burns more ammo
 			chargeManpowerCost       = 0.0
@@ -407,7 +407,7 @@ func updateSelf(newType: String) -> void:
 			weaponLevel              = 4
 			weaponOffensiveIncrease  = 0
 			weaponDefensiveIncrease  = 0
-			rangedOffensiveIncrease  = 45
+			rangedOffensiveIncrease = 200
 			rangedDefensiveIncrease  = 0
 			reloadTurns              = 3
 			weaponsPerLevel          = 6
