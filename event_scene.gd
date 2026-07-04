@@ -34,6 +34,7 @@ func build_from_data(data: Dictionary, tile = null, player = null) -> void:
 	$EventPanel/EventNameLabel.text             = _substitute(data.get("headline",   ""))
 	$EventPanel/EventShortDescriptionLabel.text = _substitute(data.get("short_desc", ""))
 	_apply_long_desc(_substitute(data.get("long_desc",  "")))
+	_apply_event_image(str(data.get("image_tag", "")))
 
 	_build_buttons()
 
@@ -58,8 +59,21 @@ func build_from_csv(eid: String, tile = null, player = null) -> void:
 	$EventPanel/EventNameLabel.text             = _substitute(event_data.get("headline", ""))
 	$EventPanel/EventShortDescriptionLabel.text = _substitute(event_data.get("short_desc", ""))
 	_apply_long_desc(_substitute(event_data.get("long_desc", "")))
+	_apply_event_image(str(event_data.get("image_tag", "")))
 
 	_build_buttons()
+
+
+const EVENT_ART_DIR := "res://art assets/AmericanRevolutionArt/EventArt/"
+
+func _apply_event_image(tag: String) -> void:
+	# Per-event illustration loaded by image_tag; falls back to the placeholder if art isn't in yet.
+	var spr = get_node_or_null("EventPanel/EventSprite2D")
+	if spr == null or tag.strip_edges() == "":
+		return
+	var path: String = EVENT_ART_DIR + tag.strip_edges() + ".png"
+	if ResourceLoader.exists(path):
+		spr.texture = load(path)
 
 
 func _build_buttons() -> void:
