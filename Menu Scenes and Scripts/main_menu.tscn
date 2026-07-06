@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://dep7mbivwnnvj"]
+[gd_scene load_steps=21 format=3 uid="uid://dep7mbivwnnvj"]
 
 [ext_resource type="Script" uid="uid://b81ynt4qwcsri" path="res://Menu Scenes and Scripts/main_menu.gd" id="1_rf07e"]
 [ext_resource type="VideoStream" uid="uid://by5gw4q8kkt7j" path="res://art assets/AmericanRevolutionArt/menuart/truewinningvideo.ogv" id="2_s0tsv"]
@@ -12,39 +12,41 @@
 [ext_resource type="Texture2D" uid="uid://bye4mrxf5cetf" path="res://art assets/Placeholder Art/UI Art/resources/portuguese.png" id="11_ee3of"]
 [ext_resource type="Texture2D" uid="uid://d385jgaploop4" path="res://art assets/Placeholder Art/UI Art/resources/russian.png" id="12_qlmj1"]
 [ext_resource type="Texture2D" uid="uid://coqvlvmr2swk4" path="res://art assets/Placeholder Art/UI Art/resources/spanish.png" id="13_s4pyd"]
+[ext_resource type="Texture2D" uid="uid://chnvp5bxk6e2x" path="res://art assets/AmericanRevolutionArt/menuart/Title - Copy.png" id="15_wvvfk"]
+[ext_resource type="Texture2D" uid="uid://dbw5e7uw7yy4v" path="res://art assets/PresidentialLibrary/eagle_seal_transparent.png" id="16_wvvfk"]
 [ext_resource type="PackedScene" uid="uid://bpreslib0001a" path="res://PresidentialLibraryPanel.tscn" id="19_plib01"]
-[ext_resource type="Texture2D" uid="uid://bgreypanel0001" path="res://art assets/finishedAssets/Panels/grey building panel.png" id="20_grey"]
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_normal"]
-texture = ExtResource("20_grey")
-content_margin_left = 16.0
-content_margin_right = 16.0
-content_margin_top = 10.0
-content_margin_bottom = 10.0
+[ext_resource type="Texture2D" uid="uid://capssnl2a2wgr" path="res://art assets/finishedAssets/Panels/grey building panel.png" id="20_grey"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hover"]
+content_margin_left = 16.0
+content_margin_top = 10.0
+content_margin_right = 16.0
+content_margin_bottom = 10.0
 texture = ExtResource("20_grey")
 modulate_color = Color(1, 0.92, 0.72, 1)
-content_margin_left = 16.0
-content_margin_right = 16.0
-content_margin_top = 10.0
-content_margin_bottom = 10.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_pressed"]
+content_margin_left = 16.0
+content_margin_top = 10.0
+content_margin_right = 16.0
+content_margin_bottom = 10.0
 texture = ExtResource("20_grey")
 modulate_color = Color(0.6, 0.6, 0.6, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_normal"]
 content_margin_left = 16.0
-content_margin_right = 16.0
 content_margin_top = 10.0
+content_margin_right = 16.0
 content_margin_bottom = 10.0
+texture = ExtResource("20_grey")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_disabled"]
+content_margin_left = 16.0
+content_margin_top = 10.0
+content_margin_right = 16.0
+content_margin_bottom = 10.0
 texture = ExtResource("20_grey")
 modulate_color = Color(0.45, 0.45, 0.45, 0.6)
-content_margin_left = 16.0
-content_margin_right = 16.0
-content_margin_top = 10.0
-content_margin_bottom = 10.0
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -68,7 +70,6 @@ loop = true
 [node name="BottomBar" type="HBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -81,28 +82,28 @@ grow_vertical = 0
 theme_override_constants/separation = 18
 
 [node name="NewGameButton" type="Button" parent="BottomBar"]
+custom_minimum_size = Vector2(0, 90)
 layout_mode = 2
 size_flags_horizontal = 3
-custom_minimum_size = Vector2(0, 90)
 theme_override_colors/font_color = Color(0.95, 0.92, 0.85, 1)
 theme_override_font_sizes/font_size = 26
-theme_override_styles/normal = SubResource("StyleBoxTexture_normal")
 theme_override_styles/hover = SubResource("StyleBoxTexture_hover")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_pressed")
+theme_override_styles/normal = SubResource("StyleBoxTexture_normal")
 text = "NEW GAME"
 
 [node name="ContinueButton" type="Button" parent="BottomBar"]
+custom_minimum_size = Vector2(0, 90)
 layout_mode = 2
 size_flags_horizontal = 3
-custom_minimum_size = Vector2(0, 90)
-disabled = true
-theme_override_colors/font_color = Color(0.95, 0.92, 0.85, 1)
 theme_override_colors/font_disabled_color = Color(0.5, 0.5, 0.5, 1)
+theme_override_colors/font_color = Color(0.95, 0.92, 0.85, 1)
 theme_override_font_sizes/font_size = 26
-theme_override_styles/normal = SubResource("StyleBoxTexture_normal")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_disabled")
 theme_override_styles/hover = SubResource("StyleBoxTexture_hover")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_pressed")
-theme_override_styles/disabled = SubResource("StyleBoxTexture_disabled")
+theme_override_styles/normal = SubResource("StyleBoxTexture_normal")
+disabled = true
 text = "CONTINUE"
 
 [node name="SaveInfoLabel" type="Label" parent="BottomBar/ContinueButton"]
@@ -121,49 +122,46 @@ text = "No save found"
 horizontal_alignment = 1
 
 [node name="LibraryButton" type="Button" parent="BottomBar"]
+custom_minimum_size = Vector2(0, 90)
 layout_mode = 2
 size_flags_horizontal = 3
-custom_minimum_size = Vector2(0, 90)
 theme_override_colors/font_color = Color(0.95, 0.92, 0.85, 1)
 theme_override_font_sizes/font_size = 20
-theme_override_styles/normal = SubResource("StyleBoxTexture_normal")
 theme_override_styles/hover = SubResource("StyleBoxTexture_hover")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_pressed")
+theme_override_styles/normal = SubResource("StyleBoxTexture_normal")
 text = "PRESIDENTIAL LIBRARY"
 
 [node name="SettingsButton" type="Button" parent="BottomBar"]
+custom_minimum_size = Vector2(0, 90)
 layout_mode = 2
 size_flags_horizontal = 3
-custom_minimum_size = Vector2(0, 90)
 theme_override_colors/font_color = Color(0.95, 0.92, 0.85, 1)
 theme_override_font_sizes/font_size = 26
-theme_override_styles/normal = SubResource("StyleBoxTexture_normal")
 theme_override_styles/hover = SubResource("StyleBoxTexture_hover")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_pressed")
+theme_override_styles/normal = SubResource("StyleBoxTexture_normal")
 text = "SETTINGS"
 
 [node name="ExitButton" type="Button" parent="BottomBar"]
+custom_minimum_size = Vector2(0, 90)
 layout_mode = 2
 size_flags_horizontal = 3
-custom_minimum_size = Vector2(0, 90)
 theme_override_colors/font_color = Color(0.95, 0.92, 0.85, 1)
 theme_override_font_sizes/font_size = 26
-theme_override_styles/normal = SubResource("StyleBoxTexture_normal")
 theme_override_styles/hover = SubResource("StyleBoxTexture_hover")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_pressed")
+theme_override_styles/normal = SubResource("StyleBoxTexture_normal")
 text = "EXIT"
 
 [node name="VersionLabel" type="Label" parent="."]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.0
 anchor_top = 1.0
-anchor_right = 0.0
 anchor_bottom = 1.0
 offset_left = 10.0
 offset_top = -20.0
 offset_right = 280.0
-offset_bottom = 0.0
 grow_vertical = 0
 theme_override_colors/font_color = Color(0.45, 0.45, 0.45, 1)
 theme_override_font_sizes/font_size = 13
@@ -240,6 +238,18 @@ expand_icon = true
 
 [node name="PresidentialLibraryPanel" parent="." instance=ExtResource("19_plib01")]
 layout_mode = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(709, 831)
+scale = Vector2(0.323406, 0.323406)
+texture = ExtResource("15_wvvfk")
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(1260, 817)
+scale = Vector2(0.14425, 0.14425)
+texture = ExtResource("16_wvvfk")
 
 [connection signal="pressed" from="BottomBar/NewGameButton" to="." method="_on_new_game_button_pressed"]
 [connection signal="pressed" from="BottomBar/ContinueButton" to="." method="_on_continue_button_pressed"]

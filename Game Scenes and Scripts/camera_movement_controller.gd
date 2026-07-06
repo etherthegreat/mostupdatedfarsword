@@ -22,4 +22,6 @@ func _input(event: InputEvent) -> void:
 		_apply_zoom(-0.2)
 
 
-func _apply_zoom(delta: float) -> vo
+func _apply_zoom(delta: float) -> void:
+	var z: float = clampf($Camera2D.zoom.x + delta, 0.5, 2.0)   # min 0.5 = zoom out ~2x farther
+	$Camera2D.zoom = Vector2(z, z)

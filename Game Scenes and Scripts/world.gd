@@ -7532,4 +7532,142 @@ func _journal_classification(event_type: String) -> String:
 	match event_type:
 		"ualani_event":                          return "EYES ONLY"
 		"white_house_secret":                    return "EYES ONLY"
-		"vp_event":                 
+		"vp_event":                              return "EYES ONLY"
+		"protector_agree", "ca_protector_agree": return "TOP SECRET"
+		"war_declaration", "war_buildup":        return "SECRET"
+		"peace":                                 return "SECRET"
+		"collapse", "secession":                 return "SECRET"
+		"election_season", "election_night_win",\
+		"election_night_lose":                   return "CONFIDENTIAL"
+		"city_lost", "state_liberated",\
+		"city_liberated", "reintegration":       return "CONFIDENTIAL"
+		"commander_complete":                    return "DECLASSIFIED"
+		_:                                       return "DECLASSIFIED"
+
+func _spawn_anarchist_army(source_tile) -> void:
+	# Find a UK-owned tile adjacent to the source tile, or any UK tile in the world.
+	var uk_tile = null
+	if source_tile != null:
+		for neighbor in source_tile.TileNeighbors:
+			if neighbor.tileOwner == "UK":
+				uk_tile = neighbor
+				break
+	if uk_tile == null:
+		for t in $TileController.get_children():
+			if t.tileOwner == "UK":
+				uk_tile = t
+				break
+	if uk_tile == null:
+		push_warning("spawn_anarchist: no UK tile found")
+		return
+
+	# Build the anarchist army on the UK tile via the player country's addArmy machinery,
+	# but as an independent rogue unit we manage ourselves.
+	var armyInstance = load("res://Game Scenes and Scripts/army.tscn").instantiate()
+	var anarch_gov = governor.new()
+	anarch_gov.buildSelf("Anarchistic", 1)
+
+	# TileNumber=0 so buildSelf skips the OwnedTileList search (UK tile won't be there)
+	add_child(armyInstance)
+	armyInstance.buildSelf("Anarchist Cell", playerCountryNode, 0, null)
+	armyInstance.is_anarchist = true
+	armyInstance.commander = anarch_gov
+	armyInstance.armyMaxShield = 0
+	armyInstance.armyShield = 0
+
+	playerCountryNode.addNewUnit(armyInstance, "Infantry", 1, "Flintlock", "Iron", "Cloth", 150, 80)
+	armyInstance.surveySelf()
+
+	armyInstance.inTile = uk_tile
+	uk_tile.addStationedArmy(armyInstance)
+	armyInstance.armyDestroyed.connect(_on_anarchist_destroyed.bind(armyInstance))
+	_anarchist_armies.append(armyInstance)
+	armyInstance.updateArmyUI()
+	print("[Anarchist] Cell spawned at ", uk_tile.tileName)
+
+func _on_anarchist_destroyed(army: Army) -> void:
+	_anarchist_armies.erase(army)
+
+func _tick_anarchists() -> void:
+	var to_remove: Array = []
+	for army in _anarchist_armies:
+		if not is_instance_valid(army):
+			to_remove.append(army)
+			continue
+		if army.inTile == null:
+			to_remove.append(army)
+			continue
+		# Try to attack an adjacent UK tile or fight whatever is in the current tile.
+		var target: Tile = null
+		for neighbor in army.inTile.TileNeighbors:
+			if neighbor.tileOwner == "UK":
+				target = neighbor
+				break
+		if target != null and target.stationedArmy != null:
+			# Trigger a battle against the UK army
+			var uk_army = target.stationedArmy
+			var attacker_loss: int = randi_range(10, 40)
+			var defender_loss: int = randi_range(30, 80)
+			army.manpowerInArmy = maxi(army.manpowerInArmy - attacker_loss, 0)
+			uk_army.manpowerInArmy = maxi(uk_army.manpowerInArmy - defender_loss, 0)
+				#" — loses ", attacker_loss, ", UK loses ", defender_loss)
+			#	" — loses ", attacker_loss, ", UK loses ", defender_loss)
+			army.updateArmyUI()
+			uk_army.updateArmyUI()
+			if army.manpowerInArmy <= 0:
+				to_remove.append(army)
+				army.queue_free()
+		elif army.inTile.tileOwner == "UK":
+			# Already on UK soil — apply sabotage attrition
+			var loss: int = randi_range(5, 20)
+			army.manpowerInArmy = maxi(army.manpowerInArmy - loss, 0)
+			army.updateArmyUI()
+			if army.manpowerInArmy <= 0:
+				to_remove.append(army)
+				army.queue_free()
+	for a in to_remove:
+		_anarchist_armies.erase(a)
+
+# WORLD.GD ADDITIONS
+# Add to existing save/load functions
+# ============================================================
+ 
+# func saveGameState() -> void:
+#     saveTileStatesToFile()          # tiles
+#     saveCountryStatesToFile()       # countries
+#     ArmyDatabase.save_army_states_to_file(aliveCountriesList)  # armies
+ 
+# func loadGameState() -> void:
+#     var tileStates    = loadTileStatesFromFile()
+#     var countryStates = loadCountryStatesFromFile()
+#     var armyStates    = ArmyDatabase.load_army_states_from_file()
+#     # ... then initialize tiles, countries, then restore armies
+
+
+func _on_polis_mode_button_pressed() -> void:
+	mapMode = "Polis"
+	updateMap()
+
+func _on_states_mode_button_pressed() -> void:
+	mapMode = "MapStates"
+	updateMap()
+
+func _on_outputs_mode_button_pressed() -> void:
+	mapMode = "MapOutputs"
+	updateMap()
+
+func _on_terrain_mode_button_pressed() -> void:
+	mapMode = "Natural"
+	updateMap()
+
+
+func save_from_pause_menu() -> bool:
+	# Persists country state + writes an autosave summary the main menu reads.
+	# NOTE: full load-on-Continue is a separate task (load path not yet wired).
+	saveCountryStatesToFile()
+	var f := FileAccess.open("user://autosave.json", FileAccess.WRITE)
+	if f:
+		f.store_string(JSON.stringify({"turn": currentWorldTurn}))
+		f.close()
+		return true
+	return false

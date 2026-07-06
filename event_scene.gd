@@ -243,4 +243,31 @@ func _substitute(text: String) -> String:
 						break
 		text = text.replace("[GOVERNOR_TITLE]", gov_title)
 		# Pronoun tokens — fall back to they/them/their/themselves if no pronouns set
-		var 
+		var p: Dictionary = {}
+		if target_tile.tileGovernor != null:
+			p = target_tile.tileGovernor.pronouns
+		text = text.replace("[CMD_SUBJECT]",    p.get("subject",    "they"))
+		text = text.replace("[CMD_OBJECT]",     p.get("object",     "them"))
+		text = text.replace("[CMD_POSSESSIVE]", p.get("possessive", "their"))
+		text = text.replace("[CMD_REFLEXIVE]",  p.get("reflexive",  "themselves"))
+	# Safety sweep: replace any tokens that survived (tile was null, governor missing, etc.)
+	text = text.replace("[TILE_NAME]",      "the front")
+	text = text.replace("[COMMANDER_NAME]", "the Commander")
+	text = text.replace("[GOVERNOR_TITLE]", "Commander")
+	text = text.replace("[CMD_SUBJECT]",    "they")
+	text = text.replace("[CMD_OBJECT]",     "them")
+	text = text.replace("[CMD_POSSESSIVE]", "their")
+	text = text.replace("[CMD_REFLEXIVE]",  "themselves")
+	return text
+
+
+# ── LEGACY WRAPPERS ──────────────────────────────────────────────────────────
+# Keep old-style callers working during transition
+
+func buildSelf(eventType: String, eventID: String,
+		eventCountry: String, _language: String) -> void:
+	build_from_csv(eventID)
+
+func buildTileEventSelf(eventType: String, eventID: String,
+		eventCountry: String, tile: Tile, _language: String) -> void:
+	build_from_csv(eventID, tile)

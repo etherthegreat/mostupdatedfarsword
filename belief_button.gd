@@ -60,4 +60,27 @@ func _ready() -> void:
 func makePurchaseable():
 	$TitleRichLabel.clear()
 	$TitleRichLabel.push_color(Color.GREEN)
-	$
+	$TitleRichLabel.push_hint(str(beliefDesc, "Faith: ", bbCost))
+	$TitleRichLabel.append_text(bbName)
+	$BeliefPanel/BeliefSprite.texture = bbImage
+
+func cantAfford():
+	$TitleRichLabel.clear()
+	$TitleRichLabel.push_color(Color.GRAY)
+	$TitleRichLabel.push_hint(str(beliefDesc, "Faith: ", bbCost))
+	$TitleRichLabel.append_text(bbName)
+	$BeliefPanel/BeliefSprite.texture = bbBWImage
+
+func purchased():
+	$TitleRichLabel.clear()
+	$TitleRichLabel.push_color(Color.NAVAJO_WHITE)
+	$TitleRichLabel.push_hint(str(beliefDesc, "Faith: ", bbCost))
+	$TitleRichLabel.append_text(bbName)
+	$BeliefPanel/BeliefSprite.texture = bbImage
+
+signal LabelClicked
+
+func _on_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
+	if event is InputEventMouseButton and event.is_action_pressed("Left Click"):
+		if bbPurchased == false:
+			emit_signal("LabelClicked", bbName, bbCost, bbImage, beliefDesc, borderImage)

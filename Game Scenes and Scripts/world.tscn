@@ -2480,8 +2480,7 @@ position = Vector2(2, -19)
 texture = ExtResource("147_4d88h")
 
 [node name="TileGraphic" type="Sprite2D" parent="TileController/Tile73"]
-visible = false
-position = Vector2(33, -29)
+position = Vector2(2, -19)
 texture = ExtResource("147_4d88h")
 
 [node name="Area2D" type="Area2D" parent="TileController/Tile73"]
@@ -2508,8 +2507,7 @@ position = Vector2(0, -18)
 texture = ExtResource("149_f15ar")
 
 [node name="TileGraphic" type="Sprite2D" parent="TileController/Tile74"]
-visible = false
-position = Vector2(33, -29)
+position = Vector2(0, -18)
 texture = ExtResource("149_f15ar")
 
 [node name="Area2D" type="Area2D" parent="TileController/Tile74"]
@@ -2536,8 +2534,7 @@ position = Vector2(-36, -3)
 texture = ExtResource("151_y6ik0")
 
 [node name="TileGraphic" type="Sprite2D" parent="TileController/Tile75"]
-visible = false
-position = Vector2(33, -29)
+position = Vector2(-36, -3)
 texture = ExtResource("151_y6ik0")
 
 [node name="Area2D" type="Area2D" parent="TileController/Tile75"]
@@ -2565,7 +2562,7 @@ texture = ExtResource("153_jbdq8")
 
 [node name="TileGraphic" type="Sprite2D" parent="TileController/Tile76"]
 visible = false
-position = Vector2(33, -29)
+position = Vector2(-15, -35)
 texture = ExtResource("153_jbdq8")
 
 [node name="Area2D" type="Area2D" parent="TileController/Tile76"]
@@ -2593,7 +2590,7 @@ texture = ExtResource("155_km1i6")
 
 [node name="TileGraphic" type="Sprite2D" parent="TileController/Tile77"]
 visible = false
-position = Vector2(33, -29)
+position = Vector2(1, -14)
 texture = ExtResource("155_km1i6")
 
 [node name="Area2D" type="Area2D" parent="TileController/Tile77"]
@@ -2621,7 +2618,7 @@ texture = ExtResource("157_1dp2r")
 
 [node name="TileGraphic" type="Sprite2D" parent="TileController/Tile78"]
 visible = false
-position = Vector2(33, -29)
+position = Vector2(-1, -15)
 texture = ExtResource("157_1dp2r")
 
 [node name="Area2D" type="Area2D" parent="TileController/Tile78"]
@@ -2648,8 +2645,7 @@ position = Vector2(-11, -24)
 texture = ExtResource("159_nhry3")
 
 [node name="TileGraphic" type="Sprite2D" parent="TileController/Tile79"]
-visible = false
-position = Vector2(33, -29)
+position = Vector2(-11, -24)
 texture = ExtResource("159_nhry3")
 
 [node name="Area2D" type="Area2D" parent="TileController/Tile79"]
@@ -2677,7 +2673,7 @@ texture = ExtResource("161_dbkgo")
 
 [node name="TileGraphic" type="Sprite2D" parent="TileController/Tile80"]
 visible = false
-position = Vector2(33, -29)
+position = Vector2(3, -12)
 texture = ExtResource("161_dbkgo")
 
 [node name="Area2D" type="Area2D" parent="TileController/Tile80"]
@@ -2704,8 +2700,7 @@ position = Vector2(-5, -5)
 texture = ExtResource("163_oghll")
 
 [node name="TileGraphic" type="Sprite2D" parent="TileController/Tile81"]
-visible = false
-position = Vector2(33, -29)
+position = Vector2(-5, -5)
 texture = ExtResource("163_oghll")
 
 [node name="Area2D" type="Area2D" parent="TileController/Tile81"]
@@ -2732,8 +2727,7 @@ position = Vector2(-9, -7)
 texture = ExtResource("165_yxd8j")
 
 [node name="TileGraphic" type="Sprite2D" parent="TileController/Tile82"]
-visible = false
-position = Vector2(33, -29)
+position = Vector2(-9, -7)
 texture = ExtResource("165_yxd8j")
 
 [node name="Area2D" type="Area2D" parent="TileController/Tile82"]
@@ -2760,8 +2754,7 @@ position = Vector2(-14, -15)
 texture = ExtResource("167_2lgbb")
 
 [node name="TileGraphic" type="Sprite2D" parent="TileController/Tile83"]
-visible = false
-position = Vector2(33, -29)
+position = Vector2(-14, -15)
 texture = ExtResource("167_2lgbb")
 
 [node name="Area2D" type="Area2D" parent="TileController/Tile83"]
@@ -2788,8 +2781,7 @@ position = Vector2(-9, -8)
 texture = ExtResource("169_yx1q2")
 
 [node name="TileGraphic" type="Sprite2D" parent="TileController/Tile84"]
-visible = false
-position = Vector2(33, -29)
+position = Vector2(-9, -8)
 texture = ExtResource("169_yx1q2")
 
 [node name="Area2D" type="Area2D" parent="TileController/Tile84"]
@@ -2816,8 +2808,7 @@ position = Vector2(7, 17)
 texture = ExtResource("171_f7s2x")
 
 [node name="TileGraphic" type="Sprite2D" parent="TileController/Tile85"]
-visible = false
-position = Vector2(33, -29)
+position = Vector2(7, 17)
 texture = ExtResource("171_f7s2x")
 
 [node name="Area2D" type="Area2D" parent="TileController/Tile85"]
@@ -2844,8 +2835,7 @@ position = Vector2(7, -1)
 texture = ExtResource("173_dncom")
 
 [node name="TileGraphic" type="Sprite2D" parent="TileController/Tile86"]
-visible = false
-position = Vector2(33, -29)
+position = Vector2(7, -1)
 texture = ExtResource("173_dncom")
 
 [node name="Area2D" type="Area2D" parent="TileController/Tile86"]
@@ -2872,8 +2862,7 @@ position = Vector2(5, -12)
 texture = ExtResource("175_6e05h")
 
 [node name="TileGraphic" type="Sprite2D" parent="TileController/Tile87"]
-visible = false
-position = Vector2(33, -29)
+position = Vector2(5, -12)
 texture = ExtResource("175_6e05h")
 
 [node name="Area2D" type="Area2D" parent="TileController/Tile87"]
@@ -2900,8 +2889,7 @@ position = Vector2(1, -29)
 texture = ExtResource("177_l11rc")
 
 [node name="TileGraphic" type="Sprite2D" parent="TileController/Tile88"]
-visible = false
-position = Vector2(33, -29)
+position = Vector2(1, -29)
 texture = ExtResource("177_l11rc")
 
 [node name="Area2D" type="Area2D" parent="TileController/Tile88"]
@@ -7755,6 +7743,55 @@ metadata/_edit_use_anchors_ = true
 layer = 2
 script = ExtResource("12_lbt1a")
 
+[node name="MapModes" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 1.0
+offset_top = 725.0
+offset_right = 41.0
+offset_bottom = 765.0
+
+[node name="MapModesBack" type="Sprite2D" parent="CanvasLayer/MapModes"]
+position = Vector2(71.75, 179.25)
+scale = Vector2(0.0694595, 0.0418333)
+texture = ExtResource("63_pqkb6")
+
+[node name="PolisModeButton" type="Button" parent="CanvasLayer/MapModes"]
+layout_mode = 0
+offset_left = 13.0
+offset_top = 121.0
+offset_right = 68.0
+offset_bottom = 175.0
+icon = ExtResource("525_jyjnf")
+expand_icon = true
+
+[node name="StatesModeButton" type="Button" parent="CanvasLayer/MapModes"]
+layout_mode = 0
+offset_left = 75.0
+offset_top = 121.0
+offset_right = 130.0
+offset_bottom = 175.0
+icon = ExtResource("525_jyjnf")
+expand_icon = true
+
+[node name="OutputsModeButton" type="Button" parent="CanvasLayer/MapModes"]
+layout_mode = 0
+offset_left = 13.0
+offset_top = 181.0
+offset_right = 68.0
+offset_bottom = 235.0
+icon = ExtResource("525_jyjnf")
+expand_icon = true
+
+[node name="TerrainModeButton" type="Button" parent="CanvasLayer/MapModes"]
+layout_mode = 0
+offset_left = 75.0
+offset_top = 181.0
+offset_right = 130.0
+offset_bottom = 235.0
+icon = ExtResource("525_jyjnf")
+expand_icon = true
+
 [node name="WarRoomPanel" parent="CanvasLayer" instance=ExtResource("404_c5kbx")]
 visible = false
 z_index = 10
@@ -10628,10 +10665,10 @@ text = "10000"
 [node name="Button" type="Button" parent="CanvasLayer/Resource Bar (TOP)"]
 z_index = 50
 layout_mode = 0
-offset_left = 2247.58
-offset_top = 15.4179
-offset_right = 2390.58
-offset_bottom = 90.4178
+offset_left = 2248.44
+offset_top = -4.73894
+offset_right = 2391.44
+offset_bottom = 70.261
 theme_override_colors/icon_hover_color = Color(0.286244, 0.425631, 0.505151, 1)
 theme_override_colors/icon_pressed_color = Color(0.0669525, 0.166605, 0.417161, 1)
 theme_override_styles/focus = SubResource("StyleBoxEmpty_8oo0e")
@@ -11329,55 +11366,6 @@ horizontal_alignment = 2
 [node name="GameOverPanel" parent="CanvasLayer" instance=ExtResource("405_gov01")]
 mouse_filter = 2
 
-[node name="MapModes" type="Control" parent="CanvasLayer"]
-layout_mode = 3
-anchors_preset = 0
-offset_left = 1.0
-offset_top = 725.0
-offset_right = 41.0
-offset_bottom = 765.0
-
-[node name="MapModesBack" type="Sprite2D" parent="CanvasLayer/MapModes"]
-position = Vector2(71.75, 179.25)
-scale = Vector2(0.0694595, 0.0418333)
-texture = ExtResource("63_pqkb6")
-
-[node name="PolisModeButton" type="Button" parent="CanvasLayer/MapModes"]
-layout_mode = 0
-offset_left = 13.0
-offset_top = 121.0
-offset_right = 68.0
-offset_bottom = 175.0
-icon = ExtResource("525_jyjnf")
-expand_icon = true
-
-[node name="StatesModeButton" type="Button" parent="CanvasLayer/MapModes"]
-layout_mode = 0
-offset_left = 75.0
-offset_top = 121.0
-offset_right = 130.0
-offset_bottom = 175.0
-icon = ExtResource("525_jyjnf")
-expand_icon = true
-
-[node name="OutputsModeButton" type="Button" parent="CanvasLayer/MapModes"]
-layout_mode = 0
-offset_left = 13.0
-offset_top = 181.0
-offset_right = 68.0
-offset_bottom = 235.0
-icon = ExtResource("525_jyjnf")
-expand_icon = true
-
-[node name="TerrainModeButton" type="Button" parent="CanvasLayer/MapModes"]
-layout_mode = 0
-offset_left = 75.0
-offset_top = 181.0
-offset_right = 130.0
-offset_bottom = 235.0
-icon = ExtResource("525_jyjnf")
-expand_icon = true
-
 [node name="Sprite2D" type="Sprite2D" parent="CanvasLayer"]
 position = Vector2(244, 72)
 scale = Vector2(0.241667, 0.241667)
@@ -12050,6 +12038,10 @@ shape = SubResource("RectangleShape2D_qt86y")
 [connection signal="input_event" from="TileController/Tile201/Area2D" to="TileController/Tile201" method="_on_area_2d_input_event"]
 [connection signal="mouse_entered" from="TileController/Tile201/Area2D" to="TileController/Tile201" method="_on_area_2d_mouse_entered"]
 [connection signal="mouse_exited" from="TileController/Tile201/Area2D" to="TileController/Tile201" method="_on_area_2d_mouse_exited"]
+[connection signal="pressed" from="CanvasLayer/MapModes/PolisModeButton" to="." method="_on_polis_mode_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/MapModes/StatesModeButton" to="." method="_on_states_mode_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/MapModes/OutputsModeButton" to="." method="_on_outputs_mode_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/MapModes/TerrainModeButton" to="." method="_on_terrain_mode_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/NextTurnControl/NextTurn" to="." method="_on_next_turn_pressed"]
 [connection signal="pressed" from="CanvasLayer/NextTurnControl/PickTech" to="CanvasLayer" method="_on_pick_tech_pressed"]
 [connection signal="pressed" from="CanvasLayer/TileInfoPanel/governorButton" to="CanvasLayer/TileInfoPanel" method="_on_governor_button_pressed"]
@@ -12146,8 +12138,4 @@ shape = SubResource("RectangleShape2D_qt86y")
 [connection signal="pressed" from="CanvasLayer/CivilianUnitControl/CivilianActionButtons/IncreaseMilitaryDevelopment" to="." method="_on_increase_military_development_pressed"]
 [connection signal="pressed" from="CanvasLayer/CivilianUnitControl/CivilianActionButtons/discoverNearbyTilesButton" to="." method="_on_discover_nearby_tiles_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/CivilianUnitControl/CivilianActionButtons/BuildRoad" to="PathControl" method="_on_build_road_pressed"]
-[connection signal="pressed" from="CanvasLayer/MapModes/PolisModeButton" to="." method="_on_polis_mode_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/MapModes/StatesModeButton" to="." method="_on_states_mode_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/MapModes/OutputsModeButton" to="." method="_on_outputs_mode_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/MapModes/TerrainModeButton" to="." method="_on_terrain_mode_button_pressed"]
 [connection signal="input_event" from="RightClickDetector" to="." method="_on_right_click_detector_input_event"]

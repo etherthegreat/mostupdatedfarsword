@@ -37,4 +37,19 @@ func _describe_effect(d: Dictionary) -> String:
 	match ot:
 		"resource_bundle":
 			var parts: Array = []
-			for pair in ov.
+			for pair in ov.split(","):
+				var kv = pair.split(":")
+				if kv.size() == 2:
+					parts.append("+" + kv[1].strip_edges() + " " + kv[0].strip_edges().capitalize())
+			return " · ".join(parts)
+		"resource_change":
+			return "+" + str(d.get("outcome_amount", "")) + " " + ov.capitalize()
+		"add_mil_mod":
+			return "Gain: " + ov.capitalize()
+		"morale_boost":
+			return "Boosts national morale"
+		_:
+			return ""
+
+func _on_event_button_pressed() -> void:
+	emit_signal("button_chosen", _btn_data)
