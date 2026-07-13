@@ -36,7 +36,7 @@ var ArmyName: String
 
 var homeTile #each army must be built in a barracks, barracks gives +2 maxUnits to army per level
 #army gets destroyed if homeTile changes hands
-var parentCountry: country #parent country, homeland
+var parentCountry #parent country, homeland
 var parentMilModifiers: Array = [] #list of national modifiers to armies
 var beliefMilMods: Array = []   # mil mods sourced from country beliefs / axis; cleared on update
 var parentWarEnemies: Array = [] #list of all enemies of the parent nation
@@ -82,13 +82,21 @@ var sabotaged: bool = false       # enemy spy Sabotage — blocks movement/actio
 var sabotageTimer: int = 0        # turns remaining before sabotage clears
 var reconDebuffed: bool = false   # enemy spy Reconnaissance — reduces armyDefence in battle
 var reconDebuffTimer: int = 0     # turns remaining before recon debuff clears
+var propagandaBuff: int = 0       # flat attack bonus (and equivalent defence penalty) from propaganda events
 
 # ── STATUS EFFECTS ─────────────────────────────────────────────────────────────
 var armyStatusEffects: Array = []   # Array of {type: String, turnsLeft: int}
 var attackBlocked: bool = false     # set by Routed/Pacified/Seduced/Love-Struck/Mutinous
 var reinforcementBlocked: bool = false  # set by Supply Cut/Quarantined
+var isGuarding: bool = false        # player-toggled: skip in end-turn army cycle
 
 var armySiegeScore: float
+
+var stationaryTurns: int = 0       # increments each turn army doesn't move; resets on movement
+var movedThisTurn: bool = false    # set true by path_control when army spends movement points
+var attacksFromCurrentTile: int = 0  # counts attacks without moving; resets on movement
+
+var is_anarchist: bool = false  # anarchist armies auto-attack UK each turn, no shield, uncontrollable
 
 #spawning and tiles
 var awake: bool #if a unit isn't stationed in a barracks, it is awake.  if awake, can be controlled
@@ -121,7 +129,6 @@ var deleteMode: bool
 signal armyDestroyed
 
 func buildSelf(Name, countryNode, TileNumber, icon):
-	#print("wowo so cool")
 	$VBoxContainer/BannerControl/BannerSprite.texture = icon
 	enemy = false
 	raised = false
@@ -138,12 +145,11 @@ func buildSelf(Name, countryNode, TileNumber, icon):
 		for Tile in parentCountry.OwnedTileList:
 			if Tile.tileNumber == TileNumber:
 				inTile = Tile
-			else:
-				print("error 1 - no matching tile in owned tile list, army, line 93")
-	#print("UnitUIContainer 1 Children", $RadicalCoolTestPanel/UnitUIContainer.get_children())
+				break
+		if inTile == null:
+			push_warning("army.buildSelf: tile " + str(TileNumber) + " not found in OwnedTileList for " + parentCountry.CID)
 	for armyCostUI in $resourcescontainer.get_children():
 		armyCostUI.buildSelf()
-	pass
 
 func updateArmyUI(): #call whenever attacked, or just whenever the player opens the screen
 	for Unit in unitsList:
@@ -153,7 +159,9 @@ func updateArmyUI(): #call whenever attacked, or just whenever the player opens 
 	updateUnitUIs()
 	updateCommanderUI()
 	updateFinalTotals()
-	pass
+	var gb := get_node_or_null("VBoxContainer/GuardControl/GuardButton") as CheckButton
+	if gb:
+		gb.set_pressed_no_signal(isGuarding)
 
 func _commander_movement_bonus() -> int:
 	if commander == null:
@@ -170,9 +178,19 @@ func _commander_movement_bonus() -> int:
 			match mm.milModType:
 				"President":       bonus += 3
 				"Election Season": bonus += 3
+				"Mountain Pathfinder":
+					if inTile != null and inTile.terrain == "Foothills":
+						bonus += 1
 	return bonus
 
 func onTurnEnd():
+	# Stationary turn tracking — must happen before movement points reset
+	if movedThisTurn:
+		stationaryTurns = 0
+		attacksFromCurrentTile = 0
+	else:
+		stationaryTurns += 1
+	movedThisTurn = false
 	# Restore full movement points at the start of each new turn
 	currentMovementPoints = maxMovementPoints + _commander_movement_bonus()
 	# Reset per-turn flags (re-derived below from active statuses)
@@ -198,17 +216,30 @@ func onTurnEnd():
 	_apply_status_flags()
 	# Reinforce only if not supply-cut or quarantined
 	if not reinforcementBlocked and parentCountry.TotalManpower > 0:
+		var heal_rate: int = parentCountry.armyReinforceRate
+		if parentCountry.selectedBeliefs.any(func(b): return b.beliefType == "Mary Edwards Walker"):
+			heal_rate = int(float(heal_rate) * 1.15)
 		for Unit in unitsList:
-			Unit.refillManpower(parentCountry.armyReinforceRate)
-			print("unitREFILL", Unit.unitCurrentManpower, parentCountry.armyReinforceRate)
+			Unit.refillManpower(heal_rate)
 	if unit_mods_changed:
 		surveySelf()
+	# Master Baiter: +10% shield recharge per turn
+	if commander != null and armyMaxShield > 0:
+		var cmd_mods: Array
+		match commander.governorLevel:
+			1: cmd_mods = commander.govMilModsLvl1
+			2: cmd_mods = commander.govMilModsLvl2
+			3: cmd_mods = commander.govMilModsLvl3
+			_: cmd_mods = commander.govMilModsLvl1
+		for mod in cmd_mods:
+			if mod.milModType == "Master Baiter" and not mod.disabled:
+				armyShield = mini(armyShield + int(armyMaxShield * 0.1), armyMaxShield)
+				break
 	# Corruption disease check (Park Ranger grants immunity)
 	if inTile != null and inTile.corruption > 0 and not _army_has_active_mod("Park Ranger"):
 		if randf() * 100.0 < float(inTile.corruption):
 			apply_status("Diseased", 2)
 	updateArmyUI()
-	pass
 
 func apply_status(type: String, duration: int, magic_cost: int = 0) -> void:
 	for s in armyStatusEffects:
@@ -317,7 +348,7 @@ func _apply_status_effects_to_stats() -> void:
 				armyPunch  += 25
 				armyLaunch += 10
 				armyBlock  += 10
-			"Bigfoot's Solidarity":
+			"Wood Booger's Solidarity":
 				armyBlock  += 30
 				armyPunch  += 15
 			"Thunderbird's Sovereignty":
@@ -368,6 +399,14 @@ func _apply_status_effects_to_stats() -> void:
 				armyBlock   += 15
 				armyLaunch  += 15
 				armyDefence += 10
+			# ── DOCTRINE AURA BUFFS ──────────────────────────────────────────────
+			"Spirit of the General":
+				armyPunch += 15
+			# ── LOYAL GOVERNOR BUFFS ─────────────────────────────────────────────
+			"Mercenary Zeal":
+				armyPunch += 2  # Border Mercenary coin pact — timed 10 turns
+			"Iron Discipline":
+				armyDefence += 1  # Border Mercenary discipline — permanent (duration 9999)
 			# ── CANADIAN PROTECTOR BUFFS ─────────────────────────────────────────
 			"Le Wendigo's Hunger":
 				armyPunch += 30
@@ -394,6 +433,12 @@ func _apply_status_effects_to_stats() -> void:
 			"Le Gougou's Terror":
 				armyPunch   += 15
 				armyDefence += 20
+	# Guard bonus applied last so status-effect penalties don't erase it
+	var glvl: int = _guard_level()
+	if glvl > 0:
+		var guard_mult: float = 1.0 + 0.15 * float(glvl)
+		armyBlock   = int(float(armyBlock)   * guard_mult)
+		armyDefence = int(float(armyDefence) * guard_mult)
 
 func _apply_status_flags() -> void:
 	for s in armyStatusEffects:
@@ -417,19 +462,20 @@ func _apply_status_flags() -> void:
 				currentMovementPoints += 4
 
 func addUnitToArmy(unitToAdd):
+	if unitsList.size() >= 2:
+		push_warning("Army '%s': cannot add more than 2 units." % ArmyName)
+		return
 	unitsList.append(unitToAdd)
 	#unitToAdd.updateArmy.connect(surveySelf)
 	$UnitContainer.add_child(unitToAdd)
 	var newUnitUI = unitUIScene.instantiate()
-	newUnitUI.buildSelf(unitToAdd)
+	newUnitUI.buildSelf(unitToAdd, parentCountry)
 	$ScrollContainer/UnitUIContainer.add_child(newUnitUI)
 	#updateArmyUI()
-	pass
 
 func updateUnitUIs(): #call after battle, new unit, changed unit, any change to any thing in the army
 	for unitUIScene in $ScrollContainer/UnitUIContainer.get_children():
 		unitUIScene.updateUI()
-	pass
 
 func updateCommanderUI():
 	if commander != null:
@@ -440,7 +486,6 @@ func updateCommanderUI():
 		$CommanderButton.icon = load("res://art assets/finishedAssets/Panels/armypanelfinishedui/IMG_1564.PNG")
 		$CommanderLabel.text = "No Commander"
 		$CommanderButton.modulate = Color.WHITE
-	pass
 
 func _commander_portrait_modulate() -> Color:
 	var ratio: float = 1.0
@@ -470,53 +515,52 @@ func updateFinalTotals():
 			manaPanel.queue_free()
 	if armyFoodCost != 0:
 		var newMP = manaPanelScene.instantiate()
-		newMP.buildSelf("Food", armyFoodCost, tempResourcesDict)
+		newMP.buildSelf("Food", -armyFoodCost, tempResourcesDict)
 		$ScrollContainer2/VBoxContainer.add_child(newMP)
 	if armyWoodCost != 0:
 		var newMP = manaPanelScene.instantiate()
-		newMP.buildSelf("Wood", armyWoodCost, tempResourcesDict)
+		newMP.buildSelf("Wood", -armyWoodCost, tempResourcesDict)
 		$ScrollContainer2/VBoxContainer.add_child(newMP)
 	if armyGoldCost != 0:
 		var newMP = manaPanelScene.instantiate()
-		newMP.buildSelf("Gold", armyGoldCost, tempResourcesDict)
+		newMP.buildSelf("Gold", -armyGoldCost, tempResourcesDict)
 		$ScrollContainer2/VBoxContainer.add_child(newMP)
 	if armyMetalCost != 0:
 		var newMP = manaPanelScene.instantiate()
-		newMP.buildSelf("Metal", armyMetalCost, tempResourcesDict)
+		newMP.buildSelf("Metal", -armyMetalCost, tempResourcesDict)
 		$ScrollContainer2/VBoxContainer.add_child(newMP)
 	if armyManpowerCost != 0:
 		var newMP = manaPanelScene.instantiate()
-		newMP.buildSelf("Manpower", armyManpowerCost, tempResourcesDict)
+		newMP.buildSelf("Manpower", -armyManpowerCost, tempResourcesDict)
 		$ScrollContainer2/VBoxContainer.add_child(newMP)
 	if armyWeaponsCost != 0:
 		var newMP = manaPanelScene.instantiate()
-		newMP.buildSelf("Weapons", armyWeaponsCost, tempResourcesDict)
+		newMP.buildSelf("Weapons", -armyWeaponsCost, tempResourcesDict)
 		$ScrollContainer2/VBoxContainer.add_child(newMP)
 	if armyMagicCost != 0:
 		var newMP = manaPanelScene.instantiate()
-		newMP.buildSelf("Magic", armyMagicCost, tempResourcesDict)
+		newMP.buildSelf("Magic", -armyMagicCost, tempResourcesDict)
 		$ScrollContainer2/VBoxContainer.add_child(newMP)
 	if armyScienceCost != 0:
 		var newMP = manaPanelScene.instantiate()
-		newMP.buildSelf("Science", armyScienceCost, tempResourcesDict)
+		newMP.buildSelf("Science", -armyScienceCost, tempResourcesDict)
 		$ScrollContainer2/VBoxContainer.add_child(newMP)
 	if armyCultureCost != 0:
 		var newMP = manaPanelScene.instantiate()
-		newMP.buildSelf("Culture", armyCultureCost, tempResourcesDict)
+		newMP.buildSelf("Culture", -armyCultureCost, tempResourcesDict)
 		$ScrollContainer2/VBoxContainer.add_child(newMP)
 	if armyInfluenceCost != 0:
 		var newMP = manaPanelScene.instantiate()
-		newMP.buildSelf("Influence", armyInfluenceCost, tempResourcesDict)
+		newMP.buildSelf("Influence", -armyInfluenceCost, tempResourcesDict)
 		$ScrollContainer2/VBoxContainer.add_child(newMP)
 	if armyHarmonyCost != 0:
 		var newMP = manaPanelScene.instantiate()
-		newMP.buildSelf("Harmony", armyHarmonyCost, tempResourcesDict)
+		newMP.buildSelf("Harmony", -armyHarmonyCost, tempResourcesDict)
 		$ScrollContainer2/VBoxContainer.add_child(newMP)
 	if armyFaithCost != 0:
 		var newMP = manaPanelScene.instantiate()
-		newMP.buildSelf("Faith", armyFaithCost, tempResourcesDict)
+		newMP.buildSelf("Faith", -armyFaithCost, tempResourcesDict)
 		$ScrollContainer2/VBoxContainer.add_child(newMP)
-	pass
 
 var unitCount: int
 
@@ -527,6 +571,7 @@ func surveySelf():
 	armyBlock = 0
 	armyLaunch = 0
 	armyDefence = 0
+	armyShield = 0
 	armyMaxShield = 0
 	armyMagicDefense = 0
 	maxManpower = 0
@@ -546,7 +591,6 @@ func surveySelf():
 	armyHarmonyCost = 0
 	armyFaithCost = 0
 	armySiegeScore = 0
-	print("Surveying Self")
 	unitCount = 0
 	for Unit in unitsList:
 		unitCount += Unit.unitLevel
@@ -555,6 +599,17 @@ func surveySelf():
 	armySiegeScore = unitCount * 0.1
 	if inTile != null:
 		armySiegeScore *= inTile.get_siege_difficulty()
+	# CannonBlast: artillery adds bonus siege progress (doubled with Tempering)
+	var cannon_count: int = 0
+	for Unit in unitsList:
+		for mm in Unit.militaryModifierList:
+			if mm.milModType == "CannonBlast" and not mm.disabled:
+				cannon_count += 1
+				break
+	if cannon_count > 0:
+		var has_tempering = parentCountry != null and parentCountry.unlockedTechnologies.any(func(t): return t.techName == "Tempuring")
+		var cannon_siege_bonus: float = float(cannon_count) * (0.3 if has_tempering else 0.15)
+		armySiegeScore += cannon_siege_bonus
 	for Unit in unitsList:
 		Unit.enableMilModType("All")
 		if Unit.unitCurrentManpower < Unit.unitMaxManpower:
@@ -592,10 +647,15 @@ func surveySelf():
 		if parentCountry.TotalMetal <= 0:
 			Unit.disableMilModType("Metal")
 			# prevents units from replenishing armor
-		Unit.currentTerrain  = inTile.terrain if inTile != null else ""
-		Unit.currentStorm   = inTile.stormType if (inTile != null and inTile.stormActive) else ""
-		Unit.currentState   = inTile.tileContinent if inTile != null else ""
-		Unit.armyDemoralized = _has_status("Demoralized")
+		Unit.currentTerrain    = inTile.terrain if inTile != null else ""
+		Unit.currentStorm      = inTile.stormType if (inTile != null and inTile.stormActive) else ""
+		Unit.currentState      = inTile.tileContinent if inTile != null else ""
+		Unit.inIvyLeagueTile   = inTile.has_special_feature("Ivy League") if inTile != null else false
+		Unit.inFortifiedTile   = (inTile != null and (inTile.has_building("Barracks") or inTile.has_building("Fortress")))
+		Unit.inHomeTile        = (inTile != null and inTile.tileOwner == parentCountry.CID)
+		Unit.inEntrenched      = (stationaryTurns >= 3)
+		Unit.inCoastalTile     = (inTile != null and inTile.isCoastal)
+		Unit.armyDemoralized   = _has_status("Demoralized")
 		Unit.calculateMilMods()
 		armyPunch += Unit.unitOffensiveScore
 		armyBlock += Unit.unitDefensiveScore
@@ -624,14 +684,22 @@ func surveySelf():
 				armyWoodCost += uLV
 				armyMetalCost += (2*uLV)
 		match Unit.unitWeapon.weaponType:
-			"Spear" , "Club" , "Dagger", "Atlatl":
+			"Spear", "Club", "Dagger", "Atlatl":
 				armyWeaponsCost += uLV
 			"Machete", "Macuahitl", "Single Axe", "Mace":
-				armyWeaponsCost += (2*uLV)
-			"Flail", "Shortsword", "Pike":
-				armyWeaponsCost += (3*uLV)
-			"War Hammer", "War Axe", "War Sword":
-				armyWeaponsCost += (4*uLV)
+				armyWeaponsCost += (2 * uLV)
+			"Flail", "Shortsword", "Pike", "Cutlass":
+				armyWeaponsCost += (3 * uLV)
+			"War Hammer", "War Axe", "War Sword", "Cavalry Sword", "Flintlock":
+				armyWeaponsCost += (4 * uLV)
+			"Officer Sword", "Brown Bess", "Field Cannon":
+				armyWeaponsCost += (5 * uLV)
+			"Marine Mameluke", "Percussion Cap", "Field Gun":
+				armyWeaponsCost += (6 * uLV)
+			"Lever Repeater", "Howitzer":
+				armyWeaponsCost += (7 * uLV)
+			"Mortar":
+				armyWeaponsCost += (8 * uLV)
 		if parentCountry != null: #find costs and savings from country specific modifiers here
 			for law in parentCountry.lawsInConstitution:
 				if law.lawType == "Mercantilism":
@@ -640,27 +708,44 @@ func surveySelf():
 		var mm: float = 1.0 + (float(commander.morale) / 100.0) * 0.25
 		armyPunch   = int(float(armyPunch)   * mm)
 		armyDefence = int(float(armyDefence) * mm)
+		# Experienced Fisherman: +1 attack per gov level when in wetlands tile
+		if inTile != null and inTile.terrain == "Wetlands":
+			var cmd_mods: Array
+			match commander.governorLevel:
+				1: cmd_mods = commander.govMilModsLvl1
+				2: cmd_mods = commander.govMilModsLvl2
+				3: cmd_mods = commander.govMilModsLvl3
+				_: cmd_mods = commander.govMilModsLvl1
+			for mod in cmd_mods:
+				if mod.milModType == "Experienced Fisherman" and not mod.disabled:
+					armyPunch += commander.governorLevel
+					break
+	if propagandaBuff != 0:
+		armyPunch   += propagandaBuff
+		armyDefence -= propagandaBuff
 	_apply_status_effects_to_stats()
-	pass
 
 func calculateMaxUnitLevel():
 	if inTile != null:
 		for building in inTile.tileBuildingsList:
 			if building.buildingType == "Barracks":
 				maxUnitLevel = building.buildingLevel
-	pass
 
 signal raisingArmy
 
 func raiseSelf():
+	if inTile == null:
+		push_warning("Army '%s': raiseSelf() skipped — inTile is null" % ArmyName)
+		return
 	raised = true
 	emit_signal("raisingArmy", self, parentCountry, inTile)
-	pass
 
 func _on_raise_army_pressed() -> void:
+	if inTile == null:
+		push_warning("Army '%s': raise pressed but inTile is null" % ArmyName)
+		return
 	raised = true
 	emit_signal("raisingArmy", self, parentCountry, inTile)
-	pass # Replace with function body.
 
 func addUnitCommander(newCommander):
 	commander = newCommander
@@ -672,9 +757,7 @@ func addUnitCommander(newCommander):
 			commanderModifiers2.append(MilMod)
 		for MilMod in commander.govMilModsLvl3:
 			commanderModifiers3.append(MilMod)
-	print("MILMODS IN 1", commanderModifiers1)
 	#updateArmyUI()
-	pass
 
 func applyCountryBeliefMilMods() -> void:
 	# Clear previously-applied belief mods from all units before re-applying.
@@ -693,18 +776,19 @@ func applyCountryBeliefMilMods() -> void:
 	for belief in parentCountry.selectedBeliefs:
 		match belief.beliefType:
 			"George Washington":
-				modsToGrant.append("Crossing of the Delaware")
+				pass  # Handled by _apply_ualani_aura() adjacency in world.gd
 			"Harriet Tubman":
 				modsToGrant.append("Combahee River Raid")
 			"Abraham Lincoln":
 				modsToGrant.append("Emancipation Advance")
+				modsToGrant.append("Red Badge of Courage")
 			"Theodore Roosevelt":
 				modsToGrant.append("Rough Rider's Charge")
 			"Frederick Douglass":
 				modsToGrant.append("North Star Address")
 			"Sitting Bull":
 				modsToGrant.append("Little Bighorn Ambush")
-			"Wilderness Act":
+			"Inland Maritime Expertise":
 				modsToGrant.append("Woodsman")
 			"Defense Production Act":
 				modsToGrant.append("Vanguard")
@@ -713,11 +797,15 @@ func applyCountryBeliefMilMods() -> void:
 			"War Measures Act":
 				modsToGrant.append("Vanguard")
 			"Laura Secord":
-				modsToGrant.append("Beaverdams Dispatch")
+				modsToGrant.append("Secord's Alert")
 			"Louis Riel":
 				modsToGrant.append("Batoche's Stand")
 			"Roméo Dallaire":
 				modsToGrant.append("Peacekeeping Mandate")
+
+	# PROT_08 (Old Ironsides) agreed — USS Constitution Support for all armies
+	if parentCountry.CountryFlags.has("prot_08_agreed"):
+		modsToGrant.append("USS Constitution Support")
 
 	# churchLevel ±3 axis grants
 	match parentCountry.churchLevel:
@@ -738,7 +826,6 @@ func applyCountryBeliefMilMods() -> void:
 func commanderCheck():
 	if commander != null:
 		$CommanderButton.visible = true
-		#print("The commander is in", commander, commander.governorLevel)
 		$CommanderButton.icon = commander.governorTexture
 		match commander.governorLevel:
 			1:
@@ -753,28 +840,22 @@ func commanderCheck():
 				for MilMod in commanderModifiers3:
 					for Unit in unitsList:
 						Unit.addMilMod(MilMod)
-	else:
-		print("no commander")
-	pass
 
 signal commanderButtonPressed
 func _on_commander_button_pressed() -> void:
 	# Pass both the current commander (may be null) AND this army so the
 	# world can decide whether to show details or open a commander picker.
 	emit_signal("commanderButtonPressed", commander, self)
-	pass # Replace with function body.
 
 signal battleBuilt
 
-var battleScene = preload("res://Game Scenes and Scripts/battle.tscn")
 func calculateBattle(armyPath, type, attacker, defenderAPF, lastSelectedPathPoint):
-	var newBattle = battleScene.instantiate()
+	var newBattle = load("res://Game Scenes and Scripts/battle.tscn").instantiate()
 	newBattle.buildSelf(type, attacker, self)
 	defenderAPF.showBattle(newBattle)
 	newBattle.sendDefenderResults.connect(calculateDefenderResults)
 	newBattle.sendAttackerResults.connect(calculateAttackerResults)
 	newBattle.deleteBattles.connect(lastSelectedPathPoint.deleteNeighborBattles)
-	pass
 
 func calculateAttackerResults(type: String, manpowerLossAmount: int) -> void:
 	if manpowerLossAmount <= 0:
@@ -807,7 +888,6 @@ func _on_banner_button_pressed() -> void:
 			bannerButton.queue_free()
 	if $VBoxContainer/BannerControl/BannerContainer.visible == false:
 		for Texture in parentCountry.armyIconList:
-			print("ANTICLIMATIC", parentCountry.armyIconList)
 			var newBannerButton = bannerButtonScene.instantiate()
 			newBannerButton.buildSelf(Texture)
 			newBannerButton.bannerButtonPressed.connect(changeArmyBanner)
@@ -817,7 +897,6 @@ func _on_banner_button_pressed() -> void:
 	else:
 		$VBoxContainer/BannerControl/BannerContainer.visible = false
 		$VBoxContainer/BannerControl/Sprite2D.visible = false
-	pass # Replace with function body.
 
 signal changeBanner
 func changeArmyBanner(icon):
@@ -825,7 +904,27 @@ func changeArmyBanner(icon):
 	$VBoxContainer/BannerControl/BannerSprite.texture = armyIcon
 	$VBoxContainer/BannerControl/Sprite2D.visible = false
 	$VBoxContainer/BannerControl/BannerContainer.visible = false
-	pass
+
+func _guard_level() -> int:
+	if not isGuarding:
+		return 0
+	if parentCountry == null:
+		return 1
+	const MIL_ORG_TECHS := ["Organization", "Logistics", "Tactics", "Authority"]
+	var bonus: int = 0
+	for tech in parentCountry.unlockedTechnologies:
+		if tech.techName in MIL_ORG_TECHS:
+			bonus += 1
+	return clampi(1 + bonus, 1, 4)
+
+func cancelGuard() -> void:
+	isGuarding = false
+	var guard_btn = get_node_or_null("VBoxContainer/GuardButton")
+	if guard_btn != null:
+		guard_btn.set_pressed_no_signal(false)
+
+func _on_guard_button_toggled(button_pressed: bool) -> void:
+	isGuarding = button_pressed
 
 #=================
 #Helpers

@@ -30,9 +30,12 @@ var TotalMetal: int
 var TotalWood: int
 var TotalFood: int
 var TotalMagic: int
+var cherry_blossom_magic_acc: float = 0.0
+var pioneer_heritage_corrupt_acc: Dictionary = {}
+var nature_conservationists_corrupt_acc: Dictionary = {}
+var civic_pride_mandate_acc: float = 0.0
 var TotalCulture: int     # now covers both Culture and old Faith
 var TotalHappiness: float # renamed from TotalHarmony
-var TotalBoats: int       # new Boats resource
 var TotalMandate: int
 var TotalScience: int
 var TotalWeapons: int
@@ -59,7 +62,6 @@ var APM: int #magic per month
 # IPM (Faith per month) removed — faith merged into Culture
 var CPM: int #Culture per month (now covers Faith + Culture)
 var HPM: int #Happiness per month (renamed from Harmony)
-var BPM: int #boats per month (new)
 var NDT: int #Mandate per month
 var SPM: int #science per month
 var PPM: int #weapons per month
@@ -96,7 +98,7 @@ var domesticatedMonsters: Array = []
 var unlockedTraditions: Array = []
 
 #Country Flags, used for determining events and lots of other things
-var CountryFlags: Array = []
+var CountryFlags: Dictionary = {}
 
 # Countries formally allied with this one — allows tile entry and shared visibility
 var ALLIED: Array = []
@@ -107,12 +109,17 @@ var ALLIED: Array = []
 var unlockedLaws: Array = []
 var lawsInConstitution: Array = []
 var lawsRecentlyRevoked: Array = []
+# Political compass position derived from enacted laws.
+# X: Reformatory(+1) vs Conservatory(-1)   Y: Revolutionary(+1) vs Liberator(-1)
+var lawQuadrantX: float = 0.0
+var lawQuadrantY: float = 0.0
 
 #Country Religion and Faith
 var selectedBeliefs: Array = []
 var churchLevel: int #ranges from -3 to 3.  is calculated by finding the church beliefs by faith beliefs
 var faithBeliefs: int
 var churchBeliefs: int
+var beliefPurchaseCount: int = 0   # escalating cost: cost = max(10, int(10 * 1.2^count))
 var availableDocs: Array = []
 var availableGods: Array = []
 
@@ -143,20 +150,7 @@ var rDEM #this country's attitude toward the Demon Empire
 var rANL #this country's attitude toward Anlaxia
 #eventually, fill with every country in the game
 
-#MagicSchools
-var manifestPoints: int #alchemy
-var spectralPoints: int #illusion
-var cryptidPoints: int #summoning
-var stormPoints: int #druidism
-var ironPoints: int #elementalism
-var libertyPoints: int #divination
-
-var manifestLevel: int
-var spectralLevel: int
-var cryptidLevel: int
-var stormLevel: int
-var ironLevel: int
-var libertyLevel: int
+var activeCivilianCount: int = 0  # updated each turn by PathControl before surveyResources
 
 var spellBaseCost: int #used to calculate the base cost of all spells
 var spellCostModifier: int #used when debuffs are applied for spell costs
@@ -202,28 +196,6 @@ var availableKits: Array
 
 var countryConstructionCostMod: float = 1 # 1 = 100%, .9 would be 90 % of cost, etc.
 
-#this should literally be max but I'm stupid and don't wanna change it
-var minPosTaxationAmount: int  = 0#used to calculate 'all building' taxation figures
-var minFarmTaxAmount: int = 0
-var minCampTaxAmount: int = 0
-var minMineTaxAmount: int = 0
-var minLibraryTaxAmount: int = 0
-var minTempleTaxAmount: int = 0
-var minTowerTaxAmount: int = 0
-var minForgeTaxAmount: int = 0
-var minWorkshopTaxAmount: int = 0
-var minBathTaxAmount: int = 0
-
-var setFarmTaxAmount: int = 0
-var setCampTaxAmount: int = 0
-var setMineTaxAmount: int = 0
-var setLibraryTaxAmount: int = 0
-var setTempleTaxAmount: int = 0
-var setTowerTaxAmount: int = 0
-var setForgeTaxAmount: int = 0
-var setWorkshopTaxAmount: int = 0
-var setBathTaxAmount: int = 0
-
 var capitalPathPointButton: pathPointButton
 
 func NewGameBuild() -> void:
@@ -262,7 +234,6 @@ func NewGameBuild() -> void:
 	TotalWeapons   += data.get("startWeapons", 10)
 	TotalScience   += data.get("startScience", 10)
 	TotalHappiness += data.get("startHarmony", 5.0)   # "startHarmony" key kept for compat
-	TotalBoats     += data.get("startBoats", 0)
 	TotalMandate   += data.get("startMandate", 10)
 	TotalInfluence += data.get("startInfluence", 0)
 	TotalManpower  += data.get("startManpower", 500)
@@ -324,8 +295,6 @@ func NewGameBuild() -> void:
 		var leader = _find_faction_leader(factionData["name"], governorPool)
 		addFaction(factionData["name"], factionData["loyalty"], leader.governorType)
  
-	# Taxation and unlockables
-	calculateTaxationAmounts()
 	updateUnlockableAttributes()
 	updateDiscoveredByPlayer()
  
@@ -335,8 +304,19 @@ func NewGameBuild() -> void:
 	if armyName != "" and armyTile != 0:
 		var armyIcon = _get_default_army_icon()
 		addArmy(armyName, armyTile, armyIcon)
- 
- 
+
+	# UK regional deployment — aggressive multi-front presence at game start
+	if CID == "UK":
+		var uk_icon = _get_default_army_icon()
+		addArmy("Southern Crown Force",   151, uk_icon)   # Charleston SC
+		addArmy("Cornwallis's Dragoons",  149, uk_icon)   # Myrtle Beach SC
+		addArmy("Crown Forces South",     153, uk_icon)   # Port Royal SC
+		addArmy("Florida Crown Guard",    176, uk_icon)   # Jacksonville FL
+		addArmy("Gulf Garrison",          179, uk_icon)   # Tampa FL
+		addArmy("Quebec Crown Guard",     123, uk_icon)   # Quebec City
+		addArmy("Maritime Crown Forces",  114, uk_icon)   # Halifax NS
+
+
 func _find_faction_leader(factionName: String, governorPool: Dictionary) -> governor:
 	# Match faction to its natural leader from the governor pool
 	# Falls back gracefully if no match found
@@ -378,35 +358,19 @@ func _get_default_army_icon() -> Texture2D:
 
 func discoverTile(pathPointButton):
 	discoveredTilesList.append(pathPointButton)
-	pass
 
 signal updateDiscoveredTiles
 func updateDiscoveredByPlayer():
 	emit_signal("updateDiscoveredTiles", discoveredTilesList)
-	pass
 
 func setStartingMagic():
-	manifestPoints = 0
-	spectralPoints = 0
-	cryptidPoints = 0
-	stormPoints = 0
-	ironPoints = 0
-	libertyPoints = 0
-	manifestLevel = 0
-	spectralLevel = 0
-	cryptidLevel = 0
-	stormLevel = 0
-	ironLevel = 0
-	libertyLevel = 0
-	pass
+	pass  # spell school points removed — protectors unlock spells directly
 
 func connectBuilding(building):
 	countryBuildingList.append(building)
 	building.towerBuilding.connect(assignTower)
-	pass
 
 func assignTower():
-	print("ddd")
 	pass
 
 func createFactionReward(rewardType):
@@ -424,7 +388,7 @@ func createFactionReward(rewardType):
 			addGovernmentLaw("Municipal Reform Act")
 			addGovernmentLaw("Voting Rights Act")
 		"Foreign Diplomacy":
-			pass
+			addGovernmentLaw("National Security Act")
 		"Constitutional Convention":
 			addGovernmentLaw("Voting Rights Act")
 		# Common Cause
@@ -433,7 +397,7 @@ func createFactionReward(rewardType):
 		"The People's Assembly":
 			addGovernmentLaw("Civil Rights Act")
 		"Land Reform":
-			pass
+			addGovernmentLaw("Municipal Reform Act")
 		# Abolitionist League
 		"Freedom Papers":
 			addGovernmentLaw("Civil Rights Act")
@@ -444,7 +408,7 @@ func createFactionReward(rewardType):
 			addGovernmentLaw("Voting Rights Act")
 		# Free Workers Union
 		"Guild Charters":
-			pass
+			addGovernmentLaw("Militia Act")
 		"General Strike":
 			addGovernmentLaw("Americans with Disabilities Act")
 		"Workers Commonwealth":
@@ -456,7 +420,7 @@ func createFactionReward(rewardType):
 			addGovernorToGovernorPool("Pierre Renard", 1)
 		"Republic of Quebec":
 			addGovernmentLaw("Canadian Citizenship Act")
-			addGovernmentLaw("Dominion Elections Act")
+			addGovernmentLaw("Republic Elections Act")
 		# Loyalist Settlers
 		"Crown Defectors":
 			addGovernmentLaw("National Defence Act")
@@ -464,41 +428,38 @@ func createFactionReward(rewardType):
 			addGovernorToGovernorPool("Benjamin Tallmadge", 2)
 		"New Republic Converts":
 			addGovernmentLaw("Canada Shipping Act")
-			addGovernmentLaw("Dominion Elections Act")
+			addGovernmentLaw("Republic Elections Act")
 		# Haudenosaunee Confederacy
 		"Treaty of Friendship":
 			addGovernmentLaw("Canadian Citizenship Act")
 		"Haudenosaunee Alliance":
-			pass
+			addGovernmentLaw("Voting Rights Act")
 		"Sovereign Partnership":
 			addGovernmentLaw("Canadian Citizenship Act")
 			addGovernmentLaw("Accessible Canada Act")
 		# Coureurs des Bois
 		"Trade Routes":
-			pass
+			addGovernmentLaw("Merchant Marine Act")
 		"Frontier Network":
 			addGovernorToGovernorPool("Louis Tremblant", 1)
 		"Continental Reach":
-			pass
+			addGovernmentLaw("Canada Shipping Act")
 		# Maritime Patriots
 		"Port Alliance":
-			pass
+			addGovernmentLaw("Republic Elections Act")
 		"Atlantic Commerce":
 			addGovernmentLaw("Merchant Marine Act")
 		"Maritime Union":
-			pass
-	pass
+			addGovernmentLaw("Accessible Canada Act")
 
 func addGovernorToGovernorPool(governorType, governorLevel):
 	var newGovernor = governor.new()
 	newGovernor.buildSelf(governorType, governorLevel)
 	unlockedGovernors.append(newGovernor)
-	pass
 
 signal displayCommander
 func showCommander(commander, army):
 	emit_signal("displayCommander", commander, army)
-	pass
 
 func addNewUnit(Army, UnitType, Level, WeaponType, OreType, ArmorType, curMen, curWeapons):
 	var newUnit = Unit.new()
@@ -506,7 +467,6 @@ func addNewUnit(Army, UnitType, Level, WeaponType, OreType, ArmorType, curMen, c
 	newUnit.buildSelf(self, UnitType, Level, WeaponType, OreType, ArmorType, curMen, curWeapons)
 	Army.addUnitToArmy(newUnit)
 	Army.updateArmyUI()
-	pass
 
 func updateUnit(type, unitNode):
 	for MilMod in countryMilModList:
@@ -516,7 +476,6 @@ func updateUnit(type, unitNode):
 			unitNode.addMilMod(MilMod)
 		if MilMod.siegeMod == true && type == "Siege":
 			unitNode.addMilMod(MilMod)
-	pass
 
 func prospectForOres() -> void:
 	# Scans OwnedTileList for geological resources in mine-eligible tiles
@@ -568,12 +527,10 @@ func addMilMod(Type):
 	var milModInstance = milModScene.instantiate()
 	milModInstance.buildSelf(Type)
 	countryMilModList.append(milModInstance)
-	pass
 
 signal raiseThisArmySignal
 func raiseThisArmy(Army, country, Tile):
 	emit_signal("raiseThisArmySignal", Army, country, Tile)
-	pass
 
 func addArmy(Name, TileNumber, icon = null, tags: Array = []):
 	# icon is optional — defaults to CID-based icon if not provided
@@ -588,6 +545,7 @@ func addArmy(Name, TileNumber, icon = null, tags: Array = []):
 	if not tags.is_empty():
 		armyInstance.armyTags = tags
 	var templates = ArmyDatabase.get_templates_for_country(CID)
+	var template_matched := false
 	for template in templates:
 		if template.get("armyName", "") == Name:
 			if tags.is_empty():
@@ -599,22 +557,43 @@ func addArmy(Name, TileNumber, icon = null, tags: Array = []):
 					unitData.get("unitType",    "Infantry"),
 					unitData.get("level",       1),
 					unitData.get("weaponType",  "Flintlock"),
-					"Iron",                              # OreType — default for all starting armies
-					unitData.get("uniformType", "Cloth"),# ArmorType maps to uniform cosmetic
+					"Iron",
+					unitData.get("uniformType", "Cloth"),
 					unitData.get("manpower",    100),
 					unitData.get("weapons",     100)
 				)
+			template_matched = true
 			break
+	# Fallback: procedural armies that don't match a CSV template get default units
+	if not template_matched:
+		if CID == "UK":
+			# UK reinforcements always get standard redcoat loadout at level 2
+			addNewUnit(armyInstance, "Infantry",  2, "Brown Bess", "Iron", "Redcoat",        200, 200)
+			addNewUnit(armyInstance, "Artillery", 2, "Howitzer",   "Iron", "Artillery Corps", 200, 200)
+		else:
+			match randi() % 3:
+				0: # Rifles
+					addNewUnit(armyInstance, "Infantry",  1, "Flintlock",    "Copper", "Militia", 150, 150)
+					addNewUnit(armyInstance, "Infantry",  1, "Flintlock",    "Copper", "Militia", 150, 150)
+				1: # Sabres
+					addNewUnit(armyInstance, "Cavalry",   1, "Cutlass",      "Copper", "Militia", 150, 0)
+					addNewUnit(armyInstance, "Cavalry",   1, "Cutlass",      "Copper", "Militia", 150, 0)
+				2: # Artillery
+					addNewUnit(armyInstance, "Artillery", 1, "Field Cannon", "Copper", "Militia", 100, 150)
+					addNewUnit(armyInstance, "Infantry",  1, "Flintlock",    "Copper", "Militia", 150, 150)
 	# ── Tile placement ────────────────────────────────────────────────────────
 	for Tile in OwnedTileList:
 		if Tile.tileNumber == TileNumber:
 			Tile.addStationedArmy(armyInstance)
 			armyInstance.inTile = Tile
+			break
+	if armyInstance.inTile == null:
+		push_warning("addArmy('%s'): tile #%d not found in OwnedTileList for %s — army has no spawn tile" % [Name, TileNumber, CID])
 	armyInstance.armyDestroyed.connect(_on_army_destroyed)
 	countryArmyList.append(armyInstance)
-	pass
 
 signal commanderFallen(commander, army_name: String, tile)
+signal countryArmyDestroyed(lost_army: Army)
 
 func _on_army_destroyed(army: Army) -> void:
 	if army.commander != null:
@@ -622,6 +601,7 @@ func _on_army_destroyed(army: Army) -> void:
 	countryArmyList.erase(army)
 	if army.inTile != null:
 		army.inTile.stationedArmy = null
+	emit_signal("countryArmyDestroyed", army)
 	army.queue_free()
 
 var factionScene = load("res://faction.tscn")
@@ -705,13 +685,12 @@ func loadBeliefsList(listTitle):
 			var CAGods2Array: Array = $religionData.CAGods2
 			for String in CAGods2Array:
 				availableGods.append(String)
-	pass
 
 const FACTION_GATED_LAWS: Array = [
 	"Voting Rights Act",
 	"Civil Rights Act",
 	"Americans with Disabilities Act",
-	"Dominion Elections Act",
+	"Republic Elections Act",
 	"Canadian Citizenship Act",
 	"Accessible Canada Act",
 ]
@@ -728,6 +707,28 @@ func _initialize_purchasable_laws() -> void:
 			addGovernmentLaw("Municipal Elections Act")
 			addGovernmentLaw("Militia Act")
 
+func recalculateLawQuadrant() -> void:
+	var rev := 0
+	var ref := 0
+	var con := 0
+	var lib := 0
+	for l in lawsInConstitution:
+		var tempLaw = law.new()
+		tempLaw.lawType = l.lawType
+		tempLaw.buildSelf(l.lawType, true)
+		match tempLaw.quadrant:
+			"Revolutionary": rev += 1
+			"Reformatory":   ref += 1
+			"Conservatory":  con += 1
+			"Liberator":     lib += 1
+	var total := float(rev + ref + con + lib)
+	if total == 0:
+		lawQuadrantX = 0.0
+		lawQuadrantY = 0.0
+	else:
+		lawQuadrantX = (ref - con) / total
+		lawQuadrantY = (rev - lib) / total
+
 func addGovernmentLaw(Name):
 	for existing in unlockedLaws:
 		if existing.lawType == Name:
@@ -738,7 +739,6 @@ func addGovernmentLaw(Name):
 	var newLaw = law.new()
 	newLaw.lawType = Name
 	unlockedLaws.append(newLaw)
-	pass
 
 func addLawToConstitution(newLaw):
 	for law in unlockedLaws:
@@ -747,14 +747,12 @@ func addLawToConstitution(newLaw):
 	var newSelection = law.new()
 	newSelection.lawType = newLaw
 	lawsInConstitution.append(newSelection)
-	calculateTaxationAmounts()
-	pass
+	recalculateLawQuadrant()
 
 func addCulturalTradition(Name):
 	var newTradition = tradition.new()
 	newTradition.traditionType = Name
 	unlockedTraditions.append(newTradition)
-	pass
 	
 var spellScene = load("res://spell.tscn")
 func addSpellToSpellbook(Name, Level, Experience):
@@ -765,38 +763,27 @@ func addSpellToSpellbook(Name, Level, Experience):
 	newSpell.newGameSpellAssignment()
 	unlockedSpells.append(newSpell)
 	#print ("country is", CID, "Spells are:", unlockedSpells)
-	pass
-
-func levelUpSchool(type):
-	match type:
-		"manifest", "alchemy":    manifestLevel += 1
-		"iron", "elementalist":   ironLevel     += 1
-		"storm", "druid":         stormLevel    += 1
-		"liberty", "diviner":     libertyLevel  += 1
-		"cryptid", "summoner":    cryptidLevel  += 1
-		"spectral", "illusionist":spectralLevel += 1
-	pass
 
 func addTechnologicalDiscovery(Name):
 	var newTech = Technology.new()
 	newTech.techName = Name
 	newTech.buildSelf()
 	unlockedTechnologies.append(newTech)
-	pass
 
 func addWeaponTemplate(Name):
+	for existing in weaponTemplateList:
+		if existing.weaponType == Name:
+			return
 	var newWeaponTemplate = WeaponTemplate.new()
 	newWeaponTemplate.weaponType = str(Name)
 	newWeaponTemplate.buildSelf()
 	weaponTemplateList.append(newWeaponTemplate)
-	pass
 
 
 func updateUnlockableAttributes():
 	if unlockedTechnologies == null:
-		print("no Technologies found in UnlockedTechnologist")
+		pass
 	else:
-		#print("We're toally rocking out with our cocks out and everything")
 		var farmBuildingLevel = buildingLevel.new()
 		farmBuildingLevel.buildingType = "Farm"
 		farmBuildingLevel.maxLevel = 0
@@ -861,6 +848,18 @@ func updateUnlockableAttributes():
 		templeBuildingLevel.buildingType = "Temple"
 		templeBuildingLevel.maxLevel = 0
 		buildingLevelList.append(templeBuildingLevel)
+		var marketBuildingLevel = buildingLevel.new()
+		marketBuildingLevel.buildingType = "Market"
+		marketBuildingLevel.maxLevel = 0
+		buildingLevelList.append(marketBuildingLevel)
+		var courthouseBuildingLevel = buildingLevel.new()
+		courthouseBuildingLevel.buildingType = "Courthouse"
+		courthouseBuildingLevel.maxLevel = 0
+		buildingLevelList.append(courthouseBuildingLevel)
+		var monumentBuildingLevel = buildingLevel.new()
+		monumentBuildingLevel.buildingType = "Monument"
+		monumentBuildingLevel.maxLevel = 0
+		buildingLevelList.append(monumentBuildingLevel)
 		var rangedTemplate = UnitTemplate.new()
 		rangedTemplate.unitType = "Ranged"
 		rangedTemplate.unitDefensiveScore = 0
@@ -891,8 +890,7 @@ func updateUnlockableAttributes():
 					if UnitTemplate.unitType == "Ranged":
 						UnitTemplate.unitDefensiveScore += 3
 						UnitTemplate.unitOffensiveScore += 3
-				addWeaponTemplate("Atlatl")
-				addWeaponTemplate("Club")
+				pass
 				addKit("Adventurer")
 				addKit("Homesteader")
 				addTool("Wooden Tools")
@@ -1030,11 +1028,68 @@ func updateUnlockableAttributes():
 						buildingLevel.maxLevel +=3
 			if Technology.techName == "Tempuring":
 				addTool("Steel Tools")
+			# --- SABRE row ---
+			if Technology.techName == "Swordsmanship":
+				addWeaponTemplate("Cutlass")
+			if Technology.techName == "Cavalry Drills":
+				addWeaponTemplate("Cavalry Sword")
+			if Technology.techName == "Officer Training":
+				addWeaponTemplate("Officer Sword")
+			if Technology.techName == "Marine Discipline":
+				addWeaponTemplate("Marine Mameluke")
+			# --- RIFLES row ---
+			if Technology.techName == "Musket Drilling":
+				addWeaponTemplate("Flintlock")
+			if Technology.techName == "Volley Tactics":
+				addWeaponTemplate("Brown Bess")
+				for UnitTemplate in unitTemplateList:
+					if UnitTemplate.unitType == "Ranged":
+						UnitTemplate.unitOffensiveScore += 3
+			if Technology.techName == "Percussion Ignition":
+				addWeaponTemplate("Percussion Cap")
+				addWeaponTemplate("Breechloader")
+			if Technology.techName == "Repeating Mechanisms":
+				addWeaponTemplate("Lever Repeater")
+			# --- ARTILLERY row ---
+			if Technology.techName == "Field Gunnery":
+				addWeaponTemplate("Howitzer")
+			if Technology.techName == "Siege Works":
+				addWeaponTemplate("Mortar")
+			if Technology.techName == "Explosive Charges":
+				for UnitTemplate in unitTemplateList:
+					if UnitTemplate.unitType == "Siege" or UnitTemplate.unitType == "Artillery":
+						UnitTemplate.unitOffensiveScore += 5
+			if Technology.techName == "Rocket Artillery":
+				addWeaponTemplate("Early Rockets")
+			# --- CIVILIAN row ---
+			# Every civilian tech gives all non-Barracks buildings +3 max level
+			if Technology.techName in ["Agrarian Reform", "Trade Networks", "Industrialization", "Infrastructure"]:
+				for buildingLevel in buildingLevelList:
+					if buildingLevel.buildingType != "Barracks":
+						buildingLevel.maxLevel += 3
+			if Technology.techName == "Agrarian Reform":
+				for btype in ["Farm", "Camp", "Mine", "Forge", "Monument",
+						"Courthouse", "Harbor", "Library", "Market"]:
+					addBuilding(btype)
+				addTool("Seed Bag")
+			if Technology.techName == "Trade Networks":
+				addTool("Accountant Books")
+			if Technology.techName == "Industrialization":
+				addTool("Foundry Kit")
+			if Technology.techName == "Infrastructure":
+				addTool("Rails and Engines")
+			# --- DEFENSE row (Tactics and Authority barracks bonuses) ---
+			if Technology.techName == "Tactics":
+				for buildingLevel in buildingLevelList:
+					if buildingLevel.buildingType == "Barracks":
+						buildingLevel.maxLevel += 3
+			if Technology.techName == "Authority":
+				for buildingLevel in buildingLevelList:
+					if buildingLevel.buildingType == "Barracks":
+						buildingLevel.maxLevel += 5
 	var thingForPrint: String
 	for buildingLevel in buildingLevelList:
 		thingForPrint = str("buildingType", buildingLevel.buildingType, "buildingLevel", buildingLevel.maxLevel)
-		print(thingForPrint)
-	pass
 
 var outputsDict: Dictionary = {}
 
@@ -1051,16 +1106,9 @@ func surveyResources():
 	MPM = 0
 	CPM = 0
 	HPM = 0
-	BPM = 0
 	NDT = 0
 	NPM = 0
 	MAN = 0
-	manifestPoints = 0
-	cryptidPoints = 0
-	ironPoints = 0
-	spectralPoints = 0
-	libertyPoints = 0
-	stormPoints = 0
 	for Tile in OwnedTileList:
 		Tile.surveyTile(self)
 		Tile.calculateSpellChanges()
@@ -1074,19 +1122,11 @@ func surveyResources():
 		SPM += Tile.buildingScienceOutput
 		CPM += Tile.buildingCultureOutput    # covers both old faith and culture
 		HPM += Tile.buildingHappinessOutput  # renamed from buildingHarmonyOutput
-		BPM += Tile.buildingBoatsOutput      # new Boats resource
 		NDT += Tile.buildingMandateOutput
 		NPM += Tile.buildingInfluenceOutput
 		MAN += Tile.buildingManpowerOutput
-		manifestPoints += Tile.manifestPointsOutput
-		cryptidPoints += Tile.cryptidPointsOutput
-		ironPoints += Tile.ironPointsOutput
-		spectralPoints += Tile.spectralPointsOutput
-		libertyPoints += Tile.libertyPointsOutput
-		stormPoints += Tile.stormPointsOutput
 	collectTaxes()
 	payUnitMaintenance()
-	pass
 
 signal checkingOutput
 var tempFPM = 0
@@ -1099,16 +1139,9 @@ var tempSPM = 0
 var tempMPM = 0
 var tempCPM = 0
 var tempHPM = 0
-var tempBPM = 0
 var tempNDT = 0
 var tempNPM = 0
 var tempMAN = 0
-var tempManifestPoints = 0
-var tempCryptidPoints = 0
-var tempIronPoints = 0
-var tempSpectralPoints = 0
-var tempLibertyPoints = 0
-var tempStormPoints = 0
 
 func outputCheck(caller):
 	calculateUniqueBuildingAttributes()
@@ -1124,16 +1157,9 @@ func outputCheck(caller):
 	tempMPM = 0
 	tempCPM = 0
 	tempHPM = 0
-	tempBPM = 0
 	tempNDT = 0
 	tempNPM = 0
 	tempMAN = 0
-	tempManifestPoints = 0
-	tempCryptidPoints = 0
-	tempIronPoints = 0
-	tempSpectralPoints = 0
-	tempLibertyPoints = 0
-	tempStormPoints = 0
 	for Tile in OwnedTileList:
 		Tile.surveyTile(self)
 		Tile.calculateSpellChanges()
@@ -1147,17 +1173,9 @@ func outputCheck(caller):
 		tempSPM += Tile.buildingScienceOutput
 		tempCPM += Tile.buildingCultureOutput    # covers old faith + culture
 		tempHPM += Tile.buildingHappinessOutput  # renamed from buildingHarmonyOutput
-		tempBPM += Tile.buildingBoatsOutput      # new Boats resource
 		tempNDT += Tile.buildingMandateOutput
 		tempNPM += Tile.buildingInfluenceOutput
 		tempMAN += Tile.buildingManpowerOutput
-		tempManifestPoints += Tile.manifestPointsOutput
-		tempCryptidPoints += Tile.cryptidPointsOutput
-		tempIronPoints += Tile.ironPointsOutput
-		tempSpectralPoints += Tile.spectralPointsOutput
-		tempLibertyPoints += Tile.libertyPointsOutput
-		tempStormPoints += Tile.stormPointsOutput
-		print("points", manifestPoints, cryptidPoints, ironPoints, spectralPoints, libertyPoints, stormPoints)
 	outputsDict = {
 		"FPM" : tempFPM,
 		"WPM" : tempWPM,
@@ -1169,22 +1187,16 @@ func outputCheck(caller):
 		"MPM" : tempMPM,
 		"CPM" : tempCPM,
 		"HPM" : tempHPM,
-		"BPM" : tempBPM,
 		"NDT" : tempNDT,
 		"NPM" : tempNPM,
 		"MAN" : tempMAN,
-		"MANIFEST" : tempManifestPoints,
-		"CRYPTID"  : tempCryptidPoints,
-		"IRON"     : tempIronPoints,
-		"SPECTRAL" : tempSpectralPoints,
-		"LIBERTY"  : tempLibertyPoints,
-		"STORM"    : tempStormPoints,
 	}
 	emit_signal("checkingOutput", outputsDict, caller)
-	pass
 
 func payUnitMaintenance():
 	for Army in countryArmyList:
+		if not is_instance_valid(Army) or Army.deleteMode:
+			continue
 		Army.onTurnEnd()
 		FPM += Army.armyFoodCost
 		WPM += Army.armyWoodCost
@@ -1199,7 +1211,8 @@ func payUnitMaintenance():
 		NDT += Army.armyMandateCost
 		NPM += Army.armyInfluenceCost
 		MAN += Army.armyManpowerCost
-	pass
+	# Flat 4 gold/turn per active civilian (laws can reduce activeCivilianCount via modifiers)
+	DPM -= activeCivilianCount * 4
 
 func collectTaxes():
 	TotalDollars += DPM
@@ -1215,11 +1228,9 @@ func collectTaxes():
 	TotalScience += SPM
 	TotalCulture += CPM   # covers old Faith + Culture outputs
 	TotalHappiness += HPM # renamed from TotalHarmony
-	TotalBoats += BPM     # new Boats resource
 	TotalMandate += NDT
 	TotalInfluence += NPM
 	TotalManpower += MAN
-	pass
 
 func calculateUniqueBuildingAttributes():
 	currentFoodStockpile = TotalFood
@@ -1228,6 +1239,8 @@ func calculateUniqueBuildingAttributes():
 	for building in countryBuildingList:
 		if building.buildingType == "Granary":
 			foodStorageMax += (100 * building.buildingLevel)
+		if building.buildingType == "Dock":
+			foodStorageMax += (200 * building.buildingLevel)
 			for Technology in unlockedTechnologies:
 				if Technology.techName == "Agriculture":
 					foodStorageMax += (100 * building.buildingLevel)
@@ -1243,7 +1256,6 @@ func calculateUniqueBuildingAttributes():
 		mandateFromGranaries = true
 	else:
 		mandateFromGranaries = false
-	print(currentFoodStockpile, "currentFoodStockpile", foodStorageMax, "foodStorageMax ", mandateThreshold," mandateThreshold ", mandateFromGranaries," mandateFromGranaries")
 	churchBeliefs = 0
 	faithBeliefs = 0
 	for belief in selectedBeliefs:
@@ -1251,7 +1263,6 @@ func calculateUniqueBuildingAttributes():
 			churchBeliefs +=1
 		elif belief.faithBelief == true:
 			faithBeliefs +=1
-	#print("faith beliefs:", faithBeliefs, "church beliefs", churchBeliefs)
 	var beliefDifference = (churchBeliefs - faithBeliefs)
 	if beliefDifference >= -1 && beliefDifference <= 1:
 		churchLevel = 0
@@ -1267,37 +1278,7 @@ func calculateUniqueBuildingAttributes():
 		churchLevel = -2
 	elif beliefDifference <= -6:
 		churchLevel = -3  
-	#print("beliefDifference", beliefDifference, "church Level", churchLevel)
 	#here is where the modifier for 
-	pass
-
-func calculateTaxationAmounts():
-	minFarmTaxAmount = 0
-	minCampTaxAmount = 0
-	minMineTaxAmount = 0
-	minLibraryTaxAmount = 0
-	minTempleTaxAmount = 0
-	minTowerTaxAmount = 0
-	minForgeTaxAmount = 0
-	minWorkshopTaxAmount = 0
-	minBathTaxAmount = 0
-	for law in lawsInConstitution:
-		match law.lawType:
-			"Mercantilism":
-				minPosTaxationAmount += 10
-			"Homeland Defence":
-				minForgeTaxAmount += 20
-	minPosTaxationAmount += 15
-	minFarmTaxAmount += minPosTaxationAmount
-	minCampTaxAmount += minPosTaxationAmount
-	minMineTaxAmount += minPosTaxationAmount
-	minLibraryTaxAmount += minPosTaxationAmount
-	minTempleTaxAmount += minPosTaxationAmount
-	minTowerTaxAmount += minPosTaxationAmount
-	minForgeTaxAmount += minPosTaxationAmount
-	minWorkshopTaxAmount += minPosTaxationAmount
-	minBathTaxAmount += minPosTaxationAmount
-	pass
 
 func calculateTurn() -> void:
 	match CID:
@@ -1305,8 +1286,6 @@ func calculateTurn() -> void:
 			_uk_calculate_turn()
 		"CA":
 			_ca_calculate_turn()
-		"BA":
-			pass  # BA is opportunist — TODO DODK
 		_:
 			# Generic passive AI for all state countries spawned at runtime.
 			# To add per-state behaviour later, insert a match arm above this one:
@@ -1322,6 +1301,14 @@ func calculateTurn() -> void:
 # adjacent UK tiles where CA has a manpower advantage.
 # Respects formal alliances — never enters allied-country tiles.
 # ============================================================
+
+# Emitted when an AI army physically moves to a new tile after a conquest.
+# world.gd listens and repositions the APF node.
+signal armyRepositioned(army, old_tile, new_tile)
+signal battleResolved(tile, atk_loss, def_loss)
+
+# Emitted for every AI attack so world.gd can build a turn summary.
+signal aiCombatEvent(attacker_cid, tile_name, result)
 
 func _ca_calculate_turn() -> void:
 	_passive_hold()
@@ -1360,10 +1347,16 @@ func _ca_press_uk_borders() -> void:
 					best_target = neighbor
 
 		if best_target != null:
+			var old_tile = army.inTile
 			best_target.siegeCalculate(army)
 			if best_target.stationedArmy != null:
 				_resolve_ai_battle(army, best_target.stationedArmy, best_target)
-			print("CA ", army.ArmyName, " presses UK at ", best_target.tileName)
+			var captured: bool = (best_target.tileOwner == CID)
+			emit_signal("aiCombatEvent", CID, best_target.tileName,
+				"captured" if captured else "attacked")
+			if captured and old_tile != null:
+				army.inTile = best_target
+				emit_signal("armyRepositioned", army, old_tile, best_target)
 
 
 # ============================================================
@@ -1409,7 +1402,6 @@ func _apply_supply_attrition(army: Army) -> void:
 		var loss = int(unit.unitCurrentManpower * attrition_rate)
 		unit.unitCurrentManpower = max(0, unit.unitCurrentManpower - loss)
 	army.surveySelf()
-	print(CID, " army ", army.ArmyName, " unsupplied — attrition applied")
 
 
 func is_army_supplied(army: Army) -> bool:
@@ -1421,13 +1413,19 @@ func is_army_supplied(army: Army) -> bool:
 # Pure military. No economy. No buildings.
 # ============================================================
 
+const UK_ARMY_CAP = 10   # max simultaneous UK field armies
+const UK_SPAWN_INTERVAL = 5  # turns between dock reinforcement drops
+var _uk_spawn_cooldown: int = UK_SPAWN_INTERVAL  # start at cap so turn-1 spawn doesn't fire
+
 func _uk_calculate_turn() -> void:
 	_calculate_supply_from_owned()
+	_uk_spawn_reinforcement()
 	for army in countryArmyList:
+		if not is_instance_valid(army) or army.deleteMode:
+			continue
 		if army.inTile == null:
 			continue
-		if army.deleteMode:
-			continue
+		army.onTurnEnd()  # tick status effects, reload timers, reinforcement
 		var supplied = is_army_supplied(army)
 		if not supplied:
 			_uk_retreat_to_supply(army)
@@ -1435,8 +1433,9 @@ func _uk_calculate_turn() -> void:
 			var target = _find_attack_target(army)
 			if target != null:
 				_uk_attack_tile(army, target)
-			else:
-				_uk_reinforce(army)
+			elif not _uk_try_advance(army):
+				# No target and couldn't advance — hold position
+				army.isGuarding = true
 
 
 func _find_attack_target(army: Army):
@@ -1445,48 +1444,102 @@ func _find_attack_target(army: Army):
 		return null
 	if army.inTile == null:
 		return null
+	# UK is aggressive — attack any adjacent USA tile regardless of relative strength
 	var best_target = null
 	var lowest_defender_strength = INF
 	for neighbor in army.inTile.TileNeighbors:
+		if neighbor == null:
+			continue
 		if neighbor.tileOwner != "USA":
 			continue
 		var defender_strength = 0
-		if neighbor.stationedArmy != null:
+		if neighbor.stationedArmy != null and is_instance_valid(neighbor.stationedArmy):
 			defender_strength = neighbor.stationedArmy.manpowerInArmy
 		else:
 			defender_strength = int(neighbor.get_siege_difficulty() * 50)
-		if army.manpowerInArmy > defender_strength:
-			if defender_strength < lowest_defender_strength:
-				lowest_defender_strength = defender_strength
-				best_target = neighbor
+		if defender_strength < lowest_defender_strength:
+			lowest_defender_strength = defender_strength
+			best_target = neighbor
 	return best_target
 
 
 func _uk_attack_tile(army: Army, targetTile) -> void:
 	if targetTile == null:
 		return
+	var old_tile = army.inTile
 	targetTile.siegeCalculate(army)
 	if targetTile.stationedArmy != null:
 		_resolve_ai_battle(army, targetTile.stationedArmy, targetTile)
-	print("UK ", army.ArmyName, " attacks ", targetTile.tileName)
+	var captured: bool = (targetTile.tileOwner == CID)
+	emit_signal("aiCombatEvent", CID, targetTile.tileName,
+		"captured" if captured else "attacked")
+	if captured and old_tile != null:
+		old_tile.stationedArmy = null
+		targetTile.stationedArmy = army
+		army.inTile = targetTile
+		emit_signal("armyRepositioned", army, old_tile, targetTile)
 
 
-func _resolve_ai_battle(attacker: Army, defender: Army, _tile) -> void:
-	var raw_attack = float(attacker.armyPunch)
-	var block_ratio = clamp(
-		float(defender.armyBlock) / max(1.0, float(defender.unitsList.size())),
-		0.0, 0.9)
-	var defender_loss = int(raw_attack * (1.0 - block_ratio))
+func _resolve_ai_battle(attacker: Army, defender: Army, tile) -> void:
+	# Mirrors battle.gd: prefer ranged if attacker has ready ranged units
+	var use_ranged: bool = attacker.has_ready_ranged_units() and attacker.armyLaunch > 0
+	var battle_type: String = "ranged" if use_ranged else "melee"
 
-	var counter = float(defender.armyPunch)
-	var attacker_block = clamp(
-		float(attacker.armyBlock) / max(1.0, float(attacker.unitsList.size())),
-		0.0, 0.9)
-	var attacker_loss = int(counter * (1.0 - attacker_block))
+	var defender_loss: int = 0
+	var attacker_loss: int = 0
 
-	defender.calculateDefenderResults("melee", defender_loss)
-	attacker.calculateDefenderResults("melee", attacker_loss)
-	print("UK battle: attacker loses ", attacker_loss, " defender loses ", defender_loss)
+	if use_ranged:
+		var effective_launch = float(attacker.armyLaunch)
+		var ranged_block = clamp(
+			float(defender.armyDefence) / max(1.0, float(defender.unitsList.size())),
+			0.0, 0.9)
+		var net = effective_launch * (1.0 - ranged_block)
+		# CannonBlast bonus vs unshielded
+		if defender.armyShield <= 0 and attacker._army_has_active_mod("CannonBlast"):
+			net *= 3.0
+		var shield_hit = int(min(float(defender.armyShield), net))
+		defender.armyShield = max(0, defender.armyShield - shield_hit)
+		defender_loss = int(net - float(shield_hit))
+		# Counter-ranged if defender can fire
+		if defender.has_ready_ranged_units() and defender.armyLaunch > 0:
+			var counter_launch = float(defender.armyLaunch)
+			var atk_block = clamp(
+				float(attacker.armyDefence) / max(1.0, float(attacker.unitsList.size())),
+				0.0, 0.9)
+			var counter_net = counter_launch * (1.0 - atk_block)
+			var atk_shield_hit = int(min(float(attacker.armyShield), counter_net))
+			attacker.armyShield = max(0, attacker.armyShield - atk_shield_hit)
+			attacker_loss = int(counter_net - float(atk_shield_hit))
+		# Trigger reload on attacker's ranged units
+		attacker.tick_all_reloads()
+		for unit in attacker.unitsList:
+			if unit.unitWeapon != null and (unit.unitWeapon.is_musket() or unit.unitWeapon.is_artillery()):
+				if not unit.is_reloading():
+					unit.start_reload()
+	else:
+		var raw_attack = float(attacker.armyPunch)
+		var block_ratio = clamp(
+			float(defender.armyBlock) / max(1.0, float(defender.unitsList.size())),
+			0.0, 0.9)
+		var net = raw_attack * (1.0 - block_ratio)
+		var shield_hit = int(min(float(defender.armyShield), net))
+		defender.armyShield = max(0, defender.armyShield - shield_hit)
+		defender_loss = int(net - float(shield_hit))
+		# Counter-melee
+		var counter = float(defender.armyPunch)
+		var attacker_block = clamp(
+			float(attacker.armyBlock) / max(1.0, float(attacker.unitsList.size())),
+			0.0, 0.9)
+		var counter_net = counter * (1.0 - attacker_block)
+		var atk_shield_hit = int(min(float(attacker.armyShield), counter_net))
+		attacker.armyShield = max(0, attacker.armyShield - atk_shield_hit)
+		attacker_loss = int(counter_net - float(atk_shield_hit))
+
+	if defender_loss > 0:
+		defender.calculateDefenderResults(battle_type, defender_loss)
+	if attacker_loss > 0:
+		attacker.calculateDefenderResults(battle_type, attacker_loss)
+	emit_signal("battleResolved", tile, attacker_loss, defender_loss)
 
 
 func _uk_retreat_to_supply(army: Army) -> void:
@@ -1498,12 +1551,65 @@ func _uk_retreat_to_supply(army: Army) -> void:
 		for neighbor in army.inTile.TileNeighbors:
 			if neighbor == tile and neighbor.tileOwner == CID:
 				army.inTile = neighbor
-				print("UK ", army.ArmyName, " retreats to supply at ", neighbor.tileName)
 				return
 
 
-func _uk_reinforce(_army: Army) -> void:
-	pass
+func _uk_reinforce(army: Army) -> void:
+	if army == null or army.inTile == null:
+		return
+	var rate = armyReinforceRate * (2 if army.inTile.has_dock() else 1)
+	army.manpowerInArmy = mini(army.manpowerInArmy + rate, army.maxManpower)
+
+func _uk_try_advance(army: Army) -> bool:
+	# Move into an adjacent UK-owned tile that has no army — pushes front forward
+	if army.inTile == null:
+		return false
+	for neighbor in army.inTile.TileNeighbors:
+		if neighbor == null:
+			continue
+		if neighbor.tileOwner != CID:
+			continue
+		if neighbor.stationedArmy != null and is_instance_valid(neighbor.stationedArmy):
+			continue
+		var ppb = neighbor.tileSpawnPoint
+		if ppb != null and ppb.occupied:
+			continue
+		# Found an open UK tile — move there
+		var old_tile = army.inTile
+		army.inTile = neighbor
+		old_tile.stationedArmy = null
+		neighbor.stationedArmy = army
+		if neighbor.tileSpawnPoint != null:
+			neighbor.tileSpawnPoint.stationedArmy = army
+		if old_tile.tileSpawnPoint != null:
+			old_tile.tileSpawnPoint.stationedArmy = null
+		emit_signal("armyRepositioned", army, old_tile, neighbor)
+		army.isGuarding = false
+		return true
+	return false
+
+func _uk_spawn_reinforcement() -> void:
+	_uk_spawn_cooldown -= 1
+	if _uk_spawn_cooldown > 0:
+		return
+	_uk_spawn_cooldown = UK_SPAWN_INTERVAL
+	if countryArmyList.size() >= UK_ARMY_CAP:
+		return
+	var dock_tiles: Array = []
+	for tile in OwnedTileList:
+		if tile.has_dock() and tile.stationedArmy == null:
+			dock_tiles.append(tile)
+	if dock_tiles.is_empty():
+		return
+	dock_tiles.shuffle()
+	var spawn_tile = dock_tiles[0]
+	var army_names = ["Crown Landing Force", "Royal Marine Detachment",
+		"King's Own Regiment", "Redcoat Vanguard", "British Expeditionary Force"]
+	var army_name: String = army_names[countryArmyList.size() % army_names.size()]
+	addArmy(army_name, spawn_tile.tileNumber)
+	var new_army = countryArmyList.back()
+	if new_army != null:
+		new_army.raiseSelf()
 
 
 # ============================================================
@@ -1531,27 +1637,7 @@ func _passive_hold() -> void:
 			TotalManpower -= reinforce
 
 
-func setNewTaxAmount(amount, type):
-	match type:
-		"Farm":
-			setFarmTaxAmount = amount
-		"Camp":
-			setCampTaxAmount = amount
-		"Mine":
-			setMineTaxAmount = amount
-		"Library":
-			setLibraryTaxAmount = amount
-		"Temple":
-			setTempleTaxAmount = amount
-		"Tower":
-			setTowerTaxAmount = amount
-		"Forge":
-			setTowerTaxAmount = amount
-		"Workshop":
-			setWorkshopTaxAmount = amount
-		"Bath":
-			setBathTaxAmount = amount
-	print(type," changed to ", amount, "DEBUG")
+func setNewTaxAmount(_amount, _type):
 	pass
 
 func payBill(type, amount):
@@ -1562,9 +1648,6 @@ func payBill(type, amount):
 			TotalDollars -= amount
 		"happiness", "harmony":  # "harmony" kept for backward compat
 			TotalHappiness -= amount
-		"boats":
-			TotalBoats -= amount
-	pass
 
 var newToolScene = load("res://tool.tscn")
 
@@ -1572,7 +1655,6 @@ func addTool(type):
 	var newToolType = newToolScene.instantiate()
 	newToolType.buildSelf(type)
 	availableTools.append(newToolType)
-	pass
 
 var newKitScene = load("res://kit.tscn")
 
@@ -1582,21 +1664,17 @@ func addBuilding(type):
 	newBuilding.buildingType = type
 	newBuilding.buildBuilding()
 	unlockedBuildings.append(newBuilding)
-	pass
 
 func addKit(type):
 	var newKitType = newKitScene.instantiate()
 	newKitType.buildSelf(type)
 	availableKits.append(newKitType)
-	pass
 
 func addTile(tileToAdd):
 	OwnedTileList.append(tileToAdd)
-	pass
 
 func unlockArmyIcon(icon):
 	armyIconList.append(icon)
-	pass
 
 #=============================================
 #Save Functions
@@ -1613,22 +1691,17 @@ func save_state() -> Dictionary:
 		"TotalWood":      TotalWood,
 		"TotalMetal":     TotalMetal,
 		"TotalCulture":   TotalCulture,   # covers old Faith + Culture
-		"TotalMagic":     TotalMagic,
-		"TotalWeapons":   TotalWeapons,
+		"TotalMagic":              TotalMagic,
+		"cherry_blossom_magic_acc": cherry_blossom_magic_acc,
+		"pioneer_heritage_corrupt_acc": pioneer_heritage_corrupt_acc,
+		"nature_conservationists_corrupt_acc": nature_conservationists_corrupt_acc,
+		"civic_pride_mandate_acc": civic_pride_mandate_acc,
+		"TotalWeapons":            TotalWeapons,
 		"TotalScience":   TotalScience,
 		"TotalHappiness": TotalHappiness,
-		"TotalBoats":     TotalBoats,
 		"TotalMandate":   TotalMandate,
 		"TotalInfluence": TotalInfluence,
 		"TotalManpower":  TotalManpower,
- 
-		# Magic schools
-		"manifestPoints": manifestPoints, "manifestLevel": manifestLevel,
-		"spectralPoints": spectralPoints, "spectralLevel": spectralLevel,
-		"cryptidPoints": cryptidPoints, "cryptidLevel": cryptidLevel,
-		"stormPoints": stormPoints, "stormLevel": stormLevel,
-		"ironPoints": ironPoints, "ironLevel": ironLevel,
-		"libertyPoints": libertyPoints, "libertyLevel": libertyLevel,
  
 		# Economy settings that can change
 		"armyReinforceRate": armyReinforceRate,
@@ -1744,28 +1817,17 @@ func build_from_save(save_data: Dictionary) -> void:
 	TotalWood      = save_data.get("TotalWood",      TotalWood)
 	TotalMetal     = save_data.get("TotalMetal",     TotalMetal)
 	TotalCulture   = save_data.get("TotalCulture",   TotalCulture)  # covers old Faith + Culture
-	TotalMagic     = save_data.get("TotalMagic",     TotalMagic)
-	TotalWeapons   = save_data.get("TotalWeapons",   TotalWeapons)
+	TotalMagic             = save_data.get("TotalMagic",              TotalMagic)
+	cherry_blossom_magic_acc = save_data.get("cherry_blossom_magic_acc", 0.0)
+	pioneer_heritage_corrupt_acc = save_data.get("pioneer_heritage_corrupt_acc", {})
+	nature_conservationists_corrupt_acc = save_data.get("nature_conservationists_corrupt_acc", {})
+	civic_pride_mandate_acc = save_data.get("civic_pride_mandate_acc", 0.0)
+	TotalWeapons           = save_data.get("TotalWeapons",            TotalWeapons)
 	TotalScience   = save_data.get("TotalScience",   TotalScience)
 	TotalHappiness = save_data.get("TotalHappiness", TotalHappiness)
-	TotalBoats     = save_data.get("TotalBoats",     TotalBoats)
 	TotalMandate   = save_data.get("TotalMandate",   TotalMandate)
 	TotalInfluence = save_data.get("TotalInfluence", TotalInfluence)
 	TotalManpower  = save_data.get("TotalManpower",  TotalManpower)
- 
-	# Restore magic schools
-	manifestPoints = save_data.get("manifestPoints", 0)
-	manifestLevel  = save_data.get("manifestLevel", 0)
-	spectralPoints = save_data.get("spectralPoints", 0)
-	spectralLevel  = save_data.get("spectralLevel", 0)
-	cryptidPoints = save_data.get("cryptidPoints", 0)
-	cryptidLevel  = save_data.get("cryptidLevel", 0)
-	stormPoints = save_data.get("stormPoints", 0)
-	stormLevel  = save_data.get("stormLevel", 0)
-	ironPoints = save_data.get("ironPoints", 0)
-	ironLevel  = save_data.get("ironLevel", 0)
-	libertyPoints = save_data.get("libertyPoints", 0)
-	libertyLevel  = save_data.get("libertyLevel", 0)
  
 	# Restore economy settings
 	armyReinforceRate = save_data.get("armyReinforceRate", armyReinforceRate)
@@ -1814,7 +1876,6 @@ func build_from_save(save_data: Dictionary) -> void:
 				break
  
 	# Recalculate derived values
-	calculateTaxationAmounts()
 	updateUnlockableAttributes()
 
 

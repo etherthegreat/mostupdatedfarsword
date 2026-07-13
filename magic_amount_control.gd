@@ -26,7 +26,6 @@ var amountPerTurn: int
 
 func buildSelf():
 	schoolType = schoolTypeEXP
-	print("RETURN DEBUG12,", schoolType)
 	match schoolType:
 		"storm", "druid":
 			$SchoolTreeSprite.texture = load("res://art assets/finishedAssets/spellschools/IMG_1255.PNG")
@@ -59,14 +58,11 @@ func buildSelf():
 		spellBranchUnlock.returnTranslatedInfo.connect(giveTranslatedInfo)
 		spellBranchUnlock.buildSelf()
 
-	pass
 
 
 signal askSpellBranchInfo
 func giveTranslatedInfo(type, spellBranch):
 	emit_signal("askSpellBranchInfo", type, spellBranch)
-	#print("RETURN DEBUG")
-	pass
 
 func update(playerCountryNode, magicDic):
 	schoolType = schoolTypeEXP
@@ -109,8 +105,6 @@ func update(playerCountryNode, magicDic):
 	$AmountLabel.text = str(amount)
 	for spellBranchUnlock in spellUnlocks:
 		spellBranchUnlock.update(amount, amountPerTurn)
-		pass
-	pass
 
 signal spellSchoolLevelUp
 
@@ -122,10 +116,4 @@ func calculateLevelUp(schoolLevel):
 		cost = ((cost * schoolLevel)+15)
 		finalCost = (cost - (cost * (discountModifier * .01)) + (cost * (costModifier * .01)))
 	if amount >= finalCost:
-		#send a big ole signal for an event which just says the spell has been unlocked
-		print("big big big big", schoolType)
 		emit_signal("spellSchoolLevelUp", schoolType, schoolLevel)
-		pass
-	else:
-		pass
-	pass

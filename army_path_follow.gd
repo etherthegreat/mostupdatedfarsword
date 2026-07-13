@@ -3,7 +3,7 @@ extends Control
 class_name armyPathFollow
 
 var thisArmy: Army
-var thisCountry: country
+var thisCountry
 var currentTile: Tile
 var currentPath: Path2D
 
@@ -24,6 +24,32 @@ var progressRate: float
 var spellToCast: spell
 var spellCost: int
 
+# ── ATTACK ANIMATION STATE ────────────────────────────────────────────────────
+var attack_mode: bool = false        # true while running attack advance/retreat
+var attack_at_midpoint: bool = false # true after midpoint is hit, prevents re-fire
+
+signal attackMidpoint(apf)                        # fires once at progress 0.5
+signal attackRetreated(apf, returnPoint)           # fires when retreat reaches 0.0
+
+func beginAttack(targetPPB: pathPointButton, path: Path2D) -> void:
+	currentPathPoint.occupied = false
+	currentPath = path
+	destinationPathPoint = targetPPB
+	attack_mode = true
+	attack_at_midpoint = false
+	progressRate = 0.0
+	movingForward = true
+	movingBackward = false
+	emit_signal("movingArmy")
+
+func resolveAttack(conquered: bool) -> void:
+	if conquered:
+		movingForward = true   # continue forward to 1.0 — take the tile
+	else:
+		movingBackward = true  # retreat back to 0.0 — bounce back
+
+# ── END ATTACK STATE ──────────────────────────────────────────────────────────
+
 func move(key, keyPath, path):
 	currentPathPoint.occupied = false
 	currentPath = path
@@ -37,36 +63,40 @@ func move(key, keyPath, path):
 			movingBackward = true
 			destinationPathPoint = keyPath
 	emit_signal("movingArmy")
-	pass
 
 signal armyArrived
 signal armyTraveling
-var fuckyou : float
-var tempmanpowerinarmy: float
-var tempMaxManpower: float
-func _process(delta: float) -> void:
+
+func refreshHealthBar() -> void:
+	if thisArmy == null or thisArmy.maxManpower == 0:
+		return
+	$ProgressBar.value = (float(thisArmy.manpowerInArmy) / thisArmy.maxManpower) * 100.0
+	$Label.text = "win" if thisArmy.armyCharm != null else ""
+	if thisArmy.armyMaxShield > 0:
+		$ShieldBar.visible = true
+		$ShieldBar.value = (float(thisArmy.armyShield) / float(thisArmy.armyMaxShield)) * 100.0
+	else:
+		$ShieldBar.visible = false
+
+func _process(_delta: float) -> void:
+	if thisArmy == null:
+		return
+	refreshHealthBar()
 	if thisArmy.deleteMode == false:
-		tempmanpowerinarmy = thisArmy.manpowerInArmy
-		tempMaxManpower = thisArmy.maxManpower
-		$APFButton.icon = thisArmy.armyIcon
-		fuckyou = ((tempmanpowerinarmy/tempMaxManpower)*100)
-		if thisArmy.armyCharm != null:
-			$Label.text = "win"
-		$ProgressBar.value = fuckyou
-		if movingBackward == true:
+		if attack_mode:
+			_process_attack()
+		elif movingBackward == true:
 			progressRate -= 0.02
 			if progressRate <= 0:
 				movingBackward = false
 				currentPathPoint = destinationPathPoint
 				currentPathPoint.occupied = true
-				#currentPathPoint.add_child(self)
 				var currentContainer = get_parent()
 				emit_signal("armyArrived", currentPath, destinationPathPoint, thisArmy, self, currentContainer)
 				destinationPathPoint = null
 			else:
 				emit_signal("armyTraveling", progressRate, destinationPathPoint, thisArmy)
-		if movingForward == true:
-			# Visual march speed — slowed by winter on cold tiles for non-adapted armies
+		elif movingForward == true:
 			var march_speed: float = 0.02
 			if currentTile != null and currentTile.winterScore > 0 \
 					and not thisArmy.armyTags.has("Cold Weather"):
@@ -77,7 +107,6 @@ func _process(delta: float) -> void:
 				currentPathPoint = destinationPathPoint
 				currentPathPoint.occupied = true
 				currentTile = currentPathPoint.ppbTile
-				#currentPathPoint.add_child(self)
 				var currentContainer = get_parent()
 				emit_signal("armyArrived", currentPath, destinationPathPoint, thisArmy, self, currentContainer)
 				destinationPathPoint = null
@@ -88,7 +117,38 @@ func _process(delta: float) -> void:
 		currentPathPoint.stationedArmy = null
 		thisArmy.queue_free()
 		self.queue_free()
-	pass
+
+func _process_attack() -> void:
+	var speed: float = 0.025
+	if movingForward:
+		progressRate += speed
+		if not attack_at_midpoint and progressRate >= 0.5:
+			progressRate = 0.5
+			movingForward = false
+			attack_at_midpoint = true
+			emit_signal("attackMidpoint", self)
+			# execution pauses here until resolveAttack() sets a direction
+		elif progressRate >= 1.0:
+			progressRate = 1.0
+			movingForward = false
+			attack_mode = false
+			currentPathPoint = destinationPathPoint
+			currentPathPoint.occupied = true
+			currentTile = currentPathPoint.ppbTile
+			emit_signal("armyArrived", currentPath, destinationPathPoint, thisArmy, self, get_parent())
+			destinationPathPoint = null
+		else:
+			emit_signal("armyTraveling", progressRate, destinationPathPoint, thisArmy)
+	elif movingBackward:
+		progressRate -= speed
+		if progressRate <= 0.0:
+			progressRate = 0.0
+			movingBackward = false
+			attack_mode = false
+			currentPathPoint.occupied = true
+			emit_signal("attackRetreated", self, currentPathPoint)
+		else:
+			emit_signal("armyTraveling", progressRate, destinationPathPoint, thisArmy)
 
 func onRaise(Army, country, pathPoint):
 	thisArmy = Army
@@ -96,8 +156,8 @@ func onRaise(Army, country, pathPoint):
 	currentPathPoint = pathPoint
 	currentPathPoint.occupied = true
 	$APFButton.icon = Army.armyIcon
-	currentTile = pathPoint.ppbTile   # populate immediately so winter drain/speed is safe on turn 1
-	pass
+	currentTile = pathPoint.ppbTile
+	refreshHealthBar()
 
 signal apfSelected
 func _on_apf_button_pressed() -> void:
@@ -106,22 +166,17 @@ func _on_apf_button_pressed() -> void:
 	else:
 		thisArmy.armyCharm = spellToCast
 		spellToCast = null
-	pass # Replace with function body.
 
 func showBattle(battle):
 	$battlecontrol.add_child(battle)
-	pass
 
 func deleteBattle():
 	if $battlecontrol.get_children() != null:
 		for Battle in $battlecontrol.get_children():
 			Battle.queue_free()
-		pass
 
 func prepareMilSpell(spellForCast):
 	spellToCast = spellForCast
-	pass
 
 func emitTileChange():
 	emit_signal("siegeChange", thisArmy, currentPathPoint)
-	pass

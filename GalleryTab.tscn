@@ -1,0 +1,81 @@
+[gd_scene load_steps=2 format=3 uid="uid://bihcd1g4tjs2u"]
+
+[ext_resource type="Script" uid="uid://lmrg3gf0ff8v" path="res://GalleryTab.gd" id="1_galtab"]
+
+[node name="GalleryTab" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1119.0
+offset_bottom = -552.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_galtab")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 0
+offset_right = 905.0
+offset_bottom = 564.0
+
+[node name="GalleryGrid" type="GridContainer" parent="ScrollContainer"]
+layout_mode = 2
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
+columns = 4
+
+[node name="Lightbox" type="Control" parent="."]
+layout_mode = 2
+anchors_preset = 0
+
+[node name="DarkBG" type="ColorRect" parent="Lightbox"]
+layout_mode = 0
+offset_right = 616.0
+offset_bottom = 429.0
+color = Color(0, 0, 0, 0.00392157)
+
+[node name="FullArtRect" type="TextureRect" parent="Lightbox"]
+layout_mode = 0
+offset_right = 583.0
+offset_bottom = 379.0
+expand_mode = 2
+stretch_mode = 3
+
+[node name="LightboxTitle" type="Label" parent="Lightbox"]
+layout_mode = 0
+offset_left = 176.0
+offset_right = 270.0
+offset_bottom = 23.0
+text = "lightboxtitle"
+
+[node name="LightboxFlavor" type="Label" parent="Lightbox"]
+layout_mode = 0
+offset_left = 23.0
+offset_top = 53.0
+offset_right = 135.0
+offset_bottom = 76.0
+text = "lightbox flavor"
+
+[node name="PrevButton" type="Button" parent="Lightbox"]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 342.0
+offset_right = 58.0
+offset_bottom = 373.0
+text = "<"
+
+[node name="NextButton" type="Button" parent="Lightbox"]
+layout_mode = 0
+offset_left = 114.0
+offset_top = 344.0
+offset_right = 132.0
+offset_bottom = 375.0
+text = ">"
+
+[node name="CloseButton" type="Button" parent="Lightbox"]
+layout_mode = 0
+offset_left = 77.0
+offset_top = 393.0
+offset_right = 94.0
+offset_bottom = 424.0
+text = "x"

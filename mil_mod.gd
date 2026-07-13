@@ -40,7 +40,6 @@ var newArea2D: Area2D
 var newCollissionArea2D: CollisionShape2D
 
 func buildSelf(Type):
-	#print("AHHHHHHHHHHHH", Type)
 	milModType = Type
 	infantryMod = false
 	rangedMod = false
@@ -261,12 +260,85 @@ func buildSelf(Type):
 			milModDescription = str("[i]Eyes on every inlet and estuary:[/i][color= green] All units +2 Defense per Level when adjacent to naval tiles[/color]")
 			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
 			milModResource = "None"
+		"Experienced Fisherman":
+			commanderMod = true
+			terrainMod = true
+			terrainType = "Wetlands"
+			milModDescription = str("[i]Knows every current and tidal crossing:[/i][color= green] +1 Attack per Governor Level when stationed in Wetlands terrain[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
 		# ── TIER 2 MIL MODS ───────────────────────────────────────────────────
+		"Master Baiter":
+			commanderMod = true
+			milModDescription = str("[i]Patience is a military virtue:[/i][color= green] Army Shield recharges +10% of max per turn[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
 		"Marine":
 			commanderMod = true
 			marineMod = true
 			milModDescription = str("[i]Land and sea are one battlefield:[/i][color= green] Army may launch melee attacks into adjacent naval tile neighbors[/color]")
 			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"SaberCharge":
+			infantryMod = true
+			milModDescription = str("[i]Strike while they reload — the saber does not wait for muskets:[/i][color= green] x2 Melee damage vs enemies that have not yet fired; x3 with Tempuring tech[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"USS Constitution Support":
+			siegeMod = true
+			milModDescription = str("[i]Old Ironsides rides with you:[/i][color= green] +20% Ranged Attack and +20% Ranged Defense when beginning a round in a Coastal tile[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
+			milModResource = "None"
+		"CannonBlast":
+			siegeMod = true
+			milModDescription = str("[i]Cannon shot laughs at soft flesh, balks at stone:[/i][color= green] ÷2 damage vs Shield; attacker takes +25% melee damage; x3 vs unshielded (x5 w/ Tempuring); provides Siege progress (doubled w/ Tempuring)[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		# ── ARC_02 (Appalachian Miner) mods ───────────────────────────────────────
+		"Appalachian Hill Fighter":
+			commanderMod = true
+			terrainMod = true
+			terrainType = "Foothills"
+			milModDescription = str("[i]Knows every ridge, gully, and choke point in the Appalachians:[/i][color= green] +2 Defense when stationed in Foothills terrain[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"Explosives Expert":
+			commanderMod = true
+			milModDescription = str("[i]Powder and timing — the miner's two greatest gifts to artillery:[/i][color= green] +10% Ranged Attack for this army[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"Mountain Pathfinder":
+			commanderMod = true
+			terrainMod = true
+			terrainType = "Foothills"
+			milModDescription = str("[i]The mountain is not an obstacle. It is a road:[/i][color= green] +1 Movement when beginning a turn in Foothills terrain[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"Halloween Endorsement":
+			commanderMod = true
+			milModDescription = str("[i]Four former Presidents saw who answered the call and approved:[/i][color= green] All units in Ualani's army generate +1 Happiness per turn for 10 turns[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"Cherry Blossom Prayer":
+			commanderMod = true
+			milModDescription = str("[i]She stood at the Washington Monument a long time. Whatever she asked for, it was granted:[/i][color= green] All armies generate +0.01 Magic per unit per turn (permanent)[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		# ── ARC_03 (Ivy League Dropout) mods ─────────────────────────────────────
+		"Student Body Commander":
+			commanderMod = true
+			milModDescription = str("[i]A commander shaped by the finest minds in the colonies:[/i][color= green] +10% Attack and Defense in tiles with Ivy League modifier[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"Field Research":
+			commanderMod = true
+			milModDescription = str("[i]Every battle is a lesson, and every lesson is science:[/i][color= green] Gain Science equal to 20% of damage dealt when attacking[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"Cultural Corps":
+			commanderMod = true
+			milModDescription = str("[i]The regiment marches as a school — every mile, a new lecture:[/i][color= green] +1 Culture per unit per level in army per turn[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
 			milModResource = "None"
 		"Guerrilla Tactics":
 			infantryMod = true
@@ -282,7 +354,7 @@ func buildSelf(Type):
 			milModResource = "None"
 		"Iron Bayonet":
 			infantryMod = true
-			milModDescription = str("[i]The first charge carries iron conviction:[/i][color= green] +5 Attack per Level in first battle round[/color]")
+			milModDescription = str("[i]The first charge carries iron conviction:[/i][color= green] +2 Attack per Level on first engagement from current position[/color]")
 			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
 			milModResource = "None"
 		"Sharpshooter":
@@ -312,7 +384,7 @@ func buildSelf(Type):
 			milModResource = "None"
 		"Vanguard":
 			commanderMod = true
-			milModDescription = str("[i]The first into the breach:[/i][color= green] All units +4 Attack per Level on first engagement in a fresh tile[/color]")
+			milModDescription = str("[i]The first into the breach:[/i][color= green] All units +1 Attack per Level on first engagement from current position[/color]")
 			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
 			milModResource = "None"
 		"Siege Line":
@@ -439,7 +511,7 @@ func buildSelf(Type):
 		# ── UNIFORM MODS ──────────────────────────────────────────────────────────
 		"QuickDraw":
 			infantryMod = true
-			milModDescription = str("[i]First shot wins the duel:[/i][color= green] First ranged attack each battle deals +5 bonus damage[/color]")
+			milModDescription = str("[i]First shot wins the duel:[/i][color= green] +3 Ranged Attack per Level on first engagement from current position[/color]")
 			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
 			milModResource = "None"
 		"HardeeDisc":
@@ -551,7 +623,7 @@ func buildSelf(Type):
 			commanderMod = true
 			culturalMod = true
 			culturalState = "MA"
-			milModDescription = str("[i]The shot heard 'round the world started here:[/i][color= green] +5 attack per level in the first 3 battle rounds[/color]")
+			milModDescription = str("[i]The shot heard 'round the world started here:[/i][color= green] +4 Attack per Level on first 3 engagements from current position[/color]")
 			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
 			milModResource = "None"
 		"Quaker Steel":
@@ -704,6 +776,12 @@ func buildSelf(Type):
 			civilianMod = true
 			toolMod = true
 			milModDescription = str("[i]Knows every trail, every hazard, every bad thing in the dirt:[/i][color=green] Army is immune to corruption-based disease[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"DMA Badge":
+			civilianMod = true
+			toolMod = true
+			milModDescription = str("[i]Department of Mythological Affairs field credential:[/i][color=green] Civilian may Investigate Sightings in tiles with active Protector-backed modifiers — triggers associated Protector Summon event on next turn[/color]")
 			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
 			milModResource = "None"
 		"President":
@@ -912,7 +990,7 @@ func buildSelf(Type):
 			milModDescription = str("[i]Born wrong, fights right. Absolutely territorial.:[/i][color=green] +25 Attack, +10 Ranged, +10 Block[/color]")
 			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
 			milModResource = "None"
-		"Bigfoot's Solidarity":
+		"Wood Booger's Solidarity":
 			commanderMod = true
 			milModDescription = str("[i]Eleven counties of footprints. Solidarity through presence.:[/i][color=green] +30 Block, +15 Attack[/color]")
 			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
@@ -1028,9 +1106,9 @@ func buildSelf(Type):
 			milModTexture = load("res://art assets/ModifierIcons/milMods/sun.png")
 			milModResource = "None"
 		# ── ICON BELIEF MODS ─────────────────────────────────────────────────────
-		"Crossing of the Delaware":
+		"Spirit of the General":
 			commanderMod = true
-			milModDescription = str("[i]A midnight river, a freezing dawn, and the world changed:[/i][color= green] All units +3 Defense per Level in tiles with Barracks or Fortress[/color]")
+			milModDescription = str("[i]Where the Commander stands, the line holds:[/i][color=green] Friendly armies adjacent to Ualani gain +15 Attack[/color]")
 			milModTexture = load("res://art assets/ModifierIcons/milMods/green cross.png")
 			milModResource = "None"
 		"Combahee River Raid":
@@ -1052,7 +1130,7 @@ func buildSelf(Type):
 			milModResource = "None"
 		"North Star Address":
 			commanderMod = true
-			milModDescription = str("[i]Once he found his voice, nothing could silence it:[/i][color= green] Morale loss reduced; rout threshold lowered to 15%[/color]")
+			milModDescription = str("[i]Once he found his voice, nothing could silence it:[/i][color= green] All units +2 Defense per Level[/color]")
 			milModTexture = load("res://art assets/ModifierIcons/milMods/green cross.png")
 			milModResource = "None"
 		"Little Bighorn Ambush":
@@ -1067,6 +1145,10 @@ func buildSelf(Type):
 			milModDescription = str("[i]She walked 20 miles through enemy lines to warn the garrison — and they held:[/i][color= green] All units +3 Defense per Level in tiles with Barracks or Fortress[/color]")
 			milModTexture = load("res://art assets/ModifierIcons/milMods/green cross.png")
 			milModResource = "None"
+		"Secord's Alert":
+			milModDescription = str("[i]She heard them planning it. Then she walked:[/i][color= green] +2% Defense for all units[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/green cross.png")
+			milModResource = "None"
 		"Batoche's Stand":
 			infantryMod = true
 			terrainMod = true
@@ -1074,9 +1156,14 @@ func buildSelf(Type):
 			milModDescription = str("[i]The Métis held Batoche for days with hunting rifles and prayer:[/i][color= green] +2 Attack, +2 Defense per Level in Woods terrain[/color]")
 			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
 			milModResource = "None"
+		"Red Badge of Courage":
+			commanderMod = true
+			milModDescription = str("[i]The Civil War infantry knew what it cost to hold the line — and held it anyway:[/i][color= green] Rifle units take 5% less manpower loss from all combat[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/green cross.png")
+			milModResource = "None"
 		"Peacekeeping Mandate":
 			commanderMod = true
-			milModDescription = str("[i]He witnessed the worst of humanity and refused to stop fighting for peace:[/i][color= green] Morale loss reduced; rout threshold lowered to 15%[/color]")
+			milModDescription = str("[i]He witnessed the worst of humanity and refused to stop fighting for peace:[/i][color= green] All units +2 Defense per Level[/color]")
 			milModTexture = load("res://art assets/ModifierIcons/milMods/green cross.png")
 			milModResource = "None"
 		# ── NEGATIVE STATUS EFFECTS ──────────────────────────────────────────────
@@ -1200,46 +1287,20 @@ func buildSelf(Type):
 		$Sprite2D.texture = milModTexture
 		newArea2D = $Area2D
 		newCollissionArea2D = $Area2D/CollisionShape2D
-	#print("Area2D", newArea2D, "newCollisionarea2d", newCollissionArea2D)
-	pass
 
-var mouseDetected: bool
 
 func disableMilModType(ResourceType):
 	if ResourceType == milModResource:
 		disabled = true
 	elif ResourceType == "All":
 		disabled = true
-	pass
 
 func enableMilModType(ResourceType):
 	if ResourceType == milModResource:
 		disabled = false
 	elif ResourceType == "All":
 		disabled = false
-	pass
 
-func _process(delta: float) -> void:
-	if mouseDetected == true:
-		if $Sprite2D/InfoPanel.visible == false:
-			$Sprite2D/InfoPanel.show()
-			#print("what the fuck")
-			return
-		else:
-			return
-	else:
-		if $Sprite2D/InfoPanel.visible == true:
-			$Sprite2D/InfoPanel.hide()
-			return
-		else:
-			return
-
-
-func _on_area_2d_mouse_entered() -> void:
-	mouseDetected = true
-	pass # Replace with function body.
-
-
-func _on_area_2d_mouse_exited() -> void:
-	mouseDetected = false
-	pass # Replace with function body.
+func _on_area_2d_input_event(_viewport, event, _shape_idx) -> void:
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		$Sprite2D/InfoPanel.visible = !$Sprite2D/InfoPanel.visible

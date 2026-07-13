@@ -1,0 +1,74 @@
+[gd_scene load_steps=4 format=3 uid="uid://bega4v5fh04fe"]
+
+[ext_resource type="Script" uid="uid://clekve2al6udb" path="res://GalleryTile.gd" id="1_m8frq"]
+[ext_resource type="Texture2D" uid="uid://b1nj1le7cj86i" path="res://art assets/finishedAssets/Panels/yellow building panel.png" id="2_4y5be"]
+[ext_resource type="Texture2D" uid="uid://cjh7vwsdb4t0q" path="res://art assets/finishedAssets/armyicons/finished/star1.png" id="3_aptkg"]
+
+[node name="GalleryTile" type="Control"]
+custom_minimum_size = Vector2(160, 200)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_m8frq")
+
+[node name="Panel" type="Panel" parent="."]
+custom_minimum_size = Vector2(160, 200)
+layout_mode = 0
+offset_right = 158.0
+offset_bottom = 177.0
+
+[node name="ArtRect" type="TextureRect" parent="Panel"]
+layout_mode = 0
+offset_left = -2.0
+offset_top = -8.0
+offset_right = 163.0
+offset_bottom = 207.0
+mouse_filter = 2
+texture = ExtResource("2_4y5be")
+expand_mode = 1
+
+[node name="LockedOverlay" type="ColorRect" parent="Panel"]
+layout_mode = 0
+offset_right = 161.0
+offset_bottom = 199.0
+color = Color(0, 0, 0, 0.00392157)
+
+[node name="LockIcon" type="TextureRect" parent="Panel/LockedOverlay"]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 7.0
+offset_right = 160.0
+offset_bottom = 194.0
+texture = ExtResource("3_aptkg")
+stretch_mode = 3
+
+[node name="LockedTitle" type="Label" parent="Panel/LockedOverlay"]
+layout_mode = 0
+offset_top = 3.0
+offset_right = 161.0
+offset_bottom = 28.0
+text = "???"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="UnlockedTitle" type="Label" parent="Panel"]
+layout_mode = 0
+offset_top = 168.0
+offset_right = 161.0
+offset_bottom = 194.0
+text = "sceneTitle"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="HoverHint" type="PanelContainer" parent="Panel"]
+visible = false
+layout_mode = 0
+offset_right = 161.0
+offset_bottom = 200.0
+
+[node name="Label" type="Label" parent="Panel/HoverHint"]
+layout_mode = 2
+text = "hinttext"
+horizontal_alignment = 1
+autowrap_mode = 3

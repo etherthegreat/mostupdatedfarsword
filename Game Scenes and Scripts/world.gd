@@ -23,25 +23,33 @@ var worldCreation: bool
 
 var armyMode: bool
 
-var playerCapitalPathButton: pathPointButton 
+var playerCapitalPathButton: pathPointButton
 
 var mapMode: String
 var displayCorruption: bool
+var _hover_saved_mapMode: String = ""
+
+# Populated by generateBarracksCommanders() — shared by _generate_and_assign_governor()
+var _usa_archetypes: Array = []
+var _usa_name_pools: Dictionary = {}
 
 var _republic_collapsed: bool = false
 var _ca_collapsed: bool = false
 var _game_ended: bool = false
 var _mission_timers: Dictionary = {}   # flag_key → turns_remaining until expiry
 var _event_cooldowns: Dictionary = {}  # event_id → turns_remaining before can fire again
+var _anarchist_armies: Array = []      # anarchist armies that auto-attack UK each turn
 var _commander_turns: Dictionary = {}  # "TileName:CommanderName" → turns_served
 var _vp_governor = null                # reference to the assigned Vice President governor
 var _vp_faction: String = ""           # game faction name belonging to the VP
 var _ca_vp_governor = null             # reference to Marc Penoit as CA Deputy Governor
 var _ca_vp_faction: String = ""        # faction of CA's Deputy Governor
 var _peace_dock_was_uk: Dictionary = {}  # tile_num → bool; tracks UK ownership flip per turn
+var _ai_combat_log: Array = []           # entries collected during AI resolution each round
+var _floating_damage_scene = preload("res://floating_damage_number.tscn")
 var _peace_last_freed_tile = null        # most-recently freed peace dock tile node
 var isCoopMode: bool = false             # true when both USA and CA are player-controlled
-var coopCountryNode: country = null      # second player's country in co-op mode
+var coopCountryNode    # second player's country in co-op mode
 var _player_turn_order: Array = []       # ordered CIDs of player-controlled countries
 var _turn_phase_index: int = 0           # which slot in _player_turn_order is active
 
@@ -62,7 +70,7 @@ const VP_FACTION_MAP: Dictionary = {
 const PROTECTOR_IDS: Array = [
 	"PROT_01", "PROT_02", "PROT_03", "PROT_04", "PROT_05",
 	"PROT_06", "PROT_07", "PROT_08", "PROT_09", "PROT_10",
-	"PROT_11", "PROT_12", "PROT_13", "PROT_14", "PROT_15",
+	"PROT_11", "PROT_12", "PROT_13", "PROT_15",
 	"PROT_16", "PROT_17"
 ]
 
@@ -70,7 +78,7 @@ const PROTECTOR_SUMMON_TURNS: Dictionary = {
 	"PROT_01": 10,  "PROT_02": 15,  "PROT_03": 20,  "PROT_04": 25,
 	"PROT_05": 30,  "PROT_06": 35,  "PROT_07": 40,  "PROT_08": 45,
 	"PROT_09": 50,  "PROT_10": 55,  "PROT_11": 60,  "PROT_12": 65,
-	"PROT_13": 70,  "PROT_14": 75,  "PROT_15": 80,  "PROT_16": 85,
+	"PROT_13": 70,  "PROT_15": 80,  "PROT_16": 85,
 	"PROT_17": 90
 }
 
@@ -90,7 +98,7 @@ const USA_PROT_TILES: Dictionary = {
 	"PROT_11":  61,   # Paul Revere           — Lexington, MA (Lexington Cry)
 	"PROT_12":   2,   # Liberty Bell          — Philadelphia, PA (Liberty Bell)
 	"PROT_13":  80,   # Green Mountain Ghost  — Montpelier, VT (Green Mountains)
-	"PROT_14":  11,   # Mount Rushmore        — Gettysburg, PA (monument landmark)
+
 	"PROT_15": 177,   # Skunk Ape             — Gainesville, FL (Wetlands)
 	"PROT_16":  71,   # Eternal Minuteman     — Springfield, MA (Gun Valley / Armory)
 	"PROT_17": 188,   # Lincoln's Ghost       — Washington, DC (White House)
@@ -153,35 +161,40 @@ const STATE_FULL_NAMES: Dictionary = {
 }
 
 func _process(delta: float) -> void:
-	if worldCreation == true:
+	if worldCreation:
 		$CanvasLayer/LoadingSprite.rotation += 1
-		return
-	else:
-		$"CanvasLayer/Resource Bar (TOP)/container/FoodLabel/Label".text = str(playerCountryNode.TotalFood)
-		$"CanvasLayer/Resource Bar (TOP)/container/GoldLabel/Label".text = str(playerCountryNode.TotalDollars)
-		$"CanvasLayer/Resource Bar (TOP)/container/WoodLabel/Label".text = str(playerCountryNode.TotalWood)
-		$"CanvasLayer/Resource Bar (TOP)/container/MetalLabel/Label".text = str(playerCountryNode.TotalMetal)
-		$"CanvasLayer/Resource Bar (TOP)/container/WeaponsLabel/Label".text = str(playerCountryNode.TotalWeapons)
-		$"CanvasLayer/Resource Bar (TOP)/container/ScienceLabel/Label".text = str(playerCountryNode.SPM)
-		$"CanvasLayer/Resource Bar (TOP)/container/FaithLabel/Label".text = str(playerCountryNode.TotalCulture)  # Faith→Culture
-		$"CanvasLayer/Resource Bar (TOP)/container/MagicLabel/Label".text = str(playerCountryNode.TotalMagic)
-		$"CanvasLayer/Resource Bar (TOP)/container/CultureLabel/Label".text = str(playerCountryNode.TotalCulture)
-		$"CanvasLayer/Resource Bar (TOP)/container/MandateLabel/Label".text = str(playerCountryNode.TotalMandate)
-		$"CanvasLayer/Resource Bar (TOP)/container/HarmonyLabel/Label".text = str(playerCountryNode.TotalHappiness)  # Harmony→Happiness
-		$"CanvasLayer/Resource Bar (TOP)/container/InfluenceLabel/Label".text = str(playerCountryNode.TotalInfluence)
-		$"CanvasLayer/Resource Bar (TOP)/container/ManpowerLabel/Label".text = str(playerCountryNode.TotalManpower)
-		updateMap()
-	if $CanvasLayer/TechTree.investmentTech == null:
-		$CanvasLayer/NextTurnControl/NextTurn.visible = false
-		$CanvasLayer/NextTurnControl/PickTech.visible = true
-	else:
-		$CanvasLayer/NextTurnControl/PickTech.visible = false
-		$CanvasLayer/NextTurnControl/NextTurn.visible = true
-	pass
 
-func updateMap():
+func updateResourceBar() -> void:
+	if playerCountryNode == null:
+		return
+	$"CanvasLayer/Resource Bar (TOP)/container/FoodLabel/Label".text = str(playerCountryNode.TotalFood)
+	$"CanvasLayer/Resource Bar (TOP)/container/GoldLabel/Label".text = str(playerCountryNode.TotalDollars)
+	$"CanvasLayer/Resource Bar (TOP)/container/WoodLabel/Label".text = str(playerCountryNode.TotalWood)
+	$"CanvasLayer/Resource Bar (TOP)/container/MetalLabel/Label".text = str(playerCountryNode.TotalMetal)
+	$"CanvasLayer/Resource Bar (TOP)/container/WeaponsLabel/Label".text = str(playerCountryNode.TotalWeapons)
+	$"CanvasLayer/Resource Bar (TOP)/container/ScienceLabel/Label".text = str(playerCountryNode.SPM)
+	$"CanvasLayer/Resource Bar (TOP)/container/FaithLabel/Label".text = str(playerCountryNode.TotalCulture)
+	$"CanvasLayer/Resource Bar (TOP)/container/MagicLabel/Label".text = str(playerCountryNode.TotalMagic)
+	$"CanvasLayer/Resource Bar (TOP)/container/CultureLabel/Label".text = str(playerCountryNode.TotalCulture)
+	$"CanvasLayer/Resource Bar (TOP)/container/MandateLabel/Label".text = str(playerCountryNode.TotalMandate)
+	$"CanvasLayer/Resource Bar (TOP)/container/HarmonyLabel/Label".text = str(playerCountryNode.TotalHappiness)
+	$"CanvasLayer/Resource Bar (TOP)/container/InfluenceLabel/Label".text = str(playerCountryNode.TotalInfluence)
+	$"CanvasLayer/Resource Bar (TOP)/container/ManpowerLabel/Label".text = str(playerCountryNode.TotalManpower)
+
+func _refresh_next_turn_ui() -> void:
+	var has_tech := $CanvasLayer/TechTree.investmentTech != null
+	$CanvasLayer/NextTurnControl/NextTurn.visible = has_tech
+	$CanvasLayer/NextTurnControl/PickTech.visible = not has_tech
+
+const RESOURCE_MAP_MODES := ["MapFood","MapWood","MapMetal","MapFaith","MapHappiness",
+	"MapManpower","MapWeapons","MapDollars","MapMagic","MapMandate","MapOutputs"]
+
+func updateMap() -> void:
+	if mapMode in RESOURCE_MAP_MODES:
+		for tile in $TileController.get_children():
+			if tile.tileOwner == playerCountry:
+				tile.calculateOutputsForMap(playerCountryNode)
 	$TileController.updateTiles(mapMode, displayCorruption, playerCountryNode)
-	pass
 
 
 var currentWorldTurn: int = 0
@@ -197,10 +210,10 @@ func newGameBuild(CID, gameLang, isCoop: bool = false):
 	LocBallUI = locBallUIWorld
 	add_child(locBallUIWorld)
 	$CanvasLayer/LoadingLabel.text = "Building World"
-	month = 6
-	year = 673
-	day = 126
-	dayOfMonth = 1
+	month = 7       # July
+	year = 2026
+	day = 0
+	dayOfMonth = 4  # July 4, 2026 — inauguration day
 	age = 2
 	armyMode = false
 	$TileController.connectTileSignals()
@@ -209,12 +222,15 @@ func newGameBuild(CID, gameLang, isCoop: bool = false):
 		Tile.onNewGame()
 		Tile.calculateSeason(month)
 		Tile.clicked.connect(tileClicked)
+		Tile.tile_hovered.connect(func(t): _hovered_tile = t)
+		Tile.tile_unhovered.connect(func(t): if _hovered_tile == t: _hovered_tile = null)
 		Tile.censusComplete.connect(manaUpdate)
 		Tile.tileSpawnPoint = $PathControl/PathPointsControl.get_node_or_null(str(Tile.EXPTileNumber))
 	$CanvasLayer/LoadingLabel.text = "Spawning Countries"
 	$CanvasLayer/LoadingProgressBar.value = 25
 	spawnNewGameCountries(CID)
 	connectCountrySignals()
+	_raise_starting_armies()
 	$CanvasLayer/BuildingInfoPanel/buildingPanelPanel.player = playerCountryNode
 	$CanvasLayer/LoadingLabel.text = "Prospecting for Ores"
 	$CanvasLayer/LoadingProgressBar.value = 50
@@ -228,14 +244,13 @@ func newGameBuild(CID, gameLang, isCoop: bool = false):
 	#$CanvasLayer/Spellbook.displaySpells(playerCountryNode)
 	$CanvasLayer/LoadingLabel.text = "Loading UI (Magic)"
 	$CanvasLayer/LoadingProgressBar.value = 75
+	mapMode = "Polis"
+	displayCorruption = true
 	updatePlayerUI()
 	for Tile in $TileController.get_children():
 		Tile.discoverTile()
-	#$TileController.discoverTiles(playerCountryNode)
 	worldCreation = false
 	$RightClickDetector.visible = true
-	mapMode = "Polis"
-	displayCorruption = true
 	$CanvasLayer/LoadingProgressBar.value = 100
 	$CanvasLayer/LoadingBackground.visible = false
 	$CanvasLayer/LoadingSprite.visible = false
@@ -255,8 +270,10 @@ func newGameBuild(CID, gameLang, isCoop: bool = false):
 	$CanvasLayer/WarRoomPanel.setupAllProtectors($TileController.get_children(), coop_country_id)
 	_assign_vice_president()
 	_build_turn_order()
+	$CanvasLayer/MilitaryPanelControl.trimEmptyButtons()
+	updateMap()
 	evaluateDateEvents()
-	pass
+	_seed_opening_journal_entry()
 
 # ── BARRACKS COMMANDER GENERATION ───────────────────────────────────────────
 # Assigns a governor to the faction with the fewest current members.
@@ -287,20 +304,17 @@ func _assign_governor_to_faction(gov: governor) -> void:
 func _apply_archetype_mods(gov: governor, arc_id: String) -> void:
 	match arc_id:
 		"ARC_01":
-			gov.addMilMod("Swamp Legs",       123)
-			gov.addMilMod("Coastal Watch",    123)
-			gov.addMilMod("Marine",            23)
-			gov.addMilMod("Naval Supremacy",    3)
+			gov.addMilMod("Experienced Fisherman", 123)
+			gov.addMilMod("Master Baiter",          23)
+			gov.addMilMod("Marine",                  3)
 		"ARC_02":
-			gov.addMilMod("Hill Runner",      123)
-			gov.addMilMod("Powder & Shot",    123)
-			gov.addMilMod("Siege Line",        23)
-			gov.addMilMod("Rampart",            3)
+			gov.addMilMod("Appalachian Hill Fighter", 123)
+			gov.addMilMod("Explosives Expert",         23)
+			gov.addMilMod("Mountain Pathfinder",        3)
 		"ARC_03":
-			gov.addMilMod("Steady Line",      123)
-			gov.addMilMod("Street Tough",     123)
-			gov.addMilMod("Flanking Drill",    23)
-			gov.addMilMod("Continental Line",   3)
+			gov.addMilMod("Student Body Commander", 123)
+			gov.addMilMod("Field Research",          23)
+			gov.addMilMod("Cultural Corps",           3)
 		"ARC_04":
 			gov.addMilMod("Swamp Legs",       123)
 			gov.addMilMod("Saber Drill",      123)
@@ -924,6 +938,10 @@ func generateBarracksCommanders() -> void:
 		},
 	}
 
+	# Cache at class level so _generate_and_assign_governor() can access them
+	_usa_archetypes = ARCHETYPES
+	_usa_name_pools = NAME_POOLS
+
 	var portrait_placeholder: Texture = load(
 		"res://art assets/Placeholder Art/character/4-22-Ikra-Colors - Copy.png")
 
@@ -940,8 +958,8 @@ func generateBarracksCommanders() -> void:
 				jessica.hired           = true
 				print("[Commanders] PM Commanda stationed in Ottawa (tile 201).")
 				break
-		if not jessica.hired:
-			print("[Commanders] Ottawa not player-owned at start — Commanda added to pool unassigned.")
+		#if not jessica.hired:
+#		if not jessica.hired:
 		# Marc Penoit in Quebec City (tile 123) as Deputy Governor
 		var penoit: governor = governor.new()
 		penoit.buildSelf("Marc Penoit", 2)
@@ -954,8 +972,8 @@ func generateBarracksCommanders() -> void:
 					penoit.hired            = true
 					print("[Commanders] Deputy Penoit stationed in Quebec City (tile 123).")
 					break
-		if not penoit.hired:
-			print("[Commanders] Quebec City not available — Penoit added to pool unassigned.")
+		#if not penoit.hired:
+#		if not penoit.hired:
 	else:
 		# Ualani Carlisle in Washington DC (tile 188)
 		var carlisle: governor = governor.new()
@@ -968,9 +986,21 @@ func generateBarracksCommanders() -> void:
 				carlisle.hired          = true
 				print("[Commanders] President Carlisle stationed in Washington DC (tile 188).")
 				break
-		if not carlisle.hired:
-			print("[Commanders] Washington DC not player-owned at start — Carlisle added to pool unassigned.")
+		#if not carlisle.hired:
+	#	if not carlisle.hired:
+		# Secret Service Detail unlocks alongside Carlisle
+		var detail: governor = governor.new()
+		detail.buildSelf("Secret Service Detail", 1)
+		playerCountryNode.unlockedGovernors.append(detail)
+		# Turkey God and Baseball Legend available from game start
+		var turkey_god: governor = governor.new()
+		turkey_god.buildSelf("Turkey God", 1)
+		playerCountryNode.unlockedGovernors.append(turkey_god)
+		var baseball: governor = governor.new()
+		baseball.buildSelf("Baseball Legend", 1)
+		playerCountryNode.unlockedGovernors.append(baseball)
 
+	governor.reset_portrait_pool()
 	var used_names: Dictionary = {}
 	var generated: int = 0
 
@@ -999,24 +1029,21 @@ func generateBarracksCommanders() -> void:
 					candidates.append(arch)
 		if candidates.is_empty():
 			candidates = ARCHETYPES
-		var chosen: Dictionary = candidates[randi() % candidates.size()]
+		var arch_chosen: Dictionary = candidates[randi() % candidates.size()]
 
-		# ── Pick name pool ────────────────────────────────────────────────
-		var pool_id: String = chosen["pools"][randi() % chosen["pools"].size()]
-		var pool: Dictionary = NAME_POOLS.get(pool_id, NAME_POOLS["NP_01"])
+		# ── Pick portrait first — portrait drives name, pronouns, culture ────
+		var new_gov: governor = governor.new()
+		var portrait_data: Dictionary = new_gov.pick_procedural_portrait()
+		new_gov.culture  = portrait_data["culture"]
+		new_gov.pronouns = portrait_data["pronouns"]
+		new_gov.governorTexture = load(portrait_data["path"])
 
-		# Gender: 0 = m, 1 = f, 2 = nb
-		var gender: int = randi() % 3
-		var first_list: Array
-		match gender:
-			0: first_list = pool["m"]
-			1: first_list = pool["f"]
-			_: first_list = pool["nb"]
-		var last_list: Array = pool.get("l", [])
+		var first_list: Array = portrait_data["first"]
+		var last_list: Array  = portrait_data["last"]
 
 		var first: String = first_list[randi() % first_list.size()]
 		var last: String  = ""
-		if last_list.size() > 0 and last_list[0] != "":
+		if last_list.size() > 0:
 			last = last_list[randi() % last_list.size()]
 
 		var full_name: String = (first + " " + last).strip_edges()
@@ -1029,20 +1056,22 @@ func generateBarracksCommanders() -> void:
 			tries += 1
 		used_names[full_name] = true
 
-		# ── Build governor ────────────────────────────────────────────────
-		var new_gov: governor = governor.new()
-		new_gov.governorType       = full_name           # display name shown in UI
-		new_gov.governorArchetypeId = chosen["id"]       # archetype for War Room matching
-		new_gov.governorPosition   = chosen["position"]  # role title (SCOUT, ORATOR, …)
-		new_gov.governorLevel      = 1
-		_apply_archetype_mods(new_gov, chosen["id"])
+		# ── Configure governor from archetype ─────────────────────────────
+		new_gov.governorType        = full_name
+		new_gov.governorArchetypeId = arch_chosen["id"]
+		new_gov.governorPosition    = arch_chosen["position"]
+		new_gov.governorLevel       = 1
+		_apply_archetype_mods(new_gov, arch_chosen["id"])
+		var subj: String = portrait_data["pronouns"].get("subject", "they")
+		var subj_cap: String = subj.substr(0, 1).to_upper() + subj.substr(1)
 		new_gov.governorDescription = \
-			"A " + chosen["name"] + " who answered the revolution's call from " + tile.tileName + "."
-		new_gov.governorBiography  = \
+			"A " + arch_chosen["name"] + " who answered the revolution's call from " + tile.tileName + "."
+		new_gov.governorBiography = \
 			full_name + " came from " + tile.tileName + " (" + tile.terrain + "). " + \
-			"They carry the skills of " + chosen["name"] + " into the fight for independence."
-		new_gov.governorTexture    = new_gov._get_portrait(new_gov.governorType)
-		new_gov.hired              = false
+			subj_cap + " carr" + ("ies" if subj == "he" or subj == "she" else "y") + \
+			" the skills of " + arch_chosen["name"] + " into the fight for independence."
+		new_gov.hired = false
+		_assign_thanks_content(new_gov, arch_chosen["position"], portrait_data)
 
 		# Add to player's unlocked governor pool
 		playerCountryNode.unlockedGovernors.append(new_gov)
@@ -1057,8 +1086,8 @@ func generateBarracksCommanders() -> void:
 		$CanvasLayer/WarRoomPanel.registerCommanderArc(new_gov, tile)
 
 		generated += 1
-		print("[Commanders] Generated: ", full_name, " — ", chosen["name"],
-			  " (", chosen["id"], ") at ", tile.tileName, " [", tile.terrain, "]")
+		#print("[Commanders] Generated: ", full_name, " — ", chosen["name"],
+			#  " (", chosen["id"], ") at ", tile.tileName, " [", tile.terrain, "]")
 
 	print("[Commanders] Barracks scan complete. ", generated, " commanders generated.")
 
@@ -1071,10 +1100,9 @@ func generateBarracksCommanders() -> void:
 		if army.inTile != null and army.inTile.tileGovernor != null:
 			army.addUnitCommander(army.inTile.tileGovernor)
 			army.updateArmyUI()
-			assigned += 1
-			print("[Commanders] Assigned ", army.inTile.tileGovernor.governorType,
-				  " as commander of ", army.ArmyName)
-	print("[Commanders] ", assigned, " armies received a starting commander.")
+			#assigned += 1
+				 # " as commander of ", army.ArmyName)
+				#  " as commander of ", army.ArmyName)
 
 
 # ── STARTING ARMY SPAWNER ─────────────────────────────────────────────────────
@@ -1110,23 +1138,72 @@ func spawnStartingArmies() -> void:
 		"ARC_46": "Blue Water Raiders",  "ARC_47": "Capital Shadows",
 	}
 
-	var candidates: Array = []
+	var all_candidates: Array = []
 	for tile in $TileController.get_children():
 		if tile.tileOwner != playerCountry:
 			continue
-		if tile.tileNumber == 188:            # Washington DC — Ualani's territory
+		if tile.tileNumber == 188:
 			continue
 		if not tile.filledGovernorSlot or tile.tileGovernor == null:
 			continue
-		var blvl: int = int(tile.buildings.get("barracks", 0))
-		if blvl < 2 or blvl > 4:
+		if int(tile.buildings.get("barracks", 0)) < 1:
 			continue
 		if tile.stationedArmy != null:
 			continue
-		candidates.append(tile)
+		all_candidates.append(tile)
 
-	candidates.shuffle()
-	var chosen: Array = candidates.slice(0, min(3, candidates.size()))
+	# Group by state; for each state pick the best "capital" tile to get an
+	# army first — Metro terrain wins, then countryCapital flag, then highest
+	# barracks level.  State capitals are seeded first so armies spread across
+	# the map rather than clustering in a single region.
+	var by_state: Dictionary = {}
+	for tile in all_candidates:
+		var s: String = tile.tileContinent if tile.tileContinent != "" else "__none__"
+		if not by_state.has(s):
+			by_state[s] = []
+		by_state[s].append(tile)
+
+	var capital_tiles: Array = []
+	var other_tiles: Array = []
+	for state in by_state:
+		var group: Array = by_state[state]
+		var best = null
+		# Capitals are identified by having a courthouse; highest courthouse
+		# level wins when multiple tiles in the state qualify.
+		var top_court := -1
+		for t in group:
+			var clvl := int(t.buildings.get("courthouse", 0))
+			if clvl > top_court:
+				top_court = clvl
+				best = t
+		if top_court < 1:
+			# Fallback: countryCapital flag, then highest barracks level
+			best = null
+			for t in group:
+				if t.countryCapital:
+					best = t
+					break
+			if best == null:
+				var top_lvl := -1
+				for t in group:
+					var lvl := int(t.buildings.get("barracks", 0))
+					if lvl > top_lvl:
+						top_lvl = lvl
+						best = t
+		capital_tiles.append(best)
+		for t in group:
+			if t != best:
+				other_tiles.append(t)
+
+	capital_tiles.shuffle()
+	other_tiles.shuffle()
+	var chosen: Array = []
+	chosen.append_array(capital_tiles)
+	chosen.append_array(other_tiles)
+	chosen = chosen.slice(0, min(18, chosen.size()))
+
+	print("[StartingArmies] %d state capitals + %d others → %d chosen" \
+		% [capital_tiles.size(), other_tiles.size(), chosen.size()])
 
 	for tile in chosen:
 		var gov: governor = tile.tileGovernor
@@ -1136,11 +1213,22 @@ func spawnStartingArmies() -> void:
 
 		playerCountryNode.addArmy(army_name, tile.tileNumber)
 
-		# addArmy() always appends — grab the army we just added and assign its commander
 		var new_army = playerCountryNode.countryArmyList.back()
+		print("[StartingArmies] created '%s' — inTile=%s spawnPt=%s" % [
+			army_name,
+			str(new_army.inTile) if new_army != null else "NULL ARMY",
+			str(new_army.inTile.tileSpawnPoint) if new_army != null and new_army.inTile != null else "N/A"
+		])
 		if new_army != null:
+			# Wire the army to its BarracksButton before updateArmyUI so $Node
+			# paths inside the Army scene resolve correctly (Army must be in tree).
+			for bb in $CanvasLayer/MilitaryPanelControl/ScrollContainer/GridContainer.get_children():
+				if bb.barracksTile != null and bb.barracksTile.tileNumber == tile.tileNumber and bb.barracksArmy == null:
+					bb.addPrebuiltArmy(new_army)
+					break
 			new_army.addUnitCommander(gov)
 			new_army.updateArmyUI()
+			new_army.raiseSelf()
 
 		print("[StartingArmies] '", army_name, "' at ", tile.tileName,
 			  " (barracks lvl ", int(tile.buildings.get("barracks", 0)),
@@ -1154,7 +1242,7 @@ func spawnStartingArmies() -> void:
 # governor already assigned, generates a procedural governor drawn from
 # Canadian-themed archetypes and name pools.  Does NOT register commanders in
 # the War Room (player-only UI) and does NOT spawn Ualani.
-func _generate_ai_barracks_commanders(country_node: country) -> void:
+func _generate_ai_barracks_commanders(country_node) -> void:
 	var CA_ARCHETYPES := [
 		{"id":"CA_ARC_01",    "name":"Coureur des Bois",            "position":"SCOUT",    "terrain":["Woods","Wetlands"],      "regions":["CA - OT","CA - QB"],                          "pools":["NP_06"]},
 		{"id":"CA_ARC_02",    "name":"Voyageur",                    "position":"DIPLOMAT", "terrain":["Wetlands"],              "regions":["CA - OT","CA - QB"],                          "pools":["NP_06"]},
@@ -1238,8 +1326,8 @@ func _generate_ai_barracks_commanders(country_node: country) -> void:
 			jessica.hired           = true
 			print("[CA Leaders] Jessica Commanda Odjick stationed at Ottawa (tile 201).")
 			break
-	if not jessica.hired:
-		print("[CA Leaders] Ottawa not CA-owned at start — Jessica added to pool unassigned.")
+	#if not jessica.hired:
+#	if not jessica.hired:
 
 	# ── Spawn Marc Penoit (deputy/VP) at Saint-Georges, tile 99 ─────────────────
 	# Montreal (tile 94) is UK-occupied at game start; Saint-Georges is the nearest
@@ -1254,8 +1342,8 @@ func _generate_ai_barracks_commanders(country_node: country) -> void:
 			mark.hired              = true
 			print("[CA Leaders] Marc Penoit stationed at Saint-Georges (tile 99).")
 			break
-	if not mark.hired:
-		print("[CA Leaders] Saint-Georges not CA-owned at start — Mark added to pool unassigned.")
+	#if not mark.hired:
+#	if not mark.hired:
 
 	var used_names: Dictionary = {}
 	var generated: int = 0
@@ -1326,9 +1414,9 @@ func _generate_ai_barracks_commanders(country_node: country) -> void:
 		tile.filledGovernorSlot = true
 		new_gov.hired           = true
 
-		generated += 1
-		print("[CA Commanders] Generated: ", full_name, " — ", chosen_arch["name"],
-			  " at ", tile.tileName, " [", tile.terrain, "]")
+		#generated += 1
+			  #" at ", tile.tileName, " [", tile.terrain, "]")
+			  #" at ", tile.tileName, " [", tile.terrain, "]")
 
 	# Assign tile governors to stationed armies
 	var assigned: int = 0
@@ -1337,14 +1425,14 @@ func _generate_ai_barracks_commanders(country_node: country) -> void:
 			army.addUnitCommander(army.inTile.tileGovernor)
 			army.updateArmyUI()
 			assigned += 1
-	print("[CA Commanders] ", generated, " commanders generated, ",
-		  assigned, " armies received a commander.")
+			#assigned, " armies received a commander.")
+		  #assigned, " armies received a commander.")
 
 
 # ── CANADIAN AI STARTING ARMIES ──────────────────────────────────────────────
 # Spawns up to 4 armies at CA-owned barracks tiles (level 2+) that already
 # have a governor assigned.  Must run after _generate_ai_barracks_commanders().
-func _spawn_ai_starting_armies(country_node: country) -> void:
+func _spawn_ai_starting_armies(country_node) -> void:
 	var CA_ARMY_SUFFIX := {
 		"CA_ARC_01": "Coureurs Company",   "CA_ARC_02": "River Brigade",
 		"CA_ARC_03": "Forest Trackers",    "CA_ARC_04": "Loyalist Militia",
@@ -1360,7 +1448,7 @@ func _spawn_ai_starting_armies(country_node: country) -> void:
 		if not tile.filledGovernorSlot or tile.tileGovernor == null:
 			continue
 		var blvl: int = int(tile.buildings.get("barracks", 0))
-		if blvl < 2 or blvl > 4:
+		if blvl < 1:
 			continue
 		if tile.stationedArmy != null:
 			continue
@@ -1380,9 +1468,7 @@ func _spawn_ai_starting_armies(country_node: country) -> void:
 		if new_army != null:
 			new_army.addUnitCommander(gov)
 			new_army.updateArmyUI()
-
-		print("[CA Armies] '", army_name, "' at ", tile.tileName,
-			  " (barracks lvl ", int(tile.buildings.get("barracks", 0)), ", ", arc_id, ")")
+			new_army.raiseSelf()
 
 	print("[CA Armies] ", chosen.size(), " starting armies placed for ", country_node.CID, ".")
 
@@ -1419,7 +1505,12 @@ func spawnNewGameCountries(CID: String) -> void:
 		newCountry.NewGameBuild()
 		aliveCountriesList.append(newCountry)
 		$CountryController.add_child(newCountry)
- 
+
+	# Verify player country was found
+	if playerCountryNode == null:
+		push_error("spawnNewGameCountries: playerCountryNode is null! CID='%s' not in CountryDatabase." % playerCountry)
+	#else:
+
 	# Set player capital camera position
 	if playerCountryNode != null:
 		var capitalData = CountryDatabase.get_country(playerCountry)
@@ -1447,7 +1538,20 @@ func returnOutput(outputsDict, caller):
 func connectCountrySignals():
 	for country in aliveCountriesList:
 		country.raiseThisArmySignal.connect(raiseArmyFromWorld)
-	pass
+		if not country.armyRepositioned.is_connected(_on_ai_army_repositioned):
+			country.armyRepositioned.connect(_on_ai_army_repositioned)
+		if not country.aiCombatEvent.is_connected(_on_ai_combat_event):
+			country.aiCombatEvent.connect(_on_ai_combat_event)
+		if not country.battleResolved.is_connected(_on_battle_resolved):
+			country.battleResolved.connect(_on_battle_resolved)
+
+func _raise_starting_armies() -> void:
+	# Raises every army that was created during NewGameBuild() (CSV-named starting
+	# armies like the Continental Army). Must be called AFTER connectCountrySignals()
+	# so raiseThisArmySignal is wired before the emit fires.
+	for country in aliveCountriesList:
+		for army in country.countryArmyList:
+			army.raiseSelf()
 
 func updateBeliefControl():
 	$CanvasLayer/BeliefControl.updateSelf()
@@ -1484,6 +1588,8 @@ func _activate_player(cid: String) -> void:
 	var prot_filter: String = "COOP" if isCoopMode else playerCountry
 	$CanvasLayer/WarRoomPanel.setupAllProtectors($TileController.get_children(), prot_filter)
 	_update_turn_phase_ui()
+	updateResourceBar()
+	updateMap()
 	print("[TurnOrder] Active player: ", playerCountry)
 
 
@@ -1540,6 +1646,9 @@ func _resolve_ai_and_advance_round() -> void:
 	for tile in $TileController.get_children():
 		tile.tick_conquest_timer()
 	$CanvasLayer/TurnLabel.text = _format_game_date()
+	_apply_ualani_aura()
+	_check_win_conditions()
+	_show_ai_turn_report()
 	# playerCountry/Node now hold last player in order; caller calls _activate_player to restore
 
 
@@ -1573,6 +1682,7 @@ func updatePlayerUI():
 	$PathControl.tileDevelopment.connect(newTileDevelopment)
 	$PathControl.meleeButtonPressed.connect(meleePressed)
 	$PathControl.rangedButtonPressed.connect(rangedPressed)
+	$PathControl.playerBattleResolved.connect(_on_player_battle_resolved)
 	$CanvasLayer/CivilianControl.loadCivilians(playerCountryNode, playerCountryNode.OwnedTileList)
 	$CanvasLayer/CivilianControl.raiseThisUnit.connect(raiseCivilianUnit)
 	$CanvasLayer/MilitaryPanelControl.buildSelf(playerCountryNode)
@@ -1607,10 +1717,15 @@ func updatePlayerUI():
 		$CanvasLayer/WarRoomPanel.requestEventFire.connect(_on_arc_event_requested)
 	if not $CanvasLayer/WarRoomPanel.protectorSummoned.is_connected(_on_protector_summoned):
 		$CanvasLayer/WarRoomPanel.protectorSummoned.connect(_on_protector_summoned)
-	pass
+	if not $CanvasLayer/TechTree.investmentChanged.is_connected(_refresh_next_turn_ui):
+		$CanvasLayer/TechTree.investmentChanged.connect(_refresh_next_turn_ui)
+	updateResourceBar()
+	_refresh_next_turn_ui()
+	updateMap()
 
 var thisTileNumber: int
 var selectedTile: Tile
+var _hovered_tile: Tile = null
 
 
 func manaUpdate(type, amount, dictionary):
@@ -1618,22 +1733,19 @@ func manaUpdate(type, amount, dictionary):
 	pass
 
 func tileClicked(tile):
-	#print("Tile", tile.tileNumber, "Clicked")
 	selectedTile = tile
-	#$CanvasLayer/TileInfoPanel.thisTile = tile
-	
+	# Left-click while army selected — try to move/attack first
+	if $PathControl.tryMoveSelectedAPFToTile(tile):
+		return
+	# No movement — deselect army and open tile info
+	$PathControl.deselectAll()
 	$CanvasLayer/TileInfoPanel.displayTileInfo(tile)
 	if $CanvasLayer/TileInfoPanel.visible == false:
+		$CanvasLayer.closeAllPanels()
 		$CanvasLayer/TileInfoPanel.visible = true
 	else:
 		$CanvasLayer/TileInfoPanel.visible = false
-	#$CanvasLayer/TileInfoPanel.thisTile = tile
-	#$CanvasLayer/TileInfoPanel.displayTileInfo()
-	#$CanvasLayer/BuildingInfoPanel.thisTile = tile
-	#if $CanvasLayer/BuildingInfoPanel.visible == false:
-		#$CanvasLayer/BuildingInfoPanel.visible = true
 	$CanvasLayer/BuildingInfoPanel.displayBuildingInfo(tile)
-	pass
 
 func retrieveOutputs():
 	selectedTile.censusTile(playerCountryNode)
@@ -1648,108 +1760,49 @@ func matchCountryBuildings():
 					#building.towerBuilding.connect(signalTowerInTile)
 	pass
 
-func _on_food_area_2d_mouse_entered():
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 360
+func _resource_hover_enter(panel_x: int, resource_index: int, mode: String) -> void:
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = panel_x
 	$CanvasLayer/ResourceInfoControl.visible = true
 	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 1)
-func _on_food_area_2d_mouse_exited() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
-func _on_wood_area_2d_mouse_entered() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 480
-	$CanvasLayer/ResourceInfoControl.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 2)
-func _on_wood_area_2d_mouse_exited() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
-func _on_metal_area_2d_mouse_entered() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 600
-	$CanvasLayer/ResourceInfoControl.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 3)
-func _on_metal_area_2d_mouse_exited() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
-func _on_gold_area_2d_mouse_entered() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 240
-	$CanvasLayer/ResourceInfoControl.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 0)
-func _on_gold_area_2d_mouse_exited() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
-func _on_weapons_area_mouse_entered() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 720
-	$CanvasLayer/ResourceInfoControl.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 4)
-func _on_weapons_area_mouse_exited() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
-func _on_science_area_mouse_entered() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 1000
-	$CanvasLayer/ResourceInfoControl.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 5)
-func _on_science_area_mouse_exited() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
-func _on_faith_control_mouse_entered() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 1000
-	$CanvasLayer/ResourceInfoControl.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 6)
-func _on_faith_control_mouse_exited() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
-func _on_magic_area_mouse_entered() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 1000
-	$CanvasLayer/ResourceInfoControl.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 7)
-func _on_magic_area_mouse_exited() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
-func _on_culture_area_mouse_entered() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 1000
-	$CanvasLayer/ResourceInfoControl.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 8)
-	pass # Replace with function body.
-func _on_culture_area_mouse_exited() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
-	pass # Replace with function body.
-func _on_mandate_area_mouse_entered() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 1440
-	$CanvasLayer/ResourceInfoControl.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 9)
-	pass # Replace with function body.
-func _on_mandate_area_mouse_exited() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
-	pass # Replace with function body.
-func _on_harmony_area_mouse_entered() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 1440
-	$CanvasLayer/ResourceInfoControl.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 10)
-	pass # Replace with function body.
-func _on_harmony_area_mouse_exited() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
-	pass # Replace with function body.
-func _on_influence_area_mouse_entered() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 1440
-	$CanvasLayer/ResourceInfoControl.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 11)
-	pass # Replace with function body.
-func _on_influence_area_mouse_exited() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
-	pass # Replace with function body.
-func _on_manpower_area_mouse_entered() -> void:
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.position.x = 840
-	$CanvasLayer/ResourceInfoControl.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = true
-	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, 12)
-	pass # Replace with function body.
+	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.displayNationalResource(playerCountryNode, resource_index)
+	if mode != "":
+		_hover_saved_mapMode = mapMode
+		mapMode = mode
+		updateMap()
 
-func _on_manpower_area_mouse_exited() -> void:
+func _resource_hover_exit() -> void:
 	$CanvasLayer/ResourceInfoControl/ResourceInfoPanel.visible = false
-	pass # Replace with function body.
+	if _hover_saved_mapMode != "":
+		mapMode = _hover_saved_mapMode
+		_hover_saved_mapMode = ""
+		updateMap()
+
+func _on_food_area_2d_mouse_entered():    _resource_hover_enter(360,  1, "MapFood")
+func _on_food_area_2d_mouse_exited():     _resource_hover_exit()
+func _on_wood_area_2d_mouse_entered():    _resource_hover_enter(480,  2, "MapWood")
+func _on_wood_area_2d_mouse_exited():     _resource_hover_exit()
+func _on_metal_area_2d_mouse_entered():   _resource_hover_enter(600,  3, "MapMetal")
+func _on_metal_area_2d_mouse_exited():    _resource_hover_exit()
+func _on_gold_area_2d_mouse_entered():    _resource_hover_enter(240,  0, "MapDollars")
+func _on_gold_area_2d_mouse_exited():     _resource_hover_exit()
+func _on_weapons_area_mouse_entered():    _resource_hover_enter(720,  4, "MapWeapons")
+func _on_weapons_area_mouse_exited():     _resource_hover_exit()
+func _on_science_area_mouse_entered():    _resource_hover_enter(1000, 5, "")
+func _on_science_area_mouse_exited():     _resource_hover_exit()
+func _on_faith_control_mouse_entered():   _resource_hover_enter(1000, 6, "MapFaith")
+func _on_faith_control_mouse_exited():    _resource_hover_exit()
+func _on_magic_area_mouse_entered():      _resource_hover_enter(1000, 7, "MapMagic")
+func _on_magic_area_mouse_exited():       _resource_hover_exit()
+func _on_culture_area_mouse_entered():    _resource_hover_enter(1000, 8, "MapFaith")
+func _on_culture_area_mouse_exited():     _resource_hover_exit()
+func _on_mandate_area_mouse_entered():    _resource_hover_enter(1440, 9, "MapMandate")
+func _on_mandate_area_mouse_exited():     _resource_hover_exit()
+func _on_harmony_area_mouse_entered():    _resource_hover_enter(1440, 10, "MapHappiness")
+func _on_harmony_area_mouse_exited():     _resource_hover_exit()
+func _on_influence_area_mouse_entered():  _resource_hover_enter(1440, 11, "")
+func _on_influence_area_mouse_exited():   _resource_hover_exit()
+func _on_manpower_area_mouse_entered():   _resource_hover_enter(840,  12, "MapManpower")
+func _on_manpower_area_mouse_exited():    _resource_hover_exit()
 
 #oldnext turn function
 func _on_test_resource_button_pressed() -> void:
@@ -1823,22 +1876,21 @@ func addLawToCountry(lawType):
 #Army World Code
 func _on_army_button_pressed() -> void:
 	if $CanvasLayer/MilitaryPanelControl.visible == false:
+		$CanvasLayer.closeAllPanels()
 		$CanvasLayer/MilitaryPanelControl.visible = true
 		for BarracksButton in $CanvasLayer/MilitaryPanelControl/ScrollContainer/GridContainer.get_children():
 			BarracksButton.updateSelf()
 	else:
 		$CanvasLayer/MilitaryPanelControl.visible = false
-	pass # Replace with function body.
 	
 const armyScene = preload("res://Game Scenes and Scripts/army.tscn")
 func buildNewPlayerArmy(barracksBuilding, barracksTile, bbButton, playerNode, newArmyName):
 	# Cost scales +20% per previously purchased army (game-start armies not counted).
 	var n: int  = playerNode.purchasedArmyCount
 	var cost: int = ceili(10.0 * pow(1.2, n))
-	if playerNode.TotalDollars  < cost or playerNode.TotalWeapons < cost \
-			or playerNode.TotalCulture < cost or playerNode.TotalScience < cost:
-		print("[Army] Cannot afford new army — need ", cost,
-			  " each of Dollars / Weapons / Culture / Science (army #", n + 1, ")")
+	if playerNode.TotalDollars  < cost or playerNode.TotalWeapons < cost or playerNode.TotalCulture < cost or playerNode.TotalScience < cost:
+		print(" each of Dollars / Weapons / Culture / Science (army #", n + 1, ")")
+			  #" each of Dollars / Weapons / Culture / Science (army #", n + 1, ")")
 		return
 	playerNode.TotalDollars  -= cost
 	playerNode.TotalWeapons  -= cost
@@ -1851,7 +1903,7 @@ func buildNewPlayerArmy(barracksBuilding, barracksTile, bbButton, playerNode, ne
 	for Army in playerNode.countryArmyList:
 		if Army.ArmyName == newArmyName:
 			bbButton.addPrebuiltArmy(Army)
-	pass
+			Army.applyCountryBeliefMilMods()
 
 func UICommander(commander, army):
 	if commander != null:
@@ -1945,18 +1997,93 @@ func _close_army_commander_picker() -> void:
 	_armyAwaitingCommander = null
 var pathPointButtonToSend: pathPointButton
 
+# ── ITEM 1: APF REPOSITIONING ────────────────────────────────────────────────
+# Called when an AI army conquers a tile.  Reparents the APF node from the old
+# pathPointButton to the new one so the visual token reflects the move.
+func _on_ai_army_repositioned(army: Army, old_tile: Tile, new_tile: Tile) -> void:
+	if not is_instance_valid(army) or old_tile == null or new_tile == null:
+		return
+	var new_ppb = new_tile.tileSpawnPoint
+	if new_ppb == null:
+		return
+	# Find this army's APF — try old_tile.tileSpawnPoint.stationedAPF first, then
+	# search raisedPlayerAPFs so stale stationedAPF references don't strand the APF.
+	var apf = null
+	var apf_ppb = null
+	var old_ppb = old_tile.tileSpawnPoint
+	if old_ppb != null and old_ppb.stationedAPF != null \
+			and is_instance_valid(old_ppb.stationedAPF) \
+			and old_ppb.stationedAPF.thisArmy == army:
+		apf = old_ppb.stationedAPF
+		apf_ppb = old_ppb
+	else:
+		for candidate in $PathControl.raisedPlayerAPFs:
+			if is_instance_valid(candidate) and candidate.thisArmy == army:
+				apf = candidate
+				apf_ppb = candidate.currentPathPoint
+				break
+	if apf == null or not is_instance_valid(apf_ppb):
+		return
+	apf_ppb.remove_child(apf)
+	apf_ppb.stationedAPF = null
+	apf_ppb.stationedArmy = null
+	apf_ppb.occupied = false
+	new_ppb.add_child(apf)
+	new_ppb.stationedAPF = apf
+	new_ppb.stationedArmy = army
+	new_ppb.occupied = true
+	apf.currentPathPoint = new_ppb
+	apf.currentTile = new_tile
+
+# ── ITEM 4: AI COMBAT LOG ─────────────────────────────────────────────────────
+func _on_ai_combat_event(attacker_cid: String, tile_name: String, result: String) -> void:
+	_ai_combat_log.append({"attacker": attacker_cid, "tile": tile_name, "result": result})
+
+func _show_ai_turn_report() -> void:
+	if _ai_combat_log.is_empty():
+		_ai_combat_log.clear()
+		return
+	var lines: PackedStringArray = []
+	for entry in _ai_combat_log:
+		var verb := "captured" if entry.result == "captured" else "attacked"
+		lines.append("%s %s %s" % [entry.attacker, verb, entry.tile])
+	var report := "[b]Enemy Activity[/b]\n" + "\n".join(lines)
+	var label = get_node_or_null("CanvasLayer/TurnLabel")
+	if label != null:
+		label.text = _format_game_date() + "\n" + "\n".join(lines)
+	_ai_combat_log.clear()
+
+# ── FLOATING DAMAGE NUMBERS ───────────────────────────────────────────────────
+func _spawn_damage_number(amount: int, color: Color, world_pos: Vector2, x_offset: float) -> void:
+	if amount <= 0:
+		return
+	var node = _floating_damage_scene.instantiate()
+	add_child(node)
+	node.global_position = world_pos + Vector2(x_offset, 0.0)
+	node.setup(amount, color)
+
+func _on_battle_resolved(tile, atk_loss: int, def_loss: int) -> void:
+	if tile == null or tile.tileSpawnPoint == null:
+		return
+	var base_pos: Vector2 = tile.tileSpawnPoint.global_position
+	_spawn_damage_number(atk_loss, Color(1.0, 0.4, 0.1), base_pos, -28.0)
+	_spawn_damage_number(def_loss, Color(1.0, 0.85, 0.1), base_pos, 28.0)
+
+func _on_player_battle_resolved(tile, atk_loss: int, def_loss: int) -> void:
+	_on_battle_resolved(tile, atk_loss, def_loss)
+
 func raiseArmyFromWorld(Army, country, Tile):
-	
-	#this is how the armies spawn into the world, will need a redo soon
-	#literally just add a system where tiles have a reference to their pathPointButton instead of this
-	#demon AI system will spawn units using raiseArmyFromWorld
+	if Tile == null or not is_instance_valid(Tile):
+		push_warning("raiseArmyFromWorld: Tile is null for army '%s' — skipped" % Army.ArmyName)
+		return
 	pathPointButtonToSend = Tile.tileSpawnPoint
+	if pathPointButtonToSend == null:
+		push_warning("raiseArmyFromWorld: no spawn point on tile '%s' for army '%s' — skipped" % [Tile.tileName, Army.ArmyName])
+		return
 	if country == playerCountryNode:
 		$PathControl.raisePlayerArmy(Army, country, Tile, pathPointButtonToSend)
 	else:
-		#here is where we will raise either Demonic or nonPlayer Country AIs
 		$PathControl.raiseComputerArmy(Army, country, Tile, pathPointButtonToSend)
-	pass
 func raiseCivilianUnit(civ, country):
 	var civTile = civ.stationNode.ppbTile if civ.stationNode != null else null
 	$PathControl.raisePlayerCiv(civ, country, civTile)
@@ -2004,8 +2131,8 @@ func _on_protector_summoned(origin_tile, protector_name: String, protector_id: S
 	if origin_tile != null:
 		var school: String = _protector_id_to_school(protector_id)
 		origin_tile.addWizard(protector_name, school)
-		print("[Protectors] Tower: ", protector_name,
-			  " (", school, ") stationed at ", origin_tile.tileName)
+			  #" (", school, ") stationed at ", origin_tile.tileName)
+			 # " (", school, ") stationed at ", origin_tile.tileName)
 	var spell_name: String = _protector_id_to_spell(protector_id)
 	if spell_name != "":
 		playerCountryNode.addSpellToSpellbook(spell_name, 1, 0)
@@ -2035,8 +2162,8 @@ func _on_protector_agreed(agreed_flag: String) -> void:
 		# Assign the protector as the tile's wizard so the tower produces their school's magic
 		var school: String = _protector_id_to_school(pid)
 		home_tile.addWizard(prot_name, school)
-		print("[Protectors] ", prot_name, " (", school, ") bound to tower at tile ",
-			  home_tile.tileNumber, " — ", home_tile.tileName)
+			 # home_tile.tileNumber, " — ", home_tile.tileName)
+			 # home_tile.tileNumber, " — ", home_tile.tileName)
 	else:
 		push_warning("[Protectors] No home tile mapped for " + pid)
 
@@ -2045,6 +2172,14 @@ func _on_protector_agreed(agreed_flag: String) -> void:
 	if spell_name != "":
 		playerCountryNode.addSpellToSpellbook(spell_name, 1, 0)
 		print("[Protectors] Presidential Power unlocked: ", spell_name)
+
+	# PROT_08: grant USS Constitution Support mil mod to all current armies
+	if agreed_flag == "prot_08_agreed":
+		for army in playerCountryNode.countryArmyList:
+			army.applyCountryBeliefMilMods()
+			army.surveySelf()
+			army.updateArmyUI()
+		print("[Protectors] USS Constitution Support granted to all player armies")
 
 	# Reveal this protector's Records entry globally
 	if get_node_or_null("/root/LibraryData"):
@@ -2075,7 +2210,6 @@ func _protector_id_to_name(pid: String) -> String:
 		"PROT_11": return "Paul Revere"
 		"PROT_12": return "Liberty Bell"
 		"PROT_13": return "Green Mountain Ghost"
-		"PROT_14": return "Mount Rushmore"
 		"PROT_15": return "Skunk Ape"
 		"PROT_16": return "Eternal Minuteman"
 		"PROT_17": return "Lincoln's Ghost"
@@ -2097,7 +2231,6 @@ func _protector_id_to_school(pid: String) -> String:
 		"PROT_05", "PROT_13", "PROT_17":                        return "spectral"
 		"PROT_08", "PROT_09", "PROT_16":                        return "iron"
 		"PROT_11", "PROT_12":                                   return "liberty"
-		"PROT_14":                                              return "manifest"
 	return "manifest"
 
 
@@ -2116,7 +2249,6 @@ func _protector_id_to_spell(pid: String) -> String:
 		"PROT_11": return "MIDNIGHT EMERGENCY MOBILIZATION ORDER"
 		"PROT_12": return "FREEDOM RESONANCE AMPLIFICATION DECREE"
 		"PROT_13": return "RURAL SPECTRAL INVESTMENT INITIATIVE"
-		"PROT_14": return "MONUMENT-BASED ECONOMIC STIMULUS PACKAGE"
 		"PROT_15": return "FLORIDA CRYPTID INTEGRATION TASK FORCE"
 		"PROT_16": return "PERMANENT READINESS MANDATE (EXPIRES NEVER)"
 		"PROT_17": return "EMANCIPATION PROCLAMATION 2: STILL EMANCIPATING"
@@ -2128,10 +2260,14 @@ func createNewEvent(event_id: String, tile = null) -> void:
 	var newEvent = eventScene.instantiate()
 	if event_id == "CA_PM_LEGACY":
 		newEvent.build_from_data(_build_ca_pm_legacy_data(), tile, playerCountryNode)
+	elif event_id in ["CMD_THANKS", "CMD_THANKS_INTIMATE"] and tile != null and tile.tileGovernor != null:
+		var is_exp: bool = (event_id == "CMD_THANKS_INTIMATE")
+		newEvent.build_from_data(_build_cmd_thanks_data(tile, is_exp), tile, playerCountryNode)
 	else:
 		newEvent.build_from_csv(event_id, tile, playerCountryNode)
 	newEvent.eventButtonPressed.connect(_on_event_button_pressed)
 	newEvent.tileEventButtonPressed.connect(_on_tile_event_button_pressed)
+	#AudioManager.play_sfx("event_shown")
 	$CanvasLayer/EventControl/EventContainer.add_child(newEvent)
 	EventDatabase.mark_event_fired(event_id, currentWorldTurn)
 	_library_on_event_fired(event_id)
@@ -2139,7 +2275,7 @@ func createNewEvent(event_id: String, tile = null) -> void:
 
 # Assembles CA_PM_LEGACY long_desc dynamically based on the player's CA run flags.
 func _build_ca_pm_legacy_data() -> Dictionary:
-	var flags: Array = playerCountryNode.CountryFlags
+	var flags: Dictionary = playerCountryNode.CountryFlags
 
 	# ── Protector names by flag ───────────────────────────────────────────────
 	var PROT_NAMES: Dictionary = {
@@ -2234,6 +2370,7 @@ func _on_event_button_pressed(button_id: String, event_id: String,
 	executeOutcome(outcome_type, outcome_value, outcome_amount, null)
 	if outcome_type == "set_flag" and outcome_value.ends_with("_agreed") \
 			and (outcome_value.begins_with("prot_") or outcome_value.begins_with("ca_prot_")):
+		#AudioManager.play_sfx("protector_agree")
 		_on_protector_agreed(outcome_value)
 	if next_event_id != "":
 		createNewEvent(next_event_id)
@@ -2245,6 +2382,7 @@ func _on_tile_event_button_pressed(button_id: String, event_id: String,
 	executeOutcome(outcome_type, outcome_value, outcome_amount, tile)
 	if outcome_type == "set_flag" and outcome_value.ends_with("_agreed") \
 			and (outcome_value.begins_with("prot_") or outcome_value.begins_with("ca_prot_")):
+		#AudioManager.play_sfx("protector_agree")
 		_on_protector_agreed(outcome_value)
 	if next_event_id != "":
 		createNewEvent(next_event_id, tile)
@@ -2259,6 +2397,8 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 			var lc_faction: String = outcome_value
 			if lc_faction == "vp_faction" and _vp_faction != "":
 				lc_faction = _vp_faction
+			if lc_faction == "ca_pm_faction" and _ca_vp_faction != "":
+				lc_faction = _ca_vp_faction
 			var lc_amount = outcome_amount
 			if _vp_faction != "" and lc_faction == _vp_faction:
 				lc_amount *= 2
@@ -2279,17 +2419,18 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 			_apply_resource_change(outcome_value, outcome_amount)
 		"morale_boost":
 			_apply_morale_boost(outcome_amount, tile)
+		"harmony_boost":
+			playerCountryNode.TotalHappiness += outcome_amount
 		"promote_commander":
+			# Level-up is now automatic via XP threshold — this outcome grants
+			# a commendation morale bonus and faction loyalty to acknowledge the event
 			if tile != null and tile.tileGovernor != null:
-				tile.tileGovernor.governorLevel = mini(tile.tileGovernor.governorLevel + 1, 3)
-				if tile.tileGovernor.governorLevel >= 3:
-					tile.tileGovernor.questComplete = true
-				print("[Commander] Promoted ", tile.tileGovernor.governorType,
-					" to level ", tile.tileGovernor.governorLevel)
+				tile.tileGovernor.morale = mini(tile.tileGovernor.morale + 20, 100)
 				if tile.tileGovernor.governorFaction != "":
 					playerCountryNode.changeFactionLoyalty(tile.tileGovernor.governorFaction, 1)
 				if tile.stationedArmy != null:
 					tile.stationedArmy.updateArmyUI()
+				print("[Commander] Commendation issued to ", tile.tileGovernor.governorType)
 		"tile_liberation":
 			if tile != null:
 				tile.record_conquest("USA")
@@ -2313,23 +2454,35 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 				tile.addBuilding(outcome_value, outcome_amount)
 		"army_buff":
 			_apply_army_buff(outcome_value, outcome_amount, tile)
+		"propaganda_spread":
+			for army in playerCountryNode.countryArmyList:
+				army.propagandaBuff += int(outcome_amount)
+				army.surveySelf()
+				army.updateArmyUI()
+			playerCountryNode.TotalMandate += 30
+			updatePlayerUI()
+		"quebec_manpower_refill":
+			for army in playerCountryNode.countryArmyList:
+				if army.inTile != null and army.inTile.tileContinent == "CA - QB":
+					army.manpowerInArmy = army.maxManpower
+					army.updateArmyUI()
 		"summon_protector":
 			_summon_protector(outcome_value, tile)
 		"trigger_event":
 			createNewEvent(outcome_value, tile)
 		"form_alliance":
-			playerCountryNode.CountryFlags.append("can_allied")
+			playerCountryNode.CountryFlags["can_allied"] = true
 			for c in aliveCountriesList:
 				if c.CID == outcome_value:
 					if not playerCountryNode.ALLIED.has(c):
 						playerCountryNode.ALLIED.append(c)
 					if not c.ALLIED.has(playerCountryNode):
 						c.ALLIED.append(playerCountryNode)
-					print("[Alliance] Formal alliance established: ",
-						playerCountryNode.CID, " ↔ ", c.CID)
+						#playerCountryNode.CID, " ↔ ", c.CID)
+						#playerCountryNode.CID, " ↔ ", c.CID)
 					break
 		"set_flag":
-			playerCountryNode.CountryFlags.append(outcome_value)
+			playerCountryNode.CountryFlags[outcome_value] = true
 		"clear_flag":
 			playerCountryNode.CountryFlags.erase(outcome_value)
 		"set_mission_flag":
@@ -2340,13 +2493,12 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 			else:
 				var flag_val: String = "mission_" + outcome_value + "_" + str(tile.tileNumber)
 				if not playerCountryNode.CountryFlags.has(flag_val):
-					playerCountryNode.CountryFlags.append(flag_val)
+					playerCountryNode.CountryFlags[flag_val] = true
 					var timeout: int = int(outcome_amount)
 					if timeout > 0:
 						_mission_timers[flag_val] = timeout
-						print("[Mission] Activated: ", flag_val, " — expires in ", timeout, " turns")
-					else:
-						print("[Mission] Activated: ", flag_val, " — no timeout")
+					#else:
+					#else:
 		"claim_change":
 			playerCountryNode.presidentialClaim = clampf(
 				playerCountryNode.presidentialClaim + float(outcome_amount), -10.0, 10.0)
@@ -2397,19 +2549,18 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 			else:
 				var flag_val: String = "mission_" + outcome_value + "_" + str(tile.tileNumber) + "_own"
 				if not playerCountryNode.CountryFlags.has(flag_val):
-					playerCountryNode.CountryFlags.append(flag_val)
+					playerCountryNode.CountryFlags[flag_val] = true
 					var timeout: int = int(outcome_amount)
 					if timeout > 0:
 						_mission_timers[flag_val] = timeout
-						print("[Mission] Activated (own): ", flag_val, " — expires in ", timeout, " turns")
-					else:
-						print("[Mission] Activated (own): ", flag_val, " — no timeout")
+					#else:
+					#else:
 		"governor_loyalty_change":
 			if tile != null and tile.tileGovernor != null:
 				tile.tileGovernor.loyalty = clampf(
 					tile.tileGovernor.loyalty + float(outcome_amount), -20.0, 20.0)
-				print("[GovLoyalty] ", tile.tileGovernor.governorType,
-					" at ", tile.tileName, " → ", tile.tileGovernor.loyalty)
+					#" at ", tile.tileName, " → ", tile.tileGovernor.loyalty)
+					#" at ", tile.tileName, " → ", tile.tileGovernor.loyalty)
 		"election_pressure_change":
 			if tile != null:
 				tile.electionPressure = clampi(
@@ -2421,8 +2572,8 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 				var per_turn: int = _get_tile_resource_output(tile, outcome_value)
 				var total: int = per_turn * turns
 				_apply_resource_change(outcome_value, total)
-				print("[TileYield] ", tile.tileName, " ", outcome_value,
-					" ×", turns, " (", per_turn, "/turn) = ", total)
+					#" ×", turns, " (", per_turn, "/turn) = ", total)
+					#" ×", turns, " (", per_turn, "/turn) = ", total)
 			else:
 				push_warning("executeOutcome: tile_yield requires a tile context")
 		"trigger_collapse":
@@ -2431,7 +2582,7 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 			_apply_george_peace()
 		"george_peace_reject":
 			if not playerCountryNode.CountryFlags.has("george_peace_rejected"):
-				playerCountryNode.CountryFlags.append("george_peace_rejected")
+				playerCountryNode.CountryFlags["george_peace_rejected"] = true
 			playerCountryNode.presidentialClaim = clampf(
 				playerCountryNode.presidentialClaim + 1.0, -10.0, 10.0)
 			print("[George Peace] Rejected — presidentialClaim +1")
@@ -2441,10 +2592,104 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 			# tile context = apply to the stationed army in that tile
 			if tile != null and tile.stationedArmy != null:
 				tile.stationedArmy.apply_status(outcome_value, 9999, outcome_amount)
-				print("[Protector] ", outcome_value, " cast on army at ", tile.tileName,
-					" — ", outcome_amount, " magic/turn")
+					#" — ", outcome_amount, " magic/turn")
+					#" — ", outcome_amount, " magic/turn")
 			else:
 				push_warning("cast_protector_buff: no army at tile " + str(tile))
+		"tile_building_mandate_surge":
+			# +1 mandate per building level per turn × outcome_amount turns, paid as lump sum
+			if tile != null:
+				var total_levels: int = 0
+				for b in tile.tileBuildingsList:
+					if b.enabled:
+						total_levels += b.buildingLevel
+				var total: int = total_levels * outcome_amount
+				_apply_resource_change("mandate", total)
+					#" ×", outcome_amount, " turns = ", total, " mandate")
+					#" ×", outcome_amount, " turns = ", total, " mandate")
+			else:
+				push_warning("tile_building_mandate_surge: requires tile context")
+		"corrupt_windfall":
+			# outcome_value = resource, outcome_amount = tile yield multiplier
+			# Also adds +20 corruption to the tile
+			if tile != null:
+				var per_turn: int = _get_tile_resource_output(tile, outcome_value)
+				var total: int = per_turn * outcome_amount
+				_apply_resource_change(outcome_value, total)
+				tile.corruption = mini(tile.corruption + 20, 100)
+					#outcome_value, " | corruption now ", tile.corruption)
+					#outcome_value, " | corruption now ", tile.corruption)
+			else:
+				push_warning("corrupt_windfall: requires tile context")
+		"level_all_spell_schools":
+			for i in range(outcome_amount):
+				playerCountryNode.levelUpSchool("manifest")
+				playerCountryNode.levelUpSchool("iron")
+				playerCountryNode.levelUpSchool("storm")
+				playerCountryNode.levelUpSchool("liberty")
+				playerCountryNode.levelUpSchool("cryptid")
+				playerCountryNode.levelUpSchool("spectral")
+			print("[SpellSchools] All 6 schools +", outcome_amount, " levels")
+		"gold_and_army_buff":
+			# outcome_value = buff status name, outcome_amount = turns; also grants 50 gold
+			_apply_resource_change("gold", 50)
+			_apply_army_buff(outcome_value, outcome_amount, tile)
+		"state_building_level_yield":
+			if tile != null:
+				var total_levels: int = 0
+				var state: String = tile.tileContinent
+				for t in $TileController.get_children():
+					if t.tileOwner == playerCountry and t.tileContinent == state:
+						for b in t.tileBuildingsList:
+							if b.enabled:
+								total_levels += b.buildingLevel
+				var yield_amount: int = total_levels * outcome_amount
+				_apply_resource_change(outcome_value, yield_amount)
+					#" ×", outcome_amount, " = ", yield_amount, " ", outcome_value)
+					#" ×", outcome_amount, " = ", yield_amount, " ", outcome_value)
+			else:
+				push_warning("state_building_level_yield: requires tile context")
+		"set_governor_perk":
+			if tile != null and tile.tileGovernor != null:
+				if not tile.tileGovernor.governor_perks.has(outcome_value):
+					tile.tileGovernor.governor_perks.append(outcome_value)
+						#" unlocked perk: ", outcome_value)
+						#" unlocked perk: ", outcome_value)
+			else:
+				push_warning("set_governor_perk: requires tile with governor")
+		"tile_army_manpower_refill":
+			if tile != null and tile.stationedArmy != null:
+				tile.stationedArmy.manpowerInArmy = tile.stationedArmy.maxManpower
+				tile.stationedArmy.updateArmyUI()
+				print("[ManpowerRefill] ", tile.tileName, " army fully refilled")
+			else:
+				push_warning("tile_army_manpower_refill: no army at tile")
+		"spawn_anarchist":
+			_spawn_anarchist_army(tile)
+		"reveal_british_tiles":
+			var revealed_count: int = 0
+			for t in $TileController.get_children():
+				if t.tileOwner == "UK" or (t.stationedArmy != null and t.stationedArmy.parentCountry != null and t.stationedArmy.parentCountry.CID == "UK"):
+					t.discoverTile()
+					revealed_count += 1
+			print("[RevealBritish] Revealed ", revealed_count, " British tiles")
+		"all_armies_manpower_heal":
+			var pct: float = float(outcome_amount) / 100.0
+			for army in playerCountryNode.countryArmyList:
+				for unit in army.unitsList:
+					var heal: int = int(float(unit.unitMaxManpower) * pct)
+					unit.unitCurrentManpower = mini(unit.unitCurrentManpower + heal, unit.unitMaxManpower)
+				army.surveySelf()
+				army.updateArmyUI()
+			print("[ManpowerHeal] All armies healed ", outcome_amount, "% of max manpower")
+		"halloween_endorsement":
+			# Ghost presidents' blessing: +1 happiness per unit per turn for N turns
+			playerCountryNode.CountryFlags["halloween_endorsement_turns"] = int(outcome_amount)
+			print("[HalloweenEndorsement] Granted for ", outcome_amount, " turns")
+		"cherry_blossom_prayer":
+			# Ualani's prayer at the Washington Monument: permanent +0.01 magic/unit/turn
+			playerCountryNode.CountryFlags["cherry_blossom_prayer"] = true
+			print("[CherryBlossomPrayer] Granted — permanent fractional magic gain active")
 		"nothing":
 			pass
 		_:
@@ -2464,6 +2709,8 @@ func evaluateDateEvents() -> void:
 		_check_can_events()
 		_check_ca_protectors()
 		_check_loyal_governor_events()
+		_check_arc03_honorary_event()
+		_check_arc11_monarchist_event()
 		_check_george_peace_offer()
 		_check_peace_conditions()
 		_check_harvest_crisis()
@@ -2490,18 +2737,32 @@ func evaluateDateEvents() -> void:
 		_tick_wild_protectors()
 		_tick_wild_ca_protectors()
 		_check_protector_summons()
+		_check_prot08_dma_summon()
+		_check_prot17_dma_summon()
 		_tick_commander_turns()
+		_check_arc01_objectives()
+		_tick_arc03_cultural_corps()
+		_tick_halloween_endorsement()
+		_tick_cherry_blossom_prayer()
+		_tick_pioneer_heritage_corruption()
+		_tick_nature_conservationists_corruption()
+		_tick_inland_maritime_expertise()
+		_tick_french_cultural_identity()
+		_tick_civic_pride_mandate()
 		_check_cmd_merit()
 		_check_cmd_recognition()
 		_check_cmd_thanks()
 		_tick_election_pressure()
 		_check_stump_speech()
 		_check_election_season()
+		_tick_anarchists()
 	elif playerCountry == "CA" and not _ca_collapsed:
 		_check_war_events()
 		_check_usa_alliance_events()
 		_check_ca_own_protectors()
 		_check_loyal_governor_events()
+		_check_arc03_honorary_event()
+		_check_arc11_monarchist_event()
 		_check_george_peace_offer()
 		_check_peace_conditions()
 		_check_harvest_crisis()
@@ -2514,11 +2775,15 @@ func evaluateDateEvents() -> void:
 		_check_ca_vp_events()
 		_tick_wild_ca_protectors()
 		_tick_commander_turns()
+		_check_arc01_objectives()
+		_tick_arc03_cultural_corps()
 		_check_cmd_merit()
 		_check_cmd_recognition()
 		_check_cmd_thanks()
 		_tick_election_pressure()
 		_check_election_season()
+		_tick_anarchists()
+		_tick_laura_secord_market()
 	_check_end_game()
 	var to_fire = EventDatabase.evaluate_date_triggers(currentWorldTurn, month)
 	for event_id in to_fire:
@@ -2738,7 +3003,7 @@ func _fire_state_secession(state_code: String) -> void:
 		return
 
 	var display_name: String = STATE_FULL_NAMES.get(state_code, "State of " + state_code)
-	var rebel_country: country = _spawn_state_country(state_code, display_name)
+	var rebel_country = _spawn_state_country(state_code, display_name)
 
 	var metro_tile = null
 	for tile in tiles_to_seize:
@@ -2762,7 +3027,7 @@ func _fire_state_secession(state_code: String) -> void:
 				army.parentCountry = rebel_country
 				army.enemy = true  # Rebel armies are hostile to USA
 
-	playerCountryNode.CountryFlags.append("rebel_" + state_code)
+	playerCountryNode.CountryFlags["rebel_" + state_code] = true
 	playerCountryNode.presidentialClaim = clampf(
 		playerCountryNode.presidentialClaim - 3.0, -10.0, 10.0)
 	createNewEvent("STATE_REBEL_01", metro_tile)
@@ -2818,7 +3083,7 @@ func _execute_republic_collapse() -> void:
 			break
 
 	if uk_country != null and not uk_country.CountryFlags.has("uk_usa_peace"):
-		uk_country.CountryFlags.append("uk_usa_peace")
+		uk_country.CountryFlags["uk_usa_peace"] = true
 
 	# Snapshot — we mutate OwnedTileList as we go
 	var usa_tiles: Array = playerCountryNode.OwnedTileList.duplicate()
@@ -2869,7 +3134,7 @@ func _execute_republic_collapse() -> void:
 	for state_code in state_tile_groups.keys():
 		var tiles: Array = state_tile_groups[state_code]
 		var display_name: String = STATE_FULL_NAMES.get(state_code, "State of " + state_code)
-		var state_country: country = _spawn_state_country(state_code, display_name)
+		var state_country = _spawn_state_country(state_code, display_name)
 
 		for tile in tiles:
 			playerCountryNode.OwnedTileList.erase(tile)
@@ -2893,20 +3158,19 @@ func _execute_republic_collapse() -> void:
 
 		print("[Collapse] ", display_name, " (", state_code, ") — ", tiles.size(), " tiles")
 
-	print("[Collapse] USA retains ", playerCountryNode.OwnedTileList.size(), " tile(s):")
-	for tile in playerCountryNode.OwnedTileList:
-		print("[Collapse]   • ", tile.tileName)
+	#for tile in playerCountryNode.OwnedTileList:
 
+		print("playerCountryNode.OwnedTileList")
 	createNewEvent("COLLAPSE_02")
 
 
-func _spawn_state_country(state_code: String, display_name: String) -> country:
+func _spawn_state_country(state_code: String, display_name: String):
 	# Guard: return existing node if somehow called twice for the same state
 	for c in aliveCountriesList:
 		if c.CID == state_code:
 			return c
 
-	var new_country: country = countryNode.instantiate()
+	var new_country = countryNode.instantiate()
 	new_country.name        = state_code + "_state"
 	new_country.CID         = state_code
 	new_country.NatName     = display_name
@@ -3055,9 +3319,10 @@ func _check_border_dispute() -> void:
 			continue
 		var has_ca_neighbor: bool = false
 		for n in tile.TileNeighbors:
-			if n.tileContinent in CANADIAN_STATES:
-				has_ca_neighbor = true
-				break
+			if n != null:
+				if n.tileContinent in CANADIAN_STATES:
+					has_ca_neighbor = true
+					break
 		if has_ca_neighbor:
 			candidates.append(tile)
 	if candidates.is_empty():
@@ -3110,8 +3375,8 @@ func _check_turncoat_general() -> void:
 		return
 	_start_cooldown("TURNCOAT_001", 15)
 	createNewEvent("TURNCOAT_001", suspect_tile)
-	print("[Turncoat] Suspicious commander: ", suspect_tile.tileGovernor.governorType,
-		" at ", suspect_tile.tileName)
+		#" at ", suspect_tile.tileName)
+		#" at ", suspect_tile.tileName)
 
 
 # ── UALANI EVENTS ──────────────────────────────────────────────
@@ -3136,6 +3401,27 @@ func _find_jessica_tile() -> Tile:
 		if tile.stationedArmy != null and tile.stationedArmy.parentCountry == playerCountryNode:
 			return tile
 	return null
+
+
+func _apply_ualani_aura() -> void:
+	# George Washington doctrine: armies adjacent to Ualani gain "Spirit of the General" (+15 Attack)
+	# Runs every round. Duration 2 so it expires naturally if Ualani moves away.
+	var has_washington: bool = false
+	for belief in playerCountryNode.selectedBeliefs:
+		if belief.beliefType == "George Washington":
+			has_washington = true
+			break
+	if not has_washington:
+		return
+	var ualani_tile: Tile = _find_ualani_tile()
+	if ualani_tile == null:
+		return
+	for neighbor in ualani_tile.TileNeighbors:
+		if neighbor.stationedArmy == null:
+			continue
+		if neighbor.stationedArmy.parentCountry != playerCountryNode:
+			continue
+		neighbor.stationedArmy.apply_status("Spirit of the General", 2)
 
 
 func _check_ualani_ambush() -> void:
@@ -3201,8 +3487,8 @@ func _check_ualani_wounded() -> void:
 		return
 	_start_cooldown("UALANI_WOUNDED_01", 12)
 	createNewEvent("UALANI_WOUNDED_01", tile)
-	print("[Ualani] Wounded visit at ", tile.tileName,
-		" (", army.manpowerInArmy, "/", army.maxManpower, ")")
+		#" (", army.manpowerInArmy, "/", army.maxManpower, ")")
+		#" (", army.manpowerInArmy, "/", army.maxManpower, ")")
 
 
 func _check_ualani_winter() -> void:
@@ -3275,8 +3561,8 @@ func _check_ualani_alliance() -> void:
 		return
 	_start_cooldown("UALANI_ALLIANCE_01", 18)
 	createNewEvent("UALANI_ALLIANCE_01", ally_tile)
-	print("[Ualani] Alliance meeting at ", ally_tile.tileName,
-		" with ", ally_tile.tileGovernor.governorType)
+		#" with ", ally_tile.tileGovernor.governorType)
+		#" with ", ally_tile.tileGovernor.governorType)
 
 
 func _check_ualani_frontier() -> void:
@@ -3291,8 +3577,8 @@ func _check_ualani_frontier() -> void:
 		if neighbor.tileContinent.begins_with("CA - "):
 			_start_cooldown("UALANI_FRONTIER_01", 20)
 			createNewEvent("UALANI_FRONTIER_01", tile)
-			print("[Ualani] Frontier at ", tile.tileName,
-				" bordering ", neighbor.tileContinent)
+				#" bordering ", neighbor.tileContinent)
+				#" bordering ", neighbor.tileContinent)
 			return
 
 
@@ -3351,7 +3637,7 @@ func _check_chalch_summon() -> void:
 		return
 	_start_cooldown("CHALCH_SUMMON", 999)
 	if not playerCountryNode.CountryFlags.has("chalch_summoned"):
-		playerCountryNode.CountryFlags.append("chalch_summoned")
+		playerCountryNode.CountryFlags["chalch_summoned"] = true
 	createNewEvent("CHALCH_SUMMON", ualani_tile)
 	print("[Chalch] CHALCH_SUMMON fired — Ualani at Plymouth, month 11")
 
@@ -3365,7 +3651,7 @@ func _check_chalch_quests() -> void:
 		if _count_player_farms() >= 3:
 			_start_cooldown("CHALCH_Q1", 999)
 			if not playerCountryNode.CountryFlags.has("chalch_q1_done"):
-				playerCountryNode.CountryFlags.append("chalch_q1_done")
+				playerCountryNode.CountryFlags["chalch_q1_done"] = true
 			createNewEvent("CHALCH_Q1", _find_ualani_tile())
 			print("[Chalch] CHALCH_Q1 fired — 3+ farms")
 			return
@@ -3376,7 +3662,7 @@ func _check_chalch_quests() -> void:
 		if playerCountryNode.TotalFood >= 150:
 			_start_cooldown("CHALCH_Q2", 999)
 			if not playerCountryNode.CountryFlags.has("chalch_q2_done"):
-				playerCountryNode.CountryFlags.append("chalch_q2_done")
+				playerCountryNode.CountryFlags["chalch_q2_done"] = true
 			createNewEvent("CHALCH_Q2", _find_ualani_tile())
 			print("[Chalch] CHALCH_Q2 fired — 150+ food")
 			return
@@ -3387,7 +3673,7 @@ func _check_chalch_quests() -> void:
 		if _count_player_farms() >= 5:
 			_start_cooldown("CHALCH_Q3", 999)
 			if not playerCountryNode.CountryFlags.has("chalch_q3_done"):
-				playerCountryNode.CountryFlags.append("chalch_q3_done")
+				playerCountryNode.CountryFlags["chalch_q3_done"] = true
 			createNewEvent("CHALCH_Q3", _find_ualani_tile())
 			print("[Chalch] CHALCH_Q3 fired — 5+ farms")
 			return
@@ -3895,8 +4181,8 @@ func _assign_vice_president() -> void:
 	_vp_governor = candidates[randi() % candidates.size()]
 	_vp_governor.isVicePresident = true
 	_vp_faction = VP_FACTION_MAP.get(_vp_governor.governorType, "")
-	print("[VP] Assigned: ", _vp_governor.governorType,
-		" | Faction: ", _vp_faction)
+		#" | Faction: ", _vp_faction)
+		#" | Faction: ", _vp_faction)
 
 
 func _assign_ca_vice_president() -> void:
@@ -3986,14 +4272,45 @@ func _check_end_game() -> void:
 		return
 	if currentWorldTurn < 100:
 		return
-	_game_ended = true
+
 	var total = _election_pressure_total()
-	if total > 0:
+
+	# Determine peace and UK land status for ending routing
+	var uk_country = null
+	for c in aliveCountriesList:
+		if c.CID == "UK":
+			uk_country = c
+			break
+	var usa_peace: bool = uk_country != null and uk_country.CountryFlags.has("uk_usa_peace")
+	var is_allied: bool = playerCountryNode.CountryFlags.has("can_allied")
+	var ca_peace:  bool = uk_country != null and uk_country.CountryFlags.has("uk_ca_peace")
+	var peace_signed: bool = usa_peace and (not is_allied or ca_peace)
+	var uk_tiles_remain: bool = false
+	for tile in $TileController.get_children():
+		if tile.tileOwner == "UK":
+			uk_tiles_remain = true
+			break
+
+	if total <= 0:
+		# British puppet wins the election
+		createNewEvent("ELECTION_NIGHT_LOSE", null)
+		print("[EndGame] Crown wins election — pressure total: ", total)
+		_trigger_game_over(false, "A Crown puppet has taken the White House.", "britishWhiteHouse")
+	elif peace_signed and uk_tiles_remain:
+		# Peace signed but UK still holds land — stalemate
+		createNewEvent("ELECTION_NIGHT_WIN", null)
+		print("[EndGame] Stalemate — peace signed, UK holds land, turn ", currentWorldTurn)
+		_trigger_game_over(false, "Peace was signed, but the Crown holds its ground.", "stalemate")
+	elif not peace_signed and uk_tiles_remain:
+		# War still raging at turn limit — endless battle
+		createNewEvent("ELECTION_NIGHT_WIN", null)
+		print("[EndGame] Endless battle — war ongoing at turn ", currentWorldTurn)
+		_trigger_game_over(false, "The war grinds on. No end in sight.", "endlessBattle")
+	else:
+		# Liberty wins clean
 		createNewEvent("ELECTION_NIGHT_WIN", null)
 		print("[EndGame] Liberty Coalition wins — pressure total: ", total)
-	else:
-		createNewEvent("ELECTION_NIGHT_LOSE", null)
-		print("[EndGame] Crown wins — pressure total: ", total)
+		_trigger_game_over(true, "The Liberty Coalition has won. The Republic endures.")
 
 
 # ── COMMANDER PROGRESSION ────────────────────────────────────────
@@ -4014,23 +4331,258 @@ func _tick_commander_turns() -> void:
 		_commander_turns[key] = _commander_turns.get(key, 0) + 1
 
 
-func _check_cmd_merit() -> void:
-	if _event_on_cooldown("CMD_MERIT"):
-		return
+func _check_arc01_objectives() -> void:
 	for tile in playerCountryNode.OwnedTileList:
 		if tile.tileGovernor == null or tile.stationedArmy == null:
 			continue
 		if tile.stationedArmy.commander != tile.tileGovernor:
 			continue
-		if tile.tileGovernor.governorLevel != 1:
+		var gov = tile.tileGovernor
+		var army = tile.stationedArmy
+
+		match gov.governorArchetypeId:
+			"ARC_01":
+				if tile.tileOwner != playerCountry:
+					continue
+				if gov.governorLevel == 1:
+					if army.manpowerInArmy < 500:
+						continue
+					var camp_lvl: int = 0
+					for b in tile.tileBuildingsList:
+						if b.buildingType == "Camp" and b.enabled:
+							camp_lvl = maxi(camp_lvl, b.buildingLevel)
+					if camp_lvl < 2:
+						continue
+					createNewEvent("ARC_01_FIRST", tile)
+				elif gov.governorLevel == 2:
+					if army.manpowerInArmy < 800:
+						continue
+					var granary_count: int = 0
+					for b in tile.tileBuildingsList:
+						if b.buildingType == "Granary" and b.enabled:
+							granary_count += 1
+					if granary_count < 2:
+						continue
+					createNewEvent("ARC_01_DONE", tile)
+
+			"ARC_02":
+				# Obj 1 (lvl 1→2): army stationed + lvl 2 mine + 500 manpower
+				if gov.governorLevel == 1:
+					if army.manpowerInArmy < 500:
+						continue
+					var mine_lvl: int = 0
+					for b in tile.tileBuildingsList:
+						if b.buildingType == "Mine" and b.enabled:
+							mine_lvl = maxi(mine_lvl, b.buildingLevel)
+					if mine_lvl < 2:
+						continue
+					createNewEvent("ARC_02_FIRST", tile)
+				# Obj 2 (lvl 2→3): own tile + lvl 4 mine + 800 manpower
+				elif gov.governorLevel == 2:
+					if tile.tileOwner != playerCountry:
+						continue
+					if army.manpowerInArmy < 800:
+						continue
+					var mine_lvl: int = 0
+					for b in tile.tileBuildingsList:
+						if b.buildingType == "Mine" and b.enabled:
+							mine_lvl = maxi(mine_lvl, b.buildingLevel)
+					if mine_lvl < 4:
+						continue
+					createNewEvent("ARC_02_DONE", tile)
+
+			"ARC_03":
+				# Obj 1 (lvl 1→2): liberate an Ivy League tile from UK + station commander there
+				if gov.governorLevel == 1:
+					if tile.tileOwner != playerCountry:
+						continue
+					if not tile.has_special_feature("Ivy League"):
+						continue
+					if tile.lastConqueror != "UK":
+						continue
+					createNewEvent("ARC_03_FIRST", tile)
+				# Obj 2 (lvl 2→3): library at level 5 in tile + 1000 manpower in army
+				elif gov.governorLevel == 2:
+					if tile.tileOwner != playerCountry:
+						continue
+					if army.manpowerInArmy < 1000:
+						continue
+					var lib_lvl: int = 0
+					for b in tile.tileBuildingsList:
+						if b.buildingType == "Library" and b.enabled:
+							lib_lvl = maxi(lib_lvl, b.buildingLevel)
+					if lib_lvl < 5:
+						continue
+					createNewEvent("ARC_03_DONE", tile)
+
+
+func _tick_arc03_cultural_corps() -> void:
+	for tile in playerCountryNode.OwnedTileList:
+		if tile.tileGovernor == null or tile.stationedArmy == null:
 			continue
-		var key = _commander_key(tile)
-		if _commander_turns.get(key, 0) < 5:
+		var gov = tile.tileGovernor
+		var army = tile.stationedArmy
+		if army.commander != gov:
 			continue
-		_start_cooldown("CMD_MERIT", 10)
-		createNewEvent("CMD_MERIT", tile)
-		print("[Commander] CMD_MERIT fired for ", tile.tileGovernor.governorType)
+		if gov.governorArchetypeId != "ARC_03" or gov.governorLevel < 3:
+			continue
+		if not army._army_has_active_mod("Cultural Corps"):
+			continue
+		var culture_gain: int = 0
+		for unit in army.unitsList:
+			culture_gain += unit.unitLevel
+		if culture_gain > 0:
+			playerCountryNode.TotalCulture += culture_gain
+
+
+func _tick_halloween_endorsement() -> void:
+	var turns_left: int = playerCountryNode.CountryFlags.get("halloween_endorsement_turns", 0)
+	if turns_left <= 0:
 		return
+	var ualani_tile = _find_ualani_tile()
+	if ualani_tile != null and ualani_tile.stationedArmy != null:
+		var unit_count: int = ualani_tile.stationedArmy.unitsList.size()
+		if unit_count > 0:
+			playerCountryNode.TotalHappiness += unit_count
+	turns_left -= 1
+	if turns_left <= 0:
+		playerCountryNode.CountryFlags.erase("halloween_endorsement_turns")
+	else:
+		playerCountryNode.CountryFlags["halloween_endorsement_turns"] = turns_left
+
+
+func _tick_civic_pride_mandate() -> void:
+	var active := false
+	for b in playerCountryNode.selectedBeliefs:
+		if b.beliefType == "Civic Pride":
+			active = true
+			break
+	if not active:
+		return
+	for tile in playerCountryNode.OwnedTileList:
+		var monument_level: int = tile.get_building_level("monument")
+		if monument_level <= 0:
+			continue
+		playerCountryNode.civic_pride_mandate_acc += 0.5 * float(monument_level)
+	var whole: int = int(playerCountryNode.civic_pride_mandate_acc)
+	if whole >= 1:
+		playerCountryNode.TotalMandate += whole
+		playerCountryNode.civic_pride_mandate_acc -= float(whole)
+
+
+func _tick_pioneer_heritage_corruption() -> void:
+	var active := false
+	for b in playerCountryNode.selectedBeliefs:
+		if b.beliefType == "Pioneer Heritage":
+			active = true
+			break
+	if not active:
+		return
+	for tile in playerCountryNode.OwnedTileList:
+		var farm_level: int = tile.get_building_level("farm")
+		if farm_level <= 0 or tile.corruption <= 0:
+			continue
+		var key := str(tile.tileNumber)
+		var gain: float = 0.1 * float(farm_level)
+		playerCountryNode.pioneer_heritage_corrupt_acc[key] = \
+			playerCountryNode.pioneer_heritage_corrupt_acc.get(key, 0.0) + gain
+		var whole: int = int(playerCountryNode.pioneer_heritage_corrupt_acc[key])
+		if whole >= 1:
+			tile.corruption = max(0, tile.corruption - whole)
+			playerCountryNode.pioneer_heritage_corrupt_acc[key] -= float(whole)
+			tile.calculateCorruption()
+
+
+func _tick_nature_conservationists_corruption() -> void:
+	var active := false
+	for b in playerCountryNode.selectedBeliefs:
+		if b.beliefType == "Nature Conservationists":
+			active = true
+			break
+	if not active:
+		return
+	for tile in playerCountryNode.OwnedTileList:
+		var farm_level: int = tile.get_building_level("farm")
+		var camp_level: int = tile.get_building_level("camp")
+		var total_levels: int = farm_level + camp_level
+		if total_levels <= 0 or tile.corruption <= 0:
+			continue
+		var key := str(tile.tileNumber)
+		var gain: float = 0.1 * float(total_levels)
+		playerCountryNode.nature_conservationists_corrupt_acc[key] = 			playerCountryNode.nature_conservationists_corrupt_acc.get(key, 0.0) + gain
+		var whole: int = int(playerCountryNode.nature_conservationists_corrupt_acc[key])
+		if whole >= 1:
+			tile.corruption = max(0, tile.corruption - whole)
+			playerCountryNode.nature_conservationists_corrupt_acc[key] -= float(whole)
+			tile.calculateCorruption()
+
+
+func _tick_french_cultural_identity() -> void:
+	var active := false
+	for law in playerCountryNode.lawsInConstitution:
+		if law.lawType == "French Cultural Identity Enshrined":
+			active = true
+			break
+	if not active:
+		return
+	for tile in playerCountryNode.OwnedTileList:
+		if tile.tileOwner != "CA":
+			continue
+		if not tile.has_building("Resort"):
+			continue
+		tile.resortDevelopmentPoints += 1
+		if tile.resortDevelopmentPoints >= tile.tileResortDevCost:
+			tile.levelUpBuilding("Resort")
+			tile.resortDevelopmentPoints = 0
+
+
+func _tick_inland_maritime_expertise() -> void:
+	var active := false
+	for b in playerCountryNode.selectedBeliefs:
+		if b.beliefType == "Inland Maritime Expertise":
+			active = true
+			break
+	if not active:
+		return
+	for tile in playerCountryNode.OwnedTileList:
+		if tile.stationedArmy == null:
+			continue
+		if tile.tileSpecialFeatures.has("Major River") or tile.tileSpecialFeatures.has("Major Lake"):
+			tile.stationedArmy.currentMovementPoints += 1
+
+
+func _tick_laura_secord_market() -> void:
+	var active := false
+	for b in playerCountryNode.selectedBeliefs:
+		if b.beliefType == "Laura Secord":
+			active = true
+			break
+	if not active:
+		return
+	for tile in playerCountryNode.OwnedTileList:
+		for b in tile.tileBuildingsList:
+			if b.buildingType == "Market" and b.enabled:
+				playerCountryNode.TotalFood += b.buildingLevel
+
+
+func _tick_cherry_blossom_prayer() -> void:
+	if not playerCountryNode.CountryFlags.get("cherry_blossom_prayer", false):
+		return
+	var unit_count: int = 0
+	for tile in playerCountryNode.OwnedTileList:
+		if tile.stationedArmy != null:
+			unit_count += tile.stationedArmy.unitsList.size()
+	if unit_count == 0:
+		return
+	playerCountryNode.cherry_blossom_magic_acc += 0.01 * float(unit_count)
+	var whole: int = int(playerCountryNode.cherry_blossom_magic_acc)
+	if whole >= 1:
+		playerCountryNode.TotalMagic += whole
+		playerCountryNode.cherry_blossom_magic_acc -= float(whole)
+
+
+func _check_cmd_merit() -> void:
+	pass  # dropped — arc begins at CMD_RECOGNITION
 
 
 func _check_cmd_recognition() -> void:
@@ -4041,14 +4593,15 @@ func _check_cmd_recognition() -> void:
 			continue
 		if tile.stationedArmy.commander != tile.tileGovernor:
 			continue
-		if tile.tileGovernor.governorLevel != 2:
+		var gov = tile.tileGovernor
+		if gov.governorLevel != 1 or gov.xp < 50.0:
 			continue
-		var key = _commander_key(tile)
-		if _commander_turns.get(key, 0) < 20:
-			continue
+		gov.governorLevel = 2
+		if tile.stationedArmy != null:
+			tile.stationedArmy.updateArmyUI()
 		_start_cooldown("CMD_RECOGNITION", 10)
 		createNewEvent("CMD_RECOGNITION", tile)
-		print("[Commander] CMD_RECOGNITION fired for ", tile.tileGovernor.governorType)
+		print("[Commander] CMD_RECOGNITION fired for ", gov.governorType, " (XP: ", gov.xp, ")")
 		return
 
 
@@ -4060,15 +4613,78 @@ func _check_cmd_thanks() -> void:
 			continue
 		if tile.stationedArmy.commander != tile.tileGovernor:
 			continue
-		if tile.tileGovernor.governorLevel != 3:
+		var gov = tile.tileGovernor
+		if gov.governorLevel != 2 or gov.xp < 125.0:
 			continue
-		var key = _commander_key(tile)
-		if _commander_turns.get(key, 0) < 50:
-			continue
+		gov.governorLevel = 3
+		gov.questComplete = true
+		if tile.stationedArmy != null:
+			tile.stationedArmy.updateArmyUI()
 		_start_cooldown("CMD_THANKS", 999)
 		createNewEvent("CMD_THANKS", tile)
-		print("[Commander] CMD_THANKS fired for ", tile.tileGovernor.governorType)
+		print("[Commander] CMD_THANKS fired for ", gov.governorType, " (XP: ", gov.xp, ")")
 		return
+
+
+# ── COMMANDER THANKS DYNAMIC EVENT BUILDERS ──────────────────────
+
+func _assign_thanks_content(gov: governor, position: String, portrait_data: Dictionary) -> void:
+	var path: String      = portrait_data.get("path", "")
+	var portrait_id: String = path.get_file().get_basename()
+	gov.thanksImg    = "res://art assets/AmericanRevolutionArt/Panel/cmd_thanks_" + portrait_id + ".png"
+	gov.thanksImgExp = "res://art assets/AmericanRevolutionArt/Panel/cmd_thanks_exp_" + portrait_id + ".png"
+	gov.thanksTxt    = _build_thanks_txt(position)
+	gov.thanksTxtExp = _build_thanks_txt_exp(position)
+
+
+func _build_cmd_thanks_data(tile, is_exp: bool) -> Dictionary:
+	var gov = tile.tileGovernor
+	var eid: String = "CMD_THANKS_INTIMATE" if is_exp else "CMD_THANKS"
+	return {
+		"event_id":    eid,
+		"event_type":  "standard",
+		"country_cid": "USA",
+		"headline":    "PRESIDENT CARLISLE DELIVERS PERSONAL THANKS TO [COMMANDER_NAME] AT [TILE_NAME]",
+		"short_desc":  "The President Doesn't Visit Everyone. She Visited [CMD_OBJECT].",
+		"long_desc":   gov.thanksTxtExp if is_exp else gov.thanksTxt,
+	}
+
+
+func _build_thanks_txt(position: String) -> String:
+	match position:
+		"SCOUT":
+			return "[COMMANDER_NAME] arrived at the White House press conference with the same directness [CMD_SUBJECT] brings to any terrain: immediately oriented, looking for the exits, and slightly wary of a room with no visible horizon. The press corps, accustomed to commanders who perform comfort, found the lack of performance refreshing. [CMD_SUBJECT] accepted the citation from President Carlisle without ceremony and said three words that the White House stenographer has described, in their personal notes, as the most honest thing said aloud in that room all year. Carlisle said nothing in return. She didn't need to."
+		"ORATOR":
+			return "There was a moment, approximately four minutes into President Carlisle's remarks, when the press corps quietly shifted their attention from the President to [COMMANDER_NAME]. Carlisle noticed. She finished her remarks, handed over the citation, and said: 'Go ahead.' [COMMANDER_NAME] spoke for eleven minutes. The transcription has been reprinted seventeen times. Carlisle's people later asked [CMD_OBJECT] what [CMD_SUBJECT] was going to say before [CMD_SUBJECT] said it. [CMD_SUBJECT] said [CMD_SUBJECT] didn't know. The press corps doesn't believe that."
+		"ENGINEER":
+			return "[COMMANDER_NAME] arrived at the White House with a citation in hand — not the one [CMD_SUBJECT] was about to receive, but one [CMD_SUBJECT] had drafted independently, for President Carlisle, for decisions made in the second month of operations that [CMD_SUBJECT] had wanted to acknowledge formally for some time. Carlisle accepted it with visible surprise. The exchange was not on the schedule. The press corps photographed it. The photograph is now in the Smithsonian. The blueprints [COMMANDER_NAME] also brought were not photographed. They were immediately classified."
+		"SPY":
+			return "The White House security log shows [COMMANDER_NAME] arriving at 9:47. The visitor log shows no entry for [CMD_OBJECT] at any time. The security detail has filed a report. The report contains a notation that reads, in the supervisor's handwriting: 'I believe this is intentional.' President Carlisle presented the citation in front of eighteen members of the press corps. [COMMANDER_NAME] accepted it. Three cameras malfunctioned simultaneously. The working photos show a podium, the President, and an excellent citation being held by someone the photos can't quite bring into focus."
+		"SOLDIER":
+			return "[COMMANDER_NAME] arrived in full dress uniform forty-five minutes before the press corps and stood at attention in the reception hall while the White House staff finished setting up. Three reporters, arriving early, stood up straighter without being asked. Carlisle walked in, looked at [CMD_OBJECT], and said: 'Stand easy.' [COMMANDER_NAME] said: 'Yes, ma'am,' and stood slightly less like a monument. The citation was presented. The applause was immediate. Carlisle shook [CMD_POSSESSIVE] hand and leaned in and said something nobody else heard. [COMMANDER_NAME] nodded once. That was the ceremony."
+		"FARMER":
+			return "[COMMANDER_NAME] brought food. Not as a gesture — practically, because [CMD_SUBJECT] had driven two days and figured the White House press corps probably hadn't eaten. [CMD_SUBJECT] was right. The food was gone before the ceremony started. Carlisle's deputy chief of staff asked where [CMD_SUBJECT] had gotten it. [COMMANDER_NAME] explained, briefly, that a revolution is not won on documents alone. Carlisle presented the citation and then, off-record, asked [CMD_OBJECT] to send more. [COMMANDER_NAME] said [CMD_SUBJECT] already had."
+		"HEALER":
+			return "[COMMANDER_NAME] was the only person in the room who asked President Carlisle how she was holding up. Not as protocol — as a direct question from someone who had been watching people carry too much for too long and knew what it looked like. Carlisle paused. She answered honestly. The press corps didn't catch what she said; [COMMANDER_NAME] had quietly ensured nobody was close enough to hear. The photo of that moment — Carlisle mid-answer, [COMMANDER_NAME] listening — has been called the most human photograph of the war. The citation was almost incidental."
+		"DIPLOMAT":
+			return "[COMMANDER_NAME] had renegotiated the ceremony format before it officially began. The changes were small: different staging, a brief private moment before the press entered, a different order to the remarks. The White House communications director noticed afterward and asked when this had happened. [COMMANDER_NAME] said it had come up naturally in the pre-event walkthrough. The communications director reviewed the walkthrough schedule. There was no pre-event walkthrough. The ceremony was better for the changes. Carlisle presented the citation and then asked [CMD_OBJECT], privately, if [CMD_SUBJECT] was available for a longer conversation. [COMMANDER_NAME] said [CMD_SUBJECT] had already cleared [CMD_POSSESSIVE] schedule."
+		"BUREAUCRAT":
+			return "[COMMANDER_NAME] arrived with three copies of every document — the invitation, the agenda, the citation text, the press release, and a four-page addendum [CMD_SUBJECT] had prepared regarding procedural improvements to the commendation process. The addendum was, by all accounts, excellent. Carlisle's chief of staff read it in the car and said nothing for eleven minutes. At the ceremony, Carlisle presented the citation and then, departing from prepared remarks, said: 'The addendum has been accepted.' [COMMANDER_NAME] said: 'I know.' Three members of the White House staff applauded separately, and not for the citation."
+		"SCHOLAR":
+			return "[COMMANDER_NAME] took notes during [CMD_POSSESSIVE] own commendation ceremony. This was observed by four members of the press corps, who could not agree afterward on what [CMD_SUBJECT] was writing. Carlisle presented the citation, made her remarks, and then asked [CMD_OBJECT] afterward what [CMD_SUBJECT] had written down. [COMMANDER_NAME] showed her. Carlisle read it. She handed it back without comment. The White House archivist, who happened to be present, described the contents as 'the most complete account of the ceremony I have ever read, written by the person being honored, while it was happening.'"
+		"ADMIRAL":
+			return "[COMMANDER_NAME] arrived by water. The Potomac dock had not been used for official arrivals in fourteen years. The dock master was not notified. The press corps was. The photographs of the approach — [COMMANDER_NAME] standing at the bow in the early morning fog — were on every wire service before the ceremony started. Carlisle was briefed on the arrival method by her deputy, who was trying to suppress a smile and not succeeding. The citation was presented without further incident. The departure, also by water, had better lighting."
+		"MAGE":
+			return "The White House press corps filed their reports on the commendation ceremony for [COMMANDER_NAME] within the hour. All eighteen reports described an unremarkable event: citation presented, remarks made, photographs taken. Three reporters have since filed amendments. The amendments describe, with some inconsistency, various secondary phenomena the original reports did not include. Carlisle's official statement, when asked, is that the ceremony proceeded as planned. There are no photographs. The press pool photographer says the camera was working. Three technicians confirm it was working. The photographs are simply not there."
+		"WARRIOR":
+			return "The room went quiet when [COMMANDER_NAME] walked in. Not from uncertainty — from recognition. The press corps, the White House staff, the three generals in the back row: everyone in that room had heard the name, and now they were standing in the same space as the person it belonged to. Carlisle presented the citation without preamble. [COMMANDER_NAME] accepted it without performance. Whatever was said between them was not recorded. The press corps, by unspoken agreement, did not attempt to capture the private exchange. Some moments are not improved by documentation."
+		_:
+			return "President Carlisle delivered personal thanks to [COMMANDER_NAME] at the White House. The citation was presented, the record was made, and something unscheduled happened in the margins of the ceremony that the official account doesn't fully capture. [COMMANDER_NAME] accepted the commendation without fanfare. Carlisle shook [CMD_POSSESSIVE] hand and held it a moment longer than the cameras expected."
+
+
+func _build_thanks_txt_exp(position: String) -> String:
+	var tag: String = position
+	return "The press conference is over. The Oval Office door closes. What happens next belongs to [COMMANDER_NAME] and [CMD_OBJECT] alone.\n\n[ EXPLICIT SCENE PLACEHOLDER — " + tag + " archetype. Oval Office setting. Hand-craft this scene with [COMMANDER_NAME]'s pronouns and personality. ]"
 
 
 # ── WILD PROTECTOR SYSTEM ────────────────────────────────────────
@@ -4094,6 +4710,8 @@ func _tick_wild_protectors() -> void:
 
 func _check_protector_summons() -> void:
 	for pid in PROTECTOR_IDS:
+		if pid == "PROT_08" or pid == "PROT_17":
+			continue  # DMA-investigation gated — handled by dedicated summon functions
 		if not _is_protector_wild(pid):
 			continue
 		var min_turn: int = PROTECTOR_SUMMON_TURNS.get(pid, 999)
@@ -4106,6 +4724,44 @@ func _check_protector_summons() -> void:
 		createNewEvent(summon_id, null)
 		print("[Protector] SUMMON fired: ", summon_id, " on turn ", currentWorldTurn)
 		return
+
+
+func _check_prot08_dma_summon() -> void:
+	if not _is_protector_wild("PROT_08"):
+		return
+	if _event_on_cooldown("PROT_08_SUMMON"):
+		return
+	# Scan player-owned tiles for a pending DMA investigation on a ship-raid tile
+	var dma_tile = null
+	for tile in playerCountryNode.OwnedTileList:
+		if tile.get("dmaInvestigationPending") and tile.get("hasMysteriousShipRaids"):
+			dma_tile = tile
+			tile.dmaInvestigationPending = false  # consume the flag
+			break
+	if dma_tile == null:
+		return
+	_start_cooldown("PROT_08_SUMMON", 9999)  # fires once
+	createNewEvent("PROT_08_SUMMON", dma_tile)
+	print("[Protector] PROT_08_SUMMON fired via DMA investigation at ", dma_tile.tileName)
+
+
+func _check_prot17_dma_summon() -> void:
+	if not _is_protector_wild("PROT_17"):
+		return
+	if _event_on_cooldown("PROT_17_SUMMON"):
+		return
+	# Scan player-owned tiles for a pending DMA investigation on the DC oration tile
+	var dma_tile = null
+	for tile in playerCountryNode.OwnedTileList:
+		if tile.get("dmaInvestigationPending") and tile.get("hasMysteriousShipRaids"):
+			dma_tile = tile
+			tile.dmaInvestigationPending = false  # consume the flag
+			break
+	if dma_tile == null:
+		return
+	_start_cooldown("PROT_17_SUMMON", 9999)  # fires once
+	createNewEvent("PROT_17_SUMMON", dma_tile)
+	print("[Protector] PROT_17_SUMMON fired via DMA investigation at ", dma_tile.tileName)
 
 
 # ── CANADIAN PROTECTOR CHECKS ────────────────────────────────────────────────
@@ -4173,8 +4829,8 @@ func _check_ca_protectors() -> void:
 		var prot_tile = _get_ca_prot_tile(pid)
 		_start_cooldown(summon_id, 15)
 		createNewEvent(summon_id, prot_tile)
-		print("[CA Protector] SUMMON fired: ", summon_id,
-			  " at tile ", CA_PROT_TILES.get(pid, 0), " turn ", currentWorldTurn)
+			  #" at tile ", CA_PROT_TILES.get(pid, 0), " turn ", currentWorldTurn)
+			  #" at tile ", CA_PROT_TILES.get(pid, 0), " turn ", currentWorldTurn)
 		return
 
 
@@ -4193,8 +4849,8 @@ func _check_ca_own_protectors() -> void:
 		var prot_tile = _get_ca_prot_tile(pid)
 		_start_cooldown(summon_id, 15)
 		createNewEvent(summon_id, prot_tile)
-		print("[CA Own Protector] SUMMON fired: ", summon_id,
-			  " at tile ", CA_PROT_TILES.get(pid, 0), " turn ", currentWorldTurn)
+			  #" at tile ", CA_PROT_TILES.get(pid, 0), " turn ", currentWorldTurn)
+			  #" at tile ", CA_PROT_TILES.get(pid, 0), " turn ", currentWorldTurn)
 		return
 
 
@@ -4211,6 +4867,8 @@ func _check_loyal_governor_events() -> void:
 			continue
 		if gov.governorArchetypeId == "":
 			continue  # named governor — skip
+		if gov.governorArchetypeId == "ARC_20":
+			continue  # Hawaiian Refugee — Ualani's archetype, no loyalty event
 		if gov.loyalty < GOV_LOYAL_THRESHOLD:
 			continue
 		var fired_flag: String = "loyal_event_" + gov.governorArchetypeId + "_" + str(tile.tileNumber)
@@ -4218,11 +4876,51 @@ func _check_loyal_governor_events() -> void:
 			continue
 		if randf() >= GOV_LOYAL_CHANCE:
 			continue
-		playerCountryNode.CountryFlags.append(fired_flag)
+		playerCountryNode.CountryFlags[fired_flag] = true
 		createNewEvent("GOV_LOYAL_" + gov.governorArchetypeId, tile)
-		print("[LoyalGov] ", gov.governorType, " (", gov.governorArchetypeId,
-			") loyal event fired at ", tile.tileName)
+			#") loyal event fired at ", tile.tileName)
+			#") loyal event fired at ", tile.tileName)
 		return  # one per turn max
+
+
+func _check_arc03_honorary_event() -> void:
+	for tile in playerCountryNode.OwnedTileList:
+		if tile.tileGovernor == null:
+			continue
+		var gov = tile.tileGovernor
+		if gov.governorArchetypeId != "ARC_03":
+			continue
+		if gov.loyalty < 6.0:
+			continue
+		var flag: String = "arc03_honorary_" + str(tile.tileNumber)
+		if playerCountryNode.CountryFlags.has(flag):
+			continue
+		if randf() >= 0.03:
+			continue
+		playerCountryNode.CountryFlags[flag] = true
+		createNewEvent("ARC_03_HONORARY", tile)
+		print("[ARC_03] Honorary degree event fired at ", tile.tileName)
+		return
+
+
+func _check_arc11_monarchist_event() -> void:
+	for tile in playerCountryNode.OwnedTileList:
+		if tile.tileGovernor == null:
+			continue
+		var gov = tile.tileGovernor
+		if gov.governorArchetypeId != "ARC_11":
+			continue
+		if gov.loyalty < 5.0:
+			continue
+		var flag: String = "arc11_monarchists_" + str(tile.tileNumber)
+		if playerCountryNode.CountryFlags.has(flag):
+			continue
+		if randf() >= 0.03:
+			continue
+		playerCountryNode.CountryFlags[flag] = true
+		createNewEvent("ARC_11_MONARCHISTS", tile)
+		print("[ARC_11] Monarchist mob event fired at ", tile.tileName)
+		return
 
 
 func _get_tile_resource_output(tile, resource: String) -> int:
@@ -4235,7 +4933,6 @@ func _get_tile_resource_output(tile, resource: String) -> int:
 		"manpower": return max(int(tile.buildingManpowerOutput), 2)
 		"culture":  return max(int(tile.buildingCultureOutput), 2)
 		"magic":    return max(int(tile.buildingMagicOutput), 2)
-		"boats":    return max(tile.buildingBoatsOutput, 1)
 		_:          return 2
 
 
@@ -4283,22 +4980,22 @@ func _apply_george_peace() -> void:
 	var is_allied: bool = playerCountryNode.CountryFlags.has("can_allied")
 
 	if not uk_country.CountryFlags.has("uk_usa_peace"):
-		uk_country.CountryFlags.append("uk_usa_peace")
+		uk_country.CountryFlags["uk_usa_peace"] = true
 
 	if is_allied:
 		if not uk_country.CountryFlags.has("uk_ca_peace"):
-			uk_country.CountryFlags.append("uk_ca_peace")
+			uk_country.CountryFlags["uk_ca_peace"] = true
 		for c in aliveCountriesList:
 			if c.CID == "CA":
 				if not c.CountryFlags.has("uk_ca_peace"):
-					c.CountryFlags.append("uk_ca_peace")
+					c.CountryFlags["uk_ca_peace"] = true
 				break
 
 	if not playerCountryNode.CountryFlags.has("george_peace_accepted"):
-		playerCountryNode.CountryFlags.append("george_peace_accepted")
+		playerCountryNode.CountryFlags["george_peace_accepted"] = true
 
-	print("[George Peace] Accepted — uk_usa_peace set",
-		" + uk_ca_peace (allied)" if is_allied else " (USA only)")
+		#" + uk_ca_peace (allied)" if is_allied else " (USA only)")
+		#" + uk_ca_peace (allied)" if is_allied else " (USA only)")
 
 
 # ── PEACE CONDITIONS ─────────────────────────────────────────────────────────
@@ -4369,11 +5066,11 @@ func _check_peace_conditions() -> void:
 
 
 func _execute_allied_peace(uk_country, peace_tile) -> void:
-	uk_country.CountryFlags.append("uk_usa_peace")
-	uk_country.CountryFlags.append("uk_ca_peace")
+	uk_country.CountryFlags["uk_usa_peace"] = true
+	uk_country.CountryFlags["uk_ca_peace"] = true
 	for c in aliveCountriesList:
 		if c.CID == "CA":
-			c.CountryFlags.append("uk_ca_peace")
+			c.CountryFlags["uk_ca_peace"] = true
 			break
 	createNewEvent("PEACE_ALLIED_01", peace_tile)
 	print("[Peace] Allied peace signed — PEACE_ALLIED_01 fired")
@@ -4381,34 +5078,76 @@ func _execute_allied_peace(uk_country, peace_tile) -> void:
 
 func _execute_usa_peace(uk_country, peace_tile) -> void:
 	if not uk_country.CountryFlags.has("uk_usa_peace"):
-		uk_country.CountryFlags.append("uk_usa_peace")
+		uk_country.CountryFlags["uk_usa_peace"] = true
 	createNewEvent("PEACE_USA_01", peace_tile)
 	print("[Peace] USA separate peace signed — PEACE_USA_01 fired")
 
 
 func _execute_ca_peace(uk_country, peace_tile) -> void:
 	if not uk_country.CountryFlags.has("uk_ca_peace"):
-		uk_country.CountryFlags.append("uk_ca_peace")
+		uk_country.CountryFlags["uk_ca_peace"] = true
 	for c in aliveCountriesList:
 		if c.CID == "CA":
-			c.CountryFlags.append("uk_ca_peace")
+			c.CountryFlags["uk_ca_peace"] = true
 			break
 	createNewEvent("PEACE_CA_AI_01", peace_tile)
 	print("[Peace] CA separate peace signed — PEACE_CA_AI_01 fired")
 
 
+func _check_win_conditions() -> void:
+	if _game_ended or _republic_collapsed or _ca_collapsed:
+		return
+
+	# Single pass: check UK tile presence and DC capture
+	var uk_tiles_remain: bool = false
+	var dc_captured: bool = false
+	for tile in $TileController.get_children():
+		if tile.tileOwner == "UK":
+			uk_tiles_remain = true
+			if tile.tileNumber == 188:
+				dc_captured = true
+
+	# DC fallen loss
+	if dc_captured:
+		_trigger_game_over(false, "Washington DC has fallen to the Crown.", "DCdown")
+		return
+
+	var uk_country = null
+	for c in aliveCountriesList:
+		if c.CID == "UK":
+			uk_country = c
+			break
+
+	# Peace + clean victory: peace signed AND no UK tiles remain
+	if uk_country != null:
+		var usa_peace: bool = uk_country.CountryFlags.has("uk_usa_peace")
+		var is_allied: bool = playerCountryNode.CountryFlags.has("can_allied")
+		var ca_peace:  bool = uk_country.CountryFlags.has("uk_ca_peace")
+		if usa_peace and (not is_allied or ca_peace) and not uk_tiles_remain:
+			_trigger_game_over(true, "The Crown has acknowledged the Republic. Peace is signed.")
+			return
+
+	# Military victory: all UK tiles expelled, no peace needed
+	if not uk_tiles_remain:
+		_trigger_game_over(true, "Every Crown garrison has fallen. The continent is free.")
+
+
 func _generate_and_assign_governor(tile: Tile) -> void:
+	if _usa_archetypes.is_empty() or _usa_name_pools.is_empty():
+		push_warning("_generate_and_assign_governor: archetype data not loaded (call generateBarracksCommanders first)")
+		return
 	var portrait_placeholder: Texture = load(
 		"res://art assets/Placeholder Art/character/4-22-Ikra-Colors - Copy.png")
 	var candidates: Array = []
-	for arch in ARCHETYPES:
+	for arch in _usa_archetypes:
 		if tile.terrain in arch["terrain"]:
 			candidates.append(arch)
 	if candidates.is_empty():
-		candidates = ARCHETYPES
+		candidates = _usa_archetypes
 	var chosen: Dictionary = candidates[randi() % candidates.size()]
 	var pool_id: String = chosen["pools"][randi() % chosen["pools"].size()]
-	var pool: Dictionary = NAME_POOLS.get(pool_id, NAME_POOLS["NP_01"])
+	var fallback_pool_id: String = _usa_name_pools.keys()[0] if not _usa_name_pools.is_empty() else ""
+	var pool: Dictionary = _usa_name_pools.get(pool_id, _usa_name_pools.get(fallback_pool_id, {}))
 	var gender: int = randi() % 3
 	var first_list: Array
 	match gender:
@@ -4471,24 +5210,31 @@ func _apply_resource_change(resource: String, amount: int) -> void:
 		"magic":           playerCountryNode.TotalMagic     += amount
 		"science":         playerCountryNode.TotalScience   += amount
 		"harmony", "happiness": playerCountryNode.TotalHappiness += amount  # "harmony" compat
-		"boats":           playerCountryNode.TotalBoats     += amount
 		"mandate":         playerCountryNode.TotalMandate   += amount
 		"manpower":        playerCountryNode.TotalManpower  += amount
 
 func _apply_morale_boost(amount: int, tile = null) -> void:
 	if tile != null and tile.tileGovernor != null:
 		tile.tileGovernor.morale = clampi(tile.tileGovernor.morale + amount, 0, 100)
-		print("[Morale] ", tile.tileGovernor.governorType, " at ", tile.tileName,
-			" morale → ", tile.tileGovernor.morale)
+			#" morale → ", tile.tileGovernor.morale)
+			#" morale → ", tile.tileGovernor.morale)
 	else:
 		for t in playerCountryNode.OwnedTileList:
 			if t.tileGovernor != null:
 				t.tileGovernor.morale = clampi(t.tileGovernor.morale + amount, 0, 100)
 
 func _apply_army_buff(buff_type: String, duration: int, tile) -> void:
-	for Army in playerCountryNode.countryArmyList:
-		if tile == null or Army.inTile == tile:
-			pass
+	var targets: Array = []
+	if tile != null and tile.stationedArmy != null:
+		targets = [tile.stationedArmy]
+	else:
+		targets = playerCountryNode.countryArmyList
+	for army in targets:
+		army.apply_status(buff_type, duration)
+		army.surveySelf()
+		army.updateArmyUI()
+		#targets.size(), " army/armies")
+		#targets.size(), " army/armies")
 
 func _summon_protector(protector_id: String, tile) -> void:
 	createNewEvent("PROT_" + protector_id + "_SUMMON", tile)
@@ -4498,24 +5244,7 @@ func _get_spell_school(spell_name: String) -> String:
 		"MANIFEST DESTINY SUBSIDY PROGRAM":        return "iron"
 		"THOUGHTS & PRAYERS (FEDERAL ALLOCATION)": return "spectral"
 		"UNAUTHORIZED WEATHER MODIFICATION ACT":   return "storm"
-		# Presidential Powers — map to their protector's school
-		"FEDERAL ATMOSPHERIC SURVEILLANCE ACT",
-		"PINE BARRENS DEVELOPMENT MORATORIUM",
-		"PACIFIC NORTHWEST PRIVACY PROTECTION ACT",
-		"INTER-AGENCY CRYPTID INTEGRATION PROGRAM",
-		"FLORIDA CRYPTID INTEGRATION TASK FORCE":  return "cryptid"
-		"EXECUTIVE WEATHER CONTROL INITIATIVE",
-		"CHESAPEAKE WATERS RECLAMATION PROJECT",
-		"DEPARTMENT OF PSYCHOLOGICAL OPERATIONS":  return "storm"
-		"CLASSIFIED TACTICAL TERROR BUDGET",
-		"NAVAL SUPERIORITY MAINTENANCE DIRECTIVE",
-		"COLD WEATHER RESILIENCE FUNDING ACT",
-		"MIDNIGHT EMERGENCY MOBILIZATION ORDER",
-		"PERMANENT READINESS MANDATE (EXPIRES NEVER)": return "iron"
-		"FREEDOM RESONANCE AMPLIFICATION DECREE",
-		"RURAL SPECTRAL INVESTMENT INITIATIVE",
 		"EMANCIPATION PROCLAMATION 2: STILL EMANCIPATING": return "liberty"
-		"MONUMENT-BASED ECONOMIC STIMULUS PACKAGE": return "manifest"
 		"HEADLESS HORSEMAN": return "spectral"
 		_: return "manifest"
 
@@ -4537,18 +5266,16 @@ func _is_state_liberated(state_code: String, cid: String) -> bool:
 
 func _on_right_click_detector_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if Input.is_action_just_pressed('Right Click'):
+		if _hovered_tile != null and $PathControl.selectedAPF != null:
+			if $PathControl.tryMoveSelectedAPFToTile(_hovered_tile):
+				return
 		resetUI()
-	pass # Replace with function body.
 
 func resetUI():
 	for Tile in $TileController.get_children():
-		Tile.visible = true
-	$TileController.normalMode()
-	for Control in $CanvasLayer.get_children():
-		Control.visible = false
-		$CanvasLayer/PanelOpenerControl.visible = true
-		$"CanvasLayer/Resource Bar (TOP)".visible = true
-	pass
+		Tile.normalMode()
+	$PathControl.deselectAll()
+	$CanvasLayer.closeAllPanels()
 
 var lastSelectedPathPoint: pathPointButton
 func updateArmyFunc(Army, pathPoint):
@@ -4561,12 +5288,12 @@ func updateArmyFunc(Army, pathPoint):
 	$CanvasLayer/ArmyPanel/ShieldLabel.text = str(Army.armyShield, " / ", Army.armyMaxShield)
 	#$CanvasLayer/ArmyPanel/LocationLabel.text = str(pathPoint.pathNumber)
 	if $CanvasLayer/ArmyPanel.visible == false:
+		$CanvasLayer.closeAllPanels()
 		$CanvasLayer/ArmyPanel.visible = true
 		lastSelectedPathPoint = pathPoint
 	else:
 		$CanvasLayer/ArmyPanel.visible = false
 		lastSelectedPathPoint = null
-	pass
 
 func _on_path_control_show_army_info(key) -> void:
 	match key:
@@ -4609,21 +5336,11 @@ func _on_path_control_show_army_info(key) -> void:
 			$CanvasLayer/ArmyPanel/ActionInfoPanelControl.visible = false
 	pass # Replace with function body.
 
-#this is where the battles for melee are calculated
-var calculateMelee: bool
-func meleePressed(armyPath, thisArmy) -> void:
-	if thisArmy.attackBlocked:
-		return
-	if lastSelectedPathPoint != null:
-		for pathPointButton in lastSelectedPathPoint.neighborPathPoints:
-			pathPointButton.calculateBattle(armyPath, "melee", thisArmy, lastSelectedPathPoint)
-		if _army_has_active_marine(thisArmy):
-			for pathPointButton in lastSelectedPathPoint.navalPathPoints:
-				pathPointButton.calculateBattle(armyPath, "melee", thisArmy, lastSelectedPathPoint)
-	#set all apfs that are not neighbors to 'disabled' which makes them unclickable
-	#set the world to 'melee attack calc' bool
-	#if an apf is hovered over while in melee attack calc, build a battle and display results
-	#if an apf is clicked while in melee attack calc, enact the battle and add damage/results
+# Attack animation system — melee button sets path_control.melee_mode = true,
+# then the next right-click on a neighboring enemy PPB triggers _initiate_attack().
+# Battle resolves inline at the animation midpoint via _on_attack_midpoint().
+func meleePressed(_armyPath, _thisArmy) -> void:
+	pass  # melee_mode flag already set in path_control._on_melee_attack_button_pressed
 
 	pass # Replace with function body.
 
@@ -4667,53 +5384,53 @@ func giveSpellInfo(type, spellBranch):
 	var schoolType: String
 	match type:
 		"healingPotion":
-			spellString = LocBallUI.magicDic.healingPotion
-			spellDesc = LocBallUI.magicDic.healingPotionDesc
-			schoolType = LocBallUI.magicDic.alchemy
+			spellString = LocBallUI.magicDic.manifest
+			spellDesc = LocBallUI.magicDic.manifest
+			schoolType = LocBallUI.magicDic.manifest
 		"draughtOfKnowledge":
-			spellString = LocBallUI.magicDic.draughtOfKnowledge
-			spellDesc = LocBallUI.magicDic.draughtOfKnowledgeDesc
-			schoolType = LocBallUI.magicDic.alchemy
+			spellString = LocBallUI.magicDic.manifest
+			spellDesc = LocBallUI.magicDic.manifest
+			schoolType = LocBallUI.magicDic.manifest
 		"fireworks":
-			spellString = LocBallUI.magicDic.fireworks
-			spellDesc = LocBallUI.magicDic.fireworksDesc
-			schoolType = LocBallUI.magicDic.alchemy
+			spellString = LocBallUI.magicDic.manifest
+			spellDesc = LocBallUI.magicDic.manifest
+			schoolType = LocBallUI.magicDic.manifest
 		"fleetingFoot":
-			spellString = LocBallUI.magicDic.fleetingFoot
-			spellDesc = LocBallUI.magicDic.fleetingFootDesc
-			schoolType = LocBallUI.magicDic.alchemy
+			spellString = LocBallUI.magicDic.manifest
+			spellDesc = LocBallUI.magicDic.manifest
+			schoolType = LocBallUI.magicDic.manifest
 		"focusingDust":
-			spellString = LocBallUI.magicDic.focusDust
-			spellDesc = LocBallUI.magicDic.focusDustDesc
-			schoolType = LocBallUI.magicDic.alchemy
+			spellString = LocBallUI.magicDic.manifest
+			spellDesc = LocBallUI.magicDic.manifest
+			schoolType = LocBallUI.magicDic.manifest
 		"goldenTouch":
-			spellString = LocBallUI.magicDic.goldenTouch
-			spellDesc = LocBallUI.magicDic.goldenTouchDesc
-			schoolType = LocBallUI.magicDic.alchemy
+			spellString = LocBallUI.magicDic.manifest
+			spellDesc = LocBallUI.magicDic.manifest
+			schoolType = LocBallUI.magicDic.manifest
 		"paralysis":
 			spellString = LocBallUI.magicDic.paralysis
 			spellDesc = LocBallUI.magicDic.paralysisDesc
-			schoolType = LocBallUI.magicDic.alchemy
+			schoolType = LocBallUI.magicDic.manifest
 		"poison":
 			spellString = LocBallUI.magicDic.poison
 			spellDesc = LocBallUI.magicDic.poisonDesc
-			schoolType = LocBallUI.magicDic.alchemy
+			schoolType = LocBallUI.magicDic.manifest
 		"slimeSoldier":
 			spellString = LocBallUI.magicDic.slimeSoldier
 			spellDesc = LocBallUI.magicDic.slimeSoldierDesc
-			schoolType = LocBallUI.magicDic.alchemy
+			schoolType = LocBallUI.magicDic.manifest
 		"slimeSpitter":
 			spellString = LocBallUI.magicDic.slimeSpitter
 			spellDesc = LocBallUI.magicDic.slimeSpitterDesc
-			schoolType = LocBallUI.magicDic.alchemy
+			schoolType = LocBallUI.magicDic.manifest
 		"slimeWeapons":
 			spellString = LocBallUI.magicDic.slimeWeapons
 			spellDesc = LocBallUI.magicDic.slimeWeaponsDesc
-			schoolType = LocBallUI.magicDic.alchemy
+			schoolType = LocBallUI.magicDic.manifest
 		"waterbreathing":
 			spellString = LocBallUI.magicDic.waterbreathing
 			spellDesc = LocBallUI.magicDic.waterbreathingDesc
-			schoolType = LocBallUI.magicDic.alchemy
+			schoolType = LocBallUI.magicDic.manifest
 	spellBranch.giveSpellInfo(schoolPoints, turnsUntil, unlocked, spellString, spellDesc, schoolType)
 	pass
 
@@ -4737,8 +5454,8 @@ func _on_civilian_button_pressed() -> void:
 	if $CanvasLayer/CivilianControl.visible == true:
 		$CanvasLayer/CivilianControl.visible = false
 	else:
+		$CanvasLayer.closeAllPanels()
 		$CanvasLayer/CivilianControl.visible = true
-	pass # Replace with function body.
 
 var milModScene = load("res://mil_mod.tscn")
 
@@ -4753,13 +5470,11 @@ func updateCivFunc(civ, pathPoint):
 		newMilMod.buildSelf(MilMod.milModType)
 		$CanvasLayer/CivilianUnitControl/MilModGridContainer.add_child(newMilMod)
 	calculateCivilianButtons(civ, pathPoint.ppbTile)
-	if $CanvasLayer/ArmyPanel.visible == true:
-		$CanvasLayer/ArmyPanel.visible = false
 	if $CanvasLayer/CivilianUnitControl.visible == false:
+		$CanvasLayer.closeAllPanels()
 		$CanvasLayer/CivilianUnitControl.visible = true
 	else:
 		$CanvasLayer/CivilianUnitControl.visible = false
-	pass
 
 func calculateCivilianButtons(civ, ppbTile):
 	$CanvasLayer/CivilianUnitControl/CivilianActionButtons.updateUI(playerCountryNode.CID, civ, civ.civilianTool.toolName, civ.civilianKit.kitType, ppbTile)
@@ -4842,6 +5557,19 @@ func tileSiegeWon(tile, oldCID: String, newCID: String) -> void:
 		if country.CID == newCID:
 			country.addTile(tile)
 	tile.record_conquest(newCID)
+
+	# ── ITEM 3: clean up any APF belonging to the losing side ────────────────
+	var ppb = tile.tileSpawnPoint
+	if ppb != null and is_instance_valid(ppb) and ppb.stationedAPF != null:
+		var apf = ppb.stationedAPF
+		if is_instance_valid(apf) and apf.thisArmy != null \
+				and apf.thisArmy.parentCountry != null \
+				and apf.thisArmy.parentCountry.CID == oldCID:
+			ppb.stationedAPF = null
+			ppb.stationedArmy = null
+			ppb.occupied = false
+			apf.thisArmy.deleteMode = true   # APF _process() will queue_free both nodes
+
 	evaluateTileEvents(tile)
 	var state_code = tile.tileContinent
 	if state_code != "" and _is_state_liberated(state_code, newCID):
@@ -4860,7 +5588,28 @@ func tileSiegeWon(tile, oldCID: String, newCID: String) -> void:
 			createNewEvent("MEMORIAL_001", tile)
 			print("[Memorial] UK occupied special feature tile: ", tile.tileName)
 
+func _trigger_game_over(won: bool, reason: String = "", end_type: String = "") -> void:
+	if _game_ended:
+		return
+	_game_ended = true
+	#AudioManager.play_sfx("victory" if won else "defeat")
+	print("[GameOver] won=", won, "  reason=", reason, "  end_type=", end_type)
+	if not won and end_type != "":
+		var ending = get_node_or_null("CanvasLayer/EndingSceneControl")
+		if ending != null:
+			ending.endGame(end_type, _format_game_date(), currentWorldTurn)
+			return
+	var panel = get_node_or_null("CanvasLayer/GameOverPanel")
+	if panel != null:
+		panel.show_result(won, reason)
+	else:
+		push_warning("[GameOver] GameOverPanel not found — result: " + ("WIN" if won else "LOSS"))
+
+
 func _on_next_turn_pressed() -> void:
+	if _game_ended:
+		return
+	#AudioManager.play_sfx("end_turn")
 	# End this player's individual turn
 	_end_current_player_turn()
 
@@ -4874,35 +5623,58 @@ func _on_next_turn_pressed() -> void:
 		_turn_phase_index = 0
 		_resolve_ai_and_advance_round()
 		# Restore first player as active after round ends
-		_activate_player(_player_turn_order[0])
+		if not _game_ended:
+			_activate_player(_player_turn_order[0])
 
 # ── DATE SYSTEM ──────────────────────────────────────────────────────────────
-# Each turn represents one fortnight (14 days).
-# Calendar: 25-day months, 12 months per year (300-day year).
-# Game starts month=6 year=673 (equivalent to June 1775).
-# At ~26 fortnights per year, four years ≈ 104 turns — one presidential term.
+# Each turn represents 9 days.  Real-world calendar (Gregorian leap years).
+# Game starts July 4, 2026 (inauguration day).
+# 100 turns × 9 days = 900 days → arrives ~December 2028, covering the full
+# presidential emergency term and the 2028 election cycle.
 func _advance_fortnight() -> void:
-	var FORTNIGHT: int = 14
-	var DAYS_PER_MONTH: int = 25
-	var MONTHS_PER_YEAR: int = 12
-	dayOfMonth += FORTNIGHT
-	day += FORTNIGHT
-	if dayOfMonth > DAYS_PER_MONTH:
-		dayOfMonth -= DAYS_PER_MONTH
+	var TURN_DAYS: int = 9
+	var days_per_month := [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+	# Leap year: divisible by 4, except centuries unless also by 400
+	if (year % 4 == 0 and (year % 100 != 0 or year % 400 == 0)):
+		days_per_month[2] = 29
+	day += TURN_DAYS
+	dayOfMonth += TURN_DAYS
+	if dayOfMonth > days_per_month[month]:
+		dayOfMonth -= days_per_month[month]
 		month += 1
-		if month > MONTHS_PER_YEAR:
+		if month > 12:
 			month = 1
 			year += 1
-		# Broadcast season change to all tiles
+		#AudioManager.play_sfx("season_change")
 		emit_signal("calculateSeason", month)
 
 func _format_game_date() -> String:
-	var month_names: Array = [
+	var month_names := [
 		"January","February","March","April","May","June",
 		"July","August","September","October","November","December"
 	]
-	var mname: String = month_names[month - 1] if (month >= 1 and month <= 12) else ("Month " + str(month))
-	return mname + " " + str(year)
+	var mname = month_names[month - 1] if (month >= 1 and month <= 12) else ("Month " + str(month))
+	return "%s %d, %d" % [mname, dayOfMonth, year]
+
+# ── OPENING JOURNAL ENTRY ─────────────────────────────────────────────────────
+func _seed_opening_journal_entry() -> void:
+	var lib = get_node_or_null("/root/LibraryData")
+	if lib == null:
+		return
+	var body := """[b]July 4, 2026 — Washington, D.C.[/b]
+
+President Ualani Carlisle didn't expect to become the leader of the final free coalition on Earth. She was a senator who became a vice president due to her devastating speeches criticizing the colonist King George III. It was when her president had a complete and unexpected medical event that she was suddenly holding the reins on the executive branch, just weeks from the second British invasion.
+
+She was a soldier. She fought the robot redcoats during their first invasion, when America lost her ports to the colonizers. She knew she would have critics who claimed her authority was limited due to the fact that she wasn't elected president. But when she looked out into the Atlantic, when her advisers began detailing her of British troop movements, politics faded from her view.
+
+There was only one person who could steer America through these storm clouds. If it wasn't Ualani, who would it be?"""
+	lib.add_journal_entry(
+		"JOURNAL_001",
+		1,
+		"The Inauguration of President Ualani Carlisle",
+		body,
+		"DECLASSIFIED"
+	)
 
 # ── WINTER ARMY SUPPLY DRAIN ─────────────────────────────────────────────────
 # During winter months (Nov–Feb), armies stationed in cold-winter tiles consume
@@ -4927,6 +5699,8 @@ func _apply_winter_army_drain() -> void:
 		return
 	var total_drain: int = 0
 	for army in playerCountryNode.countryArmyList:
+		if not is_instance_valid(army) or army.deleteMode:
+			continue
 		if army.inTile == null:
 			continue
 		# Negative winterScore = tropical / hurricane territory — no cold drain
@@ -4984,8 +5758,8 @@ func _spawn_storm(origin: Tile) -> void:
 
 	# Spread to all neighbors
 	_spread_storm(origin, storm_id, storm_type, duration, intensity)
-	print("[Storm] ", storm_type, " spawned at tile ", origin.tileNumber,
-		  " — intensity ", intensity, ", duration ", duration, " turns.")
+		  #" — intensity ", intensity, ", duration ", duration, " turns.")
+		 # " — intensity ", intensity, ", duration ", duration, " turns.")
 
 func _spread_storm(origin: Tile, storm_id: String, storm_type: String,
 				   duration: int, intensity: int) -> void:
@@ -5004,6 +5778,8 @@ func _spread_storm(origin: Tile, storm_id: String, storm_type: String,
 func _apply_storm_debuffs() -> void:
 	for country in aliveCountriesList:
 		for army in country.countryArmyList:
+			if not is_instance_valid(army) or army.deleteMode:
+				continue
 			if army.inTile != null and army.inTile.stormActive:
 				_apply_storm_status_to_army(army, army.inTile.stormType)
 
@@ -5127,7 +5903,7 @@ func _handle_president_death(commander, army_name: String, tile) -> void:
 			}
 		],
 	}
-	# TODO: call _trigger_game_over() here once game over screen exists
+	_trigger_game_over(false, name + " has fallen in battle. The Republic has no President.", "funeral")
 	_create_dynamic_event(data, tile)
 
 
@@ -5268,7 +6044,7 @@ func _open_vp_picker() -> void:
 		+ "Choose a governor to serve the Republic."
 	)
 	lbl_sub.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	lbl_sub.autowrap_mode = TextServer.AUTOWRAP_WORD_ONLY
+	#lbl_sub.autowrap_mode = TextServer.AUTOWRAP_WORD_ONLY
 	vbox.add_child(lbl_sub)
 
 	vbox.add_child(HSeparator.new())
@@ -5312,8 +6088,8 @@ func _on_vp_governor_selected(new_vp, overlay: ColorRect, panel: PanelContainer)
 	new_vp.isVicePresident = true
 	_vp_governor = new_vp
 	_vp_faction  = VP_FACTION_MAP.get(new_vp.governorType, "")
-	print("[VP Succession] New Vice President: ", new_vp.governorType,
-		  " | Faction: ", _vp_faction)
+		  #" | Faction: ", _vp_faction)
+		 # " | Faction: ", _vp_faction)
 
 	# Close picker UI
 	overlay.queue_free()
@@ -5517,7 +6293,7 @@ func _library_on_event_fired(event_id: String) -> void:
 		return
 
 	# Gallery unlock — all players reach all scenes; no content gate
-	var content_flag: String = event.get("content_flag", "").strip()
+	var content_flag: String = event.get("content_flag", "").strip_edges()
 	if content_flag != "" and content_flag != "false":
 		LibraryData.unlock_gallery(event_id)
 
@@ -5569,6 +6345,90 @@ func _journal_classification(event_type: String) -> String:
 		"commander_complete":                    return "DECLASSIFIED"
 		_:                                       return "DECLASSIFIED"
 
+func _spawn_anarchist_army(source_tile) -> void:
+	# Find a UK-owned tile adjacent to the source tile, or any UK tile in the world.
+	var uk_tile = null
+	if source_tile != null:
+		for neighbor in source_tile.TileNeighbors:
+			if neighbor.tileOwner == "UK":
+				uk_tile = neighbor
+				break
+	if uk_tile == null:
+		for t in $TileController.get_children():
+			if t.tileOwner == "UK":
+				uk_tile = t
+				break
+	if uk_tile == null:
+		push_warning("spawn_anarchist: no UK tile found")
+		return
+
+	# Build the anarchist army on the UK tile via the player country's addArmy machinery,
+	# but as an independent rogue unit we manage ourselves.
+	var armyInstance = load("res://Game Scenes and Scripts/army.tscn").instantiate()
+	var anarch_gov = governor.new()
+	anarch_gov.buildSelf("Anarchistic", 1)
+
+	# TileNumber=0 so buildSelf skips the OwnedTileList search (UK tile won't be there)
+	add_child(armyInstance)
+	armyInstance.buildSelf("Anarchist Cell", playerCountryNode, 0, null)
+	armyInstance.is_anarchist = true
+	armyInstance.commander = anarch_gov
+	armyInstance.armyMaxShield = 0
+	armyInstance.armyShield = 0
+
+	playerCountryNode.addNewUnit(armyInstance, "Infantry", 1, "Flintlock", "Iron", "Cloth", 150, 80)
+	armyInstance.surveySelf()
+
+	armyInstance.inTile = uk_tile
+	uk_tile.addStationedArmy(armyInstance)
+	armyInstance.armyDestroyed.connect(_on_anarchist_destroyed.bind(armyInstance))
+	_anarchist_armies.append(armyInstance)
+	armyInstance.updateArmyUI()
+	print("[Anarchist] Cell spawned at ", uk_tile.tileName)
+
+func _on_anarchist_destroyed(army: Army) -> void:
+	_anarchist_armies.erase(army)
+
+func _tick_anarchists() -> void:
+	var to_remove: Array = []
+	for army in _anarchist_armies:
+		if not is_instance_valid(army):
+			to_remove.append(army)
+			continue
+		if army.inTile == null:
+			to_remove.append(army)
+			continue
+		# Try to attack an adjacent UK tile or fight whatever is in the current tile.
+		var target: Tile = null
+		for neighbor in army.inTile.TileNeighbors:
+			if neighbor.tileOwner == "UK":
+				target = neighbor
+				break
+		if target != null and target.stationedArmy != null:
+			# Trigger a battle against the UK army
+			var uk_army = target.stationedArmy
+			var attacker_loss: int = randi_range(10, 40)
+			var defender_loss: int = randi_range(30, 80)
+			army.manpowerInArmy = maxi(army.manpowerInArmy - attacker_loss, 0)
+			uk_army.manpowerInArmy = maxi(uk_army.manpowerInArmy - defender_loss, 0)
+				#" — loses ", attacker_loss, ", UK loses ", defender_loss)
+			#	" — loses ", attacker_loss, ", UK loses ", defender_loss)
+			army.updateArmyUI()
+			uk_army.updateArmyUI()
+			if army.manpowerInArmy <= 0:
+				to_remove.append(army)
+				army.queue_free()
+		elif army.inTile.tileOwner == "UK":
+			# Already on UK soil — apply sabotage attrition
+			var loss: int = randi_range(5, 20)
+			army.manpowerInArmy = maxi(army.manpowerInArmy - loss, 0)
+			army.updateArmyUI()
+			if army.manpowerInArmy <= 0:
+				to_remove.append(army)
+				army.queue_free()
+	for a in to_remove:
+		_anarchist_armies.erase(a)
+
 # WORLD.GD ADDITIONS
 # Add to existing save/load functions
 # ============================================================
@@ -5583,3 +6443,20 @@ func _journal_classification(event_type: String) -> String:
 #     var countryStates = loadCountryStatesFromFile()
 #     var armyStates    = ArmyDatabase.load_army_states_from_file()
 #     # ... then initialize tiles, countries, then restore armies
+
+
+func _on_polis_mode_button_pressed() -> void:
+	mapMode = "Polis"
+	updateMap()
+
+func _on_states_mode_button_pressed() -> void:
+	mapMode = "MapStates"
+	updateMap()
+
+func _on_outputs_mode_button_pressed() -> void:
+	mapMode = "MapOutputs"
+	updateMap()
+
+func _on_terrain_mode_button_pressed() -> void:
+	mapMode = "Natural"
+	updateMap()

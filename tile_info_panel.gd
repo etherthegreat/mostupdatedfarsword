@@ -12,7 +12,6 @@ var firstTime: bool
 func TilesCalculated():
 	tilesCalculatedBool = true
 	firstTime = true
-	pass
 
 
 #func _process(delta: float) -> void:
@@ -20,7 +19,6 @@ func TilesCalculated():
 		#displayTileInfo()
 	#else:
 		#return
-		#print("still calculating tiles")
 	#pass
 
 var selectedTile
@@ -63,7 +61,7 @@ func displayTileInfo(tile):
 		$TerrainModifiersGridContainer.add_child(modifierControl)
 		if selectedTile.tileGovernor != null:
 			if selectedTile.tileGovernor.governorTexture != null:
-				$governorButton.icon = selectedTile.tileGovernor.governorTexture
+				$governorButton.icon = selectedTile.tileGovernor.get_portrait_for_region(selectedTile.tileContinent)
 				$governorButton/govnameLabel.text = str(selectedTile.tileGovernor.governorType)
 				#$governorButton.disabled = true
 			else:
@@ -82,7 +80,6 @@ func displayTileInfo(tile):
 			$ManaPanelContainer.remove_child(manaPanel)
 			manaPanel.queue_free()
 	emit_signal("retrieveTileOutputs")
-	pass
 
 var manaPanelScene = preload("res://mana_panel.tscn")
 
@@ -92,16 +89,13 @@ func buildTileOutput(type, amount, dictionary):
 	newManaPanel.manaLook.connect(showTileOutput)
 	newManaPanel.closeManaLook.connect(closeTileOutput)
 	$ManaPanelContainer.add_child(newManaPanel)
-	pass
 
 func showTileOutput(fText):
 	$Outputs.clear()
 	$Outputs.append_text(fText)
-	pass
 
 func closeTileOutput():
 	$Outputs.clear()
-	pass
 
 signal governorButtonPressed
 func _on_governor_button_pressed() -> void:
@@ -118,8 +112,6 @@ func _on_governor_button_pressed() -> void:
 			$GovernorSelection.visible = true
 		else:
 			$GovernorSelection.visible = false
-		pass
-	pass # Replace with function body.
 
 var governorSelectionScene = preload("res://governor_selection.tscn")
 func matchTileNaturals():
@@ -170,12 +162,9 @@ func matchTileNaturals():
 				$TerrainSprite.texture = load("res://art assets/Placeholder Art/UI Art/terrain/IMG_1441.PNG")
 			"taiga":
 				$TerrainSprite.texture = load("res://art assets/Placeholder Art/UI Art/terrain/IMG_1442.PNG")
-	pass
 func calculateAvailableGovernor(playerNode, tile):
 	var tileReplica: Tile
 	tileReplica = tile
-	#print(tile, "fyycjcjjc")
-	#print(tileReplica.tileNumber, "fucuucuuc")
 	if $governorTileControlPanel/governorVBox.get_children() != null:
 		for governorSelectionScene in $governorTileControlPanel/governorVBox.get_children():
 			governorSelectionScene.queue_free()
@@ -231,19 +220,16 @@ func calculateAvailableGovernor(playerNode, tile):
 						newGovernorSelection.availableForThisTile = false
 						newGovernorSelection.onUnavailable()
 	$governorTileControlPanel.visible = true
-	pass
 
 signal confirmThisGovernor
 func confirmGovernor(confirmedGovernor):
 	emit_signal("confirmThisGovernor", confirmedGovernor, selectedTile)
 	$governorTileControlPanel.visible = false
-	pass
 
 
 func _on_factions_button_pressed() -> void:
-	pass # Replace with function body.
+	pass
 
 
 func _on_building_info_panel_show_new_building_tab() -> void:
-	
-	pass # Replace with function body.
+	pass

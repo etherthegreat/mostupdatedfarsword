@@ -1,0 +1,454 @@
+[gd_scene load_steps=2 format=3 uid="uid://csettings001a"]
+
+[ext_resource type="Script" uid="uid://csettings001b" path="res://SettingsPanel.gd" id="1_settings"]
+
+[node name="SettingsPanel" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+visible = false
+script = ExtResource("1_settings")
+
+[node name="DarkOverlay" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.85)
+mouse_filter = 0
+
+[node name="SettingsContainer" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -450.0
+offset_top = -350.0
+offset_right = 450.0
+offset_bottom = 350.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="OuterVBox" type="VBoxContainer" parent="SettingsContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="TitleLabel" type="Label" parent="SettingsContainer/OuterVBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 54)
+theme_override_font_sizes/font_size = 28
+text = "SETTINGS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TitleDivider" type="HSeparator" parent="SettingsContainer/OuterVBox"]
+layout_mode = 2
+
+[node name="HSplitContainer" type="HSplitContainer" parent="SettingsContainer/OuterVBox"]
+layout_mode = 2
+size_flags_vertical = 3
+split_offset = 200
+
+[node name="SidebarScroll" type="ScrollContainer" parent="SettingsContainer/OuterVBox/HSplitContainer"]
+layout_mode = 2
+size_flags_horizontal = 1
+custom_minimum_size = Vector2(180, 0)
+
+[node name="SidebarList" type="VBoxContainer" parent="SettingsContainer/OuterVBox/HSplitContainer/SidebarScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ContentScroll" type="ScrollContainer" parent="SettingsContainer/OuterVBox/HSplitContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ContentVBox" type="VBoxContainer" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 16
+
+[node name="AudioSection" type="VBoxContainer" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="AudioHeader" type="Label" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/AudioSection"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 32)
+theme_override_font_sizes/font_size = 15
+text = "AUDIO"
+
+[node name="MasterRow" type="HBoxContainer" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/AudioSection"]
+layout_mode = 2
+
+[node name="MasterLabel" type="Label" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/AudioSection/MasterRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(160, 0)
+size_flags_vertical = 1
+text = "Master Volume"
+
+[node name="MasterSlider" type="HSlider" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/AudioSection/MasterRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.0
+max_value = 100.0
+value = 80.0
+tick_count = 5
+ticks_on_borders = true
+
+[node name="MusicRow" type="HBoxContainer" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/AudioSection"]
+layout_mode = 2
+
+[node name="MusicLabel" type="Label" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/AudioSection/MusicRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(160, 0)
+size_flags_vertical = 1
+text = "Music Volume"
+
+[node name="MusicSlider" type="HSlider" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/AudioSection/MusicRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.0
+max_value = 100.0
+value = 70.0
+tick_count = 5
+ticks_on_borders = true
+
+[node name="SFXRow" type="HBoxContainer" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/AudioSection"]
+layout_mode = 2
+
+[node name="SFXLabel" type="Label" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/AudioSection/SFXRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(160, 0)
+size_flags_vertical = 1
+text = "SFX Volume"
+
+[node name="SFXSlider" type="HSlider" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/AudioSection/SFXRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.0
+max_value = 100.0
+value = 90.0
+tick_count = 5
+ticks_on_borders = true
+
+[node name="AmbientRow" type="HBoxContainer" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/AudioSection"]
+layout_mode = 2
+
+[node name="AmbientLabel" type="Label" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/AudioSection/AmbientRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(160, 0)
+size_flags_vertical = 1
+text = "Ambient Volume"
+
+[node name="AmbientSlider" type="HSlider" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/AudioSection/AmbientRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.0
+max_value = 100.0
+value = 60.0
+tick_count = 5
+ticks_on_borders = true
+
+[node name="DisplaySection" type="VBoxContainer" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox"]
+layout_mode = 2
+visible = false
+theme_override_constants/separation = 10
+
+[node name="DisplayHeader" type="Label" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/DisplaySection"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 32)
+theme_override_font_sizes/font_size = 15
+text = "DISPLAY"
+
+[node name="FullscreenRow" type="HBoxContainer" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/DisplaySection"]
+layout_mode = 2
+
+[node name="FullscreenLabel" type="Label" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/DisplaySection/FullscreenRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(160, 0)
+size_flags_vertical = 1
+text = "Fullscreen"
+
+[node name="FullscreenCheck" type="CheckButton" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/DisplaySection/FullscreenRow"]
+layout_mode = 2
+button_pressed = true
+
+[node name="ResolutionRow" type="HBoxContainer" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/DisplaySection"]
+layout_mode = 2
+
+[node name="ResolutionLabel" type="Label" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/DisplaySection/ResolutionRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(160, 0)
+size_flags_vertical = 1
+text = "Resolution"
+
+[node name="ResolutionOption" type="OptionButton" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/DisplaySection/ResolutionRow"]
+layout_mode = 2
+item_count = 3
+item_0/text = "1920x1080"
+item_0/id = 0
+item_0/disabled = false
+item_1/text = "1600x900"
+item_1/id = 1
+item_1/disabled = false
+item_2/text = "1280x720"
+item_2/id = 2
+item_2/disabled = false
+selected = 0
+
+[node name="UIScaleRow" type="HBoxContainer" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/DisplaySection"]
+layout_mode = 2
+
+[node name="UIScaleLabel" type="Label" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/DisplaySection/UIScaleRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(160, 0)
+size_flags_vertical = 1
+text = "UI Scale"
+
+[node name="UIScaleSlider" type="HSlider" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/DisplaySection/UIScaleRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 50.0
+max_value = 200.0
+value = 100.0
+tick_count = 4
+ticks_on_borders = true
+
+[node name="GameplaySection" type="VBoxContainer" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox"]
+layout_mode = 2
+visible = false
+theme_override_constants/separation = 10
+
+[node name="GameplayHeader" type="Label" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/GameplaySection"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 32)
+theme_override_font_sizes/font_size = 15
+text = "GAMEPLAY"
+
+[node name="AutosaveRow" type="HBoxContainer" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/GameplaySection"]
+layout_mode = 2
+
+[node name="AutosaveLabel" type="Label" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/GameplaySection/AutosaveRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(160, 0)
+size_flags_vertical = 1
+text = "Autosave (turns)"
+
+[node name="AutosaveOption" type="OptionButton" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/GameplaySection/AutosaveRow"]
+layout_mode = 2
+item_count = 3
+item_0/text = "Every turn"
+item_0/id = 0
+item_0/disabled = false
+item_1/text = "Every 5 turns"
+item_1/id = 1
+item_1/disabled = false
+item_2/text = "Every 10 turns"
+item_2/id = 2
+item_2/disabled = false
+selected = 0
+
+[node name="TooltipsRow" type="HBoxContainer" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/GameplaySection"]
+layout_mode = 2
+
+[node name="TooltipsLabel" type="Label" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/GameplaySection/TooltipsRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(160, 0)
+size_flags_vertical = 1
+text = "Tutorial Tooltips"
+
+[node name="TooltipsCheck" type="CheckButton" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/GameplaySection/TooltipsRow"]
+layout_mode = 2
+button_pressed = true
+
+[node name="NotifRow" type="HBoxContainer" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/GameplaySection"]
+layout_mode = 2
+
+[node name="NotifLabel" type="Label" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/GameplaySection/NotifRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(160, 0)
+size_flags_vertical = 1
+text = "Notification Speed"
+
+[node name="NotifOption" type="OptionButton" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/GameplaySection/NotifRow"]
+layout_mode = 2
+item_count = 3
+item_0/text = "Slow"
+item_0/id = 0
+item_0/disabled = false
+item_1/text = "Normal"
+item_1/id = 1
+item_1/disabled = false
+item_2/text = "Fast"
+item_2/id = 2
+item_2/disabled = false
+selected = 1
+
+[node name="AccessibilitySection" type="VBoxContainer" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox"]
+layout_mode = 2
+visible = false
+theme_override_constants/separation = 10
+
+[node name="AccessibilityHeader" type="Label" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/AccessibilitySection"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 32)
+theme_override_font_sizes/font_size = 15
+text = "ACCESSIBILITY"
+
+[node name="TextSizeRow" type="HBoxContainer" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/AccessibilitySection"]
+layout_mode = 2
+
+[node name="TextSizeLabel" type="Label" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/AccessibilitySection/TextSizeRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(160, 0)
+size_flags_vertical = 1
+text = "Text Size"
+
+[node name="TextSizeOption" type="OptionButton" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/AccessibilitySection/TextSizeRow"]
+layout_mode = 2
+item_count = 3
+item_0/text = "Small"
+item_0/id = 0
+item_0/disabled = false
+item_1/text = "Medium"
+item_1/id = 1
+item_1/disabled = false
+item_2/text = "Large"
+item_2/id = 2
+item_2/disabled = false
+selected = 1
+
+[node name="ColorblindRow" type="HBoxContainer" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/AccessibilitySection"]
+layout_mode = 2
+
+[node name="ColorblindLabel" type="Label" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/AccessibilitySection/ColorblindRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(160, 0)
+size_flags_vertical = 1
+text = "Colorblind Mode"
+
+[node name="ColorblindOption" type="OptionButton" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/AccessibilitySection/ColorblindRow"]
+layout_mode = 2
+item_count = 4
+item_0/text = "Off"
+item_0/id = 0
+item_0/disabled = false
+item_1/text = "Deuteranopia"
+item_1/id = 1
+item_1/disabled = false
+item_2/text = "Protanopia"
+item_2/id = 2
+item_2/disabled = false
+item_3/text = "Tritanopia"
+item_3/id = 3
+item_3/disabled = false
+selected = 0
+
+[node name="HighContrastRow" type="HBoxContainer" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/AccessibilitySection"]
+layout_mode = 2
+
+[node name="HighContrastLabel" type="Label" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/AccessibilitySection/HighContrastRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(160, 0)
+size_flags_vertical = 1
+text = "High Contrast"
+
+[node name="HighContrastCheck" type="CheckButton" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/AccessibilitySection/HighContrastRow"]
+layout_mode = 2
+button_pressed = false
+
+[node name="LanguageSection" type="VBoxContainer" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox"]
+layout_mode = 2
+visible = false
+theme_override_constants/separation = 10
+
+[node name="LanguageHeader" type="Label" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/LanguageSection"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 32)
+theme_override_font_sizes/font_size = 15
+text = "LANGUAGE"
+
+[node name="LangRow" type="HBoxContainer" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/LanguageSection"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="EngButton" type="Button" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/LanguageSection/LangRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(120, 40)
+text = "English"
+
+[node name="DataSection" type="VBoxContainer" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox"]
+layout_mode = 2
+visible = false
+theme_override_constants/separation = 12
+
+[node name="DataHeader" type="Label" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/DataSection"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 32)
+theme_override_font_sizes/font_size = 15
+text = "DATA"
+
+[node name="ResetRow" type="HBoxContainer" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/DataSection"]
+layout_mode = 2
+
+[node name="ResetDescription" type="Label" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/DataSection/ResetRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+autowrap_mode = 3
+text = "Erase all gallery unlocks, journal entries, and encyclopedia discoveries. Game progress is not affected."
+
+[node name="ResetDataBtn" type="Button" parent="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/DataSection/ResetRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(140, 0)
+text = "Reset Library Data"
+
+[node name="FooterRow" type="HBoxContainer" parent="SettingsContainer/OuterVBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 52)
+theme_override_constants/separation = 0
+
+[node name="FooterSpacer" type="Control" parent="SettingsContainer/OuterVBox/FooterRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CloseButton" type="Button" parent="SettingsContainer/OuterVBox/FooterRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(120, 44)
+theme_override_font_sizes/font_size = 16
+text = "CLOSE"
+
+[node name="ResetConfirmDialog" type="ConfirmationDialog" parent="SettingsContainer"]
+title = "Reset Library Data"
+dialog_text = "This will erase all gallery unlocks, journal entries, and encyclopedia discoveries. Are you sure?"
+size = Vector2i(400, 140)
+
+[connection signal="value_changed" from="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/AudioSection/MasterRow/MasterSlider" to="." method="_on_audio_changed" binds=["master_volume"]]
+[connection signal="value_changed" from="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/AudioSection/MusicRow/MusicSlider" to="." method="_on_audio_changed" binds=["music_volume"]]
+[connection signal="value_changed" from="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/AudioSection/SFXRow/SFXSlider" to="." method="_on_audio_changed" binds=["sfx_volume"]]
+[connection signal="value_changed" from="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/AudioSection/AmbientRow/AmbientSlider" to="." method="_on_audio_changed" binds=["ambient_volume"]]
+[connection signal="toggled" from="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/DisplaySection/FullscreenRow/FullscreenCheck" to="." method="_on_fullscreen_toggled"]
+[connection signal="item_selected" from="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/DisplaySection/ResolutionRow/ResolutionOption" to="." method="_on_resolution_selected"]
+[connection signal="value_changed" from="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/DisplaySection/UIScaleRow/UIScaleSlider" to="." method="_on_ui_scale_changed"]
+[connection signal="item_selected" from="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/GameplaySection/AutosaveRow/AutosaveOption" to="." method="_on_autosave_selected"]
+[connection signal="toggled" from="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/GameplaySection/TooltipsRow/TooltipsCheck" to="." method="_on_tooltips_toggled"]
+[connection signal="item_selected" from="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/GameplaySection/NotifRow/NotifOption" to="." method="_on_notification_speed_selected"]
+[connection signal="item_selected" from="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/AccessibilitySection/TextSizeRow/TextSizeOption" to="." method="_on_text_size_selected"]
+[connection signal="item_selected" from="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/AccessibilitySection/ColorblindRow/ColorblindOption" to="." method="_on_colorblind_selected"]
+[connection signal="toggled" from="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/AccessibilitySection/HighContrastRow/HighContrastCheck" to="." method="_on_high_contrast_toggled"]
+[connection signal="pressed" from="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/LanguageSection/LangRow/EngButton" to="." method="_on_language_selected" binds=["eng"]]
+[connection signal="pressed" from="SettingsContainer/OuterVBox/HSplitContainer/ContentScroll/ContentVBox/DataSection/ResetRow/ResetDataBtn" to="." method="_on_reset_data_pressed"]
+[connection signal="pressed" from="SettingsContainer/OuterVBox/FooterRow/CloseButton" to="." method="_on_close_button_pressed"]
+[connection signal="confirmed" from="SettingsContainer/ResetConfirmDialog" to="." method="_on_reset_confirmed"]

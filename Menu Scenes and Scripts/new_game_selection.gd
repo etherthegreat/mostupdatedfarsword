@@ -10,31 +10,25 @@ func _ready() -> void:
 	if FileAccess.file_exists(settingsPath):
 		var file = FileAccess.open(settingsPath, FileAccess.READ)
 		settings = file.get_var()
-	pass
 
 func _on_return_button_pressed() -> void:
 	get_tree().change_scene_to_file("res://Menu Scenes and Scripts/main_menu.tscn")
 	updateInfoPanel()
-	pass # Replace with function body.
 
 func _on_anlaxia_button_pressed() -> void:
 	selectedCountry = "ANL"
 	updateInfoPanel()
-	pass # Replace with function body.
 
 func _on_america_button_pressed() -> void:
 	selectedCountry = "USA"
 	updateInfoPanel()
-	pass # Replace with function body.
 
 func _on_canada_button_pressed() -> void:
 	selectedCountry = "CA"
 	updateInfoPanel()
-	pass # Replace with function body.
 
 func _on_coop_button_toggled(toggled_on: bool) -> void:
 	isCoopMode = toggled_on
-	pass
 
 func updateInfoPanel():
 	match selectedCountry:
@@ -51,17 +45,15 @@ func updateInfoPanel():
 			$CountryInfoPanel/CountrySelectionPanel/CountrySelectionLabel.text = "Selected Country: Republic of Canada"
 			pass
 	$PlayButton.disabled = false
-	pass
 
 var newGameScene = load("res://Game Scenes and Scripts/world.tscn")
 func _on_play_button_pressed() -> void:
-	$ScenePanel.queue_free()
-	$ReturnButton.queue_free()
-	$PlayButton.queue_free()
-	$SelectionPanel.queue_free()
-	$CountryInfoPanel.queue_free()
-	var language = settings.gameLanguage
+	var language: String = settings.get("gameLanguage", "eng")
 	var newGame = newGameScene.instantiate()
-	add_child(newGame)
+	# Add world to the scene tree root — NOT as a child of this menu scene.
+	# If world were a child of new_game_selection, freeing the menu would also
+	# free the world and all country nodes (including playerCountryNode).
+	get_tree().root.add_child(newGame)
 	newGame.newGameBuild(selectedCountry, language, isCoopMode)
-	pass # Replace with function body.
+	# Free this menu — the built world is already in the root tree and fully ready.
+	queue_free()

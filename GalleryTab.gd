@@ -17,7 +17,7 @@ extends Control
 #     └── CloseButton     (Button, "✕", top-right)
 # ============================================================
 
-const GALLERY_CATALOG := [
+const GALLERY_CATALOG = [
 	# ── WHITE HOUSE SECRETS (sensual / explicit) ───────────────────────────
 	{
 		"event_id": "WH_SECRET_01",
@@ -141,23 +141,10 @@ const GALLERY_CATALOG := [
 		"art_path": "",
 		"flavor":   "The agreement required no words. The words came anyway.",
 	},
-	{
-		"event_id": "PROT_14_SUMMON",
-		"title":    "Rushmore Awakens",
-		"hint":     "Begin the Mount Rushmore protector arc (Gettysburg region)",
-		"art_path": "",
-		"flavor":   "All four have arrived and they are already arguing.",
-	},
-	{
-		"event_id": "PROT_14_AGREE",
-		"title":    "The Presidential Council",
-		"hint":     "Complete the Mount Rushmore protector arc and accept the endorsement",
-		"art_path": "",
-		"flavor":   "They came to a vote. The vote was unanimous. Lincoln broke the tie.",
-	},
+
 ]
 
-var _tile_scene = preload("res://GalleryTile.tscn")
+var _tile_scene = load("res://GalleryTile.tscn")
 var _unlocked_list: Array = []   # filtered to only unlocked entries, for lightbox cycling
 var _lightbox_index: int  = 0
 
@@ -177,12 +164,12 @@ func buildSelf() -> void:
 	_unlocked_list.clear()
 
 	for entry in GALLERY_CATALOG:
-		var eid      := entry.get("event_id", "")
-		var unlocked := LibraryData.is_gallery_unlocked(eid)
+		var eid: String      = entry.get("event_id", "")
+		var unlocked: bool   = LibraryData.is_gallery_unlocked(eid)
 
 		var art: Texture2D = null
 		if unlocked:
-			var art_path := entry.get("art_path", "")
+			var art_path: String = entry.get("art_path", "")
 			if art_path != "" and ResourceLoader.exists(art_path):
 				art = load(art_path)
 			_unlocked_list.append(entry)
@@ -210,7 +197,7 @@ func _show_lightbox() -> void:
 func _update_lightbox() -> void:
 	if _unlocked_list.is_empty():
 		return
-	var entry     := _unlocked_list[_lightbox_index]
+	var entry = _unlocked_list[_lightbox_index]
 	var art_rect   = get_node_or_null("Lightbox/FullArtRect")
 	var title_lbl  = get_node_or_null("Lightbox/LightboxTitle")
 	var flavor_lbl = get_node_or_null("Lightbox/LightboxFlavor")
@@ -218,7 +205,7 @@ func _update_lightbox() -> void:
 	var next_btn   = get_node_or_null("Lightbox/NextButton")
 
 	if art_rect:
-		var art_path := entry.get("art_path", "")
+		var art_path: String = entry.get("art_path", "")
 		if art_path != "" and ResourceLoader.exists(art_path):
 			art_rect.texture = load(art_path)
 	if title_lbl:
@@ -242,3 +229,12 @@ func _on_close_button_pressed() -> void:
 	var lb = get_node_or_null("Lightbox")
 	if lb:
 		lb.visible = false
+
+# ── external navigation ───────────────────────────────────────────────────────
+
+func select_entry(event_id: String) -> void:
+	for i in range(_unlocked_list.size()):
+		if _unlocked_list[i]["event_id"] == event_id:
+			_lightbox_index = i
+			_show_lightbox()
+			return

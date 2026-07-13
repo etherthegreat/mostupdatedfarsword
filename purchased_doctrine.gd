@@ -16,16 +16,13 @@ func buildSelf(Name, Sprite, Description, type, border):
 	doctrineType = type
 	borderIMG = border
 	$Panel/SpriteBorder.texture = borderIMG
-	pass
 
 
 
 signal purchasedDoctrineHover
 func _on_area_2d_mouse_entered() -> void:
 	emit_signal("purchasedDoctrineHover", title, img, desc, borderIMG)
-	pass # Replace with function body.
 
 signal pdExited
 func _on_area_2d_mouse_exited() -> void:
 	emit_signal("pdExited")
-	pass # Replace with function body.

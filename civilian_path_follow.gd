@@ -3,7 +3,7 @@ extends Control
 class_name civilianPathFollow
 
 var thisCivilian: Civilian
-var thisCountry: country
+var thisCountry
 var currentTile: Tile
 var currentPath: Path2D
 
@@ -36,7 +36,6 @@ func move(key, keyPath, path):
 			movingBackward = true
 			destinationPathPoint = keyPath
 	emit_signal("movingCivilian")
-	pass
 
 signal civilianArrived
 signal civilianTraveling
@@ -68,7 +67,6 @@ func _process(delta: float) -> void:
 			destinationPathPoint = null
 		else:
 			emit_signal("civilianTraveling", progressRate, destinationPathPoint, thisCivilian)
-	pass
 
 func onRaise(Civilian, country, pathPoint):
 	thisCivilian = Civilian
@@ -76,12 +74,10 @@ func onRaise(Civilian, country, pathPoint):
 	currentPathPoint = pathPoint
 	currentPathPoint.occupied = true
 	currentTile = pathPoint.ppbTile   # populate immediately so emitTileChange is safe on turn 1
-	pass
 
 signal cpfSelected
 func _on_cpf_button_pressed() -> void:
 	emit_signal("cpfSelected", thisCivilian, self, currentTile, thisCountry, currentPathPoint)
-	pass # Replace with function body.
 
 
 func colonizeMode():
@@ -136,4 +132,3 @@ func _consumeAndAct(action_type: String) -> void:
 signal tileChanging
 func emitTileChange():
 	emit_signal("tileChanging", currentTile, civilianMode, thisCivilian)
-	pass

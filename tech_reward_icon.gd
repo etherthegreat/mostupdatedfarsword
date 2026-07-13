@@ -94,6 +94,15 @@ func buildSelf(type):
 			Workshop Wood Cost Per Level:[color=red]-1[/color],
 			Workshop Food Cost Per Level:[color=red]-1[/color],")
 		#non-generic upgrades
+		"SaberCharge Enhanced":
+			techRewardImage = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			techRewardDescription = str("[b]SaberCharge[/b] — Cavalry Charge Upgrade:
+				vs. Reloading Enemies: [color=green]x2[/color] → [color=yellow]x3[/color] Melee Damage")
+		"CannonBlast Enhanced":
+			techRewardImage = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			techRewardDescription = str("[b]CannonBlast[/b] — Artillery Upgrade:
+				vs. Unshielded Enemies: [color=green]x3[/color] → [color=yellow]x5[/color] Ranged Damage
+				Siege Progress bonus: [color=yellow]Doubled[/color]")
 		"Banking Upgrade 1":
 			techRewardImage = load("res://art assets/finishedAssets/ores/Gold.PNG")
 			techRewardDescription = str("Triggers an event allowing us to pick one of four economic policies:
@@ -105,14 +114,11 @@ func buildSelf(type):
 	$Control/DescriptionRichLabel.text = techRewardDescription
 	$Control/TypeLabel.text = techRewardType
 	$TechRewardSprite.texture = techRewardImage
-	pass
 
 
 func _on_area_2d_mouse_entered() -> void:
 	$Control.visible = true
-	pass # Replace with function body.
 
 
 func _on_area_2d_mouse_exited() -> void:
 	$Control.visible = false
-	pass # Replace with function body.

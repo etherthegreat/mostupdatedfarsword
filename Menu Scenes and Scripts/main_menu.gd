@@ -1,27 +1,20 @@
 extends Control
 # ============================================================
-# SCENE STRUCTURE (build in Godot editor):
+# SCENE STRUCTURE:
 #
-# main_menu (Control, full screen)
-# ├── VideoStreamPlayer   (full screen, autoplay=true, loop=true,
-# │                        stream = res://art assets/<your_menu>.ogv)
-# ├── LeftPanel           (Panel, translucent dark ~360px wide, left-anchored)
-# │   ├── LogoSprite      (TextureRect, game logo, top of panel)
-# │   ├── ButtonsVBox     (VBoxContainer, fills below logo)
-# │   │   ├── NewGameButton      (Button, "NEW GAME")
-# │   │   ├── ContinueButton     (Button, "CONTINUE")
-# │   │   │   └── SaveInfoLabel  (Label, italic small, shows turn/season,
-# │   │   │                       hidden when no save)
-# │   │   ├── LibraryButton      (Button, "PRESIDENTIAL LIBRARY")
-# │   │   ├── SettingsButton     (Button, "SETTINGS")
-# │   │   └── ExitButton         (Button, "EXIT")
-# │   └── VersionLabel    (Label, version string, bottom of panel)
+# MainMenu (Control, full screen)
+# ├── VideoStreamPlayer   (full screen, autoplay, loop)
+# ├── BottomBar           (HBoxContainer, bottom-anchored, full width)
+# │   ├── NewGameButton      (Button, grey panel StyleBox)
+# │   ├── ContinueButton     (Button, grey panel StyleBox)
+# │   │   └── SaveInfoLabel  (Label, turn/season, sits below button)
+# │   ├── LibraryButton      (Button, "PRESIDENTIAL LIBRARY")
+# │   ├── SettingsButton     (Button)
+# │   └── ExitButton         (Button)
+# ├── VersionLabel        (Label, bottom-left corner)
 # ├── LanguageSelection   (Control, shown first-run, full overlay)
 # │   └── GridContainer   (flag buttons for language pick)
-# ├── PresidentialLibraryPanel  (instance PresidentialLibraryPanel.tscn,
-# │                              hidden by default)
-# └── SettingsPanel             (instance SettingsPanel.tscn,
-#                                hidden by default)
+# └── PresidentialLibraryPanel  (instance, hidden by default)
 # ============================================================
 
 const AUTOSAVE_PATH  := "user://autosave.json"
@@ -35,9 +28,9 @@ func _ready() -> void:
 
 # ── language (first-run) ──────────────────────────────────────────────────────
 func _check_language() -> void:
-	var lang := LibraryData.get_setting("language", "")
+	var lang = LibraryData.get_setting("language", "")
 	if lang == "":
-		# No language set yet — check legacy settings.txt
+		# Check legacy settings.txt
 		if FileAccess.file_exists(SETTINGS_PATH):
 			var f := FileAccess.open(SETTINGS_PATH, FileAccess.READ)
 			if f:
@@ -46,29 +39,26 @@ func _check_language() -> void:
 					lang = data["gameLanguage"]
 					LibraryData.set_setting("language", lang)
 					f.close()
-
 	if lang == "":
-		_show_language_picker()
-	else:
-		_game_language = lang
-		_hide_language_picker()
+		# First launch — default to English so the overlay never blocks the menu.
+		# Language can be changed later via Settings.
+		lang = "eng"
+		LibraryData.set_setting("language", lang)
+	_game_language = lang
+	_hide_language_picker()
 
 func _show_language_picker() -> void:
 	var ls := get_node_or_null("LanguageSelection")
-	var gc := get_node_or_null("GridContainer")
 	if ls: ls.visible = true
-	if gc: gc.visible = true
 
 func _hide_language_picker() -> void:
 	var ls := get_node_or_null("LanguageSelection")
-	var gc := get_node_or_null("GridContainer")
 	if ls: ls.visible = false
-	if gc: gc.visible = false
 
 # ── continue button ───────────────────────────────────────────────────────────
 func _check_continue_button() -> void:
-	var btn       = get_node_or_null("LeftPanel/ButtonsVBox/ContinueButton")
-	var info_lbl  = get_node_or_null("LeftPanel/ButtonsVBox/ContinueButton/SaveInfoLabel")
+	var btn       = get_node_or_null("BottomBar/ContinueButton")
+	var info_lbl  = get_node_or_null("BottomBar/ContinueButton/SaveInfoLabel")
 	if not btn:
 		return
 
@@ -86,11 +76,11 @@ func _read_save_summary() -> String:
 	var f := FileAccess.open(AUTOSAVE_PATH, FileAccess.READ)
 	if not f:
 		return ""
-	var result := JSON.parse_string(f.get_as_text())
+	var result: Variant = JSON.parse_string(f.get_as_text())
 	f.close()
 	if not result is Dictionary:
 		return ""
-	var turn   := int(result.get("turn", 0))
+	var turn: int = result.get("turn", 0)
 	var season := _season_name(turn)
 	var year   := 1782 + (turn / 4)
 	return "%s %d  ·  Turn %d" % [season, year, turn]

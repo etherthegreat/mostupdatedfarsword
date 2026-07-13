@@ -14,9 +14,8 @@ TRIG_011,CX_005,tile_lost,11,UK,0,0,0,9999,,,,,2
 TRIG_012,SL_001,state_liberated,0,,0,0,0,9999,PA,,,,2
 TRIG_013,SL_004,state_liberated,0,,0,0,0,9999,VT,,,,2
 TRIG_014,PROT_01_SUMMON,protector_summon,0,,0,0,0,9999,,,PROT_01,,1
-TRIG_015,PROT_14_SUMMON,protector_summon,0,,0,0,0,9999,,,PROT_14,,1
-TRIG_016,ARC_01_FIRST,commander_objective,0,,0,0,0,9999,,ARC_01,,1,2
-TRIG_017,ARC_01_DONE,commander_objective,0,,0,0,0,9999,,ARC_01,,3,2
+
+
 TRIG_018,PROT_02_SUMMON,protector_summon,0,,0,0,0,9999,,,PROT_02,,1
 TRIG_019,PROT_03_SUMMON,protector_summon,0,,0,0,0,9999,,,PROT_03,,1
 TRIG_020,PROT_04_SUMMON,protector_summon,0,,0,0,0,9999,,,PROT_04,,1
@@ -82,3 +81,10 @@ TRIG_080,ARC_24_FIRST,commander_objective,0,,0,0,0,9999,,ARC_24,,1,2
 TRIG_081,ARC_24_DONE,commander_objective,0,,0,0,0,9999,,ARC_24,,3,2
 TRIG_082,ARC_25_FIRST,commander_objective,0,,0,0,0,9999,,ARC_25,,1,2
 TRIG_083,ARC_25_DONE,commander_objective,0,,0,0,0,9999,,ARC_25,,3,2
+TRIG_085,PROT_08_TAME,protector_tame,0,,0,0,0,9999,,,PROT_08,,1
+TRIG_086,PROT_08_AGREE,protector_agree,0,,0,0,0,9999,,,PROT_08,,1
+TRIG_087,PROT_17_TAME,protector_tame,0,,0,0,0,9999,,,PROT_17,,1
+TRIG_088,PROT_17_AGREE,protector_agree,0,,0,0,0,9999,,,PROT_17,,1
+TRIG_089,CL_WASHINGTON_01,tile_liberated,188,USA,0,0,0,9999,,,,,2
+TRIG_090,CL_VALLEY_FORGE_01,tile_liberated,1,USA,0,0,0,9999,,,,,2
+TRIG_091,CX_NYC_01,tile_lost,14,UK,0,0,0,9999,,,,,2

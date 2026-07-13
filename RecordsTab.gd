@@ -57,22 +57,22 @@ func _select_category(category: String) -> void:
 		_show_entry(entries[0])
 
 func _show_entry(entry: Dictionary) -> void:
-	var is_mystery := entry.get("is_mystery", false)
-	var is_unlocked := not is_mystery or LibraryData.is_discovered(entry.get("unlock_flag", ""))
+	var is_mystery: bool  = entry.get("is_mystery", false)
+	var is_unlocked: bool = not is_mystery or LibraryData.is_discovered(entry.get("unlock_flag", ""))
 
-	var name_lbl  = get_node_or_null("HSplitContainer/EntryPanel/EntryHeader/EntryMeta/EntryName")
-	var cat_lbl   = get_node_or_null("HSplitContainer/EntryPanel/EntryHeader/EntryMeta/EntryCategory")
-	var icon_rect = get_node_or_null("HSplitContainer/EntryPanel/EntryHeader/EntryIcon")
-	var body_lbl  = get_node_or_null("HSplitContainer/EntryPanel/EntryBody")
-	var see_box   = get_node_or_null("HSplitContainer/EntryPanel/SeeAlsoBox")
-	var see_links = get_node_or_null("HSplitContainer/EntryPanel/SeeAlsoBox/SeeAlsoLinks")
+	var name_lbl  = get_node_or_null("HSplitContainer/EntryScroll/EntryPanel/EntryHeader/EntryMeta/EntryName")
+	var cat_lbl   = get_node_or_null("HSplitContainer/EntryScroll/EntryPanel/EntryHeader/EntryMeta/EntryCategory")
+	var icon_rect = get_node_or_null("HSplitContainer/EntryScroll/EntryPanel/EntryHeader/EntryIcon")
+	var body_lbl  = get_node_or_null("HSplitContainer/EntryScroll/EntryPanel/EntryBody")
+	var see_box   = get_node_or_null("HSplitContainer/EntryScroll/EntryPanel/SeeAlsoBox")
+	var see_links = get_node_or_null("HSplitContainer/EntryScroll/EntryPanel/SeeAlsoBox/SeeAlsoLinks")
 
 	if name_lbl:
 		name_lbl.text = "???" if (is_mystery and not is_unlocked) else entry.get("name", "")
 	if cat_lbl:
 		cat_lbl.text = entry.get("category", "")
 	if icon_rect:
-		var ipath := entry.get("icon_path", "")
+		var ipath: String = entry.get("icon_path", "")
 		if ipath != "" and ResourceLoader.exists(ipath):
 			icon_rect.texture = load(ipath)
 		else:
@@ -102,3 +102,48 @@ func _show_entry(entry: Dictionary) -> void:
 			link_btn.flat = true
 			link_btn.pressed.connect(_show_entry.bind(related))
 			see_links.add_child(link_btn)
+
+# ── wikilink processing ──────────────────────────────────────────────────────
+
+func _process_wikilinks(text: String) -> String:
+	var result := ""
+	var i := 0
+	while i < text.length():
+		if i + 1 < text.length() and text.substr(i, 2) == "[[":
+			var close := text.find("]]", i + 2)
+			if close == -1:
+				result += text.substr(i)
+				break
+			var entry_id := text.substr(i + 2, close - i - 2)
+			var linked := RecordsDatabase.get_entry(entry_id)
+			var label  = linked.get("name", entry_id) if not linked.is_empty() else entry_id
+			result += "[url=" + entry_id + "]" + label + "[/url]"
+			i = close + 2
+		else:
+			result += text[i]
+			i += 1
+	return result
+
+func _on_body_link_clicked(meta) -> void:
+	select_entry(str(meta))
+
+# ── external navigation ───────────────────────────────────────────────────────
+
+func select_entry(entry_id: String) -> void:
+	var entry := RecordsDatabase.get_entry(entry_id)
+	if entry.is_empty():
+		return
+	var category: String = entry.get("category", "")
+	if category != _current_category:
+		_select_category_button(category)
+		_current_category = category
+	_show_entry(entry)
+
+func _select_category_button(category: String) -> void:
+	var list = get_node_or_null("HSplitContainer/CategoryScroll/CategoryList")
+	if not list:
+		return
+	for btn in list.get_children():
+		if btn is Button and btn.text == category:
+			btn.emit_signal("pressed")
+			return

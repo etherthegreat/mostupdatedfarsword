@@ -12,13 +12,10 @@ signal giveWeaponName
 
 func emitWeaponChangeSignal():
 	emit_signal("giveWeaponName", weaponName)
-	pass
 func buildSelf(type, icon):
 	$Button.icon = icon
 	weaponName = type
-	pass
 
 
 func _on_button_pressed() -> void:
 	emitWeaponChangeSignal()
-	pass # Replace with function body.

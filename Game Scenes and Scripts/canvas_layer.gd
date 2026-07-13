@@ -1,102 +1,109 @@
 extends CanvasLayer
 
 
-var playerNode: country
+var playerNode
 
 func assignPlayerNode(playerCountryNode):
 	playerNode = playerCountryNode
-	pass
+
+func closeAllPanels() -> void:
+	$TileInfoPanel.visible = false
+	$BuildingInfoPanel.visible = false
+	$BeliefControl.visible = false
+	$TechTree.visible = false
+	$SpellSchoolsControl.visible = false
+	$Spellbook.visible = false
+	$MilitaryPanelControl.visible = false
+	$FactionControl.visible = false
+	$GovernmentControl.visible = false
+	$TraditionsControl.visible = false
+	$WarRoomPanel.visible = false
+	$ResourceInfoControl.visible = false
+	$ArmyPanel.visible = false
+	$CivilianControl.visible = false
+	$CivilianUnitControl.visible = false
 
 func _on_tech_tree_button_pressed() -> void:
-	if $TechTree.visible == true:
+	if $TechTree.visible:
 		$TechTree.visible = false
-	elif $TechTree.visible == false:
-		for Control in get_tree().get_nodes_in_group("ScreenPanels"):
-			if Control.visible == true:
-				Control.visible = false
+	else:
+		closeAllPanels()
 		$TechTree.visible = true
-	pass # Replace with function body.
 
 
 func _on_close_button_pressed() -> void:
 	$TechTree.visible = false
-	pass # Replace with function body.
 
 
 func _on_spell_book_button_pressed() -> void:
 	$Spellbook.displaySpells(playerNode)
-	if $Spellbook.visible == true:
+	if $Spellbook.visible:
 		$Spellbook.visible = false
-	elif $Spellbook.visible == false:
-		for Control in get_tree().get_nodes_in_group("ScreenPanels"):
-			if Control.visible == true:
-				Control.visible = false
+	else:
+		closeAllPanels()
 		$Spellbook.visible = true
-	pass # Replace with function body.
 
 
 func _on_close_spellbook_pressed() -> void:
 	$Spellbook.visible = false
-	pass # Replace with function body.
 
 signal beliefUpdate
 func _on_belief_panel_button_pressed() -> void:
+	$BeliefControl.buildSelf(playerNode)
 	$BeliefControl.updateSelf()
-	if $BeliefControl.visible == true:
+	if $BeliefControl.visible:
 		$BeliefControl.visible = false
-	elif $BeliefControl.visible == false:
-		for Control in get_tree().get_nodes_in_group("ScreenPanels"):
-			if Control.visible == true:
-				Control.visible = false
+	else:
+		closeAllPanels()
 		$BeliefControl.visible = true
-	pass # Replace with function body.
 
 
 func _on_factions_button_pressed() -> void:
-	if $FactionControl.visible == true:
+	if $FactionControl.visible:
 		$FactionControl.visible = false
 	else:
+		closeAllPanels()
 		$FactionControl.visible = true
-	pass # Replace with function body.
 
 
 func _on_laws_button_pressed() -> void:
+	$GovernmentControl.buildSelf(playerNode)
 	$GovernmentControl.updateGovernmentPanel()
-	if $GovernmentControl.visible == true:
+	if $GovernmentControl.visible:
 		$GovernmentControl.visible = false
 	else:
+		closeAllPanels()
 		$GovernmentControl.visible = true
-	pass # Replace with function body.
 
 
 func _on_open_buildings_button_pressed() -> void:
-	if $BuildingInfoPanel.visible == false:
-		$BuildingInfoPanel.visible = true
-	else:
+	if $BuildingInfoPanel.visible:
 		$BuildingInfoPanel.visible = false
-	pass # Replace with function body.
+	else:
+		closeAllPanels()
+		$BuildingInfoPanel.visible = true
 
 
 func _on_wizard_button_pressed() -> void:
-	
-	pass # Replace with function body.
+	var wtc = $TileInfoPanel.get_node_or_null("WizardTileControl")
+	if wtc:
+		wtc.visible = not wtc.visible
 
 func _on_magic_button_pressed() -> void:
 	$SpellSchoolsControl.updateMagicAmounts(playerNode)
-	if $SpellSchoolsControl.visible == false:
-		$SpellSchoolsControl.visible = true
-	else:
+	if $SpellSchoolsControl.visible:
 		$SpellSchoolsControl.visible = false
-	pass # Replace with function body.
+	else:
+		closeAllPanels()
+		$SpellSchoolsControl.visible = true
 
 func _on_pick_tech_pressed() -> void:
 	_on_tech_tree_button_pressed()
-	pass # Replace with function body.
 
 
 func _on_war_room_button_pressed() -> void:
-	if $WarRoomPanel.visible == false:
-		$WarRoomPanel.visible = true
-	else:
+	if $WarRoomPanel.visible:
 		$WarRoomPanel.visible = false
-	pass # Replace with function body.
+	else:
+		closeAllPanels()
+		$WarRoomPanel.visible = true

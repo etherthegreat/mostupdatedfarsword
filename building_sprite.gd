@@ -5,7 +5,7 @@ class_name buildingSprite
 var buildingType: String
 var buildingLevel: int
 signal updateInspector
-var thisBuilding: building
+var thisBuilding
 
 func buildBuildSprite(building):
 	thisBuilding = building
@@ -13,7 +13,6 @@ func buildBuildSprite(building):
 	buildingLevel = thisBuilding.buildingLevel
 	$Button.text = str(buildingType, "Lvl", buildingLevel)
 	$Button.pressed.connect(updateBuildingInspector)
-	pass
 
 func updateUI(tile):
 	if thisBuilding != null:
@@ -54,9 +53,6 @@ func updateUI(tile):
 			"Barracks":
 				$LevelUpPointsLabel.text = str(tile.barracksDevelopmentPoints, " / " , tile.tileBarracksDevCost)
 				$Button.icon = load("res://art assets/finishedAssets/buildingsketches/barracks.png")
-	pass
 
 func updateBuildingInspector():
-	print("heeeeeeeeee")
 	emit_signal("updateInspector", thisBuilding)
-	pass

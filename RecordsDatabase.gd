@@ -22,6 +22,7 @@ const CATEGORIES: Array[String] = [
 	"Factions",
 	"Faiths & Doctrines",
 	"American Icons",
+	"Canadian Icons",
 	"Army Units",
 	"Magic Schools & Spells",
 	"Protectors",
@@ -866,8 +867,8 @@ func _register_all() -> void:
 		"Jersey Devil's Fury: +25 Attack, +10 Ranged, +10 Block.",
 		{"see_also": ["PROT_02"]})
 
-	_add("milmod_bigfoot", "Military Modifiers", "Bigfoot's Solidarity",
-		"Bigfoot's Solidarity: +30 Block, +15 Attack.",
+	_add("milmod_wood_booger", "Military Modifiers", "Wood Booger's Solidarity",
+		"Wood Booger's Solidarity: +30 Block, +15 Attack.",
 		{"see_also": ["PROT_03"]})
 
 	_add("milmod_thunderbird", "Military Modifiers", "Thunderbird's Sovereignty",
@@ -878,12 +879,12 @@ func _register_all() -> void:
 		"Headless Terror: +20 Attack, +10 Block; attackers become Terrified.",
 		{"see_also": ["PROT_05"]})
 
-	_add("milmod_chessie", "Military Modifiers", "Chessie's Blessing",
-		"Chessie's Blessing: +20 Block, +15 Ranged Defence.",
+	_add("milmod_goatman", "Military Modifiers", "Goatman's Judgement",
+		"Goatman's Judgement: Instantly removes all remaining shield from any army at 20% shield or below.",
 		{"see_also": ["PROT_06"]})
 
-	_add("milmod_bell_witch", "Military Modifiers", "Bell Witch's Harassment",
-		"Bell Witch's Harassment: +15 Attack, +20 Defence; attackers become Demoralized.",
+	_add("milmod_bell_witch_gift", "Military Modifiers", "Giant Green Futa Dong",
+		"Giant Green Futa Dong: +3 Attack to all units in army for 3 turns.",
 		{"see_also": ["PROT_07"]})
 
 	_add("milmod_old_ironsides", "Military Modifiers", "Old Ironsides' Hull",
@@ -910,9 +911,6 @@ func _register_all() -> void:
 		"Green Mountain Haunting: +20 Block, +15 Ranged Defence.",
 		{"see_also": ["PROT_13"]})
 
-	_add("milmod_presidential_decree", "Military Modifiers", "Presidential Decree",
-		"Presidential Decree: +20 Attack, +20 Block, +15 Ranged, +15 Defence.",
-		{"see_also": ["PROT_14"]})
 
 	_add("milmod_skunk_ape", "Military Modifiers", "Skunk Ape's Domain",
 		"Skunk Ape's Domain: +20 Attack, +15 Block.",
@@ -1089,7 +1087,7 @@ func _register_all() -> void:
 		"PROT_05")
 
 	_add_mystery("PROT_06", "Protectors",
-		"Chesapeake fishermen have stopped working the deep water. Something beneath the surface watches back.",
+		"Two DMA agents investigating the Prince George's County parkway disappearances have gone missing. Only their binoculars were recovered.",
 		"PROT_06")
 
 	_add_mystery("PROT_07", "Protectors",
@@ -1120,16 +1118,13 @@ func _register_all() -> void:
 		"The mountains of Vermont are haunted by something patriotic and enormous. It has opinions about taxation.",
 		"PROT_13")
 
-	_add_mystery("PROT_14", "Protectors",
-		"The faces in the rock at Gettysburg open their eyes sometimes. Only sometimes. But when they do, they are looking south.",
-		"PROT_14")
 
 	_add_mystery("PROT_15", "Protectors",
 		"The Everglades hold something enormous and foul-smelling that the local Seminole call very old. They do not explain further.",
 		"PROT_15")
 
 	_add_mystery("PROT_16", "Protectors",
-		"There is a musket that fires without being loaded, held by someone who cannot be seen, near the Connecticut River valley.",
+		"Clothing has appeared on a New York clothesline in a pattern that means nothing to most people and everything to those who know the Culper Ring's codes. The DMA is not saying who left it.",
 		"PROT_16")
 
 	_add_mystery("PROT_17", "Protectors",
@@ -1198,9 +1193,9 @@ func _register_all() -> void:
 		"Passed in 1950, the Defense Production Act gave the President sweeping authority to direct industrial production toward national security needs. It turned the civilian economy into a strategic instrument — and it has never been fully repealed.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
 		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_tower", "bld_library"]})
 
-	_add("doc_wilderness_act", "Faiths & Doctrines", "Wilderness Act",
-		"Signed in 1964 after eight years of congressional debate, the Wilderness Act created a National Wilderness Preservation System — land where the hand of man shall not be felt. It is one of the most philosophically ambitious laws ever passed.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
-		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_camp", "bld_barracks", "ter_forest"]})
+	_add("doc_inland_maritime_expertise", "Faiths & Doctrines", "Inland Maritime Expertise",
+		"The republic's great rivers and inland seas are not obstacles — they are roads. Inland Maritime Expertise grants all units starting a turn on Major River or Major Lake tiles +1 Movement, turning the waterway network into a strategic advantage.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "ter_river", "ter_lake"]})
 
 	_add("doc_first_amendment", "Faiths & Doctrines", "First Amendment",
 		"Ratified in 1791 as part of the Bill of Rights, the First Amendment prohibits Congress from making any law abridging freedom of speech, religion, the press, or assembly. It is the most litigated sentence in American law and, arguably, the most important.\n\nA Doctrine. Moves the republic one step toward Providence on the Reason ↔ Providence axis.",
@@ -1290,15 +1285,15 @@ func _register_all() -> void:
 
 	_add("icon_harriet_tubman", "American Icons", "Harriet Tubman",
 		"Conductor of the Underground Railroad, spy for the Union Army, and the most dangerous person any tyrant could encounter. Tubman's patronage grants military bonuses and increases Manpower — freedom is a combat advantage.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",
-		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_barracks"]})
+		{"icon_path": "res://art assets/finishedAssets/religiousIcons/harriet_tubman.png", "see_also": ["sys_reason_providence", "bld_barracks"]})
 
 	_add("icon_frederick_douglass", "American Icons", "Frederick Douglass",
 		"Escaped slavery and spent the rest of his life explaining to anyone who would listen why that was a bad system, using words so precise they still cut. Douglass's patronage elevates Libraries, Courthouses, and the uncomfortable power of truth.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",
 		{"icon_path": "", "see_also": ["sys_reason_providence", "bld_library"]})
 
 	_add("icon_sitting_bull", "American Icons", "Sitting Bull",
-		"Hunkpapa Lakota war chief, holy man, and the figure who outlasted Custer. Sitting Bull's patronage honors the land itself — Wilderness Act flourishes and buildings in wooded and river territories produce bonus resources.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",
-		{"icon_path": "", "see_also": ["sys_reason_providence", "doc_wilderness_act", "ter_forest"]})
+		"Hunkpapa Lakota war chief, holy man, and the figure who outlasted Custer. Sitting Bull's patronage honors the land itself — inland waterways run free, and buildings in wooded and river territories produce bonus resources.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",
+		{"icon_path": "", "see_also": ["sys_reason_providence", "doc_inland_maritime_expertise", "ter_forest"]})
 
 	_add("icon_sojourner_truth", "American Icons", "Sojourner Truth",
 		"Ain't I a woman? She asked the question that exposed every hypocrite in the room. Truth's patronage uplifts Farms and Temples, and grants a Harmony bonus to every province with diverse population.\n\nAn Icon. Moves the republic one step toward Reason on the Reason ↔ Providence axis.",

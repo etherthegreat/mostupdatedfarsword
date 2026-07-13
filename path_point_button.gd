@@ -26,35 +26,28 @@ func buildSelf():
 	for NodePath in navalPathPointsEXP:
 		navalPathPoints.append(get_node(NodePath))
 	ppbTile = ppbTileEXP
-	pass
 
 signal pathPointClicked
 func _on_button_pressed() -> void:
-	print("DEBUG CLICK")
 	#if occupied != true:
 	emit_signal("pathPointClicked", self,neighborPathPoints, ppbTile)
-	pass # Replace with function body.
 
 func hideTile():
 	ppbTile.fogOfWar()
-	pass
 
 func revealTile():
 	ppbTile.discoverTile()
-	pass
 
 func calculateBattle(armyPath, type, attackingArmy, lastSelectedPathPoint):
 	if stationedArmy != null:
 		if stationedArmy.enemy == true:
+			attackingArmy.attacksFromCurrentTile += 1
 			stationedArmy.calculateBattle(armyPath, type, attackingArmy, stationedAPF, lastSelectedPathPoint)
-	pass
 
 func deleteNeighborBattles():
 	for pathPointButton in neighborPathPoints:
 		if pathPointButton.stationedAPF != null:
 			pathPointButton.stationedAPF.deleteBattle()
-	pass
 
 func siegeTile(army):
 	ppbTile.siegeCalculate(army)
-	pass

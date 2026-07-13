@@ -29,12 +29,10 @@ func buildSelf(building, playerCountry):
 	metalCost = building.metalPurchaseCost
 	player = playerCountry
 	
-	pass
 
 signal newBuilding
 func _on_button_pressed() -> void:
 	emit_signal("newBuilding",buildingType, goldCalculatedCost, foodCalculatedCost, woodCalculatedCost, metalCalculatedCost)
-	pass # Replace with function body.
 
 func updateUI():
 	goldCalculatedCost = goldCost * player.countryConstructionCostMod
@@ -78,4 +76,3 @@ func updateUI():
 		$Button.disabled = true
 	if player.TotalMetal <= metalCost:
 		$Button.disabled = true
-	pass

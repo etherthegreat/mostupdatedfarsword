@@ -1,4 +1,4 @@
-[gd_scene load_steps=541 format=3 uid="uid://bfbouq3jfwkxl"]
+[gd_scene load_steps=543 format=3 uid="uid://bfbouq3jfwkxl"]
 
 [ext_resource type="Script" uid="uid://dthx176t72xxr" path="res://Game Scenes and Scripts/world.gd" id="1_6bnro"]
 [ext_resource type="Texture2D" uid="uid://co1xqkk2trdfd" path="res://art assets/AmericanRevolutionArt/tileandMaps/maps/usamap-borderless.png" id="2_8oo0e"]
@@ -501,6 +501,7 @@
 [ext_resource type="Texture2D" uid="uid://3k3umes3e83h" path="res://art assets/AmericanRevolutionArt/tileandMaps/tiles/201-r.png" id="399_7ybmk"]
 [ext_resource type="Texture2D" uid="uid://duyc1veuyyh1t" path="res://art assets/AmericanRevolutionArt/tileandMaps/tiles/201.png" id="400_11xh4"]
 [ext_resource type="PackedScene" uid="uid://c5r5ers4csm4f" path="res://WarRoomPanel.tscn" id="404_c5kbx"]
+[ext_resource type="PackedScene" uid="uid://cg4m30v3rp4n1" path="res://GameOverPanel.tscn" id="405_gov01"]
 [ext_resource type="Texture2D" uid="uid://yll6mlw1sya0" path="res://art assets/AmericanRevolutionArt/Panel/america2.png" id="432_ld12t"]
 [ext_resource type="Texture2D" uid="uid://bidt76inkwvb8" path="res://art assets/AmericanRevolutionArt/tempArt/starfire_again.jpg" id="471_vx15h"]
 [ext_resource type="Texture2D" uid="uid://byaqywypes15d" path="res://art assets/Placeholder Art/UI Art/resources/black.png" id="473_168he"]
@@ -530,6 +531,7 @@
 [ext_resource type="Texture2D" uid="uid://b035v6wp2xufc" path="res://art assets/AmericanRevolutionArt/End Art/IMG_1775.PNG" id="522_4pj4x"]
 [ext_resource type="Texture2D" uid="uid://bosevb7m63nwm" path="res://art assets/finishedAssets/Panels/topbarresources/IMG_1542.PNG" id="522_mfggh"]
 [ext_resource type="Texture2D" uid="uid://cvvmc8beh62sd" path="res://art assets/AmericanRevolutionArt/End Art/IMG_1777.PNG" id="523_jyjnf"]
+[ext_resource type="Texture2D" uid="uid://dnkrgxnl2as5u" path="res://art assets/finishedAssets/armyicons/finished/spade.png" id="525_jyjnf"]
 [ext_resource type="Texture2D" uid="uid://c7hyc65jbh6rj" path="res://art assets/finishedAssets/ores/Razorberry.PNG" id="530_7ybmk"]
 
 [sub_resource type="Curve2D" id="Curve2D_bg6fe"]
@@ -9379,10 +9381,10 @@ mouse_filter = 2
 
 [node name="EventContainer" type="VBoxContainer" parent="CanvasLayer/EventControl"]
 layout_mode = 0
-offset_left = -556.0
-offset_top = -276.0
-offset_right = 719.0
-offset_bottom = 303.0
+offset_left = 46.0
+offset_top = -73.0
+offset_right = 1321.0
+offset_bottom = 506.0
 mouse_filter = 2
 
 [node name="FactionControl" type="Control" parent="CanvasLayer"]
@@ -9462,6 +9464,7 @@ theme_override_constants/v_separation = 140
 columns = 4
 
 [node name="TaxationControl" type="Control" parent="CanvasLayer/GovernmentControl"]
+visible = false
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
@@ -10625,6 +10628,7 @@ offset_bottom = 61.0
 text = "10000"
 
 [node name="Button" type="Button" parent="CanvasLayer/Resource Bar (TOP)"]
+z_index = 50
 layout_mode = 0
 offset_left = 2247.58
 offset_top = 15.4179
@@ -11250,6 +11254,7 @@ offset_bottom = 83.0
 text = "July 4, 2026"
 
 [node name="EndingSceneControl" type="Control" parent="CanvasLayer"]
+visible = false
 z_index = 100
 layout_mode = 3
 anchors_preset = 0
@@ -11280,7 +11285,7 @@ offset_top = 244.0
 offset_right = 1766.0
 offset_bottom = 1083.0
 theme_override_font_sizes/font_size = 44
-text = "President Ualani Carlisle was reported MIA after a recent encounter with British troops.  After Secret Service agents cleared the battlefield, they positively identified the president as deceased.  
+text = "President Ualani Carlisle was reported MIA after a recent encounter with British troops.  After Secret Service agents cleared the battlefield, they positively identified the president as deceased.
 
 Whether or not America survives will not be determined by Ualani Carlisle."
 autowrap_mode = 3
@@ -11322,6 +11327,56 @@ offset_bottom = 210.0
 theme_override_font_sizes/font_size = 44
 text = "Turn 100"
 horizontal_alignment = 2
+
+[node name="GameOverPanel" parent="CanvasLayer" instance=ExtResource("405_gov01")]
+mouse_filter = 2
+
+[node name="MapModes" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="MapModesBack" type="Sprite2D" parent="CanvasLayer/MapModes"]
+position = Vector2(71.75, 179.25)
+scale = Vector2(0.0694595, 0.0418333)
+texture = ExtResource("63_pqkb6")
+
+[node name="PolisModeButton" type="Button" parent="CanvasLayer/MapModes"]
+layout_mode = 0
+offset_left = 13.0
+offset_top = 121.0
+offset_right = 68.0
+offset_bottom = 175.0
+icon = ExtResource("525_jyjnf")
+expand_icon = true
+
+[node name="StatesModeButton" type="Button" parent="CanvasLayer/MapModes"]
+layout_mode = 0
+offset_left = 75.0
+offset_top = 121.0
+offset_right = 130.0
+offset_bottom = 175.0
+icon = ExtResource("525_jyjnf")
+expand_icon = true
+
+[node name="OutputsModeButton" type="Button" parent="CanvasLayer/MapModes"]
+layout_mode = 0
+offset_left = 13.0
+offset_top = 181.0
+offset_right = 68.0
+offset_bottom = 235.0
+icon = ExtResource("525_jyjnf")
+expand_icon = true
+
+[node name="TerrainModeButton" type="Button" parent="CanvasLayer/MapModes"]
+layout_mode = 0
+offset_left = 75.0
+offset_top = 181.0
+offset_right = 130.0
+offset_bottom = 235.0
+icon = ExtResource("525_jyjnf")
+expand_icon = true
 
 [node name="CameraMovementController" type="Control" parent="."]
 layout_mode = 3
@@ -11985,15 +12040,11 @@ shape = SubResource("RectangleShape2D_qt86y")
 [connection signal="input_event" from="TileController/Tile201/Area2D" to="TileController/Tile201" method="_on_area_2d_input_event"]
 [connection signal="mouse_entered" from="TileController/Tile201/Area2D" to="TileController/Tile201" method="_on_area_2d_mouse_entered"]
 [connection signal="mouse_exited" from="TileController/Tile201/Area2D" to="TileController/Tile201" method="_on_area_2d_mouse_exited"]
-[connection signal="meleeButtonPressed" from="PathControl" to="." method="_on_path_control_melee_button_pressed"]
-[connection signal="showArmyInfo" from="PathControl" to="." method="_on_path_control_show_army_info"]
 [connection signal="pressed" from="CanvasLayer/NextTurnControl/NextTurn" to="." method="_on_next_turn_pressed"]
 [connection signal="pressed" from="CanvasLayer/NextTurnControl/PickTech" to="CanvasLayer" method="_on_pick_tech_pressed"]
 [connection signal="pressed" from="CanvasLayer/TileInfoPanel/governorButton" to="CanvasLayer/TileInfoPanel" method="_on_governor_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/TileInfoPanel/OpenBuildingsButton" to="CanvasLayer" method="_on_open_buildings_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/TileInfoPanel/WizardButton" to="CanvasLayer" method="_on_wizard_button_pressed"]
-[connection signal="fillWithUnlockedBuildings" from="CanvasLayer/BuildingInfoPanel" to="." method="_on_building_info_panel_fill_with_unlocked_buildings"]
-[connection signal="purchasedBelief" from="CanvasLayer/BeliefControl" to="." method="_on_belief_control_purchased_belief"]
 [connection signal="pressed" from="CanvasLayer/BeliefControl/BeliefPanel/PurchasePanel/PurchaseButton" to="CanvasLayer/BeliefControl" method="_on_purchase_button_pressed"]
 [connection signal="mouse_entered" from="CanvasLayer/BeliefControl/FaithPoints/faith1area2d" to="CanvasLayer/BeliefControl" method="_on_faith_1_area_2d_mouse_entered"]
 [connection signal="mouse_exited" from="CanvasLayer/BeliefControl/FaithPoints/faith1area2d" to="CanvasLayer/BeliefControl" method="_on_faith_1_area_2d_mouse_exited"]
@@ -12009,9 +12060,6 @@ shape = SubResource("RectangleShape2D_qt86y")
 [connection signal="mouse_exited" from="CanvasLayer/BeliefControl/FaithPoints/church3area2d" to="CanvasLayer/BeliefControl" method="_on_church_3_area_2d_mouse_exited"]
 [connection signal="mouse_entered" from="CanvasLayer/BeliefControl/FaithPoints/balanceArea2D" to="CanvasLayer/BeliefControl" method="_on_balance_area_2d_mouse_entered"]
 [connection signal="mouse_exited" from="CanvasLayer/BeliefControl/FaithPoints/balanceArea2D" to="CanvasLayer/BeliefControl" method="_on_balance_area_2d_mouse_exited"]
-[connection signal="addTechToPlayer" from="CanvasLayer/TechTree" to="." method="_on_tech_tree_add_tech_to_player"]
-[connection signal="askForInfo" from="CanvasLayer/SpellSchoolsControl" to="." method="_on_spell_schools_control_ask_for_info"]
-[connection signal="calculatePlayerOutputs" from="CanvasLayer/SpellSchoolsControl" to="." method="_on_spell_schools_control_calculate_player_outputs"]
 [connection signal="pressed" from="CanvasLayer/Spellbook/CloseSpellbook" to="CanvasLayer" method="_on_close_spellbook_pressed"]
 [connection signal="value_changed" from="CanvasLayer/GovernmentControl/TaxationControl/FarmVSlider" to="CanvasLayer/GovernmentControl" method="_on_farm_v_slider_value_changed"]
 [connection signal="value_changed" from="CanvasLayer/GovernmentControl/TaxationControl/CampVSlider" to="CanvasLayer/GovernmentControl" method="_on_camp_v_slider_value_changed"]
@@ -12057,6 +12105,7 @@ shape = SubResource("RectangleShape2D_qt86y")
 [connection signal="mouse_exited" from="CanvasLayer/Resource Bar (TOP)/container/HarmonyControl/HarmonyArea" to="." method="_on_harmony_area_mouse_exited"]
 [connection signal="mouse_entered" from="CanvasLayer/Resource Bar (TOP)/container/InfluenceControl/InfluenceArea" to="." method="_on_influence_area_mouse_entered"]
 [connection signal="mouse_exited" from="CanvasLayer/Resource Bar (TOP)/container/InfluenceControl/InfluenceArea" to="." method="_on_influence_area_mouse_exited"]
+[connection signal="pressed" from="CanvasLayer/Resource Bar (TOP)/Button" to="." method="_on_button_pressed"]
 [connection signal="mouse_entered" from="CanvasLayer/ArmyPanel/ArmyButtonsContainer/MoveButtonControl/MoveButton" to="PathControl" method="_on_move_button_mouse_entered"]
 [connection signal="mouse_exited" from="CanvasLayer/ArmyPanel/ArmyButtonsContainer/MoveButtonControl/MoveButton" to="PathControl" method="_on_move_button_mouse_exited"]
 [connection signal="mouse_entered" from="CanvasLayer/ArmyPanel/ArmyButtonsContainer/WaitButtonControl/WaitButton" to="PathControl" method="_on_wait_button_mouse_entered"]
@@ -12087,4 +12136,8 @@ shape = SubResource("RectangleShape2D_qt86y")
 [connection signal="pressed" from="CanvasLayer/CivilianUnitControl/CivilianActionButtons/IncreaseMilitaryDevelopment" to="." method="_on_increase_military_development_pressed"]
 [connection signal="pressed" from="CanvasLayer/CivilianUnitControl/CivilianActionButtons/discoverNearbyTilesButton" to="." method="_on_discover_nearby_tiles_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/CivilianUnitControl/CivilianActionButtons/BuildRoad" to="PathControl" method="_on_build_road_pressed"]
+[connection signal="pressed" from="CanvasLayer/MapModes/PolisModeButton" to="." method="_on_polis_mode_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/MapModes/StatesModeButton" to="." method="_on_states_mode_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/MapModes/OutputsModeButton" to="." method="_on_outputs_mode_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/MapModes/TerrainModeButton" to="." method="_on_terrain_mode_button_pressed"]
 [connection signal="input_event" from="RightClickDetector" to="." method="_on_right_click_detector_input_event"]

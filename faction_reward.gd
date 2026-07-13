@@ -16,18 +16,14 @@ func buildSelf(fRT, fRD, fRI):
 	$RewardDescriptionPanel/RewardDescriptionLabel.text = factionRewardDescription
 	$RewardSprite.texture = factionRewardIcon
 	$RewardDescriptionPanel/RewardNameLabel.text = factionRewardType
-	pass
 
 func _on_area_2d_mouse_entered() -> void:
 	$RewardDescriptionPanel.visible = true
-	pass # Replace with function body.
 
 
 func _on_area_2d_mouse_exited() -> void:
 	$RewardDescriptionPanel.visible = false
-	pass # Replace with function body.
 
 signal emitRewardType
 func rewardUnlocked():
 	emit_signal("emitRewardType", factionRewardType)
-	pass

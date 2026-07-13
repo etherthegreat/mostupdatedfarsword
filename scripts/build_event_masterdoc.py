@@ -24,6 +24,7 @@ CAT_COLORS = {
     "Tile Crisis":    "FDEBD0",
     "Ualani":         "D6F5EA",
     "VP Arc":         "F5E6D6",
+    "CA PM Arc":      "E8D6F5",
     "Canada":         "D6EAF8",
     "CA Protector":   "B8D6F7",
     "Loyal Governor":    "F5ECD5",
@@ -193,36 +194,36 @@ EVENTS = [
     # ── PROTECTOR ────────────────────────────────────────────────────────────
     # Mothman
     ("Protector","Mothman","PROT_01_SUMMON",
-     "MOTHMAN APPROACHES",
+     "MOTHMAN APPROACHES — THESE WOODS, THESE HILLS",
      "Root","—","→ PROT_01_TAME",
-     "FIRST PASS","mothman_approach","Not Started","YES","kinky_lewd","0",
-     "Wild: +1 corruption/turn 25% chance; fires turn 10+; kinky_lewd gated"),
+     "FULL COMPLETION","mothman_approach","Integrated","YES","kinky_lewd","0",
+     "Wild: +1 corruption/turn 25% chance; fires turn 10+; kinky_lewd gated. Ualani listens for hours in the foothills; leaves before dawn."),
     ("Protector","Mothman","PROT_01_TAME",
      "MOTHMAN DEESCALATED: THE RIDGE MEETING HOLDS",
      "Branch","PROT_01_SUMMON","→ PROT_01_AGREE (next_event_id)",
-     "FIRST PASS","","Not Started","NO","","0",
+     "FULL COMPLETION","prot_01_tame_scene","Integrated","NO","","0",
      "Sets prot_01_tame flag; immediately chains to AGREE"),
     ("Protector","Mothman","PROT_01_AGREE",
      "MOTHMAN FORMALLY ALLIES WITH THE CONTINENTAL REPUBLIC",
      "Followup","PROT_01_TAME","—",
-     "FIRST PASS","","Not Started","YES","kinky_lewd","0",
+     "FULL COMPLETION","prot_01_agree","Integrated","YES","kinky_lewd","0",
      "Sets prot_01_agreed; BTN2 kinky_lewd gated"),
 
     # Jersey Devil
     ("Protector","Jersey Devil","PROT_02_SUMMON",
      "JERSEY DEVIL EMERGES FROM THE PINE BARRENS",
      "Root","—","→ PROT_02_TAME",
-     "FIRST PASS","jersey_devil","Not Started","NO","","0",
+     "FULL COMPLETION","jersey_devil","Integrated","NO","","0",
      "Wild: +1 corruption/turn 25% chance; fires turn 15+"),
     ("Protector","Jersey Devil","PROT_02_TAME",
      "JERSEY DEVIL CEASES SUPPLY ROUTE DISRUPTIONS — PINE BARRENS ACCORD",
      "Branch","PROT_02_SUMMON","→ PROT_02_AGREE (next_event_id)",
-     "FIRST PASS","","Not Started","NO","","0",
+     "FULL COMPLETION","prot_02_tame","Integrated","NO","","0",
      "Sets prot_02_tame flag; immediately chains to AGREE"),
     ("Protector","Jersey Devil","PROT_02_AGREE",
      "JERSEY DEVIL FORMALLY ENDORSES THE CONTINENTAL CAUSE",
      "Followup","PROT_02_TAME","—",
-     "FIRST PASS","","Not Started","YES","","0",
+     "FIRST PASS","","Integrated","YES","","0",
      "Sets prot_02_agreed; BTN2 explicit gated"),
 
     # Bigfoot
@@ -314,17 +315,17 @@ EVENTS = [
     ("Protector","Old Ironsides","PROT_08_SUMMON",
      "OLD IRONSIDES RETURNS TO SERVICE",
      "Root","—","→ PROT_08_TAME",
-     "FIRST PASS","old_ironsides","Not Started","NO","","0",
+     "FULL COMPLETION","old_ironsides","Integrated","NO","","0",
      "Wild: +1 corruption/turn 25% chance; fires turn 45+"),
     ("Protector","Old Ironsides","PROT_08_TAME",
      "OLD IRONSIDES ACCEPTS CONTINENTAL NAVAL COMMAND — BOSTON HARBOR STABLE",
      "Branch","PROT_08_SUMMON","→ PROT_08_AGREE (next_event_id)",
-     "FIRST PASS","","Not Started","NO","","0",
+     "FIRST PASS","","Integrated","NO","","0",
      "Sets prot_08_tame flag; immediately chains to AGREE"),
     ("Protector","Old Ironsides","PROT_08_AGREE",
      "OLD IRONSIDES FORMALLY JOINS THE CONTINENTAL NAVY",
      "Followup","PROT_08_TAME","—",
-     "FIRST PASS","","Not Started","YES","","0",
+     "FIRST PASS","","Integrated","YES","","0",
      "Sets prot_08_agreed; BTN2 explicit gated"),
 
     # Valley Forge Guardian
@@ -412,22 +413,6 @@ EVENTS = [
      "FIRST PASS","","Not Started","YES","","0",
      "Sets prot_13_agreed; BTN2 explicit gated"),
 
-    # Mount Rushmore
-    ("Protector","Mount Rushmore","PROT_14_SUMMON",
-     "MOUNT RUSHMORE AWAKENS",
-     "Root","—","→ PROT_14_TAME",
-     "FIRST PASS","rushmore_awakens","Not Started","YES","kinky_lewd","0",
-     "Wild: +1 corruption/turn 25% chance; fires turn 75+; kinky_lewd gated"),
-    ("Protector","Mount Rushmore","PROT_14_TAME",
-     "MOUNT RUSHMORE COUNCIL REACHES INTERNAL CONSENSUS — DEBATES FORMALIZED",
-     "Branch","PROT_14_SUMMON","→ PROT_14_AGREE (next_event_id)",
-     "FIRST PASS","","Not Started","NO","","0",
-     "Sets prot_14_tame flag; immediately chains to AGREE"),
-    ("Protector","Mount Rushmore","PROT_14_AGREE",
-     "THE RUSHMORE COUNCIL FORMALLY ENDORSES PRESIDENT CARLISLE",
-     "Followup","PROT_14_TAME","—",
-     "FIRST PASS","","Not Started","YES","kinky_lewd","0",
-     "Sets prot_14_agreed; BTN2 kinky_lewd gated"),
 
     # Skunk Ape
     ("Protector","Skunk Ape","PROT_15_SUMMON",
@@ -455,7 +440,7 @@ EVENTS = [
     ("Protector","Minuteman","PROT_16_TAME",
      "THE MINUTEMAN ACKNOWLEDGES CONTINENTAL FORCES — LEXINGTON GREEN ACCESS RESTORED",
      "Branch","PROT_16_SUMMON","→ PROT_16_AGREE (next_event_id)",
-     "FIRST PASS","","Not Started","NO","","0",
+     "FULL COMPLETION","","Not Started","NO","","0",
      "Sets prot_16_tame flag; immediately chains to AGREE"),
     ("Protector","Minuteman","PROT_16_AGREE",
      "THE MINUTEMAN FORMALLY DECLARES FOR THE CONTINENTAL REPUBLIC",
@@ -467,36 +452,36 @@ EVENTS = [
     ("Protector","Lincoln's Ghost","PROT_17_SUMMON",
      "LINCOLN'S GHOST APPEARS IN WASHINGTON",
      "Root","—","→ PROT_17_TAME",
-     "FIRST PASS","lincolns_ghost","Not Started","NO","","0",
+     "FULL COMPLETION","lincolns_ghost","Integrated","NO","","0",
      "Wild: +1 corruption/turn 25% chance; fires turn 90+"),
     ("Protector","Lincoln's Ghost","PROT_17_TAME",
-     "LINCOLN'S GHOST ESTABLISHES OFFICE HOURS — PRESIDENTIAL SCHEDULE RESTORED",
-     "Branch","PROT_17_SUMMON","→ PROT_17_AGREE (next_event_id)",
-     "FIRST PASS","","Not Started","NO","","0",
-     "Sets prot_17_tame flag; immediately chains to AGREE"),
+     "LINCOLN'S GHOST — ROOFTOP ACCORDS",
+     "Branch","PROT_17_SUMMON","→ PROT_17_AGREE (monument obj gate)",
+     "FULL COMPLETION","","Integrated","NO","","0",
+     "Sets prot_17_tame flag; AGREE gated by level-8 Monument in DC"),
     ("Protector","Lincoln's Ghost","PROT_17_AGREE",
-     "LINCOLN FORMALLY ENDORSES PRESIDENT CARLISLE'S ADMINISTRATION",
+     "LINCOLN'S GHOST TOURS THE MALL",
      "Followup","PROT_17_TAME","—",
-     "FIRST PASS","","Not Started","YES","","0",
-     "Sets prot_17_agreed; BTN2 explicit gated"),
+     "FULL COMPLETION","","Integrated","YES","","0",
+     "Sets prot_17_agreed; BTN2 triggers intimate; unlocks Lincoln governor + doubles Red Badge"),
 
     # ── COMMANDER ────────────────────────────────────────────────────────────
     ("Commander","Commander Arc","CMD_MERIT",
      "FIELD PROMOTION: [COMMANDER_NAME] DISTINGUISHED IN EARLY OPERATIONS",
      "Root","—","—",
-     "FIRST PASS","","Not Started","NO","","0",
-     "Fires at governorLevel==1 after 5 turns stationed; promote_commander BTN1; morale_boost BTN2"),
+     "FULL COMPLETION","","Not Started","NO","","0",
+     "DROPPED — arc redesigned to XP system; entry begins at CMD_RECOGNITION (50 XP)"),
 
     ("Commander","Commander Arc","CMD_RECOGNITION",
      "CITATION FOR EXCEPTIONAL SERVICE: [COMMANDER_NAME] AT [TILE_NAME]",
      "Branch","CMD_MERIT","—",
-     "FIRST PASS","","Not Started","NO","","0",
-     "Fires at governorLevel==2 after 20 turns stationed; promote_commander BTN1; claim_change BTN2"),
+     "FULL COMPLETION","cmd_recognition_scene","Not Started","NO","","0",
+     "Fires at governorLevel==2 (50 XP from combat); promote_commander BTN1 (+20 morale commendation); claim_change BTN2"),
 
     ("Commander","Commander Arc","CMD_THANKS",
      "PRESIDENT CARLISLE DELIVERS PERSONAL THANKS TO [COMMANDER_NAME] AT [TILE_NAME]",
      "Followup","CMD_RECOGNITION","—",
-     "FIRST PASS","","Not Started","YES","explicit","0",
+     "FULL COMPLETION","cmd_thanks_scene","Not Started","YES","explicit","0",
      "Fires at governorLevel==3 after 50 turns stationed; BTN2 explicit morale_boost +40; non-repeatable"),
 
     # ── FORT CHAIN ───────────────────────────────────────────────────────────
@@ -793,6 +778,54 @@ EVENTS = [
      "FIRST PASS","","Not Started","NO","","0",
      "Fires when agreed_protectors >= 3; BTN1 morale +15 / BTN2 vp_faction +10"),
 
+    ("CA PM Arc","CA PM Arc","CA_PM_FIRST_MEETING",
+     "MARC PENOIT REQUESTS A WAR COUNCIL",
+     "Root","—","—",
+     "FIRST PASS","mark_penoit","Not Started","NO","","0",
+     "Deputy Governor demands a war council; BTN1 morale / BTN2 harmony"),
+
+    ("CA PM Arc","CA PM Arc","CA_PM_COUNSEL",
+     "PENOIT COUNSELS RESTRAINT — OR POSSIBLY AGGRESSION",
+     "Branch","CA_PM_FIRST_MEETING","—",
+     "FIRST PASS","penoit_counsel","Not Started","NO","","0",
+     "Penoit analyzes eastern flank; BTN1 morale / BTN2 harmony"),
+
+    ("CA PM Arc","CA PM Arc","CA_PM_DOUBT",
+     "PENOIT QUESTIONS THE MILITIA'S RESOLVE",
+     "Branch","CA_PM_COUNSEL","—",
+     "FIRST PASS","penoit_doubt","Not Started","NO","","0",
+     "Morale low in Quebec corridor; BTN1 weapons / BTN2 harmony"),
+
+    ("CA PM Arc","CA PM Arc","CA_PM_LOYALTY_TEST",
+     "THE FRENCH HABITANTS DEMAND RECOGNITION",
+     "Branch","CA_PM_DOUBT","—",
+     "FIRST PASS","penoit_loyalty","Not Started","NO","","0",
+     "French Habitants ultimatum; BTN1 harmony / BTN2 mandate"),
+
+    ("CA PM Arc","CA PM Arc","CA_PM_BATTLEFIELD",
+     "PENOIT AT THE FRONT — THE DEPUTY GOVERNOR IS NOT IN QUEBEC CITY",
+     "Branch","CA_PM_LOYALTY_TEST","—",
+     "FIRST PASS","ca_pm_battlefield_scene","Integrated","NO","","0",
+     "Penoit moves up without orders; BTN1 morale_boost +20 / BTN2 harmony_boost +5"),
+
+    ("CA PM Arc","CA PM Arc","CA_PM_PRE_ELECTION",
+     "PENOIT ADDRESSES THE REPUBLIC: THE ELECTION IS COMING",
+     "Branch","CA_PM_BATTLEFIELD","—",
+     "FIRST PASS","penoit_speech","Not Started","NO","","0",
+     "Penoit's 32-minute speech in Quebec City; BTN1 culture / BTN2 harmony"),
+
+    ("CA PM Arc","CA PM Arc","CA_PM_SOLIDARITY",
+     "PENOIT AND THE PROTECTORS — THE DEPUTY GOVERNOR ACKNOWLEDGES THE CREATURES",
+     "Branch","CA_PM_PRE_ELECTION","—",
+     "FIRST PASS","penoit_solidarity","Integrated","NO","","0",
+     "Penoit stands in the snow; land has changed; BTN1 / BTN2"),
+
+    ("CA PM Arc","CA PM Arc","CA_PM_LEGACY",
+     "MARC PENOIT'S FINAL ASSESSMENT — THE DEPUTY GOVERNOR WRITES HIS HISTORY",
+     "Chain","CA_PM_SOLIDARITY","—",
+     "FIRST PASS","penoit_legacy","Not Started","NO","","0",
+     "Dynamic event assembled at runtime; BTN1 / BTN2"),
+
     ("Canada","War Arc","UK_BUILDUP_01",
      "INTELLIGENCE REPORT: CROWN FORCES AMASSING ON ALL BORDERS",
      "Root","—","→ CAN_CALL_01 (uk_buildup_known flag)",
@@ -1033,8 +1066,8 @@ EVENTS = [
     ("Loyal Governor", arc_name, f"GOV_LOYAL_{arc_id}",
      f"DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] (LOYAL {arc_name.upper()})",
      "Root", "—", "—",
-     "FIRST PASS", "", "Not Started", "NO", "standard", "0",
-     f"tile_yield {resource}×{turns}; 3%/turn at loyalty≥8; once per governor")
+     "FIRST PASS", "", "N/A", "NO", "standard", "0",
+     f"tile_yield {resource}×{turns}; 3%/turn at loyalty≥8; once per governor; text-only")
     for arc_id, arc_name, resource, turns in [
         ("ARC_01","Wetlands Fisher",      "food",     4),
         ("ARC_02","Appalachian Miner",    "metal",    5),
@@ -1046,29 +1079,157 @@ EVENTS = [
         ("ARC_08","Tobacco Belt Drifter", "food",     4),
         ("ARC_09","War Widow",            "culture",  4),
         ("ARC_10","Indigenous Scout",     "manpower", 3),
-        ("ARC_11","Boston Rabble-Rouser", "culture",  4),
-        ("ARC_12","Continental Surgeon",  "food",     4),
-        ("ARC_13","Nantucket Sailor",     "boats",    3),
-        ("ARC_14","Frontier Preacher",    "culture",  4),
-        ("ARC_15","DC Bureaucrat",        "gold",     4),
-        ("ARC_16","Rust Belt Steelworker","metal",    5),
-        ("ARC_17","Plantation Deserter",  "manpower", 4),
-        ("ARC_18","Swamp Witch",          "magic",    4),
-        ("ARC_19","Caribbean Privateer",  "gold",     4),
-        ("ARC_20","Hawaiian Refugee",     "food",     3),
-        ("ARC_21","Border Mercenary",     "weapons",  4),
-        ("ARC_22","Acadian Forest Ranger","wood",     5),
-        ("ARC_23","Gettysburg Descendant","manpower", 4),
-        ("ARC_24","LGBTQ+ Organizer",     "culture",  4),
-        ("ARC_25","Carnival Barker",      "gold",     3),
+        # ARC_11 handled separately below (FULL COMPLETION)
+        # ARC_12 handled separately below (FULL COMPLETION — two buttons)
+        # ARC_13 handled separately below (FULL COMPLETION)
+        # ARC_14 handled separately below (FULL COMPLETION)
+        # ARC_15 handled separately below (FULL COMPLETION — two buttons)
+        # ARC_16 handled separately below (custom buttons: state building yield + community_steel perk)
+        # ARC_17 handled separately below (custom buttons: manpower refill + spawn anarchist)
+        # ARC_18 handled separately below (FULL COMPLETION)
+        # ARC_19 handled separately below (FULL COMPLETION)
+        # ARC_20 excluded — Hawaiian Refugee is Ualani's archetype; no loyalty event
+        # ARC_21 handled separately below (custom buttons: gold+attack surge OR permanent defense)
+        # ARC_22 handled separately below (FULL COMPLETION)
+        # ARC_23 handled separately below (FULL COMPLETION)
+        # ARC_24 handled separately below (FULL COMPLETION)
+        # ARC_25 handled separately below (FULL COMPLETION)
     ]
 ] + [
+
+    # ARC_18 — Swamp Witch: custom buttons (power = tile magic×10 OR knowledge = +10 all spell schools)
+    ("Loyal Governor", "Swamp Witch", "GOV_LOYAL_ARC_18",
+     "MESSAGE IN A BOTTLE FROM THE DEEP SWAMPS OF [TILE_NAME] — SEEK POWER? OR SEEK KNOWLEDGE?",
+     "Root", "—", "—",
+     "FULL COMPLETION", "", "N/A", "NO", "standard", "0",
+     "BTN1: tile_yield magic×10; BTN2: level_all_spell_schools ×10; 3%/turn at loyalty≥8; once per governor"),
+
+    # ARC_19 — Caribbean Privateer: text polished, standard tile_yield gold×4
+    ("Loyal Governor", "Caribbean Privateer", "GOV_LOYAL_ARC_19",
+     "DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] CLOSES AN UNDISCLOSED DEAL; GOLD ARRIVES WITHOUT EXPLANATION",
+     "Root", "—", "—",
+     "FULL COMPLETION", "", "N/A", "NO", "standard", "0",
+     "BTN1: tile_yield gold×4; 3%/turn at loyalty≥8; once per governor"),
+
+    # ARC_11 — Boston Rabble-Rouser: speech that does not disperse; tile_yield culture×4
+    ("Loyal Governor", "Boston Rabble-Rouser", "GOV_LOYAL_ARC_11",
+     "DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] DELIVERS A SPEECH THAT DOES NOT DISPERSE",
+     "Root", "—", "—",
+     "FULL COMPLETION", "", "N/A", "NO", "standard", "0",
+     "BTN1: tile_yield culture×4; 3%/turn at loyalty≥8; once per governor"),
+
+    # ARC_03 — Ivy League Dropout: honorary degree from their university; 3%/turn at loyalty≥6; once per governor
+    ("Commander", "Ivy League Dropout", "ARC_03_HONORARY",
+     "HONORARY DEGREE GRANTED — [TILE_NAME] UNIVERSITY RECOGNIZES [COMMANDER_NAME]'S SERVICE",
+     "Root", "—", "—",
+     "FULL COMPLETION", "", "N/A", "NO", "standard", "0",
+     "BTN1: resource_change manpower+1000; BTN2: resource_change science+100; 3%/turn at loyalty≥6; once per governor"),
+
+    # ARC_11 — Boston Rabble-Rouser: monarchist mob event; 3%/turn at loyalty≥5; once per governor
+    ("Commander", "Boston Rabble-Rouser", "ARC_11_MONARCHISTS",
+     "ORAL PERFORMANCE SWAYS MONARCHISTS — A MOB IN [TILE_NAME] IS LISTENING",
+     "Root", "—", "—",
+     "FULL COMPLETION", "", "N/A", "NO", "standard", "0",
+     "BTN1: resource_change manpower+1000; BTN2: reveal_british_tiles (fog reveal 1 turn); 3%/turn at loyalty≥5; once per governor"),
+
+    # ARC_12 — Continental Surgeon: two-button (all armies 25% manpower heal OR medical_science perk)
+    ("Loyal Governor", "Continental Surgeon", "GOV_LOYAL_ARC_12",
+     "THE AMPUTEE'S HANDBOOK — [COMMANDER_NAME] SUBMITS A REPORT ON BATTLEFIELD MEDICINE",
+     "Root", "—", "—",
+     "FULL COMPLETION", "", "N/A", "NO", "standard", "0",
+     "BTN1: all_armies_manpower_heal 25%; BTN2: set_governor_perk medical_science (+1 science all buildings); 3%/turn at loyalty≥8; once per governor"),
+
+    # ARC_13 — Nantucket Sailor: text polished, standard tile_yield boats×3
+    ("Loyal Governor", "Nantucket Sailor", "GOV_LOYAL_ARC_13",
+     "DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] REFLOATS A HULL THAT WAS LISTED ON THE CHARTS AS A NAVIGATION HAZARD",
+     "Root", "—", "—",
+     "FULL COMPLETION", "", "N/A", "NO", "standard", "0",
+     "BTN1: tile_yield boats×3; 3%/turn at loyalty≥8; once per governor"),
+
+    # ARC_14 — Frontier Preacher: two buttons (culture×5 OR 1000 manpower)
+    ("Loyal Governor", "Frontier Preacher", "GOV_LOYAL_ARC_14",
+     "FRONTIER PREACHER INSPIRES THOUSANDS",
+     "Root", "—", "—",
+     "FULL COMPLETION", "", "N/A", "NO", "standard", "0",
+     "BTN1: tile_yield culture×5; BTN2: resource_change manpower 1000; 3%/turn at loyalty≥8; once per governor"),
+
+    # ARC_25 — Carnival Barker: BTN1=tile_yield gold×5, BTN2=tile_building_mandate_surge×5
+    ("Loyal Governor", "Carnival Barker", "GOV_LOYAL_ARC_25",
+     "FOR ONE NIGHT ONLY!",
+     "Root", "—", "—",
+     "FULL COMPLETION", "", "N/A", "NO", "standard", "0",
+     "BTN1: tile_yield gold×5; BTN2: tile_building_mandate_surge×5 turns; 3%/turn at loyalty≥8; once per governor"),
+
+    # ARC_24 — LGBTQ+ Organizer: text polished, standard tile_yield culture×4
+    ("Loyal Governor", "LGBTQ+ Organizer", "GOV_LOYAL_ARC_24",
+     "DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] ORGANIZED SOMETHING NOBODY OFFICIALLY SANCTIONED AND EVERYONE SHOWED UP",
+     "Root", "—", "—",
+     "FULL COMPLETION", "", "N/A", "NO", "standard", "0",
+     "BTN1: tile_yield culture×4; 3%/turn at loyalty≥8; once per governor"),
+
+    # ARC_15 — DC Bureaucrat: BTN1=tile_yield gold×4, BTN2=corrupt_windfall gold×10 (+20 corruption)
+    ("Loyal Governor", "DC Bureaucrat", "GOV_LOYAL_ARC_15",
+     "DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] AUDITS [TILE_NAME] AND FINDS THREE YEARS OF ACCOUNTING ERROR",
+     "Root", "—", "—",
+     "FULL COMPLETION", "", "N/A", "NO", "standard", "0",
+     "BTN1: tile_yield gold×4; BTN2: corrupt_windfall gold×10 +20 corruption; 3%/turn at loyalty≥8; once per governor"),
+
+    # ARC_16 — Rust Belt Steelworker: custom buttons (state building yield OR community_steel perk)
+    ("Loyal Governor", "Rust Belt Steelworker", "GOV_LOYAL_ARC_16",
+     "DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] HAS A PROPOSAL FOR THE FOUNDRY",
+     "Root", "—", "—",
+     "FULL COMPLETION", "", "N/A", "NO", "standard", "0",
+     "BTN1: state_building_level_yield metal×10; BTN2: set_governor_perk community_steel; 3%/turn at loyalty≥8; once per governor"),
+
+    # ARC_17 — Plantation Deserter: custom buttons (manpower refill OR spawn anarchist)
+    ("Loyal Governor", "Plantation Deserter", "GOV_LOYAL_ARC_17",
+     "DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] RETURNS WITH RECRUITS WHO WERE WAITING",
+     "Root", "—", "—",
+     "FULL COMPLETION", "", "N/A", "NO", "standard", "0",
+     "BTN1: tile_army_manpower_refill; BTN2: spawn_anarchist; 3%/turn at loyalty≥8; once per governor"),
+
+    # ARC_23 — Gettysburg Descendant: text polished, standard tile_yield manpower×4
+    ("Loyal Governor", "Gettysburg Descendant", "GOV_LOYAL_ARC_23",
+     "DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] POSTS ONE MUSTER NOTICE; THE LINE FORMS BEFORE DAWN",
+     "Root", "—", "—",
+     "FULL COMPLETION", "", "N/A", "NO", "standard", "0",
+     "BTN1: tile_yield manpower×4; 3%/turn at loyalty≥8; once per governor"),
+
+    # ARC_22 — Acadian Forest Ranger: text polished, standard tile_yield wood×5
+    ("Loyal Governor", "Acadian Forest Ranger", "GOV_LOYAL_ARC_22",
+     "DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] HAS MAPPED EVERY TIMBER STAND WITHIN TWO DAYS' TRAVEL",
+     "Root", "—", "—",
+     "FULL COMPLETION", "", "N/A", "NO", "standard", "0",
+     "BTN1: tile_yield wood×5; 3%/turn at loyalty≥8; once per governor"),
+
+    # ARC_21 — Border Mercenary: custom buttons (gold+attack surge OR permanent defense)
+    ("Loyal Governor", "Border Mercenary", "GOV_LOYAL_ARC_21",
+     "MERCENARY COMMANDER'S PATRIOTIC DISPLAY",
+     "Root", "—", "—",
+     "FULL COMPLETION", "", "N/A", "NO", "standard", "0",
+     "BTN1: gold_and_army_buff Mercenary Zeal×10 turns + 50 gold; BTN2: army_buff Iron Discipline permanent; 3%/turn at loyalty≥8; once per governor"),
 
     # ── COMMANDER ARCS ───────────────────────────────────────────────────────────
     # 25 archetypes × 2 events each (FIRST + DONE).
     # FIRST fires when objective 1 completes via evaluate_commander_triggers.
     # DONE fires when objective 3 completes; grants morale + archetype resource.
-] + [
+]
+
+_ARC_DONE_OVERRIDES = {
+    # arc_id: (status, art_tag, art_status)  — commander arcs are text-only (N/A art)
+    "ARC_01": ("FULL COMPLETION", "", "N/A"),
+    "ARC_02": ("FULL COMPLETION", "", "N/A"),
+    "ARC_03": ("FULL COMPLETION", "", "N/A"),
+}
+
+_ARC_FIRST_OVERRIDES = {
+    # arc_id: (status, art_tag, art_status)  — commander arcs are text-only (N/A art)
+    "ARC_01": ("FULL COMPLETION", "", "N/A"),
+    "ARC_02": ("FULL COMPLETION", "", "N/A"),
+    "ARC_03": ("FULL COMPLETION", "", "N/A"),
+}
+
+EVENTS += [
     item
     for arc_id, arc_name, done_resource in [
         ("ARC_01","Wetlands Fisher","food"),
@@ -1090,7 +1251,7 @@ EVENTS = [
         ("ARC_17","Plantation Deserter","food"),
         ("ARC_18","Swamp Witch","magic"),
         ("ARC_19","Caribbean Privateer","gold"),
-        ("ARC_20","Hawaiian Refugee","culture"),
+        # ARC_20 excluded (Ualani's archetype — no arc events)
         ("ARC_21","Border Mercenary","weapons"),
         ("ARC_22","Acadian Forest Ranger","wood"),
         ("ARC_23","Gettysburg Descendant","manpower"),
@@ -1101,15 +1262,32 @@ EVENTS = [
         ("Commander", f"{arc_name}", f"{arc_id}_FIRST",
          f"[COMMANDER_NAME] — {arc_name.upper()} FIRST OBJECTIVE",
          "Milestone 1", "—", f"{arc_id}_DONE",
-         "FIRST PASS", "", "Not Started", "NO", "", "0",
+         *_ARC_FIRST_OVERRIDES.get(arc_id, ("FIRST PASS", "", "N/A")), "NO", "", "0",
          f"Fires when {arc_id} completes objective 1; BTN1: nothing"),
         ("Commander", f"{arc_name}", f"{arc_id}_DONE",
          f"[COMMANDER_NAME] — {arc_name.upper()} ARC COMPLETE",
          "Resolution", f"{arc_id}_FIRST", "—",
-         "FIRST PASS", "", "Not Started", "NO", "", "0",
+         *_ARC_DONE_OVERRIDES.get(arc_id, ("FIRST PASS", "", "N/A")), "NO", "", "0",
          f"Fires when {arc_id} completes all 3 objectives; BTN1: morale+20, BTN2: {done_resource}"),
     ]
 ] + [
+
+    # ── GOVERNOR LEVEL-UP CEREMONIES ─────────────────────────────────────────
+    ("Commander","Governor Ceremony","GOV_LVL2_HONOR",
+     "FIELD CITATION — [COMMANDER_NAME]",
+     "Level-Up","—","—",
+     "FULL COMPLETION","","Not Started","NO","","0",
+     "Fires on promote_commander to lvl 2; BTN1: morale+10"),
+    ("Commander","Governor Ceremony","GOV_LVL3_CEREMONY",
+     "GENERAL [COMMANDER_NAME] — WHITE HOUSE RECOGNITION CEREMONY",
+     "Level-Up","—","GOV_REWARD",
+     "FULL COMPLETION","gov_lvl3_ceremony_scene","Integrated","NO","","0",
+     "Fires on promote_commander to lvl 3; BTN1: morale+20; BTN2: → GOV_REWARD"),
+    ("Commander","Governor Ceremony","GOV_REWARD",
+     "GENERAL [COMMANDER_NAME] — THE LINCOLN BEDROOM",
+     "Intimate","GOV_LVL3_CEREMONY BTN2","—",
+     "FULL COMPLETION","gov_reward_scene","Integrated","YES","intimate","0",
+     "Fires from GOV_LVL3_CEREMONY BTN2; BTN1: governor_loyalty +3"),
 
     ("VP Arc","VP Arc","VP_LEGACY",
      "THE VICE PRESIDENT LEAVES A NOTE — [COMMANDER_NAME] HAS SOMETHING TO SAY",
@@ -1120,25 +1298,38 @@ EVENTS = [
     # ── WHITE HOUSE SECRETS ──────────────────────────────────────────────────
     # Fires when Ualani is stationed at DC (tile 188) during the matching month.
     # One-shot per event; 12 total; cover holidays Jan–Dec (game starts month 6).
-] + [
+]
+
+_WH_SECRET_OVERRIDES = {
+    # num: (status, art_tag, art_status)
+    2:  ("FULL COMPLETION", "wh_secret_02_scene", "Integrated"),
+    3:  ("FULL COMPLETION", "wh_secret_03_scene", "Integrated"),
+    7:  ("FULL COMPLETION", "wh_secret_07_scene", "Integrated"),
+    8:  ("FULL COMPLETION", "wh_secret_08_scene", "Integrated"),
+    9:  ("FULL COMPLETION", "wh_secret_09",       "Integrated"),
+    12: ("FULL COMPLETION", "wh_secret_12_scene", "Integrated"),
+}
+
+EVENTS += [
     ("White House", f"Month {month}", f"WH_SECRET_{str(num).zfill(2)}",
      f"WHITE HOUSE SECRET — {holiday.upper()}",
      "Root", "—", "—",
-     "FIRST PASS", "", "Not Started", explicit, btn_note, "0",
+     *(_WH_SECRET_OVERRIDES.get(num, ("FIRST PASS", "", "Not Started"))),
+     explicit, btn_note, "0",
      f"Fires when Ualani in DC (tile 188) during month {month}; one-shot")
     for num, month, holiday, explicit, btn_note in [
         ( 1,  1, "New Year's Day",           "YES", "sensual option"),
-        ( 2,  2, "President's Day",           "NO",  "standard"),
+        ( 2,  2, "Black History Month",         "NO",  "standard"),
         ( 3,  3, "Cherry Blossom Season",     "NO",  "standard"),
         ( 4,  4, "Easter Morning",            "NO",  "standard"),
         ( 5,  5, "Cinco de Mayo",             "NO",  "standard"),
         ( 6,  6, "Juneteenth",                "NO",  "standard"),
-        ( 7,  7, "Independence Day & Pride",  "YES", "explicit option"),
-        ( 8,  8, "Diwali",                    "NO",  "standard"),
+        ( 7,  7, "Independence Day",            "NO",  "standard"),
+        ( 8,  8, "Pride Month",               "NO",  "standard"),
         ( 9,  9, "Halloween",                 "NO",  "standard"),
         (10, 10, "Indigenous Peoples Day",    "YES", "sensual option"),
         (11, 11, "Thanksgiving",              "NO",  "standard"),
-        (12, 12, "Christmas",                 "YES", "sensual option"),
+        (12, 12, "Winter Holidays",            "NO",  "standard"),
     ]
 ] + [
 
@@ -1176,53 +1367,53 @@ EVENTS = [
      "Fires when chalch_q3_done; BTN1: +100 food; closes the arc"),
 
     # ── IDEAS ────────────────────────────────────────────────────────────────
-    ("Idea","Ualani Expansion","UALANI_DOCK_01",
-     "PRESIDENT CARLISLE SURVEYS THE HARBOR AT [TILE_NAME]  ← IDEA",
+    ("Ualani Events","Ualani Expansion","UALANI_DOCK_01",
+     "PRESIDENT CARLISLE SURVEYS THE HARBOR AT [TILE_NAME]",
      "Root","—","—",
-     "IDEA","","Not Started","YES","explicit option","15",
-     "Ualani at tile with enabled Dock; follows UALANI_FORGE_01 pattern"),
+     "FIRST PASS","","Not Started","YES","explicit option","15",
+     "Ualani at tile with enabled Dock; triggers via _check_ualani_dock()"),
 
-    ("Idea","Ualani Expansion","UALANI_FARM_01",
-     "PRESIDENT CARLISLE VISITS THE FARMLANDS AT [TILE_NAME]  ← IDEA",
+    ("Ualani Events","Ualani Expansion","UALANI_FARM_01",
+     "PRESIDENT CARLISLE VISITS THE FARMLANDS AT [TILE_NAME]",
      "Root","—","—",
-     "IDEA","","Not Started","YES","explicit option","15",
-     "Ualani at Farm tile; variant of HARVEST_VISIT_01 but Ualani-led"),
+     "FIRST PASS","","Not Started","YES","explicit option","15",
+     "Ualani at Farmlands terrain tile; triggers via _check_ualani_farm()"),
 
-    ("Idea","Ualani Expansion","UALANI_BARRACKS_01",
-     "PRESIDENT CARLISLE CONDUCTS REGIMENTAL REVIEW AT [TILE_NAME]  ← IDEA",
+    ("Ualani Events","Ualani Expansion","UALANI_BARRACKS_01",
+     "PRESIDENT CARLISLE CONDUCTS REGIMENTAL REVIEW AT [TILE_NAME]",
      "Root","—","—",
-     "IDEA","","Not Started","YES","explicit option","15",
-     "Ualani at tile with Barracks; army strength / loyalty focus"),
+     "FIRST PASS","","Not Started","YES","explicit option","15",
+     "Ualani at tile with Barracks + stationed army; triggers via _check_ualani_barracks()"),
 
-    ("Idea","Ualani Expansion","UALANI_COURTHOUSE_01",
-     "PRESIDENT CARLISLE HOLDS TOWN HALL AT [TILE_NAME]  ← IDEA",
+    ("Ualani Events","Ualani Expansion","UALANI_COURTHOUSE_01",
+     "PRESIDENT CARLISLE HOLDS TOWN HALL AT [TILE_NAME]",
      "Root","—","—",
-     "IDEA","","Not Started","YES","explicit option","15",
-     "Ualani at Courthouse tile; complement to UALANI_DIGNITARY but different trigger (no moralDecay gate)"),
+     "FIRST PASS","","Not Started","YES","explicit option","15",
+     "Ualani at Courthouse tile; no moralDecay gate (cf. UALANI_DIGNITARY_01); triggers via _check_ualani_courthouse()"),
 
     ("Idea","More City Events","CL_WASHINGTON_01",
-     "WASHINGTON DC LIBERATED  ← IDEA",
+     "WASHINGTON DC RECAPTURED — THE CAPITAL RETURNS TO THE REPUBLIC",
      "Root","—","—",
-     "IDEA","","Not Started","NO","","0",
-     "Would fire when tile 188 is recaptured; natural counterpart to CX_001"),
+     "FIRST PASS","","In Progress","NO","","0",
+     "Fires via TRIG_089 (tile_liberated, 188, USA); one-time historic event; 2 buttons"),
 
     ("Idea","More City Events","CL_VALLEY_FORGE_01",
-     "VALLEY FORGE SECURED  ← IDEA",
+     "VALLEY FORGE IS OURS — THE REPUBLIC HOLDS THE GROUND THAT HELD BEFORE",
      "Root","—","—",
-     "IDEA","","Not Started","NO","","0",
-     "Tile 1; historically significant; would fire on liberation"),
+     "FIRST PASS","","In Progress","NO","","0",
+     "Fires via TRIG_090 (tile_liberated, 1, USA); one-time; 2 buttons; historical weight tone"),
 
     ("Idea","More City Events","CX_NYC_01",
-     "NEW YORK CITY FALLS AGAIN  ← IDEA",
+     "NEW YORK CITY HAS FALLEN — AGAIN — THE STOCK MARKET IS FORMALLY AGGRIEVED",
      "Root","—","—",
-     "IDEA","","Not Started","NO","","0",
-     "Would fire if NYC is re-taken after CL_001; repeatable pair"),
+     "FIRST PASS","","In Progress","NO","","0",
+     "Fires via TRIG_091 (tile_lost, 14, UK); repeatable=true, cooldown=30; satirical callback to CL_001"),
 
     ("Idea","Espionage Events","ESPIONAGE_DISCOVERY_01",
-     "SPY NETWORK DISCOVERED AT [TILE_NAME]  ← IDEA",
+     "SPY NETWORK DISCOVERED AT [TILE_NAME] — CULPER RING CATCHES A CROWN AGENT",
      "Root","—","—",
-     "IDEA","","Not Started","NO","","0",
-     "Would fire when espionageActive + enemy army arrives; uses existing espionage vars"),
+     "FIRST PASS","","In Progress","NO","","0",
+     "_uk_plant_spies() in AI round: 20% chance on is_spy_vulnerable+UK-neighbor tile. _check_espionage_discovery(): fires when is_counterintelligence_ready (governor+barracks+espionageActive); calls clear_espionage(); cooldown=15; 2 buttons"),
 
     ("Idea","Commander Expansion","CMD_OBJECTIVE_2",
      "A COMMANDER'S SECOND TASK  ← IDEA",
@@ -1231,16 +1422,16 @@ EVENTS = [
      "Extend the commander arc beyond first objective"),
 
     ("Idea","Seasonal Events","WINTER_SIEGE_01",
-     "VALLEY FORGE CONDITIONS: ARMY SUFFERING IN THE FIELD  ← IDEA",
+     "VALLEY FORGE CONDITIONS — TROOPS SUFFER THROUGH ANOTHER NORTHERN WINTER",
      "Root","—","—",
-     "IDEA","","Not Started","NO","","0",
-     "Generic winter hardship event; non-Ualani; uses winterScore + month check"),
+     "FIRST PASS","","In Progress","NO","","0",
+     "_check_winter_siege(): month [11,12,1,2] + owned tile winterScore>=3 + stationedArmy; cooldown=12; 2 buttons"),
 
     ("Idea","Seasonal Events","SPRING_OFFENSIVE_01",
-     "THE THAW: CROWN FORCES RESUME OFFENSIVE OPERATIONS  ← IDEA",
+     "THE THAW — CROWN FORCES RESUME OFFENSIVE OPERATIONS",
      "Root","—","—",
-     "IDEA","","Not Started","NO","","0",
-     "Month 3-4; UK neighbor + player army present; tactical pressure event"),
+     "FIRST PASS","","In Progress","NO","","0",
+     "_check_spring_offensive(): month [3,4] + UK neighbor + stationedArmy on owned tile; cooldown=20; 2 buttons"),
 
     # ── INTIMATE VARIANTS ────────────────────────────────────────────────────
     # Stub entries for the "By morning" intimate path on every explicit event.
@@ -1251,330 +1442,325 @@ EVENTS = [
     ("Commander","Commander Arc","CMD_THANKS_INTIMATE",
      "PRESIDENT CARLISLE DELIVERS PERSONAL THANKS TO [COMM... — BY MORNING",
      "Chain","CMD_THANKS (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of CMD_THANKS. By morning: emotional arc, no explicit imagery."),
+     "FIRST PASS","","In Progress","NO","","0",
+     "Commander — authored; command tent after citation; proper silence, maps set down"),
 
     # Fort Chain
     ("Fort Chain","Fort Disrepair","FORT_005_INTIMATE",
      "CLASSIFIED DIPLOMATIC PROCEEDINGS AT [TILE_NAME] — BY MORNING",
      "Chain","FORT_005 (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of FORT_005. By morning: emotional arc, no explicit imagery."),
+     "FIRST PASS","","In Progress","NO","","0",
+     "Fort Chain — authored; fort at night after officials leave; building old enough to know"),
 
     # Collapse
     ("Collapse","Republic Falls","COLLAPSE_02_INTIMATE",
      "WASHINGTON STANDS ALONE — BY MORNING",
      "Chain","COLLAPSE_02 (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of COLLAPSE_02. By morning: emotional arc, no explicit imagery."),
+     "FIRST PASS","","In Progress","NO","","0",
+     "Collapse — authored; last tile, window and dark city; presence as argument"),
 
     # Tile Crisis
     ("Tile Crisis","Harvest Crisis","HARVEST_VISIT_01_INTIMATE",
      "PRESIDENT CARLISLE SAVES THE HARVEST — BY MORNING",
      "Chain","HARVEST_VISIT_01 (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of HARVEST_VISIT_01. By morning: emotional arc, no explicit imagery."),
+     "FIRST PASS","","In Progress","NO","","0",
+     "Tile Crisis — authored; corn emergency; farmland dusk light"),
 
     ("Tile Crisis","Election Arc","STUMP_SPEECH_01_INTIMATE",
      "PRESIDENT CARLISLE TAKES THE FLOOR AT [TILE_NAME] — ... — BY MORNING",
      "Chain","STUMP_SPEECH_01 (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of STUMP_SPEECH_01. By morning: emotional arc, no explicit imagery."),
+     "FIRST PASS","","In Progress","NO","","0",
+     "Election — authored; after the rally; wrong light for what's happening"),
 
     # VP Arc
     ("VP Arc","VP Arc","VP_DOUBT_INTIMATE",
      "THE VICE PRESIDENT AT 2 A.M.: [COMMANDER_NAME] IS QU... — BY MORNING",
      "Chain","VP_DOUBT (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of VP_DOUBT. By morning: emotional arc, no explicit imagery."),
+     "FIRST PASS","","In Progress","NO","","0",
+     "VP arc — authored; cold coffee scene, 2AM conversation; no explicit content"),
 
     ("VP Arc","VP Arc","VP_BATTLEFIELD_INTIMATE",
      "THE VICE PRESIDENT PICKS UP A MUSKET: [COMMANDER_NAM... — BY MORNING",
      "Chain","VP_BATTLEFIELD (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of VP_BATTLEFIELD. By morning: emotional arc, no explicit imagery."),
+     "FIRST PASS","","In Progress","NO","","0",
+     "VP arc — authored; musket call aftermath; Ualani and VP on the phone"),
 
     ("VP Arc","VP Arc","VP_PRE_ELECTION_INTIMATE",
      "THE VICE PRESIDENT CALLS AN UNSCHEDULED MEETING — [C... — BY MORNING",
      "Chain","VP_PRE_ELECTION (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of VP_PRE_ELECTION. By morning: emotional arc, no explicit imagery."),
+     "FIRST PASS","","In Progress","NO","","0",
+     "VP arc — authored; the letter scene; what Ualani sees when she looks"),
 
     ("VP Arc","VP Arc","VP_LEGACY_INTIMATE",
      "THE VICE PRESIDENT LEAVES A NOTE — [COMMANDER_NAME] ... — BY MORNING",
      "Chain","VP_LEGACY (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of VP_LEGACY. By morning: emotional arc, no explicit imagery."),
+     "FIRST PASS","","In Progress","NO","","0",
+     "VP arc — authored; fourth paragraph scene; three readings, one call"),
 
     # Canada — Canadian Alliance
     ("Canada","Canadian Alliance","CAN_CLEARWATER_01_INTIMATE",
      "PM CLEAR-WATER'S PRIVATE CHANNEL: JESSICA WRITES OUT... — BY MORNING",
      "Chain","CAN_CLEARWATER_01 (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of CAN_CLEARWATER_01. By morning: emotional arc, no explicit imagery."),
+     "FIRST PASS","","In Progress","NO","","0",
+     "Canada — authored; handwritten letter outside official channels; permanent across the border"),
 
     ("Canada","Canadian Alliance","CAN_JOINT_OPS_01_INTIMATE",
      "JOINT INTELLIGENCE SUMMIT: THREE GOVERNMENTS SHARE O... — BY MORNING",
      "Chain","CAN_JOINT_OPS_01 (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of CAN_JOINT_OPS_01. By morning: emotional arc, no explicit imagery."),
+     "FIRST PASS","","In Progress","NO","","0",
+     "Canada — authored; intelligence map at midnight; Marc leaves, Jessica stays"),
 
     ("Canada","Canadian Alliance","CAN_SUMMIT_01_INTIMATE",
      "THE OTTAWA SUMMIT: ALL THREE IN THE SAME ROOM FOR TH... — BY MORNING",
      "Chain","CAN_SUMMIT_01 (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of CAN_SUMMIT_01. By morning: emotional arc, no explicit imagery."),
+     "FIRST PASS","","In Progress","NO","","0",
+     "Canada — authored; Ottawa Summit night; Marc's 'I told you'; promise to translate later"),
 
     ("Canada","Canadian Alliance","CAN_ELECTION_LUCK_INTIMATE",
      "PM CLEAR-WATER'S CALL: JESSICA HAS SOMETHING TO SAY ... — BY MORNING",
      "Chain","CAN_ELECTION_LUCK (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of CAN_ELECTION_LUCK. By morning: emotional arc, no explicit imagery."),
+     "FIRST PASS","","In Progress","NO","","0",
+     "Canada — authored; before-sunrise call; unofficial, personal capacity"),
 
     # Canada — Peace
     ("Canada","Peace","CAN_PEACE_01_INTIMATE",
      "THE TIDE HAS TURNED: PENOIT AND CLEAR-WATER COME TO ... — BY MORNING",
      "Chain","CAN_PEACE_01 (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of CAN_PEACE_01. By morning: emotional arc, no explicit imagery."),
+     "FIRST PASS","","In Progress","NO","","0",
+     "Canada — authored; Marc and Jessica arrive unannounced; Marc makes tea"),
 
     ("Canada","Peace","PEACE_ALLIED_01_INTIMATE",
      "PEACE OF [TILE_NAME] — THE CROWN EXPELLED FROM THE C... — BY MORNING",
      "Chain","PEACE_ALLIED_01 (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of PEACE_ALLIED_01. By morning: emotional arc, no explicit imagery."),
+     "FIRST PASS","","In Progress","NO","","0",
+     "Peace — authored; treaty signed, 22:00 same room; Marc's 'I told you', Jessica's French"),
 
     ("Canada","Peace","PEACE_USA_01_INTIMATE",
      "PEACE OF [TILE_NAME] — THE REPUBLIC HAS EXPELLED THE... — BY MORNING",
      "Chain","PEACE_USA_01 (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of PEACE_USA_01. By morning: emotional arc, no explicit imagery."),
+     "FIRST PASS","","In Progress","NO","","0",
+     "Peace — authored; last dispatch 11:17PM; COMMANDER_NAME on second ring, listening together"),
 
     # CA Protectors
     ("CA Protector","Le Wendigo","CA_PROT_01_AGREE_INTIMATE",
      "LE WENDIGO STANDS DOWN: SAINT-GEORGES FOREST ACCORD — BY MORNING",
      "Chain","CA_PROT_01_AGREE (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of CA_PROT_01_AGREE. By morning: emotional arc, no explicit imagery."),
+     "FIRST PASS","","In Progress","NO","","0",
+     "CA Protector — authored; Le Wendigo, three days at forest edge; wound acknowledged"),
 
     ("CA Protector","Le Loup-Garou","CA_PROT_02_AGREE_INTIMATE",
      "LE LOUP-GAROU OF RIVIÈRE-DU-LOUP: FORMALLY ACKNOWLED... — BY MORNING",
      "Chain","CA_PROT_02_AGREE (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of CA_PROT_02_AGREE. By morning: emotional arc, no explicit imagery."),
+     "FIRST PASS","","In Progress","NO","","0",
+     "CA Protector — authored; Le Loup-Garou, Saint Lawrence full moon; turns south"),
 
     ("CA Protector","Les Feux Follets","CA_PROT_03_AGREE_INTIMATE",
      "LES FEUX FOLLETS FORMALLY ACKNOWLEDGED: THE SAINT JO... — BY MORNING",
      "Chain","CA_PROT_03_AGREE (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of CA_PROT_03_AGREE. By morning: emotional arc, no explicit imagery."),
+     "FIRST PASS","","In Progress","NO","","0",
+     "CA Protector — authored; Les Feux Follets, Saint John estuary fog; lights decide"),
 
     ("CA Protector","Mishepeshu","CA_PROT_04_AGREE_INTIMATE",
      "MISHEPESHU PACT FORMALIZED: THE GREAT LYNX HOLDS THE... — BY MORNING",
      "Chain","CA_PROT_04_AGREE (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of CA_PROT_04_AGREE. By morning: emotional arc, no explicit imagery."),
+     "FIRST PASS","","In Progress","NO","","0",
+     "CA Protector — authored; Mishepeshu, Gichi-gami with Anishinaabe council"),
 
     ("CA Protector","La Corriveau","CA_PROT_05_AGREE_INTIMATE",
      "LA CORRIVEAU FORMALLY ALLIES WITH THE REPUBLIC — THR... — BY MORNING",
      "Chain","CA_PROT_05_AGREE (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of CA_PROT_05_AGREE. By morning: emotional arc, no explicit imagery."),
+     "FIRST PASS","","In Progress","NO","","0",
+     "CA Protector — authored; La Corriveau gibbet site; not friendship, same enemy"),
 
     ("CA Protector","Le Carcajou","CA_PROT_06_AGREE_INTIMATE",
      "LE CARCAJOU FORMALLY RECOGNIZED: THE MONCTON CORRIDO... — BY MORNING",
      "Chain","CA_PROT_06_AGREE (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of CA_PROT_06_AGREE. By morning: emotional arc, no explicit imagery."),
+     "FIRST PASS","","In Progress","NO","","0",
+     "CA Protector — authored; Le Carcajou, Moncton barrens; states facts not demands"),
 
     ("CA Protector","La Chasse-Galerie","CA_PROT_07_AGREE_INTIMATE",
      "LA CHASSE-GALERIE: THE RIVER RUNS FOR THE REPUBLIC NOW — BY MORNING",
      "Chain","CA_PROT_07_AGREE (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of CA_PROT_07_AGREE. By morning: emotional arc, no explicit imagery."),
+     "FIRST PASS","","In Progress","NO","","0",
+     "CA Protector — authored; La Chasse-Galerie; old bargain renegotiated, river couriers"),
 
     ("CA Protector","Le Gougou","CA_PROT_08_AGREE_INTIMATE",
      "THE GOUGOU FORMALLY GUARDS THE CHALEUR BAY FOR THE C... — BY MORNING",
      "Chain","CA_PROT_08_AGREE (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of CA_PROT_08_AGREE. By morning: emotional arc, no explicit imagery."),
+     "FIRST PASS","","In Progress","NO","","0",
+     "CA Protector — authored; Le Gougou, Chaleur Bay; Mi'kmaq advisor, bay watching since"),
 
     # Ualani Arc
     ("Ualani","Ambush","UALANI_AMBUSH_01_INTIMATE",
      "CROWN AMBUSH AVERTED: PRESIDENT CARLISLE HOLDS THE W... — BY MORNING",
      "Chain","UALANI_AMBUSH_01 (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of UALANI_AMBUSH_01. By morning: emotional arc, no explicit imagery."),
+     "FIRST PASS","","In Progress","NO","","0",
+     "Ualani — authored; wetlands dusk scene; bronze light, the right reply"),
 
     ("Ualani","Dignitary Reception","UALANI_DIGNITARY_01_INTIMATE",
      "STATE RECEPTION AT [TILE_NAME]: PRESIDENT CARLISLE A... — BY MORNING",
      "Chain","UALANI_DIGNITARY_01 (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of UALANI_DIGNITARY_01. By morning: emotional arc, no explicit imagery."),
+     "FIRST PASS","","In Progress","NO","","0",
+     "Ualani — authored; courthouse kitchen with baker; cinnamon, distance shortens"),
 
     ("Ualani","Memorial Address","UALANI_MEMORIAL_01_INTIMATE",
      "PRESIDENT CARLISLE VISITS [TILE_NAME]: PRESIDENTIAL ... — BY MORNING",
      "Chain","UALANI_MEMORIAL_01 (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of UALANI_MEMORIAL_01. By morning: emotional arc, no explicit imagery."),
+     "FIRST PASS","","In Progress","NO","","0",
+     "Ualani — authored; memorial ground morning; shared weight of the lists"),
 
     ("Ualani","Field Hospital","UALANI_WOUNDED_01_INTIMATE",
      "PRESIDENT CARLISLE VISITS FIELD HOSPITAL AT [TILE_NAME] — BY MORNING",
      "Chain","UALANI_WOUNDED_01 (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of UALANI_WOUNDED_01. By morning: emotional arc, no explicit imagery."),
+     "FIRST PASS","","In Progress","NO","","0",
+     "Ualani — authored; field hospital 6AM; the walk, revision visible on face"),
 
     ("Ualani","Forge Inspection","UALANI_FORGE_01_INTIMATE",
      "PRESIDENT CARLISLE CONDUCTS SURPRISE INSPECTION OF F... — BY MORNING",
      "Chain","UALANI_FORGE_01 (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of UALANI_FORGE_01. By morning: emotional arc, no explicit imagery."),
+     "FIRST PASS","","In Progress","NO","","0",
+     "Ualani — authored; forge night, efficiency diagram; the way she says 'what'"),
 
     ("Ualani","Culper Ring","UALANI_CULPER_01_INTIMATE",
      "CULPER RING CONTACT AT [TILE_NAME]: INTELLIGENCE ASS... — BY MORNING",
      "Chain","UALANI_CULPER_01 (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of UALANI_CULPER_01. By morning: emotional arc, no explicit imagery."),
+     "FIRST PASS","","In Progress","NO","","0",
+     "Ualani — authored; intelligence meeting aftermath; shared silence"),
 
     ("Ualani","Alliance Council","UALANI_ALLIANCE_01_INTIMATE",
      "PRESIDENT CARLISLE MEETS WITH [COMMANDER_NAME] AT [T... — BY MORNING",
      "Chain","UALANI_ALLIANCE_01 (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of UALANI_ALLIANCE_01. By morning: emotional arc, no explicit imagery."),
+     "FIRST PASS","","In Progress","NO","","0",
+     "Ualani — authored; post-meeting walk; the why underneath the strategy"),
 
     ("Ualani","Frontier","UALANI_FRONTIER_01_INTIMATE",
      "PRESIDENT CARLISLE ESTABLISHES FRONTIER PRESENCE AT ... — BY MORNING",
      "Chain","UALANI_FRONTIER_01 (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of UALANI_FRONTIER_01. By morning: emotional arc, no explicit imagery."),
+     "FIRST PASS","","In Progress","NO","","0",
+     "Ualani — authored; frontier post at dusk; why COMMANDER_NAME is here"),
 
     # Protectors — US
     ("Protector","Mothman","PROT_01_AGREE_INTIMATE",
      "MOTHMAN FORMALLY ALLIES WITH THE CONTINENTAL REPUBLIC — BY MORNING",
      "Chain","PROT_01_AGREE (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of PROT_01_AGREE. By morning: emotional arc, no explicit imagery."),
+     "FIRST PASS","","In Progress","NO","","0",
+     "Protector — authored; Mothman, Appalachian ridge at dawn; from warning to watching over"),
 
     ("Protector","Jersey Devil","PROT_02_AGREE_INTIMATE",
      "JERSEY DEVIL FORMALLY ENDORSES THE CONTINENTAL CAUSE — BY MORNING",
      "Chain","PROT_02_AGREE (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of PROT_02_AGREE. By morning: emotional arc, no explicit imagery."),
+     "FULL COMPLETION","prot_02_agree_intimate","Integrated","NO","","0",
+     "New Jersey's most complicated asset. By morning: recognition without negotiation."),
 
     ("Protector","Bigfoot","PROT_03_AGREE_INTIMATE",
      "BIGFOOT FORMALLY GUIDES THE CONTINENTAL CAUSE THROUG... — BY MORNING",
      "Chain","PROT_03_AGREE (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of PROT_03_AGREE. By morning: emotional arc, no explicit imagery."),
+     "FIRST PASS","","In Progress","NO","","0",
+     "Protector — authored; Bigfoot leads walk through northern woods; Crown scouts leave"),
 
     ("Protector","Thunderbird","PROT_04_AGREE_INTIMATE",
      "THUNDERBIRD FORMALLY ALLIES WITH THE CONTINENTAL REP... — BY MORNING",
      "Chain","PROT_04_AGREE (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of PROT_04_AGREE. By morning: emotional arc, no explicit imagery."),
+     "FIRST PASS","","In Progress","NO","","0",
+     "Protector — authored; Thunderbird rain-as-decision; NY highlands weather"),
 
     ("Protector","Headless Horseman","PROT_05_AGREE_INTIMATE",
      "THE HORSEMAN RIDES FOR THE REPUBLIC — FORMALLY — BY MORNING",
      "Chain","PROT_05_AGREE (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of PROT_05_AGREE. By morning: emotional arc, no explicit imagery."),
+     "FIRST PASS","","In Progress","NO","","0",
+     "Protector — authored; Headless Horseman Sleepy Hollow midnight; turns north"),
 
     ("Protector","Chessie","PROT_06_AGREE_INTIMATE",
      "CHESSIE FORMALLY PATROLS FOR THE CONTINENTAL NAVY — BY MORNING",
      "Chain","PROT_06_AGREE (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of PROT_06_AGREE. By morning: emotional arc, no explicit imagery."),
+     "FIRST PASS","","In Progress","NO","","0",
+     "Protector — authored; Chessie, Annapolis dock, cold bay water; shape in the deep"),
 
     ("Protector","Bell Witch","PROT_07_AGREE_INTIMATE",
      "THE BELL WITCH FORMALLY COMMITS TO THE CONTINENTAL C... — BY MORNING",
      "Chain","PROT_07_AGREE (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of PROT_07_AGREE. By morning: emotional arc, no explicit imagery."),
+     "FIRST PASS","","In Progress","NO","","0",
+     "Protector — authored; Bell Witch Adams TN; candle facing south"),
 
     ("Protector","Old Ironsides","PROT_08_AGREE_INTIMATE",
      "OLD IRONSIDES FORMALLY JOINS THE CONTINENTAL NAVY — BY MORNING",
      "Chain","PROT_08_AGREE (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of PROT_08_AGREE. By morning: emotional arc, no explicit imagery."),
+     "FIRST PASS","Integrated","In Progress","NO","","0",
+     "Protector — authored (Old Ironsides); explicit content; already Integrated"),
 
     ("Protector","Valley Forge Guardian","PROT_09_AGREE_INTIMATE",
      "VALLEY FORGE GUARDIAN FORMALLY BLESSES THE CONTINENT... — BY MORNING",
      "Chain","PROT_09_AGREE (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of PROT_09_AGREE. By morning: emotional arc, no explicit imagery."),
+     "FIRST PASS","","In Progress","NO","","0",
+     "Protector — authored; Valley Forge Guardian, winter dawn, warmer ground"),
 
     ("Protector","Snallygaster","PROT_10_AGREE_INTIMATE",
      "SNALLYGASTER FORMALLY GUARDS THE CONTINENTAL SUPPLY ... — BY MORNING",
      "Chain","PROT_10_AGREE (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of PROT_10_AGREE. By morning: emotional arc, no explicit imagery."),
+     "FIRST PASS","","In Progress","NO","","0",
+     "Protector — authored; Snallygaster, Cumberland Pass midnight; crate gone, Crown route disrupted"),
 
     ("Protector","Paul Revere","PROT_11_AGREE_INTIMATE",
      "PAUL REVERE FORMALLY INTEGRATES WITH CONTINENTAL INT... — BY MORNING",
      "Chain","PROT_11_AGREE (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of PROT_11_AGREE. By morning: emotional arc, no explicit imagery."),
+     "FIRST PASS","","In Progress","NO","","0",
+     "Protector — authored; Paul Revere Lexington midnight; turns north without orders"),
 
     ("Protector","Liberty Bell","PROT_12_AGREE_INTIMATE",
      "THE LIBERTY BELL FORMALLY RINGS FOR THE REPUBLIC — BY MORNING",
      "Chain","PROT_12_AGREE (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of PROT_12_AGREE. By morning: emotional arc, no explicit imagery."),
+     "FIRST PASS","","In Progress","NO","","0",
+     "Protector — authored; Liberty Bell Philadelphia dawn; crack unchanged, ringing anyway"),
 
     ("Protector","Green Mountain Ghost","PROT_13_AGREE_INTIMATE",
      "GREEN MOUNTAIN GHOST FORMALLY PROTECTS VERMONT FOR T... — BY MORNING",
      "Chain","PROT_13_AGREE (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of PROT_13_AGREE. By morning: emotional arc, no explicit imagery."),
+     "FIRST PASS","","In Progress","NO","","0",
+     "Protector — authored; Green Mountain Ghost, Vermont October; weather not in meteorological record"),
 
-    ("Protector","Mount Rushmore","PROT_14_AGREE_INTIMATE",
-     "THE RUSHMORE COUNCIL FORMALLY ENDORSES PRESIDENT CAR... — BY MORNING",
-     "Chain","PROT_14_AGREE (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of PROT_14_AGREE. By morning: emotional arc, no explicit imagery."),
 
     ("Protector","Skunk Ape","PROT_15_AGREE_INTIMATE",
      "SKUNK APE FORMALLY PATROLS FLORIDA FOR THE CONTINENT... — BY MORNING",
      "Chain","PROT_15_AGREE (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of PROT_15_AGREE. By morning: emotional arc, no explicit imagery."),
+     "FIRST PASS","","In Progress","NO","","0",
+     "Protector — authored; Skunk Ape, Everglades midnight; respectful not afraid"),
 
     ("Protector","Minuteman","PROT_16_AGREE_INTIMATE",
      "THE MINUTEMAN FORMALLY DECLARES FOR THE CONTINENTAL ... — BY MORNING",
      "Chain","PROT_16_AGREE (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of PROT_16_AGREE. By morning: emotional arc, no explicit imagery."),
+     "FIRST PASS","","In Progress","NO","","0",
+     "Protector — authored; Minuteman, Lexington Green; one nod, response time improves"),
 
     ("Protector","Lincoln's Ghost","PROT_17_AGREE_INTIMATE",
      "LINCOLN FORMALLY ENDORSES PRESIDENT CARLISLE'S ADMIN... — BY MORNING",
-     "Chain","PROT_17_AGREE (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of PROT_17_AGREE. By morning: emotional arc, no explicit imagery."),
+     "Chain","PROT_17_AGREE (intimate choice)","prot_17_agree_intimate",
+     "FIRST PASS","Integrated","In Progress","NO","","0",
+     "Protector — authored (Lincoln); explicit content with presidential council; already Integrated"),
 
     # White House Secrets
     ("White House","Month 1","WH_SECRET_01_INTIMATE",
      "THE WHITE HOUSE AT MIDNIGHT — THE PRESIDENT WATCHES ... — BY MORNING",
      "Chain","WH_SECRET_01 (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of WH_SECRET_01. By morning: emotional arc, no explicit imagery."),
+     "FIRST PASS","","In Progress","NO","","0",
+     "WH secrets — authored; New Year's secure channel with Jessica; bottle and window"),
 
     ("White House","Month 7","WH_SECRET_07_INTIMATE",
      "JULY AT THE WHITE HOUSE — INDEPENDENCE DAY IS ALSO HERS — BY MORNING",
      "Chain","WH_SECRET_07 (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of WH_SECRET_07. By morning: emotional arc, no explicit imagery."),
+     "FIRST PASS","","In Progress","NO","","0",
+     "WH secrets — authored; Independence Day lei scene; Lincoln Bedroom"),
 
     ("White House","Month 10","WH_SECRET_10_INTIMATE",
      "INDIGENOUS PEOPLES DAY — A PERSONAL LETTER FROM JESS... — BY MORNING",
      "Chain","WH_SECRET_10 (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of WH_SECRET_10. By morning: emotional arc, no explicit imagery."),
+     "FIRST PASS","","In Progress","NO","","0",
+     "WH secrets — authored; Indigenous Peoples Day letter; the dangling comma"),
 
     ("White House","Month 12","WH_SECRET_12_INTIMATE",
      "CHRISTMAS IN WASHINGTON — THE PRESIDENT IS FAR FROM ... — BY MORNING",
      "Chain","WH_SECRET_12 (intimate choice)","—",
-     "IDEA","","N/A","NO","","0",
-     "Stub — author intimate version of WH_SECRET_12. By morning: emotional arc, no explicit imagery."),
+     "FIRST PASS","","In Progress","NO","","0",
+     "WH secrets — authored; Christmas visit from Jessica; Marc's heads-up call"),
 ]
 
 

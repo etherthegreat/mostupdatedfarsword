@@ -23,21 +23,18 @@ func connectSchools():
 	$SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Summoning.spellSchoolLevelUp.connect(spellLevelUp)
 	$SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Summoning.askSpellBranchInfo.connect(askSpellInfo)
 	$SpellSchoolsPanel/SchoolsAmounts/SpellsVBox/Summoning.buildSelf()
-	pass
 
 
 signal lvlUpSpell
 func spellLevelUp(lvl, type):
 	emit_signal("lvlUpSpell", lvl, type)
-	pass
 
-var player: country
+var player
 
 signal calculatePlayerOutputs
 func updateMagicAmounts(playerCountryNode):
 	player = playerCountryNode
 	emit_signal("calculatePlayerOutputs", self)
-	pass
 
 func returnedOutput(playerOutput):
 	magicDic= {
@@ -50,10 +47,7 @@ func returnedOutput(playerOutput):
 	}
 	for MagicAmountControl in $SpellSchoolsPanel/SchoolsAmounts/SpellsVBox.get_children():
 		MagicAmountControl.update(player, magicDic)
-	pass
 
 signal askForInfo
 func askSpellInfo(type, spellBranch):
-	print("RETURN ASKINGFORINFO")
 	emit_signal("askForInfo", type, spellBranch)
-	pass

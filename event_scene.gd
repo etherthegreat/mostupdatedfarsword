@@ -1,5 +1,7 @@
 extends Control
 
+const EventButtonScene = preload("res://event_button.tscn")
+
 var event_id: String
 var event_type: String
 var event_country: String
@@ -23,11 +25,15 @@ func build_from_data(data: Dictionary, tile = null, player = null) -> void:
 	event_type     = data.get("event_type", "standard")
 	event_country  = data.get("country_cid", "GEN")
 	event_data     = data
-	button_data    = data.get("buttons", [])
+	# Use inline buttons if supplied; otherwise fall back to CSV lookup by event_id
+	if data.has("buttons"):
+		button_data = data["buttons"]
+	else:
+		button_data = EventDatabase.get_buttons_for_event(event_id)
 
-	$EventPanel/EventNameLabel.text             = data.get("headline",   "")
-	$EventPanel/EventShortDescriptionLabel.text = data.get("short_desc", "")
-	$EventPanel/EventLongDescriptionLabel.text  = data.get("long_desc",  "")
+	$EventPanel/EventNameLabel.text             = _substitute(data.get("headline",   ""))
+	$EventPanel/EventShortDescriptionLabel.text = _substitute(data.get("short_desc", ""))
+	$EventPanel/EventLongDescriptionLabel.text  = _substitute(data.get("long_desc",  ""))
 
 	_build_buttons()
 
@@ -45,11 +51,6 @@ func build_from_csv(eid: String, tile = null, player = null) -> void:
 		return
 
 	# ── Console preview ────────────────────────────────────────────────────────
-	print("=== EVENT FIRED: " + eid + " ===")
-	print("HEADLINE:   " + event_data.get("headline",   ""))
-	print("SHORT DESC: " + event_data.get("short_desc", ""))
-	print("LONG DESC:  " + event_data.get("long_desc",  ""))
-	print("================================")
 
 	event_type    = event_data.get("event_type", "standard")
 	event_country = event_data.get("country_cid", "GEN")
@@ -62,7 +63,11 @@ func build_from_csv(eid: String, tile = null, player = null) -> void:
 
 
 func _build_buttons() -> void:
-	for child in $EventPanel/eventButtons.get_children():
+	var btn_container = get_node_or_null("EventPanel/eventButtons")
+	if btn_container == null:
+		push_error("event_scene: eventButtons node not found!")
+		return
+	for child in btn_container.get_children():
 		child.queue_free()
 
 	for btn_data in button_data:
@@ -70,29 +75,30 @@ func _build_buttons() -> void:
 		if prereq != "" and not _check_prerequisite(prereq):
 			continue
 
-		var newButton = Button.new()
-		newButton.text = btn_data.get("button_text", "Choose")
-		newButton.name = btn_data.get("button_id", "btn")
-		newButton.set_meta("button_id",      btn_data.get("button_id", ""))
-		newButton.set_meta("button_type",    btn_data.get("button_type", "standard"))
-		newButton.set_meta("outcome_type",   btn_data.get("outcome_type", ""))
-		newButton.set_meta("outcome_value",  btn_data.get("outcome_value", ""))
-		newButton.set_meta("outcome_amount", btn_data.get("outcome_amount", 0))
-		newButton.set_meta("next_event_id",  btn_data.get("next_event_id", ""))
-		newButton.pressed.connect(_on_button_pressed.bind(newButton))
-		$EventPanel/eventButtons.add_child(newButton)
+		var btype: String = btn_data.get("button_type", "standard")
+		if btype == "explicit"    and not Settings.content_explicit:
+			continue
+		if btype == "kinky_lewd"  and not Settings.content_kinky_lewd:
+			continue
+		if btype == "sensual"     and not Settings.content_sensual:
+			continue
+
+		var btn_node = EventButtonScene.instantiate()
+		btn_node.setup(btn_data)
+		btn_node.button_chosen.connect(_on_event_button_chosen)
+		btn_container.add_child(btn_node)
 
 
-func _on_button_pressed(btn: Button) -> void:
+func _on_event_button_chosen(btn_data: Dictionary) -> void:
+	var btype: String = btn_data.get("button_type", "standard")
 	_pending = {
-		"button_id":      btn.get_meta("button_id"),
-		"button_type":    btn.get_meta("button_type", "standard"),
-		"outcome_type":   btn.get_meta("outcome_type"),
-		"outcome_value":  btn.get_meta("outcome_value"),
-		"outcome_amount": btn.get_meta("outcome_amount"),
-		"next_event_id":  btn.get_meta("next_event_id"),
+		"button_id":      btn_data.get("button_id", ""),
+		"button_type":    btype,
+		"outcome_type":   btn_data.get("outcome_type", ""),
+		"outcome_value":  btn_data.get("outcome_value", ""),
+		"outcome_amount": btn_data.get("outcome_amount", 0),
+		"next_event_id":  btn_data.get("next_event_id", ""),
 	}
-	var btype: String = _pending["button_type"]
 	if btype in ["explicit", "kinky_lewd", "sensual"]:
 		_show_scene_nav()
 	else:
@@ -153,6 +159,33 @@ func _substitute(text: String) -> String:
 		if target_tile.tileGovernor != null:
 			cmd_name = target_tile.tileGovernor.governorType
 		text = text.replace("[COMMANDER_NAME]", cmd_name)
+		# [GOVERNOR_TITLE]: General at lvl 3; Governor if courthouse present; else Commander
+		var gov_title: String = "Commander"
+		if target_tile.tileGovernor != null:
+			if target_tile.tileGovernor.governorLevel >= 3:
+				gov_title = "General"
+			else:
+				for b in target_tile.tileBuildingsList:
+					if b.buildingType == "Courthouse" and b.enabled:
+						gov_title = "Governor"
+						break
+		text = text.replace("[GOVERNOR_TITLE]", gov_title)
+		# Pronoun tokens — fall back to they/them/their/themselves if no pronouns set
+		var p: Dictionary = {}
+		if target_tile.tileGovernor != null:
+			p = target_tile.tileGovernor.pronouns
+		text = text.replace("[CMD_SUBJECT]",    p.get("subject",    "they"))
+		text = text.replace("[CMD_OBJECT]",     p.get("object",     "them"))
+		text = text.replace("[CMD_POSSESSIVE]", p.get("possessive", "their"))
+		text = text.replace("[CMD_REFLEXIVE]",  p.get("reflexive",  "themselves"))
+	# Safety sweep: replace any tokens that survived (tile was null, governor missing, etc.)
+	text = text.replace("[TILE_NAME]",      "the front")
+	text = text.replace("[COMMANDER_NAME]", "the Commander")
+	text = text.replace("[GOVERNOR_TITLE]", "Commander")
+	text = text.replace("[CMD_SUBJECT]",    "they")
+	text = text.replace("[CMD_OBJECT]",     "them")
+	text = text.replace("[CMD_POSSESSIVE]", "their")
+	text = text.replace("[CMD_REFLEXIVE]",  "themselves")
 	return text
 
 

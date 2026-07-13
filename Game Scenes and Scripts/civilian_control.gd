@@ -1,13 +1,12 @@
 extends Control
 
-var playerCountry: country
+var playerCountry
 
 
 func loadCivilians(player, playerTileList):
 	playerCountry = player
 	for Tile in playerTileList:
 		buildNewCivilian(Tile)
-	pass
 
 var civilianScene = load("res://Civilian.tscn")
 
@@ -18,29 +17,24 @@ func buildNewCivilian(Tile):
 	newCivilian.toolSignal.connect(loadToolsGrid)
 	newCivilian.raiseSignal.connect(raiseCivilianUnit)
 	$"Civilian Container".add_child(newCivilian)
-	pass
 
 signal raiseThisUnit
 func raiseCivilianUnit(civToRaise):
 	emit_signal("raiseThisUnit", civToRaise, playerCountry)
-	pass
 
 func loadKitsGrid(thisCivilian):
 	for Civilian in $"Civilian Container".get_children():
 		if Civilian == thisCivilian:
 			Civilian.displayAvailableKits(playerCountry)
-	pass
 
 func loadToolsGrid(thisCivilian):
 	for Civilian in $"Civilian Container".get_children():
 		if Civilian == thisCivilian:
 			Civilian.displayAvailableTools(playerCountry)
-	pass
 
 func updateCivilians():
 	for Civilian in $"Civilian Container".get_children():
 		Civilian.updatePanelUI()
-	pass
 
 
 
@@ -48,4 +42,3 @@ func updateCivilians():
 func _on_worker_button_pressed() -> void:
 	$ResourcesContainer.visible = false
 	$"Civilian Container".visible = true
-	pass # Replace with function body.

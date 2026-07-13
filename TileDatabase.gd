@@ -45,7 +45,6 @@ func load_tiles(path: String) -> void:
 
 	file.close()
 	loaded = true
-	print("TileDatabase: Loaded ", tile_data.size(), " tiles successfully.")
 
 
 func parse_buildings(building_string: String) -> Dictionary:

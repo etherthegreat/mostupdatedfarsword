@@ -21,12 +21,25 @@ var season             # determines the season, based on terrain type and curren
 var tileEcoModifiers: Array = []  # all resource modifiers for this tile
 var tileMilModifiers: Array = []  # all military modifiers for this tile
 
+# ── PROTECTOR / DMA FLAGS ────────────────────────────────────────────────────
+# isCoastal: set in the editor on coastal MA/RI/etc tiles; used by USS Constitution Support mil mod
+@export var isCoastal: bool = false
+# hasMysteriousShipRaids: set in the editor on affected coastal tiles; applies -2 dollars per building
+@export var hasMysteriousShipRaids: bool = false
+# hasMysteriousOrations: set in the editor on Washington DC (tile 188); applies -1 mandate per building
+# until PROT_17 (Lincoln's Ghost) is summoned via DMA investigation
+@export var hasMysteriousOrations: bool = false
+# dmaInvestigationPending: set true when a DMA-badge civilian investigates this tile;
+# world.gd checks this at turn start and fires the associated protector summon event
+var dmaInvestigationPending: bool = false
+
 var tileWizard: wizard
 var tileSpell: spell
 
 var countryCapital: bool
 
 signal clicked
+signal right_clicked
 var thisTileNumber
 
 # ============================================================
@@ -86,16 +99,6 @@ var granaryGovernorReq: bool = false
 var courthouseGovernorReq: bool = false
 
 # ============================================================
-# MAGIC POINTS — school names match protector/tower system
-# ============================================================
-var manifestPointsOutput: int  # Manifest Doctrine  (was alchemy)
-var spectralPointsOutput: int  # Spectrology        (was illusion)
-var cryptidPointsOutput: int   # Cryptidology       (was summoning)
-var stormPointsOutput: int     # Stormcraft         (was druidism)
-var ironPointsOutput: int      # Ironclad Arts      (was elementalism)
-var libertyPointsOutput: int   # Liberty Rites      (was divination)
-
-# ============================================================
 # NEIGHBORS & MOVEMENT
 # ============================================================
 @export var TileNeighborsEXP: Array = []
@@ -130,51 +133,51 @@ var damagedBuildingsList: Array = []
 var tileOutput: float
 
 # Building outputs
-var buildingDollarsOutput: float   # renamed from buildingDollarsOutput
-var buildingFoodOutput
-var buildingWoodOutput
-var buildingMetalOutput
-var buildingMagicOutput
-var buildingCultureOutput          # now covers old Faith + Culture
+var buildingDollarsOutput: float
+var buildingFoodOutput: float
+var buildingWoodOutput: float
+var buildingMetalOutput: float
+var buildingMagicOutput: float
+var buildingCultureOutput: float       # now covers old Faith + Culture
 # buildingFaithOutput removed — merged into buildingCultureOutput
-var buildingWeaponsOutput
-var buildingScienceOutput
-var buildingMandateOutput
-var buildingHappinessOutput: float # renamed from buildingHappinessOutput
-var buildingBoatsOutput: int       # new Boats resource
-var buildingManpowerOutput
-var buildingInfluenceOutput
+var buildingWeaponsOutput: float
+var buildingScienceOutput: float
+var buildingMandateOutput: float
+var buildingHappinessOutput: float
+var buildingManpowerOutput: float
+var buildingInfluenceOutput: float
+var buildingMoralDecayReduction: int = 0
 
 # Building expenses
-var buildingDollarsExpense: float  # renamed from buildingDollarsExpense
-var buildingFoodExpense
-var buildingWoodExpense
-var buildingMetalExpense
-var buildingMagicExpense
-var buildingCultureExpense         # covers old Faith + Culture
+var buildingDollarsExpense: float
+var buildingFoodExpense: float
+var buildingWoodExpense: float
+var buildingMetalExpense: float
+var buildingMagicExpense: float
+var buildingCultureExpense: float      # covers old Faith + Culture
 # buildingFaithExpense removed
-var buildingScienceExpense
-var buildingWeaponsExpense
-var buildingMandateExpense
-var buildingHappinessExpense: float # renamed from buildingHappinessExpense
-var buildingManpowerExpense
-var buildingInfluenceExpense
+var buildingScienceExpense: float
+var buildingWeaponsExpense: float
+var buildingMandateExpense: float
+var buildingHappinessExpense: float
+var buildingManpowerExpense: float
+var buildingInfluenceExpense: float
 
 # Monthly yields
-var tileFoodYield
-var tileWoodYield
-var tileDollarsYield: float   # renamed from tileDollarsYield
-var tileMetalYield
-var tileMagicYield
-var tileCultureYield          # covers old Faith + Culture
+var tileFoodYield: float
+var tileWoodYield: float
+var tileDollarsYield: float
+var tileMetalYield: float
+var tileMagicYield: float
+var tileCultureYield: float            # covers old Faith + Culture
 # tileFaithYield removed
-var tileWeaponsYield
-var tileScienceYield
-var tileMandateYield
-var tileHappinessYield: float # renamed from tileHappinessYield
-var tileBoatsYield: int       # new Boats resource
-var tileManpowerYield
-var tileInfluenceYield
+var tileWeaponsYield: float
+var tileScienceYield: float
+var tileMandateYield: float
+var tileHappinessYield: float
+var tileBoatsYield: int
+var tileManpowerYield: float
+var tileInfluenceYield: float
 
 # ============================================================
 # FILLABLE SLOTS
@@ -273,8 +276,6 @@ var buildingScene = load("res://Game Scenes and Scripts/building.tscn")
 var spellToCast: spell
 var spellCostToCast: int
 
-var tileDollarsTax: float
-var tileHappinessTax: float
 var tileFoodDic:      Dictionary = {}
 var tileDollarsDic:   Dictionary = {}
 var tileWoodDic:      Dictionary = {}
@@ -287,7 +288,6 @@ var tileMandateDic:   Dictionary = {}
 var tileHappinessDic: Dictionary = {}
 var tileManpowerDic:  Dictionary = {}
 var tileInfluenceDic: Dictionary = {}
-var tileBoatsDic:     Dictionary = {}
 
 var discoveryPoints: int = 0
 
@@ -311,8 +311,17 @@ func onNewGame():
 	discovered = false
 	undiscovered = true
 	activeView = false
+	# Draw order: TileGraphic(2) < TileFOW(3) < Ring(5)
+	var fow_node  = get_node_or_null("TileFOW")
+	var gfx_node  = get_node_or_null("TileGraphic")
+	if fow_node  != null: fow_node.z_index  = 3
+	if gfx_node  != null: gfx_node.z_index  = 2
 	for NodePath in TileNeighborsEXP:
-		TileNeighbors.append(get_node(NodePath))
+		var nb = get_node_or_null(NodePath)
+		if nb != null:
+			TileNeighbors.append(nb)
+		else:
+			push_warning("Tile %d: neighbor path '%s' not found — skipped" % [EXPTileNumber, str(NodePath)])
 	#if ocean == true:
 		#calculateOceanAttributes(tileNumber)
 	#else:
@@ -335,7 +344,7 @@ func build_self() -> void:
 		tileCrop = "corn"
 		buildings = {}
 		tileSpecialFeatures = []
-		tileSpawnPoint = get_node("../../PathControl/PathPointsControl/" + str(tileNumber))
+		tileSpawnPoint = get_node_or_null("../../PathControl/PathPointsControl/" + str(tileNumber))
 		return
 
 	# Core identity from CSV
@@ -363,9 +372,7 @@ func build_self() -> void:
 	determine_geologic_resource()
 
 	# Connect tile to its path point on the map
-	tileSpawnPoint = get_node("../../PathControl/PathPointsControl/" + str(tileNumber))
-
-	print(tileName, " | winter: ", get_winter_category(), " (", winterScore, ")")
+	tileSpawnPoint = get_node_or_null("../../PathControl/PathPointsControl/" + str(tileNumber))
 # ============================================================
 # LOAD GAME INITIALIZATION
 # ============================================================
@@ -381,7 +388,11 @@ func onLoadGame():
 	undiscovered = true
 	activeView = false
 	for NodePath in TileNeighborsEXP:
-		TileNeighbors.append(get_node(NodePath))
+		var nb = get_node_or_null(NodePath)
+		if nb != null:
+			TileNeighbors.append(nb)
+		else:
+			push_warning("Tile %d: neighbor path '%s' not found — skipped" % [EXPTileNumber, str(NodePath)])
 	build_self()  # CSV is the source of truth for load game too until save system is built
 	calculateCorruption()
 	emit_signal("tileLoaded", self)
@@ -567,10 +578,7 @@ func censusTile(playerCountryNode):
 	buildingManpowerOutput = 0
 	buildingHappinessOutput = 0
 	buildingCultureOutput = 0
-	buildingBoatsOutput = 0
 	corruptionChange = 0
-	tileDollarsTax = 0
-	tileHappinessTax = 0
 	for building in tileBuildingsList:
 		if not building.enabled:
 			continue
@@ -586,18 +594,29 @@ func censusTile(playerCountryNode):
 		buildingCultureOutput += building.totalBuildingCulture  # covers old faith + culture
 		buildingMandateOutput += building.totalBuildingMandate
 		buildingHappinessOutput += building.totalBuildingHappiness
-		buildingBoatsOutput += building.totalBuildingBoats
 		buildingManpowerOutput += building.totalBuildingManpower
 		buildingInfluenceOutput += building.totalBuildingInfluence
+		buildingMoralDecayReduction += building.totalBuildingMoralDecayReduction
 		corruptionChange += building.corruptionChange
-		tileDollarsTax += building.dollarsTax
-		tileHappinessTax += building.happinessTax
+	# Mysterious Ship Raids: -2 dollars per active building per turn
+	if hasMysteriousShipRaids:
+		var active_count: int = 0
+		for b in tileBuildingsList:
+			if b.enabled:
+				active_count += 1
+		buildingDollarsOutput -= 2.0 * float(active_count)
+	# Mysterious Orations: -1 mandate per active building per turn
+	if hasMysteriousOrations:
+		var active_count: int = 0
+		for b in tileBuildingsList:
+			if b.enabled:
+				active_count += 1
+		buildingMandateOutput -= active_count
 	_apply_output_reductions()
 	tileFoodDic.clear();      tileDollarsDic.clear();   tileWoodDic.clear()
 	tileMetalDic.clear();     tileMagicDic.clear();     tileCultureDic.clear()
 	tileWeaponsDic.clear();   tileScienceDic.clear();   tileMandateDic.clear()
 	tileHappinessDic.clear(); tileManpowerDic.clear();  tileInfluenceDic.clear()
-	tileBoatsDic.clear()
 	for building in tileBuildingsList:
 		if not building.foodDic.is_empty():      tileFoodDic[building.buildingType]      = building.foodDic
 		if not building.dollarsDic.is_empty():   tileDollarsDic[building.buildingType]   = building.dollarsDic
@@ -611,7 +630,6 @@ func censusTile(playerCountryNode):
 		if not building.happinessDic.is_empty(): tileHappinessDic[building.buildingType] = building.happinessDic
 		if not building.manpowerDic.is_empty():  tileManpowerDic[building.buildingType]  = building.manpowerDic
 		if not building.influenceDic.is_empty(): tileInfluenceDic[building.buildingType] = building.influenceDic
-		if not building.boatsDic.is_empty():     tileBoatsDic[building.buildingType]     = building.boatsDic
 	if not tileFoodDic.is_empty():      emit_signal("censusComplete", "Food",      buildingFoodOutput,      tileFoodDic)
 	if not tileDollarsDic.is_empty():   emit_signal("censusComplete", "Dollars",   buildingDollarsOutput,   tileDollarsDic)
 	if not tileWoodDic.is_empty():      emit_signal("censusComplete", "Wood",      buildingWoodOutput,      tileWoodDic)
@@ -624,7 +642,41 @@ func censusTile(playerCountryNode):
 	if not tileHappinessDic.is_empty(): emit_signal("censusComplete", "Happiness", buildingHappinessOutput, tileHappinessDic)
 	if not tileManpowerDic.is_empty():  emit_signal("censusComplete", "Manpower",  buildingManpowerOutput,  tileManpowerDic)
 	if not tileInfluenceDic.is_empty(): emit_signal("censusComplete", "Influence", buildingInfluenceOutput, tileInfluenceDic)
-	if not tileBoatsDic.is_empty():     emit_signal("censusComplete", "Boats",     buildingBoatsOutput,     tileBoatsDic)
+
+
+# Silent output calculation for resource map modes — no eco changes, no dics,
+# no censusComplete signals. Called by updateMap() across all player tiles so
+# get_map_mode_value() returns current values without spamming the TileInfoPanel.
+func calculateOutputsForMap(playerCountryNode) -> void:
+	buildingFoodOutput = 0
+	buildingWoodOutput = 0
+	buildingDollarsOutput = 0
+	buildingMetalOutput = 0
+	buildingWeaponsOutput = 0
+	buildingScienceOutput = 0
+	buildingMagicOutput = 0
+	buildingMandateOutput = 0
+	buildingInfluenceOutput = 0
+	buildingManpowerOutput = 0
+	buildingHappinessOutput = 0
+	buildingCultureOutput = 0
+	for building in tileBuildingsList:
+		if not building.enabled:
+			continue
+		building.calculateOutputs(playerCountryNode)
+		buildingFoodOutput    += building.totalBuildingFood
+		buildingWoodOutput    += building.totalBuildingWood
+		buildingDollarsOutput += building.totalBuildingDollars
+		buildingMetalOutput   += building.totalBuildingMetal
+		buildingWeaponsOutput += building.totalBuildingWeapons
+		buildingScienceOutput += building.totalBuildingScience
+		buildingMagicOutput   += building.totalBuildingMagic
+		buildingCultureOutput += building.totalBuildingCulture
+		buildingMandateOutput += building.totalBuildingMandate
+		buildingHappinessOutput += building.totalBuildingHappiness
+		buildingManpowerOutput  += building.totalBuildingManpower
+		buildingInfluenceOutput += building.totalBuildingInfluence
+	_apply_output_reductions()
 
 
 func surveyTile(playerCountryNode):
@@ -642,10 +694,8 @@ func surveyTile(playerCountryNode):
 	buildingManpowerOutput = 0
 	buildingHappinessOutput = 0
 	buildingCultureOutput = 0
-	buildingBoatsOutput = 0
+	buildingMoralDecayReduction = 0
 	corruptionChange = 0
-	tileDollarsTax = 0
-	tileHappinessTax = 0
 	for building in tileBuildingsList:
 		if not building.enabled:
 			continue
@@ -661,12 +711,10 @@ func surveyTile(playerCountryNode):
 		buildingCultureOutput += building.totalBuildingCulture  # covers old faith + culture
 		buildingMandateOutput += building.totalBuildingMandate
 		buildingHappinessOutput += building.totalBuildingHappiness
-		buildingBoatsOutput += building.totalBuildingBoats
 		buildingManpowerOutput += building.totalBuildingManpower
 		buildingInfluenceOutput += building.totalBuildingInfluence
+		buildingMoralDecayReduction += building.totalBuildingMoralDecayReduction
 		corruptionChange += building.corruptionChange
-		tileDollarsTax += building.dollarsTax
-		tileHappinessTax += building.happinessTax
 		match building.buildingType:
 			"Farm":
 				farmGovernorReq = building.buildingLevel >= 3
@@ -689,24 +737,6 @@ func surveyTile(playerCountryNode):
 			"Bath":
 				bathGovernorReq = building.buildingLevel >= 3
 			"Tower":
-				match building.magicOutput:
-					"manifest", "alchemist", "Mount Rushmore":
-						manifestPointsOutput = (1 * building.buildingLevel)
-					"cryptid", "summoner", \
-					"Mothman", "Jersey Devil", "Bigfoot", "Snallygaster", "Skunk Ape":
-						cryptidPointsOutput = (1 * building.buildingLevel)
-					"spectral", "illusionist", \
-					"Headless Horseman", "Green Mountain Ghost", "Lincoln's Ghost":
-						spectralPointsOutput = (1 * building.buildingLevel)
-					"storm", "druid", \
-					"Thunderbird", "Chessie", "Bell Witch":
-						stormPointsOutput = (1 * building.buildingLevel)
-					"iron", "elementalist", \
-					"Old Ironsides", "Valley Forge Guardian", "Eternal Minuteman":
-						ironPointsOutput = (1 * building.buildingLevel)
-					"liberty", "diviner", \
-					"Paul Revere", "Liberty Bell":
-						libertyPointsOutput = (1 * building.buildingLevel)
 				towerGovernorReq = building.buildingLevel >= 3
 			"Granary":
 				granaryGovernorReq = building.buildingLevel >= 3
@@ -725,6 +755,7 @@ func addBuilding(buildingType, level):
 	newBuild.buildingLevel = level
 	newBuild.tile = self
 	newBuild.number = tileNumber
+	newBuild.enabled = true
 	tileBuildingsList.append(newBuild)
 	self.add_child(newBuild)
 	if newBuild.buildingLevel == 1:
@@ -850,14 +881,13 @@ func addWizard(wizardType: String, wizardSchool: String = ""):
 # Maps a wizard/protector name to its school short key.
 func _resolve_wizard_school(wtype: String) -> String:
 	match wtype:
-		"Mount Rushmore":                                          return "manifest"
-		"Mothman", "Jersey Devil", "Bigfoot", "Snallygaster", \
+		"Mothman", "Jersey Devil", "Wood Booger", "Snallygaster", \
 		"Skunk Ape":                                               return "cryptid"
 		"Headless Horseman", "Green Mountain Ghost", \
 		"Lincoln's Ghost":                                         return "spectral"
 		"Thunderbird", "Chessie", "Bell Witch":                    return "storm"
 		"Old Ironsides", "Valley Forge Guardian", \
-		"Eternal Minuteman":                                       return "iron"
+		"Agent 355":                                               return "spectral"
 		"Paul Revere", "Liberty Bell":                             return "liberty"
 		# Legacy role keys pass through unchanged
 		"alchemist":   return "manifest"
@@ -893,6 +923,8 @@ func addStationedArmy(armyNode):
 # ============================================================
 
 func calculateDiscovered(playerCountry):
+	if playerCountry == null:
+		return
 	if tileOwner == playerCountry.CID:
 		discovered = true
 		undiscovered = false
@@ -1043,87 +1075,219 @@ func calculateSpellChanges():
 # GRAPHICS
 # ============================================================
 
-func updateGraphics(mapMode, displayCorruption, playerCountry):
+func updateGraphics(mapMode, displayCorruption, playerCountry, max_val: float = 1.0):
+	var fow: Node = get_node_or_null("TileFOW")
+	var gfx: Node = get_node_or_null("TileGraphic")
+	if fow == null or gfx == null:
+		return
 	if undiscovered == true:
-		$TileFOW.modulate = Color(0,0,0)
-		$TileFOW.self_modulate.a = .975
-		$TileFOW.visible = true
-		$TileGraphic.visible = false
+		fow.modulate = Color(0,0,0)
+		fow.self_modulate.a = .975
+		fow.visible = true
+		gfx.visible = false
 		activeView = false
 		return
 	if discovered == true:
 		match mapMode:
-			"Polis":
-				polisMode()
-			"Natural":
-				naturalMode()
+			"Polis":        polisMode()
+			"Natural":      naturalMode()
+			"MapFood":      _resource_map_mode(Color(0.0,  0.5,  0.0),  get_map_mode_value(mapMode), max_val)
+			"MapWood":      _resource_map_mode(Color(0.8,  0.3,  0.0),  get_map_mode_value(mapMode), max_val)
+			"MapMetal":     _resource_map_mode(Color(0.75, 0.75, 0.75), get_map_mode_value(mapMode), max_val)
+			"MapFaith":     _resource_map_mode(Color(0.5,  0.0,  0.8),  get_map_mode_value(mapMode), max_val)
+			"MapHappiness": _resource_map_mode(Color(0.9,  0.8,  0.0),  get_map_mode_value(mapMode), max_val)
+			"MapManpower":  _resource_map_mode(Color(0.8,  0.0,  0.0),  get_map_mode_value(mapMode), max_val)
+			"MapWeapons":   _resource_map_mode(Color(0.45, 0.45, 0.45), get_map_mode_value(mapMode), max_val)
+			"MapDollars":   _resource_map_mode(Color(0.85, 0.7,  0.0),  get_map_mode_value(mapMode), max_val)
+			"MapMagic":     _resource_map_mode(Color(0.9,  0.2,  0.7),  get_map_mode_value(mapMode), max_val)
+			"MapMandate":   _resource_map_mode(Color(0.55, 0.0,  0.0),  get_map_mode_value(mapMode), max_val)
+			"MapArmy":      _resource_map_mode(Color(0.0,  0.5,  0.8),  get_map_mode_value(mapMode), max_val)
+			"MapGovernors": _governors_map_mode()
+			"MapStates":    _states_map_mode()
+			"MapOutputs":   _outputs_map_mode(get_map_mode_value("MapOutputs"), max_val)
+			_:              polisMode()
+		if playerCountry == null:
+			activeView = false
+			return
 		if tileOwner == playerCountry.CID:
 			activeView = true
-			for Tile in TileNeighbors:
-				Tile.activeView = true
+			for neighbor in TileNeighbors:
+				if neighbor != null:
+					neighbor.activeView = true
+			return
+		if stationedArmy != null and is_instance_valid(stationedArmy):
+			if stationedArmy.parentCountry != null and stationedArmy.parentCountry.CID == playerCountry.CID:
+				activeView = true
+				for neighbor in TileNeighbors:
+					if neighbor != null:
+						neighbor.activeView = true
 				return
-		if tileSpawnPoint.occupied == true:
-			activeView = true
-			for Tile in TileNeighbors:
-				Tile.activeView = true
-				return
-		if tileSpawnPoint.occupied != true:
-			if TileNeighbors.size() < 0:
-				for Tile in TileNeighbors:
-					if Tile.tileSpawnPoint.occupied == true:
-						activeView = true
-						Tile.activeView = true
-						return
-					if Tile.tileOwner == playerCountry.CID:
-						activeView = true
-						Tile.activeView = true
-						return
-		activeView = false
+		# Do NOT explicitly set activeView = false here.
+		# tile_controller pre-resets all tiles to false before calling updateGraphics(),
+		# so any tile not matched above keeps false — but neighbor cascades from player
+		# tiles are preserved (would be overwritten if we set false unconditionally).
 
 func calculateActiveView():
+	var fow: Node = get_node_or_null("TileFOW")
+	if fow == null:
+		return
 	if activeView == true:
-		$TileFOW.visible = false
+		fow.visible = false
 	if activeView == false && discovered == true:
-		$TileFOW.modulate = Color(0,0,0)
-		$TileFOW.visible = true
-		$TileFOW.self_modulate.a = .6
+		fow.modulate = Color(0,0,0)
+		fow.visible = true
+		fow.self_modulate.a = .6
 
 func polisMode():
-	$TileGraphic.visible = false
-	$TileGraphic.modulate = Color(1,1,1)
+	var gfx:  Node = get_node_or_null("TileGraphic")
+	var ring: Node = get_node_or_null("Ring")
+	if gfx == null:
+		return
+	# Default: show terrain naturally, Ring white
+	gfx.visible = true
+	gfx.modulate = Color(1, 1, 1)
+	if ring != null:
+		ring.modulate = Color(1, 1, 1)
+	# Country colour applied to both graphic and Ring (z=5)
+	var country_color: Color
 	match tileOwner:
-		"USA":
-			$TileGraphic.modulate = Color(0.18, 0.31, 0.65)  # American blue
-			$TileGraphic.visible = true
-		"UK":
-			$TileGraphic.modulate = Color(0.7, 0.0, 0.1)     # British red
-			$TileGraphic.visible = true
-		"CA":
-			$TileGraphic.modulate = Color(0.9, 0.15, 0.15)   # Canadian red
-			$TileGraphic.visible = true
-		"BA":
-			$TileGraphic.modulate = Color(0.0, 0.5, 0.3)     # Bahamian teal
-			$TileGraphic.visible = true
-		# Legacy Farsword factions kept in case tiles still reference them
-		"PDT":
-			$TileGraphic.modulate = Color(0,1,0)
-			$TileGraphic.visible = true
-		"ANL":
-			$TileGraphic.modulate = Color(0,0,1)
-			$TileGraphic.visible = true
-		"EIG":
-			$TileGraphic.modulate = Color(1, 0.078431375, 0.5764706)
-			$TileGraphic.visible = true
-		"VTO":
-			$TileGraphic.modulate = Color(1, 0.54901963, 0)
-			$TileGraphic.visible = true
-		"DUM":
-			$TileGraphic.modulate = Color(0.9,1,0.5)
-			$TileGraphic.visible = true
+		"USA": country_color = Color(0.35, 0.55, 1.0)    # bright American blue
+		"UK":  country_color = Color(0.9,  0.1,  0.2)    # bright British red
+		"CA":  country_color = Color(0.82, 0.93, 1.0)    # arctic cold white-blue
+		"BA":  country_color = Color(0.1,  0.8,  0.5)    # bright Bahamian teal
+		# Legacy factions
+		"PDT": country_color = Color(0.2, 1.0, 0.3)
+		"ANL": country_color = Color(0.3, 0.4, 1.0)
+		"EIG": country_color = Color(1.0, 0.2, 0.6)
+		"VTO": country_color = Color(1.0, 0.6, 0.1)
+		"DUM": country_color = Color(0.9, 1.0, 0.5)
+		_:
+			return   # Neutral or unknown — leave white
+	gfx.modulate  = country_color
+	if ring != null:
+		ring.modulate = country_color
 
 func naturalMode():
-	$TileGraphic.modulate = Color(1,1,1)
-	$TileFOW.self_modulate.a = 0.0
+	var gfx:  Node = get_node_or_null("TileGraphic")
+	var fow:  Node = get_node_or_null("TileFOW")
+	var ring: Node = get_node_or_null("Ring")
+	if gfx  != null: gfx.modulate  = Color(1, 1, 1, 0)
+	if fow  != null: fow.self_modulate.a = 0.0
+	if ring != null: ring.modulate  = Color(1, 1, 1, 0)
+
+func get_map_mode_value(mode: String) -> float:
+	match mode:
+		"MapFood":      return float(buildingFoodOutput     + tileFoodYield)
+		"MapWood":      return float(buildingWoodOutput     + tileWoodYield)
+		"MapMetal":     return float(buildingMetalOutput    + tileMetalYield)
+		"MapFaith":     return float(buildingCultureOutput  + tileCultureYield)
+		"MapHappiness": return float(buildingHappinessOutput+ tileHappinessYield)
+		"MapManpower":  return float(buildingManpowerOutput + tileManpowerYield)
+		"MapWeapons":   return float(buildingWeaponsOutput  + tileWeaponsYield)
+		"MapDollars":   return float(buildingDollarsOutput  + tileDollarsYield)
+		"MapMagic":     return float(buildingMagicOutput    + tileMagicYield)
+		"MapMandate":   return float(buildingMandateOutput  + tileMandateYield)
+		"MapArmy":
+			if stationedArmy != null:
+				return float(stationedArmy.manpowerInArmy)
+		"MapOutputs":
+			return (buildingFoodOutput + tileFoodYield +
+				buildingWoodOutput + tileWoodYield +
+				buildingMetalOutput + tileMetalYield +
+				buildingCultureOutput + tileCultureYield +
+				buildingMagicOutput + tileMagicYield +
+				buildingWeaponsOutput + tileWeaponsYield +
+				buildingDollarsOutput + tileDollarsYield +
+				buildingMandateOutput + tileMandateYield +
+				buildingHappinessOutput + tileHappinessYield +
+				buildingInfluenceOutput + tileInfluenceYield)
+	return 0.0
+
+func _resource_map_mode(target_color: Color, value: float, max_val: float) -> void:
+	var gfx:  Node = get_node_or_null("TileGraphic")
+	var ring: Node = get_node_or_null("Ring")
+	if gfx == null:
+		return
+	gfx.visible = true
+	var t: float = clampf(value / maxf(max_val, 1.0), 0.0, 1.0)
+	var c: Color = Color.WHITE.lerp(target_color, t)
+	gfx.modulate  = c
+	if ring != null:
+		ring.modulate = c
+
+func _governors_map_mode() -> void:
+	var gfx:  Node = get_node_or_null("TileGraphic")
+	var ring: Node = get_node_or_null("Ring")
+	if gfx == null:
+		return
+	gfx.visible = true
+	if not filledGovernorSlot or tileGovernor == null:
+		gfx.modulate  = Color(1, 1, 1)
+		if ring != null: ring.modulate = Color(1, 1, 1)
+		return
+	var gov_level: int = get_governor_level()
+	var c: Color
+	match gov_level:
+		1: c = Color(0.8,  0.5,  0.2)   # bronze
+		2: c = Color(0.75, 0.75, 0.8)   # silver
+		_: c = Color(1.0,  0.85, 0.0)   # gold (level 3+)
+	gfx.modulate  = c
+	if ring != null: ring.modulate = c
+
+const _STATE_COLORS := {
+	# US Northeast
+	"ME": Color(0.30, 0.50, 0.90),
+	"NH": Color(0.55, 0.25, 0.80),
+	"VT": Color(0.20, 0.72, 0.45),
+	"MA": Color(0.85, 0.40, 0.10),
+	"RI": Color(0.90, 0.20, 0.55),
+	"CT": Color(0.45, 0.18, 0.75),
+	"NY": Color(0.10, 0.62, 0.85),
+	"NJ": Color(0.65, 0.82, 0.18),
+	# US Mid-Atlantic
+	"PA": Color(0.18, 0.52, 0.28),
+	"DE": Color(0.92, 0.72, 0.08),
+	"MD": Color(0.85, 0.18, 0.18),
+	"DC": Color(0.60, 0.60, 0.62),
+	"WV": Color(0.28, 0.72, 0.72),
+	# US South
+	"VA": Color(0.48, 0.82, 0.28),
+	"NC": Color(0.92, 0.52, 0.08),
+	"SC": Color(0.72, 0.18, 0.62),
+	"GA": Color(0.18, 0.82, 0.38),
+	"FL": Color(0.96, 0.88, 0.18),
+	"AL": Color(0.62, 0.28, 0.08),
+	"TN": Color(0.38, 0.58, 0.92),
+	# Canadian provinces
+	"CA - OT":  Color(0.55, 0.88, 0.60),
+	"CA - QB":  Color(0.45, 0.68, 0.92),
+	"CA - NB":  Color(0.92, 0.72, 0.48),
+	"CA - NS":  Color(0.72, 0.48, 0.85),
+	"CA - PEI": Color(0.92, 0.58, 0.68),
+	# British America
+	"BA": Color(0.88, 0.14, 0.14),
+}
+
+func _states_map_mode() -> void:
+	var gfx:  Node = get_node_or_null("TileGraphic")
+	var ring: Node = get_node_or_null("Ring")
+	if gfx == null:
+		return
+	gfx.visible = true
+	var c: Color = _STATE_COLORS.get(tileContinent, Color(0.28, 0.28, 0.28))
+	gfx.modulate = c
+	if ring != null: ring.modulate = c
+
+func _outputs_map_mode(value: float, max_val: float) -> void:
+	var gfx:  Node = get_node_or_null("TileGraphic")
+	var ring: Node = get_node_or_null("Ring")
+	if gfx == null:
+		return
+	gfx.visible = true
+	var t: float = clampf(value / maxf(max_val, 1.0), 0.0, 1.0)
+	var c: Color = Color.BLACK.lerp(Color(0.0, 1.0, 0.15), t)
+	gfx.modulate = c
+	if ring != null: ring.modulate = c
 
 
 # ============================================================
@@ -1145,14 +1309,28 @@ func _on_area_2d_input_event(viewport, event, shape_idx):
 						freshWater = true
 						tileSpell = null
 				calculateCorruption()
+		elif Input.is_action_just_pressed('Right Click'):
+			emit_signal("right_clicked", self)
+
+var _pre_hover_ring_modulate: Color = Color.WHITE
+var _pre_hover_graphic_modulate: Color = Color.WHITE
+
+signal tile_hovered(tile)
+signal tile_unhovered(tile)
 
 func _on_area_2d_mouse_entered() -> void:
+	emit_signal("tile_hovered", self)
+	if tileRing == null or tileGraphic == null: return
+	_pre_hover_ring_modulate = tileRing.modulate
+	_pre_hover_graphic_modulate = tileGraphic.modulate
 	tileRing.modulate = Color(0, 0, 0)
 	tileGraphic.modulate = Color(0, 0, 1)
 
 func _on_area_2d_mouse_exited() -> void:
-	tileRing.modulate = Color(1, 1, 1)
-	tileGraphic.modulate = Color(1, 1, 1)
+	emit_signal("tile_unhovered", self)
+	if tileRing == null or tileGraphic == null: return
+	tileRing.modulate = _pre_hover_ring_modulate
+	tileGraphic.modulate = _pre_hover_graphic_modulate
 
 
 # ============================================================
@@ -1817,13 +1995,12 @@ func tick_conquest_timer() -> void:
 		for b in tileBuildingsList:
 			if b.buildingType == btype:
 				b.enabled = true
-				print("[Tile] Re-enabled '", btype, "' at ", tileName)
 				break
-	# Courthouse tiles accumulate moral decay over time when unchecked
+	# Courthouse tiles accumulate moral decay over time; Eliza Hamilton doctrine reduces it
 	if tileMoralDecay < 100:
 		for b in tileBuildingsList:
 			if b.buildingType == "Courthouse":
-				tileMoralDecay += 1
+				tileMoralDecay = clampi(tileMoralDecay + 1 - buildingMoralDecayReduction, 0, 100)
 				break
 
 func _apply_output_reductions() -> void:
@@ -1842,14 +2019,12 @@ func _apply_output_reductions() -> void:
 	if buildingHappinessOutput > 0: buildingHappinessOutput = int(float(buildingHappinessOutput) * multiplier)
 	if buildingManpowerOutput  > 0: buildingManpowerOutput  = int(float(buildingManpowerOutput)  * multiplier)
 	if buildingInfluenceOutput > 0: buildingInfluenceOutput = int(float(buildingInfluenceOutput) * multiplier)
-	if buildingBoatsOutput     > 0: buildingBoatsOutput     = int(float(buildingBoatsOutput)     * multiplier)
 
 func disable_building(type: String, turns: int) -> void:
 	for b in tileBuildingsList:
 		if b.buildingType == type:
 			b.enabled = false
 			disabled_buildings[type] = turns
-			print("[Tile] Disabled '", type, "' for ", turns, " turns at ", tileName)
 			return
 	push_warning("[Tile] disable_building: no building of type '" + type + "' at " + tileName)
 
@@ -1890,7 +2065,8 @@ func calculateDynamicModifiers() -> void:
 		func(mod): return not mod.modName in [
 			"RevolutionaryHotbed",
 			"OccupiedTerritory",
-			"SunbeltHeat"
+			"SunbeltHeat",
+			"MysteriousShipRaids"
 		]
 	)
  
@@ -1927,6 +2103,24 @@ func calculateDynamicModifiers() -> void:
 		sunbeltMod.modName = "SunbeltHeat"
 		sunbeltMod.buildTileEcoMod()
 		tileEcoModifiers.append(sunbeltMod)
+
+	# --- MYSTERIOUS SHIP RAIDS ---
+	# Coastal MA/RI tiles set hasMysteriousShipRaids = true in the editor;
+	# cleared when Old Ironsides is tamed (PROT_08_TAME fires)
+	if hasMysteriousShipRaids:
+		var shipMod = tileEcoModifier.new()
+		shipMod.modName = "MysteriousShipRaids"
+		shipMod.buildTileEcoMod()
+		tileEcoModifiers.append(shipMod)
+
+	# --- MYSTERIOUS ORATIONS ---
+	# Washington DC (tile 188) sets hasMysteriousOrations = true in the editor;
+	# cleared when Lincoln's Ghost is summoned via DMA investigation (PROT_17_SUMMON fires)
+	if hasMysteriousOrations:
+		var orationMod = tileEcoModifier.new()
+		orationMod.modName = "MysteriousOrations"
+		orationMod.buildTileEcoMod()
+		tileEcoModifiers.append(orationMod)
 
 
 #===============

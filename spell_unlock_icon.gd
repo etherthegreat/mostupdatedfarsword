@@ -33,19 +33,16 @@ func buildSelf(playerCountryNode):
 		else:
 			enabledBool = false
 			$SpellUnlockSprite.texture = disabledSprite
-	pass
 
 func unlockSpell(spellType):
 	$SpellUnlockSprite.texture = enabledSprite
 	enabledBool = true
-	pass
 
 func _on_area_2d_mouse_entered() -> void:
 	if enabledBool == true:
 		pass
 	else:
 		calculateUnlockTime()
-	pass # Replace with function body.
 
 
 

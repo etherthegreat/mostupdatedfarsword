@@ -37,52 +37,53 @@ func updateSelf(newType: String) -> void:
  
 		# ============================================================
 		# SABERS — melee only, always available, charge costs manpower
+		# Art by Sister Spacedesk
 		# ============================================================
 		"Cutlass":
 			weaponClass              = "Saber"
 			weaponLevel              = 1
-			weaponOffensiveIncrease  = 3
-			weaponDefensiveIncrease  = 2
+			weaponOffensiveIncrease  = 25
+			weaponDefensiveIncrease  = 10
 			rangedOffensiveIncrease  = 0
 			rangedDefensiveIncrease  = 0
 			reloadTurns              = 0
 			weaponsPerLevel          = 0   # no ammo
 			chargeManpowerCost       = 0.10
-			weaponImage = load("res://art assets/finishedAssets/Weapons/Macuahuitl.png")
+			weaponImage = load("res://art assets/finishedAssets/Weapons/cutlass.png")
 			addWeaponMod("SaberCharge")
- 
-		"Cavalry Saber":
+
+		"Cavalry Sword":
 			weaponClass              = "Saber"
 			weaponLevel              = 2
-			weaponOffensiveIncrease  = 5
-			weaponDefensiveIncrease  = 3
+			weaponOffensiveIncrease  = 40
+			weaponDefensiveIncrease  = 15
 			reloadTurns              = 0
 			weaponsPerLevel          = 0
 			chargeManpowerCost       = 0.10
-			weaponImage = load("res://art assets/finishedAssets/Weapons/Longsword.png")
+			weaponImage = load("res://art assets/finishedAssets/Weapons/cavalry_sword.png")
 			addWeaponMod("SaberCharge")
 			addWeaponMod("CavalryMorale")  # bonus vs infantry morale
- 
-		"Light Saber":
+
+		"Officer Sword":
 			weaponClass              = "Saber"
 			weaponLevel              = 3
-			weaponOffensiveIncrease  = 7
-			weaponDefensiveIncrease  = 4
+			weaponOffensiveIncrease  = 55
+			weaponDefensiveIncrease  = 20
 			reloadTurns              = 0
 			weaponsPerLevel          = 0
 			chargeManpowerCost       = 0.10
-			weaponImage = load("res://art assets/finishedAssets/Weapons/Shortsword.png")
+			weaponImage = load("res://art assets/finishedAssets/Weapons/officer_sword.png")
 			addWeaponMod("SaberCharge")
- 
-		"Heavy Saber":
+
+		"Marine Mameluke":
 			weaponClass              = "Saber"
 			weaponLevel              = 4
-			weaponOffensiveIncrease  = 9
-			weaponDefensiveIncrease  = 5
+			weaponOffensiveIncrease  = 70
+			weaponDefensiveIncrease  = 25
 			reloadTurns              = 0
 			weaponsPerLevel          = 0
 			chargeManpowerCost       = 0.10
-			weaponImage = load("res://art assets/finishedAssets/Weapons/Double_Axe.png")
+			weaponImage = load("res://art assets/finishedAssets/Weapons/marine_mameluke.png")
 			addWeaponMod("SaberCharge")
 			addWeaponMod("HeavyCharge")  # extra punch damage on charge
  
@@ -90,58 +91,72 @@ func updateSelf(newType: String) -> void:
 		# ============================================================
 		# MUSKETS — ranged primary, bayonet gives limited melee
 		# consumes weapons on ranged attack, has reload delay
+		# Sprites (Flintlock/Brown_Bess/Percussion_Cap/Lever_Repeater) by Sister Spacedesk
 		# ============================================================
 		"Flintlock":
 			weaponClass              = "Musket"
 			weaponLevel              = 1
-			weaponOffensiveIncrease  = 1   # bayonet melee
-			weaponDefensiveIncrease  = 1   # butt of rifle
-			rangedOffensiveIncrease  = 4
-			rangedDefensiveIncrease  = 1
+			weaponOffensiveIncrease  = 8   # bayonet melee (×0.5 penalty = 4 effective)
+			weaponDefensiveIncrease  = 5   # butt of rifle
+			rangedOffensiveIncrease  = 35
+			rangedDefensiveIncrease  = 5
 			reloadTurns              = 2
 			weaponsPerLevel          = 1
 			chargeManpowerCost       = 0.0
-			weaponImage = load("res://art assets/finishedAssets/Weapons/Spear.png")
+			weaponImage = load("res://art assets/finishedAssets/Weapons/Flintlock.png")
 			addWeaponMod("Bayonet")
- 
+
 		"Brown Bess":
 			weaponClass              = "Musket"
 			weaponLevel              = 2
-			weaponOffensiveIncrease  = 2
-			weaponDefensiveIncrease  = 1
-			rangedOffensiveIncrease  = 6
-			rangedDefensiveIncrease  = 1
+			weaponOffensiveIncrease  = 10
+			weaponDefensiveIncrease  = 5
+			rangedOffensiveIncrease  = 50
+			rangedDefensiveIncrease  = 5
 			reloadTurns              = 2
 			weaponsPerLevel          = 1
 			chargeManpowerCost       = 0.0
-			weaponImage = load("res://art assets/finishedAssets/Weapons/Spear.png")
+			weaponImage = load("res://art assets/finishedAssets/Weapons/Brown_Bess.png")
 			addWeaponMod("Bayonet")
 			addWeaponMod("VolleyFire")  # bonus when multiple musket units fire
- 
+
 		"Percussion Cap":
 			weaponClass              = "Musket"
 			weaponLevel              = 3
-			weaponOffensiveIncrease  = 2
-			weaponDefensiveIncrease  = 2
-			rangedOffensiveIncrease  = 8
-			rangedDefensiveIncrease  = 2
+			weaponOffensiveIncrease  = 10
+			weaponDefensiveIncrease  = 8
+			rangedOffensiveIncrease  = 65
+			rangedDefensiveIncrease  = 8
 			reloadTurns              = 1   # faster reload
 			weaponsPerLevel          = 1
 			chargeManpowerCost       = 0.0
-			weaponImage = load("res://art assets/finishedAssets/Weapons/Spear.png")
+			weaponImage = load("res://art assets/finishedAssets/Weapons/Percussion_Cap.png")
 			addWeaponMod("Bayonet")
- 
+
+		"Breechloader":
+			weaponClass              = "Musket"
+			weaponLevel              = 3
+			weaponOffensiveIncrease  = 10
+			weaponDefensiveIncrease  = 8
+			rangedOffensiveIncrease  = 80
+			rangedDefensiveIncrease  = 8
+			reloadTurns              = 1
+			weaponsPerLevel          = 1
+			chargeManpowerCost       = 0.0
+			weaponImage = load("res://art assets/finishedAssets/Weapons/Percussion_Cap.png")
+			addWeaponMod("Bayonet")
+
 		"Lever Repeater":
 			weaponClass              = "Musket"
 			weaponLevel              = 4
-			weaponOffensiveIncrease  = 3
-			weaponDefensiveIncrease  = 2
-			rangedOffensiveIncrease  = 10
-			rangedDefensiveIncrease  = 2
+			weaponOffensiveIncrease  = 15
+			weaponDefensiveIncrease  = 10
+			rangedOffensiveIncrease  = 80
+			rangedDefensiveIncrease  = 10
 			reloadTurns              = 0   # no reload — fires every turn
 			weaponsPerLevel          = 2   # burns more ammo
 			chargeManpowerCost       = 0.0
-			weaponImage = load("res://art assets/finishedAssets/Weapons/Spear.png")
+			weaponImage = load("res://art assets/finishedAssets/Weapons/Lever_Repeater.png")
 			addWeaponMod("Bayonet")
 			addWeaponMod("RapidFire")
  
@@ -150,25 +165,25 @@ func updateSelf(newType: String) -> void:
 		# ARTILLERY — devastating ranged, zero melee, slow reload
 		# no melee offensive or defensive at all
 		# ============================================================
-		"Falconet":
+		"Field Cannon":
 			weaponClass              = "Artillery"
 			weaponLevel              = 1
 			weaponOffensiveIncrease  = 0   # no melee
 			weaponDefensiveIncrease  = 0   # no melee defence
-			rangedOffensiveIncrease  = 12
+			rangedOffensiveIncrease  = 70
 			rangedDefensiveIncrease  = 0
 			reloadTurns              = 3
 			weaponsPerLevel          = 3   # heavy ammo cost
 			chargeManpowerCost       = 0.0
-			weaponImage = load("res://art assets/finishedAssets/Weapons/Club.png")
+			weaponImage = load("res://art assets/finishedAssets/Weapons/Howitzer.png")
 			addWeaponMod("CannonBlast")
- 
+
 		"Field Gun":
 			weaponClass              = "Artillery"
 			weaponLevel              = 2
 			weaponOffensiveIncrease  = 0
 			weaponDefensiveIncrease  = 0
-			rangedOffensiveIncrease  = 18
+			rangedOffensiveIncrease  = 90
 			rangedDefensiveIncrease  = 0
 			reloadTurns              = 3
 			weaponsPerLevel          = 3
@@ -182,29 +197,57 @@ func updateSelf(newType: String) -> void:
 			weaponLevel              = 3
 			weaponOffensiveIncrease  = 0
 			weaponDefensiveIncrease  = 0
-			rangedOffensiveIncrease  = 25
+			rangedOffensiveIncrease  = 120
 			rangedDefensiveIncrease  = 0
 			reloadTurns              = 2
 			weaponsPerLevel          = 4
 			chargeManpowerCost       = 0.0
-			weaponImage = load("res://art assets/finishedAssets/Weapons/Club.png")
+			weaponImage = load("res://art assets/finishedAssets/Weapons/Howitzer.png")
 			addWeaponMod("CannonBlast")
 			addWeaponMod("AreaDamage")
- 
+
+		"Siege Cannon":
+			weaponClass              = "Artillery"
+			weaponLevel              = 2
+			weaponOffensiveIncrease  = 0
+			weaponDefensiveIncrease  = 0
+			rangedOffensiveIncrease  = 100
+			rangedDefensiveIncrease  = 0
+			reloadTurns              = 4
+			weaponsPerLevel          = 4
+			chargeManpowerCost       = 0.0
+			weaponImage = load("res://art assets/finishedAssets/Weapons/Club.png")
+			addWeaponMod("CannonBlast")
+			addWeaponMod("Siege")
+
 		"Mortar":
+			weaponClass              = "Artillery"
+			weaponLevel              = 3
+			weaponOffensiveIncrease  = 0
+			weaponDefensiveIncrease  = 0
+			rangedOffensiveIncrease  = 150
+			rangedDefensiveIncrease  = 0
+			reloadTurns              = 2
+			weaponsPerLevel          = 4
+			chargeManpowerCost       = 0.0
+			weaponImage = load("res://art assets/finishedAssets/Weapons/Mortar.png")
+			addWeaponMod("CannonBlast")
+			addWeaponMod("AreaDamage")
+			addWeaponMod("Siege")
+
+		"Early Rockets":
 			weaponClass              = "Artillery"
 			weaponLevel              = 4
 			weaponOffensiveIncrease  = 0
 			weaponDefensiveIncrease  = 0
-			rangedOffensiveIncrease  = 35
+			rangedOffensiveIncrease  = 220
 			rangedDefensiveIncrease  = 0
-			reloadTurns              = 2
-			weaponsPerLevel          = 5
+			reloadTurns              = 3
+			weaponsPerLevel          = 6
 			chargeManpowerCost       = 0.0
-			weaponImage = load("res://art assets/finishedAssets/Weapons/Club.png")
-			addWeaponMod("CannonBlast")
+			weaponImage = load("res://art assets/finishedAssets/Weapons/Early_Rockets.png")
+			addWeaponMod("RocketBarrage")
 			addWeaponMod("AreaDamage")
-			addWeaponMod("Siege")  # bonus vs fortified tiles
  
  
 		# ============================================================

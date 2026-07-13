@@ -20,7 +20,6 @@ func buildSelf(toolBool, toolType, kitImage):
 		$ToolKitButton.size.y = 41.5
 	ToolType = toolType
 	$ToolKitButton.icon = kitImage
-	pass
 
 
 func _on_tool_kit_button_pressed() -> void:
@@ -28,4 +27,3 @@ func _on_tool_kit_button_pressed() -> void:
 		emit_signal("toolSelected", ToolType)
 	else:
 		emit_signal("kitSelected", ToolType)
-	pass # Replace with function body.

@@ -233,17 +233,7 @@ GALLERY_DATA = [
      "The agreement required no words. The words came anyway.",
      "FIRST PASS", "Not Started", "", ""),
 
-    ("Protector Arcs", "PROT_14_SUMMON", "Rushmore Awakens",
-     "kinky",
-     "Begin the Mount Rushmore protector arc (Gettysburg region)",
-     "All four have arrived and they are already arguing.",
-     "FIRST PASS", "Not Started", "", ""),
 
-    ("Protector Arcs", "PROT_14_AGREE", "The Presidential Council",
-     "kinky",
-     "Complete the Mount Rushmore protector arc and accept the endorsement",
-     "They came to a vote. The vote was unanimous. Lincoln broke the tie.",
-     "FIRST PASS", "Not Started", "", ""),
 ]
 
 
@@ -931,9 +921,7 @@ RECORDS_DATA = [
     ("Military Modifiers","milmod_green_mountain","Green Mountain Haunting","Regular",
      "Green Mountain Haunting: +20 Block, +15 Ranged Defence.",
      "",False,"FIRST PASS","","Protectors: Green Mountain (PROT_13)"),
-    ("Military Modifiers","milmod_presidential_decree","Presidential Decree","Regular",
-     "Presidential Decree: +20 Attack, +20 Block, +15 Ranged, +15 Defence.",
-     "",False,"FIRST PASS","","Protectors: Presidential Decree (PROT_14)"),
+
     ("Military Modifiers","milmod_skunk_ape","Skunk Ape's Domain","Regular",
      "Skunk Ape's Domain: +20 Attack, +15 Block.",
      "",False,"FIRST PASS","","Protectors: Skunk Ape (PROT_15)"),
@@ -1374,9 +1362,7 @@ RECORDS_DATA = [
     ("Protectors","PROT_13","???","Mystery",
      "The mountains of Vermont are haunted by something patriotic and enormous. It has opinions about taxation.",
      "PROT_13",False,"FIRST PASS","Green Mountain giant (Ethan Allen). Revealed entry not yet written.",""),
-    ("Protectors","PROT_14","???","Mystery",
-     "The faces in the rock at Gettysburg open their eyes sometimes. Only sometimes. But when they do, they are looking south.",
-     "PROT_14",False,"FIRST PASS","Mount Rushmore (anachronistic). Revealed entry not yet written.",""),
+
     ("Protectors","PROT_15","???","Mystery",
      "The Everglades hold something enormous and foul-smelling that the local Seminole call very old. They do not explain further.",
      "PROT_15",False,"FIRST PASS","Skunk Ape. Revealed entry not yet written.",""),
@@ -1475,7 +1461,7 @@ RECORDS_DATA = [
      "",True,"FIRST PASS","","See: sys_reason_providence"),
     ("American Icons","icon_harriet_tubman","Harriet Tubman","Regular",
      "Conductor of the Underground Railroad, spy for the Union Army, and the most dangerous person any tyrant could encounter. Tubman's patronage grants military bonuses and increases Manpower.\n\nAn Icon. Moves the republic one step toward Reason.",
-     "",True,"FIRST PASS","","See: sys_reason_providence, bld_barracks"),
+     "harriet_tubman.png",True,"FIRST PASS","Art: Integrated","See: sys_reason_providence, bld_barracks"),
     ("American Icons","icon_frederick_douglass","Frederick Douglass","Regular",
      "Escaped slavery and spent the rest of his life explaining why that was a bad system, in words so precise they still cut. Douglass's patronage elevates Libraries, Courthouses, and the power of truth.\n\nAn Icon. Moves the republic one step toward Reason.",
      "",True,"FIRST PASS","","See: sys_reason_providence, bld_library"),
@@ -1681,7 +1667,7 @@ RECORDS_DATA = [
      "",False,"FIRST PASS","1800s. Replaces DODK 'Vibian Karik'.",""),
     ("American Icons","icon_tubman","Harriet Tubman","Regular",
      "She called herself Moses. She operated the Underground Railroad. She scouted for the Union Army. She lobbied for women's suffrage until her death. She never lost a passenger on the Railroad. When asked if she was afraid, she said she would have gone back regardless. She went back thirteen times.\n\nBonuses: Manpower does not decay in enemy territory · Shadow magic doubled · Colonization of contested tiles −50% cost · Emancipation and Reconstruction laws cost less Mandate | Replaces: 'Venodam'",
-     "",False,"FIRST PASS","1800s. Replaces DODK 'Venodam'.",""),
+     "harriet_tubman.png",False,"FIRST PASS","1800s. Replaces DODK 'Venodam'. Art: Integrated",""),
     ("American Icons","icon_douglass","Frederick Douglass","Regular",
      "Born into slavery. Escaped. Wrote three autobiographies. Advised Lincoln. Argued that the Constitution — properly read — obligated the republic to end slavery, at a time when most abolitionists called the Constitution irredeemably corrupt. The most powerful orator in nineteenth-century America argued for a republic that did not yet exist. He lived to see it partially arrive.\n\nBonuses: Culture +50% · Press and journalism events more frequent · Mandate from public approval events · Civil Rights laws amplified | Replaces: 'Jerriwix'",
      "",False,"FIRST PASS","1800s. Replaces DODK 'Jerriwix'.",""),

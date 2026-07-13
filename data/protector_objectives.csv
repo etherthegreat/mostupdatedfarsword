@@ -1,7 +1,7 @@
 protector_id,protector_name,origin_type,origin_tile_id,origin_state,origin_terrain,resource_type,resource_min,resource_max,dev_levels
 PROT_01,Mothman,dynamic,0,WV,Foothills,food,20,35,3
 PROT_02,Jersey Devil,dynamic,0,NJ,Wetlands,weapons,15,25,2
-PROT_03,Bigfoot,dynamic,0,,Woods,wood,25,40,3
+PROT_03,Wood Booger,dynamic,0,,Woods,wood,25,40,3
 PROT_04,Thunderbird,dynamic,0,NY,Woods,culture,20,35,3
 PROT_05,Headless Horseman,dynamic,0,NY,Woods,dollars,25,40,4
 PROT_06,Chessie,dynamic,0,MD,Wetlands,food,30,50,2
@@ -12,9 +12,9 @@ PROT_10,Snallygaster,dynamic,0,MD,Foothills,metal,15,25,3
 PROT_11,Paul Revere,dynamic,0,MA,Suburbs,culture,20,35,3
 PROT_12,Liberty Bell,fixed,2,PA,Metro,dollars,30,50,4
 PROT_13,Green Mountain Ghost,dynamic,0,VT,Foothills,happiness,20,35,2
-PROT_14,Mount Rushmore,dynamic,0,,Metro,mandate,25,40,5
+
 PROT_15,Skunk Ape,dynamic,0,FL,Wetlands,food,15,25,2
-PROT_16,Eternal Minuteman,fixed,61,MA,Suburbs,manpower,30,50,3
+PROT_16,Agent 355,fixed,20,NY,Metro,dollars,20,35,3
 PROT_17,Lincoln's Ghost,fixed,188,DC,Metro,mandate,20,35,3
 CA_PROT_01,Le Wendigo,fixed,99,QC,Woods,food,20,35,3
 CA_PROT_02,Le Loup-Garou,fixed,105,QC,Woods,weapons,15,25,2

@@ -1,7 +1,7 @@
 extends Control
 class_name Unit
 
-var playerCountry: country
+var playerCountry
 
 var unitType: String
 var unitLevel: int
@@ -49,10 +49,15 @@ var reloadCounter: int = 0  # counts down to 0 before unit can fire ranged
 
 var militaryModifierList: Array = []
 
-var currentTerrain: String = ""   # set from inTile.terrain before calculateMilMods()
-var currentStorm: String = ""     # set from inTile.stormType when inTile.stormActive
-var currentState: String = ""     # set from inTile.tileContinent before calculateMilMods()
-var armyDemoralized: bool = false # set from army before calculateMilMods(); skips all mods
+var currentTerrain: String = ""       # set from inTile.terrain before calculateMilMods()
+var currentStorm: String = ""         # set from inTile.stormType when inTile.stormActive
+var currentState: String = ""         # set from inTile.tileContinent before calculateMilMods()
+var inIvyLeagueTile: bool = false     # set from inTile.has_special_feature("Ivy League") before calculateMilMods()
+var inFortifiedTile: bool = false     # set from inTile barracks/fortress check before calculateMilMods()
+var inHomeTile: bool = false          # set from inTile.tileOwner == parentCountry.CID before calculateMilMods()
+var inEntrenched: bool = false        # set from army.stationaryTurns >= 3 before calculateMilMods()
+var inCoastalTile: bool = false       # set from inTile.isCoastal before calculateMilMods(); used by USS Constitution Support
+var armyDemoralized: bool = false     # set from army before calculateMilMods(); skips all mods
 
 const milModScene = preload("res://mil_mod.tscn")
 const weaponScene = preload("res://weapon.tscn")
@@ -98,7 +103,8 @@ func getUnitAttributes() -> void:
 	unitMaxWeapons     = (100 * unitLevel)
 
 	for MilMod in militaryModifierList:
-		removeMilMod(MilMod)
+		MilMod.queue_free()
+	militaryModifierList.clear()
 
 	emit_signal("getUnitInfo", unitType, self)
 	calculateWeaponsOresArmor()
@@ -178,6 +184,12 @@ func calculateMilMods() -> void:
 					unitOffensiveScore += unitLevel
 				"SaberCharge":
 					pass  # handled in battle.gd
+				"USS Constitution Support":
+					if inCoastalTile and unitWeapon != null and unitWeapon.is_artillery():
+						unitRangedOffence *= 1.20
+						unitRangedDefence *= 1.20
+				"Secord's Alert":
+					unitDefensiveScore = int(float(unitDefensiveScore) * 1.02)
 				"Bayonet":
 					pass  # handled in unit can_melee()
 				"CannonBlast":
@@ -255,7 +267,8 @@ func calculateMilMods() -> void:
 					pass  # handled in tile/world logic
 				# ── Tier 3 mods ──────────────────────────────────────────────
 				"Entrenched":
-					pass  # handled at army level (stationary turn counter)
+					if inEntrenched:
+						unitDefensiveScore += (5 * unitLevel)  # dug-in after 3 stationary turns
 				"Continental Line":
 					unitOffensiveScore += (2 * unitLevel)
 					unitDefensiveScore += (2 * unitLevel)
@@ -265,9 +278,11 @@ func calculateMilMods() -> void:
 				"Terror":
 					pass  # handled in battle.gd morale drain
 				"Iron Wall":
-					pass  # handled at army level (home-tile check)
+					if inHomeTile:
+						unitDefensiveScore += (8 * unitLevel)  # defending sovereign territory
 				"Rampart":
-					pass  # handled at army level (fortress-tile check)
+					if inFortifiedTile:
+						unitDefensiveScore += (5 * unitLevel)  # fortification advantage
 				"Naval Supremacy":
 					pass  # handled at army level
 				"Ghost March":
@@ -368,6 +383,45 @@ func calculateMilMods() -> void:
 					pass  # first-shot bonus handled in battle.gd
 				"HardeeDisc":
 					pass  # formation bonus handled at army level
+				# ── Icon figure mods (TEMP — needs full pass per ethertask) ──
+				"Emancipation Advance":
+					unitOffensiveScore += (2 * unitLevel)
+					unitDefensiveScore += (2 * unitLevel)
+				"Rough Rider's Charge":
+					if currentTerrain == "Woods" or currentTerrain == "Wetlands":
+						unitOffensiveScore += (4 * unitLevel)
+						unitDefensiveScore += (4 * unitLevel)
+				"Little Bighorn Ambush":
+					if currentTerrain == "Woods":
+						unitOffensiveScore += (2 * unitLevel)
+						unitDefensiveScore += (2 * unitLevel)
+				"Batoche's Stand":
+					if currentTerrain == "Woods":
+						unitOffensiveScore += (2 * unitLevel)
+						unitDefensiveScore += (2 * unitLevel)
+				"North Star Address":
+					unitDefensiveScore += (2 * unitLevel)
+				"Peacekeeping Mandate":
+					unitDefensiveScore += (2 * unitLevel)
+				"Beaverdams Dispatch":
+					if inFortifiedTile:
+						unitDefensiveScore += (3 * unitLevel)
+				"Combahee River Raid":
+					unitOffensiveScore += (3 * unitLevel)
+				# ── Commander Arc mods ────────────────────────────────────────
+				"Appalachian Hill Fighter":
+					if currentTerrain == "Foothills":
+						unitDefensiveScore += (2 * unitLevel)
+				"Explosives Expert":
+					unitRangedOffence *= 1.10
+				"Student Body Commander":
+					if inIvyLeagueTile:
+						unitOffensiveScore = int(float(unitOffensiveScore) * 1.10)
+						unitDefensiveScore = int(float(unitDefensiveScore) * 1.10)
+				"Field Research":
+					pass  # science gain on attack handled in battle.gd
+				"Cultural Corps":
+					pass  # culture per turn handled in world.gd turn loop
 			# State guard: culturalMod entries with a state target get +2 attack/defence per level
 			if MilMod.culturalMod and MilMod.culturalState != "" and currentState == MilMod.culturalState:
 				unitOffensiveScore += (2 * unitLevel)
@@ -429,6 +483,13 @@ func get_weapons_cost_for_attack() -> int:
 # ============================================================
 
 func takeLosses(type: String, amount: float) -> void:
+	if unitWeapon != null and unitWeapon.weaponClass == "Musket":
+		for mm in militaryModifierList:
+			if mm.milModType == "Red Badge of Courage" and not mm.disabled:
+				var has_lincoln_accord = (playerCountry != null and
+						playerCountry.CountryFlags.has("prot_17_agreed"))
+				amount *= 0.90 if has_lincoln_accord else 0.95
+				break
 	match type:
 		"melee":
 			# FIX: was += (adding health), now -= (subtracting)
