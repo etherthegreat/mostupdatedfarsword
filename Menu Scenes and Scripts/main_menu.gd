@@ -35,7 +35,7 @@ func _ready() -> void:
 
 # ── language (first-run) ──────────────────────────────────────────────────────
 func _check_language() -> void:
-	var lang := LibraryData.get_setting("language", "")
+	var lang: String = LibraryData.get_setting("language", "")
 	if lang == "":
 		# No language set yet — check legacy settings.txt
 		if FileAccess.file_exists(SETTINGS_PATH):
@@ -43,7 +43,7 @@ func _check_language() -> void:
 			if f:
 				var data = f.get_var()
 				if data is Dictionary and data.has("gameLanguage"):
-					lang = data["gameLanguage"]
+					lang = str(data["gameLanguage"])
 					LibraryData.set_setting("language", lang)
 					f.close()
 
@@ -86,7 +86,7 @@ func _read_save_summary() -> String:
 	var f := FileAccess.open(AUTOSAVE_PATH, FileAccess.READ)
 	if not f:
 		return ""
-	var result := JSON.parse_string(f.get_as_text())
+	var result: Variant = JSON.parse_string(f.get_as_text())
 	f.close()
 	if not result is Dictionary:
 		return ""

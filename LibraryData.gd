@@ -156,7 +156,7 @@ func load_data() -> void:
 		return
 	var text   := file.get_as_text()
 	file.close()
-	var result := JSON.parse_string(text)
+	var result: Variant = JSON.parse_string(text)
 	if not result is Dictionary:
 		return
 	if result.has("gallery_unlocked"):
