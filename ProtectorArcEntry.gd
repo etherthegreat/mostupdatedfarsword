@@ -28,13 +28,13 @@ signal devotionCompleted(protector_id)
 signal summonRequested(protector_id)   # emitted when player presses the Summon button
 
 var arcData: Dictionary
-var playerNode: country
+var playerNode
 
 var checkTexture = null    # TODO: load your checkmark asset
 var circleTexture = null   # TODO: load your empty circle asset
 
 
-func buildSelf(data: Dictionary, player: country) -> void:
+func buildSelf(data: Dictionary, player) -> void:
 	arcData = data
 	playerNode = player
 	_apply_layout()

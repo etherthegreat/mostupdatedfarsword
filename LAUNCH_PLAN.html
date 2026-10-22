@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Farsword — July 4th Launch Plan</title>
+<style>
+  :root {
+    --navy:   #0a1628;
+    --gold:   #c8a84b;
+    --red:    #b22222;
+    --cream:  #f5f0e8;
+    --green:  #2d6a4f;
+    --amber:  #e07b39;
+    --slate:  #2c3e50;
+    --muted:  #7f8c8d;
+    --p0:     #b22222;
+    --p1:     #1a5276;
+    --p2:     #1e8449;
+    --p3:     #7d6608;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Georgia', serif;
+    background: var(--navy);
+    color: var(--cream);
+    min-height: 100vh;
+  }
+  header {
+    background: linear-gradient(135deg, #0a1628 0%, #1a2a4a 50%, #0a1628 100%);
+    border-bottom: 3px solid var(--gold);
+    padding: 40px 60px;
+    text-align: center;
+  }
+  header h1 {
+    font-size: 2.8rem;
+    color: var(--gold);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+  }
+  header .subtitle {
+    font-size: 1.1rem;
+    color: var(--cream);
+    opacity: 0.8;
+    margin-top: 8px;
+    font-style: italic;
+  }
+  .stats-bar {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    padding: 20px;
+    background: #111e33;
+    border-bottom: 1px solid #2a3a5a;
+  }
+  .stat { text-align: center; }
+  .stat .num { font-size: 2rem; font-weight: bold; color: var(--gold); }
+  .stat .lbl { font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    vertical-align: middle;
+  }
+  .p0 { background: var(--p0); color: #fff; }
+  .p1 { background: var(--p1); color: #fff; }
+  .p2 { background: var(--p2); color: #fff; }
+  .p3 { background: var(--p3); color: #fff; }
+  .done { background: #444; color: #aaa; text-decoration: line-through; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 40px 30px; }
+  h2 {
+    color: var(--gold);
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--gold);
+    padding-bottom: 8px;
+    margin: 40px 0 20px;
+  }
+  h3 { color: var(--cream); font-size: 1.1rem; margin: 24px 0 10px; }
+
+  /* ── TIMELINE ── */
+  .timeline { position: relative; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 110px;
+    top: 0; bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--gold), var(--red));
+  }
+  .day-block {
+    display: flex;
+    gap: 0;
+    margin-bottom: 8px;
+    position: relative;
+  }
+  .day-label {
+    width: 110px;
+    flex-shrink: 0;
+    text-align: right;
+    padding-right: 20px;
+    padding-top: 12px;
+    font-size: 0.8rem;
+    color: var(--gold);
+    font-weight: bold;
+    letter-spacing: 1px;
+  }
+  .day-label .dow { display: block; font-size: 0.65rem; color: var(--muted); text-transform: uppercase; }
+  .day-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--gold);
+    flex-shrink: 0;
+    margin-top: 16px;
+    margin-left: -5px;
+    z-index: 1;
+  }
+  .day-content {
+    flex: 1;
+    background: #111e33;
+    border: 1px solid #2a3a5a;
+    border-radius: 6px;
+    padding: 14px 18px;
+    margin-left: 14px;
+    margin-bottom: 6px;
+  }
+  .day-content h4 {
+    color: var(--gold);
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .task-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 5px 0;
+    border-bottom: 1px solid #1a2a3a;
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
+  .task-row:last-child { border-bottom: none; }
+  .task-id { color: var(--muted); font-size: 0.7rem; min-width: 80px; font-family: monospace; padding-top: 2px; }
+  .task-name { flex: 1; }
+  .cat-tag {
+    font-size: 0.65rem;
+    padding: 1px 5px;
+    border-radius: 2px;
+    background: #2a3a5a;
+    color: #8ab;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+  }
+  .focus-box {
+    background: #0d1a2e;
+    border-left: 3px solid var(--gold);
+    padding: 10px 14px;
+    margin-top: 10px;
+    font-size: 0.82rem;
+    color: #a8b8d8;
+    font-style: italic;
+  }
+  .warning-box {
+    background: #2a0a0a;
+    border-left: 3px solid var(--red);
+    padding: 10px 14px;
+    margin-top: 10px;
+    font-size: 0.82rem;
+    color: #d88;
+  }
+  .note-box {
+    background: #0a2010;
+    border-left: 3px solid var(--green);
+    padding: 10px 14px;
+    margin: 10px 0;
+    font-size: 0.82rem;
+    color: #8d8;
+  }
+
+  /* ── TASK TABLES ── */
+  .task-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .task-card {
+    background: #111e33;
+    border: 1px solid #2a3a5a;
+    border-radius: 6px;
+    padding: 12px 14px;
+  }
+  .task-card .tc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+  .task-card .tc-id { font-family: monospace; font-size: 0.75rem; color: var(--muted); }
+  .task-card .tc-name { font-size: 0.88rem; color: var(--cream); margin-bottom: 4px; }
+  .task-card .tc-note { font-size: 0.75rem; color: #7a8fa8; font-style: italic; line-height: 1.35; }
+
+  /* ── COUNT SUMMARY ── */
+  .prio-summary {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin: 20px 0;
+  }
+  .prio-card {
+    background: #111e33;
+    border-radius: 8px;
+    padding: 18px;
+    text-align: center;
+    border-top: 4px solid;
+  }
+  .prio-card.pc-p0 { border-color: var(--p0); }
+  .prio-card.pc-p1 { border-color: var(--p1); }
+  .prio-card.pc-p2 { border-color: var(--p2); }
+  .prio-card.pc-p3 { border-color: var(--p3); }
+  .prio-card .pc-num { font-size: 2.5rem; font-weight: bold; }
+  .pc-p0 .pc-num { color: var(--p0); }
+  .pc-p1 .pc-num { color: #5d9fd8; }
+  .pc-p2 .pc-num { color: #5bc88a; }
+  .pc-p3 .pc-num { color: #c8b44b; }
+  .prio-card .pc-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); margin-top: 4px; }
+  .prio-card .pc-sub { font-size: 0.8rem; color: #8ab; margin-top: 8px; line-height: 1.4; }
+
+  footer {
+    text-align: center;
+    padding: 30px;
+    color: var(--muted);
+    font-size: 0.8rem;
+    border-top: 1px solid #2a3a5a;
+    margin-top: 60px;
+  }
+  .stars { color: var(--gold); letter-spacing: 4px; }
+
+  @media print {
+    body { background: white; color: black; }
+    header { background: white; border-bottom: 2px solid #333; }
+    .day-content, .task-card, .prio-card { background: #f5f5f5; border-color: #ccc; }
+    .timeline::before { background: #333; }
+    .day-dot { background: #333; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="stars">★ ★ ★ ★ ★ ★ ★</div>
+  <h1>Farsword — Launch Sprint</h1>
+  <div class="subtitle">America Rush &nbsp;·&nbsp; Target: July 4th, 2026 &nbsp;·&nbsp; 16 days</div>
+</header>
+
+<div class="stats-bar">
+  <div class="stat"><div class="num">259</div><div class="lbl">Total tasks</div></div>
+  <div class="stat"><div class="num">1</div><div class="lbl">Done so far</div></div>
+  <div class="stat"><div class="num">16</div><div class="lbl">Days to launch</div></div>
+  <div class="stat"><div class="num">~16</div><div class="lbl">Tasks/day needed</div></div>
+</div>
+
+<div class="container">
+
+  <h2>Priority Overview</h2>
+  <div class="prio-summary">
+    <div class="prio-card pc-p0">
+      <div class="pc-num">14</div>
+      <div class="pc-label">P0 — Blockers</div>
+      <div class="pc-sub">Code fixes + all HIGH editor tasks.<br>Nothing ships without these.</div>
+    </div>
+    <div class="prio-card pc-p1">
+      <div class="pc-num">205</div>
+      <div class="pc-label">P1 — USA Core</div>
+      <div class="pc-sub">All USA events, icons, doctrines, factions, music, art assets, economic ledger.</div>
+    </div>
+    <div class="prio-card pc-p2">
+      <div class="pc-num">30</div>
+      <div class="pc-label">P2 — Canada Lite</div>
+      <div class="pc-sub">PM Arc, peace/alliance events, Marc Penoit, flag, mountee silhouette, 2 laws, 2 icons.</div>
+    </div>
+    <div class="prio-card pc-p3">
+      <div class="pc-num">9</div>
+      <div class="pc-label">P3 — Polish</div>
+      <div class="pc-sub">Typo fixes, SFX wiring, wizard tab, boats icon, separator labels.</div>
+    </div>
+  </div>
+
+  <div class="note-box">
+    <strong>Strategy:</strong> P0 all done by June 21. Art (portraits + scene illustrations) is the long tail — drop art files as they're created; the system auto-integrates them. Text polish and code fixes can happen in parallel. Canada Lite is a 2-day sprint at the end (June 30–July 1). P3 items only if time allows.
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <h2>Day-by-Day Timeline</h2>
+  <div class="timeline">
+
+    <!-- ─────────────────────────── TODAY: June 18 -->
+    <div class="day-block">
+      <div class="day-label">June 18<span class="dow">Wed · Today</span></div>
+      <div class="day-dot"></div>
+      <div class="day-content">
+        <h4>Setup + First P0 Fixes</h4>
+        <div class="task-row"><span class="task-id">FIX_CONTENT_TOGGLE</span><span class="task-name">Wire content filter to Settings booleans</span><span class="badge done">DONE</span></div>
+        <div class="task-row"><span class="task-id">FIX_ARMY_BUFF</span><span class="task-name">Implement <code>_apply_army_buff()</code> stub in world.gd</span><span class="badge p0">P0</span></div>
+        <div class="task-row"><span class="task-id">FIX_WIN_CONDITIONS</span><span class="task-name">Add win/loss condition checks to <code>_end_turn()</code></span><span class="badge p0">P0</span></div>
+        <div class="task-row"><span class="task-id">AmericaRush</span><span class="task-name">AmericaRush system deployed — picker now priority-tiered</span><span class="badge done">DONE</span></div>
+        <div class="focus-box">Focus: get the two remaining code fixes done tonight. They're single-function implementations. army_buff is ~15 lines; win conditions is ~30 lines.</div>
+      </div>
+    </div>
+
+    <!-- ─────────────────────────── June 19 -->
+    <div class="day-block">
+      <div class="day-label">June 19<span class="dow">Thu</span></div>
+      <div class="day-dot"></div>
+      <div class="day-content">
+        <h4>P0 Editor Sprint — Game-Over + War Room</h4>
+        <div class="task-row"><span class="task-id">GOV-001</span><span class="task-name">Create GameOverPanel.tscn — overlay, win/loss title, reason label, Return button</span><span class="badge p0">P0</span></div>
+        <div class="task-row"><span class="task-id">FIX_GAME_OVER</span><span class="task-name">Wire <code>_trigger_game_over()</code> in world.gd once panel exists</span><span class="badge p0">P0</span></div>
+        <div class="task-row"><span class="task-id">WAR-001</span><span class="task-name">WarRoomPanel: add CloseButton + wire pressed signal</span><span class="badge p0">P0</span></div>
+        <div class="task-row"><span class="task-id">RES-001</span><span class="task-name">Resource bar: add Manpower, Mandate, Happiness, Influence, Boats labels</span><span class="badge p0">P0</span></div>
+        <div class="focus-box">4 critical P0 editor tasks. War Room close button is 10 minutes. Resource bar labels are copy-paste from existing label nodes. Game Over panel is a new scene — build it first.</div>
+      </div>
+    </div>
+
+    <!-- ─────────────────────────── June 20 -->
+    <div class="day-block">
+      <div class="day-label">June 20<span class="dow">Fri</span></div>
+      <div class="day-dot"></div>
+      <div class="day-content">
+        <h4>Main Menu + AutoLoad</h4>
+        <div class="task-row"><span class="task-id">MENU-001</span><span class="task-name">Rebuild main_menu.tscn: video BG + 5-button LeftPanel</span><span class="badge p0">P0</span></div>
+        <div class="task-row"><span class="task-id">MENU-008</span><span class="task-name">AutoLoad: register LibraryData + RecordsDatabase</span><span class="badge p0">P0</span></div>
+        <div class="task-row"><span class="task-id">MUSIC-001</span><span class="task-name">Implement menu theme (when composer delivers files)</span><span class="badge p1">P1</span></div>
+        <div class="focus-box">Main menu is the first thing players see. MENU-001 is the highest-visibility editor task. AutoLoad registration is 5 minutes but must happen before any Library feature works. Music wiring: import .ogg → create MusicManager.gd → wire to menu load signal.</div>
+      </div>
+    </div>
+
+    <!-- ─────────────────────────── June 21 -->
+    <div class="day-block">
+      <div class="day-label">June 21<span class="dow">Sat</span></div>
+      <div class="day-dot"></div>
+      <div class="day-content">
+        <h4>Presidential Library — Scene Build</h4>
+        <div class="task-row"><span class="task-id">MENU-002</span><span class="task-name">Create PresidentialLibraryPanel.tscn: 3-tab panel (Gallery / Records / Journal)</span><span class="badge p0">P0</span></div>
+        <div class="task-row"><span class="task-id">MENU-005</span><span class="task-name">Create RecordsTab.tscn: sidebar + entry panel with RichTextLabel</span><span class="badge p0">P0</span></div>
+        <div class="task-row"><span class="task-id">MENU-006</span><span class="task-name">Create JournalTab.tscn: entry list + memo document panel</span><span class="badge p0">P0</span></div>
+        <div class="task-row"><span class="task-id">PRES_LIB_LINKS</span><span class="task-name">Wire wikilink navigation in Records entries (RichTextLabel [url] → navigate)</span><span class="badge p1">P1</span></div>
+        <div class="focus-box">Records and Journal share the same HSplitContainer pattern — build one, clone the other. RichTextLabel [url] tags handle hyperlinks natively in Godot; connect the meta_clicked signal to the navigation function. No extra buttons ever needed.</div>
+        <div class="note-box"><strong>Hyperlink pattern:</strong> In RecordsTab.gd, set bbcode_text with <code>[url=ENTRY_ID]linked text[/url]</code>. Connect <code>meta_clicked(meta)</code> → look up the entry by ID in RecordsDatabase, populate the panel. Dead simple.</div>
+      </div>
+    </div>
+
+    <!-- ─────────────────────────── June 22 -->
+    <div class="day-block">
+      <div class="day-label">June 22<span class="dow">Sun</span></div>
+      <div class="day-dot"></div>
+      <div class="day-content">
+        <h4>Gallery + Settings Panel</h4>
+        <div class="task-row"><span class="task-id">MENU-003</span><span class="task-name">Create GalleryTab.tscn: 4-col grid + lightbox overlay</span><span class="badge p0">P0</span></div>
+        <div class="task-row"><span class="task-id">MENU-004</span><span class="task-name">Create GalleryTile.tscn: locked/unlocked states + hover hint</span><span class="badge p0">P0</span></div>
+        <div class="task-row"><span class="task-id">MENU-007</span><span class="task-name">Create SettingsPanel.tscn: 6-category sidebar including content toggle UI</span><span class="badge p0">P0</span></div>
+        <div class="focus-box">All P0 editor tasks complete by end of day. Settings panel must expose the content_explicit / content_kinky_lewd / content_sensual toggles we wired yesterday — that closes the loop on FIX_CONTENT_TOGGLE.</div>
+        <div class="warning-box"><strong>Checkpoint:</strong> After June 22, all P0 tasks should be DONE. If any are still open, they must be completed before touching P1 content. A game with no close button on the War Room cannot ship.</div>
+      </div>
+    </div>
+
+    <!-- ─────────────────────────── June 23-24 -->
+    <div class="day-block">
+      <div class="day-label">June 23–24<span class="dow">Mon–Tue</span></div>
+      <div class="day-dot"></div>
+      <div class="day-content">
+        <h4>Economic Ledger + Art Assets Sprint</h4>
+        <div class="task-row"><span class="task-id">ECON_LEDGER</span><span class="task-name">Build EconomicLedger.tscn: national summary tab + per-resource tile breakdown tabs</span><span class="badge p1">P1</span></div>
+        <div class="task-row"><span class="task-id">ART_RELIGION_DOCTRINE</span><span class="task-name">Religion/Doctrine tab: American-themed art update</span><span class="badge p1">P1</span></div>
+        <div class="task-row"><span class="task-id">ART_LAWS_TAB</span><span class="task-name">Laws tab: Constitution flavor art/border</span><span class="badge p1">P1</span></div>
+        <div class="task-row"><span class="task-id">ART_WEAPON_SPRITES</span><span class="task-name">Weapon sprites — draw/finalize all weapon types</span><span class="badge p1">P1</span></div>
+        <div class="task-row"><span class="task-id">ART_ARMOR_SPRITES</span><span class="task-name">Armor sprites — draw/finalize all armor types</span><span class="badge p1">P1</span></div>
+        <div class="focus-box">Economic Ledger: Tab 1 = national totals (13 resources, input vs output). Tabs 2–14 = per-resource list of every tile contributing. Data comes directly from tile census — this is a read-only display panel, no game logic changes needed.</div>
+      </div>
+    </div>
+
+    <!-- ─────────────────────────── June 25-26 -->
+    <div class="day-block">
+      <div class="day-label">June 25–26<span class="dow">Wed–Thu</span></div>
+      <div class="day-dot"></div>
+      <div class="day-content">
+        <h4>Tech Tree + Music Implementation</h4>
+        <div class="task-row"><span class="task-id">ART_TECH_ICONS</span><span class="task-name">Finish all technology tree node icons</span><span class="badge p1">P1</span></div>
+        <div class="task-row"><span class="task-id">ART_TECH_BACKGROUND</span><span class="task-name">Draw technology tree panel background</span><span class="badge p1">P1</span></div>
+        <div class="task-row"><span class="task-id">MUSIC-001</span><span class="task-name">Finalize menu theme implementation</span><span class="badge p1">P1</span></div>
+        <div class="task-row"><span class="task-id">MUSIC-002</span><span class="task-name">Wire 2–3 in-game ambient tracks from composer</span><span class="badge p1">P1</span></div>
+        <div class="focus-box">Music: the composer will hand off .ogg files. Implementation is: AudioManager.gd singleton → play_music(track_id) → fade in/out on scene transitions. Plan for 1 menu theme + 2 game tracks minimum. More tracks = better but not required.</div>
+      </div>
+    </div>
+
+    <!-- ─────────────────────────── June 27-28 -->
+    <div class="day-block">
+      <div class="day-label">June 27–28<span class="dow">Fri–Sat</span></div>
+      <div class="day-dot"></div>
+      <div class="day-content">
+        <h4>USA Event Art Drop + VP/WH Secret Polish</h4>
+        <div class="task-row"><span class="task-id">VP Arc (×9)</span><span class="task-name">Drop scene illustrations + final text polish for all VP Arc events</span><span class="badge p1">P1</span></div>
+        <div class="task-row"><span class="task-id">WH Secrets (×6)</span><span class="task-name">Drop scene illustrations + final text for remaining White House Secrets</span><span class="badge p1">P1</span></div>
+        <div class="task-row"><span class="task-id">Ualani events (×10)</span><span class="task-name">Ualani scene art drop — these are the prestige story moments</span><span class="badge p1">P1</span></div>
+        <div class="task-row"><span class="task-id">USA Icons (×17)</span><span class="task-name">Portraits (color + BW) for remaining 17 USA icons</span><span class="badge p1">P1</span></div>
+        <div class="focus-box">Art is the long tail. Treat this as a continuous drop-integrate cycle: draw a batch, drop files, run /closetask, repeat. VP Arc and Ualani events are the highest-narrative-value scenes — prioritize those for art first.</div>
+      </div>
+    </div>
+
+    <!-- ─────────────────────────── June 29 -->
+    <div class="day-block">
+      <div class="day-label">June 29<span class="dow">Sun</span></div>
+      <div class="day-dot"></div>
+      <div class="day-content">
+        <h4>Protector Art + Doctrines + Factions</h4>
+        <div class="task-row"><span class="task-id">Protectors (×39)</span><span class="task-name">Scene art for remaining 13 protector arcs (Summon/Tame/Agree)</span><span class="badge p1">P1</span></div>
+        <div class="task-row"><span class="task-id">USA Doctrines (×7)</span><span class="task-name">Text polish + portrait art for 7 remaining USA doctrines</span><span class="badge p1">P1</span></div>
+        <div class="task-row"><span class="task-id">USA Factions (×5)</span><span class="task-name">Text polish + art for 5 USA factions</span><span class="badge p1">P1</span></div>
+        <div class="focus-box">Protector scene art is high-volume but follows a pattern. Summon scenes are the priority — that's the player's first impression. Tame/Agree can use simpler compositions. Doctrines and factions don't need scene art — portraits only.</div>
+      </div>
+    </div>
+
+    <!-- ─────────────────────────── June 30 -->
+    <div class="day-block">
+      <div class="day-label">June 30<span class="dow">Mon</span></div>
+      <div class="day-dot"></div>
+      <div class="day-content">
+        <h4>Bug Testing Day — USA Only</h4>
+        <div class="task-row"><span class="task-id">QA</span><span class="task-name">Full playthrough: new game → win condition fires correctly</span><span class="badge p1">P1</span></div>
+        <div class="task-row"><span class="task-id">QA</span><span class="task-name">Content toggle: verify explicit/sensual buttons hide correctly</span><span class="badge p1">P1</span></div>
+        <div class="task-row"><span class="task-id">QA</span><span class="task-name">Protector arc: one full arc end-to-end (summon → tame → agree → wizard assigned)</span><span class="badge p1">P1</span></div>
+        <div class="task-row"><span class="task-id">QA</span><span class="task-name">Presidential Library: navigate Records, click a hyperlink, verify navigation</span><span class="badge p1">P1</span></div>
+        <div class="task-row"><span class="task-id">Commander ARCs</span><span class="task-name">Text polish pass on all 22 ARC_XX_FIRST / ARC_XX_DONE event pairs</span><span class="badge p1">P1</span></div>
+        <div class="warning-box"><strong>Hard deadline:</strong> All P0 + P1 CODE/EDITOR tasks must be done before June 30 bug testing. If they're not, push testing to July 1 and cut scope from P1 content.</div>
+      </div>
+    </div>
+
+    <!-- ─────────────────────────── July 1 -->
+    <div class="day-block">
+      <div class="day-label">July 1<span class="dow">Tue · Canada Day</span></div>
+      <div class="day-dot"></div>
+      <div class="day-content">
+        <h4>Canada Lite Sprint — Day 1</h4>
+        <div class="task-row"><span class="task-id">CANADA_FLAG</span><span class="task-name">Create Canada flag sprite for doctrine/icon visual</span><span class="badge p2">P2</span></div>
+        <div class="task-row"><span class="task-id">CANADA_DOCTRINE_SILHOUETTE</span><span class="task-name">Black silhouette for unfinished CA doctrine portraits</span><span class="badge p2">P2</span></div>
+        <div class="task-row"><span class="task-id">CANADA_GOVERNOR_SILHOUETTE</span><span class="task-name">Mountee silhouette for unfinished CA governor portraits</span><span class="badge p2">P2</span></div>
+        <div class="task-row"><span class="task-id">MARC_PENOIT_PORTRAIT</span><span class="task-name">Draw Marc Penoit governor portrait (color + BW)</span><span class="badge p2">P2</span></div>
+        <div class="task-row"><span class="task-id">FIX_CA_PROT_TRIGGERS</span><span class="task-name">Wire 8 CA protector summon trigger rows in event_triggers.csv</span><span class="badge p2">P2</span></div>
+        <div class="note-box"><strong>Canada Day irony:</strong> We ship with Canada on July 4th. The Mountee silhouette is a graceful placeholder — it tells players "more coming" without looking unfinished.</div>
+      </div>
+    </div>
+
+    <!-- ─────────────────────────── July 2 -->
+    <div class="day-block">
+      <div class="day-label">July 2<span class="dow">Wed</span></div>
+      <div class="day-dot"></div>
+      <div class="day-content">
+        <h4>Canada Lite Sprint — Day 2</h4>
+        <div class="task-row"><span class="task-id">CA PM Arc (×8)</span><span class="task-name">Text polish + scene art for all 8 CA PM Arc events</span><span class="badge p2">P2</span></div>
+        <div class="task-row"><span class="task-id">Canada Events (×13)</span><span class="task-name">Core Canada events: UK buildup, peace/alliance, Marc Penoit, Quebec election</span><span class="badge p2">P2</span></div>
+        <div class="task-row"><span class="task-id">Louis Riel</span><span class="task-name">CA Icon: Louis Riel — text polish + portrait</span><span class="badge p2">P2</span></div>
+        <div class="task-row"><span class="task-id">Roméo Dallaire</span><span class="task-name">CA Icon: Roméo Dallaire — text polish + portrait</span><span class="badge p2">P2</span></div>
+        <div class="task-row"><span class="task-id">CA Laws (×2)</span><span class="task-name">French Language Rights + French Cultural Identity — text polish</span><span class="badge p2">P2</span></div>
+      </div>
+    </div>
+
+    <!-- ─────────────────────────── July 3 -->
+    <div class="day-block">
+      <div class="day-label">July 3<span class="dow">Thu</span></div>
+      <div class="day-dot"></div>
+      <div class="day-content">
+        <h4>Final Polish + P3 Tasks (if time)</h4>
+        <div class="task-row"><span class="task-id">QA</span><span class="task-name">Full Canada playthrough: alliance → peace treaty → win condition fires</span><span class="badge p2">P2</span></div>
+        <div class="task-row"><span class="task-id">WAR-002</span><span class="task-name">Typo fix: DEPTARTMENT → DEPARTMENT</span><span class="badge p3">P3</span></div>
+        <div class="task-row"><span class="task-id">CMD-001 / PROT-001</span><span class="task-name">Arc entry checkmark + circle textures</span><span class="badge p3">P3</span></div>
+        <div class="task-row"><span class="task-id">SFX-001/002</span><span class="task-name">AudioManager + HIGH-priority SFX wiring (if time)</span><span class="badge p3">P3</span></div>
+        <div class="task-row"><span class="task-id">Tile Crisis (×24)</span><span class="task-name">Remaining tile crisis event art if not yet dropped</span><span class="badge p1">P1</span></div>
+        <div class="focus-box">July 3 is buffer + polish day. Don't start new features. Fix bugs found in QA. Get P3 typo fixes in. If the art queue is behind, spend today on remaining event scene illustrations.</div>
+      </div>
+    </div>
+
+    <!-- ─────────────────────────── July 4 -->
+    <div class="day-block">
+      <div class="day-label">July 4<span class="dow">Fri · LAUNCH</span></div>
+      <div class="day-dot" style="background:#b22222;width:16px;height:16px;margin-top:14px;margin-left:-7px;"></div>
+      <div class="day-content" style="border-color:#b22222;">
+        <h4 style="color:#b22222;">🎆 LAUNCH DAY 🎆</h4>
+        <div class="task-row"><span class="task-id">BUILD</span><span class="task-name">Export final build (Godot → HTML5 or Windows export)</span><span class="badge p0">P0</span></div>
+        <div class="task-row"><span class="task-id">RELEASE</span><span class="task-name">Upload to itch.io / distribution platform</span><span class="badge p0">P0</span></div>
+        <div class="task-row"><span class="task-id">PATCH</span><span class="task-name">Hotfix window open — monitor for launch-day bugs</span><span class="badge p1">P1</span></div>
+        <div class="warning-box"><strong>Cut rule:</strong> Anything not done by midnight July 3 does not ship. Do not delay launch for P3 tasks or unfinished art. Ship with "art coming soon" placeholders rather than miss the date.</div>
+      </div>
+    </div>
+
+  </div><!-- end timeline -->
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <h2>P0 Tasks — Full List</h2>
+  <div class="task-grid">
+
+    <div class="task-card">
+      <div class="tc-header"><span class="tc-id">FIX_CONTENT_TOGGLE</span><span class="badge done">DONE</span></div>
+      <div class="tc-name">Wire explicit content filter to Settings booleans</div>
+      <div class="tc-note">event_scene.gd — content_explicit / content_kinky_lewd / content_sensual now read from Settings.</div>
+    </div>
+
+    <div class="task-card">
+      <div class="tc-header"><span class="tc-id">FIX_ARMY_BUFF</span><span class="badge p0">P0 · CODE</span></div>
+      <div class="tc-name">Fix _apply_army_buff() stub</div>
+      <div class="tc-note">world.gd:5011 — entire body is pass. Iterate countryArmyList, call army.apply_status().</div>
+    </div>
+
+    <div class="task-card">
+      <div class="tc-header"><span class="tc-id">FIX_GAME_OVER</span><span class="badge p0">P0 · CODE</span></div>
+      <div class="tc-name">Implement _trigger_game_over() + victory/defeat screen</div>
+      <div class="tc-note">world.gd:5660 — show GameOverPanel, halt turn loop, set win/loss state.</div>
+    </div>
+
+    <div class="task-card">
+      <div class="tc-header"><span class="tc-id">FIX_WIN_CONDITIONS</span><span class="badge p0">P0 · CODE</span></div>
+      <div class="tc-name">Implement win/loss condition checks</div>
+      <div class="tc-note">world.gd — _check_win_conditions() called from _end_turn(). All-tiles win, CA peace treaty win, president-death loss.</div>
+    </div>
+
+    <div class="task-card">
+      <div class="tc-header"><span class="tc-id">WAR-001</span><span class="badge p0">P0 · EDITOR</span></div>
+      <div class="tc-name">WarRoomPanel: Add CloseButton + wire signal</div>
+      <div class="tc-note">WarRoomPanel.tscn — without this, the player is trapped in the War Room panel.</div>
+    </div>
+
+    <div class="task-card">
+      <div class="tc-header"><span class="tc-id">GOV-001</span><span class="badge p0">P0 · EDITOR</span></div>
+      <div class="tc-name">Create GameOverPanel.tscn</div>
+      <div class="tc-note">New scene: dark overlay + title + reason label + Return to Menu button. Required before president-death has any consequence.</div>
+    </div>
+
+    <div class="task-card">
+      <div class="tc-header"><span class="tc-id">RES-001</span><span class="badge p0">P0 · EDITOR</span></div>
+      <div class="tc-name">Resource bar: add 5 missing resource labels</div>
+      <div class="tc-note">Manpower, Mandate, Happiness, Influence, Boats — currently not visible to the player at all.</div>
+    </div>
+
+    <div class="task-card">
+      <div class="tc-header"><span class="tc-id">MENU-001</span><span class="badge p0">P0 · EDITOR</span></div>
+      <div class="tc-name">Rebuild main_menu.tscn</div>
+      <div class="tc-note">VideoStreamPlayer BG + 5-button LeftPanel. First impression for all players.</div>
+    </div>
+
+    <div class="task-card">
+      <div class="tc-header"><span class="tc-id">MENU-002</span><span class="badge p0">P0 · EDITOR</span></div>
+      <div class="tc-name">Create PresidentialLibraryPanel.tscn</div>
+      <div class="tc-note">3-tab panel (Gallery / Records / Journal). Container for all Presidential Library content.</div>
+    </div>
+
+    <div class="task-card">
+      <div class="tc-header"><span class="tc-id">MENU-003 / 004</span><span class="badge p0">P0 · EDITOR</span></div>
+      <div class="tc-name">Create GalleryTab.tscn + GalleryTile.tscn</div>
+      <div class="tc-note">4-col grid with lightbox. GalleryTile: locked/unlocked states, hover hint.</div>
+    </div>
+
+    <div class="task-card">
+      <div class="tc-header"><span class="tc-id">MENU-005 / 006</span><span class="badge p0">P0 · EDITOR</span></div>
+      <div class="tc-name">Create RecordsTab.tscn + JournalTab.tscn</div>
+      <div class="tc-note">Both use HSplitContainer pattern. RichTextLabel in Records supports wikilink navigation.</div>
+    </div>
+
+    <div class="task-card">
+      <div class="tc-header"><span class="tc-id">MENU-007</span><span class="badge p0">P0 · EDITOR</span></div>
+      <div class="tc-name">Create SettingsPanel.tscn</div>
+      <div class="tc-note">6-category sidebar. Must include content toggle UI (explicit/sensual/kinky_lewd toggles) to close the content filter loop.</div>
+    </div>
+
+    <div class="task-card">
+      <div class="tc-header"><span class="tc-id">MENU-008</span><span class="badge p0">P0 · EDITOR</span></div>
+      <div class="tc-name">AutoLoad: register LibraryData + RecordsDatabase</div>
+      <div class="tc-note">Project Settings → AutoLoad. LibraryData must load before RecordsDatabase.</div>
+    </div>
+
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <h2>New Features Added Today</h2>
+
+  <div class="note-box" style="margin-bottom: 16px;">
+    <strong>Presidential Library Hyperlinks</strong> — RecordsTab will support <code>[[ENTRY_ID]]</code> wikilink syntax in entry body text. Rendered as Godot RichTextLabel <code>[url=ENTRY_ID]text[/url]</code>. Clicking navigates to that entry. Implementation in RecordsDatabase.gd + RecordsTab.gd — no separate button nodes needed. Wire <code>meta_clicked(meta)</code> signal.
+  </div>
+
+  <div class="note-box" style="margin-bottom: 16px;">
+    <strong>Economic Ledger (ECON_LEDGER)</strong> — New panel with multiple tabs. Tab 1: national resource summary (all 13 resources, total input vs. output by category). Tabs 2–14: per-resource tile breakdown (each tile's contribution sorted by output). Read-only display — connects to tile census data already collected by world.gd. Open button wired to resource bar or main world UI.
+  </div>
+
+  <div class="note-box" style="margin-bottom: 16px;">
+    <strong>Music (MUSIC-001 / MUSIC-002)</strong> — When composer delivers .ogg files: import to Godot, create MusicManager.gd autoload, wire menu theme to main_menu.tscn load, wire in-game tracks to AudioStreamPlayer with fade transitions. Minimum viable: 1 menu theme + 2 game tracks.
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <h2>Canada Lite Scope</h2>
+  <div class="note-box">
+    <strong>Ships with:</strong> CA PM Arc (8 events), UK buildup/declaration, Marc Penoit event, CAN_CALL, Clearwater, Joint Ops, Summit, Peace, Quebec election, George's peace, Allied victory, USA terms, CA AI peace. Louis Riel + Roméo Dallaire portraits. 2 remaining laws. Canada flag sprite + Mountee silhouette placeholder.<br><br>
+    <strong>Ships without (Mountee Update):</strong> CA Protector arcs (CA_PROT_01–08), most CA icons (15 IDEA-tier), most CA doctrines (10 IDEA-tier). These become the next DLC-style update after July 4th.
+  </div>
+
+</div>
+
+<footer>
+  <div class="stars">★ ★ ★ ★ ★ ★ ★</div>
+  <p style="margin-top:10px;">Farsword &nbsp;·&nbsp; America Rush Sprint &nbsp;·&nbsp; Generated June 18, 2026</p>
+  <p style="margin-top: 6px;">Run <code>python3 scripts/pick_ethertask.py</code> to see the current task &nbsp;·&nbsp; <code>/closetask</code> to mark complete</p>
+</footer>
+
+</body>
+</html>

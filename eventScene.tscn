@@ -1,27 +1,34 @@
-[gd_scene load_steps=4 format=3 uid="uid://dwonmrxv1pcck"]
+[gd_scene load_steps=5 format=3 uid="uid://dwonmrxv1pcck"]
 
 [ext_resource type="Script" uid="uid://brege513eyw2c" path="res://event_scene.gd" id="1_y3087"]
+[ext_resource type="Texture2D" uid="uid://demtu316la1b4" path="res://art assets/AmericanRevolutionArt/Panel/IMG_1688.PNG" id="2_5slwq"]
 [ext_resource type="Texture2D" uid="uid://dpp4uvu74ta2r" path="res://art assets/Placeholder Art/character/4-22-Samurai-Jack-Colors - Copy.png" id="2_apgmq"]
 [ext_resource type="Texture2D" uid="uid://kjhhk7jj22fr" path="res://art assets/Placeholder Art/UI Art/resources/Plentify.png" id="3_apgmq"]
 
 [node name="EventControl" type="Control"]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_right = 1248.0
+offset_bottom = 639.0
 script = ExtResource("1_y3087")
 
 [node name="Panel" type="Panel" parent="."]
+visible = false
 layout_mode = 0
-offset_right = 1925.0
-offset_bottom = 1086.0
+offset_right = 1282.0
+offset_bottom = 672.0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(640.5, 334.5)
+scale = Vector2(0.440333, 0.715)
+texture = ExtResource("2_5slwq")
 
 [node name="EventPanel" type="Panel" parent="."]
 layout_mode = 0
-offset_left = 374.0
-offset_top = 188.0
-offset_right = 1644.0
-offset_bottom = 844.0
+offset_left = 1.0
+offset_top = -3.0
+offset_right = 1284.0
+offset_bottom = 671.0
 
 [node name="EventNameLabel" type="Label" parent="EventPanel"]
 layout_mode = 0
@@ -72,10 +79,10 @@ columns = 3
 [node name="SpellSchoolUnlocked" type="Panel" parent="."]
 visible = false
 layout_mode = 0
-offset_left = 677.0
-offset_top = 356.0
-offset_right = 1181.0
-offset_bottom = 749.0
+offset_left = -1.0
+offset_top = 8.0
+offset_right = 503.0
+offset_bottom = 401.0
 
 [node name="SpellSprite" type="Sprite2D" parent="SpellSchoolUnlocked"]
 position = Vector2(158, 153)

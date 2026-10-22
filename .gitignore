@@ -22,3 +22,7 @@ mono_crash.*.json
 __pycache__/
 *.pyc
 *.pyo
+
+# local backup bundles — never commit (huge binaries)
+*.bundle
+*.bundle.lock

@@ -34,6 +34,15 @@ text = "War Room"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="CloseButton" type="Button" parent="PanelBackground"]
+layout_mode = 0
+offset_left = 660.0
+offset_top = 8.0
+offset_right = 726.0
+offset_bottom = 60.0
+theme_override_font_sizes/font_size = 22
+text = "X"
+
 [node name="TabContainer" type="TabContainer" parent="PanelBackground"]
 layout_mode = 0
 offset_top = 83.0
@@ -59,17 +68,17 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 0
 
-[node name="DEPTARTMENT OF MYTHOLOGICAL  AFFAIRS" type="Control" parent="PanelBackground/TabContainer"]
+[node name="DEPARTMENT OF MYTHOLOGICAL AFFAIRS" type="Control" parent="PanelBackground/TabContainer"]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
-[node name="ScrollContainer" type="ScrollContainer" parent="PanelBackground/TabContainer/DEPTARTMENT OF MYTHOLOGICAL  AFFAIRS"]
+[node name="ScrollContainer" type="ScrollContainer" parent="PanelBackground/TabContainer/DEPARTMENT OF MYTHOLOGICAL AFFAIRS"]
 layout_mode = 0
 offset_left = 5.0
 offset_right = 700.0
 offset_bottom = 974.0
 
-[node name="PresidentialVBox" type="VBoxContainer" parent="PanelBackground/TabContainer/DEPTARTMENT OF MYTHOLOGICAL  AFFAIRS/ScrollContainer"]
+[node name="PresidentialVBox" type="VBoxContainer" parent="PanelBackground/TabContainer/DEPARTMENT OF MYTHOLOGICAL AFFAIRS/ScrollContainer"]
 layout_mode = 2
 theme_override_constants/separation = 0

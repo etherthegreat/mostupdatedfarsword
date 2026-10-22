@@ -1,20 +1,19 @@
 extends Control
 
 
-var buildingUnderInspection: building
+var buildingUnderInspection
 
 signal upgradeBuilding
 signal downgradeBuilding
 signal requestPlayerCountry
 var bPPLevelList: Array = []
 
-var player: country
+var player
 var red = Color(1.0,0.0,0.0,1.0)
 var white = Color(1.0,1.0,1.0,1.0)
 var green = Color(0, 1, 0, 1)
 
 func updateInspector(building):
-	print("dkdkdkdkdkd")
 	self.visible = true
 	buildingUnderInspection = building
 	if buildingUnderInspection != null:
@@ -135,7 +134,6 @@ func updateInspector(building):
 		else:
 			$Panel/GoldLabel.set("theme_override_colors/font_color",white)
 			$Panel/Upgrade.disabled = false
-		print("Success")
 		bPPLevelList = player.buildingLevelList
 		for buildingLevel in bPPLevelList:
 			if buildingLevel.buildingType == buildingUnderInspection.buildingType:
@@ -145,17 +143,14 @@ func updateInspector(building):
 				if buildingUnderInspection.buildingLevel < buildingLevel.maxLevel:
 					$Panel/Upgrade.disabled = false
 	else:
-		#print("no inspector")
 		pass
-	pass
 
 
 
 
-func _process(delta: float) -> void:
-	if self.visible == true:
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_VISIBILITY_CHANGED and self.visible:
 		updateInspector(buildingUnderInspection)
-	pass
 
 func _on_upgrade_pressed() -> void:
 	emit_signal("upgradeBuilding", buildingUnderInspection)
@@ -163,12 +158,10 @@ func _on_upgrade_pressed() -> void:
 	player.TotalWood -= woodUpgradeCost
 	player.TotalDollars -= goldUpgradeCost
 	player.TotalMetal -= metalUpgradeCost
-	pass # Replace with function body.
 
 
 func _on_downgrade_pressed() -> void:
 	emit_signal("downgradeBuilding", buildingUnderInspection)
-	pass # Replace with function body.
 
 var goldUpgradeCost: int
 var foodUpgradeCost: int
@@ -290,5 +283,3 @@ func calculateUpgradeCost(building):
 			woodUpgradeCost += (15 + (15 * building.buildingLevel))
 			goldUpgradeCost += (30 + (30 * building.buildingLevel))
 		return
-	print("no building recognized")
-	pass

@@ -60,4 +60,18 @@ func buildSelf(Name):
 			var newMilMod = milModScene.instantiate()
 			newMilMod.buildSelf("Codebook")
 			toolMilMod = newMilMod
-	pass
+		"Accountant Books":
+			toolImage = load("res://art assets/Placeholder Art/UI Art/resources/4-15-Eli-Prompt.png")
+			var newMilMod = milModScene.instantiate()
+			newMilMod.buildSelf("Accountant Books")
+			toolMilMod = newMilMod
+		"Foundry Kit":
+			toolImage = load("res://art assets/Placeholder Art/UI Art/resources/Metal.png")
+			var newMilMod = milModScene.instantiate()
+			newMilMod.buildSelf("Foundry Kit")
+			toolMilMod = newMilMod
+		"Rails and Engines":
+			toolImage = load("res://art assets/Placeholder Art/UI Art/resources/weapons.png")
+			var newMilMod = milModScene.instantiate()
+			newMilMod.buildSelf("Rails and Engines")
+			toolMilMod = newMilMod

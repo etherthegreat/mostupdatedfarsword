@@ -56,7 +56,6 @@ func load_countries(path: String) -> void:
 
 	file.close()
 	loaded = true
-	print("CountryDatabase: Loaded ", country_data.size(), " countries: ", country_data.keys())
 
 
 func parse_list(s: String) -> Array:

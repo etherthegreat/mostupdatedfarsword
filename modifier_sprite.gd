@@ -8,22 +8,17 @@ var modifierName: String
 func _ready() -> void:
 	scale = Vector2(0.13,0.13)
 	#$Panel.visible = false
-	pass
 
 
 func buildModifier(tileEcoModifier):
 	modifierName = tileEcoModifier.modName
 	self.texture = tileEcoModifier.modSprite
-	pass
 
 func _on_area_2d_mouse_entered() -> void:
-	print("hell ya")
 	if modifierName == "Summer":
 		$Panel/Label.text = str("Summer:  This holiday is warm!")
 		$Panel.visible = true
-	pass # Replace with function body.
 
 
 func _on_area_2d_mouse_exited() -> void:
 	$Panel.visible = false
-	pass # Replace with function body.

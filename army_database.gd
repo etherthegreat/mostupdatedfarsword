@@ -38,7 +38,6 @@ func load_templates(path: String) -> void:
  
 	file.close()
 	loaded = true
-	print("ArmyDatabase: Loaded templates for ", army_templates.keys(), ".")
  
  
 func parse_list(s: String) -> Array:

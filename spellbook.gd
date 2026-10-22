@@ -10,7 +10,6 @@ func displaySpells(playerCountry):
 		#for Control in $Panel/ArmySpellsGridContainer.get_children():
 		#	Control.queue_free()
 	for spell in playerCountry.unlockedSpells:
-		print("spells in playerCountry.unlockedSpells", spell.spellType)
 		if spell.militarySpell == false:
 			var thisSpellArt = spellArtScene.instantiate()
 			thisSpellArt.buildSpell(spell.spellType, spell.spellCastCost, playerCountry, spell)
@@ -22,7 +21,6 @@ func displaySpells(playerCountry):
 			thisSpellArt.buildSpell(spell.spellType, spell.spellCastCost, playerCountry, spell)
 			thisSpellArt.spellButtonPressed.connect(useThisSpell)
 			$Panel/ArmySpellsGridContainer.add_child(thisSpellArt)
-	pass
 
 signal spellToUse
 func useThisSpell(spell, cost):
@@ -33,4 +31,3 @@ func useThisSpell(spell, cost):
 	$SelectedInfoPanel/Description.text = spell.spellShortDescription
 	$SelectedInfoPanel.visible = true
 	#$Panel/BookSprite.visible = false
-	pass

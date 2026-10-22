@@ -31,7 +31,6 @@ func initializeTiles(is_new_game: bool, save_data: Dictionary = {}) -> void:
 			else:
 				tile.build_self_from_save(tile_save)
 
-	print("TileController: All ", allTilesList.size(), " tiles initialized.")
 
 
 # ============================================================
@@ -60,8 +59,23 @@ func discoverTiles(playerCountry) -> void:
 
 
 func updateTiles(mapMode, displayCorruption, playerCountry) -> void:
+	var max_val: float = 1.0
+	const GRADIENT_MODES := ["MapFood","MapWood","MapMetal","MapFaith","MapHappiness",
+		"MapManpower","MapWeapons","MapDollars","MapMagic","MapMandate","MapArmy","MapOutputs"]
+	if mapMode in GRADIENT_MODES:
+		for t in get_children():
+			if t.has_method("get_map_mode_value"):
+				var v: float = t.get_map_mode_value(mapMode)
+				if v > max_val:
+					max_val = v
+	# Pass 1: reset all activeView so neighbor cascades start from a clean slate
 	for Tile in get_children():
-		Tile.updateGraphics(mapMode, displayCorruption, playerCountry)
+		Tile.activeView = false
+	# Pass 2: updateGraphics sets player/army tiles + cascades visibility to neighbors
+	for Tile in get_children():
+		Tile.updateGraphics(mapMode, displayCorruption, playerCountry, max_val)
+	# Pass 3: apply FOW now that all activeView values are final
+	for Tile in get_children():
 		Tile.calculateActiveView()
 
 
@@ -72,7 +86,6 @@ func connectEventSignal(tile) -> void:
 signal transfer
 
 func transferTileEvent(tile, type) -> void:
-	print("yippie")
 	emit_signal("transfer", tile, type)
 
 

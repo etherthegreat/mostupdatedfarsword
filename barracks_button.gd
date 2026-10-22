@@ -2,7 +2,7 @@ extends Control
 
 class_name BarracksButton
 
-var barracksBuilding: building
+var barracksBuilding
 var barracksTile: Tile
 
 var barracksArmy: Army
@@ -17,7 +17,6 @@ func _on_add_new_army_button_pressed():
 	else:
 		$NameAndConfirmPanel.visible = true
 	#var newArmy = Army
-	pass # Replace with function body.
 
 func addPrebuiltArmy(Army):
 	$AddNewArmyButton.visible = false
@@ -25,27 +24,34 @@ func addPrebuiltArmy(Army):
 	$Panel/builtArmyInfoPanel/armyName.text = str(Army.ArmyName)
 	$ArmyContainer.add_child(Army)
 	barracksArmy = Army
-	pass
 
 func buildSelf():
-	$Panel/tileName.text = barracksTile.tileName
-	$Panel/barrackslvl.text = str("Barracks Level: ", barracksBuilding.buildingLevel)
-	pass
+	if barracksTile != null:
+		$Panel/tileName.text = barracksTile.tileName
+	if barracksBuilding != null:
+		$Panel/barrackslvl.text = str("Barracks Level: ", barracksBuilding.buildingLevel)
+	else:
+		$Panel/barrackslvl.text = "Militia Camp"
 
 func updateSelf():
-	$Panel/barrackslvl.text = str("Barracks Level: ", barracksBuilding.buildingLevel)
-	if barracksArmy != null:
+	if barracksBuilding != null:
+		$Panel/barrackslvl.text = str("Barracks Level: ", barracksBuilding.buildingLevel)
+	else:
+		$Panel/barrackslvl.text = "Militia Camp"
+	if is_instance_valid(barracksArmy):
 		barracksArmy.updateArmyUI()
-	pass
+	else:
+		# Army died or was never raised — restore the "Add New Army" affordance
+		barracksArmy = null
+		$AddNewArmyButton.visible = true
+		$Panel/builtArmyInfoPanel.visible = false
+		$Panel/builtArmyInfoPanel/armyName.text = ""
 
 func _on_text_edit_text_changed():
 	newArmyName = $NameAndConfirmPanel/TextEdit.text
-	print("text edit changed, new name is ", newArmyName)
-	pass # Replace with function body.
 
 
 func _on_confirm_button_pressed():
 	emit_signal("addNewArmy", barracksBuilding, barracksTile, self, newArmyName)
 	$NameAndConfirmPanel/TextEdit.clear()
 	$NameAndConfirmPanel.visible = false
-	pass # Replace with function body.

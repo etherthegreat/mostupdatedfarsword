@@ -1,0 +1,109 @@
+[gd_scene load_steps=2 format=3 uid="uid://cumkyb1p2m02h"]
+
+[ext_resource type="Script" uid="uid://b0f6ttw3lbwgr" path="res://JournalTab.gd" id="1_jt001"]
+
+[node name="JournalTab" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_jt001")
+
+[node name="HSplitContainer" type="HSplitContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+
+[node name="EntryListScroll" type="ScrollContainer" parent="HSplitContainer"]
+custom_minimum_size = Vector2(320, 0)
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="EntryList" type="VBoxContainer" parent="HSplitContainer/EntryListScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 4
+
+[node name="MemoPanel" type="Panel" parent="HSplitContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MemoMargin" type="MarginContainer" parent="HSplitContainer/MemoPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 26
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 26
+
+[node name="MemoVBox" type="VBoxContainer" parent="HSplitContainer/MemoPanel/MemoMargin"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="LetterheadRow" type="HBoxContainer" parent="HSplitContainer/MemoPanel/MemoMargin/MemoVBox"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="SealMini" type="TextureRect" parent="HSplitContainer/MemoPanel/MemoMargin/MemoVBox/LetterheadRow"]
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="HeaderTextVBox" type="VBoxContainer" parent="HSplitContainer/MemoPanel/MemoMargin/MemoVBox/LetterheadRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 2
+
+[node name="ClassificationLabel" type="Label" parent="HSplitContainer/MemoPanel/MemoMargin/MemoVBox/LetterheadRow/HeaderTextVBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "CLASSIFICATION"
+
+[node name="DateLabel" type="Label" parent="HSplitContainer/MemoPanel/MemoMargin/MemoVBox/LetterheadRow/HeaderTextVBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "Date"
+
+[node name="SubjectLabel" type="Label" parent="HSplitContainer/MemoPanel/MemoMargin/MemoVBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "RE: Subject"
+autowrap_mode = 2
+
+[node name="Divider" type="HSeparator" parent="HSplitContainer/MemoPanel/MemoMargin/MemoVBox"]
+layout_mode = 2
+
+[node name="MemoBody" type="RichTextLabel" parent="HSplitContainer/MemoPanel/MemoMargin/MemoVBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 15
+bbcode_enabled = true
+
+[node name="ClassifiedStamp" type="TextureRect" parent="HSplitContainer/MemoPanel"]
+modulate = Color(1, 1, 1, 0.6)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -185.0
+offset_top = 64.0
+offset_right = -35.0
+offset_bottom = 214.0
+grow_horizontal = 0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5

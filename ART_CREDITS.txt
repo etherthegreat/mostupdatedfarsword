@@ -1,0 +1,8 @@
+ART CREDITS — FARSWORD
+======================
+
+Sister Spacedesk
+  - Flintlock musket sprite          (art assets/finishedAssets/Weapons/Flintlock.png)
+  - Brown Bess musket sprite         (art assets/finishedAssets/Weapons/Brown_Bess.png)
+  - Percussion Cap rifle sprite      (art assets/finishedAssets/Weapons/Percussion_Cap.png)
+  - Lever Repeater sprite            (art assets/finishedAssets/Weapons/Lever_Repeater.png)

@@ -17,4 +17,3 @@ func addFaction(Name: String, Loyalty: int, factionLeader: governor = null) -> v
 signal newRewardSend
 func forwardRewardType(rewardType):
 	emit_signal("newRewardSend", rewardType)
-	pass

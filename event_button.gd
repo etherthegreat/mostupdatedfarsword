@@ -1,40 +1,39 @@
 extends Control
 
-class_name EventButton
+class_name EventButtonControl
 
-var eventButtonID: String
+var _btn_data: Dictionary = {}
 
-var eventButtonType: String
+signal button_chosen(btn_data: Dictionary)
 
-signal EventButtonPressed
-signal tileSignalPressed
+func setup(btn_data: Dictionary) -> void:
+	_btn_data = btn_data
+	$EventButton.text = btn_data.get("button_text", "Choose")
+	$EventButton.tooltip_text = _describe_effect(btn_data)
 
-var eventTile: Tile
-
-func buildSelf(buttonText, buttonID, buttonType):
-	eventButtonType = buttonType
-	$EventButton.text = buttonText
-	eventButtonID = buttonID
-	pass
-
-
-func buildTileEventButton(buttonText, buttonID, tile, buttonType):
-	$EventButton.text = buttonText
-	eventButtonID = buttonID
-	eventTile = tile
-	eventButtonType = buttonType
-	pass
+func _describe_effect(d: Dictionary) -> String:
+	# Explicit hover text wins; otherwise auto-describe the mechanical outcome.
+	var explicit: String = str(d.get("button_tooltip", "")).strip_edges()
+	if explicit != "":
+		return explicit
+	var ot: String = str(d.get("outcome_type", ""))
+	var ov: String = str(d.get("outcome_value", ""))
+	match ot:
+		"resource_bundle":
+			var parts: Array = []
+			for pair in ov.split(","):
+				var kv = pair.split(":")
+				if kv.size() == 2:
+					parts.append("+" + kv[1].strip_edges() + " " + kv[0].strip_edges().capitalize())
+			return " · ".join(parts)
+		"resource_change":
+			return "+" + str(d.get("outcome_amount", "")) + " " + ov.capitalize()
+		"add_mil_mod":
+			return "Gain: " + ov.capitalize()
+		"morale_boost":
+			return "Boosts national morale"
+		_:
+			return ""
 
 func _on_event_button_pressed() -> void:
-	
-	match eventButtonType:
-		"governor":
-			print("PIRESTS OF THE CARI")
-			emit_signal("EventButtonPressed", eventButtonID)
-		"spell":
-			emit_signal("EventButtonPressed", eventButtonID)
-		"tile":
-			emit_signal("tileSignalPressed", eventTile, eventButtonID)
-			print("gangnam style")
-			pass
-	pass # Replace with function body.
+	emit_signal("button_chosen", _btn_data)

@@ -28,7 +28,6 @@ func buildSelf(id, image, bwImage, purch, cost, hint, border):
 	$BeliefPanel/BeliefSprite.texture = image
 	$TitleRichLabel.push_hint(str(beliefDesc, "Faith: ", bbCost))
 	$TitleRichLabel.append_text(bbName)
-	pass
 
 func makePurchaseable():
 	$TitleRichLabel.clear()
@@ -36,7 +35,6 @@ func makePurchaseable():
 	$TitleRichLabel.push_hint(str(beliefDesc, "Faith: ", bbCost))
 	$TitleRichLabel.append_text(bbName)
 	$BeliefPanel/BeliefSprite.texture = bbImage
-	pass
 
 func cantAfford():
 	$TitleRichLabel.clear()
@@ -44,7 +42,6 @@ func cantAfford():
 	$TitleRichLabel.push_hint(str(beliefDesc, "Faith: ", bbCost))
 	$TitleRichLabel.append_text(bbName)
 	$BeliefPanel/BeliefSprite.texture = bbBWImage
-	pass
 
 func purchased():
 	$TitleRichLabel.clear()
@@ -52,7 +49,6 @@ func purchased():
 	$TitleRichLabel.push_hint(str(beliefDesc, "Faith: ", bbCost))
 	$TitleRichLabel.append_text(bbName)
 	$BeliefPanel/BeliefSprite.texture = bbImage
-	pass
 
 signal LabelClicked
 
@@ -60,4 +56,3 @@ func _on_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) 
 	if event is InputEventMouseButton and event.is_action_pressed("Left Click"):
 		if bbPurchased == false:
 			emit_signal("LabelClicked", bbName, bbCost, bbImage, beliefDesc, borderImage)
-	pass # Replace with function body.

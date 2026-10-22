@@ -43,8 +43,7 @@ PROTECTORS = [
      "Address the Bell Directly", "Establish a Bell Protocol"),
     ("13", "Green Mountain Ghost", "",
      "Consult Vermont Communities", "Walk the Ridgeline at Dusk"),
-    ("14", "Mount Rushmore",     "kinky_lewd",
-     "Let Them Finish", "Gentlemen — One Agenda Item"),
+
     ("15", "Skunk Ape",          "",
      "Contact Florida Homesteaders", "Observe from the Swamp Edge"),
     ("16", "Minuteman",          "",
@@ -414,8 +413,8 @@ def update_buttons_csv(new_rows: list[str]) -> None:
     reader = csv.reader(io.StringIO(existing))
     all_rows = list(reader)
 
-    # 3. Remove old PROT_01 and PROT_14 SUMMON buttons (they'll be replaced)
-    old_summon_events = {"PROT_01_SUMMON", "PROT_14_SUMMON"}
+    # 3. Remove old PROT_01 SUMMON buttons (they'll be replaced)
+    old_summon_events = {"PROT_01_SUMMON"}
     filtered = [r for r in all_rows if not (len(r) >= 2 and r[1] in old_summon_events)]
 
     # 4. Re-write filtered content

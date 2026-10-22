@@ -44,4 +44,3 @@ func buildSelf(type):
 	var newMilMod = milModScene.instantiate()
 	newMilMod.buildSelf(kitType)
 	kitMilMod = newMilMod
-	pass

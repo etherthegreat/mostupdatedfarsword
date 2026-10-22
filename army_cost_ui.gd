@@ -32,7 +32,6 @@ func buildSelf():
 			image = load("res://art assets/finishedAssets/Panels/armypanelfinishedui/IMG_1558.PNG")
 			$amountlabel.set("theme_override_colors/font_color", Color.PURPLE)
 	$Sprite2D2.texture = image
-	pass
 
 func updateSelf(numb, maxNumb):
 	if newType == "Shield":
@@ -45,4 +44,3 @@ func updateSelf(numb, maxNumb):
 	else:
 		amount = numb
 		$amountlabel.text = str(amount, "%")
-	pass

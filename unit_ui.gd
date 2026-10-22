@@ -5,6 +5,8 @@ class_name UIUnitScene
 var thisUnit: Unit
 var updateControl: bool = false
 
+var playerCountry
+
 var milModList: Array = []
 var modListCompare: Array = []
 
@@ -15,7 +17,8 @@ var delete: bool #flag used by the army to determine if it will be deleted durin
 
 const milModScene = preload("res://mil_mod.tscn")
 
-func buildSelf(unit):
+func buildSelf(unit, player):
+	playerCountry = player
 	debugMode = false
 	alwaysFree = false
 	thisUnit = unit
@@ -93,9 +96,7 @@ func _on_weapon_type_button_pressed() -> void:
 		for WeaponButton in weaponsList:
 			WeaponButton.queue_free()
 		weaponsList.clear()
-	print(thisUnit.playerCountry.CID, "CID")
-	print(thisUnit.playerCountry.weaponTemplateList, "WTL")
-	for WeaponTemplate in thisUnit.playerCountry.weaponTemplateList:
+	for WeaponTemplate in playerCountry.weaponTemplateList:
 		var weaponButton = weaponButtScene.instantiate()
 		weaponButton.buildSelf(WeaponTemplate.weaponType, WeaponTemplate.weaponImage)
 		weaponButton.giveWeaponName.connect(addWeapon)
@@ -114,8 +115,7 @@ func _on_ore_type_button_pressed() -> void:
 		for OreButton in oresList:
 			OreButton.queue_free()
 		oresList.clear()
-	#print("DEBUG AVAILABLE ORES", thisUnit.playerCountry.availableOres)
-	for ore in thisUnit.playerCountry.availableOres:
+	for ore in playerCountry.availableOres:
 		var newOreButton = oreButtonScene.instantiate()
 		newOreButton.buildSelf(ore.oreType, ore.oreImage)
 		newOreButton.giveOreName.connect(addOre)

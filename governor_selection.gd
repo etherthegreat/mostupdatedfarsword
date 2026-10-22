@@ -12,7 +12,6 @@ func buildSelf(receivedGovernor):
 	$MasterPanel/characterInfoPanel/shortDescLabel.text = thisGovernor.governorDescription
 	$MasterPanel/selectGovernorPanel/selectGovernorButton.icon = thisGovernor.governorTexture
 	fillCommanderMilMods()
-	pass
 
 func buildSelectedSelf(receivedGovernor):
 	# Guard: called with null when army has no commander — skip silently
@@ -25,20 +24,16 @@ func buildSelectedSelf(receivedGovernor):
 	$MasterPanel/characterInfoPanel/shortDescLabel.text = thisGovernor.governorDescription
 	$MasterPanel/selectGovernorPanel/selectGovernorButton.visible = false
 	fillCommanderMilMods()
-	pass
 	
 
 func _on_character_info_button_pressed() -> void:
 	changePanel("character")
-	pass # Replace with function body.
 
 func _on_governor_info_button_pressed() -> void:
 	changePanel("governor")
-	pass # Replace with function body.
 
 func _on_commander_info_button_pressed() -> void:
 	changePanel("commander")
-	pass # Replace with function body.
 
 func changePanel(panelType):
 	match panelType:
@@ -78,7 +73,6 @@ func changePanel(panelType):
 			$MasterPanel/selectGovernorPanel/confirmGovernorButton.z_index = 10
 			$MasterPanel/selectGovernorPanel/declineGovernorButton.z_index = 10
 			$MasterPanel.move_child($MasterPanel/commanderPanel, $MasterPanel.get_child_count() - 1)
-	pass
 
 
 func _on_select_governor_button_pressed() -> void:
@@ -94,7 +88,6 @@ func _on_select_governor_button_pressed() -> void:
 	$MasterPanel/selectGovernorPanel/confirmGovernorButton.z_index = 25
 	$MasterPanel/selectGovernorPanel/declineGovernorButton.z_index = 25
 	$MasterPanel.move_child($MasterPanel/selectGovernorPanel, $MasterPanel.get_child_count() - 1) 
-	pass # Replace with function body.
 
 var milModScene = load("res://mil_mod.tscn")
 func fillCommanderMilMods():
@@ -119,22 +112,17 @@ func fillCommanderMilMods():
 		var newMMS = milModScene.instantiate()
 		newMMS.buildSelf(MilMod.milModType)
 		$MasterPanel/commanderPanel/HBoxContainerLVL3.add_child(newMMS)
-	pass
 
 signal governorConfirmed
 func _on_confirm_governor_button_pressed() -> void:
 	emit_signal("governorConfirmed", thisGovernor)
-	pass # Replace with function body.
 
 func onAvailable():
 	$MasterPanel/selectGovernorPanel/selectGovernorButton.disabled = false
-	pass
 
 func onUnavailable():
 	$MasterPanel/selectGovernorPanel/selectGovernorButton.disabled = true
-	pass
 
 
 func _on_decline_governor_button_pressed() -> void:
 	changePanel("character")
-	pass # Replace with function body.

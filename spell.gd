@@ -48,31 +48,31 @@ func newGameSpellAssignment():
 			spellSprite = load("res://art assets/Placeholder Art/Spells/Draught of Knowledge.PNG")
 			spellCastCost = 25
 			spellShortDescription = "The Jersey Devil holds dominion over these woods. He was born there under highly controversial circumstances and considers the territory personally his. Trespassers are corrected. Vigorously."
-		"PACIFIC NORTHWEST PRIVACY PROTECTION ACT":      # PROT_03 Bigfoot
+		"APPALACHIAN PRIVACY PROTECTION ACT":            # PROT_03 Wood Booger
 			militarySpell = false
 			spellSprite = load("res://art assets/Placeholder Art/Spells/Draught of Knowledge.PNG")
 			spellCastCost = 35
-			spellShortDescription = "Your armies move unseen, like a large hairy man through the ferns. The tracks are enormous, the evidence abundant, and yet the government swears it isn't there. Your scouts learn from the best."
-		"EXECUTIVE WEATHER CONTROL INITIATIVE":          # PROT_04 Thunderbird
+			spellShortDescription = "Your armies move unseen through the Blue Ridge. The Wood Booger is enormous, silent, and extremely private about the Appalachians. The tracks are larger than logic permits. The DMA has no record of anything moving through those ridgelines. Neither will anyone else."
+		"EXECUTIVE WEATHER CONTROL INITIATIVE":          # PROT_04 Pamola
 			militarySpell = true
 			spellSprite = load("res://art assets/Placeholder Art/Spells/Fireworks.PNG")
 			spellCastCost = 50
-			spellShortDescription = "The Thunderbird, when properly aroused, shall release storms of such fury that enemy formations scatter. He is ancient, tremendous, and requires considerable coaxing. The results are worth the effort."
+			spellShortDescription = "Pamola has come down from Katahdin. The storm that arrives does not distinguish between an army and a hillside — it simply arrives, total and sudden, from a direction that was not in any forecast. Enemy formations scatter. The mountain does not file reports."
 		"CLASSIFIED TACTICAL TERROR BUDGET":             # PROT_05 Headless Horseman
 			militarySpell = true
 			spellSprite = load("res://art assets/Placeholder Art/Spells/Fireworks.PNG")
 			spellCastCost = 45
 			spellShortDescription = "The Horseman rides at full gallop toward enemy lines. He cannot aim, having no head, but compensates with enthusiasm. Enemy commanders report being unsettled in ways they decline to specify in their reports."
-		"CHESAPEAKE WATERS RECLAMATION PROJECT":         # PROT_06 Chessie
-			militarySpell = false
-			spellSprite = load("res://art assets/Placeholder Art/Spells/Health Potion.PNG")
-			spellCastCost = 40
-			spellShortDescription = "Chessie stirs the deep bay and brings forth rich bounty from her depths. She is ancient, immense, and responded positively to the Secretary's advances. He brought oysters. She appreciated the gesture."
-		"DEPARTMENT OF PSYCHOLOGICAL OPERATIONS":        # PROT_07 Bell Witch
+		"GOATMAN'S JUDGEMENT":                           # PROT_06 Goatman
 			militarySpell = true
-			spellSprite = load("res://art assets/Placeholder Art/Spells/Fireworks.PNG")
+			spellSprite = load("res://art assets/finishedAssets/governors/goatman.png")
+			spellCastCost = 50
+			spellShortDescription = "Cast on any army at 20% shield or below. The Goatman emerges from the Maryland treeline and finishes the job. He does not negotiate at this stage. He does not have to."
+		"BELL WITCH'S GIFT":                             # PROT_07 Bell Witch
+			militarySpell = true
+			spellSprite = load("res://art assets/finishedAssets/governors/bell_witch.png")
 			spellCastCost = 55
-			spellShortDescription = "The Bell Witch shall visit enemy commanders in the night and make herself thoroughly unforgettable. What happened to Andrew Jackson in that farmhouse remains classified. He still flinches at bells."
+			spellShortDescription = "Cast on an allied army. The Bell Witch produces a gift from a velvet case that smells of Tennessee cedar. Recipients report +3 Attack across all units for 3 turns. The DMA field report describes the gift only as 'non-standard configuration.' The army reports no complaints. Several enthusiastic ones, actually."
 		"NAVAL SUPERIORITY MAINTENANCE DIRECTIVE":       # PROT_08 Old Ironsides
 			militarySpell = true
 			spellSprite = load("res://art assets/Placeholder Art/Spells/Fireworks.PNG")
@@ -88,39 +88,34 @@ func newGameSpellAssignment():
 			spellSprite = load("res://art assets/Placeholder Art/Spells/Draught of Knowledge.PNG")
 			spellCastCost = 45
 			spellShortDescription = "A Snallygaster has been assigned to this region and has signed the relevant articles. He is enormous, many-tentacled, and surprisingly diligent. The other clerks avoid his desk area. The smell is distinct."
-		"MIDNIGHT EMERGENCY MOBILIZATION ORDER":         # PROT_11 Paul Revere
-			militarySpell = true
-			spellSprite = load("res://art assets/Placeholder Art/Spells/Fireworks.PNG")
+		"BLACK DOG WATCH PROTOCOL":                      # PROT_11 Black Dog
+			militarySpell = false
+			spellSprite = load("res://art assets/Placeholder Art/Spells/Draught of Knowledge.PNG")
 			spellCastCost = 40
-			spellShortDescription = "Mr. Revere rides through the night in a state of considerable agitation. One if by land, two if by sea, three if everyone should put their breeches on this instant and leave through the back."
-		"FREEDOM RESONANCE AMPLIFICATION DECREE":        # PROT_12 Liberty Bell
+			spellShortDescription = "The Black Dog of the Hanging Hills has been observed in the target area. This is either the first sighting or the third, depending on enemy scouting records. Advise Crown patrols to stop counting their encounters. They are unlikely to do so. The DMA considers this satisfactory."
+		"MERCY BROWN'S COMPACT":                         # PROT_12 Mercy Brown
 			militarySpell = false
 			spellSprite = load("res://art assets/Placeholder Art/Spells/Health Potion.PNG")
 			spellCastCost = 50
-			spellShortDescription = "Ring the bell. Let freedom's resonance stir the passions of free men and women everywhere. They are stirred. Vigorously. No one is taking responsibility for the crack."
-		"RURAL SPECTRAL INVESTMENT INITIATIVE":          # PROT_13 Green Mountain Ghost
+			spellShortDescription = "Mercy Brown's interests in the area have been formalized. She operates nocturnally, which is when Crown supply convoys believe they are unobserved. Crown units in the target area begin filing medical reports describing chronic fatigue of unknown origin. The DMA has stopped asking her to specify what she is doing. She finds the question unnecessary."
+		"LAKE CHAMPLAIN SOVEREIGNTY DECREE":             # PROT_13 Champ
 			militarySpell = false
 			spellSprite = load("res://art assets/Placeholder Art/Spells/Health Potion.PNG")
 			spellCastCost = 30
-			spellShortDescription = "The Green Mountain Ghost haunts your forests in a professional capacity, encouraging settlers to greater productivity through nocturnal visitations. Settlers report working harder, sleeping less, and declining to elaborate on specifics."
-		"MONUMENT-BASED ECONOMIC STIMULUS PACKAGE":      # PROT_14 Mount Rushmore
-			militarySpell = false
-			spellSprite = load("res://art assets/Placeholder Art/Spells/Draught of Knowledge.PNG")
-			spellCastCost = 65
-			spellShortDescription = "The four stone presidents gaze upon our commerce. Washington approves. Jefferson has seen things. Roosevelt is very excited about all of it. Lincoln looks as though he has been told something he cannot un-know."
+			spellShortDescription = "Lake Champlain is controlled by a large aquatic entity with territorial opinions and first-documented-sighting credentials dating to 1609. Crown vessels attempting transit report structural complications. Champ does not file explanations. The admiralty has stopped requesting them."
+
 		"FLORIDA CRYPTID INTEGRATION TASK FORCE":        # PROT_15 Skunk Ape
 			militarySpell = false
 			spellSprite = load("res://art assets/Placeholder Art/Spells/Draught of Knowledge.PNG")
 			spellCastCost = 35
 			spellShortDescription = "The Skunk Ape has been deployed to your wetlands. He is massive, fragrant, and passionate about swamp sovereignty. Enemy scouts report being overwhelmed on two fronts: the creature's considerable size and its personal scent, which lingers for three turns."
-		"PERMANENT READINESS MANDATE (EXPIRES NEVER)":   # PROT_16 Eternal Minuteman
-			militarySpell = true
-			spellSprite = load("res://art assets/Placeholder Art/Spells/Fireworks.PNG")
-			spellCastCost = 75
-			spellShortDescription = "The Minuteman has stood ready since 1775. His musket is primed, his powder is dry, and his breeches are fastened with the intensity of a man who has been waiting one hundred and fifty years for an excuse to unfasten them."
+		"CULPER RING":   # PROT_16 Agent 355
+			militarySpell = false
+			spellSprite = load("res://art assets/finishedAssets/governors/agent_355.png")
+			spellCastCost = 60
+			spellShortDescription = "The Culper Ring's network is activated on the target tile. All enemy units stationed there suffer -5% shield loss per turn as their movements, supply lines, and communications are exposed. The tile is permanently revealed to Continental intelligence. She does not need to be in the room."
 		"EMANCIPATION PROCLAMATION 2: STILL EMANCIPATING":  # PROT_17 Lincoln's Ghost
 			militarySpell = false
 			spellSprite = load("res://art assets/Placeholder Art/Spells/Health Potion.PNG")
 			spellCastCost = 70
 			spellShortDescription = "The President, speaking from beyond mortality, assures us the work of freedom is never finished. He is still haunting the White House. He has strong opinions about the East Bedroom and will express them in full to anyone who enters, at any hour of the night."
-	pass
