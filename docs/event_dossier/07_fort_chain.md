@@ -32,6 +32,11 @@
 | 1 | Make an Example of Him — Confront Publicly | `standard` | sets mission flag `FORT_003` | — |
 | 2 | Handle It Quietly — Visit Privately | `standard` | sets mission flag `FORT_004` | — |
 
+**Leads to**
+
+- "Make an Example of Him — Confront Publicly" sets mission (army present within 6 turns) `FORT_003` — PRESIDENT CARLISLE FIRES [COMMANDER_NAME] IN FRONT OF GOD AND THE GARRISON
+- "Handle It Quietly — Visit Privately" sets mission (army present within 6 turns) `FORT_004` — FORT [TILE_NAME] REPAIR ORDER SIGNED — GRIEVANCES RESOLVED
+
 **Design notes** Fires at Fortress tiles; requires governor + no fortDisrepair; army station required
 
 <details><summary><b>FINAL PASS — write here</b></summary>
@@ -54,7 +59,7 @@
 
 **Fires when**
 
-- ⚠️ **No trigger row, no inbound chain link, no code reference.** Draft is currently unreachable in game.
+- Chained from `FORT_001` — "Make an Example of Him — Confront Publicly" sets mission (army present within 6 turns) <sub>(FORT [TILE_NAME]: STRUCTURAL CONCERNS AND A PAMP)</sub>
 
 **Subhead — first draft**
 
@@ -92,6 +97,7 @@
 
 **Fires when**
 
+- Chained from `FORT_001` — "Handle It Quietly — Visit Privately" sets mission (army present within 6 turns) <sub>(FORT [TILE_NAME]: STRUCTURAL CONCERNS AND A PAMP)</sub>
 - Gated on flag `FORT_005` — set by _nothing sets this_
 
 **Subhead — first draft**

@@ -240,6 +240,19 @@ def build_graph(events, buttons):
                 label = f'"{b["button_text"].strip()}" fires'
                 outgoing[src].append((label, tgt))
                 incoming[tgt].append((label, src))
+        # set_mission_flag stores the completion event id as
+        # "mission_<eventId>_<tileNum>"; checkPendingMissions() fires that event
+        # once the tile condition is met (world.gd:2530).
+        if b["outcome_type"].strip() in ("set_mission_flag", "set_mission_flag_own"):
+            tgt = b["outcome_value"].strip()
+            if tgt in ids:
+                turns = b["outcome_amount"].strip()
+                window = f" within {turns} turns" if turns and turns != "0" else ""
+                kind = ("tile owned" if b["outcome_type"].strip().endswith("_own")
+                        else "army present")
+                label = f'"{b["button_text"].strip()}" sets mission ({kind}{window})'
+                outgoing[src].append((label, tgt))
+                incoming[tgt].append((label, src))
 
     # event_scene.gd:114 — picking "intimate" on X routes to X_INTIMATE
     for eid in ids:
@@ -264,6 +277,23 @@ def build_flag_graph(buttons):
         if pre:
             gates[pre].append(b["event_id"].strip())
     return sets, gates
+
+
+def find_hidden_buttons(buttons, flag_sets):
+    """Buttons _build_buttons() skips because their prerequisite can never hold.
+
+    event_scene.gd:69 drops any button whose prerequisite_flag is non-empty and
+    unsatisfied, and _check_prerequisite() only ever consults CountryFlags. A
+    prerequisite nothing appends can never be met, so the button never renders.
+    Mission flags are stored as "mission_<id>_<tile>", so a bare event id in
+    this column is never satisfied by one.
+    """
+    out = []
+    for b in buttons:
+        pre = b["prerequisite_flag"].strip()
+        if pre and pre.lstrip("!") not in flag_sets:
+            out.append(b)
+    return out
 
 
 def find_misfiled_links(buttons, ids):
@@ -448,6 +478,15 @@ def main():
     flag_sets, flag_gates = build_flag_graph(buttons)
     code_refs = find_code_refs(ids)
     misfiled = find_misfiled_links(buttons, ids)
+    hidden = find_hidden_buttons(buttons, flag_sets)
+    hidden_ids = {b["button_id"].strip() for b in hidden}
+    # An event whose every button is hidden renders with no choices, and the
+    # panel is only freed by a button press (event_scene.gd:137), so there is
+    # no way out of it.
+    buttonless = [e for e in events
+                  if by_event_btn.get(e["event_id"])
+                  and all(b["button_id"].strip() in hidden_ids
+                          for b in by_event_btn[e["event_id"]])]
 
     # Order: follow the masterdoc's arc-coherent ordering, then CSV-only events.
     md_order = {eid: i for i, eid in enumerate(masterdoc)}
@@ -489,14 +528,16 @@ def main():
         written.append((fname, cat, len(evs), counts))
 
     write_index(written, events, masterdoc, by_event_btn, by_event_trig,
-                incoming, code_refs, flag_sets, flag_gates, ids, misfiled)
+                incoming, code_refs, flag_sets, flag_gates, ids, misfiled,
+                hidden, buttonless)
     print(f"Wrote {len(written) + 1} files to {OUT_DIR}/")
     for fname, cat, n, counts in written:
         print(f"  {fname:34} {cat:34} {n:4} events")
 
 
 def write_index(written, events, masterdoc, by_event_btn, by_event_trig,
-                incoming, code_refs, flag_sets, flag_gates, ids, misfiled):
+                incoming, code_refs, flag_sets, flag_gates, ids, misfiled,
+                hidden, buttonless):
     total = len(events)
     status_counts = Counter(masterdoc.get(e["event_id"], {}).get("status", "UNTRACKED")
                             for e in events)
@@ -585,6 +626,39 @@ def write_index(written, events, masterdoc, by_event_btn, by_event_trig,
             md = masterdoc.get(e["event_id"], {})
             L.append(f"| `{e['event_id']}` | {md.get('category','—')} "
                      f"| {md.get('status','UNTRACKED')} | {e['headline'].strip()[:60]} |")
+    else:
+        L.append("_None._")
+    L.append("")
+
+    L.append(f"### Events that render with no usable choice ({len(buttonless)})")
+    L.append("")
+    L.append("Every button on these events is dropped by `_build_buttons()` "
+             "(`event_scene.gd:69`) because its prerequisite can never hold. The "
+             "panel is only freed by a button press (`event_scene.gd:137`) and the "
+             "scene has no close control, so reaching one of these leaves the "
+             "player with an undismissable modal.")
+    L.append("")
+    if buttonless:
+        L.append("| Event | Category | Headline |")
+        L.append("|---|---|---|")
+        for e in buttonless:
+            md = masterdoc.get(e["event_id"], {})
+            L.append(f"| `{e['event_id']}` | {md.get('category','—')} "
+                     f"| {e['headline'].strip()[:60]} |")
+    else:
+        L.append("_None._")
+    L.append("")
+
+    L.append(f"### Buttons hidden by an unsatisfiable prerequisite ({len(hidden)})")
+    L.append("")
+    L.append("`prerequisite_flag` names a flag no button ever sets.")
+    L.append("")
+    if hidden:
+        L.append("| Button | On event | Button text | Waiting on |")
+        L.append("|---|---|---|---|")
+        for b in hidden:
+            L.append(f"| `{b['button_id'].strip()}` | `{b['event_id'].strip()}` "
+                     f"| {b['button_text'].strip()} | `{b['prerequisite_flag'].strip()}` |")
     else:
         L.append("_None._")
     L.append("")

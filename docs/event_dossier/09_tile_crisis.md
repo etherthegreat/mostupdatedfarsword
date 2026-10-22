@@ -31,6 +31,10 @@
 | 1 | Dispatch Ualani to the Farmlands — Station Army at [TILE_NAME] | `standard` | sets mission flag `HARVEST_VISIT_01` | — |
 | 2 | Accept the Shortage — Hold Position | `standard` | _no mechanical effect_ | — |
 
+**Leads to**
+
+- "Dispatch Ualani to the Farmlands — Station Army at [TILE_NAME]" sets mission (army present within 8 turns) `HARVEST_VISIT_01` — PRESIDENT CARLISLE SAVES THE HARVEST
+
 **Design notes** Fires when food < 50; Farm tile required; set_mission_flag BTN1
 
 <details><summary><b>FINAL PASS — write here</b></summary>
@@ -53,7 +57,7 @@
 
 **Fires when**
 
-- ⚠️ **No trigger row, no inbound chain link, no code reference.** Draft is currently unreachable in game.
+- Chained from `HARVEST_001` — "Dispatch Ualani to the Farmlands — Station Army at [TILE_NAME]" sets mission (army present within 8 turns) <sub>(THE ARMY ATE THE SEED CORN)</sub>
 
 **Subhead — first draft**
 
@@ -113,6 +117,11 @@
 | 1 | Station a Naval Garrison — Secure the Dock | `standard` | sets mission flag `HARBOR_ESCORT_01` | — |
 | 2 | Deny Access by Force — Destroy the Dock | `standard` | sets mission flag `HARBOR_BURN_01` | — |
 
+**Leads to**
+
+- "Station a Naval Garrison — Secure the Dock" sets mission (army present within 8 turns) `HARBOR_ESCORT_01` — HARBOR SECURED: CROWN FRIGATE RETREATS FROM [TILE_NAME]
+- "Deny Access by Force — Destroy the Dock" sets mission (army present within 4 turns) `HARBOR_BURN_01` — DOCK FACILITIES AT [TILE_NAME] DESTROYED: ACCESS DENIED TO ALL PARTIES
+
 **Design notes** Dock tile required + UK neighbor; army station required
 
 <details><summary><b>FINAL PASS — write here</b></summary>
@@ -135,7 +144,7 @@
 
 **Fires when**
 
-- ⚠️ **No trigger row, no inbound chain link, no code reference.** Draft is currently unreachable in game.
+- Chained from `HARBOR_001` — "Station a Naval Garrison — Secure the Dock" sets mission (army present within 8 turns) <sub>(CROWN VESSELS SPOTTED IN TERRITORIAL WATERS: DOC)</sub>
 
 **Subhead — first draft**
 
@@ -173,7 +182,7 @@
 
 **Fires when**
 
-- ⚠️ **No trigger row, no inbound chain link, no code reference.** Draft is currently unreachable in game.
+- Chained from `HARBOR_001` — "Deny Access by Force — Destroy the Dock" sets mission (army present within 4 turns) <sub>(CROWN VESSELS SPOTTED IN TERRITORIAL WATERS: DOC)</sub>
 
 **Subhead — first draft**
 
@@ -228,6 +237,11 @@
 | 1 | Reinforce the Forge — Station Army at [TILE_NAME] | `standard` | sets mission flag `FORGE_REINFORCE_01` | — |
 | 2 | Emergency Evacuation — Extract the Weapons Cache | `standard` | sets mission flag `FORGE_EVACUATE_01` | — |
 
+**Leads to**
+
+- "Reinforce the Forge — Station Army at [TILE_NAME]" sets mission (army present within 6 turns) `FORGE_REINFORCE_01` — FORGE SECURED: CROWN ASSAULT PLAN ABANDONED
+- "Emergency Evacuation — Extract the Weapons Cache" sets mission (army present within 4 turns) `FORGE_EVACUATE_01` — EMERGENCY EXTRACTION: WEAPONS CACHE SECURED — FORGE TEMPORARILY OUT OF SERVICE
+
 **Design notes** Forge tile required + UK neighbor; army station required
 
 <details><summary><b>FINAL PASS — write here</b></summary>
@@ -250,7 +264,7 @@
 
 **Fires when**
 
-- ⚠️ **No trigger row, no inbound chain link, no code reference.** Draft is currently unreachable in game.
+- Chained from `FORGE_001` — "Reinforce the Forge — Station Army at [TILE_NAME]" sets mission (army present within 6 turns) <sub>(INTELLIGENCE ALERT: CROWN FORCES HAVE LOCATED TH)</sub>
 
 **Subhead — first draft**
 
@@ -288,7 +302,7 @@
 
 **Fires when**
 
-- ⚠️ **No trigger row, no inbound chain link, no code reference.** Draft is currently unreachable in game.
+- Chained from `FORGE_001` — "Emergency Evacuation — Extract the Weapons Cache" sets mission (army present within 4 turns) <sub>(INTELLIGENCE ALERT: CROWN FORCES HAVE LOCATED TH)</sub>
 
 **Subhead — first draft**
 
@@ -344,6 +358,11 @@
 | 2 | Private Deal — Negotiate a Resolution | `standard` | sets mission flag `CORRUPT_DEAL_01` | — |
 | 3 | Investigate Further — No Action Yet | `standard` | _no mechanical effect_ | — |
 
+**Leads to**
+
+- "Public Trial — Remove and Make an Example" sets mission (army present within 8 turns) `CORRUPT_TRIAL_01` — MAGISTRATE REMOVED IN DISGRACE — [TILE_NAME] COURTHOUSE CLEANED
+- "Private Deal — Negotiate a Resolution" sets mission (army present within 6 turns) `CORRUPT_DEAL_01` — ARRANGEMENT REACHED AT [TILE_NAME]: COURTHOUSE CONTINUES OPERATING
+
 **Design notes** Fires when tileMoralDecay >= 50 on Courthouse tile; army station required
 
 <details><summary><b>FINAL PASS — write here</b></summary>
@@ -366,7 +385,7 @@
 
 **Fires when**
 
-- ⚠️ **No trigger row, no inbound chain link, no code reference.** Draft is currently unreachable in game.
+- Chained from `CORRUPT_001` — "Public Trial — Remove and Make an Example" sets mission (army present within 8 turns) <sub>(MAGISTRATE [COMMANDER_NAME] UNDER INVESTIGATION )</sub>
 
 **Subhead — first draft**
 
@@ -446,7 +465,7 @@
 
 **Fires when**
 
-- ⚠️ **No trigger row, no inbound chain link, no code reference.** Draft is currently unreachable in game.
+- Chained from `CORRUPT_001` — "Private Deal — Negotiate a Resolution" sets mission (army present within 6 turns) <sub>(MAGISTRATE [COMMANDER_NAME] UNDER INVESTIGATION )</sub>
 
 **Subhead — first draft**
 
@@ -502,6 +521,11 @@
 | 2 | Open a Diplomatic Channel — Accept the Negotiation | `standard` | claim → `` -1 | — |
 | 3 | Survey the Territory — Document the Claim | `standard` | sets mission flag `BORDER_SURVEY_01` | — |
 
+**Leads to**
+
+- "Assert Federal Authority — Station Army at [TILE_NAME]" sets mission (army present within 6 turns) `BORDER_ASSERT_01` — FEDERAL BOUNDARY MARKER PLANTED AT [TILE_NAME]: CANADA FILES OBJECTION
+- "Survey the Territory — Document the Claim" sets mission (army present within 10 turns) `BORDER_SURVEY_01` — SURVEY COMPLETE AT [TILE_NAME]: THE LAND HAS BEEN MEASURED AND IS OURS
+
 **Design notes** Woods/Foothills tile + CA neighbor; BTN2 claim_change -1 (diplomacy)
 
 <details><summary><b>FINAL PASS — write here</b></summary>
@@ -524,7 +548,7 @@
 
 **Fires when**
 
-- ⚠️ **No trigger row, no inbound chain link, no code reference.** Draft is currently unreachable in game.
+- Chained from `BORDER_001` — "Assert Federal Authority — Station Army at [TILE_NAME]" sets mission (army present within 6 turns) <sub>(CANADIAN BORDER INCIDENT AT [TILE_NAME]: THE LIN)</sub>
 
 **Subhead — first draft**
 
@@ -562,7 +586,7 @@
 
 **Fires when**
 
-- ⚠️ **No trigger row, no inbound chain link, no code reference.** Draft is currently unreachable in game.
+- Chained from `BORDER_001` — "Survey the Territory — Document the Claim" sets mission (army present within 10 turns) <sub>(CANADIAN BORDER INCIDENT AT [TILE_NAME]: THE LIN)</sub>
 
 **Subhead — first draft**
 
@@ -736,6 +760,10 @@
 | 1 | Plan the Recapture — Retake [TILE_NAME] | `standard` | sets mission flag `MEMORIAL_RESTORE_01` (own country) | — |
 | 2 | Denounce the Occupation — Issue a Statement | `standard` | morale +10 | — |
 
+**Leads to**
+
+- "Plan the Recapture — Retake [TILE_NAME]" sets mission (tile owned within 12 turns) `MEMORIAL_RESTORE_01` — [TILE_NAME] LIBERATED: THE MEMORIAL IS OURS AGAIN
+
 **Design notes** Fires when UK captures tile with tileSpecialFeatures; set_mission_flag_own
 
 <details><summary><b>FINAL PASS — write here</b></summary>
@@ -758,7 +786,7 @@
 
 **Fires when**
 
-- ⚠️ **No trigger row, no inbound chain link, no code reference.** Draft is currently unreachable in game.
+- Chained from `MEMORIAL_001` — "Plan the Recapture — Retake [TILE_NAME]" sets mission (tile owned within 12 turns) <sub>([TILE_NAME] FALLS TO THE CROWN: HISTORICAL SITE )</sub>
 
 **Subhead — first draft**
 

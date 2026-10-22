@@ -55,24 +55,13 @@ Findings from generating this packet. None of these are prose problems — they 
 
 These are repaired **on read only** — the CSVs still contain the malformed rows.
 
-### Unreachable drafts (45)
+### Unreachable drafts (34)
 
 Prose exists, but nothing found in the data or the code can reach it. Either the wiring is missing or the draft is a spare.
 
 | Event | Category | Status | Headline |
 |---|---|---|---|
-| `FORT_003` | Fort Chain | FIRST PASS | PRESIDENT CARLISLE FIRES [COMMANDER_NAME] IN FRONT OF GOD AN |
 | `FORT_005` | Fort Chain | FIRST PASS | CLASSIFIED DIPLOMATIC PROCEEDINGS AT [TILE_NAME] |
-| `HARVEST_VISIT_01` | Tile Crisis | FIRST PASS | PRESIDENT CARLISLE SAVES THE HARVEST |
-| `HARBOR_ESCORT_01` | Tile Crisis | FIRST PASS | HARBOR SECURED: CROWN FRIGATE RETREATS FROM [TILE_NAME] |
-| `HARBOR_BURN_01` | Tile Crisis | FIRST PASS | DOCK FACILITIES AT [TILE_NAME] DESTROYED: ACCESS DENIED TO A |
-| `FORGE_REINFORCE_01` | Tile Crisis | FIRST PASS | FORGE SECURED: CROWN ASSAULT PLAN ABANDONED |
-| `FORGE_EVACUATE_01` | Tile Crisis | FIRST PASS | EMERGENCY EXTRACTION: WEAPONS CACHE SECURED — FORGE TEMPORAR |
-| `CORRUPT_TRIAL_01` | Tile Crisis | FIRST PASS | MAGISTRATE REMOVED IN DISGRACE — [TILE_NAME] COURTHOUSE CLEA |
-| `CORRUPT_DEAL_01` | Tile Crisis | FIRST PASS | ARRANGEMENT REACHED AT [TILE_NAME]: COURTHOUSE CONTINUES OPE |
-| `BORDER_ASSERT_01` | Tile Crisis | FIRST PASS | FEDERAL BOUNDARY MARKER PLANTED AT [TILE_NAME]: CANADA FILES |
-| `BORDER_SURVEY_01` | Tile Crisis | FIRST PASS | SURVEY COMPLETE AT [TILE_NAME]: THE LAND HAS BEEN MEASURED A |
-| `MEMORIAL_RESTORE_01` | Tile Crisis | FIRST PASS | [TILE_NAME] LIBERATED: THE MEMORIAL IS OURS AGAIN |
 | `CA_PROT_01_SUMMON` | CA Protector | FIRST PASS | LE WENDIGO WAKES IN THE LAURENTIAN FOREST |
 | `CA_PROT_02_SUMMON` | CA Protector | FIRST PASS | LE LOUP-GAROU RUNS THE RIVER ROAD — RIVIÈRE-DU-LOUP QUARANTI |
 | `CA_PROT_03_SUMMON` | CA Protector | FIRST PASS | LES FEUX FOLLETS RISE OVER THE SAINT JOHN MARSHES — NAVIGATI |
@@ -106,6 +95,22 @@ Prose exists, but nothing found in the data or the code can reach it. Either the
 | `GOV_LOYAL_ARC_23` | Loyal Governor | FIRST PASS | DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] POSTS A MUSTER  |
 | `GOV_LOYAL_ARC_24` | Loyal Governor | FIRST PASS | DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] HOSTS A GATHERI |
 | `GOV_LOYAL_ARC_25` | Loyal Governor | FIRST PASS | DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] STAGES AN EXHIB |
+
+### Events that render with no usable choice (1)
+
+Every button on these events is dropped by `_build_buttons()` (`event_scene.gd:69`) because its prerequisite can never hold. The panel is only freed by a button press (`event_scene.gd:137`) and the scene has no close control, so reaching one of these leaves the player with an undismissable modal.
+
+| Event | Category | Headline |
+|---|---|---|
+| `FORT_004` | Fort Chain | FORT [TILE_NAME] REPAIR ORDER SIGNED — GRIEVANCES RESOLVED |
+
+### Buttons hidden by an unsatisfiable prerequisite (1)
+
+`prerequisite_flag` names a flag no button ever sets.
+
+| Button | On event | Button text | Waiting on |
+|---|---|---|---|
+| `FORT_004_BTN1` | `FORT_004` | Accept the Resolution | `FORT_005` |
 
 ### Chain links filed in the wrong column (1)
 
