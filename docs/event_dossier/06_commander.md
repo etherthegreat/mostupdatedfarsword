@@ -1,6 +1,6 @@
 # Commander
 
-54 events · FIRST PASS 53 · IDEA 1
+57 events · FIRST PASS 43 · FULL COMPLETION 14
 
 [← back to index](00_INDEX.md)
 
@@ -8,13 +8,13 @@
 
 ### `CMD_MERIT` — FIELD PROMOTION: [COMMANDER_NAME] DISTINGUISHED IN EARLY OPERATIONS
 
-**Status** FIRST PASS · **Type** `commander_merit` · **Country** `USA` · **Tone** Determined
+**Status** FULL COMPLETION · **Type** `commander_merit` · **Country** `USA` · **Tone** Determined
 **Chain** Commander Arc · position Root
 **Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
-- Fired from code: `Game Scenes and Scripts/world.gd:4018`, `Game Scenes and Scripts/world.gd:4030`, `Game Scenes and Scripts/world.gd:4031`, `Game Scenes and Scripts/world.gd:4032`
+- ⚠️ **No trigger row, no inbound chain link, no code reference.** Draft is currently unreachable in game.
 
 **Subhead — first draft**
 
@@ -22,7 +22,7 @@
 
 **Body — first draft**
 
-> [COMMANDER_NAME] arrived at [TILE_NAME] without a title worth repeating. They leave this phase of the war with one. The record shows: five engagements, two under circumstances that nobody who wasn't there should have survived, and one decision that will be taught in whatever military academies the Republic eventually builds. President Carlisle does not promote lightly. The citation is brief. The name will be remembered.
+> [COMMANDER_NAME] arrived at [TILE_NAME] without a title worth repeating. They leave this phase of the war with one. The record shows: five engagements, two under circumstances that nobody who wasn't there should have survived, and one decision that will be taught in whatever military academies the Republic eventually builds. The paperwork moved faster than paperwork usually moves. Three officers co-signed without being asked. President Carlisle does not promote lightly — but she promotes quickly when the name is right. The citation is brief. The garrison already knew.
 
 **Choices & outcomes**
 
@@ -31,7 +31,7 @@
 | 1 | Issue the Promotion | `standard` | promotes the commander | — |
 | 2 | Add a Personal Note | `standard` | morale +15 | — |
 
-**Design notes** Fires at governorLevel==1 after 5 turns stationed; promote_commander BTN1; morale_boost BTN2
+**Design notes** DROPPED — arc redesigned to XP system; entry begins at CMD_RECOGNITION (50 XP)
 
 <details><summary><b>FINAL PASS — write here</b></summary>
 
@@ -47,13 +47,13 @@
 
 ### `CMD_RECOGNITION` — CITATION FOR EXCEPTIONAL SERVICE: [COMMANDER_NAME] AT [TILE_NAME]
 
-**Status** FIRST PASS · **Type** `commander_recognition` · **Country** `USA` · **Tone** Proud/Formal
+**Status** FULL COMPLETION · **Type** `commander_recognition` · **Country** `USA` · **Tone** Proud/Formal
 **Chain** Commander Arc · position Branch
 **Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
-- Fired from code: `Game Scenes and Scripts/world.gd:4037`, `Game Scenes and Scripts/world.gd:4049`, `Game Scenes and Scripts/world.gd:4050`, `Game Scenes and Scripts/world.gd:4051`
+- Fired from code: `Game Scenes and Scripts/world.gd:5171`, `Game Scenes and Scripts/world.gd:5175`, `Game Scenes and Scripts/world.gd:5188`, `Game Scenes and Scripts/world.gd:5189`, `Game Scenes and Scripts/world.gd:5190`
 
 **Subhead — first draft**
 
@@ -61,7 +61,7 @@
 
 **Body — first draft**
 
-> The formal recognition came with a document, a seal, and a room full of officers who had heard the name before and now understood why. [COMMANDER_NAME]'s service at [TILE_NAME] has moved from notable to undeniable. Three separate unit commanders cited them in field reports. One cited them twice, which is unusual and meaningful. President Carlisle signed the citation personally and added a marginal note that the official record omits but the recipient will not forget.
+> The formal recognition came with a document, a seal, and a room full of officers who had heard the name before and now understood why. [COMMANDER_NAME]'s service at [TILE_NAME] has moved from notable to undeniable. Three separate unit commanders cited [CMD_OBJECT] in field reports. One cited [CMD_OBJECT] twice, which is unusual and meaningful. President Carlisle signed the citation personally and added a marginal note that the official record omits but the recipient will not forget.
 
 **Choices & outcomes**
 
@@ -70,7 +70,7 @@
 | 1 | Present the Citation Formally | `standard` | promotes the commander | — |
 | 2 | Address the Garrison in Their Honor | `standard` | claim → `` +1 | — |
 
-**Design notes** Fires at governorLevel==2 after 20 turns stationed; promote_commander BTN1; claim_change BTN2
+**Design notes** Fires at governorLevel==2 (50 XP from combat); promote_commander BTN1 (+20 morale commendation); claim_change BTN2
 
 <details><summary><b>FINAL PASS — write here</b></summary>
 
@@ -86,31 +86,32 @@
 
 ### `CMD_THANKS` — PRESIDENT CARLISLE DELIVERS PERSONAL THANKS TO [COMMANDER_NAME] AT [TILE_NAME]
 
-**Status** FIRST PASS · **Type** `commander_thanks` · **Country** `USA` · **Tone** Intimate/Warm
+**Status** FULL COMPLETION · **Type** `commander_thanks` · **Country** `USA` · **Tone** Intimate/Warm
 **Chain** Commander Arc · position Followup
 **Art** `—` (Not Started) · **Explicit art** YES · **Content flag** `explicit` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
-- Fired from code: `GalleryTab.gd:123`, `Game Scenes and Scripts/world.gd:4056`, `Game Scenes and Scripts/world.gd:4068`, `Game Scenes and Scripts/world.gd:4069`, `Game Scenes and Scripts/world.gd:4070`
+- Fired from code: `Game Scenes and Scripts/world.gd:2814`, `Game Scenes and Scripts/world.gd:2815`, `Game Scenes and Scripts/world.gd:5195`, `Game Scenes and Scripts/world.gd:5209`, `Game Scenes and Scripts/world.gd:5210`
 
 **Subhead — first draft**
 
-> The President Doesn't Visit Everyone. She Visited Them.
+> The President Doesn't Visit Everyone. She Visited [CMD_OBJECT].
 
 **Body — first draft**
 
-> [COMMANDER_NAME] did not expect the President to arrive in person. Nobody who gets this visit expects it — it is, by design, not on the official schedule. President Carlisle came to [TILE_NAME] without the briefing staff and without the press detail and with exactly the intention she communicated at the door: to thank a specific person, in a specific place, for what they specifically did. What was said in that room is not in the official record. What is in the official record: [COMMANDER_NAME] returned to duty with a bearing that several junior officers described as 'changed.' One said 'galvanized.' The word the President used, privately, was 'deserved.'
+> [COMMANDER_NAME] did not expect the President to arrive in person. Nobody who gets this visit expects it — it is, by design, not on the official schedule. President Carlisle came to [TILE_NAME] without the briefing staff and without the press detail and with exactly the intention she communicated at the door: to thank a specific person, in a specific place, for what [CMD_SUBJECT] specifically did. What was said in that room is not in the official record. What is in the official record: [COMMANDER_NAME] returned to duty with a bearing that several junior officers described as 'changed.' One said 'galvanized.' The word the President used, privately, was 'deserved.'
 
 **Choices & outcomes**
 
 | # | Button text | Type | What it does | Leads to |
 |---|---|---|---|---|
 | 1 | A President's Personal Thanks | `standard` | morale +25 | — |
-| 2 | The Full Presidential Visit | `explicit` | morale +40 | — |
+| 2 | The Full Presidential Visit | `explicit` | fires **CMD_THANKS_INTIMATE** immediately | `CMD_THANKS_INTIMATE` |
 
 **Leads to**
 
+- "The Full Presidential Visit" fires `CMD_THANKS_INTIMATE` — PRESIDENT CARLISLE DELIVERS PERSONAL THANKS TO [COMM... — BY MORNING
 - scene nav: "intimate" → `CMD_THANKS_INTIMATE` — PRESIDENT CARLISLE DELIVERS PERSONAL THANKS TO [COMM... — BY MORNING
 
 **Design notes** Fires at governorLevel==3 after 50 turns stationed; BTN2 explicit morale_boost +40; non-repeatable
@@ -127,15 +128,93 @@
 
 ---
 
-### `ARC_01_FIRST` — [COMMANDER_NAME] REPORTS IN FROM THE WETLANDS — FIRST GROUND HELD
+### `ARC_03_HONORARY` — HONORARY DEGREE GRANTED — [TILE_NAME] UNIVERSITY RECOGNIZES [COMMANDER_NAME]'S SERVICE
 
-**Status** FIRST PASS · **Type** `commander_objective` · **Country** `USA` · **Tone** Terse/Determined
-**Chain** Wetlands Fisher · position Milestone 1
-**Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Status** FULL COMPLETION · **Type** `general` · **Country** `USA` · **Tone** Wry/Warm
+**Chain** Ivy League Dropout · position Root
+**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
-- **Commander objective** — archetype `ARC_01`, objective #1 · priority 2  <sub>`TRIG_016`</sub>
+- Fired from code: `Game Scenes and Scripts/world.gd:5487`
+
+**Subhead — first draft**
+
+> The College Gave Back What the War Took. Or So They Said.
+
+**Body — first draft**
+
+> [COMMANDER_NAME] left a full scholarship to enlist in the Continental Army. Their university — moved by the reports from the field — has voted to grant an honorary degree in absentia. At the graduation ceremony, [COMMANDER_NAME] accepted the scroll and dedicated the award to:
+
+**Choices & outcomes**
+
+| # | Button text | Type | What it does | Leads to |
+|---|---|---|---|---|
+| 1 | Dedicated to the War Effort — +1000 Manpower | `standard` | manpower +1000 | — |
+| 2 | Dedicated to the Sciences — +100 Science | `standard` | science +100 | — |
+
+**Design notes** BTN1: resource_change manpower+1000; BTN2: resource_change science+100; 3%/turn at loyalty≥6; once per governor
+
+<details><summary><b>FINAL PASS — write here</b></summary>
+
+- **Headline:**
+- **Subhead:**
+- **Body:**
+- **Button text:**
+- **Notes:**
+
+</details>
+
+---
+
+### `ARC_11_MONARCHISTS` — ORAL PERFORMANCE SWAYS MONARCHISTS — A MOB IN [TILE_NAME] IS LISTENING
+
+**Status** FULL COMPLETION · **Type** `general` · **Country** `USA` · **Tone** Tense/Relief
+**Chain** Boston Rabble-Rouser · position Root
+**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+
+**Fires when**
+
+- Fired from code: `Game Scenes and Scripts/world.gd:5507`
+
+**Subhead — first draft**
+
+> Two Dispatches. One Morning. Things Could Have Gone Worse.
+
+**Body — first draft**
+
+> 07:00 — British loyalists attempting to form a mob at [TILE_NAME]. [COMMANDER_NAME] has been dispatched to calm the rioters. Awaiting further direction.13:30 — Loyalist mob calmed and listening to [COMMANDER_NAME]'s address. The crowd has not dispersed. They are waiting to be told what to do next. Cabinet to decide.
+
+**Choices & outcomes**
+
+| # | Button text | Type | What it does | Leads to |
+|---|---|---|---|---|
+| 1 | These men will make fine soldiers — convince them to join our cause | `standard` | manpower +1000 | — |
+| 2 | Use the loyalists against the King — extract their secrets | `standard` | `reveal_british_tiles` +1 | — |
+
+**Design notes** BTN1: resource_change manpower+1000; BTN2: reveal_british_tiles (fog reveal 1 turn); 3%/turn at loyalty≥5; once per governor
+
+<details><summary><b>FINAL PASS — write here</b></summary>
+
+- **Headline:**
+- **Subhead:**
+- **Body:**
+- **Button text:**
+- **Notes:**
+
+</details>
+
+---
+
+### `ARC_01_FIRST` — [COMMANDER_NAME] REPORTS IN FROM THE WETLANDS — FIRST GROUND HELD
+
+**Status** FULL COMPLETION · **Type** `commander_objective` · **Country** `USA` · **Tone** Terse/Determined
+**Chain** Wetlands Fisher · position Milestone 1
+**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+
+**Fires when**
+
+- Fired from code: `Game Scenes and Scripts/world.gd:4942`
 
 **Subhead — first draft**
 
@@ -149,7 +228,7 @@
 
 | # | Button text | Type | What it does | Leads to |
 |---|---|---|---|---|
-| 1 | Field Dispatch Acknowledged. | `standard` | _no mechanical effect_ | — |
+| 1 | Promote [COMMANDER_NAME] to Second Rank | `standard` | promotes the commander | — |
 
 **Design notes** Fires when ARC_01 completes objective 1; BTN1: nothing
 
@@ -167,13 +246,13 @@
 
 ### `ARC_01_DONE` — [COMMANDER_NAME] HAS EARNED THE SWAMP — THE WETLANDS ARE OURS
 
-**Status** FIRST PASS · **Type** `commander_complete` · **Country** `USA` · **Tone** Quiet/Triumphant
+**Status** FULL COMPLETION · **Type** `commander_complete` · **Country** `USA` · **Tone** Quiet/Triumphant
 **Chain** Wetlands Fisher · position Resolution
-**Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
-- **Commander objective** — archetype `ARC_01`, objective #3 · priority 2  <sub>`TRIG_017`</sub>
+- Fired from code: `Game Scenes and Scripts/world.gd:4952`
 
 **Subhead — first draft**
 
@@ -187,8 +266,7 @@
 
 | # | Button text | Type | What it does | Leads to |
 |---|---|---|---|---|
-| 1 | Formally Recognize [COMMANDER_NAME]'s Service | `standard` | morale +20 | — |
-| 2 | A Wetlands Fisher's Work Deserves Its Reward | `standard` | food +20 | — |
+| 1 | Invite the General to Washington | `standard` | promotes the commander | — |
 
 **Design notes** Fires when ARC_01 completes all 3 objectives; BTN1: morale+20, BTN2: food
 
@@ -204,11 +282,11 @@
 
 ---
 
-### `ARC_02_FIRST` — [COMMANDER_NAME] BREAKS THROUGH IN THE FOOTHILLS — FIRST GROUND TAKEN
+### `ARC_02_FIRST` — [COMMANDER_NAME] SENDS WORD FROM THE MINE — SHAFT OPENED AND GROUND HELD
 
-**Status** FIRST PASS · **Type** `commander_objective` · **Country** `USA` · **Tone** Gruff/Determined
+**Status** FULL COMPLETION · **Type** `commander_objective` · **Country** `USA` · **Tone** Gruff/Determined
 **Chain** Appalachian Miner · position Milestone 1
-**Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -216,17 +294,17 @@
 
 **Subhead — first draft**
 
-> The Miner Found Their Hill. [COMMANDER_NAME] Sends the Report.
+> The Mountain Cooperated. [COMMANDER_NAME] Dug Deep Enough.
 
 **Body — first draft**
 
-> The first foothills tile is secured. [COMMANDER_NAME]'s field note was four sentences and a diagram of the defensive position. Engineers communicate in structures. The structure is sound.
+> [COMMANDER_NAME] held [TILE_NAME] and drove the mine down to second level while five hundred troops kept the ridge clear. The field report was a single line: 'Went deeper. Shaft's good. Nobody bothered us.' That is exactly what this command needed to hear.
 
 **Choices & outcomes**
 
 | # | Button text | Type | What it does | Leads to |
 |---|---|---|---|---|
-| 1 | Field Dispatch Acknowledged. | `standard` | _no mechanical effect_ | — |
+| 1 | Promote [COMMANDER_NAME] to Second Rank | `standard` | promotes the commander | — |
 
 **Design notes** Fires when ARC_02 completes objective 1; BTN1: nothing
 
@@ -242,11 +320,11 @@
 
 ---
 
-### `ARC_02_DONE` — [COMMANDER_NAME] HAS CARVED THE MOUNTAIN — THE FOOTHILLS ARC COMPLETE
+### `ARC_02_DONE` — [COMMANDER_NAME] HAS EARNED THE RIDGE — THE APPALACHIAN ARC IS COMPLETE
 
-**Status** FIRST PASS · **Type** `commander_complete` · **Country** `USA` · **Tone** Terse/Satisfied
+**Status** FULL COMPLETION · **Type** `commander_complete` · **Country** `USA` · **Tone** Terse/Satisfied
 **Chain** Appalachian Miner · position Resolution
-**Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -254,11 +332,11 @@
 
 **Subhead — first draft**
 
-> Built It. Cleared It. Held It.
+> The Mine Is Deep. The Tile Is Ours. Eight Hundred Stood With Them.
 
 **Body — first draft**
 
-> An Appalachian Miner does not celebrate — they assess, and [COMMANDER_NAME]'s assessment is: the ground is developed, the corruption is cleared, and the home tile is fortified to standard. The arc is complete. The mountains are ours.
+> An Appalachian Miner does not celebrate. [COMMANDER_NAME]'s final dispatch from [TILE_NAME]: shaft is at fourth level, eight hundred under arms, tile is Continental territory by name and by fact. The mountain said yes. We listened.
 
 **Choices & outcomes**
 
@@ -283,9 +361,9 @@
 
 ### `ARC_03_FIRST` — [COMMANDER_NAME] DISPATCHES FROM THE CITY — FIRST URBAN GROUND SECURED
 
-**Status** FIRST PASS · **Type** `commander_objective` · **Country** `USA` · **Tone** Verbose/Self-Aware
+**Status** FULL COMPLETION · **Type** `commander_objective` · **Country** `USA` · **Tone** Verbose/Self-Aware
 **Chain** Ivy League Dropout · position Milestone 1
-**Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -293,17 +371,17 @@
 
 **Subhead — first draft**
 
-> The Scholar Has Discovered That Theory Meets Practice at [TILE_NAME].
+> The Dispatch Was Three Pages. Page One Was Good.
 
 **Body — first draft**
 
-> The dispatch was three pages. [COMMANDER_NAME] has liberated a Metro tile and taken fifteen hundred words to explain exactly why this was historically inevitable and what it means for the broader strategic picture. President Carlisle read page one. Page one was good.
+> [COMMANDER_NAME] has liberated a Metro tile and submitted a fifteen-hundred-word report explaining exactly why this outcome was historically inevitable and what it means for the continental strategic picture. President Carlisle read page one. Headquarters is providing validation that was not requested but appears to have been anticipated.
 
 **Choices & outcomes**
 
 | # | Button text | Type | What it does | Leads to |
 |---|---|---|---|---|
-| 1 | Field Dispatch Acknowledged. | `standard` | _no mechanical effect_ | — |
+| 1 | Promote [COMMANDER_NAME] to Second Rank | `standard` | promotes the commander | — |
 
 **Design notes** Fires when ARC_03 completes objective 1; BTN1: nothing
 
@@ -321,9 +399,9 @@
 
 ### `ARC_03_DONE` — [COMMANDER_NAME]'S URBAN ARC COMPLETE — THE SCHOLAR CLOSES THE BOOK
 
-**Status** FIRST PASS · **Type** `commander_complete` · **Country** `USA` · **Tone** Wry/Satisfied
+**Status** FULL COMPLETION · **Type** `commander_complete` · **Country** `USA` · **Tone** Wry/Satisfied
 **Chain** Ivy League Dropout · position Resolution
-**Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -331,18 +409,18 @@
 
 **Subhead — first draft**
 
-> Ten Turns Survived. Two Hundred Gold. One Metro. The Curriculum Is Complete.
+> Library Maxed. Army Intact. The Curriculum Is Complete.
 
 **Body — first draft**
 
-> The final dispatch was characteristically long and characteristically correct. [COMMANDER_NAME] has survived the full engagement, built the treasury, and proven that an Ivy League dropout with a usable theory and the sense to adapt it is worth twice a graduate who cannot. The arc is closed.
+> The final dispatch was characteristically long and characteristically correct. [COMMANDER_NAME] has built the finest library on the continent, kept a thousand soldiers in the field, and proven that an Ivy League dropout with a usable theory and the sense to adapt it is worth twice a graduate who cannot. The arc is closed.
 
 **Choices & outcomes**
 
 | # | Button text | Type | What it does | Leads to |
 |---|---|---|---|---|
 | 1 | Formally Recognize [COMMANDER_NAME]'s Service | `standard` | morale +20 | — |
-| 2 | A Ivy League Dropout's Work Deserves Its Reward | `standard` | gold +25 | — |
+| 2 | An Ivy League Dropout's Work Deserves Its Reward | `standard` | gold +25 | — |
 
 **Design notes** Fires when ARC_03 completes all 3 objectives; BTN1: morale+20, BTN2: gold
 
@@ -362,7 +440,7 @@
 
 **Status** FIRST PASS · **Type** `commander_objective` · **Country** `USA` · **Tone** Terse/Martial
 **Chain** Seminole Fighter · position Milestone 1
-**Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -400,7 +478,7 @@
 
 **Status** FIRST PASS · **Type** `commander_complete` · **Country** `USA` · **Tone** Spare/Triumphant
 **Chain** Seminole Fighter · position Resolution
-**Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -439,7 +517,7 @@
 
 **Status** FIRST PASS · **Type** `commander_objective` · **Country** `USA` · **Tone** Warm/Grounded
 **Chain** Green Mountain Farmer · position Milestone 1
-**Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -477,7 +555,7 @@
 
 **Status** FIRST PASS · **Type** `commander_complete` · **Country** `USA` · **Tone** Warm/Triumphant
 **Chain** Green Mountain Farmer · position Resolution
-**Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -516,7 +594,7 @@
 
 **Status** FIRST PASS · **Type** `commander_objective` · **Country** `USA` · **Tone** Methodical/Precise
 **Chain** Chesapeake Shipwright · position Milestone 1
-**Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -554,7 +632,7 @@
 
 **Status** FIRST PASS · **Type** `commander_complete` · **Country** `USA` · **Tone** Satisfied/Methodical
 **Chain** Chesapeake Shipwright · position Resolution
-**Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -593,7 +671,7 @@
 
 **Status** FIRST PASS · **Type** `commander_objective` · **Country** `USA` · **Tone** Cautious/Earnest
 **Chain** Loyalist Turncoat · position Milestone 1
-**Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -631,7 +709,7 @@
 
 **Status** FIRST PASS · **Type** `commander_complete` · **Country** `USA` · **Tone** Quiet/Resolved
 **Chain** Loyalist Turncoat · position Resolution
-**Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -670,7 +748,7 @@
 
 **Status** FIRST PASS · **Type** `commander_objective` · **Country** `USA` · **Tone** Laconic/Surprised
 **Chain** Tobacco Belt Drifter · position Milestone 1
-**Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -708,7 +786,7 @@
 
 **Status** FIRST PASS · **Type** `commander_complete` · **Country** `USA` · **Tone** Quiet/Satisfied
 **Chain** Tobacco Belt Drifter · position Resolution
-**Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -747,7 +825,7 @@
 
 **Status** FIRST PASS · **Type** `commander_objective` · **Country** `USA` · **Tone** Tense/Determined
 **Chain** War Widow · position Milestone 1
-**Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -785,7 +863,7 @@
 
 **Status** FIRST PASS · **Type** `commander_complete` · **Country** `USA` · **Tone** Somber/Triumphant
 **Chain** War Widow · position Resolution
-**Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -824,7 +902,7 @@
 
 **Status** FIRST PASS · **Type** `commander_objective` · **Country** `USA` · **Tone** Quiet/Knowing
 **Chain** Indigenous Scout · position Milestone 1
-**Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -862,7 +940,7 @@
 
 **Status** FIRST PASS · **Type** `commander_complete` · **Country** `USA` · **Tone** Spare/Triumphant
 **Chain** Indigenous Scout · position Resolution
-**Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -901,7 +979,7 @@
 
 **Status** FIRST PASS · **Type** `commander_objective` · **Country** `USA` · **Tone** Loud/Principled
 **Chain** Boston Rabble-Rouser · position Milestone 1
-**Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -939,7 +1017,7 @@
 
 **Status** FIRST PASS · **Type** `commander_complete` · **Country** `USA` · **Tone** Rousing/Satisfied
 **Chain** Boston Rabble-Rouser · position Resolution
-**Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -978,7 +1056,7 @@
 
 **Status** FIRST PASS · **Type** `commander_objective` · **Country** `USA` · **Tone** Clinical/Steady
 **Chain** Continental Surgeon · position Milestone 1
-**Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -1016,7 +1094,7 @@
 
 **Status** FIRST PASS · **Type** `commander_complete` · **Country** `USA` · **Tone** Clinical/Relieved
 **Chain** Continental Surgeon · position Resolution
-**Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -1055,7 +1133,7 @@
 
 **Status** FIRST PASS · **Type** `commander_objective` · **Country** `USA` · **Tone** Salty/Direct
 **Chain** Nantucket Sailor · position Milestone 1
-**Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -1093,7 +1171,7 @@
 
 **Status** FIRST PASS · **Type** `commander_complete` · **Country** `USA` · **Tone** Salty/Satisfied
 **Chain** Nantucket Sailor · position Resolution
-**Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -1132,7 +1210,7 @@
 
 **Status** FIRST PASS · **Type** `commander_objective` · **Country** `USA` · **Tone** Earnest/Spiritual
 **Chain** Frontier Preacher · position Milestone 1
-**Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -1170,7 +1248,7 @@
 
 **Status** FIRST PASS · **Type** `commander_complete` · **Country** `USA` · **Tone** Warm/Triumphant
 **Chain** Frontier Preacher · position Resolution
-**Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -1209,7 +1287,7 @@
 
 **Status** FIRST PASS · **Type** `commander_objective` · **Country** `USA` · **Tone** Formal/Systematic
 **Chain** DC Bureaucrat · position Milestone 1
-**Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -1247,7 +1325,7 @@
 
 **Status** FIRST PASS · **Type** `commander_complete` · **Country** `USA` · **Tone** Dry/Satisfied
 **Chain** DC Bureaucrat · position Resolution
-**Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -1286,7 +1364,7 @@
 
 **Status** FIRST PASS · **Type** `commander_objective` · **Country** `USA` · **Tone** Working-Class/Direct
 **Chain** Rust Belt Steelworker · position Milestone 1
-**Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -1324,7 +1402,7 @@
 
 **Status** FIRST PASS · **Type** `commander_complete` · **Country** `USA` · **Tone** Gruff/Satisfied
 **Chain** Rust Belt Steelworker · position Resolution
-**Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -1363,7 +1441,7 @@
 
 **Status** FIRST PASS · **Type** `commander_objective` · **Country** `USA` · **Tone** Deliberate/Defiant
 **Chain** Plantation Deserter · position Milestone 1
-**Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -1401,7 +1479,7 @@
 
 **Status** FIRST PASS · **Type** `commander_complete` · **Country** `USA` · **Tone** Defiant/Resolved
 **Chain** Plantation Deserter · position Resolution
-**Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -1440,7 +1518,7 @@
 
 **Status** FIRST PASS · **Type** `commander_objective` · **Country** `USA` · **Tone** Arcane/Knowing
 **Chain** Swamp Witch · position Milestone 1
-**Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -1478,7 +1556,7 @@
 
 **Status** FIRST PASS · **Type** `commander_complete` · **Country** `USA` · **Tone** Arcane/Satisfied
 **Chain** Swamp Witch · position Resolution
-**Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -1517,7 +1595,7 @@
 
 **Status** FIRST PASS · **Type** `commander_objective` · **Country** `USA` · **Tone** Charming/Mercenary
 **Chain** Caribbean Privateer · position Milestone 1
-**Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -1555,7 +1633,7 @@
 
 **Status** FIRST PASS · **Type** `commander_complete` · **Country** `USA` · **Tone** Wry/Satisfied
 **Chain** Caribbean Privateer · position Resolution
-**Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -1590,88 +1668,11 @@
 
 ---
 
-### `ARC_20_FIRST` — [COMMANDER_NAME] REACHES THE MAINLAND — FIRST TILES SECURED FOR THE REPUBLIC
-
-**Status** FIRST PASS · **Type** `commander_objective` · **Country** `USA` · **Tone** Earnest/Hopeful
-**Chain** Hawaiian Refugee · position Milestone 1
-**Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
-
-**Fires when**
-
-- **Commander objective** — archetype `ARC_20`, objective #1 · priority 2  <sub>`TRIG_072`</sub>
-
-**Subhead — first draft**
-
-> A Refugee Who Kept Moving Until the Ground Was Worth Stopping For.
-
-**Body — first draft**
-
-> A Hawaiian Refugee knows what it costs to be somewhere you were not born and to fight for it anyway. [COMMANDER_NAME] has liberated three tiles — enough to prove the point. The dispatch said: I found a monument. It was still standing. I think that means something.
-
-**Choices & outcomes**
-
-| # | Button text | Type | What it does | Leads to |
-|---|---|---|---|---|
-| 1 | Field Dispatch Acknowledged. | `standard` | _no mechanical effect_ | — |
-
-**Design notes** Fires when ARC_20 completes objective 1; BTN1: nothing
-
-<details><summary><b>FINAL PASS — write here</b></summary>
-
-- **Headline:**
-- **Subhead:**
-- **Body:**
-- **Button text:**
-- **Notes:**
-
-</details>
-
----
-
-### `ARC_20_DONE` — [COMMANDER_NAME]'S HOMELAND ARC IS COMPLETE — THE REFUGEE HAS FOUND HOME
-
-**Status** FIRST PASS · **Type** `commander_complete` · **Country** `USA` · **Tone** Warm/Resolved
-**Chain** Hawaiian Refugee · position Resolution
-**Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
-
-**Fires when**
-
-- **Commander objective** — archetype `ARC_20`, objective #3 · priority 2  <sub>`TRIG_073`</sub>
-
-**Subhead — first draft**
-
-> Three Tiles Liberated. Monument Secured. A Place to Stay.
-
-**Body — first draft**
-
-> Three objectives: the tiles, the monument, the station. [COMMANDER_NAME]'s final dispatch was the first one that didn't mention distance. It said only: I know where I am now. The Republic has one more person who chose to be here. That is what the arc was always about.
-
-**Choices & outcomes**
-
-| # | Button text | Type | What it does | Leads to |
-|---|---|---|---|---|
-| 1 | Formally Recognize [COMMANDER_NAME]'s Service | `standard` | morale +20 | — |
-| 2 | A Hawaiian Refugee's Work Deserves Its Reward | `standard` | culture +20 | — |
-
-**Design notes** Fires when ARC_20 completes all 3 objectives; BTN1: morale+20, BTN2: culture
-
-<details><summary><b>FINAL PASS — write here</b></summary>
-
-- **Headline:**
-- **Subhead:**
-- **Body:**
-- **Button text:**
-- **Notes:**
-
-</details>
-
----
-
 ### `ARC_21_FIRST` — [COMMANDER_NAME] TAKES THE SUBURB — THE MERCENARY HAS DECIDED THIS ONE COUNTS
 
 **Status** FIRST PASS · **Type** `commander_objective` · **Country** `USA` · **Tone** Pragmatic/Direct
 **Chain** Border Mercenary · position Milestone 1
-**Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -1709,7 +1710,7 @@
 
 **Status** FIRST PASS · **Type** `commander_complete` · **Country** `USA` · **Tone** Dry/Resolved
 **Chain** Border Mercenary · position Resolution
-**Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -1748,7 +1749,7 @@
 
 **Status** FIRST PASS · **Type** `commander_objective` · **Country** `USA` · **Tone** Quiet/Belonging
 **Chain** Acadian Forest Ranger · position Milestone 1
-**Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -1786,7 +1787,7 @@
 
 **Status** FIRST PASS · **Type** `commander_complete` · **Country** `USA` · **Tone** Quiet/Triumphant
 **Chain** Acadian Forest Ranger · position Resolution
-**Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -1825,7 +1826,7 @@
 
 **Status** FIRST PASS · **Type** `commander_objective` · **Country** `USA` · **Tone** Weighted/Determined
 **Chain** Gettysburg Descendant · position Milestone 1
-**Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -1863,7 +1864,7 @@
 
 **Status** FIRST PASS · **Type** `commander_complete` · **Country** `USA` · **Tone** Somber/Triumphant
 **Chain** Gettysburg Descendant · position Resolution
-**Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -1902,7 +1903,7 @@
 
 **Status** FIRST PASS · **Type** `commander_objective` · **Country** `USA` · **Tone** Principled/Visible
 **Chain** LGBTQ+ Organizer · position Milestone 1
-**Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -1940,7 +1941,7 @@
 
 **Status** FIRST PASS · **Type** `commander_complete` · **Country** `USA` · **Tone** Principled/Satisfied
 **Chain** LGBTQ+ Organizer · position Resolution
-**Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -1979,7 +1980,7 @@
 
 **Status** FIRST PASS · **Type** `commander_objective` · **Country** `USA` · **Tone** Theatrical/Charming
 **Chain** Carnival Barker · position Milestone 1
-**Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -2017,7 +2018,7 @@
 
 **Status** FIRST PASS · **Type** `commander_complete` · **Country** `USA` · **Tone** Theatrical/Triumphant
 **Chain** Carnival Barker · position Resolution
-**Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -2052,23 +2053,139 @@
 
 ---
 
-### `CMD_THANKS_INTIMATE` — PRESIDENT CARLISLE DELIVERS PERSONAL THANKS TO [COMM... — BY MORNING
+### `GOV_LVL2_HONOR` — FIELD CITATION — [COMMANDER_NAME]
 
-**Status** IDEA · **Type** `commander_thanks` · **Country** `USA` · **Tone** Warm/Tender
-**Chain** Commander Arc · position Chain
-**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Status** FULL COMPLETION · **Type** `commander_milestone` · **Country** `USA` · **Tone** Terse/Warm
+**Chain** Governor Ceremony · position Level-Up
+**Art** `—` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** true · **Cooldown** 0
 
 **Fires when**
 
+- ⚠️ **No trigger row, no inbound chain link, no code reference.** Draft is currently unreachable in game.
+
+**Subhead — first draft**
+
+> [COMMANDER_NAME] Has Reached Second Rank. The Republic Notes the Service.
+
+**Body — first draft**
+
+> [COMMANDER_NAME] has met the standard for second-rank field citation. The Republic does not hand these out casually. The paperwork was filed from Washington. It reads: demonstrated command capacity under sustained field conditions. The record is updated. Headquarters concurs.
+
+**Choices & outcomes**
+
+| # | Button text | Type | What it does | Leads to |
+|---|---|---|---|---|
+| 1 | Citation Received. | `standard` | morale +10 | — |
+
+**Design notes** Fires on promote_commander to lvl 2; BTN1: morale+10
+
+<details><summary><b>FINAL PASS — write here</b></summary>
+
+- **Headline:**
+- **Subhead:**
+- **Body:**
+- **Button text:**
+- **Notes:**
+
+</details>
+
+---
+
+### `GOV_LVL3_CEREMONY` — GENERAL [COMMANDER_NAME] — WHITE HOUSE RECOGNITION CEREMONY
+
+**Status** FULL COMPLETION · **Type** `commander_milestone` · **Country** `USA` · **Tone** Warm/Triumphant
+**Chain** Governor Ceremony · position Level-Up
+**Art** `gov_lvl3_ceremony_scene` (Integrated) · **Explicit art** NO · **Content flag** `—` · **Repeatable** true · **Cooldown** 0
+
+**Fires when**
+
+- Fired from code: `GalleryTab.gd:28`
+
+**Subhead — first draft**
+
+> Ualani Presents the Third-Rank Citation. It Was a Good Ceremony.
+
+**Body — first draft**
+
+> The White House advance team filed four memos before [COMMANDER_NAME] arrived. Three were standard. The fourth concerned the apple boxes — the standing order to locate them whenever an honoree's height differential with President Ualani exceeds comfortable framing range. The boxes were already positioned when [COMMANDER_NAME] walked in. The full service record was read aloud. President Ualani shook [COMMANDER_NAME]'s hand for an unusually long time. [COMMANDER_NAME] appeared genuinely moved. The press pool described it as 'the good kind of ceremony.' White House Production marked the event: Complete.
+
+**Choices & outcomes**
+
+| # | Button text | Type | What it does | Leads to |
+|---|---|---|---|---|
+| 1 | Dismiss the General — Back to the Field | `standard` | morale +20 | — |
+| 2 | Invite the General to Stay the Night | `standard` | _no mechanical effect_; army: `GOV_REWARD` | — |
+
+**Design notes** Fires on promote_commander to lvl 3; BTN1: morale+20; BTN2: → GOV_REWARD
+
+<details><summary><b>FINAL PASS — write here</b></summary>
+
+- **Headline:**
+- **Subhead:**
+- **Body:**
+- **Button text:**
+- **Notes:**
+
+</details>
+
+---
+
+### `GOV_REWARD` — GENERAL [COMMANDER_NAME] — THE LINCOLN BEDROOM
+
+**Status** FULL COMPLETION · **Type** `commander_intimate` · **Country** `USA` · **Tone** Intimate/Warm
+**Chain** Governor Ceremony · position Intimate
+**Art** `gov_reward_scene` (Integrated) · **Explicit art** YES · **Content flag** `—` · **Repeatable** true · **Cooldown** 0
+
+**Fires when**
+
+- Fired from code: `GalleryTab.gd:29`
+
+**Subhead — first draft**
+
+> [COMMANDER_NAME] Had Never Felt So Taken Care Of.
+
+**Body — first draft**
+
+> [COMMANDER_NAME] had held difficult ground for the better part of a year. It showed — not in their posture but in the pauses between sentences‚ in the way veterans carry things nobody asks them about. Ualani noticed. She had made a plan for the evening. She discarded the plan. Instead she turned the entire night around — not toward herself but toward [COMMANDER_NAME]‚ toward the quiet question of what a general actually needs when no one is watching and nothing is being asked in return. [COMMANDER_NAME] had not expected that. The Lincoln Bedroom has a long record. It added another entry.
+
+**Choices & outcomes**
+
+| # | Button text | Type | What it does | Leads to |
+|---|---|---|---|---|
+| 1 | The Morning After | `standard` | governor loyalty `` +3 | — |
+
+**Design notes** Fires from GOV_LVL3_CEREMONY BTN2; BTN1: governor_loyalty +3
+
+<details><summary><b>FINAL PASS — write here</b></summary>
+
+- **Headline:**
+- **Subhead:**
+- **Body:**
+- **Button text:**
+- **Notes:**
+
+</details>
+
+---
+
+### `CMD_THANKS_INTIMATE` — PRESIDENT CARLISLE DELIVERS PERSONAL THANKS TO [COMM... — BY MORNING
+
+**Status** FIRST PASS · **Type** `commander_thanks` · **Country** `USA` · **Tone** Warm/Tender
+**Chain** Commander Arc · position Chain
+**Art** `—` (In Progress) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+
+**Fires when**
+
+- Chained from `CMD_THANKS` — "The Full Presidential Visit" fires <sub>(PRESIDENT CARLISLE DELIVERS PERSONAL THANKS TO [)</sub>
 - Chained from `CMD_THANKS` — scene nav: "intimate" from <sub>(PRESIDENT CARLISLE DELIVERS PERSONAL THANKS TO [)</sub>
 
 **Subhead — first draft**
 
-> The President Doesn't Visit Everyone. She Visited Them.
+> The President Doesn't Visit Everyone. She Visited [CMD_OBJECT].
 
 **Body — first draft**
 
-> [INTIMATE STUB — CMD_THANKS] Commander gratitude scene, intimate version. Write: what it feels like to be thanked by someone who has earned the right to thank you. The warmth of the command relationship, without explicit content. Author this scene.
+> The citation was filed before she came in — that part was staff, procedure, the Republic's paperwork done properly. What happened after was not in any procedure. She came to the command tent after the formal business was complete. Not with a retinue. Alone. [COMMANDER_NAME] had been reviewing the next deployment when she arrived, and something about the way she arrived — without announcement, without the press corps, without the weight of office she usually carries as a visible thing — told [CMD_SUBJECT] this was different from the citation. She said: I wanted to tell you myself. Not in a speech. Not for the record. [COMMANDER_NAME] set down the maps. She talked for a while. What she said is not in any record and does not need to be. [COMMANDER_NAME] did not say much. There was, at the end, a quality of silence between them that had not existed before she started talking — not empty, not awkward, but the specific kind that means something has been properly acknowledged by the people who needed to acknowledge it. She left before the next shift. [COMMANDER_NAME] picked up the maps. [COMMANDER_NAME] did not put them back down for a while.
 
 **Choices & outcomes**
 
@@ -2076,7 +2193,7 @@
 |---|---|---|---|---|
 | 1 | Continue | `standard` | _no mechanical effect_ | — |
 
-**Design notes** Stub — author intimate version of CMD_THANKS. By morning: emotional arc, no explicit imagery.
+**Design notes** Commander — authored; command tent after citation; proper silence, maps set down
 
 <details><summary><b>FINAL PASS — write here</b></summary>
 

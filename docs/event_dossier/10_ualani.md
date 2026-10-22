@@ -1,6 +1,6 @@
 # Ualani
 
-18 events · FIRST PASS 10 · IDEA 8
+18 events · FIRST PASS 18
 
 [← back to index](00_INDEX.md)
 
@@ -14,7 +14,7 @@
 
 **Fires when**
 
-- Fired from code: `GalleryTab.gd:52`, `Game Scenes and Scripts/world.gd:3142`, `Game Scenes and Scripts/world.gd:3151`, `Game Scenes and Scripts/world.gd:3152`
+- Fired from code: `Game Scenes and Scripts/world.gd:4011`, `Game Scenes and Scripts/world.gd:4020`, `Game Scenes and Scripts/world.gd:4021`
 
 **Subhead — first draft**
 
@@ -58,7 +58,7 @@
 
 **Fires when**
 
-- Fired from code: `GalleryTab.gd:59`, `Game Scenes and Scripts/world.gd:3157`, `Game Scenes and Scripts/world.gd:3173`, `Game Scenes and Scripts/world.gd:3174`
+- Fired from code: `Game Scenes and Scripts/world.gd:4026`, `Game Scenes and Scripts/world.gd:4042`, `Game Scenes and Scripts/world.gd:4043`
 
 **Subhead — first draft**
 
@@ -102,7 +102,7 @@
 
 **Fires when**
 
-- Fired from code: `GalleryTab.gd:66`, `Game Scenes and Scripts/world.gd:3179`, `Game Scenes and Scripts/world.gd:3186`, `Game Scenes and Scripts/world.gd:3187`
+- Fired from code: `Game Scenes and Scripts/world.gd:4048`, `Game Scenes and Scripts/world.gd:4055`, `Game Scenes and Scripts/world.gd:4056`
 
 **Subhead — first draft**
 
@@ -146,7 +146,7 @@
 
 **Fires when**
 
-- Fired from code: `GalleryTab.gd:73`, `Game Scenes and Scripts/world.gd:3192`, `Game Scenes and Scripts/world.gd:3202`, `Game Scenes and Scripts/world.gd:3203`
+- Fired from code: `Game Scenes and Scripts/world.gd:4061`, `Game Scenes and Scripts/world.gd:4071`, `Game Scenes and Scripts/world.gd:4072`
 
 **Subhead — first draft**
 
@@ -189,7 +189,7 @@
 
 **Fires when**
 
-- Fired from code: `GalleryTab.gd:80`, `Game Scenes and Scripts/world.gd:3209`, `Game Scenes and Scripts/world.gd:3220`, `Game Scenes and Scripts/world.gd:3221`
+- Fired from code: `Game Scenes and Scripts/world.gd:4078`, `Game Scenes and Scripts/world.gd:4089`, `Game Scenes and Scripts/world.gd:4090`
 
 **Subhead — first draft**
 
@@ -228,7 +228,7 @@
 
 **Fires when**
 
-- Fired from code: `GalleryTab.gd:87`, `Game Scenes and Scripts/world.gd:3226`, `Game Scenes and Scripts/world.gd:3238`, `Game Scenes and Scripts/world.gd:3239`
+- Fired from code: `Game Scenes and Scripts/world.gd:4095`, `Game Scenes and Scripts/world.gd:4107`, `Game Scenes and Scripts/world.gd:4108`
 
 **Subhead — first draft**
 
@@ -272,7 +272,7 @@
 
 **Fires when**
 
-- Fired from code: `GalleryTab.gd:94`, `Game Scenes and Scripts/world.gd:3244`, `Game Scenes and Scripts/world.gd:3251`, `Game Scenes and Scripts/world.gd:3252`
+- Fired from code: `Game Scenes and Scripts/world.gd:4113`, `Game Scenes and Scripts/world.gd:4120`, `Game Scenes and Scripts/world.gd:4121`
 
 **Subhead — first draft**
 
@@ -357,7 +357,7 @@
 
 **Fires when**
 
-- Fired from code: `GalleryTab.gd:108`, `Game Scenes and Scripts/world.gd:3257`, `Game Scenes and Scripts/world.gd:3276`, `Game Scenes and Scripts/world.gd:3277`
+- Fired from code: `Game Scenes and Scripts/world.gd:4126`, `Game Scenes and Scripts/world.gd:4145`, `Game Scenes and Scripts/world.gd:4146`
 
 **Subhead — first draft**
 
@@ -401,7 +401,7 @@
 
 **Fires when**
 
-- Fired from code: `GalleryTab.gd:115`, `Game Scenes and Scripts/world.gd:3283`, `Game Scenes and Scripts/world.gd:3292`, `Game Scenes and Scripts/world.gd:3293`
+- Fired from code: `Game Scenes and Scripts/world.gd:4152`, `Game Scenes and Scripts/world.gd:4161`, `Game Scenes and Scripts/world.gd:4162`
 
 **Subhead — first draft**
 
@@ -439,9 +439,9 @@
 
 ### `UALANI_AMBUSH_01_INTIMATE` — CROWN AMBUSH AVERTED: PRESIDENT CARLISLE HOLDS THE W... — BY MORNING
 
-**Status** IDEA · **Type** `ualani_event` · **Country** `USA` · **Tone** Warm/Tender
+**Status** FIRST PASS · **Type** `ualani_event` · **Country** `USA` · **Tone** Warm/Tender
 **Chain** Ambush · position Chain
-**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (In Progress) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -453,7 +453,7 @@
 
 **Body — first draft**
 
-> [INTIMATE STUB — UALANI_AMBUSH_01] Ualani personal arc — intimate version of: CROWN AMBUSH AVERTED: PRESIDENT CARLISLE HOLDS THE WETLANDS. Write the version where the relationship advances through presence and conversation rather than explicit action. What she says. What she doesn't say. What changes. Author this scene.
+> The Crown's assessment of [TILE_NAME] as unoccupied had been, in [COMMANDER_NAME]'s words, a navigable error. Ualani asked what made it navigable. [COMMANDER_NAME] said: we were already here. She found this answer professionally satisfying and personally funnier than she expected given that they had just repelled an ambush. The wetlands at dusk have a quality that intelligence reports do not capture — the way the light goes horizontal and turns everything the color of old bronze. They stood at the tree line. The Crown element was gone. The ground had absorbed what the ground absorbs. [COMMANDER_NAME] said something she did not expect — not tactical, not an after-action report. Something personal. Something about what it had been like to watch her hold position when the first contact hit. She did not say: I have held position before. She said what she actually thought, which was quieter and more specific and which she will not have recorded here. [COMMANDER_NAME] did not say anything for a moment. Then [COMMANDER_NAME] said: I know. Which turned out to be exactly the right thing to say. The wetlands continued doing what they do. The light went gold and then gray. What changed between them is not in any field report and is not the Crown's business.
 
 **Choices & outcomes**
 
@@ -461,7 +461,7 @@
 |---|---|---|---|---|
 | 1 | Continue | `standard` | _no mechanical effect_ | — |
 
-**Design notes** Stub — author intimate version of UALANI_AMBUSH_01. By morning: emotional arc, no explicit imagery.
+**Design notes** Ualani — authored; wetlands dusk scene; bronze light, the right reply
 
 <details><summary><b>FINAL PASS — write here</b></summary>
 
@@ -477,9 +477,9 @@
 
 ### `UALANI_DIGNITARY_01_INTIMATE` — STATE RECEPTION AT [TILE_NAME]: PRESIDENT CARLISLE A... — BY MORNING
 
-**Status** IDEA · **Type** `ualani_event` · **Country** `USA` · **Tone** Warm/Tender
+**Status** FIRST PASS · **Type** `ualani_event` · **Country** `USA` · **Tone** Warm/Tender
 **Chain** Dignitary Reception · position Chain
-**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (In Progress) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -491,7 +491,7 @@
 
 **Body — first draft**
 
-> [INTIMATE STUB — UALANI_DIGNITARY_01] Ualani personal arc — intimate version of: STATE RECEPTION AT [TILE_NAME]: PRESIDENT CARLISLE ATTENDS IN FULL CAPACITY. Write the version where the relationship advances through presence and conversation rather than explicit action. What she says. What she doesn't say. What changes. Author this scene.
+> The baker had not left. This was established late in the evening when the magistrates and the treasury official had all filed out and [COMMANDER_NAME] attempted a headcount and found the number short by one. She was in the courthouse kitchen making something that smelled like cinnamon and refusing to acknowledge that the event had ended. She said — to [COMMANDER_NAME], who was standing in the kitchen doorway in full uniform — that she had brought enough for everyone and did not intend to take it back. [COMMANDER_NAME] looked at the President. The President looked at the baker. The baker was seventy-three years old and had apparently outlasted every civic formality in this county for four decades and was not going to stop now. Ualani sat down. [COMMANDER_NAME] sat down. The baker served them both without ceremony or acknowledgment of rank and then sat down herself and said: you look tired. She said this to both of them and did not pursue the topic. They ate the thing that smelled like cinnamon. The courthouse kitchen at 9 PM has a character that is nothing like the courthouse at 6 PM with the magistrates and the handshakes. [COMMANDER_NAME] said something to the baker about the town that made Ualani look at [COMMANDER_NAME] differently. The baker told them both what the war had cost this specific county in the specific voice of someone keeping count. Ualani set down her fork. She looked at [COMMANDER_NAME]. [COMMANDER_NAME] had already been looking. What changed between them: the distance at which they understand each other had shortened, without moving.
 
 **Choices & outcomes**
 
@@ -499,7 +499,7 @@
 |---|---|---|---|---|
 | 1 | Continue | `standard` | _no mechanical effect_ | — |
 
-**Design notes** Stub — author intimate version of UALANI_DIGNITARY_01. By morning: emotional arc, no explicit imagery.
+**Design notes** Ualani — authored; courthouse kitchen with baker; cinnamon, distance shortens
 
 <details><summary><b>FINAL PASS — write here</b></summary>
 
@@ -515,9 +515,9 @@
 
 ### `UALANI_MEMORIAL_01_INTIMATE` — PRESIDENT CARLISLE VISITS [TILE_NAME]: PRESIDENTIAL ... — BY MORNING
 
-**Status** IDEA · **Type** `ualani_event` · **Country** `USA` · **Tone** Warm/Tender
+**Status** FIRST PASS · **Type** `ualani_event` · **Country** `USA` · **Tone** Warm/Tender
 **Chain** Memorial Address · position Chain
-**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (In Progress) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -529,7 +529,7 @@
 
 **Body — first draft**
 
-> [INTIMATE STUB — UALANI_MEMORIAL_01] Ualani personal arc — intimate version of: PRESIDENT CARLISLE VISITS [TILE_NAME]: PRESIDENTIAL ADDRESS AT THE MEMORIAL. Write the version where the relationship advances through presence and conversation rather than explicit action. What she says. What she doesn't say. What changes. Author this scene.
+> She stayed after. The public record covered the address and the address ended. What it did not cover: [COMMANDER_NAME] standing with her on the ground after the photographers and witnesses had been cleared, in the early light that was now being used by no one except them. She had made three soldiers cry. She knew this. She was not processing it publicly. [COMMANDER_NAME] did not ask her to. [COMMANDER_NAME] had read the same casualty reports. [COMMANDER_NAME] knew the same names. They stood at the memorial stones in the light that was going from gold to ordinary and there is a specific thing that happens between two people who know the same names — who have both memorized the lists and both understand that a list is not an abstraction. It is a list. It has specific names on it. One of them said this. The other one said: yes. The memorial ground is heavier than other ground. She carries it differently standing next to someone who also knows how much it weighs. [COMMANDER_NAME] said, after a while: the address will travel. She said: I know. She meant it differently than he or she or they meant it. [COMMANDER_NAME] heard the difference. What changed between them: something she could not have said before the address and which required no saying after it.
 
 **Choices & outcomes**
 
@@ -537,7 +537,7 @@
 |---|---|---|---|---|
 | 1 | Continue | `standard` | _no mechanical effect_ | — |
 
-**Design notes** Stub — author intimate version of UALANI_MEMORIAL_01. By morning: emotional arc, no explicit imagery.
+**Design notes** Ualani — authored; memorial ground morning; shared weight of the lists
 
 <details><summary><b>FINAL PASS — write here</b></summary>
 
@@ -553,9 +553,9 @@
 
 ### `UALANI_WOUNDED_01_INTIMATE` — PRESIDENT CARLISLE VISITS FIELD HOSPITAL AT [TILE_NAME] — BY MORNING
 
-**Status** IDEA · **Type** `ualani_event` · **Country** `USA` · **Tone** Warm/Tender
+**Status** FIRST PASS · **Type** `ualani_event` · **Country** `USA` · **Tone** Warm/Tender
 **Chain** Field Hospital · position Chain
-**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (In Progress) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -567,7 +567,7 @@
 
 **Body — first draft**
 
-> [INTIMATE STUB — UALANI_WOUNDED_01] Ualani personal arc — intimate version of: PRESIDENT CARLISLE VISITS FIELD HOSPITAL AT [TILE_NAME]. Write the version where the relationship advances through presence and conversation rather than explicit action. What she says. What she doesn't say. What changes. Author this scene.
+> It was 6 AM when she came out of the hospital tent. [COMMANDER_NAME] had been standing outside in the particular posture of someone who has been waiting without acknowledging they are waiting. She did not ask how long. [COMMANDER_NAME] did not say. They walked. The field hospital at dawn has a quality the field hospital at midnight does not — the light makes everything that happened in the dark provisional, possible to carry. She had been in there for two hours. She had talked to every person whose name she had memorized. [COMMANDER_NAME] said, after they had been walking for a while: I read the same reports. She said: I know. [COMMANDER_NAME] said: do you do that every time. She said: I try. [COMMANDER_NAME] was quiet for a while. Then [COMMANDER_NAME] said: they'll fight better because you were there. She said: I know that too. That is not why I was there. [COMMANDER_NAME] stopped walking. She stopped. [COMMANDER_NAME] looked at her with the specific quality of attention that means someone is revising something they thought they understood. She let them revise it. They walked back to camp. The light was ordinary by then. What changed: the revision. It was visible on [COMMANDER_NAME]'s face the rest of the day.
 
 **Choices & outcomes**
 
@@ -575,7 +575,7 @@
 |---|---|---|---|---|
 | 1 | Continue | `standard` | _no mechanical effect_ | — |
 
-**Design notes** Stub — author intimate version of UALANI_WOUNDED_01. By morning: emotional arc, no explicit imagery.
+**Design notes** Ualani — authored; field hospital 6AM; the walk, revision visible on face
 
 <details><summary><b>FINAL PASS — write here</b></summary>
 
@@ -591,9 +591,9 @@
 
 ### `UALANI_FORGE_01_INTIMATE` — PRESIDENT CARLISLE CONDUCTS SURPRISE INSPECTION OF F... — BY MORNING
 
-**Status** IDEA · **Type** `ualani_event` · **Country** `USA` · **Tone** Warm/Tender
+**Status** FIRST PASS · **Type** `ualani_event` · **Country** `USA` · **Tone** Warm/Tender
 **Chain** Forge Inspection · position Chain
-**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (In Progress) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -605,7 +605,7 @@
 
 **Body — first draft**
 
-> [INTIMATE STUB — UALANI_FORGE_01] Ualani personal arc — intimate version of: PRESIDENT CARLISLE CONDUCTS SURPRISE INSPECTION OF FORGE AT [TILE_NAME]. Write the version where the relationship advances through presence and conversation rather than explicit action. What she says. What she doesn't say. What changes. Author this scene.
+> The shift had changed and the day crew had gone and the President was still there. [COMMANDER_NAME] found her in conversation with the forge supervisor about the efficiency gap between the third and fourth production runs, which the supervisor was explaining with the momentum of someone who has wanted to explain this to someone with authority for several years and has finally found that person. The supervisor had brought a clipboard. The clipboard had a diagram. Ualani had the diagram and was asking about specific tolerances in a way that suggested she had read the production manifests and had opinions about them. [COMMANDER_NAME] stood in the forge doorway in the specific warmth that forges produce — heat-heavy, metallic, the kind of heat that has work in it — and watched the President of the Continental Republic get drawn into an increasingly detailed discussion about iron content with the focused ease of someone who is, in some fundamental way, interested. When the supervisor was eventually called away by an actual production issue, she turned and found [COMMANDER_NAME] still in the doorway. She said: what. [COMMANDER_NAME] said nothing, just looked at her. She said: I read the manifests. [COMMANDER_NAME] said: I know. [COMMANDER_NAME] said it the way people say things when they mean: I know, and I now know something else too. They walked out of the forge into the night, which takes a moment to adjust to after the heat. What changed: [COMMANDER_NAME] had the diagram in the morning. She didn't ask how.
 
 **Choices & outcomes**
 
@@ -613,7 +613,7 @@
 |---|---|---|---|---|
 | 1 | Continue | `standard` | _no mechanical effect_ | — |
 
-**Design notes** Stub — author intimate version of UALANI_FORGE_01. By morning: emotional arc, no explicit imagery.
+**Design notes** Ualani — authored; forge night, efficiency diagram; the way she says 'what'
 
 <details><summary><b>FINAL PASS — write here</b></summary>
 
@@ -629,9 +629,9 @@
 
 ### `UALANI_CULPER_01_INTIMATE` — CULPER RING CONTACT AT [TILE_NAME]: INTELLIGENCE ASS... — BY MORNING
 
-**Status** IDEA · **Type** `ualani_event` · **Country** `USA` · **Tone** Warm/Tender
+**Status** FIRST PASS · **Type** `ualani_event` · **Country** `USA` · **Tone** Warm/Tender
 **Chain** Culper Ring · position Chain
-**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (In Progress) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -643,7 +643,7 @@
 
 **Body — first draft**
 
-> [INTIMATE STUB — UALANI_CULPER_01] Ualani personal arc — intimate version of: CULPER RING CONTACT AT [TILE_NAME]: INTELLIGENCE ASSET REQUESTS MEETING. Write the version where the relationship advances through presence and conversation rather than explicit action. What she says. What she doesn't say. What changes. Author this scene.
+> The meeting lasted forty minutes and she cannot say what was in it. What she can say: [TILE_NAME] at night with a standing army and a Culper contact and [COMMANDER_NAME] at her side has a specific atmospheric quality that is not fear, exactly, but is not not-fear either — the particular alertness of people operating in the gap between what is known and what is about to be known. The contact left through the usual method. The intelligence was logged through the usual channels. [COMMANDER_NAME] had held position at the meeting's perimeter without being asked and without appearing to need acknowledgment. She said, after the contact was gone: you read the brief. [COMMANDER_NAME] said: I read the brief. She said: and. [COMMANDER_NAME] said what the brief implied — not the intelligence, the other thing it implied, the thing about the adjacent territory that neither of them had said directly and that the brief made impossible to not say. She looked at [COMMANDER_NAME] for a moment. She said: yes. [COMMANDER_NAME] said: how long have you known. She said: since [TILE_NAME]. [COMMANDER_NAME] was quiet. Then [COMMANDER_NAME] said: that was three months ago. She said: I know. What changed: the silence between them is now a shared silence, which is a different thing than two separate silences occurring at the same time.
 
 **Choices & outcomes**
 
@@ -651,7 +651,7 @@
 |---|---|---|---|---|
 | 1 | Continue | `standard` | _no mechanical effect_ | — |
 
-**Design notes** Stub — author intimate version of UALANI_CULPER_01. By morning: emotional arc, no explicit imagery.
+**Design notes** Ualani — authored; intelligence meeting aftermath; shared silence
 
 <details><summary><b>FINAL PASS — write here</b></summary>
 
@@ -667,9 +667,9 @@
 
 ### `UALANI_ALLIANCE_01_INTIMATE` — PRESIDENT CARLISLE MEETS WITH [COMMANDER_NAME] AT [T... — BY MORNING
 
-**Status** IDEA · **Type** `ualani_event` · **Country** `USA` · **Tone** Warm/Tender
+**Status** FIRST PASS · **Type** `ualani_event` · **Country** `USA` · **Tone** Warm/Tender
 **Chain** Alliance Council · position Chain
-**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (In Progress) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -681,7 +681,7 @@
 
 **Body — first draft**
 
-> [INTIMATE STUB — UALANI_ALLIANCE_01] Ualani personal arc — intimate version of: PRESIDENT CARLISLE MEETS WITH [COMMANDER_NAME] AT [TILE_NAME]. Write the version where the relationship advances through presence and conversation rather than explicit action. What she says. What she doesn't say. What changes. Author this scene.
+> After the formal conversation — the candid one, the one involving territory and the Continental cause and the math that is not complicated — they walked. This was not in the meeting notes because the meeting had formally concluded. [COMMANDER_NAME] said: I want to be clear about what I'm asking for. She said: you've been clear. [COMMANDER_NAME] said: I want to be clear about why. She let [COMMANDER_NAME] be clear about why. It took a while. The why was not the version that appears in the meeting notes — the strategic version, the territory-and-alliance version. The why [COMMANDER_NAME] explained on the walk was the version underneath that, which had to do with what [COMMANDER_NAME] is actually protecting and who [COMMANDER_NAME] is actually protecting it for and what it costs to lead people toward something you cannot guarantee. She listened to the whole thing without interrupting. She said, when [COMMANDER_NAME] finished: I asked myself the same question six months into this war and I still don't have a clean answer. [COMMANDER_NAME] said: what do you have. She said: an incomplete answer I'm still fighting for. [COMMANDER_NAME] looked at her. Then [COMMANDER_NAME] said: that's enough. She said: I know. What changed: [COMMANDER_NAME] had asked for a military alliance. That is what [COMMANDER_NAME] received. What [COMMANDER_NAME] also received did not appear in the notes, was less formal, and is more permanent.
 
 **Choices & outcomes**
 
@@ -689,7 +689,7 @@
 |---|---|---|---|---|
 | 1 | Continue | `standard` | _no mechanical effect_ | — |
 
-**Design notes** Stub — author intimate version of UALANI_ALLIANCE_01. By morning: emotional arc, no explicit imagery.
+**Design notes** Ualani — authored; post-meeting walk; the why underneath the strategy
 
 <details><summary><b>FINAL PASS — write here</b></summary>
 
@@ -705,9 +705,9 @@
 
 ### `UALANI_FRONTIER_01_INTIMATE` — PRESIDENT CARLISLE ESTABLISHES FRONTIER PRESENCE AT ... — BY MORNING
 
-**Status** IDEA · **Type** `ualani_event` · **Country** `USA` · **Tone** Warm/Tender
+**Status** FIRST PASS · **Type** `ualani_event` · **Country** `USA` · **Tone** Warm/Tender
 **Chain** Frontier · position Chain
-**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (In Progress) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -719,7 +719,7 @@
 
 **Body — first draft**
 
-> [INTIMATE STUB — UALANI_FRONTIER_01] Ualani personal arc — intimate version of: PRESIDENT CARLISLE ESTABLISHES FRONTIER PRESENCE AT [TILE_NAME]. Write the version where the relationship advances through presence and conversation rather than explicit action. What she says. What she doesn't say. What changes. Author this scene.
+> The proclamation had been delivered and the observers had received their information and the army was standing down and Ualani was at the frontier line with [COMMANDER_NAME] at the literal edge of what the Republic claims. The marker is easy to miss — a surveyor's post, weathered, half-embedded in the ground, indicating where one jurisdiction ends. She looked at it for a long time. [COMMANDER_NAME] said: it's a post. She said: it's a post we put here. [COMMANDER_NAME] said: we put a lot of posts here. She said: I know. But this one is ours. [COMMANDER_NAME] looked at her and then looked at the post. [COMMANDER_NAME] said: it doesn't look like much. She said: no. It never does, from the inside. From the outside it looks like a line. The frontier at evening has a quality the frontier at noon does not — the shadows go long and everything looks like it has already been decided, even the things that are still being decided. She said: why did you want this posting specifically. [COMMANDER_NAME] gave the official answer first, which she acknowledged, and then the real answer, which she also acknowledged. The real answer had to do with something [COMMANDER_NAME] was moving toward rather than away from, which is not a strategic calculation and which she found, standing at the edge of what the Republic currently claims, privately accurate. She did not say what she thought about it. She stood at the frontier line and thought it anyway. What changed: she knows why [COMMANDER_NAME] is here. It changes the way she looks at the post.
 
 **Choices & outcomes**
 
@@ -727,7 +727,7 @@
 |---|---|---|---|---|
 | 1 | Continue | `standard` | _no mechanical effect_ | — |
 
-**Design notes** Stub — author intimate version of UALANI_FRONTIER_01. By morning: emotional arc, no explicit imagery.
+**Design notes** Ualani — authored; frontier post at dusk; why COMMANDER_NAME is here
 
 <details><summary><b>FINAL PASS — write here</b></summary>
 

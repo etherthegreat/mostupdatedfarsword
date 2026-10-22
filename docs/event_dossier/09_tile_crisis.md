@@ -1,6 +1,6 @@
 # Tile Crisis
 
-26 events · FIRST PASS 24 · IDEA 2
+26 events · FIRST PASS 26
 
 [← back to index](00_INDEX.md)
 
@@ -14,7 +14,7 @@
 
 **Fires when**
 
-- Fired from code: `Game Scenes and Scripts/world.gd:2970`, `Game Scenes and Scripts/world.gd:2983`, `Game Scenes and Scripts/world.gd:2984`, `Game Scenes and Scripts/world.gd:2985`
+- Fired from code: `Game Scenes and Scripts/world.gd:3809`, `Game Scenes and Scripts/world.gd:3822`, `Game Scenes and Scripts/world.gd:3823`, `Game Scenes and Scripts/world.gd:3824`
 
 **Subhead — first draft**
 
@@ -100,7 +100,7 @@
 
 **Fires when**
 
-- Fired from code: `Game Scenes and Scripts/world.gd:2990`, `Game Scenes and Scripts/world.gd:3003`, `Game Scenes and Scripts/world.gd:3004`, `Game Scenes and Scripts/world.gd:3005`
+- Fired from code: `Game Scenes and Scripts/world.gd:3829`, `Game Scenes and Scripts/world.gd:3842`, `Game Scenes and Scripts/world.gd:3843`, `Game Scenes and Scripts/world.gd:3844`
 
 **Subhead — first draft**
 
@@ -220,7 +220,7 @@
 
 **Fires when**
 
-- Fired from code: `Game Scenes and Scripts/world.gd:3010`, `Game Scenes and Scripts/world.gd:3023`, `Game Scenes and Scripts/world.gd:3024`, `Game Scenes and Scripts/world.gd:3025`
+- Fired from code: `Game Scenes and Scripts/world.gd:3849`, `Game Scenes and Scripts/world.gd:3862`, `Game Scenes and Scripts/world.gd:3863`, `Game Scenes and Scripts/world.gd:3864`
 
 **Subhead — first draft**
 
@@ -340,7 +340,7 @@
 
 **Fires when**
 
-- Fired from code: `Game Scenes and Scripts/world.gd:3030`, `Game Scenes and Scripts/world.gd:3043`, `Game Scenes and Scripts/world.gd:3044`
+- Fired from code: `Game Scenes and Scripts/world.gd:3869`, `Game Scenes and Scripts/world.gd:3882`, `Game Scenes and Scripts/world.gd:3883`
 
 **Subhead — first draft**
 
@@ -503,7 +503,7 @@
 
 **Fires when**
 
-- Fired from code: `Game Scenes and Scripts/world.gd:3050`, `Game Scenes and Scripts/world.gd:3066`, `Game Scenes and Scripts/world.gd:3067`, `Game Scenes and Scripts/world.gd:3068`
+- Fired from code: `Game Scenes and Scripts/world.gd:3889`, `Game Scenes and Scripts/world.gd:3906`, `Game Scenes and Scripts/world.gd:3907`, `Game Scenes and Scripts/world.gd:3908`
 
 **Subhead — first draft**
 
@@ -624,7 +624,7 @@
 
 **Fires when**
 
-- Fired from code: `Game Scenes and Scripts/world.gd:3073`, `Game Scenes and Scripts/world.gd:3081`, `Game Scenes and Scripts/world.gd:3082`
+- Fired from code: `Game Scenes and Scripts/world.gd:3913`, `Game Scenes and Scripts/world.gd:3921`, `Game Scenes and Scripts/world.gd:3922`
 
 **Subhead — first draft**
 
@@ -663,7 +663,7 @@
 
 **Fires when**
 
-- Fired from code: `Game Scenes and Scripts/world.gd:3089`, `Game Scenes and Scripts/world.gd:3093`, `Game Scenes and Scripts/world.gd:3094`
+- Fired from code: `Game Scenes and Scripts/world.gd:3929`, `Game Scenes and Scripts/world.gd:3933`, `Game Scenes and Scripts/world.gd:3934`
 
 **Subhead — first draft**
 
@@ -703,7 +703,7 @@
 
 **Fires when**
 
-- Fired from code: `Game Scenes and Scripts/world.gd:3100`, `Game Scenes and Scripts/world.gd:3111`, `Game Scenes and Scripts/world.gd:3112`
+- Fired from code: `Game Scenes and Scripts/world.gd:3940`, `Game Scenes and Scripts/world.gd:3951`, `Game Scenes and Scripts/world.gd:3952`
 
 **Subhead — first draft**
 
@@ -743,7 +743,7 @@
 
 **Fires when**
 
-- Fired from code: `Game Scenes and Scripts/world.gd:4860`
+- Fired from code: `Game Scenes and Scripts/world.gd:6226`
 
 **Subhead — first draft**
 
@@ -868,7 +868,7 @@
 
 **Fires when**
 
-- Fired from code: `Game Scenes and Scripts/world.gd:3949`, `Game Scenes and Scripts/world.gd:3961`, `Game Scenes and Scripts/world.gd:3962`
+- Fired from code: `Game Scenes and Scripts/world.gd:4818`, `Game Scenes and Scripts/world.gd:4830`, `Game Scenes and Scripts/world.gd:4831`
 
 **Subhead — first draft**
 
@@ -913,7 +913,7 @@
 
 **Fires when**
 
-- Fired from code: `Game Scenes and Scripts/world.gd:3992`
+- Fired from code: `Game Scenes and Scripts/world.gd:4887`, `Game Scenes and Scripts/world.gd:4892`, `Game Scenes and Scripts/world.gd:4897`
 
 **Subhead — first draft**
 
@@ -953,7 +953,7 @@
 
 **Fires when**
 
-- Fired from code: `Game Scenes and Scripts/world.gd:3995`
+- Fired from code: `Game Scenes and Scripts/world.gd:4882`
 
 **Subhead — first draft**
 
@@ -985,9 +985,9 @@
 
 ### `HARVEST_VISIT_01_INTIMATE` — PRESIDENT CARLISLE SAVES THE HARVEST — BY MORNING
 
-**Status** IDEA · **Type** `harvest_resolution` · **Country** `USA` · **Tone** Warm/Tender
+**Status** FIRST PASS · **Type** `harvest_resolution` · **Country** `USA` · **Tone** Warm/Tender
 **Chain** Harvest Crisis · position Chain
-**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (In Progress) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -999,7 +999,7 @@
 
 **Body — first draft**
 
-> [INTIMATE STUB — HARVEST_VISIT_01] Field event intimate version: PRESIDENT CARLISLE SAVES THE HARVEST. Write the quieter version: what the relationship looks like away from headquarters, in the field, with something at stake. Author this scene.
+> The harvest was in. This had required, among other things, the President of the Continental Republic spending four hours in a corn emergency, which is not a phrase anyone had prepared her to use during the campaign but which she now uses with the specific authority of someone who has personally identified a root-blight and coordinated the response. [COMMANDER_NAME] had been there for all of it. The farm supervisor's report describes [COMMANDER_NAME] as having provided essential coordination support, which is the kind of language used when you want to say that someone rolled up [CMD_POSSESSIVE] sleeves in a field and worked alongside the crew without anyone having asked [CMD_OBJECT] to. When the last of it was done and the evening was coming and the farm crew was at the tables, Ualani and [COMMANDER_NAME] were at the edge of the field, which is the place where farm fields go from work to something else at dusk. She said: you didn't have to do that. [COMMANDER_NAME] said: I know. She said: but you did. [COMMANDER_NAME] said: the corn needed doing. She looked at [COMMANDER_NAME] in the specific quality of light that open farmland has at the end of the day. There are worse qualities of light. There are worse things to have found out about a person in a corn emergency.
 
 **Choices & outcomes**
 
@@ -1007,7 +1007,7 @@
 |---|---|---|---|---|
 | 1 | Continue | `standard` | _no mechanical effect_ | — |
 
-**Design notes** Stub — author intimate version of HARVEST_VISIT_01. By morning: emotional arc, no explicit imagery.
+**Design notes** Tile Crisis — authored; corn emergency; farmland dusk light
 
 <details><summary><b>FINAL PASS — write here</b></summary>
 
@@ -1023,9 +1023,9 @@
 
 ### `STUMP_SPEECH_01_INTIMATE` — PRESIDENT CARLISLE TAKES THE FLOOR AT [TILE_NAME] — ... — BY MORNING
 
-**Status** IDEA · **Type** `stump_speech` · **Country** `USA` · **Tone** Warm/Tender
+**Status** FIRST PASS · **Type** `stump_speech` · **Country** `USA` · **Tone** Warm/Tender
 **Chain** Election Arc · position Chain
-**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (In Progress) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -1037,7 +1037,7 @@
 
 **Body — first draft**
 
-> [INTIMATE STUB — STUMP_SPEECH_01] Campaign trail intimate scene, 'By morning' version. Write: what happens after the rally, in the quiet. The exhaustion and the adrenaline and the specific intimacy of people who share a cause. Author this scene.
+> The crowd had gone. The lights were still too bright and the sound equipment was still making that particular subsonic hum that sound equipment makes when the people running it have left. She came offstage into the actual dark and stood in the specific way she stands when she has been performing intensity for two hours and has just found the place where she can stop. [COMMANDER_NAME] was there. [COMMANDER_NAME] had been at the back of the room for the speech. She had not known this. She said: you didn't have to come. [COMMANDER_NAME] said: I know. She said: how long were you there. [COMMANDER_NAME] said: from the beginning. She looked at [COMMANDER_NAME]. There is something about being watched by someone who is not there to be impressed by you — who is there because they wanted to see, not because they wanted to see something impressive — that has a different weight. She said: it was a good speech. [COMMANDER_NAME] said: it was. [COMMANDER_NAME] said it in a way that meant it. The stage lights were still on behind them, filling the space with the wrong light for the thing that was happening in it. What happened after is not in the rally notes. The adrenaline of a political speech takes time to resolve. It resolves differently when [COMMANDER_NAME] is there.
 
 **Choices & outcomes**
 
@@ -1045,7 +1045,7 @@
 |---|---|---|---|---|
 | 1 | Continue | `standard` | _no mechanical effect_ | — |
 
-**Design notes** Stub — author intimate version of STUMP_SPEECH_01. By morning: emotional arc, no explicit imagery.
+**Design notes** Election — authored; after the rally; wrong light for what's happening
 
 <details><summary><b>FINAL PASS — write here</b></summary>
 

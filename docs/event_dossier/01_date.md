@@ -1,47 +1,8 @@
 # Date
 
-5 events · FIRST PASS 5
+4 events · FIRST PASS 4
 
 [← back to index](00_INDEX.md)
-
----
-
-### `DE_001` — A NEW WAR FOR AN OLD REPUBLIC
-
-**Status** FIRST PASS · **Type** `date` · **Country** `GEN` · **Tone** Serious/Rousing
-**Chain** Annual Calendar · position Root
-**Art** `president_address` (Not Started) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
-
-**Fires when**
-
-- **Game start** — fires on turn 1 · turns 1–1 · priority 1  <sub>`TRIG_001`</sub>
-
-**Subhead — first draft**
-
-> President Carlisle Addresses the Nation
-
-**Body — first draft**
-
-> In a nationally televised address from the newly fortified Washington Mall, President Ualani Carlisle gripped the podium and stared down a nation that smelled faintly of gunpowder and existential dread. 'King George III has made his intentions clear,' she said. 'So have we.' Behind her, the Lincoln Memorial statue gave what witnesses described as an encouraging nod.
-
-**Choices & outcomes**
-
-| # | Button text | Type | What it does | Leads to |
-|---|---|---|---|---|
-| 1 | Rally the Nation | `standard` | morale +20 | — |
-| 2 | Read the Briefing | `standard` | _no mechanical effect_ | — |
-
-**Design notes** Opening address; non-repeatable; fires turn 1
-
-<details><summary><b>FINAL PASS — write here</b></summary>
-
-- **Headline:**
-- **Subhead:**
-- **Body:**
-- **Button text:**
-- **Notes:**
-
-</details>
 
 ---
 

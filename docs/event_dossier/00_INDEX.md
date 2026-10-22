@@ -8,33 +8,35 @@ Every entry carries the first-draft prose, the context that makes it fire, each 
 
 | Status | Events |
 |---|---|
-| FIRST PASS | 248 |
-| IDEA | 53 |
-| UNTRACKED | 14 |
-| FULL COMPLETION | 2 |
-| **Total** | **317** |
+| FIRST PASS | 271 |
+| FULL COMPLETION | 47 |
+| UNTRACKED | 8 |
+| **Total** | **326** |
 
 ## Files
 
 | File | Category | Events | Status breakdown |
 |---|---|---|---|
-| [01_date.md](01_date.md) | Date | 5 | FIRST PASS 5 |
+| [01_date.md](01_date.md) | Date | 4 | FIRST PASS 4 |
 | [02_city_liberated.md](02_city_liberated.md) | City Liberated | 5 | FIRST PASS 5 |
 | [03_city_lost.md](03_city_lost.md) | City Lost | 2 | FIRST PASS 2 |
 | [04_state.md](04_state.md) | State | 4 | FIRST PASS 4 |
-| [05_protector.md](05_protector.md) | Protector | 68 | FIRST PASS 51, IDEA 17 |
-| [06_commander.md](06_commander.md) | Commander | 54 | FIRST PASS 53, IDEA 1 |
-| [07_fort_chain.md](07_fort_chain.md) | Fort Chain | 5 | FIRST PASS 4, IDEA 1 |
-| [08_collapse.md](08_collapse.md) | Collapse | 3 | FIRST PASS 2, IDEA 1 |
-| [09_tile_crisis.md](09_tile_crisis.md) | Tile Crisis | 26 | FIRST PASS 24, IDEA 2 |
-| [10_ualani.md](10_ualani.md) | Ualani | 18 | FIRST PASS 10, IDEA 8 |
-| [11_vp_arc.md](11_vp_arc.md) | VP Arc | 13 | FIRST PASS 9, IDEA 4 |
-| [12_canada.md](12_canada.md) | Canada | 22 | FIRST PASS 13, IDEA 7, FULL COMPLETION 2 |
-| [13_ca_protector.md](13_ca_protector.md) | CA Protector | 32 | FIRST PASS 24, IDEA 8 |
-| [14_loyal_governor.md](14_loyal_governor.md) | Loyal Governor | 25 | FIRST PASS 25 |
-| [15_white_house.md](15_white_house.md) | White House | 16 | FIRST PASS 12, IDEA 4 |
-| [16_chalchiuhtotolin.md](16_chalchiuhtotolin.md) | Chalchiuhtotolin | 5 | FIRST PASS 5 |
-| [17_untracked_not_in_masterdoc.md](17_untracked_not_in_masterdoc.md) | Untracked (not in masterdoc) | 14 | UNTRACKED 14 |
+| [05_protector.md](05_protector.md) | Protector | 64 | FIRST PASS 53, FULL COMPLETION 11 |
+| [06_commander.md](06_commander.md) | Commander | 57 | FIRST PASS 43, FULL COMPLETION 14 |
+| [07_fort_chain.md](07_fort_chain.md) | Fort Chain | 5 | FIRST PASS 5 |
+| [08_collapse.md](08_collapse.md) | Collapse | 3 | FIRST PASS 3 |
+| [09_tile_crisis.md](09_tile_crisis.md) | Tile Crisis | 26 | FIRST PASS 26 |
+| [10_ualani.md](10_ualani.md) | Ualani | 18 | FIRST PASS 18 |
+| [11_vp_arc.md](11_vp_arc.md) | VP Arc | 13 | FIRST PASS 13 |
+| [12_ca_pm_arc.md](12_ca_pm_arc.md) | CA PM Arc | 8 | FIRST PASS 8 |
+| [13_canada.md](13_canada.md) | Canada | 22 | FIRST PASS 20, FULL COMPLETION 2 |
+| [14_ca_protector.md](14_ca_protector.md) | CA Protector | 32 | FIRST PASS 32 |
+| [15_loyal_governor.md](15_loyal_governor.md) | Loyal Governor | 24 | FULL COMPLETION 14, FIRST PASS 10 |
+| [16_white_house.md](16_white_house.md) | White House | 16 | FIRST PASS 10, FULL COMPLETION 6 |
+| [17_chalchiuhtotolin.md](17_chalchiuhtotolin.md) | Chalchiuhtotolin | 5 | FIRST PASS 5 |
+| [18_ualani_events.md](18_ualani_events.md) | Ualani Events | 4 | FIRST PASS 4 |
+| [19_idea.md](19_idea.md) | Idea | 6 | FIRST PASS 6 |
+| [20_untracked_not_in_masterdoc.md](20_untracked_not_in_masterdoc.md) | Untracked (not in masterdoc) | 8 | UNTRACKED 8 |
 
 ## Reading an entry
 
@@ -46,21 +48,23 @@ Every entry carries the first-draft prose, the context that makes it fire, each 
 
 Findings from generating this packet. None of these are prose problems — they are wiring issues worth deciding on before the final pass locks the text.
 
-### Malformed source rows (2)
+### Malformed source rows (0)
 
-| File | Line | Row | Repair applied for this packet |
-|---|---|---|---|
-| `data/events.csv` | 314 | `CA_PM_LEGACY` | 3 stray comma(s) folded back into 'long_desc' |
-| `data/event_buttons.csv` | 40 | `FORT_004_BTN1` | trailing pad field dropped so the row parses; values after the skipped column are still shifted one place right |
+_None._
 
-These are repaired **on read only** — the CSVs still contain the malformed rows.
-
-### Unreachable drafts (34)
+### Unreachable drafts (48)
 
 Prose exists, but nothing found in the data or the code can reach it. Either the wiring is missing or the draft is a spare.
 
 | Event | Category | Status | Headline |
 |---|---|---|---|
+| `PROT_06_TAME` | Protector | FIRST PASS | GOATMAN: CONSEQUENCES |
+| `PROT_06_AGREE` | Protector | FIRST PASS | MIDNIGHT MEETING — THE TERMS OF THE DEAL |
+| `PROT_07_TAME` | Protector | FIRST PASS | THE HAUNTING OF BELL HOUSE |
+| `PROT_07_AGREE` | Protector | FIRST PASS | JINGLE BELLS‚ KING GEORGE SMELLS |
+| `PROT_16_TAME` | Protector | FULL COMPLETION | COVERT AGENT ACTIVE — CELL LOYAL |
+| `PROT_16_AGREE` | Protector | FIRST PASS | A LETTER OF PERSONAL LOYALTY |
+| `CMD_MERIT` | Commander | FULL COMPLETION | FIELD PROMOTION: [COMMANDER_NAME] DISTINGUISHED IN EARLY OPE |
 | `FORT_005` | Fort Chain | FIRST PASS | CLASSIFIED DIPLOMATIC PROCEEDINGS AT [TILE_NAME] |
 | `CA_PROT_01_SUMMON` | CA Protector | FIRST PASS | LE WENDIGO WAKES IN THE LAURENTIAN FOREST |
 | `CA_PROT_02_SUMMON` | CA Protector | FIRST PASS | LE LOUP-GAROU RUNS THE RIVER ROAD — RIVIÈRE-DU-LOUP QUARANTI |
@@ -80,21 +84,28 @@ Prose exists, but nothing found in the data or the code can reach it. Either the
 | `GOV_LOYAL_ARC_08` | Loyal Governor | FIRST PASS | DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] CALLS IN A FAVO |
 | `GOV_LOYAL_ARC_09` | Loyal Governor | FIRST PASS | DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] ORGANIZES A MEM |
 | `GOV_LOYAL_ARC_10` | Loyal Governor | FIRST PASS | DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] RETURNS FROM TH |
-| `GOV_LOYAL_ARC_11` | Loyal Governor | FIRST PASS | DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] DELIVERS A SPEE |
-| `GOV_LOYAL_ARC_12` | Loyal Governor | FIRST PASS | DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] APPLIES MEDICAL |
-| `GOV_LOYAL_ARC_13` | Loyal Governor | FIRST PASS | DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] REFLOATS A DECO |
-| `GOV_LOYAL_ARC_14` | Loyal Governor | FIRST PASS | DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] RIDES THE CIRCU |
-| `GOV_LOYAL_ARC_15` | Loyal Governor | FIRST PASS | DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] AUDITS [TILE_NA |
-| `GOV_LOYAL_ARC_16` | Loyal Governor | FIRST PASS | DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] RETASKS THE FOU |
-| `GOV_LOYAL_ARC_17` | Loyal Governor | FIRST PASS | DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] RETURNS TO [TIL |
-| `GOV_LOYAL_ARC_18` | Loyal Governor | FIRST PASS | DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] REPORTS A WORKI |
-| `GOV_LOYAL_ARC_19` | Loyal Governor | FIRST PASS | DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] CLOSES A DEAL A |
-| `GOV_LOYAL_ARC_20` | Loyal Governor | FIRST PASS | DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] INTRODUCES NEW  |
-| `GOV_LOYAL_ARC_21` | Loyal Governor | FIRST PASS | DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] CONSOLIDATES SC |
-| `GOV_LOYAL_ARC_22` | Loyal Governor | FIRST PASS | DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] MAPS AND MILLS  |
-| `GOV_LOYAL_ARC_23` | Loyal Governor | FIRST PASS | DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] POSTS A MUSTER  |
-| `GOV_LOYAL_ARC_24` | Loyal Governor | FIRST PASS | DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] HOSTS A GATHERI |
-| `GOV_LOYAL_ARC_25` | Loyal Governor | FIRST PASS | DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] STAGES AN EXHIB |
+| `GOV_LOYAL_ARC_18` | Loyal Governor | FULL COMPLETION | MESSAGE IN A BOTTLE FROM THE DEEP SWAMPS OF [TILE_NAME] — TH |
+| `GOV_LOYAL_ARC_19` | Loyal Governor | FULL COMPLETION | DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] CLOSES AN UNDIS |
+| `GOV_LOYAL_ARC_11` | Loyal Governor | FULL COMPLETION | DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] DELIVERS A SPEE |
+| `GOV_LOYAL_ARC_12` | Loyal Governor | FULL COMPLETION | THE AMPUTEE'S HANDBOOK — [COMMANDER_NAME] SUBMITS A REPORT O |
+| `GOV_LOYAL_ARC_13` | Loyal Governor | FULL COMPLETION | DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] REFLOATS A HULL |
+| `GOV_LOYAL_ARC_14` | Loyal Governor | FULL COMPLETION | FRONTIER PREACHER INSPIRES THOUSANDS |
+| `GOV_LOYAL_ARC_25` | Loyal Governor | FULL COMPLETION | FOR ONE NIGHT ONLY! |
+| `GOV_LOYAL_ARC_24` | Loyal Governor | FULL COMPLETION | DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] ORGANIZED SOMET |
+| `GOV_LOYAL_ARC_15` | Loyal Governor | FULL COMPLETION | DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] AUDITS [TILE_NA |
+| `GOV_LOYAL_ARC_16` | Loyal Governor | FULL COMPLETION | DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] HAS A PROPOSAL  |
+| `GOV_LOYAL_ARC_17` | Loyal Governor | FULL COMPLETION | DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] RETURNS TO [TIL |
+| `GOV_LOYAL_ARC_23` | Loyal Governor | FULL COMPLETION | DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] POSTS ONE MUSTE |
+| `GOV_LOYAL_ARC_22` | Loyal Governor | FULL COMPLETION | DISPATCH FROM [TILE_NAME] — [COMMANDER_NAME] HAS MAPPED EVER |
+| `GOV_LOYAL_ARC_21` | Loyal Governor | FULL COMPLETION | MERCENARY COMMANDER'S PATRIOTIC DISPLAY |
+| `GOV_LVL2_HONOR` | Commander | FULL COMPLETION | FIELD CITATION — [COMMANDER_NAME] |
+| `UALANI_DOCK_01` | Ualani Events | FIRST PASS | PRESIDENT CARLISLE SURVEYS THE HARBOR AT [TILE_NAME] |
+| `UALANI_FARM_01` | Ualani Events | FIRST PASS | PRESIDENT CARLISLE VISITS THE FARMLANDS AT [TILE_NAME] |
+| `UALANI_BARRACKS_01` | Ualani Events | FIRST PASS | PRESIDENT CARLISLE CONDUCTS REGIMENTAL REVIEW AT [TILE_NAME] |
+| `UALANI_COURTHOUSE_01` | Ualani Events | FIRST PASS | PRESIDENT CARLISLE HOLDS TOWN HALL AT [TILE_NAME] |
+| `ESPIONAGE_DISCOVERY_01` | Idea | FIRST PASS | SPY NETWORK DISCOVERED AT [TILE_NAME] — CULPER RING CATCHES  |
+| `WINTER_SIEGE_01` | Idea | FIRST PASS | VALLEY FORGE CONDITIONS — TROOPS SUFFER THROUGH ANOTHER NORT |
+| `SPRING_OFFENSIVE_01` | Idea | FIRST PASS | THE THAW — CROWN FORCES RESUME OFFENSIVE OPERATIONS |
 
 ### Events that render with no usable choice (1)
 
@@ -132,26 +143,17 @@ Authored without a `content_flag` value, so `repeatable` and `cooldown_turns` si
 
 `PROT_02_SUMMON`, `PROT_03_SUMMON`, `PROT_04_SUMMON`, `PROT_05_SUMMON`, `PROT_06_SUMMON`, `PROT_07_SUMMON`, `PROT_08_SUMMON`, `PROT_09_SUMMON`, `PROT_10_SUMMON`, `PROT_11_SUMMON`, `PROT_12_SUMMON`, `PROT_13_SUMMON`, `PROT_15_SUMMON`, `PROT_16_SUMMON`, `PROT_17_SUMMON`, `ELECTION_SEASON`, `ELECTION_NIGHT_WIN`, `ELECTION_NIGHT_LOSE`, `VP_FIRST_MEETING`, `VP_COUNSEL`, `VP_DOUBT`, `VP_LOYALTY_TEST`, `VP_BATTLEFIELD`, `VP_PRE_ELECTION`, `VP_SACRIFICE`, `VP_SOLIDARITY`, `UK_BUILDUP_01`, `UK_DECLARATION_01`, `CAN_CALL_01`, `CAN_PENOIT_01`, `CAN_CLEARWATER_01`, `CAN_JOINT_OPS_01`, `CAN_ELECTION_LUCK`, `CA_PROT_01_SUMMON`, `CA_PROT_02_SUMMON`, `CA_PROT_03_SUMMON`, `CA_PROT_04_SUMMON`, `CA_PROT_05_SUMMON`, `CA_PROT_06_SUMMON`, `CA_PROT_07_SUMMON`, `CA_PROT_08_SUMMON`, `VP_LEGACY`, `CHALCH_SUMMON`, `CHALCH_Q1`, `CHALCH_Q2`, `CHALCH_Q3`, `CHALCH_AGREE`
 
-### In the masterdoc but not in `events.csv` (11)
+### In the masterdoc but not in `events.csv` (2)
 
 Tracked as planned work with no row in the data yet.
 
 | Event | Category | Status |
 |---|---|---|
-| `CL_VALLEY_FORGE_01` | Idea | IDEA |
-| `CL_WASHINGTON_01` | Idea | IDEA |
 | `CMD_OBJECTIVE_2` | Idea | IDEA |
-| `CX_NYC_01` | Idea | IDEA |
-| `ESPIONAGE_DISCOVERY_01` | Idea | IDEA |
-| `SPRING_OFFENSIVE_01` | Idea | IDEA |
-| `UALANI_BARRACKS_01` | Idea | IDEA |
-| `UALANI_COURTHOUSE_01` | Idea | IDEA |
-| `UALANI_DOCK_01` | Idea | IDEA |
-| `UALANI_FARM_01` | Idea | IDEA |
-| `WINTER_SIEGE_01` | Idea | IDEA |
+| `DE_001` | Date | FIRST PASS |
 
-### Events with no button rows (11)
+### Events with no button rows (0)
 
 Their choices are assembled at runtime in code, so button text for these lives in `.gd` files rather than the CSV.
 
-`CA_ALONE_01`, `CA_COLLAPSE_01`, `CA_COLLAPSE_JESSICA`, `CA_PM_COUNSEL`, `CA_PM_DOUBT`, `CA_PM_FIRST_MEETING`, `CA_PM_LOYALTY_TEST`, `CA_PM_PRE_ELECTION`, `USA_ALLIANCE_SIGNED`, `USA_CALL_01`, `USA_SUMMIT_01`
+_None._

@@ -1,6 +1,6 @@
 # VP Arc
 
-13 events · FIRST PASS 9 · IDEA 4
+13 events · FIRST PASS 13
 
 [← back to index](00_INDEX.md)
 
@@ -16,7 +16,7 @@
 
 **Fires when**
 
-- Fired from code: `Game Scenes and Scripts/world.gd:3450`, `Game Scenes and Scripts/world.gd:3454`
+- Fired from code: `Game Scenes and Scripts/world.gd:4319`, `Game Scenes and Scripts/world.gd:4323`
 
 **Subhead — first draft**
 
@@ -57,7 +57,7 @@
 
 **Fires when**
 
-- Fired from code: `Game Scenes and Scripts/world.gd:3458`, `Game Scenes and Scripts/world.gd:3464`
+- Fired from code: `Game Scenes and Scripts/world.gd:4327`, `Game Scenes and Scripts/world.gd:4333`
 
 **Subhead — first draft**
 
@@ -98,7 +98,7 @@
 
 **Fires when**
 
-- Fired from code: `Game Scenes and Scripts/world.gd:3468`, `Game Scenes and Scripts/world.gd:3474`
+- Fired from code: `Game Scenes and Scripts/world.gd:4337`, `Game Scenes and Scripts/world.gd:4343`
 
 **Subhead — first draft**
 
@@ -143,7 +143,7 @@
 
 **Fires when**
 
-- Fired from code: `Game Scenes and Scripts/world.gd:3478`, `Game Scenes and Scripts/world.gd:3486`
+- Fired from code: `Game Scenes and Scripts/world.gd:4347`, `Game Scenes and Scripts/world.gd:4355`
 
 **Subhead — first draft**
 
@@ -184,7 +184,7 @@
 
 **Fires when**
 
-- Fired from code: `Game Scenes and Scripts/world.gd:3491`, `Game Scenes and Scripts/world.gd:3499`
+- Fired from code: `Game Scenes and Scripts/world.gd:4360`, `Game Scenes and Scripts/world.gd:4368`
 
 **Subhead — first draft**
 
@@ -229,7 +229,7 @@
 
 **Fires when**
 
-- Fired from code: `Game Scenes and Scripts/world.gd:3503`, `Game Scenes and Scripts/world.gd:3509`
+- Fired from code: `Game Scenes and Scripts/world.gd:4372`, `Game Scenes and Scripts/world.gd:4378`
 
 **Subhead — first draft**
 
@@ -274,7 +274,7 @@
 
 **Fires when**
 
-- Fired from code: `Game Scenes and Scripts/world.gd:3513`, `Game Scenes and Scripts/world.gd:3521`
+- Fired from code: `Game Scenes and Scripts/world.gd:4382`, `Game Scenes and Scripts/world.gd:4390`
 
 **Subhead — first draft**
 
@@ -315,7 +315,7 @@
 
 **Fires when**
 
-- Fired from code: `Game Scenes and Scripts/world.gd:3525`, `Game Scenes and Scripts/world.gd:3531`
+- Fired from code: `Game Scenes and Scripts/world.gd:4394`, `Game Scenes and Scripts/world.gd:4400`
 
 **Subhead — first draft**
 
@@ -356,7 +356,7 @@
 
 **Fires when**
 
-- Fired from code: `Game Scenes and Scripts/world.gd:3535`, `Game Scenes and Scripts/world.gd:3541`
+- Fired from code: `Game Scenes and Scripts/world.gd:4404`, `Game Scenes and Scripts/world.gd:4410`
 
 **Subhead — first draft**
 
@@ -393,9 +393,9 @@
 
 ### `VP_DOUBT_INTIMATE` — THE VICE PRESIDENT AT 2 A.M.: [COMMANDER_NAME] IS QU... — BY MORNING
 
-**Status** IDEA · **Type** `vp_event` · **Country** `USA` · **Tone** Warm/Tender
+**Status** FIRST PASS · **Type** `vp_event` · **Country** `USA` · **Tone** Warm/Tender
 **Chain** VP Arc · position Chain
-**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (In Progress) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -407,7 +407,7 @@
 
 **Body — first draft**
 
-> [INTIMATE STUB — VP_DOUBT] VP arc intimate version: THE VICE PRESIDENT AT 2 A.M.: [COMMANDER_NAME] IS QUESTIONING EVERYTHING. Write the emotional version — the conversation that happens instead of or alongside the physical scene. The VP relationship developing in a quieter register. Author this scene.
+> The coffee was still cold. Neither of them had touched it since the first cup. This is how Ualani knew the conversation had gone somewhere real — she stops drinking when she is actually present, and she had been actually present since approximately the third sentence, when [COMMANDER_NAME] stopped saying the diplomatic version of the thing and said the thing. She did not respond with the thing she would have said in a meeting with staff in the room. She responded with the thing she actually thought, which was quieter and took longer and was, she believes, correct. [COMMANDER_NAME] looked at her for a moment after she finished. Then [COMMANDER_NAME] said: is that what you tell yourself, or is that what you believe. She said: it started as the first one. [COMMANDER_NAME] said: and now. She said: now I've been saying it long enough that I can't find the seam anymore. [COMMANDER_NAME] looked at the newspapers from Crown territory, still spread across the table. [COMMANDER_NAME] said: that's either very good or very concerning. She said: I think it's the job. The state dining room at 3 AM has a quality that the state dining room at 3 PM does not — the formality has gone out of it, the institutional weight has lifted slightly, and what is left is two people who have been in the same building for nine months and have just, in the last forty minutes, started talking to each other rather than at each other. [COMMANDER_NAME] did not have an answer about the letter from the home district by the time they left. But [COMMANDER_NAME] had a different question, which Ualani believes is more useful. What changed: the cold coffee, and the specific register of the silence that had replaced it.
 
 **Choices & outcomes**
 
@@ -415,7 +415,7 @@
 |---|---|---|---|---|
 | 1 | Continue | `standard` | _no mechanical effect_ | — |
 
-**Design notes** Stub — author intimate version of VP_DOUBT. By morning: emotional arc, no explicit imagery.
+**Design notes** VP arc — authored; cold coffee scene, 2AM conversation; no explicit content
 
 <details><summary><b>FINAL PASS — write here</b></summary>
 
@@ -431,9 +431,9 @@
 
 ### `VP_BATTLEFIELD_INTIMATE` — THE VICE PRESIDENT PICKS UP A MUSKET: [COMMANDER_NAM... — BY MORNING
 
-**Status** IDEA · **Type** `vp_event` · **Country** `USA` · **Tone** Warm/Tender
+**Status** FIRST PASS · **Type** `vp_event` · **Country** `USA` · **Tone** Warm/Tender
 **Chain** VP Arc · position Chain
-**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (In Progress) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -445,7 +445,7 @@
 
 **Body — first draft**
 
-> [INTIMATE STUB — VP_BATTLEFIELD] VP arc intimate version: THE VICE PRESIDENT PICKS UP A MUSKET: [COMMANDER_NAME] AT THE FRONT LINE. Write the emotional version — the conversation that happens instead of or alongside the physical scene. The VP relationship developing in a quieter register. Author this scene.
+> The garrison commander's report described [COMMANDER_NAME] as having exceeded operational expectations. What the garrison commander's report did not include: Ualani's reaction when she read it, which was not entirely professional and which she will not be having recorded. She called [COMMANDER_NAME]. The call lasted eleven minutes. The first four minutes she said very little. [COMMANDER_NAME] said: I was there. It seemed necessary. She said: I know it seemed necessary. [COMMANDER_NAME] said: the advance has been repelled. She said: I know the advance has been repelled. [COMMANDER_NAME] said: so. She said: so I am going to ask you not to do this again and you are going to say what you always say and then I am going to tell you that I need you alive and you are going to tell me that you know and then we are going to be in the same position we are currently in. [COMMANDER_NAME] said: that's a very accurate summary. There was a pause. Then [COMMANDER_NAME] said: the musket was actually very good. A Continental Long Rifle, modified. The garrison armorer had done exceptional work. She said: I will pass that along. [COMMANDER_NAME] said: Ualani. She said: yes. [COMMANDER_NAME] said: I know. She said: I know you know. That's not the point. The point is that I need you here. [COMMANDER_NAME] did not say anything for a moment. Then [COMMANDER_NAME] said: here as in the Vice Presidency, or here as in. She said: yes. [COMMANDER_NAME] said: alright. The call ended. What changed: [COMMANDER_NAME] did not agree not to do it again. They agreed to something else, which Ualani will take.
 
 **Choices & outcomes**
 
@@ -453,7 +453,7 @@
 |---|---|---|---|---|
 | 1 | Continue | `standard` | _no mechanical effect_ | — |
 
-**Design notes** Stub — author intimate version of VP_BATTLEFIELD. By morning: emotional arc, no explicit imagery.
+**Design notes** VP arc — authored; musket call aftermath; Ualani and VP on the phone
 
 <details><summary><b>FINAL PASS — write here</b></summary>
 
@@ -469,9 +469,9 @@
 
 ### `VP_PRE_ELECTION_INTIMATE` — THE VICE PRESIDENT CALLS AN UNSCHEDULED MEETING — [C... — BY MORNING
 
-**Status** IDEA · **Type** `vp_event` · **Country** `USA` · **Tone** Warm/Tender
+**Status** FIRST PASS · **Type** `vp_event` · **Country** `USA` · **Tone** Warm/Tender
 **Chain** VP Arc · position Chain
-**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (In Progress) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -483,7 +483,7 @@
 
 **Body — first draft**
 
-> [INTIMATE STUB — VP_PRE_ELECTION] VP arc intimate version: THE VICE PRESIDENT CALLS AN UNSCHEDULED MEETING — [COMMANDER_NAME] ISN'T SURE TH. Write the emotional version — the conversation that happens instead of or alongside the physical scene. The VP relationship developing in a quieter register. Author this scene.
+> The letter was still in [COMMANDER_NAME]'s hand. They had not put it down. Ualani had been watching this for the duration of the conversation — the way [COMMANDER_NAME] held it, not sliding it across the desk, not letting go of it either. She knew what this meant. She had held things the same way in the months before certain decisions. She said: you're not actually asking for my permission. [COMMANDER_NAME] said: no. She said: and you're not asking me to talk you out of it. [COMMANDER_NAME] said: I don't know. She said: what are you asking for. [COMMANDER_NAME] looked at the letter for a moment. Then [COMMANDER_NAME] said: I think I'm asking you to tell me what you see when you look at me. Not what the polling says. Not what headquarters says. What you see. She looked at [COMMANDER_NAME] for a while. She said what she saw. It took longer than either of them expected. [COMMANDER_NAME] did not say anything when she finished. The letter was still in their hand. After a while [COMMANDER_NAME] set it on the desk — not sliding it across, just setting it down, which is not the same thing. [COMMANDER_NAME] said: you really believe that. She said: I've had nine months to watch you. Yes. [COMMANDER_NAME] looked at the letter on the desk. [COMMANDER_NAME] did not pick it back up. What changed: the letter stayed on the desk. That is not the same as a decision, but it is adjacent to one.
 
 **Choices & outcomes**
 
@@ -491,7 +491,7 @@
 |---|---|---|---|---|
 | 1 | Continue | `standard` | _no mechanical effect_ | — |
 
-**Design notes** Stub — author intimate version of VP_PRE_ELECTION. By morning: emotional arc, no explicit imagery.
+**Design notes** VP arc — authored; the letter scene; what Ualani sees when she looks
 
 <details><summary><b>FINAL PASS — write here</b></summary>
 
@@ -507,9 +507,9 @@
 
 ### `VP_LEGACY_INTIMATE` — THE VICE PRESIDENT LEAVES A NOTE — [COMMANDER_NAME] ... — BY MORNING
 
-**Status** IDEA · **Type** `vp_event` · **Country** `USA` · **Tone** Warm/Tender
+**Status** FIRST PASS · **Type** `vp_event` · **Country** `USA` · **Tone** Warm/Tender
 **Chain** VP Arc · position Chain
-**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (In Progress) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -521,7 +521,7 @@
 
 **Body — first draft**
 
-> [INTIMATE STUB — VP_LEGACY] VP arc intimate version: THE VICE PRESIDENT LEAVES A NOTE — [COMMANDER_NAME] HAS SOMETHING TO SAY. Write the emotional version — the conversation that happens instead of or alongside the physical scene. The VP relationship developing in a quieter register. Author this scene.
+> She read the fourth paragraph twice and then she called [COMMANDER_NAME]. [COMMANDER_NAME] did not pick up, which she had expected — [COMMANDER_NAME] had left before her first meeting deliberately, and [COMMANDER_NAME] knows her well enough to know she would call, and [COMMANDER_NAME] had chosen anyway not to be reachable for this part. She sat with the note for four minutes before the briefings started. She did not tell her chief of staff what was in the fourth paragraph. She said it was going to the historical archive. This is true. What is also true: she read the fourth paragraph a third time after the briefings, alone, and she did not move for a while after. The note says things about the war and what they built and what the Republic is made of when the people who built it have to hand it to someone else. These things are in the first three paragraphs and they are correct and they are the kind of thing that will look right in the archive. The fourth paragraph is different. The fourth paragraph is not for the archive. It is for her specifically, written in handwriting she knows as well as she knows most things she has known long enough to stop thinking about. [COMMANDER_NAME] called back at 6 PM. She picked up. Neither of them said anything for a moment. Then she said: the fourth paragraph. [COMMANDER_NAME] said: I know. She said: you should have stayed. [COMMANDER_NAME] said: I know. She said: [COMMANDER_NAME]. [COMMANDER_NAME] said: I know. What changed: nothing that was not already true. What is different: she has now read it three times and intends to read it again.
 
 **Choices & outcomes**
 
@@ -529,7 +529,7 @@
 |---|---|---|---|---|
 | 1 | Continue | `standard` | _no mechanical effect_ | — |
 
-**Design notes** Stub — author intimate version of VP_LEGACY. By morning: emotional arc, no explicit imagery.
+**Design notes** VP arc — authored; fourth paragraph scene; three readings, one call
 
 <details><summary><b>FINAL PASS — write here</b></summary>
 

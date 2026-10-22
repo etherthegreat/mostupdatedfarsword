@@ -92,7 +92,7 @@
 
 **Fires when**
 
-- Fired from code: `Game Scenes and Scripts/world.gd:2768`
+- Fired from code: `Game Scenes and Scripts/world.gd:3608`
 
 **Subhead — first draft**
 
@@ -130,7 +130,7 @@
 
 **Fires when**
 
-- Fired from code: `Game Scenes and Scripts/world.gd:2806`
+- Fired from code: `Game Scenes and Scripts/world.gd:3646`
 
 **Subhead — first draft**
 

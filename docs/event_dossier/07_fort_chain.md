@@ -1,6 +1,6 @@
 # Fort Chain
 
-5 events · FIRST PASS 4 · IDEA 1
+5 events · FIRST PASS 5
 
 [← back to index](00_INDEX.md)
 
@@ -67,7 +67,7 @@
 
 **Body — first draft**
 
-> President Carlisle's arrival at [TILE_NAME] was not quiet. Her army was with her. She walked through the gate, past the crumbling parapet that featured in pamphlet four, and found [COMMANDER_NAME] in the command tent surrounded by what appeared to be additional draft pamphlets. The conversation lasted four minutes. 'You are relieved,' the President said. This is the complete transcript. [COMMANDER_NAME] opened his mouth. The President's army was outside. He closed it. The command tent was vacated. A replacement commander has been identified, briefed, and installed before sunset. Their first act was to burn the remaining pamphlets. The President sent a letter. The letter said: good start.
+> President Carlisle's arrival at [TILE_NAME] was not announced. Her army was with her. She walked through the gate, past the crumbling parapet that featured in pamphlet four, and found [COMMANDER_NAME] in the command tent surrounded by what appeared to be additional draft pamphlets. The conversation lasted four minutes. 'You are relieved,' she said. This is the complete transcript. [COMMANDER_NAME]'s mouth opened. The President's army was outside. [CMD_POSSESSIVE] mouth closed. The command tent was vacated. A replacement commander was identified, briefed, and installed before sunset. [CMD_POSSESSIVE] first act was to burn the remaining pamphlets. The President sent a letter. The letter said: good start.
 
 **Choices & outcomes**
 
@@ -173,9 +173,9 @@
 
 ### `FORT_005_INTIMATE` — CLASSIFIED DIPLOMATIC PROCEEDINGS AT [TILE_NAME] — BY MORNING
 
-**Status** IDEA · **Type** `fort_reward` · **Country** `USA` · **Tone** Warm/Tender
+**Status** FIRST PASS · **Type** `fort_reward` · **Country** `USA` · **Tone** Warm/Tender
 **Chain** Fort Disrepair · position Chain
-**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (In Progress) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -187,7 +187,7 @@
 
 **Body — first draft**
 
-> [INTIMATE STUB — FORT_005] Field event intimate version: CLASSIFIED DIPLOMATIC PROCEEDINGS AT [TILE_NAME]. Write the quieter version: what the relationship looks like away from headquarters, in the field, with something at stake. Author this scene.
+> The officials had gone. The adjutant had gone. [TILE_NAME] at night without the formal meeting in it is a different place than [TILE_NAME] at night with the formal meeting in it — the weight of structure lifts and what remains is the building itself, which is old enough to have its own opinion about what happens inside it. [COMMANDER_NAME] stayed after the last dispatch was sent. Ualani stayed after [COMMANDER_NAME]. This is, she has noted, a pattern: she tends to stay when [COMMANDER_NAME] stays, which is not a thing she does with most people. The fort's administrative records show the formal meeting ending at 19:42. What the administrative records do not show: 22:00, [TILE_NAME], two people who have been in the same building for three hours processing the same information and who have reached the specific point of exhaustion where diplomacy drops away and what is underneath it becomes briefly visible. [COMMANDER_NAME] said something she did not expect — not about the fort, not about the diplomatic resolution, not about the war. Something that had been held under the formal business all evening. She did not answer immediately. The fort is old. It has heard many conversations. This one, she thinks, is worth the building knowing.
 
 **Choices & outcomes**
 
@@ -195,7 +195,7 @@
 |---|---|---|---|---|
 | 1 | Continue | `standard` | _no mechanical effect_ | — |
 
-**Design notes** Stub — author intimate version of FORT_005. By morning: emotional arc, no explicit imagery.
+**Design notes** Fort Chain — authored; fort at night after officials leave; building old enough to know
 
 <details><summary><b>FINAL PASS — write here</b></summary>
 

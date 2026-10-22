@@ -19,8 +19,6 @@ TRIGGERS_CSV = "data/event_triggers.csv"
 MASTERDOC    = "scripts/build_event_masterdoc.py"
 OUT_DIR      = "docs/event_dossier"
 
-EVENT_FIELDS = 14
-BUTTON_FIELDS = 12
 
 # ── TOLERANT CSV READING ─────────────────────────────────────────────────────
 # Two rows in the shipped data have the wrong field count (see 00_INDEX.md
@@ -29,11 +27,17 @@ BUTTON_FIELDS = 12
 REPAIRS = []
 
 
-def read_rows(path, expected, long_field_index):
-    """Read a CSV, folding any over-long row back into long_field_index."""
+def read_rows(path, long_field_index):
+    """Read a CSV, folding any over-long row back into long_field_index.
+
+    The expected width is the header's own width, so adding a column to the
+    data (combat-work added button_tooltip) does not make every row look
+    malformed.
+    """
     with open(path, encoding="utf-8") as fh:
         rows = list(csv.reader(fh))
     header = [h.strip() for h in rows[0]]
+    expected = len(header)
     out = []
     for lineno, row in enumerate(rows[1:], start=2):
         if not any(c.strip() for c in row):
@@ -63,9 +67,9 @@ def read_rows(path, expected, long_field_index):
 
 
 def load_data():
-    events = read_rows(EVENTS_CSV, EVENT_FIELDS, 5)      # long_desc
-    buttons = read_rows(BUTTONS_CSV, BUTTON_FIELDS, 2)   # button_text
-    triggers = read_rows(TRIGGERS_CSV, 14, 12)           # trigger_condition
+    events = read_rows(EVENTS_CSV, 5)      # long_desc
+    buttons = read_rows(BUTTONS_CSV, 2)    # button_text
+    triggers = read_rows(TRIGGERS_CSV, 12) # trigger_condition
     events = [e for e in events if e["event_id"].strip()]
     return events, buttons, triggers
 

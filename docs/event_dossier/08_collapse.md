@@ -1,6 +1,6 @@
 # Collapse
 
-3 events · FIRST PASS 2 · IDEA 1
+3 events · FIRST PASS 3
 
 [← back to index](00_INDEX.md)
 
@@ -14,7 +14,7 @@
 
 **Fires when**
 
-- Fired from code: `Game Scenes and Scripts/world.gd:2586`, `Game Scenes and Scripts/world.gd:2587`, `Game Scenes and Scripts/world.gd:2601`, `Game Scenes and Scripts/world.gd:2602`
+- Fired from code: `Game Scenes and Scripts/world.gd:3426`, `Game Scenes and Scripts/world.gd:3427`, `Game Scenes and Scripts/world.gd:3441`, `Game Scenes and Scripts/world.gd:3442`
 
 **Subhead — first draft**
 
@@ -52,7 +52,7 @@
 
 **Fires when**
 
-- Fired from code: `Game Scenes and Scripts/world.gd:2900`
+- Fired from code: `Game Scenes and Scripts/world.gd:3739`
 
 **Subhead — first draft**
 
@@ -89,9 +89,9 @@
 
 ### `COLLAPSE_02_INTIMATE` — WASHINGTON STANDS ALONE — BY MORNING
 
-**Status** IDEA · **Type** `collapse` · **Country** `USA` · **Tone** Warm/Tender
+**Status** FIRST PASS · **Type** `collapse` · **Country** `USA` · **Tone** Warm/Tender
 **Chain** Republic Falls · position Chain
-**Art** `—` (N/A) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
+**Art** `—` (In Progress) · **Explicit art** NO · **Content flag** `—` · **Repeatable** false · **Cooldown** 0
 
 **Fires when**
 
@@ -103,7 +103,7 @@
 
 **Body — first draft**
 
-> [INTIMATE STUB — COLLAPSE_02] Late-game crisis intimate scene. Write: what comfort looks like when the Republic is at its breaking point. Not rescue — presence. What two people do with the weight of impending collapse. Author this scene.
+> There is a particular quality to a building when it is the last building of a government that is no longer sure it will be a government tomorrow. The staff had filed out. The security had their orders. Ualani was at the window with no lights on and the specific dark of a city that has been through something and is waiting to find out if more is coming. [COMMANDER_NAME] came without knocking. She had not asked [COMMANDER_NAME] to stay. [COMMANDER_NAME] had stayed. This is the distinction she will think about later — that [COMMANDER_NAME] understood that what she needed was not advice and not a plan and not a speech about the Republic's resilience. What she needed was another person in the building. They stood at the window for a long time. The city was dark and quiet in the way cities get quiet when people are waiting. She said, eventually: I don't know if we're going to hold. [COMMANDER_NAME] said: I know. She said: I need to know you know. [COMMANDER_NAME] said: I know. That was all. They stayed at the window until the dark started changing. Presence, it turns out, is a form of argument. She did not know this before tonight.
 
 **Choices & outcomes**
 
@@ -111,7 +111,7 @@
 |---|---|---|---|---|
 | 1 | Continue | `standard` | _no mechanical effect_ | — |
 
-**Design notes** Stub — author intimate version of COLLAPSE_02. By morning: emotional arc, no explicit imagery.
+**Design notes** Collapse — authored; last tile, window and dark city; presence as argument
 
 <details><summary><b>FINAL PASS — write here</b></summary>
 
