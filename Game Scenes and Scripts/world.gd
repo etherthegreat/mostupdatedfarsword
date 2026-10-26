@@ -6240,54 +6240,21 @@ func _tile_line(panel: Panel, txt: String, y: int, dim: bool = false) -> void:
 	panel.add_child(l)
 
 
+const TILE_CARD_SCRIPT := preload("res://Game Scenes and Scripts/tile_card.gd")
+
 func _show_tile_info(tile) -> void:
+	# GUI pass 2026-10-26: the readout is now a full tile card (terrain painting, strategic
+	# pills, liberation spoils / per-turn yields, building sketches with hover details).
+	# The old line-by-line version is in _gui_pass_backup_20261025/world.gd.pre_tilecard.
 	_close_tile_info()
 	if tile == null or not is_instance_valid(tile):
 		return
 	_tileInfoTile = tile
-	var panel := Panel.new()
-	panel.size = Vector2(340, 350)
-	panel.position = Vector2(12, 100)
-	_style_hud_panel(panel)
-	$CanvasLayer.add_child(panel)
-	_tileInfoPanel = panel
-	var y: int = 12
-	var title := Label.new()
-	title.text = tile.tileName
-	title.position = Vector2(16, y)
-	title.add_theme_font_size_override("font_size", 18)
-	panel.add_child(title)
-	y += 30
-	_tile_line(panel, str(tile.tileContinent) + "   \u2022   " + str(tile.terrain), y, true); y += 26
-	var owner_name: String = {"USA": "United States", "UK": "Britain", "CA": "Canada"}.get(str(tile.tileOwner), str(tile.tileOwner))
-	_tile_line(panel, "Held by: " + owner_name, y); y += 24
-	if tile.tileSpecialFeatures.size() > 0:
-		_tile_line(panel, str(tile.tileSpecialFeatures[0]), y, true); y += 24
-	y += 6
-	if str(tile.tileOwner) == "USA":
-		_tile_line(panel, "Your territory.", y, true)
-	else:
-		_tile_line(panel, "LIBERATE FOR:", y); y += 24
-		var any: bool = false
-		if _is_tech_tile(tile):
-			_tile_line(panel, "  +1 Tech token", y); y += 22; any = true
-		if int(tile.buildings.get("monument", 0)) > 0:
-			_tile_line(panel, "  +1 Culture token", y); y += 22; any = true
-		if int(tile.buildings.get("courthouse", 0)) > 0:
-			_tile_line(panel, "  +3 Spell tokens", y); y += 22; any = true
-		if int(tile.buildings.get("market", 0)) > 0:
-			_tile_line(panel, "  +$" + str(CACHE_CASH) + "   (market)", y); y += 22; any = true
-		if int(tile.buildings.get("forge", 0)) > 0:
-			_tile_line(panel, "  +" + str(CACHE_WEAPONS) + " weapons   (forge)", y); y += 22; any = true
-		if int(tile.buildings.get("barracks", 0)) > 0:
-			_tile_line(panel, "  +" + str(CACHE_MANPOWER) + " manpower   (barracks)", y); y += 22; any = true
-		if not any:
-			_tile_line(panel, "  (open ground \u2014 no special spoils)", y, true); y += 22
-	if tile.tileGovernor != null:
-		var gn = tile.tileGovernor.get("governorName")
-		if gn != null:
-			_tile_line(panel, "Governor: " + str(gn), y); y += 24
-	panel.size.y = y + 14   # fit the content instead of a fixed 350px slab
+	var card = TILE_CARD_SCRIPT.new()
+	card.position = Vector2(12, 100)
+	$CanvasLayer.add_child(card)
+	card.build(tile, self)
+	_tileInfoPanel = card
 
 
 func _close_army_info() -> void:
@@ -7854,7 +7821,6 @@ func _show_enemy_activity_box(lines: PackedStringArray) -> void:
 		lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		_enemyActivityBox.add_child(lbl)
 		$CanvasLayer.add_child(_enemyActivityBox)
-	# Top-centre, just under the resource bar — away from the left-side info panels.
 	var vp := get_viewport_rect().size
 	var shown: Array = []
 	for i in range(lines.size() - 1, -1, -1):
@@ -7867,7 +7833,13 @@ func _show_enemy_activity_box(lines: PackedStringArray) -> void:
 	var rtl: RichTextLabel = _enemyActivityBox.get_node("Text")
 	rtl.text = txt
 	_enemyActivityBox.reset_size()
-	_enemyActivityBox.position = Vector2(maxf(12.0, (vp.x - 90.0 - _enemyActivityBox.size.x) * 0.5), 104)
+	# Top-right: just under the banner, tucked against the left edge of the button column
+	# (so it never sits over the big country names in the middle of the map).
+	var rightEdge: float = vp.x - 90.0
+	var btns = get_node_or_null("CanvasLayer/PanelOpenerControl/ButtonPanel")
+	if btns != null and btns is Control and btns.is_visible_in_tree():
+		rightEdge = (btns as Control).get_global_rect().position.x
+	_enemyActivityBox.position = Vector2(maxf(12.0, rightEdge - 10.0 - _enemyActivityBox.size.x), 104)
 	_enemyActivityBox.modulate.a = 1.0
 	if _enemyActivityTween != null and _enemyActivityTween.is_valid():
 		_enemyActivityTween.kill()
