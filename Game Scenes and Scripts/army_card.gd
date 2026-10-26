@@ -15,6 +15,7 @@ extends PanelContainer
 const BADGE := preload("res://Game Scenes and Scripts/army_badge.gd")
 
 const W := 420.0
+const PORTRAIT_SIZE := Vector2(84, 168)   # commander art is full-body 1:2
 const BG := Color(0.07, 0.09, 0.16, 0.95)
 const BORDER := Color(0.85, 0.62, 0.18, 1.0)
 const GOLD := Color(1.0, 0.82, 0.32)
@@ -174,9 +175,9 @@ func _build_header(v: VBoxContainer) -> void:
 	frame.add_theme_stylebox_override("panel", fsb)
 	h.add_child(frame)
 	var tr := TextureRect.new()
-	tr.custom_minimum_size = Vector2(92, 92)
+	tr.custom_minimum_size = PORTRAIT_SIZE
 	tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	tr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	tr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED   # whole figure, never cropped
 	var cmd = army.commander
 	tr.texture = _portrait(cmd)
 	frame.add_child(tr)
@@ -192,8 +193,8 @@ func _build_header(v: VBoxContainer) -> void:
 	h.add_child(info)
 	var name_row := HBoxContainer.new()
 	info.add_child(name_row)
-	var nm := _label(str(army.ArmyName), 20, Color.WHITE, true)
-	nm.clip_text = true
+	var nm := _label(str(army.ArmyName), 18, Color.WHITE, true)
+	nm.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	nm.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	name_row.add_child(nm)
 	if str(army.armyTier) != "":
@@ -213,6 +214,11 @@ func _build_header(v: VBoxContainer) -> void:
 	info.add_child(_label(where, 14, DIM))
 	if read_only:
 		info.add_child(_label("ENEMY — read only", 13, BAD, true))
+	if cmd != null and str(cmd.governorDescription) != "":
+		# the full-body portrait leaves room for the commander's line
+		var d := _label(str(cmd.governorDescription), 13, FAINT)
+		d.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		info.add_child(d)
 
 
 func _portrait(cmd) -> Texture2D:

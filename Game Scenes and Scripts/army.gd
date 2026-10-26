@@ -380,7 +380,7 @@ func offensive_output(require_ap: bool, holders_counter: bool, holders_attack: b
 					# threat estimate: a holding unit could switch to its best attack next turn
 					if u.unitWeapon != null and u.unitWeapon.weaponClass == "Saber":
 						melee += float(u.unitOffensiveScore) * 1.8 * _belief_atk_mult(u)
-					elif not u.is_reloading():
+					else:
 						ranged += float(u.unitRangedOffence) * _belief_atk_mult(u)
 				elif holders_counter:
 					if u.unitWeapon != null and u.unitWeapon.weaponClass == "Saber":
@@ -388,7 +388,8 @@ func offensive_output(require_ap: bool, holders_counter: bool, holders_attack: b
 					else:
 						ranged += float(u.unitRangedOffence) * 1.2
 			"fire":
-				if (not require_ap or u.unitCurrentAP > 0) and not u.is_reloading():
+				# threat estimates assume the enemy has reloaded by its own turn
+				if (not require_ap or u.unitCurrentAP > 0) and (not u.is_reloading() or holders_attack):
 					ranged += float(u.unitRangedOffence) * _belief_atk_mult(u)
 			"charge":
 				if not require_ap or u.unitCurrentAP > 0:
