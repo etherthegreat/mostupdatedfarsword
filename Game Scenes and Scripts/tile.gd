@@ -2189,3 +2189,71 @@ func is_counterintelligence_ready() -> bool:
 	# Has barracks + governor + recent espionage activity
 	# Use for: spy capture events
 	return has_governor()
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# MAP LABELS — the tile's own name, drawn on the tile, shrunk to fit inside it.
+# Runtime-built (no .tscn surgery). Alpha is driven by camera zoom from world.gd:
+# tile names fade IN as you zoom in, and hand off to the big country names as you
+# zoom out. Undiscovered tiles never show a name (no fog leak).
+# ─────────────────────────────────────────────────────────────────────────────
+var _tileNameLabel: Label = null
+const _TILE_LABEL_BASE_FONT := 22          # px at zoom 1.0 before shrink-to-fit
+const _TILE_LABEL_MIN_FONT := 6
+
+func _tileVisualBBox() -> Rect2:
+	var area := get_node_or_null("Area2D")
+	var poly := get_node_or_null("Area2D/CollisionPolygon2D")
+	if poly == null or area == null:
+		return Rect2(0, 0, 90, 90)
+	var pts: PackedVector2Array = poly.polygon
+	if pts.is_empty():
+		return Rect2(0, 0, 90, 90)
+	var mn := pts[0]
+	var mx := pts[0]
+	for p in pts:
+		mn.x = min(mn.x, p.x); mn.y = min(mn.y, p.y)
+		mx.x = max(mx.x, p.x); mx.y = max(mx.y, p.y)
+	return Rect2(mn + area.position, mx - mn)
+
+func ensureNameLabel() -> void:
+	if _tileNameLabel == null or not is_instance_valid(_tileNameLabel):
+		_tileNameLabel = Label.new()
+		_tileNameLabel.name = "TileNameLabel"
+		_tileNameLabel.z_index = 40
+		_tileNameLabel.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		_tileNameLabel.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		_tileNameLabel.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		_tileNameLabel.clip_text = true
+		_tileNameLabel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_tileNameLabel.add_theme_color_override("font_color", Color(1, 1, 1))
+		_tileNameLabel.add_theme_color_override("font_outline_color", Color(0, 0, 0))
+		_tileNameLabel.add_theme_constant_override("outline_size", 4)
+		add_child(_tileNameLabel)
+
+func refreshTileNameLabel() -> void:
+	if str(tileName).strip_edges() == "":
+		if _tileNameLabel != null and is_instance_valid(_tileNameLabel):
+			_tileNameLabel.visible = false
+		return
+	ensureNameLabel()
+	var box := _tileVisualBBox()
+	_tileNameLabel.text = tileName
+	_tileNameLabel.position = box.position
+	_tileNameLabel.size = box.size
+	var font := _tileNameLabel.get_theme_font("font")
+	var fs := _TILE_LABEL_BASE_FONT
+	if font != null:
+		var w := font.get_string_size(tileName, HORIZONTAL_ALIGNMENT_LEFT, -1, _TILE_LABEL_BASE_FONT).x
+		if w > box.size.x and w > 0.0:
+			fs = int(_TILE_LABEL_BASE_FONT * (box.size.x / w))
+	fs = clampi(fs, _TILE_LABEL_MIN_FONT, _TILE_LABEL_BASE_FONT)
+	_tileNameLabel.add_theme_font_size_override("font_size", fs)
+
+func setTileLabelAlpha(a: float) -> void:
+	if _tileNameLabel == null or not is_instance_valid(_tileNameLabel):
+		return
+	if undiscovered or not discovered:
+		a = 0.0
+	_tileNameLabel.visible = a > 0.01
+	_tileNameLabel.modulate.a = a

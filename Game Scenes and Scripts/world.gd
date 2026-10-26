@@ -172,6 +172,8 @@ const STATE_FULL_NAMES: Dictionary = {
 func _process(delta: float) -> void:
 	if worldCreation:
 		$CanvasLayer/LoadingSprite.rotation += 1
+	else:
+		_pollZoomForLabels()
 
 func updateResourceBar() -> void:
 	if playerCountryNode == null:
@@ -276,6 +278,8 @@ func newGameBuild(CID, gameLang, isCoop: bool = false):
 	for Tile in $TileController.get_children():
 		Tile.discoverTile()
 	worldCreation = false
+	# MAP LABELS: tiles owned/discovered — build tile-name + country-name layers.
+	call_deferred("setupMapLabels")
 	$RightClickDetector.visible = true
 	$CanvasLayer/LoadingProgressBar.value = 100
 	$CanvasLayer/LoadingBackground.visible = false
@@ -2198,10 +2202,10 @@ func _show_ai_turn_report() -> void:
 	for entry in _ai_combat_log:
 		var verb := "captured" if entry.result == "captured" else "attacked"
 		lines.append("%s %s %s" % [entry.attacker, verb, entry.tile])
-	var report := "[b]Enemy Activity[/b]\n" + "\n".join(lines)
 	var label = get_node_or_null("CanvasLayer/TurnLabel")
 	if label != null:
-		label.text = _format_game_date() + "\n" + "\n".join(lines)
+		label.text = _format_game_date()
+	_show_enemy_activity_box(lines)
 	_ai_combat_log.clear()
 
 # ── FLOATING DAMAGE NUMBERS ───────────────────────────────────────────────────
@@ -6242,6 +6246,7 @@ func _show_tile_info(tile) -> void:
 	var panel := Panel.new()
 	panel.size = Vector2(340, 350)
 	panel.position = Vector2(12, 100)
+	_style_hud_panel(panel)
 	$CanvasLayer.add_child(panel)
 	_tileInfoPanel = panel
 	var y: int = 12
@@ -6279,7 +6284,8 @@ func _show_tile_info(tile) -> void:
 	if tile.tileGovernor != null:
 		var gn = tile.tileGovernor.get("governorName")
 		if gn != null:
-			_tile_line(panel, "Governor: " + str(gn), y)
+			_tile_line(panel, "Governor: " + str(gn), y); y += 24
+	panel.size.y = y + 14   # fit the content instead of a fixed 350px slab
 
 
 func _close_army_info() -> void:
@@ -6316,6 +6322,7 @@ func _show_army_info(army) -> void:
 	panel.size = Vector2(340, 424)
 	var vp := get_viewport_rect().size
 	panel.position = Vector2(12, vp.y - panel.size.y - 12)
+	_style_hud_panel(panel)
 	$CanvasLayer.add_child(panel)
 	_armyInfoPanel = panel
 	var y: int = 10
@@ -7671,3 +7678,220 @@ func save_from_pause_menu() -> bool:
 		f.close()
 		return true
 	return false
+
+
+# ═════════════════════════════════════════════════════════════════════════════
+# MAP LABELS — two-layer name system (ported from Farsword-Ghost 2026-07-17).
+#   • Per-tile names fade IN as you zoom in.  • Big country names fade IN as you
+# zoom out. Built at runtime under TileController so they pan/scale with the map.
+# ═════════════════════════════════════════════════════════════════════════════
+var _countryLabels: Array = []
+var _mapLabelsReady: bool = false
+var _lastLabelZoom: float = -1.0
+# GUI pass 2026-10-25 — three zoom bands so text never stacks:
+#   FAR  (min zoom .. ×_CTRY_BAND)  : big country names only
+#   MID  (in between)               : tiles + units, no text
+#   NEAR (>= _TILE_FADE_LO)         : tile names
+const _TILE_FADE_LO := 1.35
+const _TILE_FADE_HI := 1.7
+const _CTRY_BAND_FULL := 1.08   # country names fully visible up to min_zoom × this
+const _CTRY_BAND_GONE := 1.4    # …and fully gone by min_zoom × this
+const COUNTRY_DISPLAY_NAMES := {
+	"USA": "United States", "CA": "Canada", "UK": "United Kingdom"
+}
+
+func _currentMapZoom() -> float:
+	var cam = get_node_or_null("CameraMovementController/Camera2D")
+	return cam.zoom.x if cam != null else 1.0
+
+func setupMapLabels() -> void:
+	for t in $TileController.get_children():
+		if t.has_method("refreshTileNameLabel"):
+			t.refreshTileNameLabel()
+	buildCountryLabels()
+	_applyCameraBounds()
+	_lastLabelZoom = -1.0
+	_mapLabelsReady = true
+	refreshMapLabels(_currentMapZoom())
+
+func buildCountryLabels() -> void:
+	# IMPORTANT: this holder must NOT be a child of TileController. The game's
+	# updateTiles()/connectTileSignals()/discoverTiles() loops iterate
+	# TileController.get_children() assuming every child is a Tile (e.g. Tile.activeView),
+	# so a plain Control parked there crashes the first time updateMap() runs. Park it on
+	# the world root instead; labels are placed by global_position, so map space is identical.
+	var holder = get_node_or_null("MapCountryLabels")
+	if holder == null:
+		holder = Control.new()
+		holder.name = "MapCountryLabels"
+		holder.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		add_child(holder)
+	for old in _countryLabels:
+		if is_instance_valid(old):
+			old.queue_free()
+	_countryLabels.clear()
+
+	for country in $CountryController.get_children():
+		var tiles = country.get("OwnedTileList")
+		if tiles == null or tiles.size() == 0:
+			continue
+		var cid: String = str(country.get("CID"))
+		var dispName: String = COUNTRY_DISPLAY_NAMES.get(cid, cid)
+		var sum := Vector2.ZERO
+		var minX := INF
+		var maxX := -INF
+		var n := 0
+		for t in tiles:
+			if not is_instance_valid(t):
+				continue
+			var ctr: Vector2 = t.global_position
+			if t.has_method("_tileVisualBBox"):
+				ctr += t._tileVisualBBox().get_center()
+			sum += ctr
+			minX = min(minX, ctr.x)
+			maxX = max(maxX, ctr.x)
+			n += 1
+		if n == 0:
+			continue
+		var centroid: Vector2 = sum / float(n)
+		var spanW: float = max(140.0, maxX - minX)
+
+		var lbl := Label.new()
+		lbl.name = "CL_" + cid
+		lbl.text = dispName
+		lbl.z_index = 30
+		lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		lbl.add_theme_color_override("font_color", Color(1, 1, 1))
+		lbl.add_theme_color_override("font_outline_color", Color(0, 0, 0))
+		lbl.add_theme_constant_override("outline_size", 6)
+		holder.add_child(lbl)
+
+		var font := lbl.get_theme_font("font")
+		var fs := 64
+		if font != null:
+			var w1: float = font.get_string_size(dispName, HORIZONTAL_ALIGNMENT_LEFT, -1, 100).x
+			if w1 > 0.0:
+				fs = int(100.0 * (spanW * 0.85) / w1)
+		fs = clampi(fs, 20, 260)
+		lbl.add_theme_font_size_override("font_size", fs)
+
+		var meas: Vector2 = Vector2(spanW, float(fs) * 1.2)
+		if font != null:
+			meas = font.get_string_size(dispName, HORIZONTAL_ALIGNMENT_LEFT, -1, fs)
+		lbl.size = meas
+		lbl.global_position = centroid - meas / 2.0
+		lbl.modulate.a = 0.0
+		_countryLabels.append(lbl)
+
+func refreshMapLabels(z: float) -> void:
+	var tileA: float = clampf((z - _TILE_FADE_LO) / max(0.001, _TILE_FADE_HI - _TILE_FADE_LO), 0.0, 1.0)
+	var zmin: float = 0.5
+	var ctl = get_node_or_null("CameraMovementController")
+	if ctl != null and ctl.get("min_zoom") != null:
+		zmin = float(ctl.min_zoom)
+	var c_full: float = zmin * _CTRY_BAND_FULL
+	var c_gone: float = zmin * _CTRY_BAND_GONE
+	var ctryA: float = clampf((c_gone - z) / max(0.001, c_gone - c_full), 0.0, 1.0)
+	for t in $TileController.get_children():
+		if t.has_method("setTileLabelAlpha"):
+			t.setTileLabelAlpha(tileA)
+	for l in _countryLabels:
+		if is_instance_valid(l):
+			l.visible = ctryA > 0.01
+			l.modulate.a = ctryA
+
+func _pollZoomForLabels() -> void:
+	if not _mapLabelsReady:
+		return
+	var z: float = _currentMapZoom()
+	if abs(z - _lastLabelZoom) > 0.001:
+		_lastLabelZoom = z
+		refreshMapLabels(z)
+
+
+# ═════════════════════════════════════════════════════════════════════════════
+# GUI PASS 2026-10-25 — legibility helpers
+# ═════════════════════════════════════════════════════════════════════════════
+const HUD_PANEL_BG := Color(0.07, 0.09, 0.16, 0.94)
+const HUD_PANEL_BORDER := Color(0.85, 0.62, 0.18, 1.0)   # matches the orange map frame
+
+func _style_hud_panel(panel: Control, bg: Color = HUD_PANEL_BG) -> void:
+	# Near-opaque backing so map labels never show through info panels.
+	var sb := StyleBoxFlat.new()
+	sb.bg_color = bg
+	sb.border_color = HUD_PANEL_BORDER
+	sb.set_border_width_all(2)
+	sb.set_corner_radius_all(6)
+	sb.content_margin_left = 10
+	sb.content_margin_right = 10
+	panel.add_theme_stylebox_override("panel", sb)
+
+
+func _applyCameraBounds() -> void:
+	# The camera may not leave the painted map art (both background sprites).
+	var r := Rect2()
+	var have := false
+	for n in ["MadamePresidentMap", "MadamePresidentMap2"]:
+		var spr = get_node_or_null(n)
+		if spr == null or not (spr is Sprite2D) or spr.texture == null or not spr.visible:
+			continue
+		var lr: Rect2 = spr.get_rect()
+		var gr := Rect2(spr.to_global(lr.position), lr.size * spr.global_scale)
+		r = gr if not have else r.merge(gr)
+		have = true
+	if not have:
+		return
+	var ctl = get_node_or_null("CameraMovementController")
+	if ctl != null and ctl.has_method("set_map_rect"):
+		ctl.set_map_rect(r)
+
+
+var _enemyActivityBox: PanelContainer = null
+var _enemyActivityTween: Tween = null
+const ENEMY_LOG_MAX_LINES := 4
+const ENEMY_LOG_HOLD_SEC := 6.0
+
+func _show_enemy_activity_box(lines: PackedStringArray) -> void:
+	# Enemy turn summary lives in its own box under the date, newest first, capped,
+	# and fades away instead of spilling down over the map and the info panels.
+	if lines.is_empty():
+		return
+	if _enemyActivityBox == null or not is_instance_valid(_enemyActivityBox):
+		_enemyActivityBox = PanelContainer.new()
+		_enemyActivityBox.name = "EnemyActivityBox"
+		_enemyActivityBox.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_style_hud_panel(_enemyActivityBox, Color(0.18, 0.04, 0.05, 0.92))
+		var lbl := RichTextLabel.new()
+		lbl.name = "Text"
+		lbl.bbcode_enabled = true
+		lbl.fit_content = true
+		lbl.scroll_active = false
+		lbl.autowrap_mode = TextServer.AUTOWRAP_OFF
+		lbl.custom_minimum_size = Vector2(300, 0)
+		lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_enemyActivityBox.add_child(lbl)
+		$CanvasLayer.add_child(_enemyActivityBox)
+	# Top-centre, just under the resource bar — away from the left-side info panels.
+	var vp := get_viewport_rect().size
+	var shown: Array = []
+	for i in range(lines.size() - 1, -1, -1):
+		shown.append(lines[i])
+		if shown.size() >= ENEMY_LOG_MAX_LINES:
+			break
+	var txt := "[b]Enemy turn[/b]\n" + "\n".join(shown)
+	if lines.size() > ENEMY_LOG_MAX_LINES:
+		txt += "\n[color=#bbbbbb]+%d more[/color]" % (lines.size() - ENEMY_LOG_MAX_LINES)
+	var rtl: RichTextLabel = _enemyActivityBox.get_node("Text")
+	rtl.text = txt
+	_enemyActivityBox.reset_size()
+	_enemyActivityBox.position = Vector2(maxf(12.0, (vp.x - 90.0 - _enemyActivityBox.size.x) * 0.5), 104)
+	_enemyActivityBox.modulate.a = 1.0
+	_enemyActivityBox.visible = true
+	if _enemyActivityTween != null and _enemyActivityTween.is_valid():
+		_enemyActivityTween.kill()
+	_enemyActivityTween = create_tween()
+	_enemyActivityTween.tween_interval(ENEMY_LOG_HOLD_SEC)
+	_enemyActivityTween.tween_property(_enemyActivityBox, "modulate:a", 0.0, 0.8)
+	_enemyActivityTween.tween_callback(func(): _enemyActivityBox.visible = false)

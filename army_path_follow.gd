@@ -10,6 +10,7 @@ const APF_BACKGROUNDS := {
 
 const APF_BASE_SCALE := 0.75    # resting on-screen size at zoom 1x (+25% for readability)
 var _cam: Camera2D = null
+const STAT_NUMBERS_ZOOM := 1.35   # matches world.gd _TILE_FADE_LO (near band)
 var _hover_scale: float = 1.0
 
 var thisArmy: Army
@@ -251,6 +252,15 @@ func _update_token_scale() -> void:
 		zoomv = _cam.zoom.x
 	var sc: float = (APF_BASE_SCALE / zoomv) * _hover_scale
 	scale = Vector2(sc, sc)
+	# GUI pass 2026-10-25: the "104/104" numbers only appear when zoomed in close
+	# (or when hovering the token). Far/mid zoom shows just the icon + bars.
+	var show_numbers: bool = zoomv >= STAT_NUMBERS_ZOOM or _hover_scale > 1.01
+	var ml = get_node_or_null("ProgressBar/ManpowerLabel")
+	if ml != null:
+		ml.visible = show_numbers
+	var sl = get_node_or_null("ShieldBar/ShieldLabel")
+	if sl != null:
+		sl.visible = show_numbers
 
 
 signal apfSelected
