@@ -179,7 +179,7 @@ func _on_apf_hovered(apf, entered: bool) -> void:
 	if not _in_firing_range(targetPPB):
 		return
 	var bt: Dictionary = compute_battle(selectedAPF.thisArmy, defArmy)
-	_show_battle_preview(apf, int(bt["def_loss"]), int(bt["atk_loss"]))
+	_show_battle_preview(apf, int(bt["def_loss"]), int(bt["atk_loss"]), bt)
 
 func _ensure_preview_panel() -> void:
 	if is_instance_valid(_preview_panel):
@@ -207,7 +207,7 @@ func _ensure_preview_panel() -> void:
 	cl.add_child(_preview_panel)
 	_preview_panel.visible = false
 
-func _show_battle_preview(apf, def_loss: int, atk_loss: int) -> void:
+func _show_battle_preview(apf, def_loss: int, atk_loss: int, bt: Dictionary = {}) -> void:
 	_ensure_preview_panel()
 	if not is_instance_valid(_preview_panel):
 		return
@@ -218,6 +218,10 @@ func _show_battle_preview(apf, def_loss: int, atk_loss: int) -> void:
 	var txt := "-- Attack Preview --\n"
 	txt += "Deal %d  (enemy %d/%d)\n" % [def_loss, enemy_after, defArmy.maxManpower]
 	txt += "Take %d  (you %d/%d)" % [atk_loss, you_after, atkArmy.maxManpower]
+	if bt.get("hold_fired", false):
+		txt += "\nTheir line fires first: -%d, you hit at %d%%" % [int(bt.get("hold_loss", 0)), roundi(float(bt.get("attack_scale", 1.0)) * 100.0)]
+	if not defArmy.is_covered():
+		txt += "\nEnemy EXPOSED: their block is halved"
 	if enemy_after <= 0:
 		txt += "\n>> Destroys the enemy!"
 	elif you_after <= 0:
@@ -384,6 +388,10 @@ func calculateArmyMovement(endPathPoint: pathPointButton, _neighborPathPoints, _
 			army.movedThisTurn = true
 			army.attacksFromCurrentTile = 0
 			army.cancelGuard()
+			for _fu in army.unitsList:
+				if _fu.unitStance == "fortify":   # marching breaks the dig-in
+					_fu.unitStance = "fire" if not _fu.unitWeapon.is_saber() else "charge"
+					_fu.fortifyRefundAP = 0
 			if army.attackedThisTurn:
 				army.apply_status("Retreat", 2)
 			_clearMovableHighlights()
@@ -475,6 +483,8 @@ func _on_attack_midpoint(apf: armyPathFollow) -> void:
 		var mult: float = 0.5 + float(_flank_ally_count(targetPPB.ppbTile, attacker)) * FLANK_ALLY_BONUS
 		def_loss = int(def_loss * mult)
 		pierce = int(pierce * mult)
+	if _bt.get("hold_fired", false):
+		defender.consume_hold_volley()   # their braced line fired first; now it reloads
 	defender.calculateDefenderResults("melee", def_loss, true, pierce)
 	attacker.calculateDefenderResults("melee", atk_loss, true)
 	attacker.spend_attack_ap()

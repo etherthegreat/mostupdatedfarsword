@@ -6326,8 +6326,8 @@ func _show_army_info_legacy(army) -> void:
 	_army_info_line(panel, "Manpower   " + str(army.manpowerInArmy) + " / " + str(army.maxManpower), y); y += 22
 	if army.armyMaxShield > 0:
 		_army_info_line(panel, "Shield        " + str(army.armyShield) + " / " + str(army.armyMaxShield), y); y += 22
-	_army_info_line(panel, "Melee     ATK " + str(army.armyPunch) + "     DEF " + str(army.armyBlock), y); y += 22
-	_army_info_line(panel, "Ranged    ATK " + str(army.armyLaunch) + "    DEF " + str(army.armyDefence), y); y += 22
+	_army_info_line(panel, "Melee     ATK " + str(roundi(army.armyPunch)) + "     BLOCK " + str(roundi(army.avg_melee_block() * 100.0)) + "%", y); y += 22
+	_army_info_line(panel, "Ranged    ATK " + str(roundi(army.armyLaunch)) + "    BLOCK " + str(roundi(army.avg_ranged_block() * 100.0)) + "%", y); y += 22
 	var rng: int = _army_info_range(army)
 	_army_info_line(panel, "Range " + str(rng) + ("  tiles" if rng > 1 else "  tile") + "      Moves " + str(army.currentMovementPoints) + " / " + str(army.maxMovementPoints), y, true); y += 30
 	var idx: int = 1

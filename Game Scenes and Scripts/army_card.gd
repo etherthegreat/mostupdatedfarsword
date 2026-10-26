@@ -31,9 +31,9 @@ const TITLES := {1: "Captain", 2: "Colonel", 3: "General"}
 const ORDERS := [
 	{"key": "fire", "label": "Fire", "tip": "Fire a volley. Muskets must reload afterwards."},
 	{"key": "charge", "label": "Charge", "tip": "Bayonet / saber charge. Hits hard, costs you men, pierces shields."},
-	{"key": "hold", "label": "Hold", "tip": "Stay loaded and braced. Counts as COVERED for the army."},
+	{"key": "hold", "label": "Hold", "tip": "Stay loaded. If attacked, this unit fires FIRST — men it drops never land their blow. Then it reloads. Braced sabers meet a charge first. Counts as COVERED."},
 	{"key": "flank", "label": "Flank", "tip": "Cavalry encirclement charge (tier II+ sabers)."},
-	{"key": "fortify", "label": "Fortify", "tip": "Dig in for melee defence — coming with the combat rework.", "locked": true},
+	{"key": "fortify", "label": "Fortify", "tip": "Dig in: uses this unit's whole turn, +30% melee block for the army (shared across units). Stays until you give a new order. Moving the army breaks it."},
 	{"key": "", "label": "·", "tip": "Free slot for a future action (logistics, entrench …).", "locked": true},
 ]
 # Where a mil mod comes from, in display order.
@@ -240,10 +240,7 @@ func _portrait(cmd) -> Texture2D:
 
 # ── strength line ───────────────────────────────────────────────────────────
 func _build_strength(v: VBoxContainer) -> void:
-	var covered: bool = bool(army.get("isHolding"))
-	for u in army.unitsList:
-		if BADGE.unit_state(u) in ["hold", "fortify"]:
-			covered = true
+	var covered: bool = army.is_covered()
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation", 10)
 	v.add_child(row)
@@ -369,8 +366,10 @@ func _breakdown(u) -> Dictionary:
 	var fin_r: float = float(u.unitRangedOffence)
 	var fin_m: float = float(u.unitOffensiveScore)
 	var bel: float = army._belief_atk_mult(u)
-	var volley: float = fin_r * bel
-	var bayonet: float = fin_m * 1.8 * bel if u.can_charge_melee() else 0.0
+	var rm: float = army.ranged_mult()
+	var mmul: float = army.melee_mult()
+	var volley: float = fin_r * bel * rm
+	var bayonet: float = fin_m * 1.8 * bel * mmul if u.can_charge_melee() else 0.0
 	var share: float = maxf(volley, bayonet)
 	var health := "health %d%%" % roundi(eff * 100)
 	var parts := PackedStringArray()
@@ -381,10 +380,14 @@ func _breakdown(u) -> Dictionary:
 	var txt := "  ·  ".join(parts)
 	if absf(bel - 1.0) > 0.001:
 		txt += "  ·  beliefs ×%.2f" % bel
+	if absf(rm - 1.0) > 0.001 and fin_r > 0.0:
+		txt += "  ·  army volley ×%.2f" % rm
+	if absf(mmul - 1.0) > 0.001 and bayonet > 0.0:
+		txt += "  ·  army melee ×%.2f" % mmul
 	txt += "   → STR %d" % roundi(share)
 	var tip := "How this unit's share of STR is built:\n" \
 		+ "weapon value × unit level × health (avg of manpower & weapons; artillery: weapons only)\n" \
-		+ "+ mil mods, × beliefs. Charges hit ×1.8. Muskets fight at half strength in melee.\n" \
+		+ "+ mil mods, × beliefs, × army effects (commander morale, statuses, protector buffs). Charges hit ×1.8. Muskets fight at half strength in melee.\n" \
 		+ "STR uses whichever is bigger, volley or bayonet."
 	return {"text": txt, "tip": tip}
 
@@ -406,6 +409,11 @@ func _order_allowed(o: Dictionary, u) -> bool:
 			return u.can_charge_melee()
 		"flank":
 			return w != null and w.is_saber() and str(army.armyTier) not in ["", "I"]
+		"fortify":
+			# Whole-turn action: the army can't have moved, and the unit must still have its actions.
+			if str(u.unitStance) == "fortify":
+				return true
+			return not bool(army.movedThisTurn) and u.unitCurrentAP >= u.get_max_ap()
 	return true
 
 
@@ -450,7 +458,7 @@ func _order_button(o: Dictionary, u, allowed: bool) -> Button:
 func _set_stance(u, key: String) -> void:
 	if u == null or key == "":
 		return
-	u.unitStance = key
+	_apply_stance(u, key)
 	stance_changed.emit(army)
 	_rebuild()
 
@@ -458,9 +466,23 @@ func _set_stance(u, key: String) -> void:
 func _set_all(key: String) -> void:
 	for u in army.unitsList:
 		if u != null and _order_allowed({"key": key}, u):
-			u.unitStance = key
+			_apply_stance(u, key)
 	stance_changed.emit(army)
 	_rebuild()
+
+
+static func _apply_stance(u, key: String) -> void:
+	# Fortify spends the unit's actions; switching away the same turn gives them back.
+	var old: String = str(u.unitStance)
+	if old == key:
+		return
+	if old == "fortify" and u.fortifyRefundAP > 0:
+		u.unitCurrentAP += u.fortifyRefundAP
+		u.fortifyRefundAP = 0
+	if key == "fortify":
+		u.fortifyRefundAP = u.unitCurrentAP
+		u.unitCurrentAP = 0
+	u.unitStance = key
 
 
 # ── mil mods ────────────────────────────────────────────────────────────────

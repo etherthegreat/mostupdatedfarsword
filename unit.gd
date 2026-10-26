@@ -175,6 +175,13 @@ func calculateGrossValues() -> void:
 	unitMagicDefence   += armorSpellBlock
 
 
+# Combat rework 2026-10-26: block stats are decimals (0.15 = 15%). Mods that grant
+# "+N defence" give N percentage points of block, flat — block does not scale with
+# unit level (a bigger regiment isn't better armoured, it just has more men).
+func _pts(n: float) -> float:
+	return n * 0.01
+
+
 func calculateMilMods() -> void:
 	# Combat pass 2026-10-26: start from the clean gross values every time. Before this,
 	# each call stacked onto the last call's result (Chain +2, +2, +2…; ×1.05 compounding),
@@ -208,7 +215,7 @@ func calculateMilMods() -> void:
 						unitRangedOffence *= 1.20
 						unitRangedDefence *= 1.20
 				"Secord's Alert":
-					unitDefensiveScore = int(float(unitDefensiveScore) * 1.02)
+					unitDefensiveScore *= 1.02
 				"Bayonet":
 					pass  # handled in unit can_melee()
 				"CannonBlast":
@@ -228,15 +235,15 @@ func calculateMilMods() -> void:
 				"Woodsman":
 					if currentTerrain == "Woods":
 						unitOffensiveScore += (2 * unitLevel)
-						unitDefensiveScore += (2 * unitLevel)
+						unitDefensiveScore += _pts(2)
 				"Swamp Legs":
 					if currentTerrain == "Wetlands":
 						unitOffensiveScore += (2 * unitLevel)
-						unitDefensiveScore += (2 * unitLevel)
+						unitDefensiveScore += _pts(2)
 				"Hill Runner":
 					if currentTerrain == "Foothills":
 						unitOffensiveScore += (2 * unitLevel)
-						unitDefensiveScore += (2 * unitLevel)
+						unitDefensiveScore += _pts(2)
 				"Street Tough":
 					if currentTerrain == "Metro" or currentTerrain == "Suburbs":
 						unitOffensiveScore += (2 * unitLevel)
@@ -248,7 +255,7 @@ func calculateMilMods() -> void:
 				"Marksman":
 					unitRangedOffence += (2 * unitLevel)
 				"Steady Line":
-					unitDefensiveScore += (3 * unitLevel)
+					unitDefensiveScore += _pts(3)
 				"Quick Reload":
 					pass  # handled in start_reload()
 				"Powder & Shot":
@@ -263,7 +270,7 @@ func calculateMilMods() -> void:
 				"Guerrilla Tactics":
 					if currentTerrain == "Woods" or currentTerrain == "Wetlands":
 						unitOffensiveScore += (4 * unitLevel)
-						unitDefensiveScore += (4 * unitLevel)
+						unitDefensiveScore += _pts(4)
 				"Double Shot":
 					pass  # handled in battle.gd
 				"Iron Bayonet":
@@ -287,10 +294,10 @@ func calculateMilMods() -> void:
 				# ── Tier 3 mods ──────────────────────────────────────────────
 				"Entrenched":
 					if inEntrenched:
-						unitDefensiveScore += (5 * unitLevel)  # dug-in after 3 stationary turns
+						unitDefensiveScore += _pts(5)  # dug-in after 3 stationary turns
 				"Continental Line":
 					unitOffensiveScore += (2 * unitLevel)
-					unitDefensiveScore += (2 * unitLevel)
+					unitDefensiveScore += _pts(2)
 				"Last Stand":
 					if float(unitCurrentManpower) / float(max(1, unitMaxManpower)) < 0.25:
 						unitOffensiveScore += (6 * unitLevel)
@@ -298,10 +305,10 @@ func calculateMilMods() -> void:
 					pass  # handled in battle.gd morale drain
 				"Iron Wall":
 					if inHomeTile:
-						unitDefensiveScore += (8 * unitLevel)  # defending sovereign territory
+						unitDefensiveScore += _pts(8)  # defending sovereign territory
 				"Rampart":
 					if inFortifiedTile:
-						unitDefensiveScore += (5 * unitLevel)  # fortification advantage
+						unitDefensiveScore += _pts(5)  # fortification advantage
 				"Naval Supremacy":
 					pass  # handled at army level
 				"Ghost March":
@@ -331,7 +338,7 @@ func calculateMilMods() -> void:
 					pass  # scatter immunity handled at army level
 				"Nor'easter Veteran":
 					if currentStorm == "Nor'easter":
-						unitDefensiveScore += (3 * unitLevel)
+						unitDefensiveScore += _pts(3)
 				"Rain Reader":
 					if currentStorm == "Thunderstorm":
 						unitRangedOffence += (3 * unitLevel)
@@ -345,7 +352,7 @@ func calculateMilMods() -> void:
 				"Eye of the Storm":
 					if currentStorm != "":
 						unitOffensiveScore += (4 * unitLevel)
-						unitDefensiveScore += (4 * unitLevel)
+						unitDefensiveScore += _pts(4)
 				# ── Cultural mods ─────────────────────────────────────────────
 				"Country Musician":
 					if currentTerrain == "Farmlands":
@@ -359,16 +366,16 @@ func calculateMilMods() -> void:
 				"Everglades Tracker":
 					if currentTerrain == "Wetlands":
 						unitOffensiveScore += (4 * unitLevel)
-						unitDefensiveScore += (4 * unitLevel)
+						unitDefensiveScore += _pts(4)
 				"Bayou Warrior":
 					if currentTerrain == "Wetlands":
 						unitOffensiveScore += (5 * unitLevel)
 				"Virginia Gentry":
-					unitRangedDefence += (3 * unitLevel)
+					unitRangedDefence += _pts(3)
 				"Minuteman's Pride":
 					pass  # first-3-round bonus handled in battle.gd
 				"Quaker Steel":
-					unitDefensiveScore += (2 * unitLevel)
+					unitDefensiveScore += _pts(2)
 					unitOffensiveScore -= (1 * unitLevel)
 				"Georgia Peach":
 					unitRangedOffence += (1 * unitLevel)
@@ -405,38 +412,38 @@ func calculateMilMods() -> void:
 				# ── Icon figure mods (TEMP — needs full pass per ethertask) ──
 				"Emancipation Advance":
 					unitOffensiveScore += (2 * unitLevel)
-					unitDefensiveScore += (2 * unitLevel)
+					unitDefensiveScore += _pts(2)
 				"Rough Rider's Charge":
 					if currentTerrain == "Woods" or currentTerrain == "Wetlands":
 						unitOffensiveScore += (4 * unitLevel)
-						unitDefensiveScore += (4 * unitLevel)
+						unitDefensiveScore += _pts(4)
 				"Little Bighorn Ambush":
 					if currentTerrain == "Woods":
 						unitOffensiveScore += (2 * unitLevel)
-						unitDefensiveScore += (2 * unitLevel)
+						unitDefensiveScore += _pts(2)
 				"Batoche's Stand":
 					if currentTerrain == "Woods":
 						unitOffensiveScore += (2 * unitLevel)
-						unitDefensiveScore += (2 * unitLevel)
+						unitDefensiveScore += _pts(2)
 				"North Star Address":
-					unitDefensiveScore += (2 * unitLevel)
+					unitDefensiveScore += _pts(2)
 				"Peacekeeping Mandate":
-					unitDefensiveScore += (2 * unitLevel)
+					unitDefensiveScore += _pts(2)
 				"Beaverdams Dispatch":
 					if inFortifiedTile:
-						unitDefensiveScore += (3 * unitLevel)
+						unitDefensiveScore += _pts(3)
 				"Combahee River Raid":
 					unitOffensiveScore += (3 * unitLevel)
 				# ── Commander Arc mods ────────────────────────────────────────
 				"Appalachian Hill Fighter":
 					if currentTerrain == "Foothills":
-						unitDefensiveScore += (2 * unitLevel)
+						unitDefensiveScore += _pts(2)
 				"Explosives Expert":
 					unitRangedOffence *= 1.10
 				"Student Body Commander":
 					if inIvyLeagueTile:
 						unitOffensiveScore = int(float(unitOffensiveScore) * 1.10)
-						unitDefensiveScore = int(float(unitDefensiveScore) * 1.10)
+						unitDefensiveScore *= 1.10
 				"Field Research":
 					pass  # science gain on attack handled in battle.gd
 				"Cultural Corps":
@@ -444,7 +451,7 @@ func calculateMilMods() -> void:
 			# State guard: culturalMod entries with a state target get +2 attack/defence per level
 			if MilMod.culturalMod and MilMod.culturalState != "" and currentState == MilMod.culturalState:
 				unitOffensiveScore += (2 * unitLevel)
-				unitDefensiveScore += (2 * unitLevel)
+				unitDefensiveScore += _pts(2)
 
 
 # ============================================================
@@ -462,6 +469,7 @@ func can_fire_ranged() -> bool:
 
 var unitStance: String = "fire"  # fire / charge / hold — set by the army panel
 var unitCurrentAP: int = 1          # action points left this turn
+var fortifyRefundAP: int = 0        # AP spent digging in this turn; refunded if Fortify is cancelled
 
 const TWO_AP_WEAPONS := ["Marine Mameluke", "Lever Repeater", "Early Rockets", "Rocket Artillery", "Field Cannon"]
 

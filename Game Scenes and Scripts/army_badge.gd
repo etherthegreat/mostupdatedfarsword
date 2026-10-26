@@ -102,6 +102,9 @@ static func army_strength(army) -> int:
 		var best: float = float(u.unitRangedOffence)
 		if u.can_charge_melee():
 			best = maxf(best, float(u.unitOffensiveScore) * 1.8)
+		var best_r: float = float(u.unitRangedOffence) * army.ranged_mult()
+		var best_m: float = float(u.unitOffensiveScore) * 1.8 * army.melee_mult() if u.can_charge_melee() else 0.0
+		best = maxf(best_r, best_m)
 		total += best * army._belief_atk_mult(u)
 	return roundi(total)
 
@@ -110,11 +113,9 @@ func update_from(army) -> void:
 	if army == null or not is_instance_valid(army):
 		return
 	var p: Array = []
-	var cov: bool = bool(army.get("isHolding"))
+	var cov: bool = army.is_covered()
 	for u in army.unitsList:
 		var k := unit_state(u)
-		if k in ["hold", "fortify"]:
-			cov = true
 		p.append({"kind": k, "spent": u != null and u.unitCurrentAP <= 0})
 	var mp: float = float(army.manpowerInArmy) / maxf(1.0, float(army.maxManpower))
 	var sh: float = float(army.armyShield) / float(army.armyMaxShield) if army.armyMaxShield > 0 else 0.0

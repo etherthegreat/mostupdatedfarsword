@@ -1806,6 +1806,8 @@ func _resolve_ai_battle(attacker: Army, defender: Army, tile) -> bool:
 	# to the replay (world._show_ai_battle) so units fall on-screen during the camera tour, not
 	# instantly at the start of the turn. compute_battle is deterministic, so the prediction holds.
 	var bt: Dictionary = attacker.compute_battle_against(defender)
+	if bt.get("hold_fired", false):
+		defender.consume_hold_volley()
 	var defender_loss: int = int(bt["def_loss"])
 	var attacker_loss: int = int(bt["atk_loss"])
 	attacker.spend_attack_ap()

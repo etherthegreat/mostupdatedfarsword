@@ -70,10 +70,17 @@ var armyAbility: int #recruit = 100, regulars = 105, expert = 110, veteran = 115
 #armyAbility can also be improved/debuffed by other modifiers through tech, leader, modifiers, etc.
 var armyStrength: int #basically how much health this unit has.  once  0, this army will be expelled from combat.  
 
-var armyPunch: int
-var armyBlock: int
-var armyLaunch: int
-var armyDefence: int
+# Combat rework 2026-10-26: floats. Block/Defence are the SUM of unit block decimals
+# (0.15 = 15%); divide by unitsList.size() for the army average. They used to be int,
+# so 0.15 armour rounded to 0 and any single +15 buff slammed into the cap.
+var armyPunch: float
+var armyBlock: float
+var armyLaunch: float
+var armyDefence: float
+var rawPunch: float = 0.0    # unit melee before army-level mods (commander, statuses, propaganda)
+var rawLaunch: float = 0.0   # unit ranged before army-level mods
+var armyWard: int = 0        # shield granted by army-level effects (+30 shield statuses); absorbs first
+var wardUsed: int = 0        # ward spent this turn; resets in onTurnEnd
 var armyMagicDefense: int
 var armyShield: int
 var armyMaxShield: int
@@ -210,8 +217,15 @@ func onTurnEnd():
 	if holdPending:
 		isHolding = true
 		holdPending = false
+	wardUsed = 0
 	for _u in unitsList:
-		_u.unitStance = "charge" if (_u.unitWeapon != null and _u.unitWeapon.is_saber()) else "fire"
+		_u.fortifyRefundAP = 0
+		# Braced orders (Hold, Fortify) stay until you give a new one — that is what lets
+		# them protect you through the enemy's turn. Attack orders reset to the default.
+		if _u.unitStance in ["hold", "fortify"]:
+			pass
+		else:
+			_u.unitStance = "charge" if (_u.unitWeapon != null and _u.unitWeapon.is_saber()) else "fire"
 		if _u.unitWeapon != null and _u.unitWeapon.is_artillery():
 			# Artillery reloads ONLY with leftover action points — i.e. choosing to reload
 			# instead of firing or moving. (Non-artillery auto-reload one step per turn.)
@@ -335,12 +349,80 @@ func counter_power_factor() -> float:
 	return power / float(living)
 
 
-func hold_defense_bonus() -> float:
-	var bonus: float = 0.0
+# ── HOLD / FORTIFY (combat rework 2026-10-26) ─────────────────────────────────
+# Hold    = stay loaded. If attacked, the unit fires FIRST, before the enemy's blow
+#           lands; men it kills never get to swing. Then it has to reload.
+# Fortify = dig in for the whole turn. Adds melee block to the army; no attack.
+# An army with nobody braced (no loaded Hold, no Fortify) is EXPOSED: its block is halved.
+const HOLD_VOLLEY_MULT: float = 0.75       # holder's first-fire: a hurried volley at 3/4 strength
+const HOLD_SABER_COUNTER: float = 1.0      # braced sabers meet a charge with one normal strike
+const FORTIFY_MELEE_BLOCK: float = 0.30    # per fortified unit, averaged over the army
+const EXPOSED_BLOCK_MULT: float = 0.5      # nobody braced: block is halved
+const BLOCK_CAP: float = 0.75              # was 0.9 — with floats, buffs now stack honestly
+
+func fortify_melee_bonus() -> float:
+	var n: int = 0
 	for u in unitsList:
-		if u.unitCurrentManpower > 0 and u.unitStance == "hold":
-			bonus += 0.10
-	return bonus
+		if u.unitCurrentManpower > 0 and u.unitStance == "fortify":
+			n += 1
+	return FORTIFY_MELEE_BLOCK * float(n) / float(max(1, unitsList.size()))
+
+
+func _holder_loaded(u) -> bool:
+	return u != null and u.unitCurrentManpower > 0 and u.unitStance == "hold" \
+		and u.unitWeapon != null and not u.unitWeapon.is_saber() and not u.is_reloading() \
+		and u.unitRangedOffence > 0
+
+
+func _holder_saber(u) -> bool:
+	return u != null and u.unitCurrentManpower > 0 and u.unitStance == "hold" \
+		and u.unitWeapon != null and u.unitWeapon.is_saber()
+
+
+func is_covered() -> bool:
+	if isHolding:
+		return true
+	for u in unitsList:
+		if _holder_loaded(u) or _holder_saber(u):
+			return true
+		if u != null and u.unitCurrentManpower > 0 and u.unitStance == "fortify":
+			return true
+	return false
+
+
+func hold_volley_against(incoming_melee: bool) -> Dictionary:
+	# What this army's braced units throw at an attacker BEFORE it strikes.
+	var ranged: float = 0.0
+	var melee: float = 0.0
+	for u in unitsList:
+		if _holder_loaded(u):
+			ranged += float(u.unitRangedOffence) * HOLD_VOLLEY_MULT * _belief_atk_mult(u)
+		elif _holder_saber(u) and incoming_melee:
+			melee += float(u.unitOffensiveScore) * HOLD_SABER_COUNTER * _belief_atk_mult(u)
+	return {"ranged": ranged * ranged_mult(), "melee": melee * melee_mult()}
+
+
+func consume_hold_volley() -> void:
+	# Real fight only (never the preview): holders that fired must now reload.
+	for u in unitsList:
+		if _holder_loaded(u) and u.unitWeapon.reloadTurns > 0:
+			u.start_reload()
+
+
+func avg_ranged_block(extra: float = 0.0) -> float:
+	var d_units: float = max(1.0, float(unitsList.size()))
+	var b: float = armyDefence / d_units + extra
+	if not is_covered():
+		b *= EXPOSED_BLOCK_MULT
+	return clampf(b, 0.0, BLOCK_CAP)
+
+
+func avg_melee_block(extra: float = 0.0) -> float:
+	var d_units: float = max(1.0, float(unitsList.size()))
+	var b: float = armyBlock / d_units + fortify_melee_bonus() + extra
+	if not is_covered():
+		b *= EXPOSED_BLOCK_MULT
+	return clampf(b, 0.0, BLOCK_CAP)
 
 
 func spend_attack_ap() -> void:
@@ -398,7 +480,7 @@ func offensive_output(require_ap: bool, holders_counter: bool, holders_attack: b
 				# Flank is a melee charge; the encirclement multiplier is applied at the attack site.
 				if not require_ap or u.unitCurrentAP > 0:
 					melee += float(u.unitOffensiveScore) * 1.8 * _belief_atk_mult(u)
-	return {"ranged": ranged, "melee": melee}
+	return {"ranged": ranged * ranged_mult(), "melee": melee * melee_mult()}
 
 
 # Combat tuning — attacker risk/reward for charging (no defender reflect for now).
@@ -407,24 +489,34 @@ const CHARGE_SHIELD_PIERCE: float = 0.5  # this fraction of charge damage ignore
 
 func compute_battle_against(defender: Army, require_ap: bool = true, as_threat: bool = false) -> Dictionary:
 	# Shared attack math for player, AI, and the hover preview. Pure — no side effects.
-	# Fire -> ranged (safe for the attacker); Charge -> melee (costs the attacker, pierces shield).
+	# Order of a fight:
+	#   1. Defender's braced units fire first (Hold volley; braced sabers meet a charge).
+	#   2. The attacker strikes with whatever survived step 1 (losses scale its blow).
+	#   3. Fire = ranged (free for the attacker); Charge = melee (costs men, pierces shield).
 	# require_ap = false: "what if both sides were fresh"; as_threat = true: holding units
 	# are counted as if they attacked. Both only used by the map badge verdicts.
 	surveySelf()
 	defender.surveySelf()
-	var d_units: float = max(1.0, float(defender.unitsList.size()))
 	var a_out: Dictionary = offensive_output(require_ap, false, as_threat)
 	var d_def: float = defender.parentCountry.belief_defense_at(defender.inTile) if defender.parentCountry != null else 0.0
-	var d_rblock: float = clamp((float(defender.armyDefence) + float(defender.hold_defense_bonus())) / d_units + d_def, 0.0, 0.9)
-	var d_mblock: float = clamp((float(defender.armyBlock) + float(defender.hold_defense_bonus())) / d_units + d_def, 0.0, 0.9)
-	var ranged_dmg: float = a_out["ranged"] * (1.0 - d_rblock)
-	var melee_dmg: float = a_out["melee"] * (1.0 - d_mblock)
+
+	# 1. Hold fires first
+	var hv: Dictionary = defender.hold_volley_against(a_out["melee"] > 0.0)
+	var hold_loss: float = hv["ranged"] * (1.0 - avg_ranged_block()) + hv["melee"] * (1.0 - avg_melee_block())
+	var a_scale: float = 1.0
+	if hold_loss > 0.0:
+		var my_hp: float = maxf(1.0, float(manpowerInArmy))
+		a_scale = clampf(1.0 - hold_loss / my_hp, 0.0, 1.0)
+
+	# 2-3. Attacker strikes with what's left
+	var ranged_dmg: float = a_out["ranged"] * a_scale * (1.0 - defender.avg_ranged_block(d_def))
+	var melee_dmg: float = a_out["melee"] * a_scale * (1.0 - defender.avg_melee_block(d_def))
 	var def_loss: int = int(ranged_dmg + melee_dmg)
-	# No defender reflect. Firing is free; charging costs a fraction of the melee committed.
-	var atk_loss: int = int(a_out["melee"] * CHARGE_SELF_DAMAGE)
+	var atk_loss: int = int(hold_loss + a_out["melee"] * a_scale * CHARGE_SELF_DAMAGE)
 	# A share of charge damage bypasses the defender's shield, straight to manpower.
 	var shield_pierce: int = int(melee_dmg * CHARGE_SHIELD_PIERCE)
-	return {"def_loss": def_loss, "atk_loss": atk_loss, "shield_pierce": shield_pierce}
+	return {"def_loss": def_loss, "atk_loss": atk_loss, "shield_pierce": shield_pierce,
+		"hold_loss": int(hold_loss), "hold_fired": hold_loss > 0.0, "attack_scale": a_scale}
 
 
 func is_flanking() -> bool:
@@ -490,159 +582,165 @@ func _apply_status_effects_to_stats() -> void:
 	for s in armyStatusEffects:
 		match s.type:
 			"Exhausted":
-				armyPunch = int(armyPunch * 0.9)
-				armyLaunch = int(armyLaunch * 0.9)
+				armyPunch = armyPunch * 0.9
+				armyLaunch = armyLaunch * 0.9
 			"Stunned":
 				armyPunch = 0
 			"Suppressed":
 				armyLaunch = 0
 			"Shaken":
-				armyBlock = int(float(armyBlock) * 0.5)
+				armyBlock = armyBlock * 0.5
 			"Terrified":
-				armyPunch = int(float(armyPunch) * 0.5)
-				armyBlock = int(float(armyBlock) * 0.7)
+				armyPunch = armyPunch * 0.5
+				armyBlock = armyBlock * 0.7
 			"Routed":
 				armyPunch = 0
-				armyDefence = int(float(armyDefence) * 0.5)
+				armyDefence = armyDefence * 0.5
 			"Blinded":
-				armyLaunch = int(float(armyLaunch) * 0.5)
-				armyDefence = int(float(armyDefence) * 0.5)
+				armyLaunch = armyLaunch * 0.5
+				armyDefence = armyDefence * 0.5
 			"Hexed":
 				armyMagicDefense = 0
 			"Demoralized":
-				armyPunch = int(float(armyPunch) * 0.8)
-				armyBlock = int(float(armyBlock) * 0.8)
+				armyPunch = armyPunch * 0.8
+				armyBlock = armyBlock * 0.8
 			"Waterlogged":
-				armyPunch  = int(float(armyPunch)  * 0.8)
-				armyLaunch = int(float(armyLaunch) * 0.8)
+				armyPunch  = armyPunch * 0.8
+				armyLaunch = armyLaunch * 0.8
 			"Frostbitten":
-				armyPunch  = int(float(armyPunch)  * 0.7)
-				armyLaunch = int(float(armyLaunch) * 0.7)
+				armyPunch  = armyPunch * 0.7
+				armyLaunch = armyLaunch * 0.7
 			"Seduced":
 				armyPunch = 0
 			"Starstruck":
-				armyPunch   = int(float(armyPunch)   * 0.7)
-				armyLaunch  = int(float(armyLaunch)  * 0.7)
-				armyBlock   = int(float(armyBlock)   * 0.7)
-				armyDefence = int(float(armyDefence) * 0.7)
+				armyPunch   = armyPunch * 0.7
+				armyLaunch  = armyLaunch * 0.7
+				armyBlock   = armyBlock * 0.7
+				armyDefence = armyDefence * 0.7
 			"Hangover":
-				armyPunch   = int(float(armyPunch)   * 0.5)
-				armyLaunch  = int(float(armyLaunch)  * 0.5)
-				armyBlock   = int(float(armyBlock)   * 0.5)
-				armyDefence = int(float(armyDefence) * 0.5)
+				armyPunch   = armyPunch * 0.5
+				armyLaunch  = armyLaunch * 0.5
+				armyBlock   = armyBlock * 0.5
+				armyDefence = armyDefence * 0.5
 			"Love-Struck":
-				armyPunch = int(float(armyPunch) * 0.3)
-				armyBlock = int(float(armyBlock) * 0.3)
+				armyPunch = armyPunch * 0.3
+				armyBlock = armyBlock * 0.3
 			"Mutinous":
-				armyPunch = int(float(armyPunch) * 0.6)
+				armyPunch = armyPunch * 0.6
 			# ── USA PROTECTOR BUFFS ──────────────────────────────────────────────
 			"Mothman Presence":
 				armyLaunch  += 20
-				armyDefence += 15
+				armyDefence += _blk(15)
 			"Jersey Devil's Fury":
 				armyPunch  += 25
 				armyLaunch += 10
-				armyBlock  += 10
+				armyBlock  += _blk(10)
 			"Wood Booger's Solidarity":
-				armyBlock  += 30
+				armyBlock  += _blk(30)
 				armyPunch  += 15
 			"Thunderbird's Sovereignty":
 				armyLaunch += 25
 				armyPunch  += 10
 			"Headless Terror":
 				armyPunch  += 20
-				armyBlock  += 10
+				armyBlock  += _blk(10)
 			"Chessie's Blessing":
-				armyBlock   += 20
-				armyDefence += 15
+				armyBlock   += _blk(20)
+				armyDefence += _blk(15)
 			"Bell Witch's Harassment":
 				armyPunch   += 15
-				armyDefence += 20
+				armyDefence += _blk(20)
 			"Old Ironsides' Hull":
 				armyShield += 30
-				armyBlock  += 20
+				armyBlock  += _blk(20)
 			"Valley Forge's Will":
 				armyPunch   += 10
-				armyBlock   += 25
-				armyDefence += 20
+				armyBlock   += _blk(25)
+				armyDefence += _blk(20)
 			"Snallygaster's Claim":
 				armyPunch  += 20
 				armyLaunch += 10
-				armyBlock  += 10
+				armyBlock  += _blk(10)
 			"Paul Revere's Ride":
 				armyLaunch += 15
 				armyPunch  += 10
 			"Liberty Bell's Resonance":
-				armyBlock   += 25
-				armyDefence += 15
+				armyBlock   += _blk(25)
+				armyDefence += _blk(15)
 			"Green Mountain Haunting":
-				armyBlock   += 20
-				armyDefence += 15
+				armyBlock   += _blk(20)
+				armyDefence += _blk(15)
 			"Presidential Decree":
 				armyPunch   += 20
-				armyBlock   += 20
+				armyBlock   += _blk(20)
 				armyLaunch  += 15
-				armyDefence += 15
+				armyDefence += _blk(15)
 			"Skunk Ape's Domain":
 				armyPunch += 20
-				armyBlock += 15
+				armyBlock += _blk(15)
 			"Eternal Vigilance":
-				armyBlock  += 25
+				armyBlock  += _blk(25)
 				armyPunch  += 10
 			"Lincoln's Mandate":
 				armyPunch   += 15
-				armyBlock   += 15
+				armyBlock   += _blk(15)
 				armyLaunch  += 15
-				armyDefence += 10
+				armyDefence += _blk(10)
 			# ── DOCTRINE AURA BUFFS ──────────────────────────────────────────────
 			"Spirit of the General":
 				armyPunch += 15
 			# Presidential aura buffs (Ualani's intro gift)
 			"Beautiful Flower":
-				armyDefence += 3
+				armyDefence += _blk(3)
 			"Executive Enforcer":
 				armyPunch += 3
 			# ── LOYAL GOVERNOR BUFFS ─────────────────────────────────────────────
 			"Mercenary Zeal":
 				armyPunch += 2  # Border Mercenary coin pact — timed 10 turns
 			"Iron Discipline":
-				armyDefence += 1  # Border Mercenary discipline — permanent (duration 9999)
+				armyDefence += _blk(1)  # Border Mercenary discipline — permanent (duration 9999)
 			# ── CANADIAN PROTECTOR BUFFS ─────────────────────────────────────────
 			"Le Wendigo's Hunger":
 				armyPunch += 30
 			"Loup-Garou's Frenzy":
 				armyPunch   += 25
-				armyBlock   += 15
-				armyDefence += 10
+				armyBlock   += _blk(15)
+				armyDefence += _blk(10)
 			"Feux Follets' Misdirection":
-				armyDefence += 25
-				armyBlock   += 15
+				armyDefence += _blk(25)
+				armyBlock   += _blk(15)
 			"Mishepeshu's Depths":
-				armyBlock   += 20
-				armyDefence += 20
+				armyBlock   += _blk(20)
+				armyDefence += _blk(20)
 			"La Corriveau's Cage":
 				armyLaunch += 20
 				armyPunch  += 15
 			"Le Carcajou's Tenacity":
 				armyPunch   += 20
-				armyBlock   += 15
-				armyDefence += 10
+				armyBlock   += _blk(15)
+				armyDefence += _blk(10)
 			"La Chasse-Galerie":
 				armyPunch  += 15
 				armyLaunch += 15
 			"Le Gougou's Terror":
 				armyPunch   += 15
-				armyDefence += 20
+				armyDefence += _blk(20)
 	# Combat Hold stance: defensive bonus (distinct from the end-turn Guard toggle)
 	if isHolding:
-		armyBlock += 20
-		armyDefence += 20
+		armyBlock += _blk(20)
+		armyDefence += _blk(20)
 	# Guard bonus applied last so status-effect penalties don't erase it
 	var glvl: int = _guard_level()
 	if glvl > 0:
 		var guard_mult: float = 1.0 + 0.15 * float(glvl)
-		armyBlock   = int(float(armyBlock)   * guard_mult)
-		armyDefence = int(float(armyDefence) * guard_mult)
+		armyBlock   = armyBlock   * guard_mult
+		armyDefence = armyDefence * guard_mult
+
+
+func _blk(points: float) -> float:
+	# Army-level "+N block/defence" = N percentage points on the army AVERAGE block.
+	# armyBlock/armyDefence are sums over units, so scale by the unit count.
+	return points * 0.01 * float(max(1, unitsList.size()))
 
 func _apply_status_flags() -> void:
 	for s in armyStatusEffects:
@@ -910,10 +1008,17 @@ func surveySelf():
 			for law in parentCountry.lawsInConstitution:
 				if law.lawType == "Mercantilism":
 					armyHarmonyCost += (2*uLV)
+	rawPunch = armyPunch
+	rawLaunch = armyLaunch
+	var unit_shield_sum: int = armyShield
+	var unit_max_shield_sum: int = armyMaxShield
 	if commander != null:
+		# Commander morale: up to +25% to melee, volleys and ranged block. (Volleys were
+		# never boosted before, and none of this reached real fights until the rework.)
 		var mm: float = 1.0 + (float(commander.morale) / 100.0) * 0.25
-		armyPunch   = int(float(armyPunch)   * mm)
-		armyDefence = int(float(armyDefence) * mm)
+		armyPunch   = armyPunch   * mm
+		armyLaunch  = armyLaunch  * mm
+		armyDefence = armyDefence * mm
 		# Experienced Fisherman: +1 attack per gov level when in wetlands tile
 		if inTile != null and inTile.terrain == "Wetlands":
 			var cmd_mods: Array
@@ -928,8 +1033,32 @@ func surveySelf():
 					break
 	if propagandaBuff != 0:
 		armyPunch   += propagandaBuff
-		armyDefence -= propagandaBuff
+		armyDefence -= _blk(propagandaBuff)
 	_apply_status_effects_to_stats()
+	armyBlock = maxf(0.0, armyBlock)
+	armyDefence = maxf(0.0, armyDefence)
+	# Army-level shield (+30 statuses etc.) becomes a ward: it soaks damage before unit
+	# shields, refills each turn, and is never written into the units themselves.
+	var ward_total: int = maxi(0, armyShield - unit_shield_sum)
+	armyWard = maxi(0, ward_total - wardUsed)
+	armyShield = unit_shield_sum + armyWard
+	armyMaxShield = unit_max_shield_sum + ward_total
+
+
+const ARMY_MULT_CAP: float = 2.5   # army-level mods can at most multiply a unit's hit by this
+
+func melee_mult() -> float:
+	# How army-level effects (commander morale, statuses, protector buffs, propaganda) scale
+	# each unit's melee. Fights read per-unit numbers, so this is how armyPunch reaches them.
+	if rawPunch <= 0.0:
+		return 1.0
+	return clampf(armyPunch / rawPunch, 0.0, ARMY_MULT_CAP)
+
+
+func ranged_mult() -> float:
+	if rawLaunch <= 0.0:
+		return 1.0
+	return clampf(armyLaunch / rawLaunch, 0.0, ARMY_MULT_CAP)
 
 func calculateMaxUnitLevel():
 	if inTile != null:
@@ -1080,6 +1209,12 @@ func calculateAttackerResults(type: String, manpowerLossAmount: int) -> void:
 func calculateDefenderResults(type: String, manpowerLossAmount: int, raw: bool = false, shield_pierce: int = 0) -> void:
 	if manpowerLossAmount <= 0:
 		return
+	if raw and armyWard > 0:
+		# Army ward (status/protector shield) soaks the non-piercing share first.
+		var soak: int = mini(armyWard, maxi(0, manpowerLossAmount - shield_pierce))
+		armyWard -= soak
+		wardUsed += soak
+		manpowerLossAmount -= soak
 	var living = unitsList.filter(func(u): return u.unitCurrentManpower > 0)
 	var damagePerUnit = int(manpowerLossAmount / max(1, living.size()))
 	var pierce_per_unit = int(shield_pierce / max(1, living.size()))
