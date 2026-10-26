@@ -8,6 +8,10 @@ const APF_BACKGROUNDS := {
 	"CA":  "res://art assets/AmericanRevolutionArt/apfs/apf ca background.png",
 }
 
+const BADGE_SCRIPT := preload("res://Game Scenes and Scripts/army_badge.gd")
+const BADGE_POS := Vector2(2, 64)   # just under the diamond's bottom tip
+var badge = null                    # army_badge.gd — replaces the two bars + numbers
+
 const APF_BASE_SCALE := 0.75    # resting on-screen size at zoom 1x (+25% for readability)
 var _cam: Camera2D = null
 const STAT_NUMBERS_ZOOM := 1.35   # matches world.gd _TILE_FADE_LO (near band)
@@ -90,6 +94,20 @@ func refreshHealthBar() -> void:
 		$ShieldBar/ShieldLabel.text = str(thisArmy.armyShield) + "/" + str(thisArmy.armyMaxShield)
 	else:
 		$ShieldBar.visible = false
+	# GUI pass 2026-10-26: the badge plaque carries manpower + shield now.
+	if badge != null:
+		$ProgressBar.visible = false
+		$ShieldBar.visible = false
+		badge.update_from(thisArmy)
+
+func _ensure_badge() -> void:
+	if badge != null and is_instance_valid(badge):
+		return
+	badge = BADGE_SCRIPT.new()
+	badge.name = "ArmyBadge"
+	badge.position = BADGE_POS
+	badge.z_index = 1
+	add_child(badge)
 
 func _process(_delta: float) -> void:
 	if thisArmy != null and not is_instance_valid(thisArmy):
@@ -188,6 +206,7 @@ func onRaise(Army, country, pathPoint):
 	currentPathPoint.occupied = true
 	currentTile = pathPoint.ppbTile
 	_refresh_appearance()
+	_ensure_badge()
 	if not $APFButton.mouse_entered.is_connected(_on_apf_mouse_entered):
 		$APFButton.mouse_entered.connect(_on_apf_mouse_entered)
 		$APFButton.mouse_exited.connect(_on_apf_mouse_exited)
@@ -233,6 +252,9 @@ func _on_apf_mouse_entered() -> void:
 	z_index = 60          # bring the hovered token fully to front (fixes cluster overlap)
 	_hover_scale = 1.4
 	_refresh_weapon_icons(true)
+	if badge != null:
+		badge.compact = false
+		$APFButton.tooltip_text = badge.tooltip_text()
 	emit_signal("apfHovered", self, true)
 
 

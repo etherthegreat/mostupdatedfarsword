@@ -141,6 +141,18 @@ func calculateWeaponsOresArmor() -> void:
 		addMilMod(MilMod)
 
 
+func _rebuild_gross_values() -> void:
+	if unitWeapon == null or unitOre == null or unitArmor == null:
+		return
+	unitOffensiveScore = 0
+	unitDefensiveScore = 0
+	unitRangedOffence  = 0
+	unitRangedDefence  = 0
+	unitMagicDefence   = 0
+	unitMaxShield      = 0
+	calculateGrossValues()
+
+
 func calculateGrossValues() -> void:
 	var manPowerEffect: float    = float(unitCurrentManpower) / float(max(1, unitMaxManpower))
 	var weaponsPowerEffect: float= float(unitCurrentWeapons)  / float(max(1, unitMaxWeapons))
@@ -164,6 +176,10 @@ func calculateGrossValues() -> void:
 
 
 func calculateMilMods() -> void:
+	# Combat pass 2026-10-26: start from the clean gross values every time. Before this,
+	# each call stacked onto the last call's result (Chain +2, +2, +2…; ×1.05 compounding),
+	# and surveySelf() runs on every hover preview, attack and turn, so stats crept up.
+	_rebuild_gross_values()
 	if militaryModifierList == null:
 		return
 	if armyDemoralized:

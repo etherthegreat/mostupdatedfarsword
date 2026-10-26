@@ -24,7 +24,14 @@ const CRACK := Color(0.85, 0.22, 0.22)
 const GRADE_COLORS := {
 	"S": Color(1.0, 0.93, 0.62), "A": Color(1.0, 0.80, 0.30), "B": Color(0.70, 0.82, 1.0),
 	"C": Color(0.86, 0.62, 0.40), "D": Color(0.85, 0.45, 0.38), "F": Color(0.92, 0.25, 0.25),
+	"L": Color(0.62, 0.86, 0.35),
 }
+# Secret L grade: a jesting animation plays over the card once the L stamps down.
+# Export numbered PNG frames (L_000.png, L_001.png …) into this folder. Any names
+# work — they play in alphabetical order. Click to dismiss.
+const L_FRAMES_DIR := "res://art assets/finishedAssets/score/L_jest/"
+const L_FPS := 12.0
+const L_MAX_SIZE := Vector2(760, 760)
 # Headline per ending. Falls back to VICTORY / DEFEAT.
 const HEADLINES := {
 	"stalemate": "DEMILITARIZED ZONES", "endlessBattle": "EVERY STATE A BATTLEFIELD",
@@ -52,6 +59,10 @@ var _newBest: Label
 var _tipLabel: Label
 var _buttons: HBoxContainer
 var _playBtn: Button
+var _jest: Control = null
+var _jestRect: TextureRect = null
+var _jestFrames: Array = []
+var _jestT := 0.0
 
 
 # ═════════════════════════════════════════════════════════════════════════════
@@ -86,17 +97,24 @@ class NameStrip extends Control:
 			units += str(p.text).length()
 		units += gapCh * (pieces.size() - 1)
 		var fs := clampi(int(size.x / maxf(1.0, units) * 1.45), 24, 132)
-		var adv := func(ch: String) -> float: return font.get_char_size(ch.unicode_at(0), fs).x
 		var widths: Array = []
 		var total := 0.0
 		for p in pieces:
 			var w := 0.0
 			for ch in str(p.text):
-				w += adv.call(ch) * 1.06
+				w += _adv(ch, fs) * 1.06
 			widths.append(w)
 			total += w
-		var gapPx: float = adv.call("M") * gapCh
+		var gapPx: float = _adv("M", fs) * gapCh
 		total += gapPx * (pieces.size() - 1)
+		if total > size.x * 0.98:
+			# too wide (many shards): shrink everything to fit
+			var k := size.x * 0.98 / total
+			fs = maxi(12, int(fs * k))
+			total *= k
+			gapPx *= k
+			for i in widths.size():
+				widths[i] = float(widths[i]) * k
 		var x := (size.x - total) * 0.5
 		var base := size.y * 0.5 + fs * 0.34
 		var li := 0
@@ -111,7 +129,7 @@ class NameStrip extends Control:
 			var pivot := Vector2(x + float(widths[k]) * 0.5, base + dy)
 			var cx: float = -float(widths[k]) * 0.5
 			for ch in str(p.text):
-				var w: float = adv.call(ch) * 1.06
+				var w: float = _adv(ch, fs) * 1.06
 				if ch != " ":
 					var a := clampf(reveal - li, 0.0, 1.0)
 					if a > 0.0:
@@ -130,6 +148,9 @@ class NameStrip extends Control:
 				_draw_crack(Vector2(x + gapPx * 0.5, size.y * 0.5), fs, clampf(reveal - li + 0.5, 0.0, 1.0))
 				x += gapPx
 		draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
+
+	func _adv(ch: String, fs: int) -> float:
+		return font.get_char_size(ch.unicode_at(0), fs).x
 
 	func _draw_crack(c: Vector2, fs: int, a: float) -> void:
 		if a <= 0.0:
@@ -317,7 +338,9 @@ func _build() -> void:
 	var shownN: int = _strip.pieces.size()
 	var stranded: int = maxi(0, int(now.get("pieces", 1)) - shownN)
 	var sub := "NAME REBUILT"
-	if shownN > 1:
+	if int(now.get("held", 1)) == 0:
+		sub += "   ·   SHATTERED"
+	elif shownN > 1:
 		sub += "   ·   BROKEN IN %d" % shownN
 	if stranded > 0:
 		sub += "   ·   %d STRANDED POCKET%s" % [stranded, "" if stranded == 1 else "S"]
@@ -424,6 +447,12 @@ func _strip_pieces() -> Array:
 	# report.name_pieces: [{count, tiles}] in reading order (from the snake layout).
 	# Rebuild each piece's text from the real name so spaces land where they belong.
 	var name_str := str(NAMES.get(str(report.get("cid", "USA")), "United States")).to_upper()
+	if int(report.get("now", {}).get("held", 1)) == 0:
+		# Nothing held: the name is rubble — every letter its own crooked shard.
+		var shards: Array = []
+		for ch in name_str.replace(" ", ""):
+			shards.append({"text": ch, "main": false})
+		return shards
 	var src: Array = report.get("name_pieces", [])
 	if src.is_empty():
 		src = _pieces_from_sizes(name_str.replace(" ", "").length())
@@ -602,6 +631,9 @@ func _animate() -> void:
 	ts.parallel().tween_property(_stamp, "rotation", -0.10, 0.28)
 	ts.tween_callback(_shake)
 	ts.tween_property(_stamp.get_parent().get_node("GradeTitle"), "modulate:a", 1.0, 0.25)
+	if report.get("secret", false):
+		ts.tween_interval(0.5)
+		ts.tween_callback(_play_jest)
 	at += 0.6
 	# AudioManager.play_sfx("grade_stamp")   # ← sound hook when there is one
 
@@ -612,6 +644,83 @@ func _animate() -> void:
 	tf.parallel().tween_property(_tipLabel, "modulate:a", 1.0, 0.25)
 	tf.tween_property(_buttons, "modulate:a", 1.0, 0.25)
 	tf.tween_callback(_finish)
+
+
+func _jest_frames() -> Array:
+	# Works in exported builds too: originals are gone there, only *.png.import remain.
+	var names := {}
+	var d := DirAccess.open(L_FRAMES_DIR)
+	if d == null:
+		return []
+	for f in d.get_files():
+		var n := f.trim_suffix(".import").trim_suffix(".remap")
+		if n.get_extension().to_lower() in ["png", "webp", "jpg"]:
+			names[n] = true
+	var keys: Array = names.keys()
+	keys.sort()
+	var out: Array = []
+	for k in keys:
+		var tex = load(L_FRAMES_DIR + str(k))
+		if tex is Texture2D:
+			out.append(tex)
+	return out
+
+
+func _play_jest() -> void:
+	if _jest != null:
+		return
+	_jestFrames = _jest_frames()
+	if _jestFrames.is_empty() and not OS.is_debug_build():
+		return
+	_jest = Control.new()
+	_jest.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_jest.mouse_filter = Control.MOUSE_FILTER_STOP
+	_jest.gui_input.connect(func(e: InputEvent):
+		if e is InputEventMouseButton and e.pressed:
+			_close_jest())
+	var shade := ColorRect.new()
+	shade.color = Color(0, 0, 0, 0.6)
+	shade.set_anchors_preset(Control.PRESET_FULL_RECT)
+	shade.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_jest.add_child(shade)
+	var c := CenterContainer.new()
+	c.set_anchors_preset(Control.PRESET_FULL_RECT)
+	c.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_jest.add_child(c)
+	if _jestFrames.is_empty():
+		# Debug-only placeholder so the slot is easy to find.
+		var l := _label("L — jest animation goes here\n%s\n(click to close)" % L_FRAMES_DIR, 26, GRADE_COLORS["L"], true)
+		l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		c.add_child(l)
+	else:
+		_jestRect = TextureRect.new()
+		_jestRect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		_jestRect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		var fsz: Vector2 = _jestFrames[0].get_size()
+		var k := minf(1.0, minf(L_MAX_SIZE.x / fsz.x, L_MAX_SIZE.y / fsz.y))
+		_jestRect.custom_minimum_size = fsz * k
+		_jestRect.texture = _jestFrames[0]
+		_jestRect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		c.add_child(_jestRect)
+	_root.add_child(_jest)
+	_jest.modulate.a = 0.0
+	var t := create_tween()
+	t.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+	t.tween_property(_jest, "modulate:a", 1.0, 0.2)
+
+
+func _close_jest() -> void:
+	if _jest != null and is_instance_valid(_jest):
+		_jest.queue_free()
+	_jest = null
+	_jestRect = null
+
+
+func _process(delta: float) -> void:
+	if _jestRect == null or _jestFrames.size() < 2:
+		return
+	_jestT += delta
+	_jestRect.texture = _jestFrames[int(_jestT * L_FPS) % _jestFrames.size()]
 
 
 func _shake() -> void:

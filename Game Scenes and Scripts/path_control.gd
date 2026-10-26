@@ -343,6 +343,7 @@ func removeFromUpdateArmyPaths():
 	updatingArmyPathFollow = null
 
 func _process(_delta: float) -> void:
+	_tick_badges(_delta)
 	# Animate the path follower from whatever is currently traveling (selection-independent).
 	if updatingArmyPathFollow != null and is_instance_valid(_travelingFollower):
 		var pr: float = _travelingFollower.progressRate
@@ -715,3 +716,128 @@ func onTurnEnd() -> void:
 	for cpf in raisedPlayerCPFs:
 		if is_instance_valid(cpf) and cpf.thisCivilian != null:
 			cpf.thisCivilian.onTurnEnd()
+
+
+# ═════════════════════════════════════════════════════════════════════════════
+# ARMY BADGES — GUI pass 2026-10-26 (see army_badge.gd)
+#  • verdicts: while one of your armies is selected, every enemy badge on screen is
+#    coloured by the real battle maths run both ways (▲ win / = close / ▼ lose)
+#  • declutter: badges that would overlap on screen collapse to compact STR chips;
+#    the selected, hovered and stronger armies keep their full plaque
+# ═════════════════════════════════════════════════════════════════════════════
+const BADGE_PASS_SEC := 0.12
+const VERDICT_PASS_SEC := 0.6
+const VERDICT_WIN := 1.3       # deal/take ratio for ▲
+const VERDICT_LOSE := 0.77     # …and for ▼
+var _badgeT := 0.0
+var _verdictT := 0.0
+var _verdictFor = null
+
+func _tick_badges(delta: float) -> void:
+	_badgeT += delta
+	if _badgeT >= BADGE_PASS_SEC:
+		_badgeT = 0.0
+		_declutter_badges()
+	_verdictT += delta
+	var sel = selectedAPF if (selectedAPF != null and is_instance_valid(selectedAPF)) else null
+	if sel != null:
+		if _verdictFor != sel or _verdictT >= VERDICT_PASS_SEC:
+			_verdictT = 0.0
+			_verdictFor = sel
+			_refresh_verdicts(sel)
+	elif _verdictFor != null:
+		_verdictFor = null
+		for apf in raisedPlayerAPFs:
+			if is_instance_valid(apf) and apf.badge != null:
+				apf.badge.set_verdict(-1)
+
+func _badge_screen_rect(apf) -> Rect2:
+	var b = apf.badge
+	var r: Rect2 = b.rect_local()
+	var xf: Transform2D = get_viewport().get_canvas_transform() * b.get_global_transform()
+	var p0: Vector2 = xf * r.position
+	var p1: Vector2 = xf * r.end
+	return Rect2(p0, p1 - p0).abs()
+
+func _token_screen_rect(apf) -> Rect2:
+	# the diamond: centre ~(2, 30) in token space, half-diagonal ~36
+	var xf: Transform2D = get_viewport().get_canvas_transform() * apf.get_global_transform()
+	var c: Vector2 = xf * Vector2(2, 30)
+	var h: float = (xf.basis_xform(Vector2(30, 0))).length()
+	return Rect2(c - Vector2(h, h), Vector2(h, h) * 2.0)
+
+func _on_screen(apf) -> bool:
+	var vr := get_viewport().get_visible_rect().grow(60)
+	return vr.has_point(get_viewport().get_canvas_transform() * apf.global_position)
+
+func _refresh_verdicts(sel) -> void:
+	var mine = sel.thisArmy
+	if mine == null or not is_instance_valid(mine):
+		return
+	for apf in raisedPlayerAPFs:
+		if not is_instance_valid(apf) or apf.badge == null or apf == sel:
+			continue
+		var them = apf.thisArmy
+		if them == null or not is_instance_valid(them) or not them.enemy or not _on_screen(apf):
+			apf.badge.set_verdict(-1)
+			continue
+		apf.badge.set_verdict(_verdict(mine, them))
+
+func _verdict(mine, them) -> int:
+	# One attack each way with the game's own formula (fresh actions; holders counted as
+	# attackers for the threat side). deal/take are fractions of each side's shield+manpower.
+	var a: Dictionary = mine.compute_battle_against(them, false)
+	var b: Dictionary = them.compute_battle_against(mine, false, true)
+	var their_hp: float = maxf(1.0, float(them.manpowerInArmy + them.armyShield))
+	var my_hp: float = maxf(1.0, float(mine.manpowerInArmy + mine.armyShield))
+	var deal: float = float(a["def_loss"]) / their_hp
+	var take: float = float(b["def_loss"] + a["atk_loss"]) / my_hp
+	if deal >= 1.0 and take < 1.0:
+		return 2
+	if take >= 1.0 and deal < 1.0:
+		return 0
+	var ratio: float = (deal + 0.02) / (take + 0.02)
+	if ratio >= VERDICT_WIN:
+		return 2
+	if ratio <= VERDICT_LOSE:
+		return 0
+	return 1
+
+func _declutter_badges() -> void:
+	var items: Array = []
+	for apf in raisedPlayerAPFs:
+		if not is_instance_valid(apf) or apf.badge == null or not apf.visible:
+			continue
+		var pri: float = float(apf.badge.strength)
+		if apf == selectedAPF:
+			pri += 1e9
+		if apf._hover_scale > 1.01:
+			pri += 1e10
+		if apf.thisArmy != null and is_instance_valid(apf.thisArmy) and not apf.thisArmy.enemy:
+			pri += 1e6
+		items.append([pri, apf])
+	items.sort_custom(func(x, y): return x[0] > y[0])
+	# every token's diamond is an obstacle too, so a plaque never hides another army
+	var diamonds: Dictionary = {}
+	for it in items:
+		diamonds[it[1]] = _token_screen_rect(it[1])
+	var placed: Array = []
+	for it in items:
+		var apf = it[1]
+		apf.badge.compact = false
+		var r: Rect2 = _badge_screen_rect(apf)
+		var hit := false
+		for q in placed:
+			if r.intersects(q):
+				hit = true
+				break
+		var vip: bool = apf == selectedAPF or apf._hover_scale > 1.01
+		if not hit and not vip:
+			for other in diamonds:
+				if other != apf and r.intersects(diamonds[other]):
+					hit = true
+					break
+		if hit and apf._hover_scale <= 1.01:
+			apf.badge.compact = true
+			r = _badge_screen_rect(apf)
+		placed.append(r)

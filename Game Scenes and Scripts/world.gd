@@ -174,6 +174,7 @@ func _process(delta: float) -> void:
 		$CanvasLayer/LoadingSprite.rotation += 1
 	else:
 		_pollZoomForLabels()
+		_declutterTileLabels(delta)
 		_tickEnemyActivityBox()
 		_pollSnakeNames(delta)
 
@@ -8006,3 +8007,69 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			_trigger_game_over(true, "Debug: forced victory.")
 		else:
 			_trigger_game_over(false, "Debug: forced end of run.", "endlessBattle")
+
+
+# ═════════════════════════════════════════════════════════════════════════════
+# TILE-NAME DECLUTTER — GUI pass 2026-10-26
+# Every 0.2 s: the biggest on-screen names claim their space first; a name that
+# would overlap a bigger one hides, and a name sitting under an army token fades
+# so the token reads. Base alpha still comes from the zoom bands (tile.gd).
+# ═════════════════════════════════════════════════════════════════════════════
+const LABEL_DECLUTTER_SEC := 0.2
+const LABEL_SHRINK := 0.82          # text boxes carry padding; overlap on the inner 82%
+const LABEL_UNDER_TOKEN_A := 0.3
+var _labelDeclT := 0.0
+
+func _declutterTileLabels(delta: float) -> void:
+	_labelDeclT += delta
+	if _labelDeclT < LABEL_DECLUTTER_SEC or not _mapLabelsReady:
+		return
+	_labelDeclT = 0.0
+	var ct: Transform2D = get_viewport().get_canvas_transform()
+	var view: Rect2 = get_viewport().get_visible_rect()
+	var items: Array = []
+	for t in $TileController.get_children():
+		if not t.has_method("tileNameLabel"):
+			continue
+		var l: Label = t.tileNameLabel()
+		if l == null:
+			continue
+		var base: float = float(l.get_meta("base_a", l.modulate.a))
+		if base <= 0.01:
+			continue
+		var r: Rect2 = (ct * l.get_global_transform()) * Rect2(Vector2.ZERO, l.size)
+		r = r.abs()
+		if not view.intersects(r):
+			continue
+		r = r.grow_individual(-r.size.x * (1.0 - LABEL_SHRINK) * 0.5, -r.size.y * (1.0 - LABEL_SHRINK) * 0.5,
+			-r.size.x * (1.0 - LABEL_SHRINK) * 0.5, -r.size.y * (1.0 - LABEL_SHRINK) * 0.5)
+		items.append([r.size.y, r, l, base])
+	items.sort_custom(func(a, b): return a[0] > b[0])
+	var tokens: Array = []
+	var pc = get_node_or_null("PathControl")
+	if pc != null and pc.has_method("_token_screen_rect"):
+		for apf in pc.raisedPlayerAPFs:
+			if is_instance_valid(apf) and apf.visible:
+				tokens.append(pc._token_screen_rect(apf))
+				if apf.badge != null:
+					tokens.append(pc._badge_screen_rect(apf))
+	var placed: Array = []
+	for it in items:
+		var r: Rect2 = it[1]
+		var l: Label = it[2]
+		var hidden := false
+		for q in placed:
+			if r.intersects(q):
+				hidden = true
+				break
+		if hidden:
+			l.visible = false
+			continue
+		placed.append(r)
+		var a: float = it[3]
+		for q in tokens:
+			if r.intersects(q):
+				a *= LABEL_UNDER_TOKEN_A
+				break
+		l.visible = true
+		l.modulate.a = a

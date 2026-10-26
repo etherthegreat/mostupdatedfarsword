@@ -365,7 +365,7 @@ func _belief_atk_mult(u) -> float:
 	return 1.0 + parentCountry.belief_attack_bonus(u.unitWeapon.weaponClass)
 
 
-func offensive_output(require_ap: bool, holders_counter: bool) -> Dictionary:
+func offensive_output(require_ap: bool, holders_counter: bool, holders_attack: bool = false) -> Dictionary:
 	# Fire units deal RANGED (unitRangedOffence); Charge units deal MELEE (unitOffensiveScore x1.4).
 	# require_ap: only units with an action point contribute (the initiating attack); false for reaction counters.
 	# holders_counter: holders still counter at 1.5x in their weapon's native mode (ranged for guns, melee for sabers).
@@ -376,7 +376,13 @@ func offensive_output(require_ap: bool, holders_counter: bool) -> Dictionary:
 			continue
 		match u.unitStance:
 			"hold":
-				if holders_counter:
+				if holders_attack:
+					# threat estimate: a holding unit could switch to its best attack next turn
+					if u.unitWeapon != null and u.unitWeapon.weaponClass == "Saber":
+						melee += float(u.unitOffensiveScore) * 1.8 * _belief_atk_mult(u)
+					elif not u.is_reloading():
+						ranged += float(u.unitRangedOffence) * _belief_atk_mult(u)
+				elif holders_counter:
 					if u.unitWeapon != null and u.unitWeapon.weaponClass == "Saber":
 						melee += float(u.unitOffensiveScore) * 1.2
 					else:
@@ -398,13 +404,15 @@ func offensive_output(require_ap: bool, holders_counter: bool) -> Dictionary:
 const CHARGE_SELF_DAMAGE: float = 0.35   # attacker loses this fraction of the melee it commits
 const CHARGE_SHIELD_PIERCE: float = 0.5  # this fraction of charge damage ignores the defender's shield
 
-func compute_battle_against(defender: Army) -> Dictionary:
+func compute_battle_against(defender: Army, require_ap: bool = true, as_threat: bool = false) -> Dictionary:
 	# Shared attack math for player, AI, and the hover preview. Pure — no side effects.
 	# Fire -> ranged (safe for the attacker); Charge -> melee (costs the attacker, pierces shield).
+	# require_ap = false: "what if both sides were fresh"; as_threat = true: holding units
+	# are counted as if they attacked. Both only used by the map badge verdicts.
 	surveySelf()
 	defender.surveySelf()
 	var d_units: float = max(1.0, float(defender.unitsList.size()))
-	var a_out: Dictionary = offensive_output(true, false)
+	var a_out: Dictionary = offensive_output(require_ap, false, as_threat)
 	var d_def: float = defender.parentCountry.belief_defense_at(defender.inTile) if defender.parentCountry != null else 0.0
 	var d_rblock: float = clamp((float(defender.armyDefence) + float(defender.hold_defense_bonus())) / d_units + d_def, 0.0, 0.9)
 	var d_mblock: float = clamp((float(defender.armyBlock) + float(defender.hold_defense_bonus())) / d_units + d_def, 0.0, 0.9)

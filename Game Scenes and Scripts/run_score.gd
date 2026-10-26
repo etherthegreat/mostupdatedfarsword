@@ -35,6 +35,8 @@ const GRADES := [
 	[0.0, "F", "Border Gore"],
 ]
 const LOSS_CAP := "B"
+# Secret grade: lose the war while holding not one tile of your own claim.
+const SECRET_L := ["L", "Loyal Subject of the Crown"]
 const RECORDS_PATH := "user://pax_run_records.cfg"
 
 # Land a nation fights to rebuild. US = every tile in a US state (not Canada, not the
@@ -115,12 +117,16 @@ static func build_report(info: Dictionary) -> Dictionary:
 		score += float(r.pts)
 	score = clampf(score, 0.0, 100.0)
 	var g := grade_for(score, won)
+	var secret := not won and int(now.held) == 0
+	if secret:
+		g = SECRET_L
 	return {
 		"cid": info.cid, "won": won, "end_type": end_type, "reason": str(info.get("reason", "")),
 		"turn": int(info.get("turn", 100)), "date": str(info.get("date", "")),
 		"score": roundi(score), "grade": g[0], "title": g[1], "rows": rows,
 		"now": now, "start": info.start, "peak_pct": maxf(float(info.get("peak_pct", 0.0)), float(now.name_pct)),
-		"name_pieces": info.get("name_pieces", []), "tip": _tip(rows, now),
+		"name_pieces": info.get("name_pieces", []), "secret": secret,
+		"tip": "Next run: perhaps try keeping one (1) tile." if secret else _tip(rows, now),
 	}
 
 

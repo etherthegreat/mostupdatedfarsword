@@ -2380,5 +2380,9 @@ func setTileLabelAlpha(a: float, zoom: float = 1.0) -> void:
 	var screen_px := float(_tileLabelFont) * zoom * absf(_tileNameLabel.get_global_transform().get_scale().y)
 	var readable := clampf((screen_px - _TILE_LABEL_READABLE_PX) / (_TILE_LABEL_READABLE_FULL - _TILE_LABEL_READABLE_PX), 0.0, 1.0)
 	a *= readable
+	_tileNameLabel.set_meta("base_a", a)   # world.gd's declutter pass scales from this
 	_tileNameLabel.visible = a > 0.01
 	_tileNameLabel.modulate.a = a
+
+func tileNameLabel() -> Label:
+	return _tileNameLabel if (_tileNameLabel != null and is_instance_valid(_tileNameLabel)) else null
