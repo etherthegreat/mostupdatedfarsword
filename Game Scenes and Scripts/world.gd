@@ -232,6 +232,7 @@ var currentWorldTurn: int = 0
 signal calculateSeason
 func newGameBuild(CID, gameLang, isCoop: bool = false):
 	currentWorldTurn = 1
+	_runStartCid = str(CID)
 	worldCreation = true
 	isCoopMode = isCoop
 	gameLanguage = gameLang
@@ -6773,7 +6774,14 @@ func _trigger_game_over(won: bool, reason: String = "", end_type: String = "") -
 		var ending = get_node_or_null("CanvasLayer/EndingSceneControl")
 		if ending != null:
 			ending.endGame(end_type, _format_game_date(), currentWorldTurn)
+			# GUI pass 2026-10-26: the score screen takes over the ending's exit button.
+			var exitBtn = ending.get_node_or_null("GameOver")
+			if exitBtn != null:
+				exitBtn.visible = false
+			_show_run_score(won, reason, end_type, RUN_SCORE_AFTER_ART)
 			return
+	if _show_run_score(won, reason, end_type, RUN_SCORE_AFTER_WIN):
+		return
 	var panel = get_node_or_null("CanvasLayer/GameOverPanel")
 	if panel != null:
 		panel.show_result(won, reason)
@@ -7715,6 +7723,7 @@ func buildCountryLabels() -> void:
 		shown[k] = COUNTRY_DISPLAY_NAMES[k]
 	_snakeNames.rebuild_from_world($TileController, $CountryController, shown, false)
 	_snakeSig = _snakeNames.ownership_signature($TileController)
+	_trackRunPeak()
 
 func _pollSnakeNames(delta: float) -> void:
 	# Ownership can change from many places (sieges, events, instant captures), so
@@ -7733,6 +7742,7 @@ func _pollSnakeNames(delta: float) -> void:
 	for k in COUNTRY_DISPLAY_NAMES:
 		shown[k] = COUNTRY_DISPLAY_NAMES[k]
 	_snakeNames.rebuild_from_world($TileController, $CountryController, shown, true)
+	_trackRunPeak()
 
 func refreshMapLabels(z: float) -> void:
 	var tileA: float = clampf((z - _TILE_FADE_LO) / max(0.001, _TILE_FADE_HI - _TILE_FADE_LO), 0.0, 1.0)
@@ -7879,3 +7889,120 @@ func _tickEnemyActivityBox() -> void:
 			_enemyActivityBox.visible = false
 			_enemyBoxPending = false
 			_enemyActivityTween = null)
+
+
+# ═════════════════════════════════════════════════════════════════════════════
+# END-OF-RUN SCORE SCREEN — GUI pass 2026-10-26
+# Every ending (turn 100 or earlier) lands on score_screen.gd: outcome, the
+# nation's name as the map left it, NAME REBUILT %, a points tally, a letter grade,
+# best run, PLAY AGAIN. The maths and tuning live in run_score.gd.
+# ═════════════════════════════════════════════════════════════════════════════
+const RUN_SCORE := preload("res://Game Scenes and Scripts/run_score.gd")
+const SCORE_SCREEN := preload("res://Game Scenes and Scripts/score_screen.gd")
+const RUN_SCORE_AFTER_ART := 6.0   # loss endings: let the ending painting fade in first
+const RUN_SCORE_AFTER_WIN := 1.5
+var _runStartCid: String = ""
+var _runPeakName: float = 0.0
+
+func _runCid() -> String:
+	var cid: String = _runStartCid if _runStartCid != "" else str(playerCountry)
+	return cid if cid in ["USA", "CA"] else "USA"
+
+func _score_tiles() -> Array:
+	# [{id, owner, start_owner, state, nb}] — start owner + state come from the CSV,
+	# so this also works for loaded saves.
+	var out: Array = []
+	for t in $TileController.get_children():
+		if t.get("EXPTileNumber") == null:
+			continue
+		if t.get("oceanEXP") == true or t.get("ocean") == true:
+			continue
+		var num: int = int(t.EXPTileNumber)
+		var db: Dictionary = TileDatabase.get_tile(num)
+		var nb: Array = []
+		for n in t.TileNeighbors:
+			if is_instance_valid(n) and n.get("EXPTileNumber") != null:
+				nb.append(int(n.EXPTileNumber))
+		out.append({"id": num, "owner": str(t.tileOwner),
+			"start_owner": str(db.get("country", "")),
+			"state": str(db.get("state", t.get("tileContinent"))), "nb": nb})
+	return out
+
+func _trackRunPeak() -> void:
+	if _game_ended:
+		return
+	var m: Dictionary = RUN_SCORE.measure(_score_tiles(), _runCid())
+	_runPeakName = maxf(_runPeakName, float(m.name_pct))
+
+func _show_run_score(won: bool, reason: String, end_type: String, delay: float) -> bool:
+	# Freeze the numbers the moment the run ends, then show the card once the
+	# ending art / election-night events have had their moment.
+	var cid := _runCid()
+	var tiles := _score_tiles()
+	var now: Dictionary = RUN_SCORE.measure(tiles, cid)
+	var start: Dictionary = RUN_SCORE.measure(tiles, cid, true)
+	var pieces: Array = []
+	if _snakeNames != null and is_instance_valid(_snakeNames):
+		var sig: String = _snakeNames.ownership_signature($TileController)
+		if sig != _snakeSig:
+			_snakeSig = sig
+			var shown := {}
+			for k in COUNTRY_DISPLAY_NAMES:
+				shown[k] = COUNTRY_DISPLAY_NAMES[k]
+			_snakeNames.rebuild_from_world($TileController, $CountryController, shown, true)
+		for e in _snakeNames.debug_layout:
+			if str(e.cid) == cid:
+				pieces.append({"count": str(e.text).length(), "tiles": int(e.tiles)})
+	var vote := 0.0
+	var node = _country_by_cid(cid)
+	if node != null and node.OwnedTileList.size() > 0:
+		var tot := 0
+		for t in node.OwnedTileList:
+			tot += int(t.electionPressure)
+		vote = float(tot) / node.OwnedTileList.size()
+	var report: Dictionary = RUN_SCORE.build_report({
+		"cid": cid, "won": won, "end_type": end_type, "reason": reason,
+		"turn": currentWorldTurn, "date": _format_game_date(), "now": now, "start": start,
+		"peak_pct": _runPeakName, "vote_avg": vote, "name_pieces": pieces,
+	})
+	var recs: Dictionary = RUN_SCORE.record_run(report)
+	print("[RunScore] ", report.grade, " ", report.score, "  name ", snappedf(now.name_pct, 0.01), "  pieces ", now.pieces)
+	_open_score_screen.call_deferred(report, recs, delay)
+	return true
+
+func _open_score_screen(report: Dictionary, recs: Dictionary, delay: float) -> void:
+	await get_tree().create_timer(delay).timeout
+	# Let any election-night / ending events finish first.
+	while _event_showing or (not _event_queue.is_empty() and not _defer_events):
+		await get_tree().create_timer(0.25).timeout
+	if not is_inside_tree():
+		return
+	var scr = SCORE_SCREEN.new()
+	scr.name = "RunScoreScreen"
+	add_child(scr)
+	scr.play_again.connect(func(): _restart_run.call_deferred())
+	scr.main_menu.connect(func(): get_tree().change_scene_to_file("res://Menu Scenes and Scripts/main_menu.tscn"))
+	scr.show_report(report, recs)
+
+func _restart_run() -> void:
+	# Same flow as new_game_selection.gd: fresh world in the root, made current, built.
+	var tree := get_tree()
+	var path: String = scene_file_path if scene_file_path != "" else "res://Game Scenes and Scripts/world.tscn"
+	var fresh = load(path).instantiate()
+	tree.paused = false
+	tree.root.remove_child(self)
+	tree.root.add_child(fresh)
+	tree.current_scene = fresh
+	fresh.newGameBuild(_runCid(), gameLanguage, isCoopMode)
+	queue_free()
+
+func _unhandled_key_input(event: InputEvent) -> void:
+	# Debug builds only: F9 ends the run now as a loss (ending art → score screen),
+	# Shift+F9 as a victory — so the score screen can be checked without 100 turns.
+	if not OS.is_debug_build() or _game_ended:
+		return
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_F9:
+		if event.shift_pressed:
+			_trigger_game_over(true, "Debug: forced victory.")
+		else:
+			_trigger_game_over(false, "Debug: forced end of run.", "endlessBattle")
