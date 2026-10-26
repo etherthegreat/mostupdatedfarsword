@@ -174,6 +174,7 @@ func _process(delta: float) -> void:
 		$CanvasLayer/LoadingSprite.rotation += 1
 	else:
 		_pollZoomForLabels()
+		_tickEnemyActivityBox()
 
 func updateResourceBar() -> void:
 	if playerCountryNode == null:
@@ -7796,7 +7797,7 @@ func refreshMapLabels(z: float) -> void:
 	var ctryA: float = clampf((c_gone - z) / max(0.001, c_gone - c_full), 0.0, 1.0)
 	for t in $TileController.get_children():
 		if t.has_method("setTileLabelAlpha"):
-			t.setTileLabelAlpha(tileA)
+			t.setTileLabelAlpha(tileA, z)
 	for l in _countryLabels:
 		if is_instance_valid(l):
 			l.visible = ctryA > 0.01
@@ -7888,10 +7889,41 @@ func _show_enemy_activity_box(lines: PackedStringArray) -> void:
 	_enemyActivityBox.reset_size()
 	_enemyActivityBox.position = Vector2(maxf(12.0, (vp.x - 90.0 - _enemyActivityBox.size.x) * 0.5), 104)
 	_enemyActivityBox.modulate.a = 1.0
-	_enemyActivityBox.visible = true
 	if _enemyActivityTween != null and _enemyActivityTween.is_valid():
 		_enemyActivityTween.kill()
-	_enemyActivityTween = create_tween()
-	_enemyActivityTween.tween_interval(ENEMY_LOG_HOLD_SEC)
-	_enemyActivityTween.tween_property(_enemyActivityBox, "modulate:a", 0.0, 0.8)
-	_enemyActivityTween.tween_callback(func(): _enemyActivityBox.visible = false)
+	_enemyActivityTween = null
+	_enemyBoxPending = true   # shown (and its fade timer started) once no event is on screen
+	_enemyActivityBox.visible = not _event_panel_open()
+	_tickEnemyActivityBox()
+
+
+var _enemyBoxPending: bool = false
+
+func _event_panel_open() -> bool:
+	var ec = get_node_or_null("CanvasLayer/EventControl/EventContainer")
+	return ec != null and ec.get_child_count() > 0
+
+
+func _tickEnemyActivityBox() -> void:
+	# Called every frame: the enemy box waits behind events instead of covering them,
+	# and only starts its fade-out timer once the player can actually read it.
+	if _enemyActivityBox == null or not is_instance_valid(_enemyActivityBox):
+		return
+	if not _enemyBoxPending:
+		return
+	if _event_panel_open():
+		_enemyActivityBox.visible = false
+		if _enemyActivityTween != null and _enemyActivityTween.is_valid():
+			_enemyActivityTween.kill()
+			_enemyActivityTween = null
+			_enemyActivityBox.modulate.a = 1.0
+		return
+	_enemyActivityBox.visible = true
+	if _enemyActivityTween == null:
+		_enemyActivityTween = create_tween()
+		_enemyActivityTween.tween_interval(ENEMY_LOG_HOLD_SEC)
+		_enemyActivityTween.tween_property(_enemyActivityBox, "modulate:a", 0.0, 0.8)
+		_enemyActivityTween.tween_callback(func():
+			_enemyActivityBox.visible = false
+			_enemyBoxPending = false
+			_enemyActivityTween = null)

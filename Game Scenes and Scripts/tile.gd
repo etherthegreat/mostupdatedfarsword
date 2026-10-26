@@ -2231,29 +2231,154 @@ func ensureNameLabel() -> void:
 		_tileNameLabel.add_theme_constant_override("outline_size", 4)
 		add_child(_tileNameLabel)
 
+# GUI pass 2026-10-25 (step 2): names sit at the tile's most-interior point, sized to
+# the tile's real width there (not its bounding box, which spills into neighbours on
+# diagonal tiles). Long names may wrap to two lines. A name that would still be too
+# small to read stays hidden until the camera is zoomed in far enough to read it.
+const _TILE_LABEL_READABLE_PX := 10.0   # on-screen px where a name starts to appear
+const _TILE_LABEL_READABLE_FULL := 13.0 # …and is fully opaque
+var _tileLabelFont: int = _TILE_LABEL_BASE_FONT
+
+func _tilePolygonLocal() -> PackedVector2Array:
+	var area := get_node_or_null("Area2D")
+	var poly := get_node_or_null("Area2D/CollisionPolygon2D")
+	var out := PackedVector2Array()
+	if poly == null or area == null:
+		return out
+	var off: Vector2 = area.position + poly.position
+	for p in poly.polygon:
+		out.append(p + off)
+	return out
+
+func _distToPolyEdge(pts: PackedVector2Array, q: Vector2) -> float:
+	var best := INF
+	var n := pts.size()
+	for i in n:
+		var c := Geometry2D.get_closest_point_to_segment(q, pts[i], pts[(i + 1) % n])
+		best = min(best, q.distance_to(c))
+	return best
+
+func _labelAnchor(pts: PackedVector2Array, box: Rect2) -> Vector2:
+	# Coarse-to-fine search for the interior point farthest from every edge
+	# (a cheap "pole of inaccessibility"). Runs once per tile at map setup.
+	var best := box.get_center()
+	var bestD := -1.0
+	var steps := 14
+	var cell := Vector2(box.size.x / steps, box.size.y / steps)
+	for gx in steps + 1:
+		for gy in steps + 1:
+			var q := box.position + Vector2(gx * cell.x, gy * cell.y)
+			if not Geometry2D.is_point_in_polygon(q, pts):
+				continue
+			var d := _distToPolyEdge(pts, q)
+			if d > bestD:
+				bestD = d; best = q
+	for _pass in 2:
+		cell *= 0.4
+		var c0 := best
+		for gx in range(-3, 4):
+			for gy in range(-3, 4):
+				var q := c0 + Vector2(gx * cell.x, gy * cell.y)
+				if not Geometry2D.is_point_in_polygon(q, pts):
+					continue
+				var d := _distToPolyEdge(pts, q)
+				if d > bestD:
+					bestD = d; best = q
+	return best
+
+func _chordAt(pts: PackedVector2Array, anchor: Vector2, horizontal: bool) -> Vector2:
+	# Returns (lo, hi) of the polygon interior along a horizontal (or vertical) line
+	# through the anchor, limited to the run that actually contains the anchor.
+	var hits: Array = []
+	var n := pts.size()
+	for i in n:
+		var a := pts[i]
+		var b := pts[(i + 1) % n]
+		var ua: float = a.y if horizontal else a.x
+		var ub: float = b.y if horizontal else b.x
+		var line_v: float = anchor.y if horizontal else anchor.x
+		if (ua <= line_v and ub > line_v) or (ub <= line_v and ua > line_v):
+			var t := (line_v - ua) / (ub - ua)
+			var va: float = a.x if horizontal else a.y
+			var vb: float = b.x if horizontal else b.y
+			hits.append(va + t * (vb - va))
+	hits.sort()
+	var at: float = anchor.x if horizontal else anchor.y
+	var i2 := 0
+	while i2 + 1 < hits.size():
+		if hits[i2] <= at and at <= hits[i2 + 1]:
+			return Vector2(hits[i2], hits[i2 + 1])
+		i2 += 2
+	return Vector2(at - 40.0, at + 40.0)
+
+func _fitFont(font: Font, lines: PackedStringArray, maxW: float, maxH: float) -> int:
+	var widest := 0.0
+	for ln in lines:
+		widest = max(widest, font.get_string_size(ln, HORIZONTAL_ALIGNMENT_LEFT, -1, _TILE_LABEL_BASE_FONT).x)
+	if widest <= 0.0:
+		return _TILE_LABEL_BASE_FONT
+	var fs := float(_TILE_LABEL_BASE_FONT) * maxW / widest
+	var lh := font.get_height(_TILE_LABEL_BASE_FONT) / float(_TILE_LABEL_BASE_FONT)
+	fs = min(fs, maxH / (lh * lines.size()))
+	return int(clampf(fs, 1.0, float(_TILE_LABEL_BASE_FONT)))
+
 func refreshTileNameLabel() -> void:
 	if str(tileName).strip_edges() == "":
 		if _tileNameLabel != null and is_instance_valid(_tileNameLabel):
 			_tileNameLabel.visible = false
 		return
 	ensureNameLabel()
+	_tileNameLabel.autowrap_mode = TextServer.AUTOWRAP_OFF
+	_tileNameLabel.clip_text = false
+	var pts := _tilePolygonLocal()
 	var box := _tileVisualBBox()
-	_tileNameLabel.text = tileName
-	_tileNameLabel.position = box.position
-	_tileNameLabel.size = box.size
+	var anchor := box.get_center()
+	var maxW := box.size.x
+	var maxH := box.size.y
+	if pts.size() >= 3:
+		anchor = _labelAnchor(pts, box)
+		var hc := _chordAt(pts, anchor, true)
+		var vc := _chordAt(pts, anchor, false)
+		# Keep the label centred on the anchor: usable half-width is the nearer side.
+		maxW = 2.0 * min(anchor.x - hc.x, hc.y - anchor.x) * 0.92
+		maxH = 2.0 * min(anchor.y - vc.x, vc.y - anchor.y) * 0.85
+	var name_str := str(tileName)
 	var font := _tileNameLabel.get_theme_font("font")
+	var lines := PackedStringArray([name_str])
 	var fs := _TILE_LABEL_BASE_FONT
 	if font != null:
-		var w := font.get_string_size(tileName, HORIZONTAL_ALIGNMENT_LEFT, -1, _TILE_LABEL_BASE_FONT).x
-		if w > box.size.x and w > 0.0:
-			fs = int(_TILE_LABEL_BASE_FONT * (box.size.x / w))
-	fs = clampi(fs, _TILE_LABEL_MIN_FONT, _TILE_LABEL_BASE_FONT)
+		fs = _fitFont(font, lines, maxW, maxH)
+		# Try a two-line split at the most balanced space if that reads bigger.
+		if name_str.contains(" ") and fs < _TILE_LABEL_BASE_FONT:
+			var words := name_str.split(" ")
+			var bestFs := fs
+			var bestLines := lines
+			for k in range(1, words.size()):
+				var two := PackedStringArray([" ".join(words.slice(0, k)), " ".join(words.slice(k))])
+				var f2 := _fitFont(font, two, maxW, maxH)
+				if f2 > bestFs + 1:
+					bestFs = f2; bestLines = two
+			fs = bestFs; lines = bestLines
+	_tileLabelFont = fs
+	_tileNameLabel.text = "\n".join(lines)
 	_tileNameLabel.add_theme_font_size_override("font_size", fs)
+	_tileNameLabel.add_theme_constant_override("outline_size", max(2, int(fs * 0.18)))
+	_tileNameLabel.add_theme_constant_override("line_spacing", -int(fs * 0.15))
+	var sz := Vector2(maxW, fs * 1.25 * lines.size())
+	if font != null:
+		sz = _tileNameLabel.get_minimum_size()
+	_tileNameLabel.size = sz
+	_tileNameLabel.position = anchor - sz * 0.5
 
-func setTileLabelAlpha(a: float) -> void:
+func setTileLabelAlpha(a: float, zoom: float = 1.0) -> void:
 	if _tileNameLabel == null or not is_instance_valid(_tileNameLabel):
 		return
 	if undiscovered or not discovered:
 		a = 0.0
+	# Only show a name once it's big enough on screen to actually read.
+	# Include any scale on the tile/parents so this is the true on-screen text height.
+	var screen_px := float(_tileLabelFont) * zoom * absf(_tileNameLabel.get_global_transform().get_scale().y)
+	var readable := clampf((screen_px - _TILE_LABEL_READABLE_PX) / (_TILE_LABEL_READABLE_FULL - _TILE_LABEL_READABLE_PX), 0.0, 1.0)
+	a *= readable
 	_tileNameLabel.visible = a > 0.01
 	_tileNameLabel.modulate.a = a

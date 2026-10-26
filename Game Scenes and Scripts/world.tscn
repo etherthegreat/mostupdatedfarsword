@@ -642,7 +642,7 @@ offset_top = 21.0
 offset_right = -89.0
 offset_bottom = 21.0
 EXPTileNumber = 3
-TileNeighborsEXP = [NodePath("../Tile1"), NodePath("../Tile2"), NodePath("../Tile7"), NodePath("../Tile10"), NodePath("../Tile25"), NodePath("../Tile27")]
+TileNeighborsEXP = [NodePath("../Tile1"), NodePath("../Tile2"), NodePath("../Tile7"), NodePath("../Tile10"), NodePath("../Tile25"), NodePath("../Tile27"), NodePath("../Tile24")]
 
 [node name="Ring" type="Sprite2D" parent="TileController/Tile3"]
 z_index = 5
@@ -777,7 +777,7 @@ offset_top = -83.0
 offset_right = -85.0
 offset_bottom = -83.0
 EXPTileNumber = 9
-TileNeighborsEXP = [NodePath("../Tile8"), NodePath("../Tile12"), NodePath("../Tile10"), NodePath("../Tile85"), NodePath("../Tile11"), NodePath("../Tile45")]
+TileNeighborsEXP = [NodePath("../Tile8"), NodePath("../Tile12"), NodePath("../Tile10"), NodePath("../Tile11"), NodePath("../Tile45"), NodePath("../Tile1")]
 
 [node name="Ring" type="Sprite2D" parent="TileController/Tile9"]
 z_index = 5
@@ -992,7 +992,7 @@ offset_top = 37.0
 offset_right = 93.0
 offset_bottom = 37.0
 EXPTileNumber = 17
-TileNeighborsEXP = [NodePath("../Tile6"), NodePath("../Tile14"), NodePath("../Tile15"), NodePath("../Tile18"), NodePath("../Tile19"), NodePath("../Tile21"), NodePath("../Tile189")]
+TileNeighborsEXP = [NodePath("../Tile6"), NodePath("../Tile14"), NodePath("../Tile15"), NodePath("../Tile18"), NodePath("../Tile19"), NodePath("../Tile21"), NodePath("../Tile189"), NodePath("../Tile192")]
 
 [node name="Ring" type="Sprite2D" parent="TileController/Tile17"]
 z_index = 5
@@ -1019,7 +1019,7 @@ offset_top = -11.0
 offset_right = 106.0
 offset_bottom = -11.0
 EXPTileNumber = 18
-TileNeighborsEXP = [NodePath("../Tile17"), NodePath("../Tile16"), NodePath("../Tile52"), NodePath("../Tile189"), NodePath("../Tile192")]
+TileNeighborsEXP = [NodePath("../Tile17"), NodePath("../Tile189"), NodePath("../Tile192"), NodePath("../Tile13"), NodePath("../Tile22"), NodePath("../Tile6")]
 
 [node name="Ring" type="Sprite2D" parent="TileController/Tile18"]
 z_index = 5
@@ -1396,7 +1396,7 @@ offset_top = 82.0
 offset_right = -308.0
 offset_bottom = 82.0
 EXPTileNumber = 33
-TileNeighborsEXP = [NodePath("../Tile32"), NodePath("../Tile22"), NodePath("../Tile34")]
+TileNeighborsEXP = [NodePath("../Tile32"), NodePath("../Tile34"), NodePath("../Tile29"), NodePath("../Tile30")]
 
 [node name="Ring" type="Sprite2D" parent="TileController/Tile33"]
 z_index = 5
@@ -2850,7 +2850,7 @@ offset_top = -327.0
 offset_right = 359.0
 offset_bottom = -327.0
 EXPTileNumber = 87
-TileNeighborsEXP = [NodePath("../Tile85"), NodePath("../Tile86"), NodePath("../Tile88"), NodePath("../Tile89")]
+TileNeighborsEXP = [NodePath("../Tile85"), NodePath("../Tile86"), NodePath("../Tile88"), NodePath("../Tile89"), NodePath("../Tile92"), NodePath("../Tile93")]
 
 [node name="Ring" type="Sprite2D" parent="TileController/Tile87"]
 z_index = 5
@@ -2931,7 +2931,7 @@ offset_top = -252.0
 offset_right = 542.0
 offset_bottom = -252.0
 EXPTileNumber = 90
-TileNeighborsEXP = [NodePath("../Tile79"), NodePath("../Tile80"), NodePath("../Tile88"), NodePath("../Tile89"), NodePath("."), NodePath("../Tile91"), NodePath("../Tile94")]
+TileNeighborsEXP = [NodePath("../Tile79"), NodePath("../Tile80"), NodePath("../Tile88"), NodePath("../Tile89"), NodePath("../Tile91"), NodePath("../Tile94")]
 
 [node name="Ring" type="Sprite2D" parent="TileController/Tile90"]
 z_index = 5
@@ -3361,7 +3361,7 @@ offset_top = -110.0
 offset_right = 991.0
 offset_bottom = -110.0
 EXPTileNumber = 106
-TileNeighborsEXP = [NodePath("../Tile105"), NodePath("../Tile107"), NodePath("")]
+TileNeighborsEXP = [NodePath("../Tile105"), NodePath("../Tile107")]
 
 [node name="Ring" type="Sprite2D" parent="TileController/Tile106"]
 z_index = 5
@@ -3654,7 +3654,7 @@ offset_top = 328.0
 offset_right = 988.0
 offset_bottom = 328.0
 EXPTileNumber = 117
-TileNeighborsEXP = [NodePath("../Tile25"), NodePath("../Tile27"), NodePath("../Tile194")]
+TileNeighborsEXP = [NodePath("../Tile194"), NodePath("../Tile118"), NodePath("../Tile119")]
 
 [node name="Ring" type="Sprite2D" parent="TileController/Tile117"]
 z_index = 5
@@ -3735,7 +3735,7 @@ offset_top = 99.0
 offset_right = 922.0
 offset_bottom = 99.0
 EXPTileNumber = 120
-TileNeighborsEXP = [NodePath("../Tile28"), NodePath("../Tile30"), NodePath("")]
+TileNeighborsEXP = [NodePath("../Tile103"), NodePath("../Tile116"), NodePath("../Tile119")]
 
 [node name="Ring" type="Sprite2D" parent="TileController/Tile120"]
 z_index = 5
@@ -3761,7 +3761,7 @@ offset_top = 213.0
 offset_right = 831.0
 offset_bottom = 213.0
 EXPTileNumber = 121
-TileNeighborsEXP = [NodePath("../Tile29"), NodePath("../Tile31"), NodePath(""), NodePath("")]
+TileNeighborsEXP = [NodePath("../Tile102"), NodePath("../Tile103"), NodePath("../Tile118"), NodePath("../Tile119"), NodePath("../Tile122")]
 
 [node name="Ring" type="Sprite2D" parent="TileController/Tile121"]
 z_index = 5
@@ -3999,7 +3999,7 @@ offset_top = -770.0
 offset_right = 28.0
 offset_bottom = -770.0
 EXPTileNumber = 131
-TileNeighborsEXP = [NodePath("../Tile39"), NodePath("../Tile41"), NodePath("../Tile42"), NodePath("../Tile37"), NodePath(""), NodePath("")]
+TileNeighborsEXP = [NodePath("../Tile130"), NodePath("../Tile132"), NodePath("../Tile136"), NodePath("../Tile137")]
 
 [node name="Ring" type="Sprite2D" parent="TileController/Tile131"]
 z_index = 5
@@ -4105,7 +4105,7 @@ offset_top = -748.0
 offset_right = -58.0
 offset_bottom = -748.0
 EXPTileNumber = 135
-TileNeighborsEXP = [NodePath("../Tile46"), NodePath("../Tile19"), NodePath("../Tile21"), NodePath("../Tile199")]
+TileNeighborsEXP = [NodePath("../Tile199"), NodePath("../Tile132"), NodePath("../Tile134")]
 
 [node name="Ring" type="Sprite2D" parent="TileController/Tile135"]
 z_index = 5
@@ -4683,7 +4683,7 @@ offset_top = -80.0
 offset_right = -1023.0
 offset_bottom = -80.0
 EXPTileNumber = 158
-TileNeighborsEXP = [NodePath("../Tile150"), NodePath("../Tile152"), NodePath("../Tile154"), NodePath("../Tile155"), NodePath("../Tile157"), NodePath("../Tile160"), NodePath("../Tile161")]
+TileNeighborsEXP = [NodePath("../Tile150"), NodePath("../Tile152"), NodePath("../Tile154"), NodePath("../Tile155"), NodePath("../Tile157"), NodePath("../Tile160"), NodePath("../Tile161"), NodePath("../Tile156")]
 
 [node name="Ring" type="Sprite2D" parent="TileController/Tile158"]
 z_index = 5
@@ -4764,7 +4764,7 @@ offset_top = -21.0
 offset_right = -1202.0
 offset_bottom = -21.0
 EXPTileNumber = 161
-TileNeighborsEXP = [NodePath("../Tile157"), NodePath("../Tile158"), NodePath("../Tile159"), NodePath("../Tile160"), NodePath("../Tile162")]
+TileNeighborsEXP = [NodePath("../Tile157"), NodePath("../Tile158"), NodePath("../Tile159"), NodePath("../Tile160"), NodePath("../Tile162"), NodePath("../Tile174")]
 
 [node name="Ring" type="Sprite2D" parent="TileController/Tile161"]
 z_index = 5
@@ -5008,7 +5008,7 @@ offset_top = -85.0
 offset_right = -1625.0
 offset_bottom = -85.0
 EXPTileNumber = 170
-TileNeighborsEXP = [NodePath("../Tile12"), NodePath("../Tile78"), NodePath("../Tile80"), NodePath("../Tile184")]
+TileNeighborsEXP = [NodePath("../Tile184"), NodePath("../Tile169"), NodePath("../Tile171"), NodePath("../Tile173")]
 
 [node name="Ring" type="Sprite2D" parent="TileController/Tile170"]
 z_index = 5
@@ -5036,7 +5036,7 @@ offset_top = -204.0
 offset_right = -1592.0
 offset_bottom = -204.0
 EXPTileNumber = 171
-TileNeighborsEXP = [NodePath("../Tile170"), NodePath("../Tile172"), NodePath("../Tile173")]
+TileNeighborsEXP = [NodePath("../Tile170"), NodePath("../Tile172"), NodePath("../Tile173"), NodePath("../Tile184")]
 
 [node name="Ring" type="Sprite2D" parent="TileController/Tile171"]
 z_index = 5
@@ -5448,7 +5448,7 @@ offset_top = 149.0
 offset_right = -704.0
 offset_bottom = 149.0
 EXPTileNumber = 186
-TileNeighborsEXP = [NodePath("../Tile142"), NodePath("../Tile146"), NodePath("../Tile147"), NodePath("../Tile149"), NodePath("../Tile185"), NodePath("../Tile187")]
+TileNeighborsEXP = [NodePath("../Tile142"), NodePath("../Tile146"), NodePath("../Tile147"), NodePath("../Tile149"), NodePath("../Tile185"), NodePath("../Tile187"), NodePath("../Tile144")]
 
 [node name="Ring" type="Sprite2D" parent="TileController/Tile186"]
 z_index = 5
@@ -5555,7 +5555,7 @@ offset_top = 124.0
 offset_right = 71.0
 offset_bottom = 124.0
 EXPTileNumber = 190
-TileNeighborsEXP = [NodePath("../Tile37"), NodePath("../Tile191")]
+TileNeighborsEXP = [NodePath("../Tile191"), NodePath("../Tile14")]
 
 [node name="Ring" type="Sprite2D" parent="TileController/Tile190"]
 z_index = 5

@@ -250,7 +250,10 @@ func _update_token_scale() -> void:
 	var zoomv: float = 1.0
 	if _cam != null and _cam.zoom.x > 0.0:
 		zoomv = _cam.zoom.x
-	var sc: float = (APF_BASE_SCALE / zoomv) * _hover_scale
+	# GUI pass step 2: tokens partly scale WITH the map (on-screen size ∝ zoom^0.4)
+	# so zooming out shrinks them and stacks stop piling into one blob; close-up
+	# they grow a little. At zoom 1.0 the size is unchanged.
+	var sc: float = (APF_BASE_SCALE / pow(zoomv, 0.6)) * _hover_scale
 	scale = Vector2(sc, sc)
 	# GUI pass 2026-10-25: the "104/104" numbers only appear when zoomed in close
 	# (or when hovering the token). Far/mid zoom shows just the icon + bars.
