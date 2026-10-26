@@ -175,6 +175,7 @@ func _process(delta: float) -> void:
 	else:
 		_pollZoomForLabels()
 		_tickEnemyActivityBox()
+		_pollSnakeNames(delta)
 
 func updateResourceBar() -> void:
 	if playerCountryNode == null:
@@ -7698,7 +7699,7 @@ const _TILE_FADE_HI := 1.7
 const _CTRY_BAND_FULL := 1.08   # country names fully visible up to min_zoom × this
 const _CTRY_BAND_GONE := 1.4    # …and fully gone by min_zoom × this
 const COUNTRY_DISPLAY_NAMES := {
-	"USA": "United States", "CA": "Canada", "UK": "United Kingdom"
+	"USA": "United States", "CA": "Canada", "UK": "British Empire"
 }
 
 func _currentMapZoom() -> float:
@@ -7715,76 +7716,56 @@ func setupMapLabels() -> void:
 	_mapLabelsReady = true
 	refreshMapLabels(_currentMapZoom())
 
+const SNAKE_NAMES_SCRIPT := preload("res://Game Scenes and Scripts/country_snake_names.gd")
+# Custom font for the big map names: put the .ttf/.otf path here (empty = project default font).
+const COUNTRY_NAME_FONT_PATH := ""
+const SNAKE_POLL_SEC := 0.3        # how often to check whether any tile changed hands
+var _snakeNames = null           # country_snake_names.gd instance (untyped: script members)
+var _snakeSig: String = ""
+var _snakePollT: float = 0.0
+
 func buildCountryLabels() -> void:
-	# IMPORTANT: this holder must NOT be a child of TileController. The game's
-	# updateTiles()/connectTileSignals()/discoverTiles() loops iterate
-	# TileController.get_children() assuming every child is a Tile (e.g. Tile.activeView),
-	# so a plain Control parked there crashes the first time updateMap() runs. Park it on
-	# the world root instead; labels are placed by global_position, so map space is identical.
-	var holder = get_node_or_null("MapCountryLabels")
-	if holder == null:
-		holder = Control.new()
-		holder.name = "MapCountryLabels"
-		holder.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		add_child(holder)
+	# GUI pass 2026-10-25 (snake names): country names now follow each territory's
+	# spine and re-flow whenever ownership changes — see country_snake_names.gd.
+	# The holder must NOT be a child of TileController (its loops assume every child
+	# is a Tile), so it lives on the world root like the old labels did.
 	for old in _countryLabels:
 		if is_instance_valid(old):
 			old.queue_free()
 	_countryLabels.clear()
+	if _snakeNames == null or not is_instance_valid(_snakeNames):
+		var stale = get_node_or_null("MapCountryLabels")
+		if stale != null:
+			stale.name = "MapCountryLabels_old"
+			stale.queue_free()
+		_snakeNames = SNAKE_NAMES_SCRIPT.new()
+		_snakeNames.name = "MapCountryLabels"
+		if COUNTRY_NAME_FONT_PATH != "" and ResourceLoader.exists(COUNTRY_NAME_FONT_PATH):
+			_snakeNames.name_font = load(COUNTRY_NAME_FONT_PATH)
+		add_child(_snakeNames)
+	var shown := {}
+	for k in COUNTRY_DISPLAY_NAMES:
+		shown[k] = COUNTRY_DISPLAY_NAMES[k]
+	_snakeNames.rebuild_from_world($TileController, $CountryController, shown, false)
+	_snakeSig = _snakeNames.ownership_signature($TileController)
 
-	for country in $CountryController.get_children():
-		var tiles = country.get("OwnedTileList")
-		if tiles == null or tiles.size() == 0:
-			continue
-		var cid: String = str(country.get("CID"))
-		var dispName: String = COUNTRY_DISPLAY_NAMES.get(cid, cid)
-		var sum := Vector2.ZERO
-		var minX := INF
-		var maxX := -INF
-		var n := 0
-		for t in tiles:
-			if not is_instance_valid(t):
-				continue
-			var ctr: Vector2 = t.global_position
-			if t.has_method("_tileVisualBBox"):
-				ctr += t._tileVisualBBox().get_center()
-			sum += ctr
-			minX = min(minX, ctr.x)
-			maxX = max(maxX, ctr.x)
-			n += 1
-		if n == 0:
-			continue
-		var centroid: Vector2 = sum / float(n)
-		var spanW: float = max(140.0, maxX - minX)
-
-		var lbl := Label.new()
-		lbl.name = "CL_" + cid
-		lbl.text = dispName
-		lbl.z_index = 30
-		lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		lbl.add_theme_color_override("font_color", Color(1, 1, 1))
-		lbl.add_theme_color_override("font_outline_color", Color(0, 0, 0))
-		lbl.add_theme_constant_override("outline_size", 6)
-		holder.add_child(lbl)
-
-		var font := lbl.get_theme_font("font")
-		var fs := 64
-		if font != null:
-			var w1: float = font.get_string_size(dispName, HORIZONTAL_ALIGNMENT_LEFT, -1, 100).x
-			if w1 > 0.0:
-				fs = int(100.0 * (spanW * 0.85) / w1)
-		fs = clampi(fs, 20, 260)
-		lbl.add_theme_font_size_override("font_size", fs)
-
-		var meas: Vector2 = Vector2(spanW, float(fs) * 1.2)
-		if font != null:
-			meas = font.get_string_size(dispName, HORIZONTAL_ALIGNMENT_LEFT, -1, fs)
-		lbl.size = meas
-		lbl.global_position = centroid - meas / 2.0
-		lbl.modulate.a = 0.0
-		_countryLabels.append(lbl)
+func _pollSnakeNames(delta: float) -> void:
+	# Ownership can change from many places (sieges, events, instant captures), so
+	# rather than hook each one we fingerprint tile owners a few times a second.
+	if _snakeNames == null or not is_instance_valid(_snakeNames):
+		return
+	_snakePollT += delta
+	if _snakePollT < SNAKE_POLL_SEC:
+		return
+	_snakePollT = 0.0
+	var sig: String = _snakeNames.ownership_signature($TileController)
+	if sig == _snakeSig:
+		return
+	_snakeSig = sig
+	var shown := {}
+	for k in COUNTRY_DISPLAY_NAMES:
+		shown[k] = COUNTRY_DISPLAY_NAMES[k]
+	_snakeNames.rebuild_from_world($TileController, $CountryController, shown, true)
 
 func refreshMapLabels(z: float) -> void:
 	var tileA: float = clampf((z - _TILE_FADE_LO) / max(0.001, _TILE_FADE_HI - _TILE_FADE_LO), 0.0, 1.0)
@@ -7798,10 +7779,9 @@ func refreshMapLabels(z: float) -> void:
 	for t in $TileController.get_children():
 		if t.has_method("setTileLabelAlpha"):
 			t.setTileLabelAlpha(tileA, z)
-	for l in _countryLabels:
-		if is_instance_valid(l):
-			l.visible = ctryA > 0.01
-			l.modulate.a = ctryA
+	if _snakeNames != null and is_instance_valid(_snakeNames):
+		_snakeNames.visible = ctryA > 0.01
+		_snakeNames.modulate.a = ctryA
 
 func _pollZoomForLabels() -> void:
 	if not _mapLabelsReady:
