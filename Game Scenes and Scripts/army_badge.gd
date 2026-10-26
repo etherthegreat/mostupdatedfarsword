@@ -253,34 +253,39 @@ func _draw_verdict_glyph(c: Vector2, v: int, col: Color) -> void:
 
 
 func _draw_pip(c: Vector2, pip: Dictionary) -> void:
+	draw_pip_on(self, c, pip)
+
+
+# Static so the army card can draw the very same pips in its own rows.
+static func draw_pip_on(ci: CanvasItem, c: Vector2, pip: Dictionary) -> void:
 	var st: Dictionary = PIP_STYLES.get(pip.kind, {"shape": "ball", "col": Color.WHITE})
 	var col: Color = st.col
 	if pip.get("spent", false):
 		col = col.darkened(0.45)
 	match str(st.shape):
 		"ball":
-			draw_circle(c, 6.0, col)
-			draw_circle(c + Vector2(-1.5, -1.5), 1.6, Color(1, 1, 1, 0.55))
+			ci.draw_circle(c, 6.0, col)
+			ci.draw_circle(c + Vector2(-1.5, -1.5), 1.6, Color(1, 1, 1, 0.55))
 		"ring":
-			draw_arc(c, 5.0, 0, TAU, 18, col, 2.4, true)
+			ci.draw_arc(c, 5.0, 0, TAU, 18, col, 2.4, true)
 		"chevron":
-			draw_polyline(PackedVector2Array([c + Vector2(-5, -4), c + Vector2(-1, 0), c + Vector2(-5, 4)]), col, 2.2, true)
-			draw_polyline(PackedVector2Array([c + Vector2(0, -4), c + Vector2(4, 0), c + Vector2(0, 4)]), col, 2.2, true)
+			ci.draw_polyline(PackedVector2Array([c + Vector2(-5, -4), c + Vector2(-1, 0), c + Vector2(-5, 4)]), col, 2.2, true)
+			ci.draw_polyline(PackedVector2Array([c + Vector2(0, -4), c + Vector2(4, 0), c + Vector2(0, 4)]), col, 2.2, true)
 		"shield", "shield_empty":
 			var pts := PackedVector2Array([c + Vector2(-5, -5), c + Vector2(5, -5), c + Vector2(5, 0), c + Vector2(0, 6), c + Vector2(-5, 0)])
 			if st.shape == "shield":
-				draw_colored_polygon(pts, col)
-				draw_circle(c + Vector2(0, -1), 1.8, Color(1, 0.85, 0.35))
+				ci.draw_colored_polygon(pts, col)
+				ci.draw_circle(c + Vector2(0, -1), 1.8, Color(1, 0.85, 0.35))
 			else:
 				pts.append(pts[0])
-				draw_polyline(pts, col, 1.6, true)
+				ci.draw_polyline(pts, col, 1.6, true)
 		"wall":
-			draw_rect(Rect2(c + Vector2(-5, -4), Vector2(10, 3.5)), col)
-			draw_rect(Rect2(c + Vector2(-5, 0.5), Vector2(4.5, 3.5)), col)
-			draw_rect(Rect2(c + Vector2(0.5, 0.5), Vector2(4.5, 3.5)), col)
+			ci.draw_rect(Rect2(c + Vector2(-5, -4), Vector2(10, 3.5)), col)
+			ci.draw_rect(Rect2(c + Vector2(-5, 0.5), Vector2(4.5, 3.5)), col)
+			ci.draw_rect(Rect2(c + Vector2(0.5, 0.5), Vector2(4.5, 3.5)), col)
 		"blade":
-			draw_line(c + Vector2(-4, 4), c + Vector2(4, -4), col, 2.0, true)
-			draw_line(c + Vector2(-3, 1), c + Vector2(-1, 3), col, 2.0, true)
+			ci.draw_line(c + Vector2(-4, 4), c + Vector2(4, -4), col, 2.0, true)
+			ci.draw_line(c + Vector2(-3, 1), c + Vector2(-1, 3), col, 2.0, true)
 		"cross":
-			draw_line(c + Vector2(-4, -4), c + Vector2(4, 4), col, 2.0, true)
-			draw_line(c + Vector2(-4, 4), c + Vector2(4, -4), col, 2.0, true)
+			ci.draw_line(c + Vector2(-4, -4), c + Vector2(4, 4), col, 2.0, true)
+			ci.draw_line(c + Vector2(-4, 4), c + Vector2(4, -4), col, 2.0, true)

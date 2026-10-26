@@ -6218,7 +6218,7 @@ func updateArmyFunc(Army, pathPoint):
 	lastSelectedPathPoint = pathPoint
 
 
-var _armyInfoPanel: Panel = null
+var _armyInfoPanel: Control = null
 var _armyInfoArmy = null
 
 
@@ -6283,7 +6283,25 @@ func _army_info_range(army) -> int:
 	return r
 
 
+const ARMY_CARD_SCRIPT := preload("res://Game Scenes and Scripts/army_card.gd")
+
 func _show_army_info(army) -> void:
+	# GUI pass 2026-10-26: the army card (army_card.gd) — portrait, STR breakdown,
+	# per-unit orders, mil mods. Enemy armies open read-only.
+	_close_army_info()
+	if army == null or not is_instance_valid(army):
+		return
+	_armyInfoArmy = army
+	$CanvasLayer.closeAllPanels()
+	var card = ARMY_CARD_SCRIPT.new()
+	card.name = "ArmyCard"
+	$CanvasLayer.add_child(card)
+	_armyInfoPanel = card
+	var view_only: bool = army.enemy or (army.parentCountry != null and playerCountryNode != null and army.parentCountry != playerCountryNode)
+	card.show_army(army, view_only)
+
+
+func _show_army_info_legacy(army) -> void:
 	_close_army_info()
 	if army == null or not is_instance_valid(army):
 		return

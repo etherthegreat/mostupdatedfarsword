@@ -241,8 +241,10 @@ func displayapfInfo(thisArmy, apf, currentTile, thisCountry, currentPathPoint):
 		emit_signal("activateArmyControlMode")
 		emit_signal("updatePathPoints", true)
 	else:
-		# Left-click a British APF -> its info panel (to be built). Attacks are RIGHT-click.
-		pass
+		# Left-click an enemy / allied APF -> its army card, read-only. Attacks are RIGHT-click.
+		var w = get_parent()
+		if w != null and w.has_method("_show_army_info"):
+			w._show_army_info(thisArmy)
 
 # Called from world.gd tileClicked() when an APF is selected.
 # Returns true if the click was consumed (movement or attack initiated).
