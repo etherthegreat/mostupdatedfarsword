@@ -58,6 +58,8 @@ var inHomeTile: bool = false          # set from inTile.tileOwner == parentCount
 var inEntrenched: bool = false        # set from army.stationaryTurns >= 3 before calculateMilMods()
 var inCoastalTile: bool = false       # set from inTile.isCoastal before calculateMilMods(); used by USS Constitution Support
 var armyDemoralized: bool = false     # set from army before calculateMilMods(); skips all mods
+var inFirstEngagement: bool = false   # army hasn't attacked since arriving on this tile (Iron Bayonet, Vanguard, QuickDraw, Combahee)
+var nearFriendlyArmy: bool = false    # a friendly army stands on a neighbouring tile (HardeeDisc)
 
 const milModScene = preload("res://mil_mod.tscn")
 const weaponScene = preload("res://weapon.tscn")
@@ -260,10 +262,6 @@ func calculateMilMods() -> void:
 					pass  # handled in start_reload()
 				"Powder & Shot":
 					unitRangedOffence += (3 * unitLevel)
-				"Fortified Position":
-					pass  # handled at army level (needs building check)
-				"Coastal Watch":
-					pass  # handled at army level (needs neighbor check)
 				# ── Tier 2 mods ──────────────────────────────────────────────
 				"Marine":
 					pass  # handled in battle.gd (_army_marine_bonus)
@@ -272,9 +270,10 @@ func calculateMilMods() -> void:
 						unitOffensiveScore += (4 * unitLevel)
 						unitDefensiveScore += _pts(4)
 				"Double Shot":
-					pass  # handled in battle.gd
+					pass  # army.offensive_output: artillery volley x1.5
 				"Iron Bayonet":
-					pass  # handled in battle.gd first-round check
+					if inFirstEngagement:
+						unitOffensiveScore += (2 * unitLevel)
 				"Sharpshooter":
 					unitRangedOffence += (2 * unitLevel)  # base bonus; penetration handled in battle.gd
 				"Corrupted Ground":
@@ -284,9 +283,11 @@ func calculateMilMods() -> void:
 				"Night Raider":
 					pass  # handled at army movement level
 				"Flanking Drill":
-					pass  # handled in battle.gd contested-tile check
+					if unitStance == "flank":   # the live flank order is the contested-tile fight
+						unitOffensiveScore += (3 * unitLevel)
 				"Vanguard":
-					pass  # handled in battle.gd first-engagement check
+					if inFirstEngagement:
+						unitOffensiveScore += (1 * unitLevel)
 				"Siege Line":
 					pass  # handled in battle.gd siege calculation
 				"Cleaner":
@@ -406,9 +407,11 @@ func calculateMilMods() -> void:
 					unitRangedOffence += (3 * unitLevel)
 				# ── Uniform mods ──────────────────────────────────────────────
 				"QuickDraw":
-					pass  # first-shot bonus handled in battle.gd
+					if inFirstEngagement:
+						unitRangedOffence += (3 * unitLevel)
 				"HardeeDisc":
-					pass  # formation bonus handled at army level
+					if nearFriendlyArmy:
+						unitDefensiveScore += _pts(3)
 				# ── Icon figure mods (TEMP — needs full pass per ethertask) ──
 				"Emancipation Advance":
 					unitOffensiveScore += (2 * unitLevel)
@@ -433,7 +436,9 @@ func calculateMilMods() -> void:
 					if inFortifiedTile:
 						unitDefensiveScore += _pts(3)
 				"Combahee River Raid":
-					unitOffensiveScore += (3 * unitLevel)
+					# As written on the card: +5 per level in the first battle from a position.
+					if inFirstEngagement:
+						unitOffensiveScore += (5 * unitLevel)
 				# ── Commander Arc mods ────────────────────────────────────────
 				"Appalachian Hill Fighter":
 					if currentTerrain == "Foothills":
@@ -442,10 +447,22 @@ func calculateMilMods() -> void:
 					unitRangedOffence *= 1.10
 				"Student Body Commander":
 					if inIvyLeagueTile:
-						unitOffensiveScore = int(float(unitOffensiveScore) * 1.10)
+						unitOffensiveScore *= 1.10
 						unitDefensiveScore *= 1.10
 				"Field Research":
-					pass  # science gain on attack handled in battle.gd
+					pass  # science on attack: army.on_attack_resolved()
+				# ── Commander mods wired in the combat rework (2026-10-27) ─────
+				"Visionary":
+					unitOffensiveScore += (3 * unitLevel)
+				"Champion of the Sun":
+					unitOffensiveScore += (1 * unitLevel)
+				"Fortified Position":
+					if inFortifiedTile:
+						unitDefensiveScore += _pts(3)
+				"Coastal Watch":
+					if inCoastalTile:
+						unitDefensiveScore += _pts(2)
+						unitRangedDefence += _pts(2)
 				"Cultural Corps":
 					pass  # culture per turn handled in world.gd turn loop
 			# State guard: culturalMod entries with a state target get +2 attack/defence per level
@@ -503,7 +520,7 @@ func start_reload() -> void:
 	reloadCounter = unitWeapon.reloadTurns
 	# GunCrewEfficiency reduces reload by 1 (min 0)
 	for MilMod in militaryModifierList:
-		if MilMod.milModType == "GunCrewEfficiency":
+		if MilMod.milModType in ["GunCrewEfficiency", "Quick Reload"] and not MilMod.disabled:
 			reloadCounter = max(0, reloadCounter - 1)
 			break
 

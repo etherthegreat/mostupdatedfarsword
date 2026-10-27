@@ -103,6 +103,7 @@ var armySiegeScore: float
 var stationaryTurns: int = 0       # increments each turn army doesn't move; resets on movement
 var movedThisTurn: bool = false    # set true by path_control when army spends movement points
 var attacksFromCurrentTile: int = 0  # counts attacks without moving; resets on movement
+var _engagedFromTile = null         # tile this army last attacked from; "first engagement" = any other tile
 
 var is_anarchist: bool = false  # anarchist armies auto-attack UK each turn, no shield, uncontrollable
 
@@ -188,6 +189,7 @@ func _commander_movement_bonus() -> int:
 		if not mm.disabled:
 			match mm.milModType:
 				"President":       bonus += 3
+				"The Long March":  bonus += 2
 				"Election Season": bonus += 3
 				"Mountain Pathfinder":
 					if inTile != null and inTile.terrain == "Foothills":
@@ -260,6 +262,8 @@ func onTurnEnd():
 	# Reinforce only if not supply-cut or quarantined
 	if not reinforcementBlocked and parentCountry.TotalManpower > 0:
 		var heal_rate: int = parentCountry.armyReinforceRate
+		if _army_has_active_mod("Healer"):
+			heal_rate += 10
 		var _rb: float = parentCountry.belief_reinforce_bonus()
 		if _rb > 0.0:
 			heal_rate = int(float(heal_rate) * (1.0 + _rb))
@@ -283,6 +287,9 @@ func onTurnEnd():
 			if mod.milModType == "Master Baiter" and not mod.disabled:
 				armyShield = mini(armyShield + int(armyMaxShield * 0.1), armyMaxShield)
 				break
+	# Corrupted Ground: the army cleanses the tile it stands on, 1 corruption a turn
+	if inTile != null and inTile.corruption > 0 and _army_has_active_mod("Corrupted Ground"):
+		inTile.corruption = maxi(0, inTile.corruption - 1)
 	# Corruption disease check (Park Ranger grants immunity)
 	if inTile != null and inTile.corruption > 0 and not _army_has_active_mod("Park Ranger"):
 		if randf() * 100.0 < float(inTile.corruption):
@@ -447,7 +454,7 @@ func _belief_atk_mult(u) -> float:
 	return 1.0 + parentCountry.belief_attack_bonus(u.unitWeapon.weaponClass)
 
 
-func offensive_output(require_ap: bool, holders_counter: bool, holders_attack: bool = false) -> Dictionary:
+func offensive_output(require_ap: bool, holders_counter: bool, holders_attack: bool = false, target: Army = null) -> Dictionary:
 	# Fire units deal RANGED (unitRangedOffence); Charge units deal MELEE (unitOffensiveScore x1.4).
 	# require_ap: only units with an action point contribute (the initiating attack); false for reaction counters.
 	# holders_counter: holders still counter at 1.5x in their weapon's native mode (ranged for guns, melee for sabers).
@@ -472,14 +479,11 @@ func offensive_output(require_ap: bool, holders_counter: bool, holders_attack: b
 			"fire":
 				# threat estimates assume the enemy has reloaded by its own turn
 				if (not require_ap or u.unitCurrentAP > 0) and (not u.is_reloading() or holders_attack):
-					ranged += float(u.unitRangedOffence) * _belief_atk_mult(u)
-			"charge":
-				if not require_ap or u.unitCurrentAP > 0:
-					melee += float(u.unitOffensiveScore) * 1.8 * _belief_atk_mult(u)
-			"flank":
+					ranged += _artillery_volley(u) * _belief_atk_mult(u)
+			"charge", "flank":
 				# Flank is a melee charge; the encirclement multiplier is applied at the attack site.
 				if not require_ap or u.unitCurrentAP > 0:
-					melee += float(u.unitOffensiveScore) * 1.8 * _belief_atk_mult(u)
+					melee += float(u.unitOffensiveScore) * 1.8 * _belief_atk_mult(u) * _saber_charge_mult(u, target)
 	return {"ranged": ranged * ranged_mult(), "melee": melee * melee_mult()}
 
 
@@ -497,7 +501,7 @@ func compute_battle_against(defender: Army, require_ap: bool = true, as_threat: 
 	# are counted as if they attacked. Both only used by the map badge verdicts.
 	surveySelf()
 	defender.surveySelf()
-	var a_out: Dictionary = offensive_output(require_ap, false, as_threat)
+	var a_out: Dictionary = offensive_output(require_ap, false, as_threat, defender)
 	var d_def: float = defender.parentCountry.belief_defense_at(defender.inTile) if defender.parentCountry != null else 0.0
 
 	# 1. Hold fires first
@@ -517,6 +521,69 @@ func compute_battle_against(defender: Army, require_ap: bool = true, as_threat: 
 	var shield_pierce: int = int(melee_dmg * CHARGE_SHIELD_PIERCE)
 	return {"def_loss": def_loss, "atk_loss": atk_loss, "shield_pierce": shield_pierce,
 		"hold_loss": int(hold_loss), "hold_fired": hold_loss > 0.0, "attack_scale": a_scale}
+
+
+# ── Mil mods wired in the combat rework (2026-10-27) ─────────────────────────
+func _unit_has_mod(u, mod_name: String) -> bool:
+	for mm in u.militaryModifierList:
+		if mm.milModType == mod_name and not mm.disabled:
+			return true
+	return false
+
+
+func _saber_charge_mult(u, target: Army) -> float:
+	# SaberCharge (every saber): x2 melee vs an enemy with a gun still reloading; x3 with Tempuring.
+	if target == null or u.unitWeapon == null or not u.unitWeapon.is_saber() or not _unit_has_mod(u, "SaberCharge"):
+		return 1.0
+	for tu in target.unitsList:
+		if tu != null and tu.unitCurrentManpower > 0 and tu.unitWeapon != null \
+				and not tu.unitWeapon.is_saber() and tu.is_reloading():
+			var tempered: bool = parentCountry != null and parentCountry.unlockedTechnologies.any(func(t): return t.techName == "Tempuring")
+			return 3.0 if tempered else 2.0
+	return 1.0
+
+
+func _artillery_volley(u) -> float:
+	# Double Shot: guns fire a second round at half power. Double Cannonade: a full
+	# second volley plus +3 per level on each shot.
+	var v: float = float(u.unitRangedOffence)
+	if u.unitWeapon == null or not u.unitWeapon.is_artillery():
+		return v
+	if _unit_has_mod(u, "Double Cannonade"):
+		return (v + 3.0 * u.unitLevel) * 2.0
+	if _unit_has_mod(u, "Double Shot"):
+		return v * 1.5
+	return v
+
+
+func _near_friendly_army() -> bool:
+	if inTile == null or parentCountry == null:
+		return false
+	for nb in inTile.TileNeighbors:
+		if nb == null:
+			continue
+		var a = nb.stationedArmy
+		if a == null and nb.tileSpawnPoint != null:
+			a = nb.tileSpawnPoint.stationedArmy
+		if a != null and a != self and is_instance_valid(a) and not a.deleteMode \
+				and a.parentCountry == parentCountry and a.manpowerInArmy > 0:
+			return true
+	return false
+
+
+func on_attack_resolved(defender: Army, def_loss: int, conquered: bool) -> void:
+	# Called by the player and AI attack sites after damage lands.
+	attacksFromCurrentTile += 1
+	_engagedFromTile = inTile     # ends "first engagement" bonuses until the army stands somewhere new
+	if parentCountry != null and def_loss > 0 and _army_has_active_mod("Field Research"):
+		parentCountry.TotalScience += int(float(def_loss) * 0.2)
+	if conquered and _army_has_active_mod("Liberator's Will"):
+		for u in unitsList:
+			if u.unitCurrentManpower > 0:
+				u.refillManpower(int(u.unitMaxManpower * 0.15))
+		if commander != null:
+			commander.loyalty = minf(20.0, commander.loyalty + 2.0)
+	surveySelf()
 
 
 func is_flanking() -> bool:
@@ -564,12 +631,17 @@ func _tick_status_effects() -> void:
 			# Sustained effects don't expire naturally — only when magic runs dry
 			continue
 		match s.type:
+			# Damage over time hits the men directly (shields don't stop fire or fever).
+			# These used an unknown damage type before and did nothing.
 			"Burning":
-				calculateDefenderResults("fire", 5 * max(1, unitCount))
+				var _b: int = 5 * max(1, unitCount)
+				calculateDefenderResults("melee", _b, true, _b)
 			"Diseased":
-				calculateDefenderResults("disease", 3 * max(1, unitCount))
+				var _d: int = 3 * max(1, unitCount)
+				calculateDefenderResults("melee", _d, true, _d)
 			"Quarantined":
-				calculateDefenderResults("disease", max(1, unitCount))
+				var _q: int = max(1, unitCount)
+				calculateDefenderResults("melee", _q, true, _q)
 		s.turnsLeft -= 1
 		if s.turnsLeft <= 0:
 			to_remove.append(s)
@@ -628,6 +700,13 @@ func _apply_status_effects_to_stats() -> void:
 			"Mutinous":
 				armyPunch = armyPunch * 0.6
 			# ── USA PROTECTOR BUFFS ──────────────────────────────────────────────
+			# ── EVENT BUFFS (wired 2026-10-27) ───────────────────────────────────
+			"Inspired":        # UALANI_BARRACKS_01: the troops saw her come
+				armyPunch  *= 1.15
+				armyLaunch *= 1.15
+			"Fortified":       # SPRING_OFFENSIVE_01: dug in for the thaw
+				armyBlock   += _blk(20)
+				armyDefence += _blk(15)
 			"Mothman Presence":
 				armyLaunch  += 20
 				armyDefence += _blk(15)
@@ -960,6 +1039,8 @@ func surveySelf():
 		Unit.inEntrenched      = (stationaryTurns >= 3)
 		Unit.inCoastalTile     = (inTile != null and inTile.isCoastal)
 		Unit.armyDemoralized   = _has_status("Demoralized")
+		Unit.inFirstEngagement = (inTile == null or inTile != _engagedFromTile)
+		Unit.nearFriendlyArmy  = _near_friendly_army()
 		Unit.calculateMilMods()
 		armyPunch += Unit.unitOffensiveScore
 		armyBlock += Unit.unitDefensiveScore

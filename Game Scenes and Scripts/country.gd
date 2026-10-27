@@ -1812,6 +1812,7 @@ func _resolve_ai_battle(attacker: Army, defender: Army, tile) -> bool:
 	var attacker_loss: int = int(bt["atk_loss"])
 	attacker.spend_attack_ap()
 	attacker.start_fired_reloads()
+	attacker.on_attack_resolved(defender, defender_loss, (defender.manpowerInArmy - defender_loss) <= 0)
 	emit_signal("battleResolved", tile, attacker_loss, defender_loss, attacker, defender, int(bt.get("shield_pierce", 0)))
 	return (defender.manpowerInArmy - defender_loss) <= 0
 

@@ -426,7 +426,7 @@ func _initiate_attack(targetPPB: pathPointButton) -> void:
 			emit_signal("movement_blocked", "In Retreat — this army can't attack this turn.")
 			return
 		atk.attackedThisTurn = true
-		if atk.movedThisTurn:
+		if atk.movedThisTurn and not atk._army_has_active_mod("Night Raider"):
 			atk.apply_status("Exhausted", 1)
 			atk.cancelHold()
 			atk.surveySelf()
@@ -489,6 +489,8 @@ func _on_attack_midpoint(apf: armyPathFollow) -> void:
 	attacker.calculateDefenderResults("melee", atk_loss, true)
 	attacker.spend_attack_ap()
 	attacker.start_fired_reloads()
+	var _gone: bool = (not is_instance_valid(defender) or defender.manpowerInArmy <= 0)
+	attacker.on_attack_resolved(defender, def_loss, _gone)
 	# Also update siege on the target tile
 	targetPPB.siegeTile(attacker)
 	# Emit for floating damage numbers
