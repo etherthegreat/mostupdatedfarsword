@@ -1731,6 +1731,7 @@ func _resolve_ai_and_advance_round() -> void:
 		tile.tick_conquest_timer()
 	$CanvasLayer/TurnLabel.text = _format_game_date()
 	$CanvasLayer/DateLabel.text = "Turn " + str(currentWorldTurn)
+	_refresh_run_clock()
 	_apply_ualani_aura()
 	_check_win_conditions()
 	_show_ai_turn_report()
@@ -1838,6 +1839,7 @@ func updatePlayerUI():
 	_refresh_next_turn_ui()
 	_setup_cycle_button()
 	_setup_buy_button()
+	_setup_run_clock()
 	updateMap()
 
 var thisTileNumber: int
@@ -7953,9 +7955,8 @@ func _trackRunPeak() -> void:
 	var m: Dictionary = RUN_SCORE.measure(_score_tiles(), _runCid())
 	_runPeakName = maxf(_runPeakName, float(m.name_pct))
 
-func _show_run_score(won: bool, reason: String, end_type: String, delay: float) -> bool:
-	# Freeze the numbers the moment the run ends, then show the card once the
-	# ending art / election-night events have had their moment.
+func _build_run_report(won: bool, reason: String, end_type: String) -> Dictionary:
+	# One builder for the end screen AND the live Standing panel, so they can never disagree.
 	var cid := _runCid()
 	var tiles := _score_tiles()
 	var now: Dictionary = RUN_SCORE.measure(tiles, cid)
@@ -7979,15 +7980,96 @@ func _show_run_score(won: bool, reason: String, end_type: String, delay: float) 
 		for t in node.OwnedTileList:
 			tot += int(t.electionPressure)
 		vote = float(tot) / node.OwnedTileList.size()
-	var report: Dictionary = RUN_SCORE.build_report({
+	return RUN_SCORE.build_report({
 		"cid": cid, "won": won, "end_type": end_type, "reason": reason,
 		"turn": currentWorldTurn, "date": _format_game_date(), "now": now, "start": start,
 		"peak_pct": _runPeakName, "vote_avg": vote, "name_pieces": pieces,
 	})
+
+
+func _projected_ending() -> Dictionary:
+	# "If the election were today": the same routing _check_end_game uses at turn 100.
+	var uk_country = _country_by_cid("UK")
+	var usa_peace: bool = uk_country != null and uk_country.CountryFlags.has("uk_usa_peace")
+	var is_allied: bool = playerCountryNode != null and playerCountryNode.CountryFlags.has("can_allied")
+	var ca_peace: bool = uk_country != null and uk_country.CountryFlags.has("uk_ca_peace")
+	var peace_signed: bool = usa_peace and (not is_allied or ca_peace)
+	var uk_tiles_remain := false
+	for tile in $TileController.get_children():
+		if tile.get("tileOwner") == "UK":
+			uk_tiles_remain = true
+			break
+	if _election_pressure_total() <= 0:
+		return {"won": false, "end_type": "britishWhiteHouse"}
+	if uk_tiles_remain:
+		return {"won": false, "end_type": "stalemate" if peace_signed else "endlessBattle"}
+	return {"won": true, "end_type": ""}
+
+
+func live_run_report() -> Dictionary:
+	var p := _projected_ending()
+	var rep := _build_run_report(bool(p.won), "", str(p.end_type))
+	rep["turns_left"] = maxi(0, RUN_LAST_TURN - currentWorldTurn)
+	rep["last_turn"] = RUN_LAST_TURN
+	return rep
+
+
+func _show_run_score(won: bool, reason: String, end_type: String, delay: float) -> bool:
+	# Freeze the numbers the moment the run ends, then show the card once the
+	# ending art / election-night events have had their moment.
+	var report: Dictionary = _build_run_report(won, reason, end_type)
+	var now: Dictionary = report.now
 	var recs: Dictionary = RUN_SCORE.record_run(report)
 	print("[RunScore] ", report.grade, " ", report.score, "  name ", snappedf(now.name_pct, 0.01), "  pieces ", now.pieces)
 	_open_score_screen.call_deferred(report, recs, delay)
+	if _runClock != null and is_instance_valid(_runClock):
+		_runClock.visible = false
 	return true
+
+
+# ── RUN CLOCK + STANDING PANEL (2026-10-26) ─────────────────────────────────
+# A big countdown to turn 100 on the bottom flag band, wearing your live grade.
+# Click it for the Standing panel: grade ladder, the four score rows, the ending
+# you'd get if the election were today, and Ualani reacting to your grade.
+const RUN_LAST_TURN := 100
+const RUN_CLOCK := preload("res://Game Scenes and Scripts/run_clock.gd")
+const RUN_PROGRESS := preload("res://Game Scenes and Scripts/run_progress.gd")
+var _runClock = null
+
+func _setup_run_clock() -> void:
+	if _runClock != null and is_instance_valid(_runClock):
+		return
+	_runClock = RUN_CLOCK.new()
+	_runClock.name = "RunClock"
+	$CanvasLayer.add_child(_runClock)
+	_runClock.pressed.connect(_open_run_progress)
+	# Land changes hands mid-turn (your attacks), so the grade chip re-checks itself.
+	var t := Timer.new()
+	t.wait_time = 1.5
+	t.autostart = true
+	t.timeout.connect(_refresh_run_clock)
+	_runClock.add_child(t)
+	_refresh_run_clock()
+
+func _refresh_run_clock() -> void:
+	if _runClock == null or not is_instance_valid(_runClock) or _game_ended:
+		return
+	var rep := live_run_report()
+	_runClock.show_state(int(rep.turns_left), str(rep.grade), int(rep.score))
+
+func _open_run_progress() -> void:
+	if $CanvasLayer.has_node("RunProgress") or _game_ended:
+		return
+	var rep := live_run_report()
+	var cfg := ConfigFile.new()
+	cfg.load(RUN_SCORE.RECORDS_PATH)
+	var recs := {"best_score": int(cfg.get_value(rep.cid, "best_score", -1)),
+		"best_grade": str(cfg.get_value(rep.cid, "best_grade", ""))}
+	var p = RUN_PROGRESS.new()
+	p.name = "RunProgress"
+	get_node("CanvasLayer").add_child(p)
+	p.show_report(rep, recs)
+	_runClock.show_state(int(rep.turns_left), str(rep.grade), int(rep.score))
 
 func _open_score_screen(report: Dictionary, recs: Dictionary, delay: float) -> void:
 	await get_tree().create_timer(delay).timeout
