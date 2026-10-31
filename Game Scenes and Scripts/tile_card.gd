@@ -228,8 +228,23 @@ func _pills(parent: Control) -> void:
 		row.add_child(_pill("JUST TAKEN", Color(0.55, 0.3, 0.6)))
 	if _tile.has_method("is_fortified") and _tile.is_fortified():
 		row.add_child(_pill("FORTIFIED", Color(0.4, 0.4, 0.4)))
+	# Depth pass 2026-10-31: strongpoints, sieges, the Redcoat line, muster points.
+	var siege_note := ""
+	if _tile.has_method("is_under_siege") and _tile.is_under_siege():
+		row.add_child(_pill("UNDER SIEGE %d/%d" % [int(_tile.siegeProgress), int(_tile.SIEGE_TURNS_NEEDED)], Color(0.8, 0.35, 0.15)))
+		siege_note = "Hold it through the British turn and it falls."
+	elif owner == "UK" and _tile.has_method("is_strongpoint") and _tile.is_strongpoint():
+		row.add_child(_pill("STRONGPOINT", Color(0.5, 0.2, 0.2)))
+		siege_note = "Strongpoint: hold it a full turn to take it."
+	if owner == "UK" and _tile.has_method("redcoat_line_army") and _tile.redcoat_line_army("USA") != null:
+		row.add_child(_pill("REDCOAT LINE", Color(0.72, 0.12, 0.12)))
+		siege_note = "Redcoat line: beat the army beside it first."
+	elif mine and _tile.has_method("is_muster_point") and _tile.is_muster_point():
+		row.add_child(_pill("MUSTER POINT", Color(0.25, 0.45, 0.65)))
 	if row.get_child_count() > 0:
 		parent.add_child(row)
+	if siege_note != "":
+		parent.add_child(_label(siege_note, 12, Color(0.95, 0.75, 0.55)))
 	var note := _label(str(TERRAIN_NOTE.get(str(_tile.terrain), "")), 12, DIM)
 	if note.text != "":
 		parent.add_child(note)
@@ -480,6 +495,8 @@ func _tile_totals() -> Dictionary:
 func _spoils() -> Array:
 	# Same rules as world._on_tile_liberated, read off the world's constants.
 	var out: Array = []
+	if _world != null and "_liberation_paid" in _world and (_world._liberation_paid as Dictionary).has(_tile.tileNumber):
+		return out   # already paid out once this run
 	if _world != null and _world.has_method("_is_tech_tile") and _world._is_tech_tile(_tile):
 		out.append(["Science", 1, "Tech token"])
 	for key in ["monument", "courthouse", "market", "forge", "barracks"]:

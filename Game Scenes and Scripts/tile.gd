@@ -1031,12 +1031,80 @@ func siegeCalculate(army):
 
 
 func captureInstant(army) -> void:
-	# Walking an army into a tile flips ownership to that army's country immediately.
+	# Walking an army into a tile flips ownership to that army's country immediately —
+	# except British strongpoints (fort / barracks / metro), which the rebels must besiege
+	# for a full turn first (depth pass 2026-10-31; ticked by world._tick_sieges).
 	if not is_instance_valid(army) or army.parentCountry == null:
 		return
 	if tileOwner == army.parentCountry.CID:
 		return
+	if tileOwner == "UK" and army.parentCountry.CID != "UK" and is_strongpoint():
+		if siegeArmy != army:
+			siegeArmy = army
+			siegeProgress = 0
+		return
+	_clear_siege()
 	emit_signal("newSiegeStatus", self, tileOwner, army.parentCountry.CID)
+
+
+# ── DEPTH PASS 2026-10-31: strongpoints, sieges, the Redcoat line ────────────
+const SIEGE_TURNS_NEEDED := 1        # full turns a rebel army must hold a British strongpoint
+var siegeArmy = null                  # the army besieging this tile (null = no siege)
+var siegeProgress: int = 0
+
+func is_strongpoint() -> bool:
+	# Fortress, barracks or a metro city: can't be walked into and flipped — must be besieged.
+	return has_fort() or has_barracks() or terrain == "Metro"
+
+func is_muster_point() -> bool:
+	# Where new armies can be raised: strongpoints and the capital.
+	return is_strongpoint() or countryCapital
+
+func is_under_siege() -> bool:
+	if siegeArmy == null or not is_instance_valid(siegeArmy) or siegeArmy.deleteMode \
+			or siegeArmy.manpowerInArmy <= 0 or siegeArmy.inTile != self:
+		return false
+	return true
+
+func _clear_siege() -> void:
+	siegeArmy = null
+	siegeProgress = 0
+
+func tick_siege() -> void:
+	# Called once per round after the enemy turn. A siege that survived it completes.
+	if siegeArmy == null:
+		return
+	if not is_under_siege() or siegeArmy.parentCountry == null or tileOwner == siegeArmy.parentCountry.CID:
+		_clear_siege()
+		return
+	siegeProgress += 1
+	if siegeProgress >= SIEGE_TURNS_NEEDED:
+		var a = siegeArmy
+		_clear_siege()
+		emit_signal("newSiegeStatus", self, tileOwner, a.parentCountry.CID)
+
+func army_on(tile_ref):
+	# The live army standing on a tile (tile or its spawn point), or null.
+	if tile_ref == null:
+		return null
+	var a = tile_ref.stationedArmy
+	if (a == null or not is_instance_valid(a)) and tile_ref.tileSpawnPoint != null:
+		a = tile_ref.tileSpawnPoint.stationedArmy
+	if a == null or not is_instance_valid(a) or a.deleteMode or a.manpowerInArmy <= 0:
+		return null
+	if a.inTile != null and a.inTile != tile_ref:
+		return null
+	return a
+
+func redcoat_line_army(for_cid: String):
+	# A British army standing next to this tile (its zone of control), or null.
+	if for_cid == "UK":
+		return null
+	for nb in TileNeighbors:
+		var a = army_on(nb)
+		if a != null and a.parentCountry != null and a.parentCountry.CID == "UK":
+			return a
+	return null
 
 
 # ============================================================

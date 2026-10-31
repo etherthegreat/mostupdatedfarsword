@@ -49,6 +49,7 @@ var _ai_combat_log: Array = []           # entries collected during AI resolutio
 var _ai_playback_queue: Array = []       # AI battles recorded this round, replayed with camera + pauses
 var _ai_recording_country = null         # which AI country is currently taking its turn
 var _skip_ai_playback: bool = false      # fast-forward the replay
+var _test_fast_ai: bool = false          # headless harness: skip the AI replay entirely
 var _playing_ai: bool = false            # true while the AI-turn replay runs
 var _stashed_atk_loss: int = 0           # losses from a real battle, attached to the next attack record
 var _stashed_def_loss: int = 0
@@ -1717,6 +1718,7 @@ func _resolve_ai_and_advance_round() -> void:
 	_ai_recording_country = null
 	# Replay the AI's turn with camera + damage numbers so the player can watch it
 	await _play_ai_turn()
+	_tick_sieges()
 	$CanvasLayer/WarRoomPanel.checkObjectives($TileController.get_children(), currentWorldTurn)
 	currentWorldTurn += 1
 	_advance_fortnight()
@@ -1768,6 +1770,8 @@ func updatePlayerUI():
 		$CanvasLayer/TechTree.addTechToPlayer.connect(newPlayerTech)
 	$CanvasLayer/BeliefControl.buildSelf(playerCountryNode)
 	$CanvasLayer/BuildingInfoPanel/buildingPanelPanel.player = playerCountryNode
+	if not $PathControl.movement_blocked.is_connected(_show_notice):
+		$PathControl.movement_blocked.connect(_show_notice)
 	if not $PathControl.activateArmyControlMode.is_connected(activateArmyControl):
 		$PathControl.activateArmyControlMode.connect(activateArmyControl)
 	$PathControl.connectPathPoints(playerCountryNode)
@@ -2238,7 +2242,7 @@ func _apply_war_timing() -> void:
 		_spawn_uk_garrisons(uk)
 	_maintain_ca_force()
 	_scale_invader_difficulty()
-	if not _farmers_fired and currentWorldTurn >= 2:
+	if not _farmers_fired and currentWorldTurn >= (3 if DEBUG_AGENT355_TEST else 2):   # keep turn 2 clear for the Agent 355 reel
 		_farmers_fired = true
 		_fire_farmers_event()
 	if not _trailer_intimate_fired and currentWorldTurn >= 4:
@@ -2463,6 +2467,9 @@ func _raise_archetype_army(tile, archetype: String) -> void:
 	if new_army == null:
 		return
 	new_army.ArmyName = tile.tileName + " " + archetype
+	new_army.updateArmyUI()
+	if new_army.maxManpower > 0:
+		_template_men_cache[archetype] = new_army.maxManpower
 	if entry.has("tier"):
 		new_army.armyTier = str(entry["tier"])
 	var bb = _ensure_barracks_button_for(tile)
@@ -2518,7 +2525,7 @@ func _open_muster_panel() -> void:
 		_musterCounts[i] = 0
 	var row_h: int = 54
 	var panel := Panel.new()
-	panel.size = Vector2(720, 156 + _musterRows.size() * row_h)
+	panel.size = Vector2(720, 182 + _musterRows.size() * row_h)
 	var vp := get_viewport_rect().size
 	panel.position = Vector2(max(8.0, (vp.x - panel.size.x) / 2.0), max(20.0, (vp.y - panel.size.y) / 2.0))
 	$CanvasLayer.add_child(panel)
@@ -2528,12 +2535,13 @@ func _open_muster_panel() -> void:
 	title.position = Vector2(16, 10)
 	panel.add_child(title)
 	var budget := Label.new(); budget.name = "Budget"; budget.position = Vector2(16, 38); panel.add_child(budget)
-	var y: int = 72
+	var y: int = 96   # depth pass: two-line budget (manpower, muster points, upkeep)
 	for i in range(_musterRows.size()):
 		var entry = _musterRows[i]
 		var cost_txt := "$" + str(_row_gold(entry))
 		if int(entry["weapons"]) > 0:
 			cost_txt += " + " + str(entry["weapons"]) + "W"
+		cost_txt += " + " + str(_template_men(str(entry["template"]))) + " Mp"
 		var lbl := Label.new()
 		lbl.text = str(entry["label"]) + "   (" + cost_txt + ")"
 		lbl.position = Vector2(16, y + 2)
@@ -2583,23 +2591,33 @@ func _muster_refresh() -> void:
 		return
 	var dollars: int = int(playerCountryNode.TotalDollars)
 	var weapons: int = int(playerCountryNode.TotalWeapons)
-	_musterPanel.get_node("Budget").text = "Treasury: $" + str(dollars) + "     Weapons: " + str(weapons)
+	var men: int = int(playerCountryNode.TotalManpower)
+	var spots: int = _free_muster_tiles().size()
+	_musterPanel.get_node("Budget").text = "Treasury: $" + str(dollars) + "     Weapons: " + str(weapons) + "     Manpower: " + str(men) + "\nMuster points free: " + str(spots) + "     Army upkeep: $" + str(int(playerCountryNode.get("lastUpkeepDollars") if playerCountryNode.get("lastUpkeepDollars") != null else 0)) + "/turn (+$" + str(playerCountryNode.UPKEEP_DOLLARS_PER_UNIT_LEVEL * 2) + " per new army)"
 	var tg: int = 0
 	var tw: int = 0
+	var tm: int = 0
+	var tn: int = 0
 	for i in range(_musterRows.size()):
 		var n: int = int(_musterCounts.get(i, 0))
 		_musterPanel.get_node("Qty_" + str(i)).text = str(n)
 		tg += n * _row_gold(_musterRows[i])
 		tw += n * int(_musterRows[i]["weapons"])
+		tm += n * _template_men(str(_musterRows[i]["template"]))
+		tn += n
 	var over: String = ""
 	if tg > dollars:
 		over += "   (need $)"
 	if tw > weapons:
 		over += "   (need Weapons)"
+	if tm > men:
+		over += "   (need Manpower)"
+	if tn > spots:
+		over += "   (only " + str(spots) + " muster points free)"
 	var wtxt := ""
 	if tw > 0:
 		wtxt = "  +  " + str(tw) + " Weapons"
-	_musterPanel.get_node("Total").text = "Total: $" + str(tg) + wtxt + over
+	_musterPanel.get_node("Total").text = "Total: $" + str(tg) + wtxt + "  +  " + str(tm) + " Manpower" + over
 
 
 func _muster_confirm() -> void:
@@ -2609,12 +2627,21 @@ func _muster_confirm() -> void:
 		var n: int = int(_musterCounts.get(i, 0))
 		tg += n * _row_gold(_musterRows[i])
 		tw += n * int(_musterRows[i]["weapons"])
+	var tm: int = 0
+	var tn: int = 0
+	for i in range(_musterRows.size()):
+		var n2: int = int(_musterCounts.get(i, 0))
+		tm += n2 * _template_men(str(_musterRows[i]["template"]))
+		tn += n2
 	if tg <= 0 and tw <= 0:
 		return
 	if tg > int(playerCountryNode.TotalDollars) or tw > int(playerCountryNode.TotalWeapons):
 		return
+	if tm > int(playerCountryNode.TotalManpower) or tn > _free_muster_tiles().size():
+		return
 	playerCountryNode.TotalDollars -= tg
 	playerCountryNode.TotalWeapons -= tw
+	playerCountryNode.TotalManpower -= tm
 	# Queue the purchased units; the player clicks tiles to place each one.
 	_muster_place_queue = []
 	for i in range(_musterRows.size()):
@@ -2652,7 +2679,8 @@ func _update_placement_prompt() -> void:
 	if _placementPanel == null:
 		return
 	var nxt: String = str(_muster_place_queue[0]) if not _muster_place_queue.is_empty() else ""
-	_placementPanel.get_node("PlaceLabel").text = "Placing: " + nxt + "   (" + str(_muster_place_queue.size()) + " left)\nClick one of your own empty tiles."
+	_placementPanel.get_node("PlaceLabel").text = "Placing: " + nxt + "   (" + str(_muster_place_queue.size()) + " left)\nClick a highlighted muster point: barracks, fort, city or the capital."
+	_highlight_muster_tiles(true)
 
 
 func _try_place_at(tile) -> void:
@@ -2662,6 +2690,9 @@ func _try_place_at(tile) -> void:
 		return
 	if tile.tileOwner != playerCountry and not (tile.tileOwner == "CA" and _cids_allied(playerCountry, "CA")):
 		return   # own tiles, or allied Canada's tiles while the alliance holds
+	if not tile.is_muster_point():
+		_show_notice("Armies muster at a barracks, fort, city or the capital.")
+		return
 	var archetype: String = _muster_place_queue.pop_front()
 	_raise_archetype_army(tile, archetype)
 	if _muster_place_queue.is_empty():
@@ -2671,10 +2702,7 @@ func _try_place_at(tile) -> void:
 
 
 func _auto_place_rest() -> void:
-	var spots: Array = []
-	for tile in $TileController.get_children():
-		if tile.tileOwner == playerCountry and tile.stationedArmy == null:
-			spots.append(tile)
+	var spots: Array = _free_muster_tiles()
 	var si: int = 0
 	while not _muster_place_queue.is_empty() and si < spots.size():
 		_raise_archetype_army(spots[si], _muster_place_queue.pop_front())
@@ -2683,11 +2711,118 @@ func _auto_place_rest() -> void:
 
 
 func _end_placement() -> void:
+	# Anything left unplaced (no free muster point) is refunded.
+	for tmpl in _muster_place_queue:
+		var e: Dictionary = _catalog_entry_for(str(tmpl))
+		if not e.is_empty():
+			playerCountryNode.TotalDollars += _row_gold(e)
+			playerCountryNode.TotalWeapons += int(e["weapons"])
+			playerCountryNode.TotalManpower += _template_men(str(tmpl))
+	_highlight_muster_tiles(false)
 	_muster_place_queue = []
 	if _placementPanel != null:
 		_placementPanel.queue_free()
 		_placementPanel = null
 	updateResourceBar()
+
+
+# ── DEPTH PASS 2026-10-31: muster points, manpower draw, sieges, notices ─────
+const MUSTER_DEFAULT_MEN := 200
+var _template_men_cache: Dictionary = {}
+
+func _template_men(template: String) -> int:
+	# Manpower a freshly mustered army of this template draws from the reserve.
+	return int(_template_men_cache.get(template, MUSTER_DEFAULT_MEN))
+
+func _free_muster_tiles() -> Array:
+	var out: Array = []
+	for tile in $TileController.get_children():
+		if tile.tileOwner != playerCountry or not tile.is_muster_point():
+			continue
+		if tile.army_on(tile) == null:
+			# Clear stale refs left by a destroyed army so the muster point isn't lost forever.
+			if tile.stationedArmy != null and not (is_instance_valid(tile.stationedArmy) and tile.stationedArmy.inTile == tile and not tile.stationedArmy.deleteMode):
+				tile.stationedArmy = null
+			var sp = tile.tileSpawnPoint
+			if sp != null and sp.occupied:
+				var sa = sp.stationedArmy
+				if sa == null or not is_instance_valid(sa) or sa.deleteMode or sa.manpowerInArmy <= 0:
+					sp.occupied = false
+					sp.stationedArmy = null
+		if tile.stationedArmy == null and (tile.tileSpawnPoint == null or not tile.tileSpawnPoint.occupied):
+			out.append(tile)
+	return out
+
+var _muster_highlighted: Array = []
+func _highlight_muster_tiles(on: bool) -> void:
+	for t in _muster_highlighted:
+		if is_instance_valid(t):
+			t.setMovableHighlight(false)
+	_muster_highlighted.clear()
+	if on:
+		for t in _free_muster_tiles():
+			t.setMovableHighlight(true)
+			_muster_highlighted.append(t)
+
+func try_buy_and_raise(tile, entry: Dictionary) -> bool:
+	# One-army purchase with every real cost: dollars, weapons, manpower, a free muster point.
+	# (Used by the strategy bot; the Buy Units panel applies the same rules in bulk.)
+	if tile == null or entry.is_empty() or not tile.is_muster_point() or tile.tileOwner != playerCountry \
+			or tile.stationedArmy != null:
+		return false
+	var g: int = _row_gold(entry)
+	var w: int = int(entry["weapons"])
+	var m: int = _template_men(str(entry["template"]))
+	var p = playerCountryNode
+	if p.TotalDollars < g or (w > 0 and p.TotalWeapons < w) or p.TotalManpower < m:
+		return false
+	p.TotalDollars -= g
+	p.TotalWeapons -= w
+	p.TotalManpower -= m
+	_raise_archetype_army(tile, str(entry["template"]))
+	return true
+
+func _tick_sieges() -> void:
+	for tile in $TileController.get_children():
+		if tile.siegeArmy != null:
+			var was: String = tile.tileName
+			tile.tick_siege()
+			if tile.siegeArmy == null and tile.tileOwner != "UK":
+				print("[Siege] ", was, " taken")
+
+var _noticeLabel: Label = null
+var _noticeTween: Tween = null
+func _show_notice(text: String) -> void:
+	# Small top-centre notice for movement / muster / siege feedback.
+	if _noticeLabel == null or not is_instance_valid(_noticeLabel):
+		_noticeLabel = Label.new()
+		_noticeLabel.name = "DepthNotice"
+		_noticeLabel.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		_noticeLabel.add_theme_font_size_override("font_size", 20)
+		_noticeLabel.add_theme_color_override("font_color", Color(0.98, 0.93, 0.80))
+		_noticeLabel.add_theme_color_override("font_outline_color", Color(0.08, 0.06, 0.05))
+		_noticeLabel.add_theme_constant_override("outline_size", 6)
+		var sb := StyleBoxFlat.new()
+		sb.bg_color = Color(0.10, 0.12, 0.20, 0.88)
+		sb.border_color = Color(0.78, 0.62, 0.30)
+		sb.set_border_width_all(2)
+		sb.set_corner_radius_all(6)
+		sb.content_margin_left = 16; sb.content_margin_right = 16
+		sb.content_margin_top = 8; sb.content_margin_bottom = 8
+		_noticeLabel.add_theme_stylebox_override("normal", sb)
+		_noticeLabel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		$CanvasLayer.add_child(_noticeLabel)
+	_noticeLabel.text = text
+	_noticeLabel.reset_size()
+	var vp := get_viewport_rect().size
+	_noticeLabel.position = Vector2((vp.x - _noticeLabel.size.x) / 2.0, 150)
+	_noticeLabel.modulate.a = 1.0
+	_noticeLabel.visible = true
+	if _noticeTween != null and _noticeTween.is_valid():
+		_noticeTween.kill()
+	_noticeTween = create_tween()
+	_noticeTween.tween_interval(2.6)
+	_noticeTween.tween_property(_noticeLabel, "modulate:a", 0.0, 0.6)
 
 
 func _on_border_warning_choice(button_id: String) -> void:
@@ -2874,7 +3009,7 @@ func _play_ai_turn() -> void:
 	if _ai_playback_queue.is_empty():
 		return
 	_playing_ai = true
-	_skip_ai_playback = false
+	_skip_ai_playback = _test_fast_ai
 	for entry in _ai_playback_queue:
 		if _skip_ai_playback:
 			if entry.get("kind") != "move":
@@ -2928,7 +3063,21 @@ func _show_ai_battle(entry) -> void:
 		_on_battle_resolved(entry.get("tile"), al, dl)
 
 
+const AGENT355_REEL := ["PROT_16_SUMMON", "PROT_16_TAME", "PROT_16_AGREE"]
+
+func _fire_agent355_reel() -> void:
+	# Resets fire counts so the reel can be replayed (F8) during a screenshare.
+	for eid in AGENT355_REEL + ["PROT_16_AGREE_INTIMATE"]:
+		if EventDatabase.events.has(eid):
+			EventDatabase.events[eid]["_fire_count"] = 0
+			EventDatabase.events[eid]["_last_fired"] = -999
+	for eid in AGENT355_REEL:
+		createNewEvent(eid)
+
 func _unhandled_input(event: InputEvent) -> void:
+	if DEBUG_AGENT355_TEST and event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_F8:
+		_fire_agent355_reel()
+		return
 	# A click or keypress during the AI replay fast-forwards it.
 	if _playing_ai and event.is_pressed():
 		_skip_ai_playback = true
@@ -2964,6 +3113,7 @@ var _defer_events: bool = false  # true during an AI turn — events queue, then
 const _ARCS_DISABLED := true      # TEMP: mute commander/protector arcs for a later focused writing pass
 const DEMO_MODE := true            # July-4 limited demo: only intro chain + protectors + White House events fire
 const RESOURCE_SLIM := true        # show only Dollars/Manpower/Weapons/Science/Culture; hide the rest
+const DEBUG_AGENT355_TEST := true  # ARTIST DEMO: Agent 355 arc plays back-to-back on turn 2; F8 replays it. Set false after the screenshare.
 const DEMO_END_TURN := 20          # demo ends here (war opens turn 10 -> ~10 war turns). Tune freely.
 var _cycle_index: int = -1        # last unit index visited by the cycle-units button
 var _border_warning_fired: bool = false
@@ -3606,6 +3756,11 @@ func evaluateDateEvents() -> void:
 		# Turn 1 is the intro chain ONLY — suppress every other event this turn.
 		createNewEvent("INTRO_01")
 		return
+	if DEBUG_AGENT355_TEST and currentWorldTurn == 2:
+		# Turn 2 is the Agent 355 test reel ONLY (summon -> tame -> agree; the agree's
+		# candlelight button chains into the intimate scene when explicit content is on).
+		_fire_agent355_reel()
+		return
 	checkPendingMissions()
 	checkMissionExpiry()
 	checkCollapseCondition()
@@ -3770,6 +3925,9 @@ func checkCollapseCondition() -> void:
 	_republic_collapsed = true
 	print("[Collapse] All American metros have fallen. Triggering COLLAPSE_01.")
 	createNewEvent("COLLAPSE_01")
+	# COLLAPSE_01 is filtered out in DEMO_MODE, and both end checks bail once
+	# _republic_collapsed is set — so end the run here or it soft-locks forever.
+	_trigger_game_over(false, "Every American city has fallen to the Crown.", "DCdown")
 
 
 func checkCaCollapseCondition() -> void:
@@ -6741,6 +6899,8 @@ func _is_tech_tile(tile) -> bool:
 	return tile != null and tile.tileNumber in TECH_TILE_NUMBERS
 
 
+var _liberation_paid: Dictionary = {}   # tileNumber -> true once its spoils were paid this run
+
 func _on_tile_liberated(tile, oldOwner: String, newOwner: String) -> void:
 	# CENTRAL CAPTURE HOOK — every liberation payout hangs off this single call.
 	# Fires whenever a tile changes hands. Phase 4 fills in the token/cache grants.
@@ -6754,6 +6914,10 @@ func _on_tile_liberated(tile, oldOwner: String, newOwner: String) -> void:
 	var p = playerCountryNode
 	if p == null:
 		return
+	# Depth pass 2026-10-31: each tile pays out once per run — retaking it pays nothing.
+	if _liberation_paid.has(tile.tileNumber):
+		return
+	_liberation_paid[tile.tileNumber] = true
 	var got: String = ""
 	var earned_culture := false
 	if _is_tech_tile(tile):

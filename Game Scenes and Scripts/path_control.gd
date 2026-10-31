@@ -78,6 +78,19 @@ func armyArrivedFunc(pathOfArmy, newPathPointButton, theArmy, apf, contain):
 	#use this to resume 
 	removeFromUpdateArmyPaths()
 	_travelingFollower = null
+	# Fix 2026-10-27: a moved army used to stay registered on the tile it LEFT and never
+	# updated inTile, so the UK AI (country._tile_occupant needs inTile == tile) saw
+	# phantoms behind the line and walked into the real army's tile, deleting it unfought.
+	for oldPPB in $PathPointsControl.get_children():
+		if oldPPB != newPathPointButton and oldPPB.stationedArmy == theArmy:
+			oldPPB.stationedArmy = null
+			if oldPPB.stationedAPF == apf:
+				oldPPB.stationedAPF = null
+			oldPPB.occupied = false
+			if oldPPB.ppbTile != null and oldPPB.ppbTile.stationedArmy == theArmy:
+				oldPPB.ppbTile.stationedArmy = null
+	if is_instance_valid(theArmy) and newPathPointButton.ppbTile != null:
+		theArmy.inTile = newPathPointButton.ppbTile
 	for pathPointButton in $PathPointsControl.get_children():
 		if pathPointButton == newPathPointButton:
 			contain.remove_child(apf)
@@ -90,9 +103,31 @@ func armyArrivedFunc(pathOfArmy, newPathPointButton, theArmy, apf, contain):
 			updateArmyPanel(theArmy, newPathPointButton)
 	emit_signal("updatePathPoints", true)
 	newPathPointButton.stationedAPF = apf
-	# Instant capture on entry — walking into a tile flips it to your country.
+	# Instant capture on entry — walking into a tile flips it to your country
+	# (British strongpoints start a one-turn siege instead; see tile.captureInstant).
 	if newPathPointButton.ppbTile != null:
-		newPathPointButton.ppbTile.captureInstant(theArmy)
+		var _t = newPathPointButton.ppbTile
+		_t.captureInstant(theArmy)
+		if is_instance_valid(theArmy) and theArmy.parentCountry != null and theArmy.parentCountry.CID != "UK":
+			if _t.siegeArmy == theArmy:
+				emit_signal("movement_blocked", "Siege begun at " + _t.tileName + " — hold it one full turn to take it (Under siege 0/" + str(_t.SIEGE_TURNS_NEEDED) + ")")
+			# Zone of control: stepping next to a Redcoat army ends the march.
+			if _t.redcoat_line_army(theArmy.parentCountry.CID) != null and theArmy.currentMovementPoints > 0:
+				theArmy.currentMovementPoints = 0
+				emit_signal("movement_blocked", "Redcoat line — movement stops")
+
+
+# ── DEPTH PASS 2026-10-31 ────────────────────────────────────────────────────
+func zoc_block_reason(army, dest_tile) -> String:
+	# Why `army` may not step into `dest_tile` (empty string = it may).
+	if army == null or dest_tile == null or army.parentCountry == null:
+		return ""
+	var cid: String = army.parentCountry.CID
+	if cid == "UK" or dest_tile.tileOwner != "UK":
+		return ""
+	if dest_tile.redcoat_line_army(cid) != null:
+		return "Redcoat line — a British army covers " + dest_tile.tileName + ". Break it first."
+	return ""
 
 func civilianArrivedFunc(pathOfCivilian, newPathPointButton, theCivilian, cpf, contain):
 	#use this to resume 
@@ -372,6 +407,12 @@ func calculateArmyMovement(endPathPoint: pathPointButton, _neighborPathPoints, _
 			return
 		# Movement point gate — terrain cost consumed from army's pool
 		var dest_tile: Tile = endPathPoint.ppbTile
+		# Depth pass 2026-10-31 — the Redcoat line: open British ground beside a British
+		# army can't be walked into; break that army first.
+		var _block: String = zoc_block_reason(army, dest_tile)
+		if _block != "":
+			emit_signal("movement_blocked", _block)
+			return
 		if dest_tile != null and army != null:
 			var cost: int = dest_tile.get_move_cost(army)
 			if army.parentCountry != null and army.parentCountry.CID == "USA":

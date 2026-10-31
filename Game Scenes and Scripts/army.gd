@@ -166,6 +166,12 @@ func buildSelf(Name, countryNode, TileNumber, icon):
 func updateArmyUI(): #call whenever attacked, or just whenever the player opens the screen
 	for Unit in unitsList:
 		Unit.getUnitAttributes()
+	# Fix 2026-10-27: getUnitAttributes() wipes every unit mod, so belief mods (Vanguard,
+	# North Star Address…) vanished at the first turn end. Re-grant them from the templates.
+	for mm in beliefMilMods:
+		if is_instance_valid(mm):
+			for Unit in unitsList:
+				Unit.addMilMod(mm)
 	commanderCheck()
 	surveySelf()
 	updateUnitUIs()
@@ -259,8 +265,14 @@ func onTurnEnd():
 	_tick_status_effects()
 	# Apply movement reductions and re-derive blocked flags from remaining statuses
 	_apply_status_flags()
+	# Depth pass 2026-10-31: an army that was bloodied since its last turn can't refill
+	# (it's in contact — the wall has to be worn down, not just dented); and the player's
+	# unpaid armies (treasury in debt) don't get recruits either.
+	var _in_contact: bool = _hitSinceLastTurn
+	_hitSinceLastTurn = false
+	var _unpaid: bool = parentCountry != null and parentCountry.Player and parentCountry.TotalDollars < 0
 	# Reinforce only if not supply-cut or quarantined
-	if not reinforcementBlocked and parentCountry.TotalManpower > 0:
+	if not reinforcementBlocked and not _in_contact and not _unpaid and parentCountry.TotalManpower > 0:
 		var heal_rate: int = parentCountry.armyReinforceRate
 		if _army_has_active_mod("Healer"):
 			heal_rate += 10
@@ -488,6 +500,32 @@ func offensive_output(require_ap: bool, holders_counter: bool, holders_attack: b
 
 
 # Combat tuning — attacker risk/reward for charging (no defender reflect for now).
+# Depth pass 2026-10-31: fights take several beats instead of one-shots.
+const BATTLE_DAMAGE_SCALE: float = 0.5    # every blow in compute_battle_against is scaled by this
+const SABER_CHARGE_MULT: float = 1.5          # SaberCharge vs a reloading gun (was x2; cavalry stripped the map in 13 turns)
+const SABER_CHARGE_TEMPERED_MULT: float = 2.0 # with Tempuring (was x3)
+const STRONGPOINT_DEFENSE_MULT: float = 0.6  # damage taken defending your own fort / barracks / metro
+const HOLD_VOLLEY_CAP_FRAC: float = 0.34  # a braced line's first volley costs at most ~1/3 of the attacker's men
+
+func is_beyond_reach_of(defender) -> bool:
+	# True when we strike from two tiles away (mortars, rockets): their Hold volley can't reach us.
+	# Only exactly-two-tiles-away shots by a range-2 gun count; any other pairing (badge
+	# verdicts compare armies across the map) is treated as a normal adjacent fight.
+	if inTile == null or defender == null or defender.inTile == null or inTile == defender.inTile:
+		return false
+	if defender.inTile in inTile.TileNeighbors:
+		return false
+	var reach := 1
+	for u in unitsList:
+		if u != null and u.unitCurrentManpower > 0 and u.unitWeapon != null and u.unitWeapon.weaponRange > reach:
+			reach = u.unitWeapon.weaponRange
+	if reach < 2:
+		return false
+	for n in inTile.TileNeighbors:
+		if n != null and defender.inTile in n.TileNeighbors:
+			return true
+	return false
+
 const CHARGE_SELF_DAMAGE: float = 0.35   # attacker loses this fraction of the melee it commits
 const CHARGE_SHIELD_PIERCE: float = 0.5  # this fraction of charge damage ignores the defender's shield
 
@@ -504,9 +542,15 @@ func compute_battle_against(defender: Army, require_ap: bool = true, as_threat: 
 	var a_out: Dictionary = offensive_output(require_ap, false, as_threat, defender)
 	var d_def: float = defender.parentCountry.belief_defense_at(defender.inTile) if defender.parentCountry != null else 0.0
 
-	# 1. Hold fires first
+	# 1. Hold fires first — unless we're shooting from beyond their reach (range 2), and
+	#    never more than a toll of HOLD_VOLLEY_CAP_FRAC of our men (depth pass 2026-10-31).
+	var from_range: bool = is_beyond_reach_of(defender)
 	var hv: Dictionary = defender.hold_volley_against(a_out["melee"] > 0.0)
-	var hold_loss: float = hv["ranged"] * (1.0 - avg_ranged_block()) + hv["melee"] * (1.0 - avg_melee_block())
+	var hold_loss: float = 0.0
+	if not from_range:
+		hold_loss = hv["ranged"] * (1.0 - avg_ranged_block()) + hv["melee"] * (1.0 - avg_melee_block())
+		hold_loss *= BATTLE_DAMAGE_SCALE
+		hold_loss = minf(hold_loss, float(manpowerInArmy) * HOLD_VOLLEY_CAP_FRAC)
 	var a_scale: float = 1.0
 	if hold_loss > 0.0:
 		var my_hp: float = maxf(1.0, float(manpowerInArmy))
@@ -515,8 +559,17 @@ func compute_battle_against(defender: Army, require_ap: bool = true, as_threat: 
 	# 2-3. Attacker strikes with what's left
 	var ranged_dmg: float = a_out["ranged"] * a_scale * (1.0 - defender.avg_ranged_block(d_def))
 	var melee_dmg: float = a_out["melee"] * a_scale * (1.0 - defender.avg_melee_block(d_def))
+	if from_range:
+		melee_dmg = 0.0   # sabers and bayonets can't reach two tiles away
+	ranged_dmg *= BATTLE_DAMAGE_SCALE
+	melee_dmg *= BATTLE_DAMAGE_SCALE
+	if defender.inTile != null and defender.parentCountry != null \
+			and defender.inTile.tileOwner == defender.parentCountry.CID \
+			and defender.inTile.has_method("is_strongpoint") and defender.inTile.is_strongpoint():
+		ranged_dmg *= STRONGPOINT_DEFENSE_MULT   # walls, barracks and city blocks shelter their garrison
+		melee_dmg *= STRONGPOINT_DEFENSE_MULT
 	var def_loss: int = int(ranged_dmg + melee_dmg)
-	var atk_loss: int = int(hold_loss + a_out["melee"] * a_scale * CHARGE_SELF_DAMAGE)
+	var atk_loss: int = int(hold_loss + a_out["melee"] * a_scale * CHARGE_SELF_DAMAGE * BATTLE_DAMAGE_SCALE * (0.0 if from_range else 1.0))
 	# A share of charge damage bypasses the defender's shield, straight to manpower.
 	var shield_pierce: int = int(melee_dmg * CHARGE_SHIELD_PIERCE)
 	return {"def_loss": def_loss, "atk_loss": atk_loss, "shield_pierce": shield_pierce,
@@ -539,7 +592,7 @@ func _saber_charge_mult(u, target: Army) -> float:
 		if tu != null and tu.unitCurrentManpower > 0 and tu.unitWeapon != null \
 				and not tu.unitWeapon.is_saber() and tu.is_reloading():
 			var tempered: bool = parentCountry != null and parentCountry.unlockedTechnologies.any(func(t): return t.techName == "Tempuring")
-			return 3.0 if tempered else 2.0
+			return SABER_CHARGE_TEMPERED_MULT if tempered else SABER_CHARGE_MULT
 	return 1.0
 
 
@@ -1181,6 +1234,9 @@ func applyCountryBeliefMilMods() -> void:
 	for Unit in unitsList:
 		for mm in beliefMilMods:
 			Unit.removeMilMod(mm)
+	for mm in beliefMilMods:   # the templates themselves were never in the tree — free them
+		if is_instance_valid(mm):
+			mm.queue_free()
 	beliefMilMods.clear()
 
 	if parentCountry == null:
@@ -1287,7 +1343,11 @@ func calculateAttackerResults(type: String, manpowerLossAmount: int) -> void:
 	if manpowerInArmy <= 0:
 		emit_signal("armyDestroyed", self)
 
+var _hitSinceLastTurn: bool = false   # depth pass: took losses since its last turn → no reinforcement
+
 func calculateDefenderResults(type: String, manpowerLossAmount: int, raw: bool = false, shield_pierce: int = 0) -> void:
+	if manpowerLossAmount > 0:
+		_hitSinceLastTurn = true
 	if manpowerLossAmount <= 0:
 		return
 	if raw and armyWard > 0:

@@ -1363,8 +1363,15 @@ func surveyResources():
 		MAN += Tile.buildingManpowerOutput
 	if Player:
 		DPM += DEMO_BASE_DOLLARS   # flat treasury income — must run BEFORE collectTaxes folds DPM into Dollars
-	collectTaxes()
+	# Depth pass 2026-10-31: upkeep is billed BEFORE taxes fold into the treasury (it used to
+	# run after, so armies were free).
 	payUnitMaintenance()
+	collectTaxes()
+	# Supplies can run out but not go below zero (dollars CAN go into debt — see army.onTurnEnd).
+	TotalWeapons = maxi(TotalWeapons, 0)
+	TotalWood = maxi(TotalWood, 0)
+	TotalMetal = maxi(TotalMetal, 0)
+	TotalFood = maxi(TotalFood, 0)
 	# Manpower reserve ceiling scales with barracks (MAN is barracks-only output)
 	var _manpowerMax: int = max(MAN * MANPOWER_MAX_TURNS, 2000)
 	TotalManpower = min(TotalManpower, _manpowerMax)
@@ -1434,24 +1441,40 @@ func outputCheck(caller):
 	}
 	emit_signal("checkingOutput", outputsDict, caller)
 
+# Depth pass 2026-10-31: flat dollar upkeep per unit level for the player's armies, so a
+# 30-army horde eats the treasury. Resource costs on armies are positive numbers and are
+# now SUBTRACTED (they used to be added, i.e. paid as income). armyManpowerCost is already
+# negative (reinforcement draw), so it is still added.
+const UPKEEP_DOLLARS_PER_UNIT_LEVEL := 4
+var lastUpkeepDollars: int = 0
+
 func payUnitMaintenance():
+	lastUpkeepDollars = 0
 	for Army in countryArmyList:
 		if not is_instance_valid(Army) or Army.deleteMode:
 			continue
 		Army.onTurnEnd()
-		FPM += Army.armyFoodCost
-		WPM += Army.armyWoodCost
-		MPM += Army.armyMetalCost
-		DPM += Army.armyGoldCost     # armyGoldCost still works (dollars cost)
+		FPM -= Army.armyFoodCost
+		WPM -= Army.armyWoodCost
+		MPM -= Army.armyMetalCost
+		DPM -= Army.armyGoldCost     # armyGoldCost still works (dollars cost)
+		lastUpkeepDollars += Army.armyGoldCost
 		# armyFaithCost removed — faith merged into culture
-		PPM += Army.armyWeaponsCost
-		APM += Army.armyMagicCost
-		SPM += Army.armyScienceCost
-		CPM += Army.armyCultureCost
-		HPM += Army.armyHarmonyCost  # still valid var name in army.gd (cost rename deferred)
-		NDT += Army.armyMandateCost
-		NPM += Army.armyInfluenceCost
+		PPM -= Army.armyWeaponsCost
+		APM -= Army.armyMagicCost
+		SPM -= Army.armyScienceCost
+		CPM -= Army.armyCultureCost
+		HPM -= Army.armyHarmonyCost  # still valid var name in army.gd (cost rename deferred)
+		NDT -= Army.armyMandateCost
+		NPM -= Army.armyInfluenceCost
 		MAN += Army.armyManpowerCost
+		if Player:
+			var lv: int = 0
+			for u in Army.unitsList:
+				if u != null and u.unitCurrentManpower > 0:
+					lv += u.unitLevel
+			DPM -= lv * UPKEEP_DOLLARS_PER_UNIT_LEVEL
+			lastUpkeepDollars += lv * UPKEEP_DOLLARS_PER_UNIT_LEVEL
 	# Flat 4 gold/turn per active civilian (laws can reduce activeCivilianCount via modifiers)
 	DPM -= activeCivilianCount * 4
 
@@ -1661,8 +1684,16 @@ func is_army_supplied(army: Army) -> bool:
 # Pure military. No economy. No buildings.
 # ============================================================
 
-const UK_ARMY_CAP = 10   # max simultaneous UK field armies
+const UK_ARMY_CAP = 10   # floor on simultaneous UK field armies
 const UK_SPAWN_INTERVAL = 5  # turns between dock reinforcement drops
+# Depth pass 2026-10-31: the Crown's army cap scales with the land it holds — dense at the
+# start, thinning as it loses ground. Below the cap it lands a fresh regiment every
+# UK_SPAWN_INTERVAL_DENSE turns.
+const UK_TILES_PER_ARMY := 8
+const UK_SPAWN_INTERVAL_DENSE := 2
+
+func uk_army_cap() -> int:
+	return maxi(UK_ARMY_CAP, OwnedTileList.size() / UK_TILES_PER_ARMY)
 var _uk_spawn_cooldown: int = UK_SPAWN_INTERVAL  # start at cap so turn-1 spawn doesn't fire
 
 func _ai_set_stances(army: Army, defensive: bool) -> void:
@@ -1761,6 +1792,10 @@ func _find_attack_target(army: Army):
 		if neighbor == null:
 			continue
 		if neighbor.tileOwner != "USA":
+			# Depth pass: rebels besieging a British tile are fair game too.
+			var bes = _tile_occupant(neighbor)
+			if bes != null and bes.parentCountry != null and bes.parentCountry.CID != CID and armed_target == null:
+				armed_target = neighbor
 			continue
 		var occ = _tile_occupant(neighbor)
 		if occ != null and occ.parentCountry != null and occ.parentCountry.CID != CID:
@@ -1900,8 +1935,12 @@ func _uk_spawn_reinforcement() -> void:
 	_uk_spawn_cooldown -= 1
 	if _uk_spawn_cooldown > 0:
 		return
-	_uk_spawn_cooldown = UK_SPAWN_INTERVAL
-	if countryArmyList.size() >= UK_ARMY_CAP:
+	var _live: int = 0
+	for _a in countryArmyList:
+		if is_instance_valid(_a) and not _a.deleteMode and _a.manpowerInArmy > 0:
+			_live += 1
+	_uk_spawn_cooldown = UK_SPAWN_INTERVAL_DENSE if _live < uk_army_cap() else UK_SPAWN_INTERVAL
+	if _live >= uk_army_cap():
 		return
 	var dock_tiles: Array = []
 	for tile in OwnedTileList:
