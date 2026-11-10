@@ -110,7 +110,7 @@ func show_army(a, view_only: bool) -> void:
 func _signature() -> String:
 	if army == null or not is_instance_valid(army):
 		return ""
-	var parts := PackedStringArray([str(army.manpowerInArmy), str(army.armyShield), str(army.currentMovementPoints), str(army.unitsList.size())])
+	var parts := PackedStringArray([str(army.manpowerInArmy), str(army.armyShield), str(army.currentMovementPoints), str(army.unitsList.size()), str(army.attachedTurnsLeft), str(army.contractTurnsLeft)])
 	for u in army.unitsList:
 		if u == null:
 			continue
@@ -157,7 +157,7 @@ func _place() -> void:
 		return
 	reset_size()
 	var vp := get_viewport_rect().size
-	position = Vector2(12, vp.y - size.y - 12)
+	position = Vector2(12, maxf(8.0, vp.y - size.y - 12))
 
 
 # ── header ──────────────────────────────────────────────────────────────────
@@ -283,11 +283,49 @@ func _build_units(v: VBoxContainer) -> void:
 			b.custom_minimum_size = Vector2(52, 22)
 			head.add_child(b)
 	var idx := 1
+	var shown_attached := false
 	for u in army.unitsList:
 		if u == null:
 			continue
+		if u in army.attachedUnits and not shown_attached:
+			shown_attached = true
+			_build_attached_header(v)
 		_build_unit(v, u, idx)
 		idx += 1
+	if army.isContract:
+		v.add_child(_label("MINUTEMEN CONTRACT: last turn of service" if army.contractTurnsLeft <= 1 \
+			else "MINUTEMEN CONTRACT: %d turns left. No commander, no recruits." % army.contractTurnsLeft, 13, GOLD))
+
+
+# The Minutemen riding with this commander: who they are, how long they stay, and the way out.
+func _build_attached_header(v: VBoxContainer) -> void:
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 8)
+	v.add_child(row)
+	var left: int = int(army.attachedTurnsLeft)
+	var txt := "ATTACHED: %s  •  %s" % [str(army.attachedName), "last turn" if left <= 1 else "%d turns left" % left]
+	var l := _label(txt, 13, GOLD, true)
+	l.tooltip_text = "These Minutemen fight in this army and carry the commander's traits.\nThey add no movement and take no recruits, and go home when the contract ends."
+	l.mouse_filter = Control.MOUSE_FILTER_PASS
+	l.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_child(l)
+	if read_only:
+		return
+	var b := Button.new()
+	b.text = "Detach"
+	b.tooltip_text = "Send the company to a free friendly tile next to this one. It cannot move again this turn."
+	b.custom_minimum_size = Vector2(76, 24)
+	b.pressed.connect(_detach_pressed)
+	row.add_child(b)
+
+
+func _detach_pressed() -> void:
+	var n: Node = get_parent()
+	while n != null and not n.has_method("detach_company"):
+		n = n.get_parent()
+	if n != null:
+		n.detach_company(army)
+		_rebuild()
 
 
 func _build_unit(v: VBoxContainer, u, idx: int) -> void:
@@ -343,7 +381,13 @@ func _build_unit(v: VBoxContainer, u, idx: int) -> void:
 	bl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	bl.tooltip_text = bd.tip
 	bl.mouse_filter = Control.MOUSE_FILTER_PASS
-	col.add_child(bl)
+	if army.unitsList.size() <= 2:
+		col.add_child(bl)
+	else:
+		# With Minutemen attached the card would run off the screen: keep the sum as a
+		# hover on the unit instead of spelling it out under every one.
+		bl.queue_free()
+		box.tooltip_text = bd.text + "\n\n" + bd.tip
 
 	if not read_only:
 		var orders := HBoxContainer.new()

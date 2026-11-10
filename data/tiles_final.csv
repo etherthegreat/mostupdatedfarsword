@@ -10,9 +10,9 @@ number,tileName,terrain,state,country,corruption,specialFeature,buildings,tileCr
 9,York,Farmlands,PA,USA,0,,farm:1,corn,45
 10,Kennett Square,Farmlands,PA,USA,0,Mushroom Capital of the World,farm:1,mushrooms,40
 11,Gettysburg,Farmlands,PA,USA,0,Gettysburg Memorial,barracks:1|monument:2|farm:1,corn,48
-12,Harrisburg,Foothills,PA,USA,0,Appalachian Minerals,mine:1,corn,45
+12,Harrisburg,Foothills,PA,USA,0,Appalachian Minerals,mine:1|workshop:1,corn,45
 13,Reading,Foothills,PA,USA,0,Appalachian Minerals,mine:1,apples,43
-14,New York City,Metro,NY,UK,0,NYC Metro Area|Ivy League|Stock Market|Statue of Liberty,barracks:4|monument:3|market:3|fortress:3|library:2,corn,30
+14,New York City,Metro,NY,UK,0,NYC Metro Area|Ivy League|Stock Market|Statue of Liberty,barracks:4|monument:3|market:3|fortress:3|library:2|workshop:1,corn,30
 15,Newark,Metro,NJ,UK,0,,barracks:3|market:2|fortress:2,corn,32
 16,Princeton,Woods,NJ,UK,0,Princeton College,library:3,corn,35
 17,Peekskill,Woods,NY,UK,0,,camp:1,apples,45
@@ -36,7 +36,7 @@ number,tileName,terrain,state,country,corruption,specialFeature,buildings,tileCr
 35,Elkton,Farmlands,MD,UK,0,,farm:1,soybeans,25
 36,Aberdeen,Farmlands,MD,UK,0,,farm:1,soybeans,28
 37,Baltimore,Metro,MD,USA,0,Fort McHenry|Chesapeake Shipyards|Johns Hopkins University,barracks:2|fortress:2|courthouse:2|market:1|monument:1|dock:2,corn,30
-38,Annapolis,Woods,MD,USA,0,Naval Academy,barracks:2|library:1|market:1,soybeans,22
+38,Annapolis,Woods,MD,USA,0,Naval Academy,barracks:2|library:1|market:1|workshop:1,soybeans,22
 39,Alexandria,Suburbs,VA,USA,0,,barracks:3|monument:3,corn,28
 40,Waldorf,Woods,MD,USA,0,,camp:2,soybeans,25
 41,Bethesda,Suburbs,MD,USA,0,,market:1|barracks:1,corn,28
@@ -49,7 +49,7 @@ number,tileName,terrain,state,country,corruption,specialFeature,buildings,tileCr
 48,Leesburg,Farmlands,VA,USA,0,,farm:1,corn,32
 49,Fredericksburg,Woods,VA,UK,0,Appalachian Forest,camp:1|mine:1,corn,20
 50,West Point,Wetlands,VA,UK,0,West Point Military College,barracks:3|monument:1|library:1,corn,10
-51,Richmond,Metro,VA,UK,0,,barracks:2|forge:1|market:1|courthouse:2,corn,18
+51,Richmond,Metro,VA,UK,0,,barracks:2|forge:1|market:1|courthouse:2|workshop:1,corn,18
 52,Farmville,Farmlands,VA,UK,0,,farm:1|granary:1,peanuts,22
 53,Norfolk,Wetlands,VA,UK,0,Naval Station Norfolk|Norfolk Defense Contracts|Old Dominion University,forge:2|market:2|fortress:2|dock:3,peanuts,-5
 54,New Haven,Suburbs,CT,UK,0,Gun Valley|Yale University,forge:2|library:3,apples,42
@@ -63,7 +63,7 @@ number,tileName,terrain,state,country,corruption,specialFeature,buildings,tileCr
 62,Harvard,Woods,MA,UK,0,Harvard University,library:3,apples,60
 63,Portsmouth,Wetlands,NH,UK,0,First Naval Shipyard,dock:1|barracks:1|market:1,apples,55
 64,Salem,Woods,MA,UK,0,,market:2,apples,52
-65,Boston,Metro,MA,UK,0,MIT|Charlestown Navy Yard|Ivy League,barracks:3|courthouse:3|library:4|dock:2,apples,55
+65,Boston,Metro,MA,UK,0,MIT|Charlestown Navy Yard|Ivy League,barracks:3|courthouse:3|library:4|dock:2|workshop:1,apples,55
 66,Plymouth,Wetlands,MA,UK,0,The Original Dock,market:1|monument:2|dock:1,apples,50
 67,Nantucket,Wetlands,MA,UK,0,Whaling Capital — Formerly,resort:3|dock:1,hay,30
 68,Concord,Woods,NH,UK,0,,monument:1|barracks:1|courthouse:2,apples,68
@@ -120,7 +120,7 @@ number,tileName,terrain,state,country,corruption,specialFeature,buildings,tileCr
 119,Houlton,Woods,ME,UK,0,North Maine Woods,mine:1,hay,82
 120,Millinocket,Woods,ME,UK,0,North Maine Woods,camp:1,hay,85
 121,Bangor,Woods,ME,UK,0,North Maine Woods,camp:1,apples,75
-122,Augusta,Wetlands,ME,UK,0,North Maine Woods|Fort Western,courthouse:1|barracks:2|fortress:1,apples,72
+122,Augusta,Wetlands,ME,UK,0,North Maine Woods|Fort Western,courthouse:1|barracks:2|fortress:1|workshop:1,apples,72
 123,Quebec City,Metro,CA - QB,UK,0,St. Lawrence River Delta|Major River,barracks:2|fortress:2|forge:1|market:1|monument:1|dock:2,corn,88
 124,Shawinigan,Farmlands,CA - QB,UK,0,,farm:1,corn,80
 125,,,,,,,,,0
@@ -137,19 +137,19 @@ number,tileName,terrain,state,country,corruption,specialFeature,buildings,tileCr
 136,Huntsville,Wetlands,CA - OT,CA,20,Muskoka Highlands,camp:1,hay,70
 137,Parry Sound,Wetlands,CA - OT,CA,20,Georgian Bay Forests|Major Lake,camp:1,hay,68
 138,,,,,,,,,0
-139,Buffalo,Suburbs,NY,USA,70,Borders Dust Bowl|Niagara Falls|Major Lake,monument:3|barracks:1|forge:1|mine:1|market:2,corn,78
+139,Buffalo,Suburbs,NY,USA,70,Borders Dust Bowl|Niagara Falls|Major Lake,monument:3|barracks:1|forge:1|mine:1|market:2|workshop:1,corn,78
 140,Batavia,Farmlands,NY,USA,45,,farm:1|mine:1|granary:2,corn,70
 141,Rochester,Farmlands,NY,USA,20,Major Lake,farm:1|camp:1,apples,72
 142,Rocky Mount,Farmlands,NC,UK,0,Tobacco Belt,farm:2|granary:2,soybeans,-15
 143,Nags Head,Wetlands,NC,UK,0,Outer Banks,resort:2,corn,-30
 144,Greensboro,Suburbs,NC,UK,0,,library:1|courthouse:1|camp:1,soybeans,10
 145,Asheville,Foothills,NC,UK,0,Blue Ridge Highlands,mine:1|camp:1|resort:1,apples,35
-146,Raleigh,Suburbs,NC,UK,0,Research Triangle,barracks:2|courthouse:2|library:2,soybeans,8
+146,Raleigh,Suburbs,NC,UK,0,Research Triangle,barracks:2|courthouse:2|library:2|workshop:1,soybeans,8
 147,Mooresville,Farmlands,NC,UK,0,,farm:1,corn,12
 148,Charlotte,Metro,NC,UK,0,,market:1|barracks:2,corn,10
 149,Myrtle Beach,Wetlands,SC,UK,0,,barracks:1|resort:1,soybeans,-35
 150,Greenville,Suburbs,SC,UK,0,,farm:1|market:1,peaches,15
-151,Charleston,Suburbs,SC,UK,0,Fort Sumter|Fort Moultrie|Charleston Harbor|The Citadel,fortress:2|market:1|barracks:2|dock:2,soybeans,-40
+151,Charleston,Suburbs,SC,UK,0,Fort Sumter|Fort Moultrie|Charleston Harbor|The Citadel,fortress:2|market:1|barracks:2|dock:2|workshop:1,soybeans,-40
 152,Henderson,Foothills,NC,UK,0,,mine:1|camp:1,peaches,18
 153,Port Royal,Wetlands,SC,UK,0,,camp:1|resort:1,soybeans,-38
 154,Columbia,Suburbs,SC,UK,0,,market:2|courthouse:2|barracks:2,peaches,5
@@ -162,8 +162,8 @@ number,tileName,terrain,state,country,corruption,specialFeature,buildings,tileCr
 161,Macon,Woods,GA,UK,0,Sunbelt|Georgia Piedmont,farm:1,peaches,-20
 162,Athens,Farmlands,GA,UK,20,Sunbelt,farm:1|monument:1,peaches,-10
 163,Marietta,Suburbs,GA,USA,45,Sunbelt,market:1|barracks:2,peaches,5
-164,Atlanta,Metro,GA,UK,20,Sunbelt|Georgia Tech,courthouse:2|barracks:3|library:3,peaches,5
-165,Nashville,Metro,TN,USA,70,Borders Dust Bowl|Country Music Homeland,courthouse:1|barracks:1|monument:2|market:2,corn,15
+164,Atlanta,Metro,GA,UK,20,Sunbelt|Georgia Tech,courthouse:2|barracks:3|library:3|workshop:1,peaches,5
+165,Nashville,Metro,TN,USA,70,Borders Dust Bowl|Country Music Homeland,courthouse:1|barracks:1|monument:2|market:2|workshop:1,corn,15
 166,Americus,Farmlands,GA,UK,20,Sunbelt,farm:1,peanuts,-25
 167,Anniston,Woods,AL,USA,70,Borders Dust Bowl|Sunbelt,camp:1,corn,-10
 168,Birmingham,Suburbs,AL,USA,70,Borders Dust Bowl|Sunbelt,camp:1|courthouse:1|barracks:1|library:1,corn,-5
@@ -179,7 +179,7 @@ number,tileName,terrain,state,country,corruption,specialFeature,buildings,tileCr
 178,Orlando,Metro,FL,UK,0,Space Coast|Sunbelt|Central Florida Research,resort:3|barracks:2|forge:1,oranges,-70
 179,Tampa,Suburbs,FL,UK,0,Sunbelt,market:2|barracks:1|resort:1,oranges,-72
 180,Naples,Wetlands,FL,UK,0,Sunbelt,camp:1|farm:2,oranges,-80
-181,Miami,Suburbs,FL,UK,0,Sunbelt,resort:1|market:2|barracks:2,oranges,-90
+181,Miami,Suburbs,FL,UK,0,Sunbelt,resort:1|market:2|barracks:2|workshop:1,oranges,-90
 182,Nassau,Farmlands,BA,UK,0,Pirate Republic of Nassau,farm:1|courthouse:1|dock:1,oranges,-95
 183,Fort Myers,Wetlands,FL,UK,0,Sunbelt,resort:2|fort:1,oranges,-85
 184,Columbus,Woods,GA,UK,45,Sunbelt|Georgia Piedmont,farm:2,peanuts,-15

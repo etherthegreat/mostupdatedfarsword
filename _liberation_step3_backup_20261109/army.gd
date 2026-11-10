@@ -1,0 +1,1506 @@
+extends Control
+
+
+class_name Army
+
+var armyFoodCost: int = 0
+var armyWoodCost: int = 0
+var armyMetalCost: int = 0
+var armyGoldCost: int = 0
+var armyFaithCost: int = 0
+var armyMagicCost: int = 0
+var armyScienceCost: int = 0
+var armyCultureCost: int = 0
+var armyHarmonyCost: int = 0
+var armyMandateCost: int = 0
+var armyInfluenceCost: int = 0
+
+var armyWeaponsCost: int = 0
+var armyManpowerCost: int = 0
+
+# ── MOVEMENT POINTS ───────────────────────────────────────────────────────────
+# Civ-style: each army gets maxMovementPoints per turn, spent when entering tiles.
+# Terrain and winter conditions increase tile entry cost.  Armies with the
+# "Cold Weather" tag in armyTags ignore winter cost penalties.
+var maxMovementPoints: int = 3
+var currentMovementPoints: int = 3
+
+# ── ARMY TAGS ─────────────────────────────────────────────────────────────────
+# Populated from army_templates.csv armyMods column (pipe-delimited).
+# Used by the movement and winter-drain systems to grant terrain exemptions.
+# Examples: "Cold Weather", "Naval Power", "Redcoats", "Pirates"
+var armyTags: Array = []
+
+var ArmyName: String
+var armyTier: String = ""   # I/II/III/IV shown on the map token
+#var Icon
+
+var homeTile #each army must be built in a barracks, barracks gives +2 maxUnits to army per level
+#army gets destroyed if homeTile changes hands
+var parentCountry #parent country, homeland
+var parentMilModifiers: Array = [] #list of national modifiers to armies
+var beliefMilMods: Array = []   # mil mods sourced from country beliefs / axis; cleared on update
+var parentWarEnemies: Array = [] #list of all enemies of the parent nation
+
+var commander: governor #create a character to lead the army, has traits that give the army modifiers
+var commanderModifiers1: Array = []
+var commanderModifiers2: Array = []
+var commanderModifiers3: Array = []
+
+var armyCurse: spell #harmful spell from anybody
+var armyCharm: spell #beneficial spell from player or ally
+
+var maxUnits #number that determines how many units this army can hold, determined by technology, policies, leader
+var unitsList: Array = []
+var maxUnitLevel: int
+
+var maxManpower:int #used to determine the maximum manpower of all units, used for a calculation for refilling army
+var manpowerInArmy:int #actual manpower in armies, will be lower if units are damaged
+#it costs costly resources but you can instantly refill your army's manpower, also takes from manpower pool
+
+var maxWeapons: int
+var weaponsInArmy: int
+
+var armyIcon: Texture2D
+
+#Combat Modifiers
+var averageExperience: int #used to calculate the level of this army's level
+var armyLevel: int #1 = recruit, 2 = regulars, 3 = expert, 4 = veteran, gives buffs per level
+var armyAbility: int #recruit = 100, regulars = 105, expert = 110, veteran = 115.  Basically vets do 15% more damage
+#armyAbility can also be improved/debuffed by other modifiers through tech, leader, modifiers, etc.
+var armyStrength: int #basically how much health this unit has.  once  0, this army will be expelled from combat.  
+
+# Combat rework 2026-10-26: floats. Block/Defence are the SUM of unit block decimals
+# (0.15 = 15%); divide by unitsList.size() for the army average. They used to be int,
+# so 0.15 armour rounded to 0 and any single +15 buff slammed into the cap.
+var armyPunch: float
+var armyBlock: float
+var armyLaunch: float
+var armyDefence: float
+var rawPunch: float = 0.0    # unit melee before army-level mods (commander, statuses, propaganda)
+var rawLaunch: float = 0.0   # unit ranged before army-level mods
+var armyWard: int = 0        # shield granted by army-level effects (+30 shield statuses); absorbs first
+var wardUsed: int = 0        # ward spent this turn; resets in onTurnEnd
+var armyMagicDefense: int
+var armyShield: int
+var armyMaxShield: int
+
+# ── SPY EFFECTS ───────────────────────────────────────────────────────────────
+var sabotaged: bool = false       # enemy spy Sabotage — blocks movement/action for the turn
+var sabotageTimer: int = 0        # turns remaining before sabotage clears
+var reconDebuffed: bool = false   # enemy spy Reconnaissance — reduces armyDefence in battle
+var reconDebuffTimer: int = 0     # turns remaining before recon debuff clears
+var propagandaBuff: int = 0       # flat attack bonus (and equivalent defence penalty) from propaganda events
+
+# ── STATUS EFFECTS ─────────────────────────────────────────────────────────────
+var armyStatusEffects: Array = []   # Array of {type: String, turnsLeft: int}
+var attackBlocked: bool = false     # set by Routed/Pacified/Seduced/Love-Struck/Mutinous
+var reinforcementBlocked: bool = false  # set by Supply Cut/Quarantined
+var isGuarding: bool = false        # player-toggled: skip in end-turn army cycle
+
+var armySiegeScore: float
+
+var stationaryTurns: int = 0       # increments each turn army doesn't move; resets on movement
+var movedThisTurn: bool = false    # set true by path_control when army spends movement points
+var attacksFromCurrentTile: int = 0  # counts attacks without moving; resets on movement
+var _engagedFromTile = null         # tile this army last attacked from; "first engagement" = any other tile
+
+# Liberation economy: a commander army is tied to its commander's home tile. While the enemy
+# holds that tile the army is displaced: no recruits and a slow bleed, until the tile is retaken.
+var commanderHome: Tile = null
+var displaced: bool = false
+const DISPLACED_BLEED := 0.05   # share of full strength lost each turn (placeholder, not agreed yet)
+const DISPLACED_FLOOR := 0.25   # the bleed stops here, so a displaced army is never bled to death
+
+var is_anarchist: bool = false  # anarchist armies auto-attack UK each turn, no shield, uncontrollable
+
+#spawning and tiles
+var awake: bool #if a unit isn't stationed in a barracks, it is awake.  if awake, can be controlled
+var inTile: Tile #the tile this unit is currently in
+var inTileTerrain #terrain type, used to determine unit stats and modifiers
+var targetTile: Tile #the tile this unit would like to move to.  builds a path from this inTile to targetTile to determining
+#pathfinding.
+var pathLine #a tilequeue created for army pathfinding through the worldspace, if the army isn't going anywhere, = null
+
+#combat
+var combatModifiers: Array #if army is in active combat, this variable is true.  if else, is false
+#when a unit detects another unit in the same tile, it will check if the enemy is in the unit is owned by 
+#a country in parentWarEnemies.  if it is, the defender will create a Battle class node.  this temporarily consumes
+#the unit and will spit it back out with changed stats after the battle finishes.  
+var inRetreat: bool #if in retreat, will become uncontrollable until the retreat is finished
+var retreatTarget: Tile
+
+const unitUIScene = preload("res://unit_ui.tscn")
+
+var raised: bool
+
+const manaPanelScene = preload("res://mana_panel.tscn")
+
+var tempResourcesDict: Dictionary = {}
+
+var enemy: bool #for any non-playable country
+
+var deleteMode: bool
+
+signal armyDestroyed
+var attackedThisTurn: bool = false  # set when this army attacks; drives Exhausted/Retreat
+var isHolding: bool = false         # combat Hold stance; distinct from isGuarding
+var holdPending: bool = false       # Hold declared after moving -> arms next turn
+
+func buildSelf(Name, countryNode, TileNumber, icon):
+	$VBoxContainer/BannerControl/BannerSprite.texture = icon
+	enemy = false
+	raised = false
+	deleteMode = false
+	armyIcon = icon
+	ArmyName = Name
+	parentCountry = countryNode
+	match parentCountry.CID:
+			"UK":
+				enemy = true   # King George's forces are THE enemy in Uprisings
+			"DEM", "EIG", "DUM":
+				enemy = true   # keep for DODK compatibility
+	if TileNumber != 0:
+		for Tile in parentCountry.OwnedTileList:
+			if Tile.tileNumber == TileNumber:
+				inTile = Tile
+				break
+		if inTile == null:
+			push_warning("army.buildSelf: tile " + str(TileNumber) + " not found in OwnedTileList for " + parentCountry.CID)
+	for armyCostUI in $resourcescontainer.get_children():
+		armyCostUI.buildSelf()
+
+func updateArmyUI(): #call whenever attacked, or just whenever the player opens the screen
+	for Unit in unitsList:
+		Unit.getUnitAttributes()
+	# Fix 2026-10-27: getUnitAttributes() wipes every unit mod, so belief mods (Vanguard,
+	# North Star Address…) vanished at the first turn end. Re-grant them from the templates.
+	for mm in beliefMilMods:
+		if is_instance_valid(mm):
+			for Unit in unitsList:
+				Unit.addMilMod(mm)
+	commanderCheck()
+	surveySelf()
+	updateUnitUIs()
+	updateCommanderUI()
+	updateFinalTotals()
+	var gb := get_node_or_null("VBoxContainer/GuardControl/GuardButton") as CheckButton
+	if gb:
+		gb.set_pressed_no_signal(isGuarding)
+
+func _commander_movement_bonus() -> int:
+	if commander == null:
+		return 0
+	var mods: Array
+	match commander.governorLevel:
+		1: mods = commander.govMilModsLvl1
+		2: mods = commander.govMilModsLvl2
+		3: mods = commander.govMilModsLvl3
+		_: mods = commander.govMilModsLvl1
+	var bonus: int = 0
+	for mm in mods:
+		if not mm.disabled:
+			match mm.milModType:
+				"President":       bonus += 3
+				"The Long March":  bonus += 2
+				"Election Season": bonus += 3
+				"Mountain Pathfinder":
+					if inTile != null and inTile.terrain == "Foothills":
+						bonus += 1
+	return bonus
+
+func has_moves_left() -> bool:
+	# True if this army can still move (movement points) or act (any unit has an action point).
+	if currentMovementPoints > 0:
+		return true
+	for u in unitsList:
+		if u.unitCurrentManpower > 0 and u.unitCurrentAP > 0:
+			return true
+	return false
+
+
+func onTurnEnd():
+	# Stationary turn tracking — must happen before movement points reset
+	if movedThisTurn:
+		stationaryTurns = 0
+		attacksFromCurrentTile = 0
+	else:
+		stationaryTurns += 1
+	movedThisTurn = false
+	# Combat-economy per-turn reset
+	attackedThisTurn = false
+	if holdPending:
+		isHolding = true
+		holdPending = false
+	wardUsed = 0
+	for _u in unitsList:
+		_u.fortifyRefundAP = 0
+		# Braced orders (Hold, Fortify) stay until you give a new one — that is what lets
+		# them protect you through the enemy's turn. Attack orders reset to the default.
+		if _u.unitStance in ["hold", "fortify"]:
+			pass
+		else:
+			_u.unitStance = "charge" if (_u.unitWeapon != null and _u.unitWeapon.is_saber()) else "fire"
+		if _u.unitWeapon != null and _u.unitWeapon.is_artillery():
+			# Artillery reloads ONLY with leftover action points — i.e. choosing to reload
+			# instead of firing or moving. (Non-artillery auto-reload one step per turn.)
+			if _u.reloadCounter > 0 and _u.unitCurrentAP > 0:
+				_u.reloadCounter = max(0, _u.reloadCounter - _u.unitCurrentAP)
+		else:
+			_u.tick_reload()   # count down any pending reload once per turn
+		_u.unitCurrentAP = _u.get_max_ap()
+	# Restore full movement points at the start of each new turn
+	currentMovementPoints = maxMovementPoints + _commander_movement_bonus() + (parentCountry.belief_move_bonus() if parentCountry != null else 0)
+	# Reset per-turn flags (re-derived below from active statuses)
+	attackBlocked = false
+	reinforcementBlocked = false
+	# Tick spy effect timers
+	if sabotageTimer > 0:
+		sabotageTimer -= 1
+		if sabotageTimer <= 0:
+			sabotaged = false
+	if reconDebuffTimer > 0:
+		reconDebuffTimer -= 1
+		if reconDebuffTimer <= 0:
+			reconDebuffed = false
+	# Tick per-unit temporary mods
+	var unit_mods_changed: bool = false
+	for Unit in unitsList:
+		if Unit.tick_temp_mods():
+			unit_mods_changed = true
+	# Tick army-level status effects (DoT, decrement, removal)
+	_tick_status_effects()
+	# Apply movement reductions and re-derive blocked flags from remaining statuses
+	_apply_status_flags()
+	# Depth pass 2026-10-31: an army that was bloodied since its last turn can't refill
+	# (it's in contact — the wall has to be worn down, not just dented); and the player's
+	# unpaid armies (treasury in debt) don't get recruits either.
+	var _in_contact: bool = _hitSinceLastTurn
+	_hitSinceLastTurn = false
+	var _unpaid: bool = parentCountry != null and parentCountry.Player and parentCountry.TotalDollars < 0
+	if displaced:
+		_bleed_displaced()
+	# Reinforce only if not supply-cut or quarantined
+	if not reinforcementBlocked and not displaced and not _in_contact and not _unpaid and parentCountry.TotalManpower > 0:
+		var heal_rate: int = parentCountry.armyReinforceRate
+		if _army_has_active_mod("Healer"):
+			heal_rate += 10
+		var _rb: float = parentCountry.belief_reinforce_bonus()
+		if _rb > 0.0:
+			heal_rate = int(float(heal_rate) * (1.0 + _rb))
+		for Unit in unitsList:
+			if parentCountry.TotalManpower <= 0:
+				break
+			var _before: int = Unit.unitCurrentManpower
+			Unit.refillManpower(heal_rate)
+			parentCountry.TotalManpower -= (Unit.unitCurrentManpower - _before)   # reinforcement now DRAWS from the Manpower reserve
+	if unit_mods_changed:
+		surveySelf()
+	# Master Baiter: +10% shield recharge per turn
+	if commander != null and armyMaxShield > 0:
+		var cmd_mods: Array
+		match commander.governorLevel:
+			1: cmd_mods = commander.govMilModsLvl1
+			2: cmd_mods = commander.govMilModsLvl2
+			3: cmd_mods = commander.govMilModsLvl3
+			_: cmd_mods = commander.govMilModsLvl1
+		for mod in cmd_mods:
+			if mod.milModType == "Master Baiter" and not mod.disabled:
+				armyShield = mini(armyShield + int(armyMaxShield * 0.1), armyMaxShield)
+				break
+	# Corrupted Ground: the army cleanses the tile it stands on, 1 corruption a turn
+	if inTile != null and inTile.corruption > 0 and _army_has_active_mod("Corrupted Ground"):
+		inTile.corruption = maxi(0, inTile.corruption - 1)
+	# Corruption disease check (Park Ranger grants immunity)
+	if inTile != null and inTile.corruption > 0 and not _army_has_active_mod("Park Ranger"):
+		if randf() * 100.0 < float(inTile.corruption):
+			apply_status("Diseased", 2)
+	updateArmyUI()
+
+func apply_status(type: String, duration: int, magic_cost: int = 0) -> void:
+	for s in armyStatusEffects:
+		if s.type == type:
+			s.turnsLeft = max(s.turnsLeft, duration)
+			s.magicCostPerTurn = magic_cost
+			surveySelf()
+			_apply_status_flags()
+			return
+	armyStatusEffects.append({type = type, turnsLeft = duration, magicCostPerTurn = magic_cost})
+	surveySelf()
+	_apply_status_flags()
+
+func _army_has_active_mod(mod_name: String) -> bool:
+	for unit in unitsList:
+		for mm in unit.militaryModifierList:
+			if mm.milModType == mod_name and not mm.disabled:
+				return true
+	return false
+
+func declareHold() -> void:
+	# Combat Hold: instant if the army has not moved, else arms next turn.
+	if movedThisTurn:
+		holdPending = true
+	else:
+		isHolding = true
+		surveySelf()
+
+
+func cancelHold() -> void:
+	isHolding = false
+	holdPending = false
+
+
+func attack_power_factor() -> float:
+	# Fraction of living units that are fighting (not holding). Holding a unit trades attack for defense.
+	var living: int = 0
+	var fighting: int = 0
+	for u in unitsList:
+		if u.unitCurrentManpower > 0:
+			living += 1
+			if u.unitStance != "hold" and u.unitCurrentAP > 0:
+				fighting += 1
+	if living == 0:
+		return 0.0
+	return float(fighting) / float(living)
+
+
+func counter_power_factor() -> float:
+	# Counterfire is a REACTION (no AP needed). Holding units counter at 1.5x — reward for bracing.
+	var living: int = 0
+	var power: float = 0.0
+	for u in unitsList:
+		if u.unitCurrentManpower > 0:
+			living += 1
+			power += 1.5 if u.unitStance == "hold" else 1.0
+	if living == 0:
+		return 0.0
+	return power / float(living)
+
+
+# ── HOLD / FORTIFY (combat rework 2026-10-26) ─────────────────────────────────
+# Hold    = stay loaded. If attacked, the unit fires FIRST, before the enemy's blow
+#           lands; men it kills never get to swing. Then it has to reload.
+# Fortify = dig in for the whole turn. Adds melee block to the army; no attack.
+# An army with nobody braced (no loaded Hold, no Fortify) is EXPOSED: its block is halved.
+const HOLD_VOLLEY_MULT: float = 0.75       # holder's first-fire: a hurried volley at 3/4 strength
+const HOLD_SABER_COUNTER: float = 1.0      # braced sabers meet a charge with one normal strike
+const FORTIFY_MELEE_BLOCK: float = 0.30    # per fortified unit, averaged over the army
+const EXPOSED_BLOCK_MULT: float = 0.5      # nobody braced: block is halved
+const BLOCK_CAP: float = 0.75              # was 0.9 — with floats, buffs now stack honestly
+
+func fortify_melee_bonus() -> float:
+	var n: int = 0
+	for u in unitsList:
+		if u.unitCurrentManpower > 0 and u.unitStance == "fortify":
+			n += 1
+	return FORTIFY_MELEE_BLOCK * float(n) / float(max(1, unitsList.size()))
+
+
+func _holder_loaded(u) -> bool:
+	return u != null and u.unitCurrentManpower > 0 and u.unitStance == "hold" \
+		and u.unitWeapon != null and not u.unitWeapon.is_saber() and not u.is_reloading() \
+		and u.unitRangedOffence > 0
+
+
+func _holder_saber(u) -> bool:
+	return u != null and u.unitCurrentManpower > 0 and u.unitStance == "hold" \
+		and u.unitWeapon != null and u.unitWeapon.is_saber()
+
+
+func is_covered() -> bool:
+	if isHolding:
+		return true
+	for u in unitsList:
+		if _holder_loaded(u) or _holder_saber(u):
+			return true
+		if u != null and u.unitCurrentManpower > 0 and u.unitStance == "fortify":
+			return true
+	return false
+
+
+func hold_volley_against(incoming_melee: bool) -> Dictionary:
+	# What this army's braced units throw at an attacker BEFORE it strikes.
+	var ranged: float = 0.0
+	var melee: float = 0.0
+	for u in unitsList:
+		if _holder_loaded(u):
+			ranged += float(u.unitRangedOffence) * HOLD_VOLLEY_MULT * _belief_atk_mult(u)
+		elif _holder_saber(u) and incoming_melee:
+			melee += float(u.unitOffensiveScore) * HOLD_SABER_COUNTER * _belief_atk_mult(u)
+	return {"ranged": ranged * ranged_mult(), "melee": melee * melee_mult()}
+
+
+func consume_hold_volley() -> void:
+	# Real fight only (never the preview): holders that fired must now reload.
+	for u in unitsList:
+		if _holder_loaded(u) and u.unitWeapon.reloadTurns > 0:
+			u.start_reload()
+
+
+func avg_ranged_block(extra: float = 0.0) -> float:
+	var d_units: float = max(1.0, float(unitsList.size()))
+	var b: float = armyDefence / d_units + extra
+	if not is_covered():
+		b *= EXPOSED_BLOCK_MULT
+	return clampf(b, 0.0, BLOCK_CAP)
+
+
+func avg_melee_block(extra: float = 0.0) -> float:
+	var d_units: float = max(1.0, float(unitsList.size()))
+	var b: float = armyBlock / d_units + fortify_melee_bonus() + extra
+	if not is_covered():
+		b *= EXPOSED_BLOCK_MULT
+	return clampf(b, 0.0, BLOCK_CAP)
+
+
+func spend_attack_ap() -> void:
+	for u in unitsList:
+		if u.unitCurrentManpower > 0 and u.unitStance != "hold":
+			u.spend_ap()
+
+
+func all_units_charging() -> bool:
+	var any: bool = false
+	for u in unitsList:
+		if u.unitCurrentManpower > 0:
+			any = true
+			if u.unitStance != "charge":
+				return false
+	return any
+
+
+func _belief_atk_mult(u) -> float:
+	if parentCountry == null or u == null or u.unitWeapon == null:
+		return 1.0
+	return 1.0 + parentCountry.belief_attack_bonus(u.unitWeapon.weaponClass)
+
+
+func offensive_output(require_ap: bool, holders_counter: bool, holders_attack: bool = false, target: Army = null) -> Dictionary:
+	# Fire units deal RANGED (unitRangedOffence); Charge units deal MELEE (unitOffensiveScore x1.4).
+	# require_ap: only units with an action point contribute (the initiating attack); false for reaction counters.
+	# holders_counter: holders still counter at 1.5x in their weapon's native mode (ranged for guns, melee for sabers).
+	var ranged: float = 0.0
+	var melee: float = 0.0
+	for u in unitsList:
+		if u == null or u.unitCurrentManpower <= 0:
+			continue
+		match u.unitStance:
+			"hold":
+				if holders_attack:
+					# threat estimate: a holding unit could switch to its best attack next turn
+					if u.unitWeapon != null and u.unitWeapon.weaponClass == "Saber":
+						melee += float(u.unitOffensiveScore) * 1.8 * _belief_atk_mult(u)
+					else:
+						ranged += float(u.unitRangedOffence) * _belief_atk_mult(u)
+				elif holders_counter:
+					if u.unitWeapon != null and u.unitWeapon.weaponClass == "Saber":
+						melee += float(u.unitOffensiveScore) * 1.2
+					else:
+						ranged += float(u.unitRangedOffence) * 1.2
+			"fire":
+				# threat estimates assume the enemy has reloaded by its own turn
+				if (not require_ap or u.unitCurrentAP > 0) and (not u.is_reloading() or holders_attack):
+					ranged += _artillery_volley(u) * _belief_atk_mult(u)
+			"charge", "flank":
+				# Flank is a melee charge; the encirclement multiplier is applied at the attack site.
+				if not require_ap or u.unitCurrentAP > 0:
+					melee += float(u.unitOffensiveScore) * 1.8 * _belief_atk_mult(u) * _saber_charge_mult(u, target)
+	return {"ranged": ranged * ranged_mult(), "melee": melee * melee_mult()}
+
+
+# Combat tuning — attacker risk/reward for charging (no defender reflect for now).
+# Depth pass 2026-10-31: fights take several beats instead of one-shots.
+const BATTLE_DAMAGE_SCALE: float = 0.5    # every blow in compute_battle_against is scaled by this
+const SABER_CHARGE_MULT: float = 1.5          # SaberCharge vs a reloading gun (was x2; cavalry stripped the map in 13 turns)
+const SABER_CHARGE_TEMPERED_MULT: float = 2.0 # with Tempuring (was x3)
+const STRONGPOINT_DEFENSE_MULT: float = 0.6  # damage taken defending your own fort / barracks / metro
+const HOLD_VOLLEY_CAP_FRAC: float = 0.34  # a braced line's first volley costs at most ~1/3 of the attacker's men
+
+func is_beyond_reach_of(defender) -> bool:
+	# True when we strike from two tiles away (mortars, rockets): their Hold volley can't reach us.
+	# Only exactly-two-tiles-away shots by a range-2 gun count; any other pairing (badge
+	# verdicts compare armies across the map) is treated as a normal adjacent fight.
+	if inTile == null or defender == null or defender.inTile == null or inTile == defender.inTile:
+		return false
+	if defender.inTile in inTile.TileNeighbors:
+		return false
+	var reach := 1
+	for u in unitsList:
+		if u != null and u.unitCurrentManpower > 0 and u.unitWeapon != null and u.unitWeapon.weaponRange > reach:
+			reach = u.unitWeapon.weaponRange
+	if reach < 2:
+		return false
+	for n in inTile.TileNeighbors:
+		if n != null and defender.inTile in n.TileNeighbors:
+			return true
+	return false
+
+const CHARGE_SELF_DAMAGE: float = 0.35   # attacker loses this fraction of the melee it commits
+const CHARGE_SHIELD_PIERCE: float = 0.5  # this fraction of charge damage ignores the defender's shield
+
+func compute_battle_against(defender: Army, require_ap: bool = true, as_threat: bool = false) -> Dictionary:
+	# Shared attack math for player, AI, and the hover preview. Pure — no side effects.
+	# Order of a fight:
+	#   1. Defender's braced units fire first (Hold volley; braced sabers meet a charge).
+	#   2. The attacker strikes with whatever survived step 1 (losses scale its blow).
+	#   3. Fire = ranged (free for the attacker); Charge = melee (costs men, pierces shield).
+	# require_ap = false: "what if both sides were fresh"; as_threat = true: holding units
+	# are counted as if they attacked. Both only used by the map badge verdicts.
+	surveySelf()
+	defender.surveySelf()
+	var a_out: Dictionary = offensive_output(require_ap, false, as_threat, defender)
+	var d_def: float = defender.parentCountry.belief_defense_at(defender.inTile) if defender.parentCountry != null else 0.0
+
+	# 1. Hold fires first — unless we're shooting from beyond their reach (range 2), and
+	#    never more than a toll of HOLD_VOLLEY_CAP_FRAC of our men (depth pass 2026-10-31).
+	var from_range: bool = is_beyond_reach_of(defender)
+	var hv: Dictionary = defender.hold_volley_against(a_out["melee"] > 0.0)
+	var hold_loss: float = 0.0
+	if not from_range:
+		hold_loss = hv["ranged"] * (1.0 - avg_ranged_block()) + hv["melee"] * (1.0 - avg_melee_block())
+		hold_loss *= BATTLE_DAMAGE_SCALE
+		hold_loss = minf(hold_loss, float(manpowerInArmy) * HOLD_VOLLEY_CAP_FRAC)
+	var a_scale: float = 1.0
+	if hold_loss > 0.0:
+		var my_hp: float = maxf(1.0, float(manpowerInArmy))
+		a_scale = clampf(1.0 - hold_loss / my_hp, 0.0, 1.0)
+
+	# 2-3. Attacker strikes with what's left
+	var ranged_dmg: float = a_out["ranged"] * a_scale * (1.0 - defender.avg_ranged_block(d_def))
+	var melee_dmg: float = a_out["melee"] * a_scale * (1.0 - defender.avg_melee_block(d_def))
+	if from_range:
+		melee_dmg = 0.0   # sabers and bayonets can't reach two tiles away
+	ranged_dmg *= BATTLE_DAMAGE_SCALE
+	melee_dmg *= BATTLE_DAMAGE_SCALE
+	if defender.inTile != null and defender.parentCountry != null \
+			and defender.inTile.tileOwner == defender.parentCountry.CID \
+			and defender.inTile.has_method("is_strongpoint") and defender.inTile.is_strongpoint():
+		ranged_dmg *= STRONGPOINT_DEFENSE_MULT   # walls, barracks and city blocks shelter their garrison
+		melee_dmg *= STRONGPOINT_DEFENSE_MULT
+	var def_loss: int = int(ranged_dmg + melee_dmg)
+	var atk_loss: int = int(hold_loss + a_out["melee"] * a_scale * CHARGE_SELF_DAMAGE * BATTLE_DAMAGE_SCALE * (0.0 if from_range else 1.0))
+	# A share of charge damage bypasses the defender's shield, straight to manpower.
+	var shield_pierce: int = int(melee_dmg * CHARGE_SHIELD_PIERCE)
+	return {"def_loss": def_loss, "atk_loss": atk_loss, "shield_pierce": shield_pierce,
+		"hold_loss": int(hold_loss), "hold_fired": hold_loss > 0.0, "attack_scale": a_scale}
+
+
+# ── Mil mods wired in the combat rework (2026-10-27) ─────────────────────────
+func _unit_has_mod(u, mod_name: String) -> bool:
+	for mm in u.militaryModifierList:
+		if mm.milModType == mod_name and not mm.disabled:
+			return true
+	return false
+
+
+func _saber_charge_mult(u, target: Army) -> float:
+	# SaberCharge (every saber): x2 melee vs an enemy with a gun still reloading; x3 with Tempuring.
+	if target == null or u.unitWeapon == null or not u.unitWeapon.is_saber() or not _unit_has_mod(u, "SaberCharge"):
+		return 1.0
+	for tu in target.unitsList:
+		if tu != null and tu.unitCurrentManpower > 0 and tu.unitWeapon != null \
+				and not tu.unitWeapon.is_saber() and tu.is_reloading():
+			var tempered: bool = parentCountry != null and parentCountry.unlockedTechnologies.any(func(t): return t.techName == "Tempuring")
+			return SABER_CHARGE_TEMPERED_MULT if tempered else SABER_CHARGE_MULT
+	return 1.0
+
+
+func _artillery_volley(u) -> float:
+	# Double Shot: guns fire a second round at half power. Double Cannonade: a full
+	# second volley plus +3 per level on each shot.
+	var v: float = float(u.unitRangedOffence)
+	if u.unitWeapon == null or not u.unitWeapon.is_artillery():
+		return v
+	if _unit_has_mod(u, "Double Cannonade"):
+		return (v + 3.0 * u.unitLevel) * 2.0
+	if _unit_has_mod(u, "Double Shot"):
+		return v * 1.5
+	return v
+
+
+func _near_friendly_army() -> bool:
+	if inTile == null or parentCountry == null:
+		return false
+	for nb in inTile.TileNeighbors:
+		if nb == null:
+			continue
+		var a = nb.stationedArmy
+		if a == null and nb.tileSpawnPoint != null:
+			a = nb.tileSpawnPoint.stationedArmy
+		if a != null and a != self and is_instance_valid(a) and not a.deleteMode \
+				and a.parentCountry == parentCountry and a.manpowerInArmy > 0:
+			return true
+	return false
+
+
+func on_attack_resolved(defender: Army, def_loss: int, conquered: bool) -> void:
+	# Called by the player and AI attack sites after damage lands.
+	attacksFromCurrentTile += 1
+	_engagedFromTile = inTile     # ends "first engagement" bonuses until the army stands somewhere new
+	if parentCountry != null and def_loss > 0 and _army_has_active_mod("Field Research"):
+		parentCountry.TotalScience += int(float(def_loss) * 0.2)
+	if conquered and _army_has_active_mod("Liberator's Will"):
+		for u in unitsList:
+			if u.unitCurrentManpower > 0:
+				u.refillManpower(int(u.unitMaxManpower * 0.15))
+		if commander != null:
+			commander.loyalty = minf(20.0, commander.loyalty + 2.0)
+	surveySelf()
+
+
+func is_flanking() -> bool:
+	for u in unitsList:
+		if u != null and u.unitStance == "flank":
+			return true
+	return false
+
+
+func has_charging_unit() -> bool:
+	for u in unitsList:
+		if u.unitCurrentManpower > 0 and u.unitStance == "charge":
+			return true
+	return false
+
+
+func combat_status_tag() -> String:
+	var tags: Array = []
+	if isHolding:
+		tags.append("HOLD")
+	if _has_status("Exhausted"):
+		tags.append("EXH")
+	if _has_status("Retreat"):
+		tags.append("RET")
+	return " ".join(tags)
+
+
+func _has_status(type: String) -> bool:
+	for s in armyStatusEffects:
+		if s.type == type:
+			return true
+	return false
+
+func _tick_status_effects() -> void:
+	var to_remove: Array = []
+	for s in armyStatusEffects:
+		# Magic upkeep: sustained protector buffs drain magic each turn
+		var magic_cost: int = s.get("magicCostPerTurn", 0)
+		if magic_cost > 0:
+			if parentCountry != null and parentCountry.TotalMagic >= magic_cost:
+				parentCountry.TotalMagic -= magic_cost
+			else:
+				to_remove.append(s)
+				continue
+			# Sustained effects don't expire naturally — only when magic runs dry
+			continue
+		match s.type:
+			# Damage over time hits the men directly (shields don't stop fire or fever).
+			# These used an unknown damage type before and did nothing.
+			"Burning":
+				var _b: int = 5 * max(1, unitCount)
+				calculateDefenderResults("melee", _b, true, _b)
+			"Diseased":
+				var _d: int = 3 * max(1, unitCount)
+				calculateDefenderResults("melee", _d, true, _d)
+			"Quarantined":
+				var _q: int = max(1, unitCount)
+				calculateDefenderResults("melee", _q, true, _q)
+		s.turnsLeft -= 1
+		if s.turnsLeft <= 0:
+			to_remove.append(s)
+	for s in to_remove:
+		armyStatusEffects.erase(s)
+	if to_remove.size() > 0:
+		surveySelf()
+
+func _apply_status_effects_to_stats() -> void:
+	for s in armyStatusEffects:
+		match s.type:
+			"Exhausted":
+				armyPunch = armyPunch * 0.9
+				armyLaunch = armyLaunch * 0.9
+			"Stunned":
+				armyPunch = 0
+			"Suppressed":
+				armyLaunch = 0
+			"Shaken":
+				armyBlock = armyBlock * 0.5
+			"Terrified":
+				armyPunch = armyPunch * 0.5
+				armyBlock = armyBlock * 0.7
+			"Routed":
+				armyPunch = 0
+				armyDefence = armyDefence * 0.5
+			"Blinded":
+				armyLaunch = armyLaunch * 0.5
+				armyDefence = armyDefence * 0.5
+			"Hexed":
+				armyMagicDefense = 0
+			"Demoralized":
+				armyPunch = armyPunch * 0.8
+				armyBlock = armyBlock * 0.8
+			"Waterlogged":
+				armyPunch  = armyPunch * 0.8
+				armyLaunch = armyLaunch * 0.8
+			"Frostbitten":
+				armyPunch  = armyPunch * 0.7
+				armyLaunch = armyLaunch * 0.7
+			"Seduced":
+				armyPunch = 0
+			"Starstruck":
+				armyPunch   = armyPunch * 0.7
+				armyLaunch  = armyLaunch * 0.7
+				armyBlock   = armyBlock * 0.7
+				armyDefence = armyDefence * 0.7
+			"Hangover":
+				armyPunch   = armyPunch * 0.5
+				armyLaunch  = armyLaunch * 0.5
+				armyBlock   = armyBlock * 0.5
+				armyDefence = armyDefence * 0.5
+			"Love-Struck":
+				armyPunch = armyPunch * 0.3
+				armyBlock = armyBlock * 0.3
+			"Mutinous":
+				armyPunch = armyPunch * 0.6
+			# ── USA PROTECTOR BUFFS ──────────────────────────────────────────────
+			# ── EVENT BUFFS (wired 2026-10-27) ───────────────────────────────────
+			"Inspired":        # UALANI_BARRACKS_01: the troops saw her come
+				armyPunch  *= 1.15
+				armyLaunch *= 1.15
+			"Fortified":       # SPRING_OFFENSIVE_01: dug in for the thaw
+				armyBlock   += _blk(20)
+				armyDefence += _blk(15)
+			"Mothman Presence":
+				armyLaunch  += 20
+				armyDefence += _blk(15)
+			"Jersey Devil's Fury":
+				armyPunch  += 25
+				armyLaunch += 10
+				armyBlock  += _blk(10)
+			"Wood Booger's Solidarity":
+				armyBlock  += _blk(30)
+				armyPunch  += 15
+			"Thunderbird's Sovereignty":
+				armyLaunch += 25
+				armyPunch  += 10
+			"Headless Terror":
+				armyPunch  += 20
+				armyBlock  += _blk(10)
+			"Chessie's Blessing":
+				armyBlock   += _blk(20)
+				armyDefence += _blk(15)
+			"Bell Witch's Harassment":
+				armyPunch   += 15
+				armyDefence += _blk(20)
+			"Old Ironsides' Hull":
+				armyShield += 30
+				armyBlock  += _blk(20)
+			"Valley Forge's Will":
+				armyPunch   += 10
+				armyBlock   += _blk(25)
+				armyDefence += _blk(20)
+			"Snallygaster's Claim":
+				armyPunch  += 20
+				armyLaunch += 10
+				armyBlock  += _blk(10)
+			"Paul Revere's Ride":
+				armyLaunch += 15
+				armyPunch  += 10
+			"Liberty Bell's Resonance":
+				armyBlock   += _blk(25)
+				armyDefence += _blk(15)
+			"Green Mountain Haunting":
+				armyBlock   += _blk(20)
+				armyDefence += _blk(15)
+			"Presidential Decree":
+				armyPunch   += 20
+				armyBlock   += _blk(20)
+				armyLaunch  += 15
+				armyDefence += _blk(15)
+			"Skunk Ape's Domain":
+				armyPunch += 20
+				armyBlock += _blk(15)
+			"Eternal Vigilance":
+				armyBlock  += _blk(25)
+				armyPunch  += 10
+			"Lincoln's Mandate":
+				armyPunch   += 15
+				armyBlock   += _blk(15)
+				armyLaunch  += 15
+				armyDefence += _blk(10)
+			# ── DOCTRINE AURA BUFFS ──────────────────────────────────────────────
+			"Spirit of the General":
+				armyPunch += 15
+			# Presidential aura buffs (Ualani's intro gift)
+			"Beautiful Flower":
+				armyDefence += _blk(3)
+			"Executive Enforcer":
+				armyPunch += 3
+			# ── LOYAL GOVERNOR BUFFS ─────────────────────────────────────────────
+			"Mercenary Zeal":
+				armyPunch += 2  # Border Mercenary coin pact — timed 10 turns
+			"Iron Discipline":
+				armyDefence += _blk(1)  # Border Mercenary discipline — permanent (duration 9999)
+			# ── CANADIAN PROTECTOR BUFFS ─────────────────────────────────────────
+			"Le Wendigo's Hunger":
+				armyPunch += 30
+			"Loup-Garou's Frenzy":
+				armyPunch   += 25
+				armyBlock   += _blk(15)
+				armyDefence += _blk(10)
+			"Feux Follets' Misdirection":
+				armyDefence += _blk(25)
+				armyBlock   += _blk(15)
+			"Mishepeshu's Depths":
+				armyBlock   += _blk(20)
+				armyDefence += _blk(20)
+			"La Corriveau's Cage":
+				armyLaunch += 20
+				armyPunch  += 15
+			"Le Carcajou's Tenacity":
+				armyPunch   += 20
+				armyBlock   += _blk(15)
+				armyDefence += _blk(10)
+			"La Chasse-Galerie":
+				armyPunch  += 15
+				armyLaunch += 15
+			"Le Gougou's Terror":
+				armyPunch   += 15
+				armyDefence += _blk(20)
+	# Combat Hold stance: defensive bonus (distinct from the end-turn Guard toggle)
+	if isHolding:
+		armyBlock += _blk(20)
+		armyDefence += _blk(20)
+	# Guard bonus applied last so status-effect penalties don't erase it
+	var glvl: int = _guard_level()
+	if glvl > 0:
+		var guard_mult: float = 1.0 + 0.15 * float(glvl)
+		armyBlock   = armyBlock   * guard_mult
+		armyDefence = armyDefence * guard_mult
+
+
+func _blk(points: float) -> float:
+	# Army-level "+N block/defence" = N percentage points on the army AVERAGE block.
+	# armyBlock/armyDefence are sums over units, so scale by the unit count.
+	return points * 0.01 * float(max(1, unitsList.size()))
+
+func _apply_status_flags() -> void:
+	for s in armyStatusEffects:
+		match s.type:
+			"Routed", "Pacified", "Seduced", "Love-Struck":
+				attackBlocked = true
+			"Retreat":
+				attackBlocked = true
+			"Stunned":
+				attackBlocked = true
+			"Supply Cut", "Quarantined":
+				reinforcementBlocked = true
+			"Mutinous":
+				if randf() < 0.5:
+					attackBlocked = true
+			"Exhausted":
+				currentMovementPoints = min(currentMovementPoints, 1)
+			"Bogged Down":
+				currentMovementPoints = 0
+			"Paul Revere's Ride":
+				currentMovementPoints += 3
+			"La Chasse-Galerie":
+				currentMovementPoints += 4
+
+func addUnitToArmy(unitToAdd):
+	if unitsList.size() >= 2:
+		push_warning("Army '%s': cannot add more than 2 units." % ArmyName)
+		return
+	unitsList.append(unitToAdd)
+	#unitToAdd.updateArmy.connect(surveySelf)
+	$UnitContainer.add_child(unitToAdd)
+	var newUnitUI = unitUIScene.instantiate()
+	newUnitUI.buildSelf(unitToAdd, parentCountry)
+	$ScrollContainer/UnitUIContainer.add_child(newUnitUI)
+	#updateArmyUI()
+
+func updateUnitUIs(): #call after battle, new unit, changed unit, any change to any thing in the army
+	for unitUIScene in $ScrollContainer/UnitUIContainer.get_children():
+		unitUIScene.updateUI()
+
+func updateCommanderUI():
+	if commander != null:
+		$CommanderButton.icon = commander.governorTexture
+		$CommanderLabel.text = str(commander.governorType)
+		$CommanderButton.modulate = _commander_portrait_modulate()
+	else:
+		$CommanderButton.icon = load("res://art assets/finishedAssets/Panels/armypanelfinishedui/IMG_1564.PNG")
+		$CommanderLabel.text = "No Commander"
+		$CommanderButton.modulate = Color.WHITE
+
+func _commander_portrait_modulate() -> Color:
+	var ratio: float = 1.0
+	if maxManpower > 0:
+		ratio = clampf(float(manpowerInArmy) / float(maxManpower), 0.0, 1.0)
+	var r: float = 1.0
+	var g: float = 0.3 + 0.7 * ratio
+	var b: float = 0.3 + 0.7 * ratio
+	if armyShield > 0:
+		r *= 0.75
+		g *= 0.75
+		b = minf(b + 0.5, 1.0)
+	return Color(r, g, b, 1.0)
+
+func updateFinalTotals():
+	$resourcescontainer/armyCostUI.updateSelf(armyPunch,armyPunch)
+	$resourcescontainer/armyCostUI2.updateSelf(armyLaunch, armyLaunch)
+	$resourcescontainer/armyCostUI3.updateSelf(armyShield, armyMaxShield)
+	$resourcescontainer/armyCostUI4.updateSelf(armyBlock, armyBlock)
+	$resourcescontainer/armyCostUI5.updateSelf(armyDefence, armyDefence)
+	$resourcescontainer/armyCostUI6.updateSelf(armyMagicDefense, armyMagicDefense)
+	
+	$manpowerweaponscontainer/manpowercontrol/Manpower/manpowerlabel.text = str(manpowerInArmy, maxManpower)
+	$manpowerweaponscontainer/weaponscontrol/Weapons/weaponslabel. text = str(weaponsInArmy, maxWeapons)
+	if $ScrollContainer2/VBoxContainer.get_children() != null:
+		for manaPanel in $ScrollContainer2/VBoxContainer.get_children():
+			manaPanel.queue_free()
+	if armyFoodCost != 0:
+		var newMP = manaPanelScene.instantiate()
+		newMP.buildSelf("Food", -armyFoodCost, tempResourcesDict)
+		$ScrollContainer2/VBoxContainer.add_child(newMP)
+	if armyWoodCost != 0:
+		var newMP = manaPanelScene.instantiate()
+		newMP.buildSelf("Wood", -armyWoodCost, tempResourcesDict)
+		$ScrollContainer2/VBoxContainer.add_child(newMP)
+	if armyGoldCost != 0:
+		var newMP = manaPanelScene.instantiate()
+		newMP.buildSelf("Gold", -armyGoldCost, tempResourcesDict)
+		$ScrollContainer2/VBoxContainer.add_child(newMP)
+	if armyMetalCost != 0:
+		var newMP = manaPanelScene.instantiate()
+		newMP.buildSelf("Metal", -armyMetalCost, tempResourcesDict)
+		$ScrollContainer2/VBoxContainer.add_child(newMP)
+	if armyManpowerCost != 0:
+		var newMP = manaPanelScene.instantiate()
+		newMP.buildSelf("Manpower", -armyManpowerCost, tempResourcesDict)
+		$ScrollContainer2/VBoxContainer.add_child(newMP)
+	if armyWeaponsCost != 0:
+		var newMP = manaPanelScene.instantiate()
+		newMP.buildSelf("Weapons", -armyWeaponsCost, tempResourcesDict)
+		$ScrollContainer2/VBoxContainer.add_child(newMP)
+	if armyMagicCost != 0:
+		var newMP = manaPanelScene.instantiate()
+		newMP.buildSelf("Magic", -armyMagicCost, tempResourcesDict)
+		$ScrollContainer2/VBoxContainer.add_child(newMP)
+	if armyScienceCost != 0:
+		var newMP = manaPanelScene.instantiate()
+		newMP.buildSelf("Science", -armyScienceCost, tempResourcesDict)
+		$ScrollContainer2/VBoxContainer.add_child(newMP)
+	if armyCultureCost != 0:
+		var newMP = manaPanelScene.instantiate()
+		newMP.buildSelf("Culture", -armyCultureCost, tempResourcesDict)
+		$ScrollContainer2/VBoxContainer.add_child(newMP)
+	if armyInfluenceCost != 0:
+		var newMP = manaPanelScene.instantiate()
+		newMP.buildSelf("Influence", -armyInfluenceCost, tempResourcesDict)
+		$ScrollContainer2/VBoxContainer.add_child(newMP)
+	if armyHarmonyCost != 0:
+		var newMP = manaPanelScene.instantiate()
+		newMP.buildSelf("Harmony", -armyHarmonyCost, tempResourcesDict)
+		$ScrollContainer2/VBoxContainer.add_child(newMP)
+	if armyFaithCost != 0:
+		var newMP = manaPanelScene.instantiate()
+		newMP.buildSelf("Faith", -armyFaithCost, tempResourcesDict)
+		$ScrollContainer2/VBoxContainer.add_child(newMP)
+
+var unitCount: int
+
+func surveySelf():
+	maxUnitLevel = 0
+	calculateMaxUnitLevel()
+	armyPunch= 0
+	armyBlock = 0
+	armyLaunch = 0
+	armyDefence = 0
+	armyShield = 0
+	armyMaxShield = 0
+	armyMagicDefense = 0
+	maxManpower = 0
+	manpowerInArmy = 0
+	maxWeapons = 0
+	weaponsInArmy = 0
+	armyFoodCost = 0
+	armyWoodCost = 0
+	armyGoldCost = 0
+	armyMetalCost = 0
+	armyManpowerCost = 0
+	armyWeaponsCost = 0
+	armyMagicCost = 0
+	armyScienceCost = 0
+	armyCultureCost = 0
+	armyInfluenceCost = 0
+	armyHarmonyCost = 0
+	armyFaithCost = 0
+	armySiegeScore = 0
+	unitCount = 0
+	for Unit in unitsList:
+		unitCount += Unit.unitLevel
+	var minSize: int = (unitCount * 210)
+	$ScrollContainer/UnitUIContainer.set_custom_minimum_size(Vector2(minSize, 0))
+	armySiegeScore = unitCount * 0.1
+	if inTile != null:
+		armySiegeScore *= inTile.get_siege_difficulty()
+	# CannonBlast: artillery adds bonus siege progress (doubled with Tempering)
+	var cannon_count: int = 0
+	for Unit in unitsList:
+		for mm in Unit.militaryModifierList:
+			if mm.milModType == "CannonBlast" and not mm.disabled:
+				cannon_count += 1
+				break
+	if cannon_count > 0:
+		var has_tempering = parentCountry != null and parentCountry.unlockedTechnologies.any(func(t): return t.techName == "Tempuring")
+		var cannon_siege_bonus: float = float(cannon_count) * (0.3 if has_tempering else 0.15)
+		armySiegeScore += cannon_siege_bonus
+	for Unit in unitsList:
+		Unit.enableMilModType("All")
+		if Unit.unitCurrentManpower < Unit.unitMaxManpower:
+			armyManpowerCost += (Unit.unitLevel * (-1 * parentCountry.armyReinforceRate)) #replace -3 with - var reinforceRaisedRate
+		if Unit.unitCurrentManpower == 0:
+			Unit.disableMilModType("All") #disable all milmods which are 
+				#reliant on manpower.  all mil mods are reliant on manpow
+		#if parentCountry.TotalManpower > 0:
+			#Unit.refillManpower(parentCountry.armyReinforceRate)
+				#Unit.hurt() #hurt takes the level of the unit down, and deletes the unit if reaches level 0.
+		if parentCountry.TotalWeapons <= 0:
+			Unit.disableMilModType("Weapons")
+		if parentCountry.TotalWood <= 0:
+			Unit.disableMilModType("Wood")
+		if parentCountry.TotalHappiness <= 0:
+			Unit.disableMilModType("Happiness")
+			# unitsWillBecomeMutinous
+		if parentCountry.TotalCulture <= 0:
+			# TotalCulture now covers both Culture and old Faith
+			Unit.disableMilModType("Culture")
+		# TotalFaith removed — merged into TotalCulture
+		if parentCountry.TotalInfluence <= 0:
+			Unit.disableMilModType("Influence")
+		if parentCountry.TotalDollars <= 0:
+			Unit.disableMilModType("Gold")
+			# unitsWon'tListenToOrders
+		if parentCountry.TotalScience <= 0:
+			Unit.disableMilModType("Science")
+		if parentCountry.TotalMagic <= 0:
+			Unit.disableMilModType("Magic")
+			# brings down spell defence
+		if parentCountry.TotalFood <= 0:
+			Unit.disableMilModType("Food")
+			# slowly kills units
+		if parentCountry.TotalMetal <= 0:
+			Unit.disableMilModType("Metal")
+			# prevents units from replenishing armor
+		Unit.currentTerrain    = inTile.terrain if inTile != null else ""
+		Unit.currentStorm      = inTile.stormType if (inTile != null and inTile.stormActive) else ""
+		Unit.currentState      = inTile.tileContinent if inTile != null else ""
+		Unit.inIvyLeagueTile   = inTile.has_special_feature("Ivy League") if inTile != null else false
+		Unit.inFortifiedTile   = (inTile != null and (inTile.has_building("Barracks") or inTile.has_building("Fortress")))
+		Unit.inHomeTile        = (inTile != null and inTile.tileOwner == parentCountry.CID)
+		Unit.inEntrenched      = (stationaryTurns >= 3)
+		Unit.inCoastalTile     = (inTile != null and inTile.isCoastal)
+		Unit.armyDemoralized   = _has_status("Demoralized")
+		Unit.inFirstEngagement = (inTile == null or inTile != _engagedFromTile)
+		Unit.nearFriendlyArmy  = _near_friendly_army()
+		Unit.calculateMilMods()
+		armyPunch += Unit.unitOffensiveScore
+		armyBlock += Unit.unitDefensiveScore
+		maxManpower += Unit.unitMaxManpower
+		manpowerInArmy += Unit.unitCurrentManpower
+		maxWeapons += Unit.unitMaxWeapons
+		weaponsInArmy += Unit.unitCurrentWeapons
+		armyLaunch += Unit.unitRangedOffence
+		armyDefence += Unit.unitRangedDefence
+		armyMagicDefense += Unit.unitMagicDefence
+		armyShield += Unit.unitShield
+		armyMaxShield += Unit.unitMaxShield
+		var uLV = Unit.unitLevel
+		match Unit.unitOre.oreType:
+			"Copper":
+				armyMetalCost += uLV
+				armyGoldCost += uLV
+			"Gold":
+				armyGoldCost += (2*uLV)
+			"Wood":
+				armyWoodCost += uLV
+			"Iron":
+				armyMetalCost += (3*uLV)
+				armyGoldCost += uLV
+			"Ivoroid":
+				armyWoodCost += uLV
+				armyMetalCost += (2*uLV)
+		match Unit.unitWeapon.weaponType:
+			"Spear", "Club", "Dagger", "Atlatl":
+				armyWeaponsCost += uLV
+			"Machete", "Macuahitl", "Single Axe", "Mace":
+				armyWeaponsCost += (2 * uLV)
+			"Flail", "Shortsword", "Pike", "Cutlass":
+				armyWeaponsCost += (3 * uLV)
+			"War Hammer", "War Axe", "War Sword", "Cavalry Sword", "Flintlock":
+				armyWeaponsCost += (4 * uLV)
+			"Officer Sword", "Brown Bess", "Field Cannon":
+				armyWeaponsCost += (5 * uLV)
+			"Marine Mameluke", "Percussion Cap", "Field Gun":
+				armyWeaponsCost += (6 * uLV)
+			"Lever Repeater", "Howitzer":
+				armyWeaponsCost += (7 * uLV)
+			"Mortar":
+				armyWeaponsCost += (8 * uLV)
+		if parentCountry != null: #find costs and savings from country specific modifiers here
+			for law in parentCountry.lawsInConstitution:
+				if law.lawType == "Mercantilism":
+					armyHarmonyCost += (2*uLV)
+	rawPunch = armyPunch
+	rawLaunch = armyLaunch
+	var unit_shield_sum: int = armyShield
+	var unit_max_shield_sum: int = armyMaxShield
+	if commander != null:
+		# Commander morale: up to +25% to melee, volleys and ranged block. (Volleys were
+		# never boosted before, and none of this reached real fights until the rework.)
+		var mm: float = 1.0 + (float(commander.morale) / 100.0) * 0.25
+		armyPunch   = armyPunch   * mm
+		armyLaunch  = armyLaunch  * mm
+		armyDefence = armyDefence * mm
+		# Experienced Fisherman: +1 attack per gov level when in wetlands tile
+		if inTile != null and inTile.terrain == "Wetlands":
+			var cmd_mods: Array
+			match commander.governorLevel:
+				1: cmd_mods = commander.govMilModsLvl1
+				2: cmd_mods = commander.govMilModsLvl2
+				3: cmd_mods = commander.govMilModsLvl3
+				_: cmd_mods = commander.govMilModsLvl1
+			for mod in cmd_mods:
+				if mod.milModType == "Experienced Fisherman" and not mod.disabled:
+					armyPunch += commander.governorLevel
+					break
+	if propagandaBuff != 0:
+		armyPunch   += propagandaBuff
+		armyDefence -= _blk(propagandaBuff)
+	_apply_status_effects_to_stats()
+	armyBlock = maxf(0.0, armyBlock)
+	armyDefence = maxf(0.0, armyDefence)
+	# Army-level shield (+30 statuses etc.) becomes a ward: it soaks damage before unit
+	# shields, refills each turn, and is never written into the units themselves.
+	var ward_total: int = maxi(0, armyShield - unit_shield_sum)
+	armyWard = maxi(0, ward_total - wardUsed)
+	armyShield = unit_shield_sum + armyWard
+	armyMaxShield = unit_max_shield_sum + ward_total
+
+
+const ARMY_MULT_CAP: float = 2.5   # army-level mods can at most multiply a unit's hit by this
+
+func melee_mult() -> float:
+	# How army-level effects (commander morale, statuses, protector buffs, propaganda) scale
+	# each unit's melee. Fights read per-unit numbers, so this is how armyPunch reaches them.
+	if rawPunch <= 0.0:
+		return 1.0
+	return clampf(armyPunch / rawPunch, 0.0, ARMY_MULT_CAP)
+
+
+func ranged_mult() -> float:
+	if rawLaunch <= 0.0:
+		return 1.0
+	return clampf(armyLaunch / rawLaunch, 0.0, ARMY_MULT_CAP)
+
+func calculateMaxUnitLevel():
+	if inTile != null:
+		for building in inTile.tileBuildingsList:
+			if building.buildingType == "Barracks":
+				maxUnitLevel = building.buildingLevel
+
+signal raisingArmy
+
+func raiseSelf():
+	if inTile == null:
+		push_warning("Army '%s': raiseSelf() skipped — inTile is null" % ArmyName)
+		return
+	raised = true
+	emit_signal("raisingArmy", self, parentCountry, inTile)
+
+func _on_raise_army_pressed() -> void:
+	if inTile == null:
+		push_warning("Army '%s': raise pressed but inTile is null" % ArmyName)
+		return
+	raised = true
+	emit_signal("raisingArmy", self, parentCountry, inTile)
+
+func _bleed_displaced() -> void:
+	for u in unitsList:
+		var floor_men: int = int(ceil(float(u.unitMaxManpower) * DISPLACED_FLOOR))
+		if u.unitCurrentManpower > floor_men:
+			var loss: int = int(ceil(float(u.unitMaxManpower) * DISPLACED_BLEED))
+			u.unitCurrentManpower = maxi(floor_men, u.unitCurrentManpower - loss)
+
+func addUnitCommander(newCommander):
+	commander = newCommander
+	var passes = 2 if commander.isVicePresident else 1
+	for i in passes:
+		for MilMod in commander.govMilModsLvl1:
+			commanderModifiers1.append(MilMod)
+		for MilMod in commander.govMilModsLvl2:
+			commanderModifiers2.append(MilMod)
+		for MilMod in commander.govMilModsLvl3:
+			commanderModifiers3.append(MilMod)
+	#updateArmyUI()
+
+func applyCountryBeliefMilMods() -> void:
+	# Clear previously-applied belief mods from all units before re-applying.
+	# Belief mods are tagged via beliefMilMods so we can track and remove them.
+	for Unit in unitsList:
+		for mm in beliefMilMods:
+			Unit.removeMilMod(mm)
+	for mm in beliefMilMods:   # the templates themselves were never in the tree — free them
+		if is_instance_valid(mm):
+			mm.queue_free()
+	beliefMilMods.clear()
+
+	if parentCountry == null:
+		return
+
+	# Collect which mod types to grant based on active beliefs and axis level.
+	var modsToGrant: Array[String] = []
+
+	for belief in parentCountry.selectedBeliefs:
+		match belief.beliefType:
+			"George Washington":
+				pass  # Handled by _apply_ualani_aura() adjacency in world.gd
+			"Harriet Tubman":
+				modsToGrant.append("Combahee River Raid")
+			"Abraham Lincoln":
+				modsToGrant.append("Emancipation Advance")
+				modsToGrant.append("Red Badge of Courage")
+			"Theodore Roosevelt":
+				modsToGrant.append("Rough Rider's Charge")
+			"Frederick Douglass":
+				modsToGrant.append("North Star Address")
+			"Sitting Bull":
+				modsToGrant.append("Little Bighorn Ambush")
+			"Inland Maritime Expertise":
+				modsToGrant.append("Woodsman")
+			"Defense Production Act":
+				modsToGrant.append("Vanguard")
+			"National Parks Act":
+				modsToGrant.append("Woodsman")
+			"War Measures Act":
+				modsToGrant.append("Vanguard")
+			"Laura Secord":
+				modsToGrant.append("Secord's Alert")
+			"Louis Riel":
+				modsToGrant.append("Batoche's Stand")
+			"Roméo Dallaire":
+				modsToGrant.append("Peacekeeping Mandate")
+
+	# PROT_08 (Old Ironsides) agreed — USS Constitution Support for all armies
+	if parentCountry.CountryFlags.has("prot_08_agreed"):
+		modsToGrant.append("USS Constitution Support")
+
+	# churchLevel ±3 axis grants
+	match parentCountry.churchLevel:
+		3:
+			modsToGrant.append("Entrenched")
+		-3:
+			modsToGrant.append("Sharpshooter")
+
+	# Instantiate and apply to all units.
+	var milModScene = preload("res://mil_mod.tscn")
+	for modType in modsToGrant:
+		var newMod = milModScene.instantiate()
+		newMod.buildSelf(modType)
+		beliefMilMods.append(newMod)
+		for Unit in unitsList:
+			Unit.addMilMod(newMod)
+
+func commanderCheck():
+	if commander != null:
+		$CommanderButton.visible = true
+		$CommanderButton.icon = commander.governorTexture
+		match commander.governorLevel:
+			1:
+				for MilMod in commanderModifiers1:
+					for Unit in unitsList:
+						Unit.addMilMod(MilMod)
+			2:
+				for MilMod in commanderModifiers2:
+					for Unit in unitsList:
+						Unit.addMilMod(MilMod)
+			3:
+				for MilMod in commanderModifiers3:
+					for Unit in unitsList:
+						Unit.addMilMod(MilMod)
+
+signal commanderButtonPressed
+func _on_commander_button_pressed() -> void:
+	# Pass both the current commander (may be null) AND this army so the
+	# world can decide whether to show details or open a commander picker.
+	emit_signal("commanderButtonPressed", commander, self)
+
+signal battleBuilt
+
+func calculateBattle(armyPath, type, attacker, defenderAPF, lastSelectedPathPoint):
+	var newBattle = load("res://Game Scenes and Scripts/battle.tscn").instantiate()
+	newBattle.buildSelf(type, attacker, self)
+	defenderAPF.showBattle(newBattle)
+	newBattle.sendDefenderResults.connect(calculateDefenderResults)
+	newBattle.sendAttackerResults.connect(calculateAttackerResults)
+	newBattle.deleteBattles.connect(lastSelectedPathPoint.deleteNeighborBattles)
+
+func calculateAttackerResults(type: String, manpowerLossAmount: int) -> void:
+	if manpowerLossAmount <= 0:
+		return
+	var living = unitsList.filter(func(u): return u.unitCurrentManpower > 0)
+	var damagePerUnit = int(manpowerLossAmount / max(1, living.size()))
+	for Unit in living:
+		Unit.takeLosses(type, float(damagePerUnit))
+	if type == "ranged":
+		for Unit in unitsList:
+			Unit.tick_reload()
+	surveySelf()
+	if manpowerInArmy <= 0:
+		emit_signal("armyDestroyed", self)
+
+var _hitSinceLastTurn: bool = false   # depth pass: took losses since its last turn → no reinforcement
+
+func calculateDefenderResults(type: String, manpowerLossAmount: int, raw: bool = false, shield_pierce: int = 0) -> void:
+	if manpowerLossAmount > 0:
+		_hitSinceLastTurn = true
+	if manpowerLossAmount <= 0:
+		return
+	if raw and armyWard > 0:
+		# Army ward (status/protector shield) soaks the non-piercing share first.
+		var soak: int = mini(armyWard, maxi(0, manpowerLossAmount - shield_pierce))
+		armyWard -= soak
+		wardUsed += soak
+		manpowerLossAmount -= soak
+	var living = unitsList.filter(func(u): return u.unitCurrentManpower > 0)
+	var damagePerUnit = int(manpowerLossAmount / max(1, living.size()))
+	var pierce_per_unit = int(shield_pierce / max(1, living.size()))
+	for Unit in living:
+		if raw:
+			# compute_battle already applied block. Pierce portion ignores shield; the rest absorbs it.
+			var dmg: int = damagePerUnit
+			var pierce: int = min(pierce_per_unit, dmg)
+			var normal: int = dmg - pierce
+			if Unit.unitShield > 0:
+				var absorbed: int = min(Unit.unitShield, normal)
+				Unit.unitShield -= absorbed
+				normal -= absorbed
+			Unit.unitCurrentManpower = max(0, Unit.unitCurrentManpower - pierce - normal)
+		else:
+			Unit.takeLosses(type, float(damagePerUnit))
+	surveySelf()
+	if manpowerInArmy <= 0:
+		emit_signal("armyDestroyed", self)
+
+var bannerButtonScene= load("res://banner_button.tscn")
+
+func _on_banner_button_pressed() -> void:
+	if $VBoxContainer/BannerControl/BannerContainer.get_children() != null:
+		for bannerButton in $VBoxContainer/BannerControl/BannerContainer.get_children():
+			bannerButton.queue_free()
+	if $VBoxContainer/BannerControl/BannerContainer.visible == false:
+		for Texture in parentCountry.armyIconList:
+			var newBannerButton = bannerButtonScene.instantiate()
+			newBannerButton.buildSelf(Texture)
+			newBannerButton.bannerButtonPressed.connect(changeArmyBanner)
+			$VBoxContainer/BannerControl/BannerContainer.add_child(newBannerButton)
+		$VBoxContainer/BannerControl/Sprite2D.visible = true
+		$VBoxContainer/BannerControl/BannerContainer.visible = true
+	else:
+		$VBoxContainer/BannerControl/BannerContainer.visible = false
+		$VBoxContainer/BannerControl/Sprite2D.visible = false
+
+signal changeBanner
+func changeArmyBanner(icon):
+	armyIcon = icon
+	$VBoxContainer/BannerControl/BannerSprite.texture = armyIcon
+	$VBoxContainer/BannerControl/Sprite2D.visible = false
+	$VBoxContainer/BannerControl/BannerContainer.visible = false
+
+func _guard_level() -> int:
+	if not isGuarding:
+		return 0
+	if parentCountry == null:
+		return 1
+	const MIL_ORG_TECHS := ["Organization", "Logistics", "Tactics", "Authority"]
+	var bonus: int = 0
+	for tech in parentCountry.unlockedTechnologies:
+		if tech.techName in MIL_ORG_TECHS:
+			bonus += 1
+	return clampi(1 + bonus, 1, 4)
+
+func cancelGuard() -> void:
+	isGuarding = false
+	var guard_btn = get_node_or_null("VBoxContainer/GuardButton")
+	if guard_btn != null:
+		guard_btn.set_pressed_no_signal(false)
+
+func _on_guard_button_toggled(button_pressed: bool) -> void:
+	isGuarding = button_pressed
+
+#=================
+#Helpers
+#================
+func has_ready_ranged_units() -> bool:
+	for Unit in unitsList:
+		if Unit.can_fire_ranged():
+			return true
+	return false
+
+func has_melee_units() -> bool:
+	for Unit in unitsList:
+		if Unit.can_charge_melee():
+			return true
+	return false
+
+func start_fired_reloads() -> void:
+	# Units that just FIRED begin reloading (weapons with reloadTurns > 0 only).
+	for u in unitsList:
+		if u.unitCurrentManpower > 0 and u.unitStance == "fire" \
+				and u.unitWeapon != null and u.unitWeapon.reloadTurns > 0 and not u.is_reloading():
+			u.start_reload()
+
+
+func tick_all_reloads() -> void:
+	for Unit in unitsList:
+		if Unit.is_reloading():
+			Unit.tick_reload()
+
+func get_army_weapon_classes() -> Dictionary:
+	var counts = {"Saber": 0, "Musket": 0, "Artillery": 0, "Legacy": 0}
+	for Unit in unitsList:
+		if Unit.unitWeapon != null:
+			var wClass = Unit.unitWeapon.weaponClass
+			if counts.has(wClass):
+				counts[wClass] += 1
+			else:
+				counts[wClass] = 1
+	return counts
+
+func has_artillery() -> bool:
+	for u in unitsList:
+		if u != null and u.unitWeapon != null and u.unitWeapon.is_artillery():
+			return true
+	return false
+
+
+func artillery_can_move() -> bool:
+	# Moving costs the cannon an action point — every artillery unit needs one to spare.
+	for u in unitsList:
+		if u != null and u.unitWeapon != null and u.unitWeapon.is_artillery():
+			if u.unitCurrentAP <= 0:
+				return false
+	return true
+
+
+func spend_artillery_move_ap() -> void:
+	for u in unitsList:
+		if u != null and u.unitWeapon != null and u.unitWeapon.is_artillery():
+			u.spend_ap()
+
+
+func is_pure_artillery() -> bool:
+	var classes = get_army_weapon_classes()
+	return classes.get("Artillery", 0) > 0 and \
+		   classes.get("Saber", 0) == 0 and \
+		   classes.get("Musket", 0) == 0

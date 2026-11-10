@@ -59,6 +59,13 @@ func _add_button(parent: Node, text: String, cb: Callable) -> void:
 	parent.add_child(b)
 
 func open() -> void:
+	var layer = get_parent()
+	if layer != null:
+		if layer.has_method("closeAllPanels"):
+			layer.closeAllPanels()   # one panel at a time, and the pause menu is a panel
+		layer.move_child(self, -1)   # above the HUD pieces that were added after it
+		if _settings_panel != null and _settings_panel.get_parent() == layer:
+			layer.move_child(_settings_panel, -1)
 	visible = true
 	get_tree().paused = true
 

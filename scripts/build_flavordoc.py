@@ -539,6 +539,24 @@ ICONS = [
 # mod name | source | figure/act | type | effect | historical flavor | status
 
 BELIEF_MODS = [
+    # ── Commander Trait Mods (liberation economy: saber and cannon commanders) ──
+    ("Light Horse", "Commander trait — saber archetypes",
+     "infantryMod", "Saber units +2 Attack per level and +2 Defense",
+     "Raised in the saddle and steady at the gallop. Cowmen, circuit riders, patroons and trick riders: people who were on a horse before they were in an army.",
+     "FIRST DRAFT"),
+    ("Thunder Charge", "Commander trait — saber archetypes",
+     "infantryMod", "Saber units +4 Attack per level on first engagement from current position",
+     "The first charge is the one they remember. Hit before the line has finished forming and the rest of the fight is downhill.",
+     "FIRST DRAFT"),
+    ("Gun Captain", "Commander trait — artillery archetypes",
+     "siegeMod", "Artillery units +4 Ranged Attack per level",
+     "Every crew knows its drill and every gun its range. Ship's gunners, ordnance clerks and people who can do the trajectory in their head.",
+     "FIRST DRAFT"),
+    ("Canister Shot", "Commander trait — artillery archetypes",
+     "siegeMod", "Artillery units +4 Ranged Attack per level while holding or fortified",
+     "Let them come close, then load tin and iron. A battery that waits is worth two that fire early.",
+     "FIRST DRAFT"),
+
     # ── American Icon Mods ───────────────────────────────────────────────────
     ("Spirit of the General", "Icon — George Washington",
      "ualaniAura", "+15% Attack to all friendly units adjacent to Ualani",

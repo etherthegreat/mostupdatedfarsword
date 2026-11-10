@@ -245,6 +245,26 @@ func buildSelf(Type):
 			milModDescription = str("[i]Powder and ball, faster than any rival:[/i][color= green] Reload reduced by 1 round[/color]")
 			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
 			milModResource = "None"
+		"Light Horse":
+			infantryMod = true
+			milModDescription = str("[i]Raised in the saddle and steady at the gallop:[/i][color= green] Saber units +2 Attack per Level and +2 Defense[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"Thunder Charge":
+			infantryMod = true
+			milModDescription = str("[i]The first charge is the one they remember:[/i][color= green] Saber units +4 Attack per Level on first engagement from current position[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"Gun Captain":
+			siegeMod = true
+			milModDescription = str("[i]Every crew knows its drill and every gun its range:[/i][color= green] Artillery units +4 Ranged Attack per Level[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
+		"Canister Shot":
+			siegeMod = true
+			milModDescription = str("[i]Let them come close, then load tin and iron:[/i][color= green] Artillery units +4 Ranged Attack per Level while holding or fortified[/color]")
+			milModTexture = load("res://art assets/ModifierIcons/milMods/weird shape.png")
+			milModResource = "None"
 		"Powder & Shot":
 			siegeMod = true
 			milModDescription = str("[i]The cannons never run dry:[/i][color= green] +3 Siege Attack per Level[/color]")

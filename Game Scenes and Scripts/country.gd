@@ -59,7 +59,11 @@ var mandateThreshold: int #can be 0 to 100.  almost always starts at 50 for ever
 
 #gains per month
 var DPM: int #dollars per month (renamed from DPM)
-const DEMO_BASE_DOLLARS := 370   # flat treasury income so peace turns build a real Dollars nest egg (tune freely)
+# Liberation economy: a small flat base, and the rest comes from the land you hold.
+# Markets carry most of it (see MARKET_DOLLARS_PER_LEVEL in building.gd).
+const DEMO_BASE_DOLLARS := 120
+const DOLLARS_PER_HELD_TILE := 1
+const COMMANDER_ARMY_UPKEEP := 10   # flat dollars a turn for a commander army, whatever its level
 const MANPOWER_MAX_TURNS := 30   # Manpower reserve caps at 30 turns of barracks output (barracks-based ceiling)
 const BALANCE_MANPOWER := 120   # religion dial at Balanced = max manpower/turn; falls off toward the extremes
 const BALANCE_STEP := 35
@@ -602,14 +606,14 @@ signal displayCommander
 func showCommander(commander, army):
 	emit_signal("displayCommander", commander, army)
 
-func addNewUnit(Army, UnitType, Level, WeaponType, OreType, ArmorType, curMen, curWeapons):
+func addNewUnit(Army, UnitType, Level, WeaponType, OreType, ArmorType, curMen, curWeapons, attached: bool = false):
 	var bestUniform := getBestUniform()
 	if bestUniform != "":
 		ArmorType = bestUniform  # researched UNIFORM tech auto-upgrades recruits
 	var newUnit = Unit.new()
 	newUnit.getUnitInfo.connect(updateUnit)
 	newUnit.buildSelf(self, UnitType, Level, WeaponType, OreType, ArmorType, curMen, curWeapons)
-	Army.addUnitToArmy(newUnit)
+	Army.addUnitToArmy(newUnit, attached)
 	Army.updateArmyUI()
 
 func updateUnit(type, unitNode):
@@ -676,7 +680,7 @@ signal raiseThisArmySignal
 func raiseThisArmy(Army, country, Tile):
 	emit_signal("raiseThisArmySignal", Army, country, Tile)
 
-func addArmy(Name, TileNumber, icon = null, tags: Array = []):
+func addArmy(Name, TileNumber, icon = null, tags: Array = [], custom_units: Array = []):
 	# icon is optional — defaults to CID-based icon if not provided
 	if icon == null:
 		icon = _get_default_army_icon()
@@ -690,6 +694,16 @@ func addArmy(Name, TileNumber, icon = null, tags: Array = []):
 		armyInstance.armyTags = tags
 	var templates = ArmyDatabase.get_templates_for_country(CID)
 	var template_matched := false
+	# Minutemen contracts pass their two units in directly:
+	# [unit class, level, weapon, ore, uniform, men, weapons carried] each.
+	if not custom_units.is_empty():
+		for cu in custom_units:
+			if cu is Unit:
+				armyInstance.addUnitToArmy(cu)   # units handed back by a detach
+			else:
+				addNewUnit(armyInstance, cu[0], cu[1], cu[2], cu[3], cu[4], cu[5], cu[6])
+		template_matched = true
+		templates = []
 	for template in templates:
 		if template.get("armyName", "") == Name:
 			if tags.is_empty():
@@ -1371,6 +1385,7 @@ func surveyResources():
 		NPM += Tile.buildingInfluenceOutput
 		MAN += Tile.buildingManpowerOutput
 	if Player:
+		DPM += OwnedTileList.size() * DOLLARS_PER_HELD_TILE
 		DPM += DEMO_BASE_DOLLARS   # flat treasury income — must run BEFORE collectTaxes folds DPM into Dollars
 	# Depth pass 2026-10-31: upkeep is billed BEFORE taxes fold into the treasury (it used to
 	# run after, so armies were free).
@@ -1381,6 +1396,7 @@ func surveyResources():
 	TotalWood = maxi(TotalWood, 0)
 	TotalMetal = maxi(TotalMetal, 0)
 	TotalFood = maxi(TotalFood, 0)
+	TotalManpower = maxi(TotalManpower, 0)   # recruits drawn by bloodied armies could push the reserve below zero
 	# Manpower reserve ceiling scales with barracks (MAN is barracks-only output)
 	var _manpowerMax: int = max(MAN * MANPOWER_MAX_TURNS, 2000)
 	TotalManpower = min(TotalManpower, _manpowerMax)
@@ -1466,8 +1482,11 @@ func payUnitMaintenance():
 		FPM -= Army.armyFoodCost
 		WPM -= Army.armyWoodCost
 		MPM -= Army.armyMetalCost
-		DPM -= Army.armyGoldCost     # armyGoldCost still works (dollars cost)
-		lastUpkeepDollars += Army.armyGoldCost
+		# A commander army costs its flat upkeep and nothing else; a contract company
+		# costs no dollars at all (both handled below).
+		var _gold_cost: int = 0 if (Player and (Army.commanderHome != null or Army.isContract)) else Army.armyGoldCost
+		DPM -= _gold_cost
+		lastUpkeepDollars += _gold_cost
 		# armyFaithCost removed — faith merged into culture
 		PPM -= Army.armyWeaponsCost
 		APM -= Army.armyMagicCost
@@ -1477,10 +1496,13 @@ func payUnitMaintenance():
 		NDT -= Army.armyMandateCost
 		NPM -= Army.armyInfluenceCost
 		MAN += Army.armyManpowerCost
-		if Player:
+		if Player and Army.commanderHome != null:
+			DPM -= COMMANDER_ARMY_UPKEEP
+			lastUpkeepDollars += COMMANDER_ARMY_UPKEEP
+		elif Player and not Army.isContract:   # a contract company is paid for up front, in Manpower
 			var lv: int = 0
 			for u in Army.unitsList:
-				if u != null and u.unitCurrentManpower > 0:
+				if u != null and u.unitCurrentManpower > 0 and not (u in Army.attachedUnits):
 					lv += u.unitLevel
 			DPM -= lv * UPKEEP_DOLLARS_PER_UNIT_LEVEL
 			lastUpkeepDollars += lv * UPKEEP_DOLLARS_PER_UNIT_LEVEL
@@ -1755,14 +1777,25 @@ func _uk_calculate_turn() -> void:
 			_ai_set_stances(army, true)   # brace while retreating
 			_uk_retreat_to_supply(army)
 		else:
-			var target = _find_attack_target(army)
-			if target != null:
-				_ai_set_stances(army, false)   # aggressive: fire + charge
-				_uk_attack_tile(army, target)
-			else:
-				_ai_set_stances(army, true)    # no fight this turn — brace
+			# Same movement as the player's armies: one step per movement point
+			# (saber 1.5, musket 1, artillery 0.5 per unit, rounded down), and an attack
+			# ends the march.
+			var steps: int = army.base_movement_points()
+			var marched: bool = false
+			while steps > 0:
+				var target = _find_attack_target(army)
+				if target != null:
+					_ai_set_stances(army, false)   # aggressive: fire + charge
+					_uk_attack_tile(army, target)
+					marched = true
+					break
+				_ai_set_stances(army, true)    # no fight from here — brace
 				if not _uk_try_advance(army):
-					army.isGuarding = true
+					break
+				marched = true
+				steps -= 1
+			if not marched:
+				army.isGuarding = true
 
 
 func _tile_occupant(tile):

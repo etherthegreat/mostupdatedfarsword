@@ -130,6 +130,7 @@ func build_commander(arc: Dictionary, rows: Array) -> void:
 	if home != null and is_instance_valid(home):
 		sub += "  •  stationed at " + str(home.tileName)
 	col.add_child(_label(sub, 14, DIM))
+	_add_army_lines(col, gov)
 	var n_done: int = 0
 	for r in rows:
 		if r.get("done", false):
@@ -141,6 +142,39 @@ func build_commander(arc: Dictionary, rows: Array) -> void:
 	var foot := "REUNION UNLOCKED" if all_done \
 			else "Finish all three to unlock this commander's reunion scene"
 	_box.add_child(_label(foot, 13, GOLD if all_done else FAINT))
+
+
+# The army that came with this commander: its two units, men, strength and where it stands.
+func _add_army_lines(col: Node, gov) -> void:
+	if gov == null or gov.get("commanderHomeTile") == null:
+		return
+	var a = gov.get("commanderArmy")
+	if a == null or not is_instance_valid(a) or a.deleteMode or a.manpowerInArmy <= 0:
+		var left: int = int(gov.get("commanderRemusterTurns")) if gov.get("commanderRemusterTurns") != null else -1
+		var home = gov.commanderHomeTile
+		if left > 0 and home != null and is_instance_valid(home):
+			col.add_child(_label("Army destroyed. A new one musters at %s after %d more turns of holding it." % [str(home.tileName), left], 14, Color(0.95, 0.45, 0.40)))
+		else:
+			col.add_child(_label("Army mustering", 14, FAINT))
+		return
+	var kinds: Array = []
+	for u in a.unitsList:
+		if u in a.attachedUnits:
+			continue
+		var wpn = u.unitWeapon
+		if wpn != null and wpn.is_saber():
+			kinds.append("Saber")
+		elif wpn != null and wpn.is_artillery():
+			kinds.append("Artillery")
+		else:
+			kinds.append("Musket")
+	var where: String = str(a.inTile.tileName) if a.inTile != null and is_instance_valid(a.inTile) else "the field"
+	col.add_child(_label("%s  •  %s  •  %d / %d men  •  attack %d  •  at %s" % [
+		str(a.ArmyName), " + ".join(kinds), int(a.manpowerInArmy), int(a.maxManpower), int(round(a.armyPunch + a.armyLaunch)), where], 14, GOLD))
+	if a.attachedTurnsLeft >= 0:
+		col.add_child(_label("Attached: %s (%s)" % [str(a.attachedName), "last turn" if a.attachedTurnsLeft <= 1 else "%d turns left" % int(a.attachedTurnsLeft)], 13, DIM))
+	if a.displaced:
+		col.add_child(_label("DISPLACED: the enemy holds %s. No recruits, and the army loses men each turn until it is retaken." % str(gov.commanderHomeTile.tileName), 13, Color(0.95, 0.45, 0.40)))
 
 
 # ── PIECES ───────────────────────────────────────────────────────────────────

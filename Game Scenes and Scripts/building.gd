@@ -29,6 +29,11 @@ var faithChurchLevel: int
 #Resources
 #each month, this building produces this amount of resources
 var foodPerLevel: int = 0
+# Liberation economy: Markets are where the dollars come from. A held Market pays this
+# much per level each turn, before corruption.
+const MARKET_DOLLARS_PER_LEVEL := 14
+const GOVERNOR_MANPOWER_SHARE := 0.1
+const BARRACKS_MANPOWER_PER_LEVEL := 25   # was 15
 var dollarsPerLevel: float = 0   # renamed from dollarsPerLevel
 var woodPerLevel: int = 0
 var magicPerLevel: int = 0
@@ -456,6 +461,11 @@ func _apply_governor_archetype_bonus(bType: String) -> void:
 						2: happinessPerLevel += 1; culturePerLevel += 1
 						3: happinessPerLevel += 2; culturePerLevel += 2; dollarsPerLevel += 1
 
+	# Liberation economy: which commanders a run deals used to swing manpower income from
+	# about 300 to about 900 a turn. A governor's manpower bonus is now a tenth of the
+	# written figure, so it is a nudge and the Barracks themselves set the pace.
+	if manpowerPerLevel > mp0:
+		manpowerPerLevel = mp0 + int(round(float(manpowerPerLevel - mp0) * GOVERNOR_MANPOWER_SHARE))
 	# Write Dic entries for every resource that changed so the tile info panel can show the breakdown
 	var label := "Governor Bonus (" + tile.tileGovernor.governorType + ")"
 	if foodPerLevel      != f0:   foodDic[label]      = (foodPerLevel      - f0)   * buildingLevel
@@ -553,14 +563,14 @@ func buildBuilding():
 		"Market":
 			# Market = Workshop equivalent (produces Dollars)
 			buildingSprite = load("res://art assets/finishedAssets/buildingsketches/workshop.png")
-			dollarsPerLevel += 1
+			dollarsPerLevel += MARKET_DOLLARS_PER_LEVEL
 			metalCostPerLevel += 1
 			woodCostPerLevel += 1
 			foodPurchaseCost = 25
 			goldPurchaseCost = 25
 			woodPurchaseCost = 50
 			metalPurchaseCost = 100
-			dollarsDic["Base Market Dollars Output"] = (1 * buildingLevel)
+			dollarsDic["Base Market Dollars Output"] = (MARKET_DOLLARS_PER_LEVEL * buildingLevel)
 			woodDic["Base Market Wood Cost"] = (-1 * buildingLevel)
 			metalDic["Base Market Metal Cost"] = (-1 * buildingLevel)
 		"Dock":
@@ -662,7 +672,7 @@ func buildBuilding():
 			metalDic["Base Forge Metal Cost"] = (-1 * buildingLevel)
 		"Barracks":
 			buildingSprite = load("res://art assets/finishedAssets/buildingsketches/barracks.png")
-			manpowerPerLevel += 15
+			manpowerPerLevel += BARRACKS_MANPOWER_PER_LEVEL
 			dollarsCostPerLevel += 2
 			woodCostPerLevel += 1
 			foodCostPerLevel += 1

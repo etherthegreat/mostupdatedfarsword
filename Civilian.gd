@@ -7,6 +7,12 @@ var civilianKit: kit
 var player
 
 var stationTile: Tile
+
+# Liberation economy: a worker comes with a Workshop and carries free building purchases.
+var isWorker: bool = false
+var workshopTile = null   # the Construction Site this worker belongs to
+var fbp: int = 0          # free building purchases left
+var captured: bool = false   # held on a tile the enemy took; freed when the tile is retaken
 var stationNode: pathPointButton
 
 var foodCost: int

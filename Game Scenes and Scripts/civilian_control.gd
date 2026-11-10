@@ -17,6 +17,7 @@ func buildNewCivilian(Tile):
 	newCivilian.toolSignal.connect(loadToolsGrid)
 	newCivilian.raiseSignal.connect(raiseCivilianUnit)
 	$"Civilian Container".add_child(newCivilian)
+	return newCivilian
 
 signal raiseThisUnit
 func raiseCivilianUnit(civToRaise):

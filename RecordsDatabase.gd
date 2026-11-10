@@ -487,6 +487,22 @@ func _register_all() -> void:
 		"The cannons never run dry. +3 Siege Attack per level.",
 		{"see_also": ["milmod_double_shot"]})
 
+	_add("milmod_light_horse", "Military Modifiers", "Light Horse",
+		"Raised in the saddle and steady at the gallop. Saber units +2 Attack per level and +2 Defense.",
+		{"see_also": ["milmod_saber_drill", "milmod_thunder_charge"]})
+
+	_add("milmod_thunder_charge", "Military Modifiers", "Thunder Charge",
+		"The first charge is the one they remember. Saber units +4 Attack per level on first engagement from current position.",
+		{"see_also": ["milmod_light_horse"]})
+
+	_add("milmod_gun_captain", "Military Modifiers", "Gun Captain",
+		"Every crew knows its drill and every gun its range. Artillery units +4 Ranged Attack per level.",
+		{"see_also": ["milmod_powder_shot", "milmod_canister_shot"]})
+
+	_add("milmod_canister_shot", "Military Modifiers", "Canister Shot",
+		"Let them come close, then load tin and iron. Artillery units +4 Ranged Attack per level while holding or fortified.",
+		{"see_also": ["milmod_gun_captain"]})
+
 	_add("milmod_fortified_position", "Military Modifiers", "Fortified Position",
 		"Commander mod. All units +3 Defense per level in tiles with Barracks or Fortress.",
 		{"see_also": ["arc_soldier", "bld_barracks"]})

@@ -54,6 +54,7 @@ var pips: Array = []          # [{kind, spent}]
 var hp := 1.0                 # manpower fraction
 var shield := 0.0             # shield fraction (0 when the army has no shield)
 var covered := false
+var contract := -1            # turns left on a Minutemen contract (-1 = not a contract company)
 var compact := false:
 	set(v):
 		if v != compact:
@@ -120,7 +121,8 @@ func update_from(army) -> void:
 	var mp: float = float(army.manpowerInArmy) / maxf(1.0, float(army.maxManpower))
 	var sh: float = float(army.armyShield) / float(army.armyMaxShield) if army.armyMaxShield > 0 else 0.0
 	var s := army_strength(army)
-	var sig := "%d|%s|%.3f|%.3f|%s" % [s, str(p), mp, sh, cov]
+	var ct: int = int(army.contractTurnsLeft) if army.get("isContract") else int(army.get("attachedTurnsLeft")) if army.get("attachedTurnsLeft") != null else -1
+	var sig := "%d|%s|%.3f|%.3f|%s|%d" % [s, str(p), mp, sh, cov, ct]
 	if sig == _sig:
 		return
 	_sig = sig
@@ -129,6 +131,7 @@ func update_from(army) -> void:
 	hp = clampf(mp, 0.0, 1.0)
 	shield = clampf(sh, 0.0, 1.0)
 	covered = cov
+	contract = ct
 	queue_redraw()
 
 
@@ -165,6 +168,8 @@ func rect_local() -> Rect2:
 func tooltip_text() -> String:
 	var lines := PackedStringArray(["STR %d — best hit of every unit combined" % strength])
 	lines.append("COVERED — someone answers a charge" if covered else "EXPOSED — nobody can answer a charge")
+	if contract >= 0:
+		lines.append("Minutemen: last turn of service" if contract <= 1 else "Minutemen: %d turns left on the contract" % contract)
 	for i in pips.size():
 		var st: Dictionary = PIP_STYLES.get(pips[i].kind, {})
 		lines.append("Unit %d: %s%s" % [i + 1, str(st.get("tip", pips[i].kind)), "  (no actions left)" if pips[i].spent else ""])
@@ -185,6 +190,8 @@ func _draw() -> void:
 	sb.shadow_color = Color(0, 0, 0, 0.45)
 	sb.shadow_size = 3
 	draw_style_box(sb, r)
+	if contract >= 0:
+		_draw_contract_chip(Vector2(r.end.x + 6, r.position.y - 2))
 
 	var vcol: Color = VERDICT_COLORS[verdict] if verdict >= 0 else Color.WHITE
 	var fs := FS_COMPACT if compact else FS_FULL
@@ -209,6 +216,19 @@ func _draw() -> void:
 		_text(Vector2(x - 2, midY + 5), "+%d" % (pips.size() - MAX_PIPS), 14, Color(1, 1, 1, 0.85))
 	# bottom: manpower + shield
 	_bar(Rect2(r.position.x + 8, r.end.y - 11, r.size.x - 16, 6))
+
+
+# Turns left on a Minutemen contract, riding the top-right corner of the plaque.
+# On its last turn the chip fills orange, so it reads without relying on the number.
+func _draw_contract_chip(c: Vector2) -> void:
+	var last: bool = contract <= 1
+	draw_circle(c, 19.0, Color(0, 0, 0, 0.55))
+	draw_circle(c, 17.0, EXPOSED if last else BG)
+	draw_arc(c, 17.0, 0.0, TAU, 32, EXPOSED if last else MANPOWER, 2.5, true)
+	var s := str(maxi(0, contract))
+	var fs := 25
+	var w: float = _font.get_string_size(s, HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x
+	_text(c + Vector2(-w * 0.5, fs * 0.36), s, fs, Color(0.08, 0.06, 0.05) if last else MANPOWER)
 
 
 func _draw_emblem(c: Vector2, is_covered: bool, col: Color) -> void:

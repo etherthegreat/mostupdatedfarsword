@@ -1372,8 +1372,16 @@ func setMovableHighlight(on: bool) -> void:
 	modulate = Color(1.4, 1.4, 0.7) if on else Color(1, 1, 1)
 
 
+# True when an open panel covers the spot the mouse is on (see canvas_layer.blocks_map_at).
+func _under_open_panel() -> bool:
+	var layer = get_node_or_null("../../CanvasLayer")
+	return layer != null and layer.has_method("blocks_map_at") and layer.blocks_map_at(get_viewport().get_mouse_position())
+
+
 func _on_area_2d_input_event(viewport, event, shape_idx):
 	if event is InputEventMouseButton and event.pressed:
+		if _under_open_panel():
+			return   # the click belongs to the panel on top of this tile
 		if Input.is_action_just_pressed('Left Click'):
 			if spellToCast == null:
 				emit_signal("clicked", self)

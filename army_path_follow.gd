@@ -265,6 +265,8 @@ func _on_apf_mouse_exited() -> void:
 	emit_signal("apfHovered", self, false)
 
 
+const CONTRACT_TOKEN_SCALE := 0.72
+
 func _update_token_scale() -> void:
 	# Zoom-responsive: hold a constant on-screen size (inverse of camera zoom) * hover pop.
 	if _cam == null or not is_instance_valid(_cam):
@@ -276,6 +278,8 @@ func _update_token_scale() -> void:
 	# so zooming out shrinks them and stacks stop piling into one blob; close-up
 	# they grow a little. At zoom 1.0 the size is unchanged.
 	var sc: float = (APF_BASE_SCALE / pow(zoomv, 0.6)) * _hover_scale
+	if thisArmy != null and is_instance_valid(thisArmy) and thisArmy.isContract:
+		sc *= CONTRACT_TOKEN_SCALE   # Minutemen companies are drawn smaller than commander armies
 	scale = Vector2(sc, sc)
 	# GUI pass 2026-10-25: the "104/104" numbers only appear when zoomed in close
 	# (or when hovering the token). Far/mid zoom shows just the icon + bars.

@@ -292,6 +292,8 @@ func newGameBuild(CID, gameLang, isCoop: bool = false):
 	$CanvasLayer/LoadingProgressBar.visible = false
 	$CanvasLayer/LoadingLabel.visible = false
 	generateBarracksCommanders()
+	_spawn_starting_militia()
+	_setup_construction_sites()
 	# Quiet start — no field armies until the turn-9 mobilization / turn-10 invasion.
 	# spawnStartingArmies()
 	# Populate AI country commanders only (no start armies during peace).
@@ -317,13 +319,16 @@ func newGameBuild(CID, gameLang, isCoop: bool = false):
 # ── TRAILER LAUNCH BOOST ────────────────────────────────────────────────────
 # One-time kick at game start so there's plenty of ACTION for filming: a fat
 # treasury and a musket-infantry army led by the Secret Service Detail.
+const TRAILER_LAUNCH_BOOST := false   # true = +1,000 dollars, manpower and weapons at the start, for filming
+
 func _trailer_launch_boost() -> void:
 	if playerCountryNode == null:
 		return
-	# Fat treasury for immediate mustering.
-	playerCountryNode.TotalDollars   += 1000
-	playerCountryNode.TotalManpower  += 1000
-	playerCountryNode.TotalWeapons   += 1000
+	# Filming aid: a fat treasury on turn 1. Off for real runs (TRAILER_LAUNCH_BOOST).
+	if TRAILER_LAUNCH_BOOST:
+		playerCountryNode.TotalDollars   += 1000
+		playerCountryNode.TotalManpower  += 1000
+		playerCountryNode.TotalWeapons   += 1000
 	updateResourceBar()
 
 	# Spawn the Secret Service Detail — a musket-infantry army (from army_templates.csv)
@@ -395,6 +400,7 @@ func _apply_archetype_mods(gov: governor, arc_id: String) -> void:
 			gov.addMilMod("Student Body Commander", 123)
 			gov.addMilMod("Field Research",          23)
 			gov.addMilMod("Cultural Corps",           3)
+			gov.addMilMod("Gun Captain", 123)
 		"ARC_04":
 			gov.addMilMod("Swamp Legs",       123)
 			gov.addMilMod("Saber Drill",      123)
@@ -402,7 +408,7 @@ func _apply_archetype_mods(gov: governor, arc_id: String) -> void:
 			gov.addMilMod("Last Stand",         3)
 		"ARC_05":
 			gov.addMilMod("Farmhand",         123)
-			gov.addMilMod("Hill Runner",      123)
+			gov.addMilMod("Gun Captain",      123)
 			gov.addMilMod("Corrupted Ground",  23)
 			gov.addMilMod("Liberator's Will",   3)
 		"ARC_06":
@@ -412,12 +418,12 @@ func _apply_archetype_mods(gov: governor, arc_id: String) -> void:
 			gov.addMilMod("Double Cannonade",   3)
 		"ARC_07":
 			gov.addMilMod("Street Tough",     123)
-			gov.addMilMod("Marksman",         123)
+			gov.addMilMod("Gun Captain",      123)
 			gov.addMilMod("Night Raider",      23)
 			gov.addMilMod("Ghost March",        3)
 		"ARC_08":
 			gov.addMilMod("Farmhand",         123)
-			gov.addMilMod("Quick Reload",     123)
+			gov.addMilMod("Light Horse",      123)
 			gov.addMilMod("Corrupted Ground",  23)
 			gov.addMilMod("The Long March",     3)
 		"ARC_09":
@@ -442,18 +448,18 @@ func _apply_archetype_mods(gov: governor, arc_id: String) -> void:
 			gov.addMilMod("Liberator's Will",   3)
 		"ARC_13":
 			gov.addMilMod("Coastal Watch",    123)
-			gov.addMilMod("Marksman",         123)
+			gov.addMilMod("Gun Captain",      123)
 			gov.addMilMod("Marine",            23)
 			gov.addMilMod("Naval Supremacy",    3)
 		"ARC_14":
 			gov.addMilMod("Woodsman",         123)
-			gov.addMilMod("Hill Runner",      123)
+			gov.addMilMod("Light Horse",      123)
 			gov.addMilMod("Rallying Voice",    23)
 			gov.addMilMod("Undaunted",          3)
 		"ARC_15":
 			gov.addMilMod("Fortified Position",123)
-			gov.addMilMod("Street Tough",     123)
-			gov.addMilMod("Flanking Drill",    23)
+			gov.addMilMod("Gun Captain",      123)
+			gov.addMilMod("Canister Shot",     23)
 			gov.addMilMod("Iron Wall",          3)
 		"ARC_16":
 			gov.addMilMod("Powder & Shot",    123)
@@ -483,7 +489,7 @@ func _apply_archetype_mods(gov: governor, arc_id: String) -> void:
 		"ARC_21":
 			gov.addMilMod("Hill Runner",      123)
 			gov.addMilMod("Saber Drill",      123)
-			gov.addMilMod("Iron Bayonet",      23)
+			gov.addMilMod("Thunder Charge",    23)
 			gov.addMilMod("Last Stand",         3)
 		"ARC_22":
 			gov.addMilMod("Woodsman",         123)
@@ -502,13 +508,13 @@ func _apply_archetype_mods(gov: governor, arc_id: String) -> void:
 			gov.addMilMod("Continental Line",   3)
 		"ARC_25":
 			gov.addMilMod("Street Tough",     123)
-			gov.addMilMod("Marksman",         123)
-			gov.addMilMod("Night Raider",      23)
+			gov.addMilMod("Light Horse",      123)
+			gov.addMilMod("Thunder Charge",    23)
 			gov.addMilMod("The Long March",     3)
 		# ── NEW ENGLAND ────────────────────────────────────────────────────────
 		"ARC_26": # Boston Irish Dockworker
 			gov.addMilMod("Street Tough",     123)
-			gov.addMilMod("Quick Reload",     123)
+			gov.addMilMod("Saber Drill",      123)
 			gov.addMilMod("Iron Bayonet",      23)
 			gov.addMilMod("Last Stand",         3)
 		"ARC_27": # Cape Ann Fisherwoman
@@ -533,7 +539,7 @@ func _apply_archetype_mods(gov: governor, arc_id: String) -> void:
 			gov.addMilMod("Rallying Voice",    23)
 			gov.addMilMod("Undaunted",          3)
 		"ARC_31": # Hudson Valley Patroon
-			gov.addMilMod("Fortified Position",123)
+			gov.addMilMod("Light Horse",       123)
 			gov.addMilMod("Steady Line",      123)
 			gov.addMilMod("Flanking Drill",    23)
 			gov.addMilMod("Iron Wall",          3)
@@ -545,7 +551,7 @@ func _apply_archetype_mods(gov: governor, arc_id: String) -> void:
 			gov.addMilMod("Ghost March",        3)
 		"ARC_33": # Appalachian Moonshiner
 			gov.addMilMod("Hill Runner",      123)
-			gov.addMilMod("Woodsman",         123)
+			gov.addMilMod("Powder & Shot",    123)
 			gov.addMilMod("Night Raider",      23)
 			gov.addMilMod("Ghost March",        3)
 		"ARC_34": # Granny Witch
@@ -560,7 +566,7 @@ func _apply_archetype_mods(gov: governor, arc_id: String) -> void:
 			gov.addMilMod("Marine",            23)
 			gov.addMilMod("Naval Supremacy",    3)
 		"ARC_36": # Tidewater Gentlewoman
-			gov.addMilMod("Steady Line",      123)
+			gov.addMilMod("Light Horse",      123)
 			gov.addMilMod("Rallying Voice",   123)
 			gov.addMilMod("Cleaner",           23)
 			gov.addMilMod("Continental Line",   3)
@@ -593,8 +599,8 @@ func _apply_archetype_mods(gov: governor, arc_id: String) -> void:
 			gov.addMilMod("Terror",             3)
 		"ARC_42": # Florida Cracker Cowman
 			gov.addMilMod("Farmhand",         123)
-			gov.addMilMod("Hill Runner",      123)
-			gov.addMilMod("Guerrilla Tactics", 23)
+			gov.addMilMod("Light Horse",      123)
+			gov.addMilMod("Thunder Charge",    23)
 			gov.addMilMod("Ghost March",        3)
 		# ── INDUSTRIAL / URBAN ─────────────────────────────────────────────────
 		"ARC_43": # Rust Belt Union Organizer
@@ -615,8 +621,8 @@ func _apply_archetype_mods(gov: governor, arc_id: String) -> void:
 		# ── CARIBBEAN / ATLANTIC ───────────────────────────────────────────────
 		"ARC_46": # Bahamian Free Sailor
 			gov.addMilMod("Coastal Watch",    123)
-			gov.addMilMod("Swamp Legs",       123)
-			gov.addMilMod("Marine",            23)
+			gov.addMilMod("Powder & Shot",    123)
+			gov.addMilMod("Canister Shot",     23)
 			gov.addMilMod("Naval Supremacy",    3)
 		# ── WASHINGTON DC ──────────────────────────────────────────────────────
 		"ARC_47": # DC Political Fixer
@@ -1081,93 +1087,32 @@ func generateBarracksCommanders() -> void:
 		playerCountryNode.unlockedGovernors.append(baseball)
 
 	governor.reset_portrait_pool()
-	var used_names: Dictionary = {}
+	_used_commander_names.clear()
 	var generated: int = 0
 
-	for tile in $TileController.get_children():
-		# Only player-owned tiles with a barracks
-		if tile.tileOwner != playerCountry:
-			continue
-		if not tile.buildings.has("barracks"):
-			continue
-		# Skip tiles already governed (e.g., DC if Ualani was stationed there)
-		if tile.filledGovernorSlot:
-			continue
-
-		# ── Pick archetype (terrain + optional region filter) ────────────────
-		var candidates: Array = []
-		for arch in ARCHETYPES:
-			var terrain_ok: bool = tile.terrain in arch["terrain"]
-			var regions: Array = arch.get("regions", [])
-			var region_ok: bool = regions.is_empty() or tile.tileContinent in regions
-			if terrain_ok and region_ok:
-				candidates.append(arch)
-		if candidates.is_empty():
-			# Fallback: terrain only, ignore region constraint
-			for arch in ARCHETYPES:
-				if tile.terrain in arch["terrain"]:
-					candidates.append(arch)
-		if candidates.is_empty():
-			candidates = ARCHETYPES
-		var arch_chosen: Dictionary = candidates[randi() % candidates.size()]
-
-		# ── Pick portrait first — portrait drives name, pronouns, culture ────
-		var new_gov: governor = governor.new()
-		var portrait_data: Dictionary = new_gov.pick_procedural_portrait()
-		new_gov.culture  = portrait_data["culture"]
-		new_gov.pronouns = portrait_data["pronouns"]
-		new_gov.governorTexture = load(portrait_data["path"])
-
-		var first_list: Array = portrait_data["first"]
-		var last_list: Array  = portrait_data["last"]
-
-		var first: String = first_list[randi() % first_list.size()]
-		var last: String  = ""
-		if last_list.size() > 0:
-			last = last_list[randi() % last_list.size()]
-
-		var full_name: String = (first + " " + last).strip_edges()
-
-		# Deduplicate — try up to 8 times before giving up
-		var tries: int = 0
-		while used_names.has(full_name) and tries < 8:
-			first = first_list[randi() % first_list.size()]
-			full_name = (first + " " + last).strip_edges()
-			tries += 1
-		used_names[full_name] = true
-
-		# ── Configure governor from archetype ─────────────────────────────
-		new_gov.governorType        = full_name
-		new_gov.governorArchetypeId = arch_chosen["id"]
-		new_gov.governorPosition    = arch_chosen["position"]
-		new_gov.governorLevel       = 1
-		_apply_archetype_mods(new_gov, arch_chosen["id"])
-		var subj: String = portrait_data["pronouns"].get("subject", "they")
-		var subj_cap: String = subj.substr(0, 1).to_upper() + subj.substr(1)
-		new_gov.governorDescription = \
-			"A " + arch_chosen["name"] + " who answered the revolution's call from " + tile.tileName + "."
-		new_gov.governorBiography = \
-			full_name + " came from " + tile.tileName + " (" + tile.terrain + "). " + \
-			subj_cap + " carr" + ("ies" if subj == "he" or subj == "she" else "y") + \
-			" the skills of " + arch_chosen["name"] + " into the fight for independence."
-		new_gov.hired = false
-		_assign_thanks_content(new_gov, arch_chosen["position"], portrait_data)
-
-		# Add to player's unlocked governor pool
-		playerCountryNode.unlockedGovernors.append(new_gov)
-		_assign_governor_to_faction(new_gov)
-
-		# Auto-assign as the tile's governor so they show up immediately
-		tile.tileGovernor      = new_gov
-		tile.filledGovernorSlot = true
-		new_gov.hired           = true
-
-		# Register their arc in the War Room
-		$CanvasLayer/WarRoomPanel.registerCommanderArc(new_gov, tile)
-
-		generated += 1
-		#print("[Commanders] Generated: ", full_name, " — ", chosen["name"],
-			#  " (", chosen["id"], ") at ", tile.tileName, " [", tile.terrain, "]")
+	if playerCountry == "USA":
+		# Liberation economy: 25 commander homes on Barracks tiles. The starting homes come
+		# with their commander and army; every other home is won by liberating it.
+		_pick_commander_homes()
+		for n in STARTING_COMMANDER_HOMES:
+			if _commander_homes.has(n):
+				_grant_commander_home(_commander_homes[n]["tile"], true)
+				generated += 1
+		_retry_pending_commander_armies(true)
+		_push_commander_homes_to_war_room()
+	else:
+		for tile in $TileController.get_children():
+			# Only player-owned tiles with a barracks
+			if tile.tileOwner != playerCountry:
+				continue
+			if not tile.buildings.has("barracks"):
+				continue
+			# Skip tiles already governed
+			if tile.filledGovernorSlot:
+				continue
+			var cands: Array = _arch_candidates_for(tile)
+			_spawn_home_commander(tile, cands[randi() % cands.size()])
+			generated += 1
 
 	print("[Commanders] Barracks scan complete. ", generated, " commanders generated.")
 
@@ -1177,12 +1122,1318 @@ func generateBarracksCommanders() -> void:
 	# with a commander already assigned.
 	var assigned: int = 0
 	for army in playerCountryNode.countryArmyList:
-		if army.inTile != null and army.inTile.tileGovernor != null:
+		if army.commander == null and army.inTile != null and army.inTile.tileGovernor != null \
+				and not _is_home_commander(army.inTile.tileGovernor):
 			army.addUnitCommander(army.inTile.tileGovernor)
 			army.updateArmyUI()
 			#assigned += 1
 				 # " as commander of ", army.ArmyName)
 				#  " as commander of ", army.ArmyName)
+
+
+# Builds one procedural commander for a Barracks tile from the given archetype, seats them as
+# the tile's governor and opens their War Room file. Name and face are random each run.
+func _spawn_home_commander(tile, arch_chosen: Dictionary) -> governor:
+	# ── Pick portrait first — portrait drives name, pronouns, culture ────
+	var new_gov: governor = governor.new()
+	var portrait_data: Dictionary = new_gov.pick_procedural_portrait()
+	new_gov.culture  = portrait_data["culture"]
+	new_gov.pronouns = portrait_data["pronouns"]
+	new_gov.governorTexture = load(portrait_data["path"])
+
+	var first_list: Array = portrait_data["first"]
+	var last_list: Array  = portrait_data["last"]
+
+	var first: String = first_list[randi() % first_list.size()]
+	var last: String  = ""
+	if last_list.size() > 0:
+		last = last_list[randi() % last_list.size()]
+
+	var full_name: String = (first + " " + last).strip_edges()
+
+	# Deduplicate — try up to 8 times before giving up
+	var tries: int = 0
+	while _used_commander_names.has(full_name) and tries < 8:
+		first = first_list[randi() % first_list.size()]
+		full_name = (first + " " + last).strip_edges()
+		tries += 1
+	_used_commander_names[full_name] = true
+
+	# ── Configure governor from archetype ─────────────────────────────
+	new_gov.governorType        = full_name
+	new_gov.governorArchetypeId = arch_chosen["id"]
+	new_gov.governorPosition    = arch_chosen["position"]
+	new_gov.governorLevel       = 1
+	_apply_archetype_mods(new_gov, arch_chosen["id"])
+	var subj: String = portrait_data["pronouns"].get("subject", "they")
+	var subj_cap: String = subj.substr(0, 1).to_upper() + subj.substr(1)
+	new_gov.governorDescription = \
+		"A " + arch_chosen["name"] + " who answered the revolution's call from " + tile.tileName + "."
+	new_gov.governorBiography = \
+		full_name + " came from " + tile.tileName + " (" + tile.terrain + "). " + \
+		subj_cap + " carr" + ("ies" if subj == "he" or subj == "she" else "y") + \
+		" the skills of " + arch_chosen["name"] + " into the fight for independence."
+	new_gov.hired = false
+	_assign_thanks_content(new_gov, arch_chosen["position"], portrait_data)
+
+	# Add to player's unlocked governor pool
+	playerCountryNode.unlockedGovernors.append(new_gov)
+	_assign_governor_to_faction(new_gov)
+
+	# Auto-assign as the tile's governor so they show up immediately
+	tile.tileGovernor      = new_gov
+	tile.filledGovernorSlot = true
+	new_gov.hired           = true
+
+	# Register their arc in the War Room
+	$CanvasLayer/WarRoomPanel.registerCommanderArc(new_gov, tile)
+	return new_gov
+
+
+const COMMANDER_ARMY_SUFFIX := {
+	"ARC_01": "Wetlands Rangers",    "ARC_02": "Mountain Militia",
+	"ARC_03": "Volunteer Regiment",  "ARC_04": "Forest Skirmishers",
+	"ARC_05": "Green Mountain Boys", "ARC_06": "Harbor Guard",
+	"ARC_07": "Irregular Rifles",    "ARC_08": "Frontier Militia",
+	"ARC_09": "Liberty Brigade",     "ARC_10": "Ranger Company",
+	"ARC_11": "Sons of Liberty",     "ARC_12": "Continental Corps",
+	"ARC_13": "Naval Infantry",      "ARC_14": "Righteous Rifles",
+	"ARC_15": "Federal Guard",       "ARC_16": "Iron Brigade",
+	"ARC_17": "Freedom Rifles",      "ARC_18": "Bayou Raiders",
+	"ARC_19": "Privateer Corps",     "ARC_20": "Pacific Guard",
+	"ARC_21": "Border Company",      "ARC_22": "Forest Rangers",
+	"ARC_23": "Heritage Guard",      "ARC_24": "Solidarity Regiment",
+	"ARC_25": "Showmen's Rifles",
+	"ARC_26": "Harbor Wolves",       "ARC_27": "Gloucester Guard",
+	"ARC_28": "Clockwork Company",   "ARC_29": "Ward Rifles",
+	"ARC_30": "Hex Company",         "ARC_31": "River Gentry",
+	"ARC_32": "Long Rifle Company",  "ARC_33": "Hollow Runners",
+	"ARC_34": "Ridge Wardens",       "ARC_35": "Bay Freedmen",
+	"ARC_36": "Parlor Guard",        "ARC_37": "Sea Island Rangers",
+	"ARC_38": "North Star Company",  "ARC_39": "Cathedral Regiment",
+	"ARC_40": "Red Clay Rifles",     "ARC_41": "Root Brigade",
+	"ARC_42": "Scrub Riders",        "ARC_43": "Iron Hall Brigade",
+	"ARC_44": "Mulberry Street Guard","ARC_45": "Tenement Rifles",
+	"ARC_46": "Blue Water Raiders",  "ARC_47": "Capital Shadows",
+}
+
+# ── COMMANDER HOMES (liberation economy, step 2) ─────────────────────────────
+# 25 Barracks tiles are commander homes each run, spread evenly over three regions and,
+# inside a region, over its states. An archetype is dealt onto each home by terrain (the
+# same table the old barracks scan used), and the archetype's abilities decide the army:
+# saber commanders get two saber units, artillery commanders a musket and a cannon,
+# everyone else two muskets. Liberating a home grants its commander and that army.
+# If the enemy takes the home back the army is displaced (see army.gd) until it is retaken.
+const COMMANDER_HOME_COUNT := 25
+const STARTING_COMMANDER_HOMES := [165, 1, 37, 78]   # Nashville, Valley Forge, Baltimore, Ticonderoga
+const HOME_REGIONS := {
+	"South":        ["NC", "SC", "TN", "GA", "AL", "FL"],
+	"Mid-Atlantic": ["PA", "NJ", "DE", "MD", "VA", "WV"],
+	"North":        ["NY", "CT", "RI", "MA", "NH", "VT", "ME"],
+}
+# Share of the 25 armies each type should make up; the dealer steers toward this mix.
+const ARMY_TYPE_SHARE := {"musket": 0.4, "saber": 0.3, "arty": 0.3}
+# Commander armies are regulars: level 2 units, twice the men of a Minutemen company.
+const ARMY_TYPE_TEMPLATE := {"musket": "Commander Muskets", "saber": "Commander Sabers", "arty": "Commander Battery"}
+const ARMY_TYPE_LABEL := {"musket": "Musket army", "saber": "Saber army", "arty": "Artillery army"}
+const SABER_ABILITIES := ["Saber Drill", "Light Horse", "Thunder Charge"]
+const ARTY_ABILITIES := ["Powder & Shot", "Explosives Expert", "Double Shot", "Double Cannonade", "Siege Line", "Gun Captain", "Canister Shot"]
+
+var _commander_homes: Dictionary = {}        # tileNumber -> {tile, arch, army_type, gov, army, granted}
+var _pending_commander_armies: Array = []    # home tile numbers whose army still has to be raised
+var _used_commander_names: Dictionary = {}
+var _arch_army_type_cache: Dictionary = {}
+var _home_cid: String = ""                   # the country the homes belong to (the US player)
+var _home_country = null
+# A commander army destroyed in the field comes back after this many turns of holding its
+# home tile. Turns the enemy holds the home do not count. An unlockable can shorten the wait
+# by raising _commander_remuster_bonus.
+const COMMANDER_REMUSTER_TURNS := 10
+var _commander_remuster_bonus: int = 0
+
+
+func commander_remuster_turns() -> int:
+	return maxi(1, COMMANDER_REMUSTER_TURNS - _commander_remuster_bonus)
+
+
+func _home_region_of(tile) -> String:
+	for r in HOME_REGIONS:
+		if tile.tileContinent in HOME_REGIONS[r]:
+			return r
+	return ""
+
+
+func _is_home_commander(gov) -> bool:
+	return gov != null and gov.get("commanderHomeTile") != null
+
+
+func _army_alive(a) -> bool:
+	return a != null and is_instance_valid(a) and not a.deleteMode and a.manpowerInArmy > 0
+
+
+# Archetypes that fit a tile: terrain and region, then terrain only, then anyone.
+func _arch_candidates_for(tile) -> Array:
+	var candidates: Array = []
+	for arch in _usa_archetypes:
+		var regions: Array = arch.get("regions", [])
+		if tile.terrain in arch["terrain"] and (regions.is_empty() or tile.tileContinent in regions):
+			candidates.append(arch)
+	if candidates.is_empty():
+		for arch in _usa_archetypes:
+			if tile.terrain in arch["terrain"]:
+				candidates.append(arch)
+	if candidates.is_empty():
+		candidates = _usa_archetypes.duplicate()
+	return candidates
+
+
+# "saber", "arty" or "musket", read off the archetype's abilities. The lowest commander
+# level that carries a saber or artillery ability decides; saber wins a tie on one level.
+func _army_type_for_arch(arc_id: String) -> String:
+	if _arch_army_type_cache.has(arc_id):
+		return _arch_army_type_cache[arc_id]
+	var probe: governor = governor.new()
+	_apply_archetype_mods(probe, arc_id)
+	var out: String = "musket"
+	for mods in [probe.govMilModsLvl1, probe.govMilModsLvl2, probe.govMilModsLvl3]:
+		var found: String = ""
+		for m in mods:
+			if m.milModType in SABER_ABILITIES:
+				found = "saber"
+				break
+			if m.milModType in ARTY_ABILITIES:
+				found = "arty"
+		if found != "":
+			out = found
+			break
+	for m in probe.govMilModsLvl3:
+		if is_instance_valid(m):
+			m.free()
+	probe.free()
+	_arch_army_type_cache[arc_id] = out
+	return out
+
+
+# Deals an archetype onto a home: one that fits the terrain, not used yet this run if
+# possible, and of whichever army type is furthest behind its share.
+func _deal_archetype(tile, used_ids: Dictionary, type_counts: Dictionary) -> Dictionary:
+	var cands: Array = _arch_candidates_for(tile)
+	var fresh: Array = []
+	for a in cands:
+		if not used_ids.has(a["id"]):
+			fresh.append(a)
+	if not fresh.is_empty():
+		cands = fresh
+	var by_type: Dictionary = {}
+	for a in cands:
+		var ty: String = _army_type_for_arch(str(a["id"]))
+		if not by_type.has(ty):
+			by_type[ty] = []
+		by_type[ty].append(a)
+	var best_types: Array = []
+	var best_fill: float = INF
+	for ty in by_type:
+		var fill: float = float(type_counts.get(ty, 0)) / maxf(0.01, float(ARMY_TYPE_SHARE.get(ty, 0.1)))
+		if fill < best_fill - 0.001:
+			best_fill = fill
+			best_types = [ty]
+		elif absf(fill - best_fill) <= 0.001:
+			best_types.append(ty)
+	var pick_type: String = best_types[randi() % best_types.size()]
+	var pool: Array = by_type[pick_type]
+	return pool[randi() % pool.size()]
+
+
+func _pick_commander_homes() -> void:
+	_commander_homes.clear()
+	_pending_commander_armies.clear()
+	_home_cid = playerCountry
+	_home_country = playerCountryNode
+	var by_num: Dictionary = {}
+	var pools: Dictionary = {}          # region -> state -> [tiles]
+	var region_total: Dictionary = {}
+	for r in HOME_REGIONS:
+		pools[r] = {}
+		region_total[r] = 0
+	for tile in $TileController.get_children():
+		by_num[tile.tileNumber] = tile
+		if int(tile.buildings.get("barracks", 0)) < 1:
+			continue
+		if tile.tileNumber in STARTING_COMMANDER_HOMES:
+			continue
+		if tile.tileOwner == playerCountry:
+			continue   # every home but the starting ones sits behind enemy lines
+		var region: String = _home_region_of(tile)
+		if region == "":
+			continue
+		if not pools[region].has(tile.tileContinent):
+			pools[region][tile.tileContinent] = []
+		pools[region][tile.tileContinent].append(tile)
+		region_total[region] += 1
+
+	# Even split across regions; any odd slot goes to the region with the most Barracks.
+	var regions: Array = HOME_REGIONS.keys()
+	var quota: Dictionary = {}
+	for r in regions:
+		quota[r] = COMMANDER_HOME_COUNT / regions.size()
+	var by_size: Array = regions.duplicate()
+	by_size.sort_custom(func(a, b): return region_total[a] > region_total[b])
+	for i in COMMANDER_HOME_COUNT % regions.size():
+		quota[by_size[i]] += 1
+
+	var picked: Array = []
+	var state_count: Dictionary = {}
+	for n in STARTING_COMMANDER_HOMES:
+		var st = by_num.get(n)
+		if st == null or st.tileOwner != playerCountry:
+			push_warning("[Homes] starting commander home %s is not a player tile; skipped" % str(n))
+			continue
+		picked.append(st)
+		state_count[st.tileContinent] = int(state_count.get(st.tileContinent, 0)) + 1
+		var sr: String = _home_region_of(st)
+		if sr != "":
+			quota[sr] -= 1
+
+	# Inside a region always draw from the state with the fewest homes so far.
+	var shortfall: int = 0
+	for r in regions:
+		var need: int = maxi(0, int(quota[r]))
+		while need > 0:
+			var best_states: Array = []
+			var fewest: int = 999
+			for s in pools[r]:
+				if pools[r][s].is_empty():
+					continue
+				var c: int = int(state_count.get(s, 0))
+				if c < fewest:
+					fewest = c
+					best_states = [s]
+				elif c == fewest:
+					best_states.append(s)
+			if best_states.is_empty():
+				break
+			var s_pick: String = best_states[randi() % best_states.size()]
+			var arr: Array = pools[r][s_pick]
+			var t_pick = arr.pop_at(randi() % arr.size())
+			picked.append(t_pick)
+			state_count[s_pick] = int(state_count.get(s_pick, 0)) + 1
+			need -= 1
+		shortfall += need
+	if shortfall > 0:
+		var rest: Array = []
+		for r in regions:
+			for s in pools[r]:
+				rest.append_array(pools[r][s])
+		rest.shuffle()
+		picked.append_array(rest.slice(0, mini(shortfall, rest.size())))
+
+	var used_ids: Dictionary = {}
+	var type_counts: Dictionary = {}
+	for t in picked:
+		var arch: Dictionary = _deal_archetype(t, used_ids, type_counts)
+		var ty: String = _army_type_for_arch(str(arch["id"]))
+		used_ids[arch["id"]] = true
+		type_counts[ty] = int(type_counts.get(ty, 0)) + 1
+		_commander_homes[t.tileNumber] = {"tile": t, "arch": arch, "army_type": ty, "gov": null, "army": null, "granted": false, "raised_once": false, "remuster": -1}
+	print("[Homes] ", _commander_homes.size(), " commander homes picked. Army mix: ", type_counts)
+
+
+func _grant_commander_home(tile, quiet: bool = false) -> void:
+	var home = _commander_homes.get(tile.tileNumber)
+	if home == null or home["granted"]:
+		return
+	# Whoever sat in the governor's chair under the occupation makes way for the commander.
+	tile.tileGovernor = null
+	tile.filledGovernorSlot = false
+	var gov: governor = _spawn_home_commander(tile, home["arch"])
+	gov.commanderHomeTile = tile
+	home["gov"] = gov
+	home["granted"] = true
+	if not _pending_commander_armies.has(tile.tileNumber):
+		_pending_commander_armies.append(tile.tileNumber)
+	if not quiet:
+		_show_notice("%s answers the call at %s. A %s musters there at the end of the turn." % [
+			gov.governorType, tile.tileName, str(ARMY_TYPE_LABEL[home["army_type"]]).to_lower()])
+
+
+func _tile_free_for_army(t) -> bool:
+	if t == null or not is_instance_valid(t) or t.army_on(t) != null:
+		return false
+	if t.stationedArmy != null:
+		t.stationedArmy = null   # stale ref left by a destroyed army
+	var sp = t.tileSpawnPoint
+	if sp != null and sp.occupied:
+		var sa = sp.stationedArmy
+		if sa == null or not is_instance_valid(sa) or sa.deleteMode or sa.manpowerInArmy <= 0:
+			sp.occupied = false
+			sp.stationedArmy = null
+		else:
+			return false
+	return true
+
+
+# The home tile if it is free, otherwise a free friendly tile next to it.
+func _commander_army_spot(home_tile):
+	if home_tile.tileOwner != _home_cid:
+		return null
+	if _tile_free_for_army(home_tile):
+		return home_tile
+	for nb in home_tile.TileNeighbors:
+		if nb != null and is_instance_valid(nb) and nb.tileOwner == _home_cid and _tile_free_for_army(nb):
+			return nb
+	return null
+
+
+func _raise_commander_army(home: Dictionary, spot) -> void:
+	var gov: governor = home["gov"]
+	var tile = home["tile"]
+	_home_country.addArmy(str(ARMY_TYPE_TEMPLATE[home["army_type"]]), spot.tileNumber)
+	var a = _home_country.countryArmyList.back()
+	if a == null:
+		return
+	a.ArmyName = tile.tileName + " " + str(COMMANDER_ARMY_SUFFIX.get(str(home["arch"]["id"]), "Regulars"))
+	a.commanderHome = tile
+	var bb = _ensure_barracks_button_for(spot)
+	if bb != null:
+		bb.addPrebuiltArmy(a)
+	a.addUnitCommander(gov)
+	a.updateArmyUI()
+	a.raiseSelf()
+	gov.commanderArmy = a
+	gov.commanderRemusterTurns = -1
+	home["army"] = a
+	home["raised_once"] = true
+	home["remuster"] = -1
+
+
+func _retry_pending_commander_armies(quiet: bool = false) -> void:
+	if _pending_commander_armies.is_empty():
+		return
+	var still: Array = []
+	for n in _pending_commander_armies:
+		var home = _commander_homes.get(n)
+		if home == null or not home["granted"] or _army_alive(home["army"]):
+			continue
+		var spot = _commander_army_spot(home["tile"])
+		if spot == null:
+			still.append(n)
+			continue
+		_raise_commander_army(home, spot)
+		if not quiet and _army_alive(home["army"]):
+			_show_notice("The %s takes the field at %s." % [home["army"].ArmyName, spot.tileName])
+	_pending_commander_armies = still
+
+
+# Once a round: a commander whose army was destroyed counts down toward a new one, but
+# only on turns the home tile is in friendly hands.
+func _tick_commander_remuster() -> void:
+	for n in _commander_homes:
+		var home = _commander_homes[n]
+		if not home["granted"] or not home["raised_once"]:
+			continue
+		var gov = home["gov"]
+		if _army_alive(home["army"]) or _pending_commander_armies.has(n):
+			continue
+		var tile = home["tile"]
+		if int(home["remuster"]) < 0:
+			home["remuster"] = commander_remuster_turns()
+			gov.commanderArmy = null
+			gov.commanderRemusterTurns = int(home["remuster"])
+			_show_notice("%s has lost the army. A new one musters at %s after %d turns of holding it." % [
+				gov.governorType, tile.tileName, int(home["remuster"])])
+			continue
+		if tile.tileOwner != _home_cid:
+			continue
+		home["remuster"] = int(home["remuster"]) - 1
+		gov.commanderRemusterTurns = int(home["remuster"])
+		if int(home["remuster"]) <= 0:
+			home["remuster"] = -1
+			gov.commanderRemusterTurns = -1
+			_pending_commander_armies.append(n)
+
+
+# Called from tileSiegeWon every time a tile changes hands.
+func _on_commander_home_changed(tile, oldCID: String, newCID: String) -> void:
+	if tile == null or oldCID == newCID or not _commander_homes.has(tile.tileNumber):
+		return
+	var home = _commander_homes[tile.tileNumber]
+	if newCID == _home_cid:
+		if not home["granted"]:
+			_grant_commander_home(tile)
+		elif _army_alive(home["army"]):
+			home["army"].displaced = false
+			_show_notice("%s is free again. The %s can take recruits." % [tile.tileName, home["army"].ArmyName])
+		elif home["raised_once"]:
+			# The army died while the home was lost: the re-muster clock (below) runs again.
+			_show_notice("%s is free again. %s can raise a new army there." % [tile.tileName, home["gov"].governorType])
+	elif oldCID == _home_cid and home["granted"]:
+		if _army_alive(home["army"]):
+			home["army"].displaced = true
+			_show_notice("%s has fallen. The %s is displaced: no recruits until it is retaken." % [tile.tileName, home["army"].ArmyName])
+	_push_commander_homes_to_war_room()
+
+
+func _push_commander_homes_to_war_room() -> void:
+	var waiting: Array = []
+	for n in _commander_homes:
+		var h = _commander_homes[n]
+		if not h["granted"]:
+			waiting.append({"tile": h["tile"], "archetype_name": h["arch"]["name"], "army_label": ARMY_TYPE_LABEL[h["army_type"]]})
+	waiting.sort_custom(func(a, b): return str(a["tile"].tileContinent) + str(a["tile"].tileName) < str(b["tile"].tileContinent) + str(b["tile"].tileName))
+	$CanvasLayer/WarRoomPanel.setWaitingCommanders(waiting)
+
+
+# ── ONE PANEL AT A TIME ──────────────────────────────────────────────────────
+# Opening any panel closes every other one. canvas_layer.closeAllPanels() hides the scene
+# panels and calls _close_code_panels for the ones built in code; a code panel opens through
+# _close_all_panels("its name") so it does not close itself.
+func _close_all_panels(keep: String = "") -> void:
+	$CanvasLayer.keep_code_panel = keep
+	$CanvasLayer.closeAllPanels()
+	$CanvasLayer.keep_code_panel = ""
+
+
+func _close_code_panels(keep: String = "") -> void:
+	if keep != "army":
+		_close_army_info()
+	if keep != "tile":
+		_close_tile_info()
+	if keep != "contract":
+		_close_contract_panel()
+	if keep != "worker":
+		_close_worker_panel()
+	if keep != "sites":
+		_close_sites_panel()
+	if keep != "muster":
+		_close_muster_panel()
+	if keep != "picker":
+		_close_army_commander_picker()
+	if keep != "progress":
+		var rp = $CanvasLayer.get_node_or_null("RunProgress")
+		if rp != null:
+			rp.queue_free()
+	# A unit stays selected only while its own card is the one on screen.
+	if not (keep in ["army", "worker", "picker"]):
+		$PathControl.deselectAll()
+
+
+# ── MINUTEMEN CONTRACTS (liberation economy, step 3) ─────────────────────────
+# A Minutemen company is two units the player picks (left and right, any mix of musket,
+# saber and artillery), hired from a hiring ground for Manpower. It has no commander, takes
+# no recruits, and goes home when its contract runs out. A ground can be hired from three
+# times a run (full price, +50%, double) and not while its last company is still serving.
+const CONTRACT_TURNS := 5
+const CONTRACT_BASE_COST := 500
+const CONTRACT_COST_MULT := [1.0, 1.5, 2.0]   # 1st, 2nd, 3rd hire from one tile; its length is the per-run cap
+const CONTRACT_UNIT_TYPES := ["musket", "saber", "arty"]
+const CONTRACT_UNIT_LABEL := {"musket": "Musket", "saber": "Saber", "arty": "Artillery"}
+const CONTRACT_UNIT_ICON := {"musket": "Flintlock.png", "saber": "cutlass.png", "arty": "Howitzer.png"}
+const CONTRACT_UNIT_SPEC := {   # unit class, uniform, men, weapons carried
+	"musket": ["Infantry", "Minuteman", 200, 200],
+	"saber":  ["Cavalry", "Cavalry", 200, 0],
+	"arty":   ["Artillery", "Artillery Corps", 200, 200],
+}
+# A new company carries the best weapon of each type the player has researched
+# (interim rule until the per-unit Upgrade button exists). [weapon, tech; "" = from the start]
+const CONTRACT_WEAPON_CHAIN := {
+	"musket": [["Flintlock", ""], ["Breechloader", "Breechloaders"], ["Percussion Cap", "Rifles"], ["Lever Repeater", "Repeaters"]],
+	"saber":  [["Cutlass", ""], ["Officer Sword", "Cavalry Drills"], ["Cavalry Sword", "Officer Training"], ["Marine Mameluke", "Marine Discipline"]],
+	"arty":   [["Field Cannon", ""], ["Mortar", "Siege Works"], ["Rocket Artillery", "Rocket Artillery"]],
+}
+# The 12 companies the player starts with: [left, right, last turn it serves].
+const STARTING_MILITIA := {
+	"South":        [["musket", "musket", 5], ["saber", "saber", 8]],
+	"Mid-Atlantic": [["musket", "musket", 4], ["musket", "musket", 5], ["musket", "arty", 6],
+					 ["saber", "saber", 6], ["musket", "musket", 7], ["musket", "saber", 8]],
+	"North":        [["musket", "musket", 4], ["musket", "musket", 6], ["saber", "saber", 7], ["musket", "arty", 8]],
+}
+
+var _contract_hires: Dictionary = {}     # tileNumber -> companies hired from that ground this run
+var _contract_length_bonus: int = 0      # modifiers that lengthen contracts add here
+var _contractPanel: PanelContainer = null
+var _contract_left: String = "musket"
+var _contract_right: String = "musket"
+
+
+func contract_turns() -> int:
+	return CONTRACT_TURNS + _contract_length_bonus
+
+
+# Manpower for the next hire from this ground, or -1 when its three hires are used.
+func contract_cost(tile) -> int:
+	var n: int = int(_contract_hires.get(tile.tileNumber, 0))
+	if n >= CONTRACT_COST_MULT.size():
+		return -1
+	return int(round(CONTRACT_BASE_COST * float(CONTRACT_COST_MULT[n])))
+
+
+func _contract_weapon(unit_type: String) -> String:
+	var best: String = str(CONTRACT_WEAPON_CHAIN[unit_type][0][0])
+	for step in CONTRACT_WEAPON_CHAIN[unit_type]:
+		if str(step[1]) == "" or _player_has_tech(str(step[1])):
+			best = str(step[0])
+	return best
+
+
+# The company hired from this ground that is still serving, if any.
+func _contract_company_of(tile):
+	for a in playerCountryNode.countryArmyList:
+		if not _army_alive(a):
+			continue
+		if (a.isContract and a.contractTile == tile) or (a.attachedTurnsLeft >= 0 and a.attachedContractTile == tile):
+			return a
+	return null
+
+
+# A commander army standing on the tile that has room for a company, or null.
+func _contract_host_on(tile):
+	var a = tile.army_on(tile)
+	if a != null and a.parentCountry == playerCountryNode and a.can_host_company():
+		return a
+	return null
+
+
+# A company joins a commander army: its units fight in that army and carry the commander's
+# traits until the contract ends or the player detaches them.
+func attach_company(host, co) -> void:
+	if not _army_alive(host) or not _army_alive(co) or not co.isContract or not host.can_host_company():
+		return
+	host.attach_company(co)
+	_disband_contract(co)
+	_show_notice("%s attached to the %s." % [host.attachedName, host.ArmyName])
+
+
+# Sends the attached company to a free friendly tile beside the commander army.
+func detach_company(host) -> bool:
+	if not _army_alive(host) or host.attachedTurnsLeft < 0 or host.inTile == null:
+		return false
+	var spot = null
+	for nb in host.inTile.TileNeighbors:
+		if nb != null and is_instance_valid(nb) and nb.tileOwner == playerCountry and _tile_free_for_army(nb):
+			spot = nb
+			break
+	if spot == null:
+		_show_notice("No free friendly tile next to %s to detach onto." % host.inTile.tileName)
+		return false
+	var nm: String = host.attachedName
+	var turns: int = host.attachedTurnsLeft
+	var src = host.attachedContractTile
+	var units: Array = host.detach_units()
+	var before: int = playerCountryNode.countryArmyList.size()
+	playerCountryNode.addArmy(nm, spot.tileNumber, null, [], units)
+	if playerCountryNode.countryArmyList.size() == before:
+		return false
+	var a = playerCountryNode.countryArmyList.back()
+	a.isContract = true
+	a.contractTurnsLeft = turns
+	a.contractTile = src
+	var bb = _ensure_barracks_button_for(spot)
+	if bb != null:
+		bb.addPrebuiltArmy(a)
+	a.updateArmyUI()
+	a.raiseSelf()
+	a.currentMovementPoints = 0   # no fresh march out of a detach
+	_show_notice("%s detached to %s." % [nm, spot.tileName])
+	return true
+
+
+# Why a company cannot be hired from this tile right now ("" = it can).
+func contract_block_reason(tile) -> String:
+	if tile == null or not is_instance_valid(tile) or tile.tileOwner != playerCountry:
+		return "Not in your hands"
+	if not tile.is_muster_point():
+		return "Not a hiring ground"
+	var cost: int = contract_cost(tile)
+	if cost < 0:
+		return "No hires left this run"
+	var serving = _contract_company_of(tile)
+	if serving != null:
+		return "Its company is still serving (%d turns left)" % int(serving.contractTurnsLeft if serving.isContract else serving.attachedTurnsLeft)
+	if not _tile_free_for_army(tile) and _contract_host_on(tile) == null:
+		return "An army is standing here"
+	if int(playerCountryNode.TotalManpower) < cost:
+		return "Need %d Manpower" % cost
+	return ""
+
+
+func hiring_grounds() -> Array:
+	var out: Array = []
+	for tile in $TileController.get_children():
+		if tile.tileOwner == playerCountry and tile.is_muster_point():
+			out.append(tile)
+	out.sort_custom(func(a, b): return str(a.tileContinent) + str(a.tileName) < str(b.tileContinent) + str(b.tileName))
+	return out
+
+
+func hire_contract(tile, left: String, right: String) -> bool:
+	if contract_block_reason(tile) != "":
+		return false
+	var cost: int = contract_cost(tile)
+	playerCountryNode.TotalManpower -= cost
+	_contract_hires[tile.tileNumber] = int(_contract_hires.get(tile.tileNumber, 0)) + 1
+	var host = null if _tile_free_for_army(tile) else _contract_host_on(tile)
+	if host != null:
+		# A commander army is standing on the ground: the company is hired straight into it.
+		for ty in [left, right]:
+			var spec: Array = CONTRACT_UNIT_SPEC[ty]
+			playerCountryNode.addNewUnit(host, spec[0], 1, _contract_weapon(ty), "Iron", spec[1], spec[2], spec[3], true)
+		host.attachedName = tile.tileName + " Minutemen"
+		host.attachedTurnsLeft = contract_turns()
+		host.attachedContractTile = tile
+		host.updateArmyUI()
+	else:
+		_raise_contract_company(tile, left, right, contract_turns(), tile)
+	updateResourceBar()
+	return true
+
+
+# Puts a company on a tile. source_tile is the hiring ground it counts against (null for
+# the starting companies and for companies handed out by events).
+func _raise_contract_company(tile, left: String, right: String, turns: int, source_tile, company_name: String = ""):
+	if tile == null or not is_instance_valid(tile) or not _tile_free_for_army(tile):
+		return null
+	var units: Array = []
+	for ty in [left, right]:
+		var spec: Array = CONTRACT_UNIT_SPEC[ty]
+		units.append([spec[0], 1, _contract_weapon(ty), "Iron", spec[1], spec[2], spec[3]])
+	var nm: String = company_name if company_name != "" else tile.tileName + " Minutemen"
+	var before: int = playerCountryNode.countryArmyList.size()
+	playerCountryNode.addArmy(nm, tile.tileNumber, null, [], units)
+	if playerCountryNode.countryArmyList.size() == before:
+		return null
+	var a = playerCountryNode.countryArmyList.back()
+	a.isContract = true
+	a.contractTurnsLeft = maxi(1, turns)
+	a.contractTile = source_tile
+	var bb = _ensure_barracks_button_for(tile)
+	if bb != null:
+		bb.addPrebuiltArmy(a)
+	a.updateArmyUI()
+	a.raiseSelf()
+	return a
+
+
+func _disband_contract(a) -> void:
+	var sel = $PathControl.selectedAPF
+	if sel != null and is_instance_valid(sel) and sel.thisArmy == a:
+		$PathControl.deselectAll()
+	a.deleteMode = true
+	a.emit_signal("armyDestroyed", a)   # country.gd tears down the token and frees the army
+
+
+# Once a round: every contract counts down; companies at zero go home.
+func _tick_contracts() -> void:
+	var gone: Array = []
+	var last_turn: Array = []
+	for a in playerCountryNode.countryArmyList.duplicate():
+		if not _army_alive(a):
+			continue
+		if a.attachedTurnsLeft >= 0:
+			a.attachedTurnsLeft -= 1
+			if a.attachedTurnsLeft <= 0:
+				gone.append(a.attachedName)
+				for u in a.detach_units():
+					u.queue_free()
+			elif a.attachedTurnsLeft == 1:
+				last_turn.append(a.attachedName)
+		if not a.isContract:
+			continue
+		a.contractTurnsLeft -= 1
+		if a.contractTurnsLeft <= 0:
+			gone.append(a.ArmyName)
+			_disband_contract(a)
+		elif a.contractTurnsLeft == 1:
+			last_turn.append(a.ArmyName)
+	var msg: String = ""
+	if not gone.is_empty():
+		msg = "Contract over, gone home: " + ", ".join(gone) + "."
+	if not last_turn.is_empty():
+		msg += ("\n" if msg != "" else "") + "Last turn of service: " + ", ".join(last_turn) + "."
+	if msg != "":
+		_show_notice(msg)
+	if _contractPanel != null:
+		_contract_rebuild()
+
+
+# The 12 starting companies. They go to free tiles in each region, the front line first,
+# and leave the hiring grounds open where they can.
+func _spawn_starting_militia() -> void:
+	if playerCountry != "USA":
+		return
+	var placed: int = 0
+	for region in STARTING_MILITIA:
+		var ranks: Array = [[], [], [], []]   # front non-ground, front ground, rear non-ground, rear ground
+		for t in $TileController.get_children():
+			if t.tileOwner != playerCountry or _home_region_of(t) != region or not _tile_free_for_army(t):
+				continue
+			var front: bool = false
+			for nb in t.TileNeighbors:
+				if nb != null and is_instance_valid(nb) and nb.tileOwner == "UK":
+					front = true
+					break
+			ranks[(0 if front else 2) + (1 if t.is_muster_point() else 0)].append(t)
+		var order: Array = []
+		for r in ranks:
+			r.shuffle()
+			order.append_array(r)
+		var specs: Array = STARTING_MILITIA[region]
+		for i in mini(specs.size(), order.size()):
+			var s: Array = specs[i]
+			# It serves through turn s[2]; the game starts on turn 1.
+			if _raise_contract_company(order[i], str(s[0]), str(s[1]), int(s[2]) - currentWorldTurn + 1, null) != null:
+				placed += 1
+	print("[Contracts] ", placed, " starting Minutemen companies placed.")
+
+
+# ── The contract screen (opens from the old Buy Units button) ──
+func _open_contract_panel() -> void:
+	_close_all_panels("contract")
+	_close_contract_panel()
+	var panel := PanelContainer.new()
+	panel.name = "ContractPanel"
+	var sb := StyleBoxFlat.new()
+	sb.bg_color = Color(0.07, 0.08, 0.13, 0.97)
+	sb.border_color = Color(0.85, 0.62, 0.18)
+	sb.set_border_width_all(2)
+	sb.set_corner_radius_all(8)
+	sb.set_content_margin_all(18)
+	panel.add_theme_stylebox_override("panel", sb)
+	$CanvasLayer.add_child(panel)
+	_contractPanel = panel
+	_contract_rebuild()
+
+
+func _close_contract_panel() -> void:
+	if _contractPanel != null and is_instance_valid(_contractPanel):
+		_contractPanel.queue_free()
+	_contractPanel = null
+
+
+func _contract_label(txt: String, px: int, col: Color) -> Label:
+	var l := Label.new()
+	l.text = txt
+	l.add_theme_font_size_override("font_size", px)
+	l.add_theme_color_override("font_color", col)
+	return l
+
+
+func _contract_pick(side: String, unit_type: String) -> void:
+	if side == "left":
+		_contract_left = unit_type
+	else:
+		_contract_right = unit_type
+	_contract_rebuild()
+
+
+func _contract_unit_picker(side: String, current: String) -> Control:
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 8)
+	var cap := _contract_label("Left unit" if side == "left" else "Right unit", 16, Color(0.72, 0.80, 0.95))
+	cap.custom_minimum_size = Vector2(96, 0)
+	row.add_child(cap)
+	for ty in CONTRACT_UNIT_TYPES:
+		var b := Button.new()
+		b.toggle_mode = true
+		b.button_pressed = (ty == current)
+		b.text = ("● " if ty == current else "") + str(CONTRACT_UNIT_LABEL[ty]) + "  (" + _contract_weapon(ty) + ")"
+		b.custom_minimum_size = Vector2(200, 36)
+		var icon_path: String = WPN_ART + str(CONTRACT_UNIT_ICON[ty])
+		if ResourceLoader.exists(icon_path):
+			b.icon = load(icon_path)
+			b.expand_icon = true
+		b.pressed.connect(_contract_pick.bind(side, ty))
+		row.add_child(b)
+	return row
+
+
+func _contract_hire_pressed(tile) -> void:
+	if hire_contract(tile, _contract_left, _contract_right):
+		_show_notice("%s hired for %d turns." % [tile.tileName + " Minutemen", contract_turns()])
+	_contract_rebuild()
+
+
+func _contract_rebuild() -> void:
+	var panel := _contractPanel
+	if panel == null or not is_instance_valid(panel):
+		return
+	for c in panel.get_children():
+		panel.remove_child(c)
+		c.queue_free()
+	var gold := Color(0.98, 0.84, 0.42)
+	var dim := Color(0.72, 0.80, 0.95)
+	var v := VBoxContainer.new()
+	v.add_theme_constant_override("separation", 10)
+	panel.add_child(v)
+	v.add_child(_contract_label("Minutemen Contracts", 26, gold))
+	var blurb := _contract_label("A company is two units of your choice. It has no commander, takes no recruits, and goes home after %d turns.\nEach hiring ground can be used three times in a run: full price, then +50%%, then double." % contract_turns(), 14, dim)
+	v.add_child(blurb)
+	var budget := _contract_label("Manpower: %d" % int(playerCountryNode.TotalManpower), 18, Color(0.93, 0.88, 0.74))
+	budget.name = "Budget"
+	v.add_child(budget)
+	v.add_child(_contract_unit_picker("left", _contract_left))
+	v.add_child(_contract_unit_picker("right", _contract_right))
+	v.add_child(_contract_label("Hiring grounds: barracks, forts, cities and the capital in your hands", 14, dim))
+	var scroll := ScrollContainer.new()
+	scroll.custom_minimum_size = Vector2(760, 330)
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	v.add_child(scroll)
+	var rows := VBoxContainer.new()
+	rows.name = "Rows"
+	rows.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	rows.add_theme_constant_override("separation", 6)
+	scroll.add_child(rows)
+	for tile in hiring_grounds():
+		var row := HBoxContainer.new()
+		row.add_theme_constant_override("separation", 12)
+		rows.add_child(row)
+		var used: int = int(_contract_hires.get(tile.tileNumber, 0))
+		var nm := _contract_label("%s, %s" % [tile.tileName, tile.tileContinent], 17, Color(0.95, 0.95, 0.98))
+		nm.custom_minimum_size = Vector2(210, 0)
+		row.add_child(nm)
+		var why: String = contract_block_reason(tile)
+		var cost: int = contract_cost(tile)
+		var status: String = "Hire %d of %d" % [used + 1, CONTRACT_COST_MULT.size()] if cost >= 0 else ""
+		if why != "":
+			status = why
+		var st := _contract_label(status, 14, dim if why == "" else Color(1.0, 0.62, 0.12))
+		st.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		row.add_child(st)
+		var b := Button.new()
+		b.custom_minimum_size = Vector2(170, 34)
+		b.text = ("Hire  %d Manpower" % cost) if cost >= 0 else "Used up"
+		b.disabled = (why != "")
+		b.pressed.connect(_contract_hire_pressed.bind(tile))
+		row.add_child(b)
+	var close := Button.new()
+	close.text = "Close"
+	close.custom_minimum_size = Vector2(130, 36)
+	close.size_flags_horizontal = Control.SIZE_SHRINK_END
+	close.pressed.connect(_close_contract_panel)
+	v.add_child(close)
+	panel.reset_size()
+	var vp := get_viewport_rect().size
+	panel.position = Vector2(maxf(8.0, (vp.x - panel.size.x) / 2.0), maxf(20.0, (vp.y - panel.size.y) / 2.0))
+
+
+# ── WORKSHOPS AND WORKERS (liberation economy, step 4) ───────────────────────
+# Twelve tiles carry a Workshop (data/tiles_final.csv): these are the Construction Sites.
+# Holding a site gives one worker, tied to that Workshop. A worker upgrades buildings for
+# dollars and adds new ones by spending a free building purchase (FBP). FBPs belong to the
+# worker: one per Workshop level, +1 when the state the worker stands in is fully liberated.
+const BUILDING_UPGRADE_COST_PER_LEVEL := 100     # x the level being upgraded to
+const WORKSHOP_UPGRADE_COST := {2: 600, 3: 1200}  # level reached -> dollars; also the Workshop's level cap
+const WORKER_MAX_BUILDING_LEVEL := 4
+const WORKER_TOKEN_SCALE := 0.5
+# What an FBP can raise. Never a Workshop or a Barracks; a Dock is left out because the
+# tiles do not say which of them are on the coast.
+const WORKER_BUILDABLE := ["Farm", "Granary", "Mine", "Camp", "Market", "Forge", "Library", "Courthouse", "Monument", "Resort", "Fortress"]
+
+var _construction_sites: Dictionary = {}   # tileNumber -> {tile, worker}
+var _state_fbp_paid: Dictionary = {}       # state code -> true once its liberation bonus was paid
+var _workerPanel: PanelContainer = null
+var _workerPanelCiv = null
+var _sitesPanel: PanelContainer = null
+var _workerPanelTile = null
+
+
+func _setup_construction_sites() -> void:
+	_construction_sites.clear()
+	_state_fbp_paid.clear()
+	if playerCountry != "USA":
+		return
+	for tile in $TileController.get_children():
+		if tile.has_building("workshop") and _tile_home_nation(tile) == "USA":
+			_construction_sites[tile.tileNumber] = {"tile": tile, "worker": null}
+	var held: int = 0
+	for n in _construction_sites:
+		if _construction_sites[n]["tile"].tileOwner == playerCountry:
+			_grant_site_worker(_construction_sites[n]["tile"], true)
+			held += 1
+	# The old building screen could upgrade and add buildings for wood, metal and food.
+	for nm in ["Upgrade", "AddBuildingButton", "Downgrade"]:
+		var legacy = $CanvasLayer/BuildingInfoPanel.find_child(nm, true, false)
+		if legacy != null and legacy is CanvasItem:
+			legacy.visible = false
+	print("[Sites] ", _construction_sites.size(), " construction sites, ", held, " held at the start.")
+
+
+func all_workers() -> Array:
+	var out: Array = []
+	for n in _construction_sites:
+		var w = _construction_sites[n]["worker"]
+		if w != null and is_instance_valid(w):
+			out.append(w)
+	return out
+
+
+func _worker_cpf(civ):
+	for cpf in $PathControl.raisedPlayerCPFs:
+		if is_instance_valid(cpf) and cpf.thisCivilian == civ:
+			return cpf
+	return null
+
+
+# The tile a worker is standing on.
+func worker_tile(civ):
+	var cpf = _worker_cpf(civ)
+	if cpf != null and cpf.currentTile != null:
+		return cpf.currentTile
+	return civ.stationTile
+
+
+func _grant_site_worker(tile, quiet: bool = false) -> void:
+	var site = _construction_sites.get(tile.tileNumber)
+	if site == null or (site["worker"] != null and is_instance_valid(site["worker"])):
+		return
+	var civ = $CanvasLayer/CivilianControl.buildNewCivilian(tile)
+	civ.isWorker = true
+	civ.workshopTile = tile
+	civ.fbp = maxi(1, tile.get_building_level("workshop"))
+	site["worker"] = civ
+	raiseCivilianUnit(civ, playerCountryNode)   # straight onto the map, at the Workshop
+	for ppb in $PathControl/PathPointsControl.get_children():
+		ppb.setMarkerVisible(false)   # raising a civilian lights its neighbours' move markers
+	var token = _worker_cpf(civ)
+	if token != null:
+		token.scale = Vector2(WORKER_TOKEN_SCALE, WORKER_TOKEN_SCALE)   # the civilian token is drawn far larger than an army's
+	playerCountryNode.activeCivilianCount = all_workers().size()
+	if not quiet:
+		_show_notice("The workshop at %s is free. Its worker joins you with %d free building%s." % [tile.tileName, civ.fbp, "" if civ.fbp == 1 else "s"])
+
+
+func building_upgrade_cost(tile, btype: String) -> int:
+	var lvl: int = tile.get_building_level(btype)
+	if lvl <= 0:
+		return -1
+	if btype == "Workshop":
+		return int(WORKSHOP_UPGRADE_COST.get(lvl + 1, -1))
+	if lvl >= WORKER_MAX_BUILDING_LEVEL:
+		return -1
+	return BUILDING_UPGRADE_COST_PER_LEVEL * (lvl + 1)
+
+
+# Why this worker cannot work on this tile right now ("" = it can).
+func worker_block_reason(civ, tile) -> String:
+	if civ == null or not is_instance_valid(civ) or tile == null:
+		return "No worker"
+	if civ.captured:
+		return "This worker is held by the British"
+	if worker_tile(civ) != tile:
+		return "The worker is not on this tile"
+	if tile.tileOwner != playerCountry:
+		return "Workers only build on liberated ground"
+	return ""
+
+
+func worker_upgrade(civ, tile, btype: String) -> bool:
+	if worker_block_reason(civ, tile) != "":
+		return false
+	var cost: int = building_upgrade_cost(tile, btype)
+	if cost < 0 or playerCountryNode.TotalDollars < cost:
+		return false
+	for b in tile.tileBuildingsList:
+		if is_instance_valid(b) and b.buildingType == btype:
+			playerCountryNode.TotalDollars -= cost
+			b.upgradeBuilding()
+			tile.buildings[btype.to_lower()] = int(b.buildingLevel)
+			if btype == "Workshop":
+				# A bigger Workshop hands its own worker another free building.
+				var site = _construction_sites.get(tile.tileNumber)
+				if site != null and site["worker"] != null and is_instance_valid(site["worker"]):
+					site["worker"].fbp += 1
+			updateResourceBar()
+			return true
+	return false
+
+
+func worker_addable(tile) -> Array:
+	var out: Array = []
+	for btype in WORKER_BUILDABLE:
+		if not tile.has_building(btype):
+			out.append(btype)
+	return out
+
+
+func worker_add_building(civ, tile, btype: String) -> bool:
+	if worker_block_reason(civ, tile) != "" or civ.fbp < 1:
+		return false
+	if not (btype in WORKER_BUILDABLE) or tile.has_building(btype):
+		return false
+	civ.fbp -= 1
+	tile.addBuilding(btype, 1)
+	tile.buildings[btype.to_lower()] = 1
+	return true
+
+
+# Called from tileSiegeWon every time a tile changes hands.
+func _on_site_tile_changed(tile, oldCID: String, newCID: String) -> void:
+	if _construction_sites.is_empty() or tile == null or oldCID == newCID:
+		return
+	var mine: bool = (newCID == playerCountry)
+	# a worker standing on the tile is captured with it, and freed with it
+	for civ in all_workers():
+		if worker_tile(civ) != tile:
+			continue
+		if not mine and not civ.captured:
+			civ.captured = true
+			_show_notice("The worker from %s is captured at %s. Retake the tile to free them." % [civ.workshopTile.tileName, tile.tileName])
+		elif mine and civ.captured:
+			civ.captured = false
+			_show_notice("The worker from %s is free again at %s." % [civ.workshopTile.tileName, tile.tileName])
+		var cpf = _worker_cpf(civ)
+		if cpf != null:
+			cpf.modulate = Color(0.45, 0.35, 0.35, 0.85) if civ.captured else Color(1, 1, 1, 1)
+	if not mine:
+		return
+	if _construction_sites.has(tile.tileNumber):
+		_grant_site_worker(tile)
+	# a state that is whole again gives every worker standing in it one more free building
+	var st: String = tile.tileContinent
+	if st != "" and not _state_fbp_paid.has(st) and _is_state_liberated(st, playerCountry):
+		_state_fbp_paid[st] = true
+		var got: Array = []
+		for civ in all_workers():
+			var wt = worker_tile(civ)
+			if not civ.captured and wt != null and wt.tileContinent == st:
+				civ.fbp += 1
+				got.append(civ.workshopTile.tileName)
+		if not got.is_empty():
+			_show_notice("%s is fully liberated. One more free building for the worker%s from %s." % [
+				str(STATE_FULL_NAMES.get(st, st)), "" if got.size() == 1 else "s", ", ".join(got)])
+	_refresh_worker_panels()
+
+
+func _refresh_worker_panels() -> void:
+	if _workerPanel != null and is_instance_valid(_workerPanel):
+		_worker_panel_rebuild()
+	if _sitesPanel != null and is_instance_valid(_sitesPanel):
+		_sites_panel_rebuild()
+
+
+# ── Worker panel: opens when a worker is selected on the map ──
+func _panel_shell(panel_name: String) -> PanelContainer:
+	var panel := PanelContainer.new()
+	panel.name = panel_name
+	var sb := StyleBoxFlat.new()
+	sb.bg_color = Color(0.07, 0.08, 0.13, 0.97)
+	sb.border_color = Color(0.85, 0.62, 0.18)
+	sb.set_border_width_all(2)
+	sb.set_corner_radius_all(8)
+	sb.set_content_margin_all(16)
+	panel.add_theme_stylebox_override("panel", sb)
+	$CanvasLayer.add_child(panel)
+	return panel
+
+
+func _show_worker_panel(civ) -> void:
+	_close_all_panels("worker")
+	_close_worker_panel()
+	_workerPanelCiv = civ
+	_workerPanel = _panel_shell("WorkerPanel")
+	_worker_panel_rebuild()
+
+
+func _close_worker_panel() -> void:
+	if _workerPanel != null and is_instance_valid(_workerPanel):
+		_workerPanel.queue_free()
+	_workerPanel = null
+	_workerPanelCiv = null
+
+
+func _worker_upgrade_pressed(tile, btype: String) -> void:
+	if not worker_upgrade(_workerPanelCiv, tile, btype):
+		_show_notice("Not enough dollars for that upgrade.")
+	_worker_panel_rebuild()
+
+
+func _worker_add_pressed(tile, btype: String) -> void:
+	if worker_add_building(_workerPanelCiv, tile, btype):
+		_show_notice("%s raised at %s." % [btype, tile.tileName])
+	_worker_panel_rebuild()
+
+
+func _worker_investigate_pressed(tile) -> void:
+	tile.dmaInvestigationPending = true
+	_show_notice("The worker reports the sightings at %s to the Department." % tile.tileName)
+	_worker_panel_rebuild()
+
+
+func _worker_panel_rebuild() -> void:
+	var panel := _workerPanel
+	var civ = _workerPanelCiv
+	if panel == null or not is_instance_valid(panel) or civ == null or not is_instance_valid(civ):
+		return
+	for c in panel.get_children():
+		panel.remove_child(c)
+		c.queue_free()
+	var gold := Color(0.98, 0.84, 0.42)
+	var dim := Color(0.72, 0.80, 0.95)
+	var warn := Color(1.0, 0.62, 0.12)
+	var tile = worker_tile(civ)
+	var v := VBoxContainer.new()
+	v.add_theme_constant_override("separation", 8)
+	v.custom_minimum_size = Vector2(400, 0)
+	panel.add_child(v)
+	v.add_child(_contract_label("Worker of the %s workshop" % civ.workshopTile.tileName, 22, gold))
+	v.add_child(_contract_label("Standing in %s, %s   •   moves %d/%d" % [tile.tileName, tile.tileContinent, civ.currentActionPoints, civ.maxActionPoints], 14, dim))
+	var fb := _contract_label("Free buildings: %d        Treasury: $%d" % [civ.fbp, int(playerCountryNode.TotalDollars)], 17, Color(0.93, 0.88, 0.74))
+	fb.name = "Budget"
+	v.add_child(fb)
+	var why: String = worker_block_reason(civ, tile)
+	if why != "":
+		v.add_child(_contract_label(why + ".", 15, warn))
+	else:
+		v.add_child(_contract_label("BUILDINGS HERE", 14, gold))
+		var rows := VBoxContainer.new()
+		rows.name = "Buildings"
+		rows.add_theme_constant_override("separation", 5)
+		v.add_child(rows)
+		for b in tile.tileBuildingsList:
+			if not is_instance_valid(b):
+				continue
+			var row := HBoxContainer.new()
+			row.add_theme_constant_override("separation", 10)
+			rows.add_child(row)
+			var nm := _contract_label("%s   L%d" % [b.buildingType, int(b.buildingLevel)], 16, Color(0.95, 0.95, 0.98))
+			nm.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			row.add_child(nm)
+			var cost: int = building_upgrade_cost(tile, b.buildingType)
+			var btn := Button.new()
+			btn.custom_minimum_size = Vector2(190, 30)
+			if cost < 0:
+				btn.text = "Top level"
+				btn.disabled = true
+			else:
+				btn.text = "Upgrade to L%d   $%d" % [int(b.buildingLevel) + 1, cost]
+				btn.disabled = playerCountryNode.TotalDollars < cost
+				if b.buildingType == "Workshop":
+					btn.tooltip_text = "A bigger Workshop gives its own worker one more free building."
+				btn.pressed.connect(_worker_upgrade_pressed.bind(tile, b.buildingType))
+			row.add_child(btn)
+		var addable: Array = worker_addable(tile)
+		v.add_child(_contract_label("ADD A BUILDING   (uses 1 free building)" if civ.fbp > 0 else "ADD A BUILDING   (no free buildings left)", 14, gold if civ.fbp > 0 else dim))
+		var grid := GridContainer.new()
+		grid.name = "Add"
+		grid.columns = 3
+		grid.add_theme_constant_override("h_separation", 6)
+		grid.add_theme_constant_override("v_separation", 6)
+		v.add_child(grid)
+		for btype in addable:
+			var ab := Button.new()
+			ab.text = btype
+			ab.custom_minimum_size = Vector2(128, 30)
+			ab.disabled = civ.fbp < 1
+			ab.pressed.connect(_worker_add_pressed.bind(tile, btype))
+			grid.add_child(ab)
+		if tile.hasMysteriousShipRaids and not tile.dmaInvestigationPending:
+			var inv := Button.new()
+			inv.text = "Report the strange sightings here"
+			inv.tooltip_text = "Sends word to the Department of Mythological Affairs."
+			inv.pressed.connect(_worker_investigate_pressed.bind(tile))
+			v.add_child(inv)
+	var close := Button.new()
+	close.text = "Close"
+	close.custom_minimum_size = Vector2(110, 32)
+	close.size_flags_horizontal = Control.SIZE_SHRINK_END
+	close.pressed.connect(_close_worker_panel)
+	v.add_child(close)
+	panel.reset_size()
+	var vp := get_viewport_rect().size
+	panel.position = Vector2(12, maxf(120.0, vp.y - panel.size.y - 130.0))
+
+
+# ── Construction Sites panel: replaces the old civilian list ──
+func _open_sites_panel() -> void:
+	if _sitesPanel != null and is_instance_valid(_sitesPanel):
+		_close_sites_panel()
+		return
+	_close_all_panels("sites")
+	_sitesPanel = _panel_shell("SitesPanel")
+	_sites_panel_rebuild()
+
+
+func _close_sites_panel() -> void:
+	if _sitesPanel != null and is_instance_valid(_sitesPanel):
+		_sitesPanel.queue_free()
+	_sitesPanel = null
+
+
+func _site_goto_pressed(civ) -> void:
+	var t = worker_tile(civ)
+	_close_sites_panel()
+	if t != null:
+		focus_camera_on(t)
+
+
+func _sites_panel_rebuild() -> void:
+	var panel := _sitesPanel
+	if panel == null or not is_instance_valid(panel):
+		return
+	for c in panel.get_children():
+		panel.remove_child(c)
+		c.queue_free()
+	var gold := Color(0.98, 0.84, 0.42)
+	var dim := Color(0.72, 0.80, 0.95)
+	var warn := Color(1.0, 0.62, 0.12)
+	var v := VBoxContainer.new()
+	v.add_theme_constant_override("separation", 8)
+	panel.add_child(v)
+	v.add_child(_contract_label("Construction Sites", 26, gold))
+	v.add_child(_contract_label("Each Workshop you hold gives one worker. A worker upgrades buildings for dollars and adds new ones with free buildings.\nA Workshop gives its worker one free building per level; a fully liberated state gives one more to every worker standing in it.", 14, dim))
+	var rows := VBoxContainer.new()
+	rows.name = "Rows"
+	rows.add_theme_constant_override("separation", 6)
+	v.add_child(rows)
+	var nums: Array = _construction_sites.keys()
+	nums.sort_custom(func(a, b):
+		var ta = _construction_sites[a]["tile"]
+		var tb = _construction_sites[b]["tile"]
+		return str(ta.tileContinent) + str(ta.tileName) < str(tb.tileContinent) + str(tb.tileName))
+	for n in nums:
+		var site = _construction_sites[n]
+		var tile = site["tile"]
+		var civ = site["worker"]
+		var row := HBoxContainer.new()
+		row.add_theme_constant_override("separation", 12)
+		rows.add_child(row)
+		var nm := _contract_label("%s, %s" % [tile.tileName, tile.tileContinent], 17, Color(0.95, 0.95, 0.98))
+		nm.custom_minimum_size = Vector2(210, 0)
+		row.add_child(nm)
+		var lv := _contract_label("Workshop L%d" % tile.get_building_level("workshop"), 14, dim)
+		lv.custom_minimum_size = Vector2(110, 0)
+		row.add_child(lv)
+		var txt: String
+		var col: Color = dim
+		if civ == null or not is_instance_valid(civ):
+			txt = "British-held. Liberate it to free its worker." if tile.tileOwner != playerCountry else "No worker"
+			col = warn
+		elif civ.captured:
+			txt = "Worker captured at %s" % worker_tile(civ).tileName
+			col = warn
+		else:
+			txt = "Worker in %s   •   %d free building%s" % [worker_tile(civ).tileName, civ.fbp, "" if civ.fbp == 1 else "s"]
+			if tile.tileOwner != playerCountry:
+				txt += "   •   workshop lost"
+		var st := _contract_label(txt, 14, col)
+		st.custom_minimum_size = Vector2(360, 0)
+		st.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		row.add_child(st)
+		var go := Button.new()
+		go.text = "Go to"
+		go.custom_minimum_size = Vector2(80, 30)
+		go.disabled = civ == null or not is_instance_valid(civ)
+		if not go.disabled:
+			go.pressed.connect(_site_goto_pressed.bind(civ))
+		row.add_child(go)
+	var close := Button.new()
+	close.text = "Close"
+	close.custom_minimum_size = Vector2(130, 36)
+	close.size_flags_horizontal = Control.SIZE_SHRINK_END
+	close.pressed.connect(_close_sites_panel)
+	v.add_child(close)
+	panel.reset_size()
+	var vp := get_viewport_rect().size
+	panel.position = Vector2(maxf(8.0, (vp.x - panel.size.x) / 2.0), maxf(20.0, (vp.y - panel.size.y) / 2.0))
 
 
 # ── STARTING ARMY SPAWNER ─────────────────────────────────────────────────────
@@ -1191,32 +2442,7 @@ func generateBarracksCommanders() -> void:
 # the tile name and the governor's archetype.  Must run after
 # generateBarracksCommanders() so every tile's tileGovernor is already set.
 func spawnStartingArmies() -> void:
-	var ARMY_SUFFIX := {
-		"ARC_01": "Wetlands Rangers",    "ARC_02": "Mountain Militia",
-		"ARC_03": "Volunteer Regiment",  "ARC_04": "Forest Skirmishers",
-		"ARC_05": "Green Mountain Boys", "ARC_06": "Harbor Guard",
-		"ARC_07": "Irregular Rifles",    "ARC_08": "Frontier Militia",
-		"ARC_09": "Liberty Brigade",     "ARC_10": "Ranger Company",
-		"ARC_11": "Sons of Liberty",     "ARC_12": "Continental Corps",
-		"ARC_13": "Naval Infantry",      "ARC_14": "Righteous Rifles",
-		"ARC_15": "Federal Guard",       "ARC_16": "Iron Brigade",
-		"ARC_17": "Freedom Rifles",      "ARC_18": "Bayou Raiders",
-		"ARC_19": "Privateer Corps",     "ARC_20": "Pacific Guard",
-		"ARC_21": "Border Company",      "ARC_22": "Forest Rangers",
-		"ARC_23": "Heritage Guard",      "ARC_24": "Solidarity Regiment",
-		"ARC_25": "Showmen's Rifles",
-		"ARC_26": "Harbor Wolves",       "ARC_27": "Gloucester Guard",
-		"ARC_28": "Clockwork Company",   "ARC_29": "Ward Rifles",
-		"ARC_30": "Hex Company",         "ARC_31": "River Gentry",
-		"ARC_32": "Long Rifle Company",  "ARC_33": "Hollow Runners",
-		"ARC_34": "Ridge Wardens",       "ARC_35": "Bay Freedmen",
-		"ARC_36": "Parlor Guard",        "ARC_37": "Sea Island Rangers",
-		"ARC_38": "North Star Company",  "ARC_39": "Cathedral Regiment",
-		"ARC_40": "Red Clay Rifles",     "ARC_41": "Root Brigade",
-		"ARC_42": "Scrub Riders",        "ARC_43": "Iron Hall Brigade",
-		"ARC_44": "Mulberry Street Guard","ARC_45": "Tenement Rifles",
-		"ARC_46": "Blue Water Raiders",  "ARC_47": "Capital Shadows",
-	}
+	var ARMY_SUFFIX := COMMANDER_ARMY_SUFFIX
 
 	var all_candidates: Array = []
 	for tile in $TileController.get_children():
@@ -1501,7 +2727,8 @@ func _generate_ai_barracks_commanders(country_node) -> void:
 	# Assign tile governors to stationed armies
 	var assigned: int = 0
 	for army in country_node.countryArmyList:
-		if army.inTile != null and army.inTile.tileGovernor != null:
+		if army.commander == null and army.inTile != null and army.inTile.tileGovernor != null \
+				and not _is_home_commander(army.inTile.tileGovernor):
 			army.addUnitCommander(army.inTile.tileGovernor)
 			army.updateArmyUI()
 			assigned += 1
@@ -1710,6 +2937,7 @@ func _set_active_country_no_ui(cid: String) -> void:
 
 func _resolve_ai_and_advance_round() -> void:
 	# All non-player countries take their AI turn (battles are recorded, shown afterward)
+	_retry_pending_commander_armies()   # commanders freed this turn raise their armies now that movement is done
 	_ai_playback_queue.clear()
 	_defer_events = true
 	for c in aliveCountriesList:
@@ -1721,6 +2949,12 @@ func _resolve_ai_and_advance_round() -> void:
 	await _play_ai_turn()
 	_tick_sieges()
 	_raise_pending_protector_towers()
+	_tick_commander_remuster()
+	_retry_pending_commander_armies()
+	_tick_contracts()
+	if playerCountryNode != null and not _construction_sites.is_empty():
+		playerCountryNode.activeCivilianCount = all_workers().size()   # 4 dollars a turn each
+		_refresh_worker_panels()
 	$PathControl.onTurnEnd()   # civilians get their moves back (this was never called, so a civilian froze for good after two moves)
 	$CanvasLayer/WarRoomPanel.checkObjectives($TileController.get_children(), currentWorldTurn + 1)
 	currentWorldTurn += 1
@@ -1792,7 +3026,9 @@ func updatePlayerUI():
 		$PathControl.rangedButtonPressed.connect(rangedPressed)
 	if not $PathControl.playerBattleResolved.is_connected(_on_player_battle_resolved):
 		$PathControl.playerBattleResolved.connect(_on_player_battle_resolved)
-	$CanvasLayer/CivilianControl.loadCivilians(playerCountryNode, playerCountryNode.OwnedTileList)
+	# Liberation economy: no civilian per tile any more. Workers come from Workshops
+	# (see _setup_construction_sites); a non-US player keeps the old one-per-tile set.
+	$CanvasLayer/CivilianControl.loadCivilians(playerCountryNode, [] if playerCountry == "USA" else playerCountryNode.OwnedTileList)
 	if not $CanvasLayer/CivilianControl.raiseThisUnit.is_connected(raiseCivilianUnit):
 		$CanvasLayer/CivilianControl.raiseThisUnit.connect(raiseCivilianUnit)
 	$CanvasLayer/MilitaryPanelControl.buildSelf(playerCountryNode)
@@ -2453,10 +3689,8 @@ func _on_farmers_choice() -> void:
 				spot = tile
 				break
 	if spot != null:
-		_raise_archetype_army(spot, "Minutemen")
-		var a = playerCountryNode.countryArmyList.back()
-		if a != null:
-			a.ArmyName = "Farmer Volunteers"
+		# Volunteers serve one contract, like any Minutemen company.
+		_raise_contract_company(spot, "musket", "musket", contract_turns(), null, "Farmer Volunteers")
 
 
 func _raise_archetype_army(tile, archetype: String) -> void:
@@ -2482,7 +3716,7 @@ func _raise_archetype_army(tile, archetype: String) -> void:
 	var bb = _ensure_barracks_button_for(tile)
 	if bb != null:
 		bb.addPrebuiltArmy(new_army)
-	if tile.tileGovernor != null:
+	if tile.tileGovernor != null and not _is_home_commander(tile.tileGovernor):   # a home commander leads only their own army
 		new_army.addUnitCommander(tile.tileGovernor)
 	new_army.updateArmyUI()
 	new_army.raiseSelf()
@@ -2838,7 +4072,7 @@ func _on_border_warning_choice(button_id: String) -> void:
 	elif button_id == "mobilize_citizens":
 		_mobilize_citizens()
 	elif button_id == "open_muster":
-		_open_muster_panel()
+		_open_contract_panel()
 
 
 func _ensure_barracks_button_for(tile):
@@ -2856,21 +4090,8 @@ func _ensure_barracks_button_for(tile):
 
 
 func _raise_player_militia(tile) -> void:
-	if tile == null or not is_instance_valid(tile) or tile.stationedArmy != null:
-		return
-	playerCountryNode.addArmy(tile.tileName + " Militia", tile.tileNumber)
-	var new_army = playerCountryNode.countryArmyList.back()
-	if new_army == null:
-		return
-	# Wire to a barracks button (create a Militia Camp button if the tile has none) so the
-	# army's panel lives in the Military panel instead of being parented onto the map APF.
-	var bb = _ensure_barracks_button_for(tile)
-	if bb != null:
-		bb.addPrebuiltArmy(new_army)
-	if tile.tileGovernor != null:
-		new_army.addUnitCommander(tile.tileGovernor)
-	new_army.updateArmyUI()
-	new_army.raiseSelf()
+	# Mobilisation events hand out Minutemen companies: one contract, no commander.
+	_raise_contract_company(tile, "musket", "musket", contract_turns(), null, tile.tileName + " Militia" if tile != null else "")
 
 
 func _mobilize_national_guard() -> void:
@@ -2963,11 +4184,11 @@ func _setup_buy_button() -> void:
 		return
 	var btn := Button.new()
 	btn.name = "BuyUnitsButton"
-	btn.text = "Buy Units"
-	btn.tooltip_text = "Open the buy store — purchase and place units with gold (and Weapons for advanced tiers)"
+	btn.text = "Minutemen"
+	btn.tooltip_text = "Hire a Minutemen company from a hiring ground. Costs Manpower; the company goes home after its contract."
 	btn.position = $CanvasLayer/NextTurnControl.position + Vector2(28, -34)
 	btn.custom_minimum_size = Vector2(110, 28)
-	btn.pressed.connect(_open_muster_panel)
+	btn.pressed.connect(_open_contract_panel)
 	$CanvasLayer.add_child(btn)
 
 
@@ -6428,6 +7649,8 @@ func _is_state_liberated(state_code: String, cid: String) -> bool:
 
 func _on_right_click_detector_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if Input.is_action_just_pressed('Right Click'):
+		if $CanvasLayer.blocks_map_at(get_viewport().get_mouse_position()):
+			return   # the click is on an open panel, not on the map
 		if _hovered_tile != null and $PathControl.selectedAPF != null:
 			if $PathControl.tryMoveSelectedAPFToTile(_hovered_tile):
 				return
@@ -6483,6 +7706,7 @@ func _show_tile_info(tile) -> void:
 	_close_tile_info()
 	if tile == null or not is_instance_valid(tile):
 		return
+	_close_all_panels("tile")
 	_tileInfoTile = tile
 	var card = TILE_CARD_SCRIPT.new()
 	card.position = Vector2(12, 100)
@@ -6523,8 +7747,8 @@ func _show_army_info(army) -> void:
 	_close_army_info()
 	if army == null or not is_instance_valid(army):
 		return
+	_close_all_panels("army")
 	_armyInfoArmy = army
-	$CanvasLayer.closeAllPanels()
 	var card = ARMY_CARD_SCRIPT.new()
 	card.name = "ArmyCard"
 	$CanvasLayer.add_child(card)
@@ -6786,6 +8010,9 @@ func _on_government_control_slider_changed(amount, type) -> void:
 	pass # Replace with function body.
 
 func _on_civilian_button_pressed() -> void:
+	if not _construction_sites.is_empty():
+		_open_sites_panel()   # the Construction Sites list replaces the civilian cards
+		return
 	$CanvasLayer/CivilianControl.updateCivilians()
 	if $CanvasLayer/CivilianControl.visible == true:
 		$CanvasLayer/CivilianControl.visible = false
@@ -6796,6 +8023,14 @@ func _on_civilian_button_pressed() -> void:
 var milModScene = load("res://mil_mod.tscn")
 
 func updateCivFunc(civ, pathPoint):
+	if civ != null and civ.isWorker:
+		# Workers get their own panel: upgrades for dollars, new buildings for FBPs.
+		if _workerPanel != null and is_instance_valid(_workerPanel) and _workerPanelCiv == civ and worker_tile(civ) == _workerPanelTile:
+			_close_worker_panel()
+		else:
+			_show_worker_panel(civ)
+			_workerPanelTile = worker_tile(civ)
+		return
 	$CanvasLayer/CivilianUnitControl/ToolIcon.texture = civ.civilianTool.toolImage
 	$CanvasLayer/CivilianUnitControl/KitIton.texture = civ.civilianKit.kitImage
 	if $CanvasLayer/CivilianUnitControl/MilModGridContainer.get_children != null:
@@ -6807,7 +8042,7 @@ func updateCivFunc(civ, pathPoint):
 		$CanvasLayer/CivilianUnitControl/MilModGridContainer.add_child(newMilMod)
 	calculateCivilianButtons(civ, pathPoint.ppbTile)
 	if $CanvasLayer/CivilianUnitControl.visible == false:
-		$CanvasLayer.closeAllPanels()
+		_close_all_panels("worker")   # keeps the civilian selected
 		$CanvasLayer/CivilianUnitControl.visible = true
 	else:
 		$CanvasLayer/CivilianUnitControl.visible = false
@@ -6921,6 +8156,8 @@ func tileSiegeWon(tile, oldCID: String, newCID: String) -> void:
 			country.addTile(tile)
 	tile.record_conquest(finalCID)
 	_on_tile_liberated(tile, oldCID, finalCID)
+	_on_commander_home_changed(tile, oldCID, finalCID)
+	_on_site_tile_changed(tile, oldCID, finalCID)
 
 	# ── ITEM 3: clean up any APF belonging to the losing side ────────────────
 	var ppb = tile.tileSpawnPoint
@@ -8296,6 +9533,7 @@ func _refresh_run_clock() -> void:
 func _open_run_progress() -> void:
 	if $CanvasLayer.has_node("RunProgress") or _game_ended:
 		return
+	_close_all_panels("progress")
 	var rep := live_run_report()
 	var cfg := ConfigFile.new()
 	cfg.load(RUN_SCORE.RECORDS_PATH)

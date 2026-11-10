@@ -103,6 +103,8 @@ func armyArrivedFunc(pathOfArmy, newPathPointButton, theArmy, apf, contain):
 			updateArmyPanel(theArmy, newPathPointButton)
 	emit_signal("updatePathPoints", true)
 	newPathPointButton.stationedAPF = apf
+	if apf == selectedAPF:
+		_highlightMovableTiles(newPathPointButton)   # show what is still in reach
 	# Instant capture on entry — walking into a tile flips it to your country
 	# (British strongpoints start a one-turn siege instead; see tile.captureInstant).
 	if newPathPointButton.ppbTile != null:
@@ -296,10 +298,9 @@ func tryMoveSelectedAPFToTile(tile: Tile) -> bool:
 	var targetPPB = tile.tileSpawnPoint
 	if targetPPB == null:
 		return false
-	if targetPPB not in selectedAPF.currentPathPoint.neighborPathPoints:
-		return false
-	# Move only — never onto an occupied tile. Attacks are right-click on the enemy APF.
-	if targetPPB.occupied:
+	# Any tile the army can reach with the movement it has left (see reachable_from).
+	# Never onto an enemy army: attacks are right-click on the enemy token.
+	if route_to(selectedAPF.currentPathPoint, targetPPB, selectedAPF.thisArmy).is_empty():
 		return false
 	calculateArmyMovement(targetPPB, targetPPB.neighborPathPoints, tile)
 	return true
@@ -368,6 +369,14 @@ func _highlightMovableTiles(pathPoint) -> void:
 	_clearMovableHighlights()
 	if pathPoint == null:
 		return
+	# An army lights up every tile it can reach this turn, not just its neighbours.
+	if selectedAPF != null and is_instance_valid(selectedAPF) and selectedAPF.currentPathPoint == pathPoint \
+			and selectedAPF.thisArmy != null and is_instance_valid(selectedAPF.thisArmy):
+		for ppb in reachable_from(pathPoint, selectedAPF.thisArmy)["cost"]:
+			if is_instance_valid(ppb) and ppb.ppbTile != null:
+				ppb.ppbTile.setMovableHighlight(true)
+				_highlightedTiles.append(ppb.ppbTile)
+		return
 	for ppb in pathPoint.neighborPathPoints:
 		if is_instance_valid(ppb) and ppb.ppbTile != null:
 			ppb.ppbTile.setMovableHighlight(true)
@@ -383,8 +392,47 @@ func _clearMovableHighlights() -> void:
 func removeFromUpdateArmyPaths():
 	updatingArmyPathFollow = null
 
+# Army tokens, worker tokens and move markers are buttons sitting on the map. One that lies
+# under an open panel would take the click meant for the panel (and then act on the map),
+# so while it is covered it stops listening to the mouse.
+var _tokenMouseT := 0.0
+func _tick_token_mouse(delta: float) -> void:
+	_tokenMouseT += delta
+	if _tokenMouseT < 0.1:
+		return
+	_tokenMouseT = 0.0
+	var layer = get_node_or_null("../CanvasLayer")
+	if layer == null or not layer.has_method("blocks_map_at"):
+		return
+	for apf in raisedPlayerAPFs:
+		if is_instance_valid(apf):
+			_set_token_listening(apf.get_node_or_null("APFButton"), apf, layer)
+	for cpf in raisedPlayerCPFs:
+		if is_instance_valid(cpf):
+			_set_token_listening(cpf.get_node_or_null("cpfButton"), cpf, layer)
+	for ppb in $PathPointsControl.get_children():
+		var mb = ppb.get_node_or_null("Button")
+		if mb != null and mb.visible:
+			if selectedCPF == null:
+				# Move markers are only for a selected civilian (armies march by right-click).
+				# Left showing, each one sits on the middle of its tile and eats the click.
+				mb.visible = false
+			else:
+				_set_token_listening(mb, ppb, layer)
+
+
+func _set_token_listening(btn, token, layer) -> void:
+	if btn == null or not (btn is Control):
+		return
+	var covered: bool = layer.blocks_map_at(token.get_global_transform_with_canvas().origin)
+	var want: int = Control.MOUSE_FILTER_IGNORE if covered else Control.MOUSE_FILTER_STOP
+	if btn.mouse_filter != want:
+		btn.mouse_filter = want
+
+
 func _process(_delta: float) -> void:
 	_tick_badges(_delta)
+	_tick_token_mouse(_delta)
 	# Animate the path follower from whatever is currently traveling (selection-independent).
 	if updatingArmyPathFollow != null and is_instance_valid(_travelingFollower):
 		var pr: float = _travelingFollower.progressRate
@@ -393,6 +441,7 @@ func _process(_delta: float) -> void:
 
 var startingPoint: pathPointButton
 func calculateArmyMovement(endPathPoint: pathPointButton, _neighborPathPoints, _ppbTile):
+	var waypoints: Array = [endPathPoint]
 	if selectedAPF != null:
 		# Melee attack: route to attack animation instead of normal movement
 		if melee_mode and endPathPoint.stationedArmy != null and endPathPoint.stationedArmy.enemy:
@@ -405,26 +454,26 @@ func calculateArmyMovement(endPathPoint: pathPointButton, _neighborPathPoints, _
 		# Sabotage blocks all movement for the affected turn
 		if army != null and army.sabotaged:
 			return
-		# Movement point gate — terrain cost consumed from army's pool
 		var dest_tile: Tile = endPathPoint.ppbTile
-		# Depth pass 2026-10-31 — the Redcoat line: open British ground beside a British
-		# army can't be walked into; break that army first.
-		var _block: String = zoc_block_reason(army, dest_tile)
-		if _block != "":
-			emit_signal("movement_blocked", _block)
-			return
 		if dest_tile != null and army != null:
-			var cost: int = dest_tile.get_move_cost(army)
-			if army.parentCountry != null and army.parentCountry.CID == "USA":
-				cost = 1   # USA reclamation: every move costs a flat 1 point
-			if army.currentMovementPoints < cost:
-				emit_signal("movement_blocked", "Not enough movement points")
+			# The march: every tile from here to the destination, paid for out of the
+			# army's movement points. Empty = the destination can't be reached this turn.
+			var route: Array = route_to(startingPoint, endPathPoint, army)
+			if route.is_empty():
+				var _block: String = zoc_block_reason(army, dest_tile)
+				if _block == "":
+					_block = "Not enough movement points" if army.currentMovementPoints <= 0 else "Out of reach this turn"
+				emit_signal("movement_blocked", _block)
 				return
+			var cost: int = 0
+			for step in route:
+				cost += _step_cost(army, step.ppbTile)
 			if army.has_artillery():
 				if not army.artillery_can_move():
 					emit_signal("movement_blocked", "The cannon crew is out of actions this turn")
 					return
 				army.spend_artillery_move_ap()
+			var partner = _attach_partner(army, endPathPoint)
 			army.currentMovementPoints -= cost
 			army.movedThisTurn = true
 			army.attacksFromCurrentTile = 0
@@ -436,10 +485,33 @@ func calculateArmyMovement(endPathPoint: pathPointButton, _neighborPathPoints, _
 			if army.attackedThisTurn:
 				army.apply_status("Retreat", 2)
 			_clearMovableHighlights()
+			if partner != null:
+				var w = get_parent()
+				if army.isContract:
+					# The company walks in and joins the commander where he stands.
+					w.attach_company(partner, army)
+					deselectAll()
+					return
+				# The commander picks the company up, then marches onto its tile.
+				w.attach_company(army, partner)
+			waypoints = route
 	elif selectedCPF != null:
 		startingPoint = selectedCPF.currentPathPoint
 		# Action point gate — civilians spend 1 point per tile moved
 		if selectedCPF.thisCivilian != null:
+			var _civ = selectedCPF.thisCivilian
+			if _civ.isWorker:
+				# Workers stay on liberated ground, one to a tile.
+				if _civ.captured:
+					emit_signal("movement_blocked", "This worker is held by the British.")
+					return
+				if endPathPoint.ppbTile == null or selectedCPF.thisCountry == null or endPathPoint.ppbTile.tileOwner != selectedCPF.thisCountry.CID:
+					emit_signal("movement_blocked", "Workers only travel on liberated ground.")
+					return
+				for other in raisedPlayerCPFs:
+					if is_instance_valid(other) and other != selectedCPF and other.currentPathPoint == endPathPoint:
+						emit_signal("movement_blocked", "Another worker is already there.")
+						return
 			if selectedCPF.thisCivilian.currentActionPoints <= 0:
 				emit_signal("movement_blocked", "Out of moves this turn — this civilian can move again next turn.")
 				return
@@ -453,8 +525,109 @@ func calculateArmyMovement(endPathPoint: pathPointButton, _neighborPathPoints, _
 	var curve: Curve2D = $PathsControl/Path.curve
 	curve.clear_points()
 	curve.add_point(startingPoint.position)
-	curve.add_point(endPathPoint.position)
+	for wp in waypoints:
+		curve.add_point(wp.position)
 	moveArmy($PathsControl/Path/PathFollow/Control, "start", endPathPoint)
+
+# ── MULTI-TILE MARCH (liberation economy) ────────────────────────────────────
+# An army may go to any tile it can pay for with the movement it has left. It can only
+# march THROUGH friendly, empty ground that no Redcoat army covers; the last step may be
+# anything a single step could always do (enemy ground, a siege, a tile on the Redcoat line).
+func _step_cost(army, tile) -> int:
+	if army.parentCountry != null and army.parentCountry.CID == "USA":
+		return 1   # USA reclamation: every move costs a flat 1 point
+	return tile.get_move_cost(army)
+
+
+# A friendly army on that point which `army` may join (company -> commander) or pick up
+# (commander -> company), or null.
+func _attach_partner(army, ppb):
+	var other = ppb.stationedArmy
+	if other == null or not is_instance_valid(other) or other == army or other.deleteMode or other.manpowerInArmy <= 0:
+		return null
+	if other.parentCountry != army.parentCountry:
+		return null
+	if (army.isContract and other.can_host_company()) or (other.isContract and army.can_host_company()):
+		return other
+	return null
+
+
+# The live army standing on a path point, or null. A worker on the tile does not count:
+# a tile holds one army and one civilian.
+func _army_on(ppb):
+	var a = ppb.stationedArmy
+	if a == null or not is_instance_valid(a) or a.deleteMode or a.manpowerInArmy <= 0:
+		return null
+	return a
+
+
+func _can_end_on(army, ppb) -> bool:
+	var t = ppb.ppbTile
+	if t == null:
+		return false
+	if not war_active and t.tileOwner == "UK":
+		return false
+	if zoc_block_reason(army, t) != "":
+		return false
+	if _army_on(ppb) != null:
+		return _attach_partner(army, ppb) != null
+	return true
+
+
+func _can_pass_through(army, ppb) -> bool:
+	var t = ppb.ppbTile
+	if t == null or _army_on(ppb) != null or army.parentCountry == null:
+		return false
+	var cid: String = army.parentCountry.CID
+	return t.tileOwner == cid and t.redcoat_line_army(cid) == null
+
+
+# {"cost": {ppb: movement spent to end there}, "prev": {ppb: the point before it}}
+func reachable_from(startPPB, army) -> Dictionary:
+	var finals: Dictionary = {}
+	var prev: Dictionary = {}
+	if startPPB == null or army == null or not is_instance_valid(army) or army.parentCountry == null:
+		return {"cost": finals, "prev": prev}
+	var budget: int = int(army.currentMovementPoints)
+	var best: Dictionary = {startPPB: 0}
+	var frontier: Array = [startPPB]
+	while not frontier.is_empty():
+		var bi: int = 0
+		for i in frontier.size():
+			if best[frontier[i]] < best[frontier[bi]]:
+				bi = i
+		var cur = frontier.pop_at(bi)
+		if cur != startPPB and not _can_pass_through(army, cur):
+			continue
+		for nb in cur.neighborPathPoints:
+			if not is_instance_valid(nb) or nb == startPPB or nb.ppbTile == null:
+				continue
+			var c: int = int(best[cur]) + _step_cost(army, nb.ppbTile)
+			if c > budget or (best.has(nb) and int(best[nb]) <= c):
+				continue
+			var can_end: bool = _can_end_on(army, nb)
+			if not can_end and not _can_pass_through(army, nb):
+				continue
+			best[nb] = c
+			prev[nb] = cur
+			if can_end:
+				finals[nb] = c
+			frontier.append(nb)
+	return {"cost": finals, "prev": prev}
+
+
+# The points to walk, in order, ending on endPPB. Empty when it can't be reached this turn.
+func route_to(startPPB, endPPB, army) -> Array:
+	var r: Dictionary = reachable_from(startPPB, army)
+	if not r["cost"].has(endPPB):
+		return []
+	var route: Array = []
+	var cur = endPPB
+	while cur != startPPB and cur != null:
+		route.push_front(cur)
+		cur = r["prev"].get(cur)
+	return route
+
 
 # ── ATTACK ANIMATION ─────────────────────────────────────────────────────────
 

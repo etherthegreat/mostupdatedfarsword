@@ -105,6 +105,83 @@ var movedThisTurn: bool = false    # set true by path_control when army spends m
 var attacksFromCurrentTile: int = 0  # counts attacks without moving; resets on movement
 var _engagedFromTile = null         # tile this army last attacked from; "first engagement" = any other tile
 
+# Liberation economy: a commander army is tied to its commander's home tile. While the enemy
+# holds that tile the army is displaced: no recruits and a slow bleed, until the tile is retaken.
+var commanderHome: Tile = null
+# A Minutemen contract company: leaderless, no recruits, disbands when the count reaches 0.
+var isContract: bool = false
+var contractTurnsLeft: int = -1
+var contractTile = null   # the hiring ground it was hired from (null for starting / event companies)
+# A company ATTACHED to this commander army: its units fight in this army (so they carry
+# the commander's traits) until the contract runs out or the player detaches them.
+var attachedUnits: Array = []
+var attachedName: String = ""
+var attachedTurnsLeft: int = -1
+var attachedContractTile = null
+# Movement a unit gives its army, by weapon. The total is rounded down; attached
+# Minutemen add nothing.
+const MOVE_PER_SABER := 1.5
+const MOVE_PER_MUSKET := 1.0
+const MOVE_PER_ARTILLERY := 0.5
+
+
+func can_host_company() -> bool:
+	return commanderHome != null and not isContract and attachedTurnsLeft < 0 and not deleteMode
+
+
+func base_movement_points() -> int:
+	if unitsList.is_empty():
+		return maxMovementPoints
+	var pts: float = 0.0
+	for u in unitsList:
+		if u == null or u in attachedUnits or u.unitWeapon == null:
+			continue
+		if u.unitWeapon.is_saber():
+			pts += MOVE_PER_SABER
+		elif u.unitWeapon.is_artillery():
+			pts += MOVE_PER_ARTILLERY
+		else:
+			pts += MOVE_PER_MUSKET
+	return maxi(1, int(floor(pts)))
+
+
+# Takes every unit of a Minutemen company into this army. The caller disbands the empty company.
+func attach_company(co) -> void:
+	for u in co.unitsList.duplicate():
+		co.unitsList.erase(u)
+		if u.get_parent() != null:
+			u.get_parent().remove_child(u)
+		addUnitToArmy(u, true)
+	attachedName = co.ArmyName
+	attachedTurnsLeft = co.contractTurnsLeft
+	attachedContractTile = co.contractTile
+	updateArmyUI()
+
+
+# Hands the attached units back (as loose nodes) and clears the attachment.
+func detach_units() -> Array:
+	var out: Array = attachedUnits.duplicate()
+	for u in out:
+		unitsList.erase(u)
+		if u.get_parent() != null:
+			u.get_parent().remove_child(u)
+	attachedUnits.clear()
+	attachedName = ""
+	attachedTurnsLeft = -1
+	attachedContractTile = null
+	for ui in $ScrollContainer/UnitUIContainer.get_children():
+		$ScrollContainer/UnitUIContainer.remove_child(ui)
+		ui.queue_free()
+	for u in unitsList:
+		var newUnitUI = unitUIScene.instantiate()
+		newUnitUI.buildSelf(u, parentCountry)
+		$ScrollContainer/UnitUIContainer.add_child(newUnitUI)
+	updateArmyUI()
+	return out
+var displaced: bool = false
+const DISPLACED_BLEED := 0.05   # share of full strength lost each turn (placeholder, not agreed yet)
+const DISPLACED_FLOOR := 0.25   # the bleed stops here, so a displaced army is never bled to death
+
 var is_anarchist: bool = false  # anarchist armies auto-attack UK each turn, no shield, uncontrollable
 
 #spawning and tiles
@@ -164,6 +241,9 @@ func buildSelf(Name, countryNode, TileNumber, icon):
 		armyCostUI.buildSelf()
 
 func updateArmyUI(): #call whenever attacked, or just whenever the player opens the screen
+	maxMovementPoints = base_movement_points()
+	if not raised:
+		currentMovementPoints = maxMovementPoints   # still being assembled: start with a full allowance
 	for Unit in unitsList:
 		Unit.getUnitAttributes()
 	# Fix 2026-10-27: getUnitAttributes() wipes every unit mod, so belief mods (Vanguard,
@@ -243,6 +323,7 @@ func onTurnEnd():
 			_u.tick_reload()   # count down any pending reload once per turn
 		_u.unitCurrentAP = _u.get_max_ap()
 	# Restore full movement points at the start of each new turn
+	maxMovementPoints = base_movement_points()
 	currentMovementPoints = maxMovementPoints + _commander_movement_bonus() + (parentCountry.belief_move_bonus() if parentCountry != null else 0)
 	# Reset per-turn flags (re-derived below from active statuses)
 	attackBlocked = false
@@ -271,8 +352,10 @@ func onTurnEnd():
 	var _in_contact: bool = _hitSinceLastTurn
 	_hitSinceLastTurn = false
 	var _unpaid: bool = parentCountry != null and parentCountry.Player and parentCountry.TotalDollars < 0
+	if displaced:
+		_bleed_displaced()
 	# Reinforce only if not supply-cut or quarantined
-	if not reinforcementBlocked and not _in_contact and not _unpaid and parentCountry.TotalManpower > 0:
+	if not reinforcementBlocked and not displaced and not isContract and not _in_contact and not _unpaid and parentCountry.TotalManpower > 0:
 		var heal_rate: int = parentCountry.armyReinforceRate
 		if _army_has_active_mod("Healer"):
 			heal_rate += 10
@@ -282,6 +365,8 @@ func onTurnEnd():
 		for Unit in unitsList:
 			if parentCountry.TotalManpower <= 0:
 				break
+			if Unit in attachedUnits:
+				continue   # attached Minutemen take no recruits
 			var _before: int = Unit.unitCurrentManpower
 			Unit.refillManpower(heal_rate)
 			parentCountry.TotalManpower -= (Unit.unitCurrentManpower - _before)   # reinforcement now DRAWS from the Manpower reserve
@@ -897,8 +982,10 @@ func _apply_status_flags() -> void:
 			"La Chasse-Galerie":
 				currentMovementPoints += 4
 
-func addUnitToArmy(unitToAdd):
-	if unitsList.size() >= 2:
+func addUnitToArmy(unitToAdd, attached: bool = false):
+	if attached:
+		attachedUnits.append(unitToAdd)
+	elif unitsList.size() - attachedUnits.size() >= 2:
 		push_warning("Army '%s': cannot add more than 2 units." % ArmyName)
 		return
 	unitsList.append(unitToAdd)
@@ -1215,6 +1302,13 @@ func _on_raise_army_pressed() -> void:
 		return
 	raised = true
 	emit_signal("raisingArmy", self, parentCountry, inTile)
+
+func _bleed_displaced() -> void:
+	for u in unitsList:
+		var floor_men: int = int(ceil(float(u.unitMaxManpower) * DISPLACED_FLOOR))
+		if u.unitCurrentManpower > floor_men:
+			var loss: int = int(ceil(float(u.unitMaxManpower) * DISPLACED_BLEED))
+			u.unitCurrentManpower = maxi(floor_men, u.unitCurrentManpower - loss)
 
 func addUnitCommander(newCommander):
 	commander = newCommander

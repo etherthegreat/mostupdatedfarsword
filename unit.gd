@@ -262,6 +262,21 @@ func calculateMilMods() -> void:
 					pass  # handled in start_reload()
 				"Powder & Shot":
 					unitRangedOffence += (3 * unitLevel)
+				# Saber and cannon commander traits (liberation economy): they only lift the
+				# matching weapon, so the trait and the army it comes with belong together.
+				"Light Horse":
+					if unitWeapon != null and unitWeapon.is_saber():
+						unitOffensiveScore += (2 * unitLevel)
+						unitDefensiveScore += _pts(2)
+				"Gun Captain":
+					if unitWeapon != null and unitWeapon.is_artillery():
+						unitRangedOffence += (4 * unitLevel)
+				"Thunder Charge":
+					if inFirstEngagement and unitWeapon != null and unitWeapon.is_saber():
+						unitOffensiveScore += (4 * unitLevel)
+				"Canister Shot":
+					if unitStance in ["hold", "fortify"] and unitWeapon != null and unitWeapon.is_artillery():
+						unitRangedOffence += (4 * unitLevel)
 				# ── Tier 2 mods ──────────────────────────────────────────────
 				"Marine":
 					pass  # handled in battle.gd (_army_marine_bonus)

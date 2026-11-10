@@ -15,3 +15,6 @@ USA,Marine Cavalry,0,,Cavalry:Marine Mameluke:Cavalry:1:200:0|Cavalry:Marine Mam
 USA,Mortar Battery,0,,Artillery:Mortar:Artillery Corps:1:200:200|Infantry:Flintlock:Minuteman:1:200:200
 USA,Rocket Battery,0,,Artillery:Rocket Artillery:Artillery Corps:1:200:200|Infantry:Flintlock:Minuteman:1:200:200
 USA,Secret Service Detail,188,,Infantry:Flintlock:Continental:2:300:300|Infantry:Flintlock:Continental:2:300:300
+USA,Commander Muskets,0,,Infantry:Flintlock:Continental:2:200:200|Infantry:Flintlock:Continental:2:200:200
+USA,Commander Sabers,0,,Cavalry:Cutlass:Cavalry:2:200:0|Cavalry:Cutlass:Cavalry:2:200:0
+USA,Commander Battery,0,,Artillery:Field Cannon:Artillery Corps:2:200:200|Infantry:Flintlock:Continental:2:200:200

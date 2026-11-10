@@ -26,6 +26,7 @@ var playerCountryNode
 var playerCountryID: String = "USA"
 var activeCommanderArcs: Array = []
 var activeProtectorArcs: Array = []
+var waitingCommanders: Array = []   # commander homes still behind enemy lines: {tile, archetype_name, army_label}
 
 const WarRoomCard := preload("res://war_room_card.gd")
 
@@ -120,6 +121,7 @@ func _populate_commander_tab() -> void:
 	_clear(vbox)
 	if activeCommanderArcs.is_empty():
 		vbox.add_child(_intro_line("No commanders in the field yet. Assign a commander to a tile and their personal objectives appear here."))
+		_add_waiting_commanders(vbox)
 		return
 	vbox.add_child(_intro_line("Every commander has three personal objectives. Finish all three and their reunion scene unlocks."))
 	for arcData in activeCommanderArcs:
@@ -131,6 +133,25 @@ func _populate_commander_tab() -> void:
 		var card = WarRoomCard.new()
 		vbox.add_child(card)
 		card.build_commander(arcData, rows)
+	_add_waiting_commanders(vbox)
+
+
+# world.gd hands over the commander homes that are still in enemy hands.
+func setWaitingCommanders(list: Array) -> void:
+	waitingCommanders = list
+	if is_visible_in_tree():
+		_populate_commander_tab()
+
+
+func _add_waiting_commanders(vbox: Node) -> void:
+	if waitingCommanders.is_empty():
+		return
+	vbox.add_child(_intro_line("BEHIND ENEMY LINES: %d commanders are waiting. Liberate a commander's home and they join you with their army." % waitingCommanders.size()))
+	for w in waitingCommanders:
+		var t = w.get("tile")
+		if t == null or not is_instance_valid(t):
+			continue
+		vbox.add_child(_intro_line("    %s, %s  •  %s  •  %s" % [str(t.tileName), str(t.tileContinent), str(w.get("archetype_name", "")), str(w.get("army_label", ""))]))
 
 
 func _populate_presidential_tab() -> void:
