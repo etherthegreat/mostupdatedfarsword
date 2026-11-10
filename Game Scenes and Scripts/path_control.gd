@@ -441,6 +441,7 @@ func calculateArmyMovement(endPathPoint: pathPointButton, _neighborPathPoints, _
 		# Action point gate — civilians spend 1 point per tile moved
 		if selectedCPF.thisCivilian != null:
 			if selectedCPF.thisCivilian.currentActionPoints <= 0:
+				emit_signal("movement_blocked", "Out of moves this turn — this civilian can move again next turn.")
 				return
 			selectedCPF.thisCivilian.currentActionPoints -= 1
 	# Reset leftover editor transforms so the curve lines up with the real tile positions.

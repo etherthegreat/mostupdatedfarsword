@@ -1721,6 +1721,7 @@ func _resolve_ai_and_advance_round() -> void:
 	await _play_ai_turn()
 	_tick_sieges()
 	_raise_pending_protector_towers()
+	$PathControl.onTurnEnd()   # civilians get their moves back (this was never called, so a civilian froze for good after two moves)
 	$CanvasLayer/WarRoomPanel.checkObjectives($TileController.get_children(), currentWorldTurn + 1)
 	currentWorldTurn += 1
 	_advance_fortnight()
