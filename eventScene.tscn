@@ -1,8 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://dwonmrxv1pcck"]
+[gd_scene load_steps=4 format=3 uid="uid://dwonmrxv1pcck"]
 
 [ext_resource type="Script" uid="uid://brege513eyw2c" path="res://event_scene.gd" id="1_y3087"]
 [ext_resource type="Texture2D" uid="uid://demtu316la1b4" path="res://art assets/AmericanRevolutionArt/Panel/IMG_1688.PNG" id="2_5slwq"]
-[ext_resource type="Texture2D" uid="uid://dpp4uvu74ta2r" path="res://art assets/Placeholder Art/character/4-22-Samurai-Jack-Colors - Copy.png" id="2_apgmq"]
 [ext_resource type="Texture2D" uid="uid://kjhhk7jj22fr" path="res://art assets/Placeholder Art/UI Art/resources/Plentify.png" id="3_apgmq"]
 
 [node name="EventControl" type="Control"]
@@ -54,7 +53,7 @@ layout_mode = 0
 offset_left = 9.0
 offset_top = 83.0
 offset_right = 906.0
-offset_bottom = 548.0
+offset_bottom = 492.0
 theme_override_font_sizes/font_size = 31
 text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 horizontal_alignment = 1
@@ -62,16 +61,15 @@ vertical_alignment = 1
 autowrap_mode = 3
 
 [node name="EventSprite2D" type="Sprite2D" parent="EventPanel"]
-position = Vector2(1095, 319.817)
-scale = Vector2(0.65, 0.65)
-texture = ExtResource("2_apgmq")
+position = Vector2(1095, 290)
+scale = Vector2(0.29, 0.29)
 
 [node name="eventButtons" type="GridContainer" parent="EventPanel"]
 layout_mode = 0
 offset_left = 23.0
-offset_top = 519.0
+offset_top = 500.0
 offset_right = 1260.0
-offset_bottom = 649.0
+offset_bottom = 662.0
 theme_override_constants/h_separation = 435
 theme_override_constants/v_separation = 70
 columns = 3

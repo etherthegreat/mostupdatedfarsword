@@ -27,22 +27,70 @@ var playerCountryID: String = "USA"
 var activeCommanderArcs: Array = []
 var activeProtectorArcs: Array = []
 
-var commanderArcEntryScene = preload("res://CommanderArcEntry.tscn")
-var protectorArcEntryScene = preload("res://ProtectorArcEntry.tscn")
+const WarRoomCard := preload("res://war_room_card.gd")
 
 const PROTECTOR_GOVERNOR_UNLOCKS: Dictionary = {
 	"PROT_01": "Mothman",
 	"PROT_17": "Lincoln's Ghost",
 }
+const STAGE_KEYS := ["contact", "trust", "accord"]
+const STAGE_EVENTS := {"contact": "_SUMMON", "trust": "_TAME", "accord": "_AGREE"}
+const STAGE_FLAGS := {"contact": "_summoned", "trust": "_tame", "accord": "_agreed"}
+const STAGE_SCENE_NAMES := {"contact": "first contact", "trust": "the truce", "accord": "the accord"}
+const OWNER_NAMES := {"USA": "the United States", "UK": "the British Empire", "CA": "Canada"}
 
 signal arcObjectiveCompleted(arc_id, objective_num)
 signal arcFullyCompleted(arc_id)
 signal requestEventFire(event_id, tile)
-signal protectorSummoned(origin_tile, protector_name, protector_id)
+signal protectorSummoned(origin_tile, protector_name, protector_id)   # legacy: no longer emitted (rewards land at the accord)
+signal protectorReady(protector_name)   # a spirit's contact tasks are done and the order button is live
+
+var _arcs_by_country: Dictionary = {}   # country filter -> protector arcs, so progress survives turn changes
+var _all_tiles: Array = []
+var _last_turn: int = 1
 
 
 func _ready() -> void:
 	$PanelBackground/CloseButton.pressed.connect(_on_close_button_pressed)
+	_apply_panel_style()
+	visibility_changed.connect(_on_visibility_changed)
+
+
+# The scene file only supplies the node tree; the look is set here so the UI
+# overhaul can restyle the whole panel from one place.
+func _apply_panel_style() -> void:
+	var bg := StyleBoxFlat.new()
+	bg.bg_color = Color(0.04, 0.05, 0.10, 0.97)
+	bg.border_color = Color(0.85, 0.62, 0.18)
+	bg.set_border_width_all(2)
+	bg.set_corner_radius_all(6)
+	$PanelBackground.add_theme_stylebox_override("panel", bg)
+	var title: Label = $PanelBackground/TitleLabel
+	title.text = "WAR ROOM"
+	title.add_theme_color_override("font_color", Color(1.0, 0.82, 0.32))
+	title.offset_right = $PanelBackground.size.x
+	var tabs: TabContainer = $PanelBackground/TabContainer
+	tabs.add_theme_font_size_override("font_size", 17)
+	tabs.add_theme_stylebox_override("panel", StyleBoxEmpty.new())
+	for tab_name in ["COMMANDERS", "DEPARTMENT OF MYTHOLOGICAL AFFAIRS"]:
+		var sc: ScrollContainer = tabs.get_node(tab_name + "/ScrollContainer")
+		sc.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		sc.offset_left = 10
+		sc.offset_right = -6
+		sc.offset_top = 8
+		sc.offset_bottom = -8
+		sc.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+		var vb: VBoxContainer = sc.get_child(0)
+		vb.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		vb.add_theme_constant_override("separation", 10)
+
+
+func _on_visibility_changed() -> void:
+	# Opening the panel shows live progress (it does not fire scenes mid-turn).
+	if visible and playerCountryNode != null:
+		_refresh_protector_progress(_last_turn)
+		_populate_commander_tab()
+		_populate_presidential_tab()
 
 
 func buildSelf(playerNode) -> void:
@@ -52,31 +100,61 @@ func buildSelf(playerNode) -> void:
 	_populate_presidential_tab()
 
 
-func _populate_commander_tab() -> void:
-	var vbox = $PanelBackground/TabContainer/COMMANDERS/ScrollContainer/CommanderVBox
+func _intro_line(txt: String) -> Label:
+	var l := Label.new()
+	l.text = txt
+	l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	l.add_theme_font_size_override("font_size", 14)
+	l.add_theme_color_override("font_color", Color(0.72, 0.80, 0.95))
+	return l
+
+
+func _clear(vbox: Node) -> void:
 	for child in vbox.get_children():
+		vbox.remove_child(child)
 		child.queue_free()
 
+
+func _populate_commander_tab() -> void:
+	var vbox = $PanelBackground/TabContainer/COMMANDERS/ScrollContainer/CommanderVBox
+	_clear(vbox)
+	if activeCommanderArcs.is_empty():
+		vbox.add_child(_intro_line("No commanders in the field yet. Assign a commander to a tile and their personal objectives appear here."))
+		return
+	vbox.add_child(_intro_line("Every commander has three personal objectives. Finish all three and their reunion scene unlocks."))
 	for arcData in activeCommanderArcs:
-		var entry = commanderArcEntryScene.instantiate()
-		vbox.add_child(entry)
-		entry.buildSelf(arcData, playerCountryNode)
-		entry.objectiveCompleted.connect(_on_commander_objective_completed)
+		var rows: Array = []
+		var objectives: Array = arcData.get("objectives", [])
+		var complete: Array = arcData.get("objectives_complete", [])
+		for i in objectives.size():
+			rows.append({"label": objectives[i].get("label", "Objective"), "done": i < complete.size() and complete[i], "progress": ""})
+		var card = WarRoomCard.new()
+		vbox.add_child(card)
+		card.build_commander(arcData, rows)
 
 
 func _populate_presidential_tab() -> void:
 	var vbox = $"PanelBackground/TabContainer/DEPARTMENT OF MYTHOLOGICAL AFFAIRS/ScrollContainer/PresidentialVBox"
-	for child in vbox.get_children():
-		child.queue_free()
-
-	for arcData in activeProtectorArcs:
-		var entry = protectorArcEntryScene.instantiate()
-		# add_child first so Godot runs _ready() on all child nodes before
-		# buildSelf() tries to write to them via $ paths.
-		vbox.add_child(entry)
-		entry.buildSelf(arcData, playerCountryNode)
-		entry.devotionCompleted.connect(_on_protector_devotion_completed)
-		entry.summonRequested.connect(_on_protector_summon_requested)
+	_clear(vbox)
+	vbox.add_child(_intro_line("A spirit joins the Republic in three steps: Contact, then Trust, then Accord. Finish the tasks listed on a file and its next scene arrives. Spirits still outside the Republic spread corruption."))
+	# Files that need you first, then work in progress, then allies.
+	var order := {"order": 0, "answer": 1, "working": 2, "waiting": 3, "complete": 4}
+	var entries: Array = []
+	for i in activeProtectorArcs.size():
+		var view: Dictionary = _protector_view(activeProtectorArcs[i])
+		entries.append([order.get(view.get("state", "working"), 2), -int(activeProtectorArcs[i].get("stage_index", 0)), i, view])
+	entries.sort()
+	var ready: int = 0
+	for e in entries:
+		var arcData: Dictionary = activeProtectorArcs[e[2]]
+		if e[3].get("state", "") in ["order", "answer"]:
+			ready += 1
+		var card = WarRoomCard.new()
+		vbox.add_child(card)
+		card.build_protector(arcData, e[3])
+		card.order_pressed.connect(_on_protector_summon_requested)
+	var tabs: TabContainer = $PanelBackground/TabContainer
+	tabs.set_tab_title(1, "DEPARTMENT OF MYTHOLOGICAL AFFAIRS" + (" (%d)" % ready if ready > 0 else ""))
 
 
 # ============================================================
@@ -118,14 +196,26 @@ func registerProtectorArc(protector_id: String) -> void:
 
 
 # ── FULL PROTECTOR SETUP (called from world.gd after the world is built) ─────
-# Reads protector_objectives.csv, resolves dynamic origins against the live tile
-# list, randomises resource thresholds, then fills activeProtectorArcs.
+# Builds one three-step file per spirit from data/protector_objectives.csv (who they
+# are, where they live) and data/protector_stages.csv (hand-written tasks per step).
+# A spirit with no hand-written rows gets the standard ladder:
+#   CONTACT  hold their home and raise it by N building levels, then give the order
+#   TRUST    bring the President there in person
+#   ACCORD   stockpile their tribute
+# world.gd calls this every time the active player changes, so the files are built
+# once per country and kept; rebuilding them would wipe the player's progress.
 func setupAllProtectors(allTiles: Array, country_id: String = "") -> void:
 	if country_id != "":
 		playerCountryID = country_id
-	activeProtectorArcs.clear()
-	var obj_rows = _load_protector_objectives()
-	for row in obj_rows:
+	_all_tiles = allTiles
+	if _arcs_by_country.has(playerCountryID):
+		activeProtectorArcs = _arcs_by_country[playerCountryID]
+		_populate_presidential_tab()
+		return
+	activeProtectorArcs = []
+	_arcs_by_country[playerCountryID] = activeProtectorArcs
+	var stage_rows: Dictionary = _load_protector_stages()
+	for row in _load_protector_objectives():
 		var pid: String = row.get("protector_id", "")
 		if pid == "":
 			continue
@@ -135,136 +225,131 @@ func setupAllProtectors(allTiles: Array, country_id: String = "") -> void:
 			continue
 		if playerCountryID == "CA" and not is_ca_prot:
 			continue
-		# Skip if no summon event exists in the database
 		if EventDatabase.get_event(pid + "_SUMMON").is_empty():
 			push_warning("WarRoomPanel: no summon event for " + pid + " — skipping")
 			continue
-		# Resolve origin tile
-		var origin_tile = _find_protector_origin(row, allTiles)
-		var origin_name: String = \
-			origin_tile.tileName if origin_tile != null else "Origin Undetermined"
-		# Randomise resource threshold
-		var rmin: int = row.get("resource_min", 20)
-		var rmax: int = row.get("resource_max", 40)
-		var threshold: int = rmin + (randi() % max(1, rmax - rmin + 1))
-		# Snapshot building levels at game start for dev-progress tracking
-		var bstart: int = \
-			_count_building_levels_in(origin_tile) if origin_tile != null else 0
-		# Build the three standardised prayers
-		var resource: String = row.get("resource_type", "gold")
-		var dev_req: int = row.get("dev_levels", 3)
-		var name: String = row.get("protector_name", pid)
-		var leader_label: String
-		if playerCountryID == "CA":
-			leader_label = "Station the Republican Army with Jessica Commanda Odjick in " + origin_name
-		else:
-			leader_label = "Station the APF with Ualani Carlisle in " + origin_name
-		var prayers: Array = [
-			{
-				"label": "Accumulate " + str(threshold) + " " + resource +
-						 " in national stockpiles",
-				"prayer_type": "resource_threshold",
-				"resource": resource,
-				"amount": threshold,
-			},
-			{
-				"label": "Build " + str(dev_req) + " new building level(s) in " +
-						 origin_name + " since game start",
-				"prayer_type": "dev_progress",
-				"levels": dev_req,
-			},
-			{
-				"label": leader_label,
-				"prayer_type": "ualani_in_origin",
-			},
-		]
-		var arcData: Dictionary = {
-			"protector_id":          pid,
-			"protector_name":        name,
-			"soma_memo":             _gen_soma_memo(pid, name),
-			"origin_tile":           origin_tile,
-			"origin_tile_name":      origin_name,
-			"resource_type":         resource,
-			"resource_threshold":    threshold,
-			"dev_levels_required":   dev_req,
-			"origin_building_start": bstart,
-			"prayers":               prayers,
-			"prayers_complete":      [false, false, false],
-			"devotion_level":        0,
-			"arc_complete":          false,
-		}
-		# PROT_08 (Old Ironsides) — two-phase arc: tame then agree
-		if pid == "PROT_08":
-			arcData["prayers"] = [
-				{
-					"label": "Control 3 coastal provinces each with a Dock and Barracks",
-					"prayer_type": "tiles_with_dual_buildings",
-					"building_a": "dock",
-					"building_b": "barracks",
-					"count": 3,
-				},
-				{
-					"label": "Accumulate 500 food in national stockpiles",
-					"prayer_type": "resource_threshold",
-					"resource": "food",
-					"amount": 500,
-				},
-				{
-					"label": "Deploy a DMA agent to investigate the Mysterious Ship Raids",
-					"prayer_type": "dma_investigation_done",
-				},
-			]
-			arcData["prayers_complete"] = [false, false, false]
-			arcData["agree_prayers"] = [
-				{
-					"label": "Upgrade 3 coastal provinces to Dock + Barracks each at level 3",
-					"prayer_type": "tiles_with_dual_buildings_min_level",
-					"building_a": "dock",
-					"building_b": "barracks",
-					"min_level": 3,
-					"count": 3,
-				},
-				{
-					"label": "Accumulate 1000 food in national stockpiles",
-					"prayer_type": "resource_threshold",
-					"resource": "food",
-					"amount": 1000,
-				},
-				{
-					"label": "Field 8 cannon units across all armies",
-					"prayer_type": "cannon_units_in_armies",
-					"count": 8,
-				},
-			]
-			arcData["agree_prayers_complete"] = [false, false, false]
-			arcData["prot08_phase"] = "tame"
-		# PROT_17 (Lincoln's Ghost) — two-phase arc gated by flags
-		if pid == "PROT_17":
-			arcData["prayers"] = [
-				{
-					"label": "Build a level 6 Courthouse in Washington DC (tile 188)",
-					"prayer_type": "building_level_in_tile",
-					"tile_id": 188,
-					"building_type": "courthouse",
-					"min_level": 6,
-				},
-				{"label": "", "prayer_type": "auto_complete"},
-				{"label": "", "prayer_type": "auto_complete"},
-			]
-			arcData["prayers_complete"] = [false, true, true]
-			arcData["agree_prayers"] = [
-				{
-					"label": "Build a level 8 Monument in Washington DC (tile 188)",
-					"prayer_type": "building_level_in_tile",
-					"tile_id": 188,
-					"building_type": "monument",
-					"min_level": 8,
-				},
-			]
-			arcData["agree_prayers_complete"] = [false]
-			arcData["prot17_phase"] = "waiting_summon"
-		activeProtectorArcs.append(arcData)
+		activeProtectorArcs.append(_build_protector_arc(row, stage_rows.get(pid, {})))
+	_refresh_protector_progress(_last_turn)
 	_populate_presidential_tab()
+
+
+func resetProtectors() -> void:
+	# New game / load: forget every country's files.
+	_arcs_by_country.clear()
+	activeProtectorArcs = []
+
+
+func _build_protector_arc(row: Dictionary, authored: Dictionary) -> Dictionary:
+	var pid: String = row.get("protector_id", "")
+	var origin_tile = _find_protector_origin(row, _all_tiles)
+	var origin_name: String = origin_tile.tileName if origin_tile != null else "their home"
+	var rmin: int = row.get("resource_min", 20)
+	var rmax: int = row.get("resource_max", 40)
+	var threshold: int = rmin + (randi() % max(1, rmax - rmin + 1))
+	var resource: String = row.get("resource_type", "gold")
+	var dev_req: int = row.get("dev_levels", 3)
+	var leader: String = "Prime Minister Odjick" if pid.begins_with("CA_") else "President Carlisle"
+	var defaults: Dictionary = {
+		"contact": {"fire": "order", "objectives": [
+			{"type": "hold_tile", "target": origin_name, "label": "Liberate " + origin_name},
+			{"type": "dev_progress", "target": origin_name, "amount": dev_req,
+			 "label": "Raise " + origin_name + " by " + str(dev_req) + " building levels"},
+		]},
+		"trust": {"fire": "auto", "objectives": [
+			{"type": "leader_at", "target": origin_name, "label": "Bring " + leader + " to " + origin_name},
+		]},
+		"accord": {"fire": "auto", "objectives": [
+			{"type": "resource", "target": resource, "amount": threshold,
+			 "label": "Stockpile " + str(threshold) + " " + _resource_label(resource)},
+		]},
+	}
+	var stages: Array = []
+	for key in STAGE_KEYS:
+		var src: Dictionary = authored.get(key, defaults[key])
+		var objectives: Array = src.get("objectives", []).duplicate(true)
+		for obj in objectives:
+			obj["tile"] = _find_tile_named(str(obj.get("target", "")))
+			obj["label"] = str(obj.get("label", "")).replace("{origin}", origin_name).replace("{leader}", leader)
+		var done: Array = []
+		done.resize(objectives.size())
+		done.fill(false)
+		stages.append({
+			"key": key,
+			"fire": src.get("fire", "auto"),
+			"event_id": pid + STAGE_EVENTS[key],
+			"flag": pid.to_lower() + STAGE_FLAGS[key],
+			"objectives": objectives,
+			"done": done,
+			"progress": [],
+		})
+	var memo: String = _gen_soma_memo(pid, row.get("protector_name", pid))
+	var note: String = ""
+	var at: int = memo.find("Note:")
+	if at >= 0:
+		note = memo.substr(at + 5).strip_edges()
+	return {
+		"protector_id":          pid,
+		"protector_name":        row.get("protector_name", pid),
+		"soma_memo":             memo,
+		"memo_note":             note,
+		"origin_tile":           origin_tile,
+		"origin_tile_name":      origin_name,
+		"origin_building_start": _count_building_levels_in(origin_tile) if origin_tile != null else 0,
+		"stages":                stages,
+		"stage_index":           0,
+		"arc_complete":          false,
+		"ready_announced":       false,
+	}
+
+
+# data/protector_stages.csv -> {protector_id: {stage: {fire, objectives[]}}}
+func _load_protector_stages() -> Dictionary:
+	var out: Dictionary = {}
+	var file = FileAccess.open("res://data/protector_stages.csv", FileAccess.READ)
+	if not file:
+		return out
+	var headers = file.get_csv_line()
+	while not file.eof_reached():
+		var row = file.get_csv_line()
+		if row.size() < 4:
+			continue
+		var e: Dictionary = {}
+		for i in range(min(headers.size(), row.size())):
+			e[headers[i].strip_edges()] = row[i].strip_edges()
+		var pid: String = e.get("protector_id", "")
+		var stage: String = e.get("stage", "")
+		if pid == "" or not STAGE_KEYS.has(stage):
+			continue
+		if not out.has(pid):
+			out[pid] = {}
+		if not out[pid].has(stage):
+			out[pid][stage] = {"fire": e.get("fire", "auto"), "objectives": []}
+		out[pid][stage]["objectives"].append({
+			"type":   e.get("objective", ""),
+			"target": e.get("target", ""),
+			"amount": e.get("amount", "0").to_int(),
+			"param":  e.get("param", ""),
+			"label":  e.get("label", ""),
+		})
+	file.close()
+	return out
+
+
+func _find_tile_named(tile_name: String):
+	if tile_name == "":
+		return null
+	for tile in _all_tiles:
+		if is_instance_valid(tile) and tile.tileName == tile_name:
+			return tile
+	return null
+
+
+func _resource_label(resource: String) -> String:
+	match resource:
+		"gold", "dollars": return "Dollars"
+		"faith":           return "Culture"
+		"harmony":         return "Happiness"
+	return resource.capitalize()
 
 
 func _load_protector_objectives() -> Array:
@@ -320,6 +405,8 @@ func _find_protector_origin(pdata: Dictionary, allTiles: Array):
 
 func _count_building_levels_in(tile) -> int:
 	var total: int = 0
+	if tile == null or not is_instance_valid(tile):
+		return 0
 	for bname in tile.buildings:
 		total += tile.buildings[bname]
 	return total
@@ -359,8 +446,10 @@ func _gen_soma_memo(pid: String, name: String) -> String:
 # ============================================================
 
 func checkObjectives(allTiles: Array, currentTurn: int) -> void:
+	_all_tiles = allTiles
+	_last_turn = currentTurn
 	_check_commander_objectives(allTiles, currentTurn)
-	_check_protector_prayers(allTiles, currentTurn)
+	_advance_protectors(currentTurn)
 	_populate_commander_tab()
 	_populate_presidential_tab()
 
@@ -389,96 +478,202 @@ func _check_commander_objectives(allTiles: Array, currentTurn: int) -> void:
 			emit_signal("arcFullyCompleted", arcData["archetype_id"])
 
 
-func _check_protector_prayers(allTiles: Array, currentTurn: int) -> void:
-	for arcData in activeProtectorArcs:
-		# PROT_08 uses a two-phase tame/agree system
-		if arcData.get("protector_id", "") == "PROT_08":
-			_check_prot08_prayers(arcData, currentTurn)
+# ── THE SPIRIT LADDER ────────────────────────────────────────────────────────
+# Once a turn, for every spirit:
+#   1. Catch up with the story: the flag a scene's buttons set (prot_16_summoned,
+#      prot_16_tame, prot_16_agreed) moves the file to the next step.
+#   2. Re-check the tasks of the step in progress.
+#   3. If they are all done, fire that step's scene ("auto"), or light the order
+#      button ("order"). "external" steps are fired by world.gd itself.
+func _advance_protectors(currentTurn: int) -> void:
+	_refresh_protector_progress(currentTurn)
+	for arc in activeProtectorArcs:
+		if arc["arc_complete"]:
 			continue
-		# PROT_17 gates tame behind level-6 Courthouse in DC
-		if arcData.get("protector_id", "") == "PROT_17":
-			_check_prot17_prayers(arcData, currentTurn)
+		var stage: Dictionary = arc["stages"][arc["stage_index"]]
+		if not _stage_tasks_done(stage):
 			continue
-		if arcData["arc_complete"]:
-			continue
-		for i in range(3):
-			if arcData["prayers_complete"][i]:
-				continue
-			var prayer = arcData["prayers"][i]
-			var fulfilled = _evaluate_protector_prayer(prayer, arcData, currentTurn)
-			if fulfilled:
-				arcData["prayers_complete"][i] = true
-				arcData["devotion_level"] = min(100, arcData["devotion_level"] + 33)
-		if arcData["prayers_complete"].all(func(b): return b):
-			arcData["arc_complete"] = true
-			# Don't auto-fire — the button in ProtectorArcEntry handles the summon
+		match stage["fire"]:
+			"auto":
+				if EventDatabase.event_can_fire(stage["event_id"], currentTurn):
+					emit_signal("requestEventFire", stage["event_id"], arc.get("origin_tile"))
+			"order":
+				if not arc["ready_announced"]:
+					arc["ready_announced"] = true
+					emit_signal("protectorReady", arc["protector_name"])
 
 
-func _check_prot08_prayers(arcData: Dictionary, currentTurn: int) -> void:
-	var phase: String = arcData.get("prot08_phase", "tame")
-	if phase == "done":
-		return
-	if phase == "tame":
-		for i in range(3):
-			if arcData["prayers_complete"][i]:
-				continue
-			var fulfilled = _evaluate_protector_prayer(arcData["prayers"][i], arcData, currentTurn)
-			if fulfilled:
-				arcData["prayers_complete"][i] = true
-				arcData["devotion_level"] = min(100, arcData["devotion_level"] + 33)
-		if arcData["prayers_complete"].all(func(b): return b):
-			arcData["prot08_phase"] = "agree"
-			var events = EventDatabase.evaluate_protector_triggers("PROT_08", "protector_tame", currentTurn)
-			for event_id in events:
-				emit_signal("requestEventFire", event_id, arcData.get("origin_tile"))
-	if arcData.get("prot08_phase", "tame") == "agree":
-		for i in range(3):
-			if arcData["agree_prayers_complete"][i]:
-				continue
-			var fulfilled = _evaluate_protector_prayer(arcData["agree_prayers"][i], arcData, currentTurn)
-			if fulfilled:
-				arcData["agree_prayers_complete"][i] = true
-		if arcData["agree_prayers_complete"].all(func(b): return b):
-			arcData["prot08_phase"] = "done"
-			arcData["arc_complete"] = true
-			var events = EventDatabase.evaluate_protector_triggers("PROT_08", "protector_agree", currentTurn)
-			for event_id in events:
-				emit_signal("requestEventFire", event_id, arcData.get("origin_tile"))
-
-
-func _check_prot17_prayers(arcData: Dictionary, currentTurn: int) -> void:
-	if arcData.get("arc_complete", false):
-		return
+func _refresh_protector_progress(currentTurn: int) -> void:
 	if playerCountryNode == null:
 		return
-	var phase: String = arcData.get("prot17_phase", "waiting_summon")
-	match phase:
-		"waiting_summon":
-			if playerCountryNode.CountryFlags.has("prot_17_summoned"):
-				arcData["prot17_phase"] = "tame"
-		"tame":
-			if not arcData["prayers_complete"][0]:
-				var fulfilled = _evaluate_protector_prayer(arcData["prayers"][0], arcData, currentTurn)
-				if fulfilled:
-					arcData["prayers_complete"][0] = true
-					arcData["devotion_level"] = min(100, arcData["devotion_level"] + 50)
-					arcData["prot17_phase"] = "waiting_tame"
-					var events = EventDatabase.evaluate_protector_triggers("PROT_17", "protector_tame", currentTurn)
-					for event_id in events:
-						emit_signal("requestEventFire", event_id, arcData.get("origin_tile"))
-		"waiting_tame":
-			if playerCountryNode.CountryFlags.has("prot_17_tame"):
-				arcData["prot17_phase"] = "agree"
-		"agree":
-			if not arcData["agree_prayers_complete"][0]:
-				var fulfilled = _evaluate_protector_prayer(arcData["agree_prayers"][0], arcData, currentTurn)
-				if fulfilled:
-					arcData["agree_prayers_complete"][0] = true
-					arcData["devotion_level"] = 100
-					arcData["arc_complete"] = true
-					var events = EventDatabase.evaluate_protector_triggers("PROT_17", "protector_agree", currentTurn)
-					for event_id in events:
-						emit_signal("requestEventFire", event_id, arcData.get("origin_tile"))
+	for arc in activeProtectorArcs:
+		_sync_stage_with_flags(arc)
+		if arc["arc_complete"]:
+			continue
+		var stage: Dictionary = arc["stages"][arc["stage_index"]]
+		stage["progress"] = []
+		for i in stage["objectives"].size():
+			var res: Dictionary = _objective_state(stage["objectives"][i], arc, currentTurn)
+			stage["done"][i] = res["done"]
+			stage["progress"].append(res["text"])
+
+
+func _sync_stage_with_flags(arc: Dictionary) -> void:
+	var flags: Dictionary = playerCountryNode.CountryFlags
+	var reached: int = arc["stage_index"]
+	for i in arc["stages"].size():
+		if flags.has(arc["stages"][i]["flag"]):
+			reached = max(reached, i + 1)
+	if reached != arc["stage_index"]:
+		arc["stage_index"] = reached
+		arc["ready_announced"] = false
+	if reached >= arc["stages"].size() and not arc["arc_complete"]:
+		arc["arc_complete"] = true
+		_on_protector_devotion_completed(arc["protector_id"])
+
+
+func _stage_tasks_done(stage: Dictionary) -> bool:
+	if stage["fire"] == "external":
+		return false
+	for d in stage["done"]:
+		if not d:
+			return false
+	return true
+
+
+# True while a step's scene has been delivered but not yet answered.
+func _stage_awaiting_answer(stage: Dictionary) -> bool:
+	var ev: Dictionary = EventDatabase.get_event(stage["event_id"])
+	return int(ev.get("_fire_count", 0)) > 0 and int(ev.get("_last_fired", -999)) >= _last_turn - 1
+
+
+# What the card shows for a spirit right now.
+func _protector_view(arc: Dictionary) -> Dictionary:
+	var origin = arc.get("origin_tile")
+	var where: String = arc.get("origin_tile_name", "")
+	if origin != null and is_instance_valid(origin) and playerCountryNode != null:
+		if origin.tileOwner == playerCountryNode.CID:
+			where += "  •  in your hands"
+		else:
+			where += "  •  held by " + OWNER_NAMES.get(origin.tileOwner, origin.tileOwner)
+	var reward: String = "Accord grants: a Tower at " + arc.get("origin_tile_name", "their home")
+	var world = get_tree().current_scene if is_inside_tree() else null
+	if world != null and world.has_method("_protector_id_to_spell"):
+		var spell: String = world._protector_id_to_spell(arc["protector_id"])
+		if spell != "":
+			reward += "  •  Presidential power: " + spell.capitalize()
+	if arc["arc_complete"]:
+		return {"state": "complete", "where": where, "tasks": [],
+				"status": "Allied with the Republic.", "reward": reward.replace("Accord grants:", "Granted:")}
+	var stage: Dictionary = arc["stages"][arc["stage_index"]]
+	var tasks: Array = []
+	for i in stage["objectives"].size():
+		tasks.append({
+			"label": stage["objectives"][i]["label"],
+			"done": stage["done"][i],
+			"progress": stage["progress"][i] if i < stage["progress"].size() else "",
+		})
+	var scene_name: String = STAGE_SCENE_NAMES[stage["key"]]
+	var state: String = "working"
+	var status: String = "Finish the tasks below and " + scene_name + " follows next turn."
+	if stage["fire"] == "external":
+		state = "waiting"
+		status = "The Department is still gathering reports. Follow the lead below."
+	elif _stage_tasks_done(stage):
+		if stage["fire"] == "order":
+			state = "order"
+			status = "Ready. Give the order and " + arc["protector_name"] + " answers."
+		elif _stage_awaiting_answer(stage):
+			state = "answer"
+			status = "A dispatch is waiting for your answer."
+		else:
+			state = "answer"
+			status = "Tasks complete. " + scene_name.capitalize() + " arrives at the start of next turn."
+	elif stage["fire"] == "order":
+		status = "Finish the tasks below, then give the order to make contact."
+	return {"state": state, "where": where, "tasks": tasks, "status": status, "reward": reward}
+
+
+# One task -> {done, text}. "text" is the short progress read-out on the right of the row.
+func _objective_state(obj: Dictionary, arc: Dictionary, currentTurn: int) -> Dictionary:
+	var cid: String = playerCountryNode.CID
+	var tile = obj.get("tile")
+	if tile == null or not is_instance_valid(tile):
+		tile = arc.get("origin_tile")
+	var amount: int = int(obj.get("amount", 0))
+	match obj.get("type", ""):
+		"turn_reached":
+			return {"done": currentTurn >= amount, "text": "Turn %d / %d" % [min(currentTurn, amount), amount]}
+		"hold_tile":
+			if tile == null:
+				return {"done": false, "text": ""}
+			var held: bool = tile.tileOwner == cid
+			return {"done": held, "text": "Held" if held else "Occupied"}
+		"hold_adjacent":
+			if tile == null:
+				return {"done": false, "text": ""}
+			var need: int = max(1, amount)
+			var n: int = need if tile.tileOwner == cid else 0
+			for nb in tile.TileNeighbors:
+				if nb != null and nb.tileOwner == cid:
+					n += 1
+			return {"done": n >= need, "text": "%d / %d" % [min(n, need), need]}
+		"leader_at", "leader_near":
+			if tile == null:
+				return {"done": false, "text": ""}
+			var spots: Array = [tile]
+			if obj["type"] == "leader_near":
+				spots.append_array(tile.TileNeighbors)
+			var here: bool = false
+			for lt in _leader_tiles():
+				if spots.has(lt):
+					here = true
+			return {"done": here, "text": "Present" if here else "Not there yet"}
+		"dev_progress":
+			if tile == null:
+				return {"done": false, "text": ""}
+			var gained: int = _count_building_levels_in(tile) - int(arc.get("origin_building_start", 0))
+			var ok: bool = tile.tileOwner == cid and gained >= amount
+			return {"done": ok, "text": "%d / %d" % [clampi(gained, 0, amount), amount]}
+		"resource":
+			var have: int = int(_get_resource_amount(str(obj.get("target", "gold"))))
+			return {"done": have >= amount, "text": "%d / %d" % [min(have, amount), amount]}
+		"building_level":
+			if tile == null:
+				return {"done": false, "text": ""}
+			var lvl: int = int(tile.buildings.get(str(obj.get("param", "")).to_lower(), 0)) if tile.tileOwner == cid else 0
+			return {"done": lvl >= amount, "text": "Level %d / %d" % [min(lvl, amount), amount]}
+		"dual_buildings":
+			# param "dock+barracks@3": both buildings at level 3 or better; amount = how many tiles
+			var spec: PackedStringArray = str(obj.get("param", "dock+barracks@1")).split("@")
+			var pair: PackedStringArray = spec[0].split("+")
+			var min_lvl: int = spec[1].to_int() if spec.size() > 1 else 1
+			var count: int = 0
+			if pair.size() == 2:
+				for t in playerCountryNode.OwnedTileList:
+					if t.buildings.get(pair[0], 0) >= min_lvl and t.buildings.get(pair[1], 0) >= min_lvl:
+						count += 1
+			return {"done": count >= amount, "text": "%d / %d" % [min(count, amount), amount]}
+		"cannons":
+			var done_c: bool = _evaluate_protector_prayer({"prayer_type": "cannon_units_in_armies", "count": amount}, arc, currentTurn)
+			return {"done": done_c, "text": ""}
+		"dma_investigation":
+			var done_d: bool = _evaluate_protector_prayer({"prayer_type": "dma_investigation_done"}, arc, currentTurn)
+			return {"done": done_d, "text": ""}
+	return {"done": false, "text": ""}
+
+
+# Where the nation's leader is: the tile she governs, or the tile of an army she commands.
+func _leader_tiles() -> Array:
+	var leader: String = "Jessica Commanda Odjick" if playerCountryNode.CID == "CA" else "Ualani Carlisle"
+	var out: Array = []
+	for t in playerCountryNode.OwnedTileList:
+		if t.tileGovernor != null and t.tileGovernor.governorType == leader:
+			out.append(t)
+	for army in playerCountryNode.countryArmyList:
+		if army.commander != null and army.commander.governorType == leader and army.inTile != null:
+			out.append(army.inTile)
+	return out
 
 
 # ============================================================
@@ -1033,14 +1228,20 @@ func _on_protector_devotion_completed(protector_id: String) -> void:
 
 
 func _on_protector_summon_requested(protector_id: String) -> void:
-	emit_signal("requestEventFire", protector_id + "_SUMMON", null)
+	# The Presidential Order: delivers the spirit's first-contact scene.
 	for arc in activeProtectorArcs:
 		if arc.get("protector_id", "") == protector_id:
-			emit_signal("protectorSummoned",
-				arc.get("origin_tile", null),
-				arc.get("protector_name", protector_id),
-				protector_id)
-			break
+			emit_signal("requestEventFire", protector_id + "_SUMMON", arc.get("origin_tile", null))
+			return
+
+
+# Spirits whose first contact this panel fires by itself (world.gd skips them in its
+# turn-scheduled summons so the scene cannot arrive twice).
+func owns_contact(protector_id: String) -> bool:
+	for arc in activeProtectorArcs:
+		if arc.get("protector_id", "") == protector_id:
+			return arc["stages"][0]["fire"] == "auto"
+	return false
 
 
 func _on_close_button_pressed() -> void:

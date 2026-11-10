@@ -4,12 +4,15 @@ class_name belief
 
 var beliefType: String
 var faithBelief: bool
+var countsOnAxis: bool = true   # false for legacy beliefs that are neither an Icon nor a Social Contract
 
 func buildBelief(type):
 	match type:
 		# ── American Doctrines ───────────────────────────────────────────────────
 		"Social Security Act":
 			faithBelief = false
+		"Landmark Heritage", "Nature Conservationists", "Civic Pride", "Pioneer Heritage":
+			faithBelief = false   # current names of the renamed Social Contracts
 		"National Monument Act":
 			faithBelief = false
 		"Lacey Wildlife Act":
@@ -56,6 +59,8 @@ func buildBelief(type):
 		# ── American Icons ───────────────────────────────────────────────────────
 		"George Washington":
 			faithBelief = true
+		"Eliza Schuyler Hamilton", "John Brown", "Mary Edwards Walker", "Mark Twain", "Malcolm X":
+			faithBelief = true   # Icons that were missing here and so counted as Social Contracts
 		"Benjamin Franklin":
 			faithBelief = true
 		"Abigail Adams":
@@ -135,3 +140,5 @@ func buildBelief(type):
 			faithBelief = true
 		"Pierre Elliott Trudeau":
 			faithBelief = true
+		_:
+			countsOnAxis = false   # not an Icon or a Social Contract: leaves the axis alone

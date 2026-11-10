@@ -1,0 +1,13 @@
+protector_id,stage,fire,objective,target,amount,param,label
+PROT_16,contact,auto,turn_reached,,4,,The Department sweeps the New York theater for signals
+PROT_16,trust,auto,hold_adjacent,New York City,1,,Liberate a town bordering New York City
+PROT_16,accord,auto,leader_near,New York City,0,,Bring {leader} to the edge of New York City
+PROT_08,contact,external,dma_investigation,,0,,Deploy a DMA agent to investigate the Mysterious Ship Raids
+PROT_08,trust,auto,dual_buildings,,3,dock+barracks@1,Control 3 coastal provinces each with a Dock and a Barracks
+PROT_08,trust,auto,resource,food,500,,Stockpile 500 Food
+PROT_08,accord,auto,dual_buildings,,3,dock+barracks@3,Raise 3 coastal provinces to Dock and Barracks level 3
+PROT_08,accord,auto,resource,food,1000,,Stockpile 1000 Food
+PROT_08,accord,auto,cannons,,8,,Field 8 cannon units across all armies
+PROT_17,contact,external,dma_investigation,,0,,Deploy a DMA agent to investigate the disturbance in Washington
+PROT_17,trust,auto,building_level,Washington,6,courthouse,Build a level 6 Courthouse in Washington
+PROT_17,accord,auto,building_level,Washington,8,monument,Build a level 8 Monument in Washington

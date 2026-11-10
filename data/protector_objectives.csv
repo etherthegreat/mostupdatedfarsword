@@ -1,20 +1,20 @@
 protector_id,protector_name,origin_type,origin_tile_id,origin_state,origin_terrain,resource_type,resource_min,resource_max,dev_levels
-PROT_01,Mothman,dynamic,0,WV,Foothills,food,20,35,3
-PROT_02,Jersey Devil,dynamic,0,NJ,Wetlands,weapons,15,25,2
-PROT_03,Wood Booger,dynamic,0,,Woods,wood,25,40,3
-PROT_04,Thunderbird,dynamic,0,NY,Woods,culture,20,35,3
-PROT_05,Headless Horseman,dynamic,0,NY,Woods,dollars,25,40,4
-PROT_06,Chessie,dynamic,0,MD,Wetlands,food,30,50,2
-PROT_07,The Bell Witch,dynamic,0,TN,Foothills,magic,10,20,3
-PROT_08,Old Ironsides,fixed,63,NH,Wetlands,weapons,30,50,5
+PROT_01,Mothman,fixed,46,WV,Foothills,food,20,35,3
+PROT_02,Jersey Devil,fixed,23,NJ,Wetlands,weapons,15,25,2
+PROT_03,Wood Booger,fixed,145,,Woods,wood,25,40,3
+PROT_04,Thunderbird,fixed,139,NY,Woods,culture,20,35,3
+PROT_05,Headless Horseman,fixed,17,NY,Woods,dollars,25,40,4
+PROT_06,Chessie,fixed,37,MD,Wetlands,food,30,50,2
+PROT_07,The Bell Witch,fixed,165,TN,Foothills,magic,10,20,3
+PROT_08,Old Ironsides,fixed,65,NH,Wetlands,weapons,30,50,5
 PROT_09,Valley Forge Guardian,fixed,1,PA,Fortress,manpower,50,80,4
-PROT_10,Snallygaster,dynamic,0,MD,Foothills,metal,15,25,3
-PROT_11,Paul Revere,dynamic,0,MA,Suburbs,culture,20,35,3
+PROT_10,Snallygaster,fixed,42,MD,Foothills,metal,15,25,3
+PROT_11,Paul Revere,fixed,61,MA,Suburbs,culture,20,35,3
 PROT_12,Liberty Bell,fixed,2,PA,Metro,dollars,30,50,4
-PROT_13,Green Mountain Ghost,dynamic,0,VT,Foothills,happiness,20,35,2
+PROT_13,Green Mountain Ghost,fixed,80,VT,Foothills,happiness,20,35,2
 
-PROT_15,Skunk Ape,dynamic,0,FL,Wetlands,food,15,25,2
-PROT_16,Agent 355,fixed,20,NY,Metro,dollars,20,35,3
+PROT_15,Skunk Ape,fixed,177,FL,Wetlands,food,15,25,2
+PROT_16,Agent 355,fixed,14,NY,Metro,dollars,20,35,3
 PROT_17,Lincoln's Ghost,fixed,188,DC,Metro,mandate,20,35,3
 CA_PROT_01,Le Wendigo,fixed,99,QC,Woods,food,20,35,3
 CA_PROT_02,Le Loup-Garou,fixed,105,QC,Woods,weapons,15,25,2

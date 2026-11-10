@@ -1,0 +1,17 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://dayynick4ijjv"
+
+[deps]
+
+files=["res://data/event_art_map.art.translation", "res://data/event_art_map.note.translation"]
+
+source_file="res://data/event_art_map.csv"
+dest_files=["res://data/event_art_map.art.translation", "res://data/event_art_map.note.translation"]
+
+[params]
+
+compress=true
+delimiter=0

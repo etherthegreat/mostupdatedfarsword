@@ -128,6 +128,10 @@ func buildSelf(newLawType, selected):
 			lawCosts = str("Cost: 15 Mandate
 						-1 Mandate Per Barracks
 						+5 Manpower from All buildings")
+	# A bare law.new() (country.gd keeps laws as data objects) has no scene children.
+	# Only the instanced law.tscn card has widgets to fill in.
+	if get_node_or_null("LawPanel") == null:
+		return
 	$LawPanel/LawSprite.texture = lawIcon
 	$LawPanel/LawSelectionButton.icon = lawIcon
 	if selected == true:

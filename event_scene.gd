@@ -37,6 +37,7 @@ func build_from_data(data: Dictionary, tile = null, player = null) -> void:
 	_apply_event_image(str(data.get("image_tag", "")))
 
 	_build_buttons()
+	_queue_intro()
 
 
 func build_from_csv(eid: String, tile = null, player = null) -> void:
@@ -51,8 +52,6 @@ func build_from_csv(eid: String, tile = null, player = null) -> void:
 		queue_free()
 		return
 
-	# ── Console preview ────────────────────────────────────────────────────────
-
 	event_type    = event_data.get("event_type", "standard")
 	event_country = event_data.get("country_cid", "GEN")
 
@@ -62,28 +61,224 @@ func build_from_csv(eid: String, tile = null, player = null) -> void:
 	_apply_event_image(str(event_data.get("image_tag", "")))
 
 	_build_buttons()
+	_queue_intro()
 
+
+# ══ ENTRANCE ══════════════════════════════════════════════════════════════════
+# The panel settles in softly, then a one-two-three: the writing, the image, the
+# choices — each ghosts from transparent to opaque while drifting a few pixels
+# up into place. Any click or key during the entrance finishes it instantly.
+
+const INTRO_PANEL := 0.18    # panel fade
+const INTRO_START := 0.08    # first beat begins
+const INTRO_FADE  := 0.45    # each beat's fade/drift time
+const INTRO_GAP   := 0.30    # delay between beats
+const INTRO_RISE  := 8.0     # px each beat drifts up as it settles
+
+var _intro_tween: Tween = null
+var _intro_pending: bool = false
+
+
+func _ready() -> void:
+	if _intro_pending:
+		_start_intro()
+
+
+func _queue_intro() -> void:
+	modulate.a = 0.0                 # no one-frame flash before the tween starts
+	if is_inside_tree():
+		_start_intro()
+	else:
+		_intro_pending = true        # world builds before add_child; start in _ready
+
+
+func _start_intro() -> void:
+	_intro_pending = false
+	if _intro_tween != null and _intro_tween.is_valid():
+		_intro_tween.kill()
+	var text_nodes: Array = [
+		get_node_or_null("EventPanel/EventNameLabel"),
+		get_node_or_null("EventPanel/EventShortDescriptionLabel"),
+		get_node_or_null("EventPanel/EventLongDescriptionLabel"),
+	]
+	var img = get_node_or_null("EventPanel/EventSprite2D")
+	var btns = get_node_or_null("EventPanel/eventButtons")
+
+	var t := create_tween().set_parallel(true)
+	t.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	_intro_tween = t
+	t.tween_property(self, "modulate:a", 1.0, INTRO_PANEL)
+	_ghost_in(t, text_nodes, INTRO_START)                      # one
+	_ghost_in(t, [img],      INTRO_START + INTRO_GAP)          # two
+	_ghost_in(t, [btns],     INTRO_START + INTRO_GAP * 2.0)    # three
+	# Choices go live halfway through their fade, so no accidental early clicks.
+	_set_buttons_live(false)
+	t.tween_callback(_set_buttons_live.bind(true)).set_delay(INTRO_START + INTRO_GAP * 2.0 + INTRO_FADE * 0.5)
+	t.finished.connect(func(): _intro_tween = null)
+
+
+func _ghost_in(t: Tween, nodes: Array, delay: float) -> void:
+	for n in nodes:
+		if n == null:
+			continue
+		var home: Vector2 = n.position
+		n.modulate.a = 0.0
+		n.position = home + Vector2(0.0, INTRO_RISE)
+		t.tween_property(n, "modulate:a", 1.0, INTRO_FADE).set_delay(delay)
+		t.tween_property(n, "position", home, INTRO_FADE).set_delay(delay)
+
+
+func _set_buttons_live(on: bool) -> void:
+	var c = get_node_or_null("EventPanel/eventButtons")
+	if c == null:
+		return
+	for child in c.get_children():
+		var b = child.get_node_or_null("EventButton")
+		if b != null:
+			b.mouse_filter = Control.MOUSE_FILTER_STOP if on else Control.MOUSE_FILTER_IGNORE
+
+
+func _input(event: InputEvent) -> void:
+	# Impatient click/key during the entrance: snap everything into place.
+	if _intro_tween == null or not _intro_tween.is_valid():
+		return
+	if (event is InputEventMouseButton or event is InputEventKey) and event.is_pressed():
+		_intro_tween.custom_step(10.0)
+		get_viewport().set_input_as_handled()
+
+
+# ══ EVENT ART ═════════════════════════════════════════════════════════════════
+# Resolution order:
+#   1. the event's image_tag (a PNG, or a FOLDER of PNGs = short sprite sequence)
+#   2. data/event_art_map.csv  (event_id -> borrowed art from the assets folder)
+#   3. commander events ([COMMANDER_NAME] in the text) -> that commander's portrait
+#   4. the Republic's eagle seal, dimmed, as quiet letterhead
+# New art dropped in under an event's image_tag always wins over 2-4.
 
 const EVENT_ART_DIR := "res://art assets/AmericanRevolutionArt/EventArt/"
+const ART_SEARCH_DIRS := [
+	EVENT_ART_DIR,
+	"res://art assets/AmericanRevolutionArt/Panel/",
+	"res://art assets/finishedAssets/civilians/",
+	"res://art assets/finishedAssets/governors/",
+]
+const ART_MAP_PATH := "res://data/event_art_map.csv"
+const ART_FALLBACK := "res://art assets/PresidentialLibrary/eagle_seal_transparent.png"
+const ART_FALLBACK_ALPHA := 0.45
+const EVENT_ART_FPS := 12.0      # sprite sequences: frames play alphabetically and loop
 
 # Display box for event art: any source resolution is scaled down to fit inside
 # this width/height and centered here, so large images never spill over the text
 # or the buttons.  Sits in the right-hand column, above the button row.
-const IMG_BOX := Vector2(350.0, 430.0)
-const IMG_CENTER := Vector2(1095.0, 300.0)
+const IMG_BOX := Vector2(350.0, 400.0)
+const IMG_CENTER := Vector2(1095.0, 290.0)
+
+static var _art_map: Dictionary = {}
+static var _art_map_loaded: bool = false
+
+var _frames: Array = []
+var _frame_i: int = 0
+var _frame_t: float = 0.0
+
 
 func _apply_event_image(tag: String) -> void:
-	# Per-event illustration by image_tag; searches EventArt, then civilian/governor portraits.
 	var spr = get_node_or_null("EventPanel/EventSprite2D")
-	if spr == null or tag.strip_edges() == "":
+	if spr == null:
 		return
-	var t: String = tag.strip_edges()
-	for dir in [EVENT_ART_DIR, "res://art assets/AmericanRevolutionArt/Panel/", "res://art assets/finishedAssets/civilians/", "res://art assets/finishedAssets/governors/"]:
-		var path: String = dir + t + ".png"
-		if ResourceLoader.exists(path):
-			spr.texture = load(path)
-			_fit_event_sprite(spr)
-			return
+	spr.self_modulate.a = 1.0
+	var frames: Array = _resolve_art(tag.strip_edges())
+	if frames.is_empty() and ResourceLoader.exists(ART_FALLBACK):
+		frames = [load(ART_FALLBACK)]
+		spr.self_modulate.a = ART_FALLBACK_ALPHA
+	_frames = frames
+	_frame_i = 0
+	_frame_t = 0.0
+	spr.texture = frames[0] if not frames.is_empty() else null
+	_fit_event_sprite(spr)
+
+
+func _resolve_art(tag: String) -> Array:
+	if tag != "":
+		for nm in [tag, tag.replace(" ", "_"), tag.replace("_", " ")]:
+			for dir in ART_SEARCH_DIRS:
+				var f: Array = _load_art(dir + nm)
+				if not f.is_empty():
+					return f
+	_ensure_art_map()
+	if _art_map.has(event_id):
+		var m: Array = _load_art(_art_map[event_id])
+		if not m.is_empty():
+			return m
+	if target_tile != null and target_tile.tileGovernor != null \
+			and target_tile.tileGovernor.governorTexture != null:
+		var raw: String = str(event_data.get("headline", "")) + str(event_data.get("long_desc", ""))
+		if raw.contains("[COMMANDER_NAME]"):
+			return [target_tile.tileGovernor.governorTexture]
+	return []
+
+
+# `base` is a res:// path with or without .png. A folder at that path is a sprite sequence.
+func _load_art(base: String) -> Array:
+	if base.get_extension().to_lower() == "png":
+		base = base.get_basename()
+	if DirAccess.dir_exists_absolute(base):
+		var seq: Array = _load_sequence(base)
+		if not seq.is_empty():
+			return seq
+	for ext in [".png", ".PNG"]:
+		if ResourceLoader.exists(base + ext):
+			return [load(base + ext)]
+	return []
+
+
+func _load_sequence(dir: String) -> Array:
+	var d := DirAccess.open(dir)
+	if d == null:
+		return []
+	var names: Array = []
+	for f in d.get_files():
+		# Exported builds list "x.png.import"/"x.png.remap" instead of the PNG itself.
+		var n: String = f.trim_suffix(".import").trim_suffix(".remap")
+		if n.get_extension().to_lower() == "png" and not names.has(n):
+			names.append(n)
+	names.sort()
+	var out: Array = []
+	for n in names:
+		var p: String = dir.path_join(n)
+		if ResourceLoader.exists(p):
+			out.append(load(p))
+	return out
+
+
+static func _ensure_art_map() -> void:
+	if _art_map_loaded:
+		return
+	_art_map_loaded = true
+	var file := FileAccess.open(ART_MAP_PATH, FileAccess.READ)
+	if file == null:
+		return
+	file.get_csv_line()   # header: event_id,art,note
+	while not file.eof_reached():
+		var row := file.get_csv_line()
+		if row.size() >= 2 and row[0].strip_edges() != "" and row[1].strip_edges() != "":
+			var art: String = row[1].strip_edges()
+			if not art.begins_with("res://"):
+				art = "res://" + art
+			_art_map[row[0].strip_edges()] = art
+	file.close()
+
+
+func _process(delta: float) -> void:
+	if _frames.size() < 2:
+		return
+	_frame_t += delta
+	var step: float = 1.0 / EVENT_ART_FPS
+	if _frame_t >= step:
+		_frame_t -= step
+		_frame_i = (_frame_i + 1) % _frames.size()
+		var spr = get_node_or_null("EventPanel/EventSprite2D")
+		if spr != null:
+			spr.texture = _frames[_frame_i]
 
 
 # Scale the sprite so its texture fits within IMG_BOX (preserving aspect) and
@@ -99,6 +294,8 @@ func _fit_event_sprite(spr) -> void:
 	spr.position = IMG_CENTER
 
 
+# ══ BUTTONS ═══════════════════════════════════════════════════════════════════
+
 func _build_buttons() -> void:
 	var btn_container = get_node_or_null("EventPanel/eventButtons")
 	if btn_container == null:
@@ -107,6 +304,7 @@ func _build_buttons() -> void:
 	for child in btn_container.get_children():
 		child.queue_free()
 
+	var visible_buttons: Array = []
 	for btn_data in button_data:
 		var prereq = btn_data.get("prerequisite_flag", "")
 		if prereq != "" and not _check_prerequisite(prereq):
@@ -119,11 +317,52 @@ func _build_buttons() -> void:
 			continue
 		if btype == "sensual"     and not Settings.content_sensual:
 			continue
+		visible_buttons.append(btn_data)
 
+	# Same reading order on every event: the plain answer on the left, scenes to the
+	# right of it, warmest last. (Stable: buttons of one kind keep their CSV order.)
+	var ordered: Array = []
+	for tier in [["standard"], ["sensual"], ["explicit"], ["kinky_lewd"]]:
+		for btn_data in visible_buttons:
+			if str(btn_data.get("button_type", "standard")) in tier:
+				ordered.append(btn_data)
+	for btn_data in visible_buttons:
+		if not ordered.has(btn_data):
+			ordered.append(btn_data)   # unknown types keep their place at the end
+
+	for btn_data in ordered:
+		var shown: Dictionary = btn_data.duplicate()
+		shown["button_text"] = _substitute(str(btn_data.get("button_text", "Choose")))   # [TILE_NAME] etc. on buttons too
 		var btn_node = EventButtonScene.instantiate()
-		btn_node.setup(btn_data)
+		btn_node.setup(shown)
 		btn_node.button_chosen.connect(_on_event_button_chosen)
 		btn_container.add_child(btn_node)
+	_layout_buttons(btn_container, ordered.size())
+
+
+# One row, centred under the panel. One or two choices sit in the middle instead of
+# hugging the left edge; four or more shrink to share the row instead of wrapping
+# onto a second row that the panel has no room for.
+const BTN_ROW_LEFT := 23.0
+const BTN_ROW_WIDTH := 1237.0
+const BTN_WIDTH := 353.0
+const BTN_GAP := 60.0
+
+func _layout_buttons(btn_container: GridContainer, n: int) -> void:
+	if n <= 0:
+		return
+	var s: float = 1.0
+	var gap: float = BTN_GAP
+	if n * BTN_WIDTH + (n - 1) * gap > BTN_ROW_WIDTH:
+		gap = 16.0
+		s = (BTN_ROW_WIDTH - (n - 1) * gap) / (n * BTN_WIDTH)
+	var w: float = BTN_WIDTH * s
+	btn_container.columns = n
+	btn_container.add_theme_constant_override("h_separation", int(round(w + gap)))
+	btn_container.position.x = BTN_ROW_LEFT + (BTN_ROW_WIDTH - (n * w + (n - 1) * gap)) * 0.5
+	for child in btn_container.get_children():
+		if not child.is_queued_for_deletion():
+			child.scale = Vector2(s, s)
 
 
 func _on_event_button_chosen(btn_data: Dictionary) -> void:
@@ -136,7 +375,12 @@ func _on_event_button_chosen(btn_data: Dictionary) -> void:
 		"outcome_amount": btn_data.get("outcome_amount", 0),
 		"next_event_id":  btn_data.get("next_event_id", ""),
 	}
-	if btype in ["explicit", "kinky_lewd", "sensual"]:
+	# The Stay / By morning / Continue overlay picks a scene for buttons that do not
+	# name one. A scene button that opens its own event (trigger_event) has already
+	# said where it goes, so it goes straight there: no second question, and
+	# "Continue" can no longer open the scene it was meant to skip.
+	var names_own_scene: bool = str(_pending["outcome_type"]) == "trigger_event"
+	if btype in ["explicit", "kinky_lewd", "sensual"] and not names_own_scene:
 		_show_scene_nav()
 	else:
 		_emit_resolved(_pending["next_event_id"])
@@ -204,17 +448,18 @@ func _apply_headline(title: String) -> void:
 	lbl.add_theme_font_size_override("font_size", fs)
 
 
+# Thresholds sized for the body box that ends above the button row + reward strip.
 func _apply_long_desc(body: String) -> void:
 	var lbl: Label = $EventPanel/EventLongDescriptionLabel
 	lbl.text = body
 	var n := body.length()
 	var fs := 31
-	if n > 1800: fs = 12
-	elif n > 1300: fs = 15
-	elif n > 900: fs = 19
-	elif n > 500: fs = 24
+	if n > 1580: fs = 12
+	elif n > 1140: fs = 15
+	elif n > 790: fs = 19
+	elif n > 440: fs = 24
 	lbl.add_theme_font_size_override("font_size", fs)
-	if n > 500:
+	if n > 440:
 		lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
 		lbl.vertical_alignment = VERTICAL_ALIGNMENT_TOP
 	else:

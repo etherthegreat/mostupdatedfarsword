@@ -1,0 +1,22 @@
+event_id,art,note
+DE_004,art assets/AmericanRevolutionArt/EventArt/wh_secret_independenceday,borrowed - Fourth of July
+DE_005,art assets/AmericanRevolutionArt/EventArt/mothman_summon,borrowed - Hallows' Eve Mothman
+PROT_01_AGREE_INTIMATE,art assets/AmericanRevolutionArt/EventArt/mothman agree sfw,borrowed - sfw agree until an intimate piece exists
+UALANI_CULPER_01,art assets/AmericanRevolutionArt/EventArt/agent_355_summon,borrowed - Culper Ring clothesline
+UALANI_CULPER_01_INTIMATE,art assets/AmericanRevolutionArt/EventArt/agent_355_summon,borrowed - Culper Ring clothesline
+UALANI_CULPER_BRIEF_01,art assets/AmericanRevolutionArt/EventArt/agent_355_summon,borrowed - Culper Ring clothesline
+ESPIONAGE_DISCOVERY_01,art assets/AmericanRevolutionArt/EventArt/agent_355_summon,borrowed - Culper Ring clothesline
+WH_SECRET_06,art assets/AmericanRevolutionArt/EventArt/wh_secret_Juneteenth,Juneteenth
+WH_SECRET_07_INTIMATE,art assets/AmericanRevolutionArt/Panel/wh_secret_07_scene,July scene
+WH_SECRET_12_INTIMATE,art assets/AmericanRevolutionArt/Panel/wh_secret_12_scene,Christmas scene
+CAN_PENOIT_01,art assets/AmericanRevolutionArt/EventArt/penoit_solidarity,borrowed - Penoit
+CA_PM_FIRST_MEETING,art assets/AmericanRevolutionArt/EventArt/penoit_solidarity,borrowed - Penoit
+CA_PM_COUNSEL,art assets/AmericanRevolutionArt/EventArt/penoit_solidarity,borrowed - Penoit
+CA_PM_DOUBT,art assets/AmericanRevolutionArt/EventArt/penoit_solidarity,borrowed - Penoit
+CA_PM_LOYALTY_TEST,art assets/AmericanRevolutionArt/EventArt/penoit_solidarity,borrowed - Penoit
+CA_PM_PRE_ELECTION,art assets/AmericanRevolutionArt/EventArt/penoit_solidarity,borrowed - Penoit
+CA_PM_LEGACY,art assets/AmericanRevolutionArt/EventArt/ca_pm_legacy_scene,Penoit legacy
+CAN_SUMMIT_01,art assets/AmericanRevolutionArt/EventArt/can_alliance_signed_scene,borrowed - alliance signing
+CAN_SUMMIT_01_INTIMATE,art assets/AmericanRevolutionArt/EventArt/can_alliance_signed_intimate,borrowed - alliance signing
+CAN_PEACE_01,art assets/AmericanRevolutionArt/EventArt/can_alliance_signed_scene,borrowed - alliance signing
+CAN_PEACE_01_INTIMATE,art assets/AmericanRevolutionArt/EventArt/can_alliance_signed_intimate,borrowed - alliance signing

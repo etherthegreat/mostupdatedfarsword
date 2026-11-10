@@ -631,12 +631,21 @@ func refillManpower(RR: int) -> void:
 func addMilMod(mM) -> void:
 	var newMilMod = milModScene.instantiate()
 	newMilMod.buildSelf(mM.milModType)
+	newMilMod.set_meta("src_id", mM.get_instance_id())   # so removeMilMod(template) finds this copy
 	militaryModifierList.append(newMilMod)
 
 func removeMilMod(milMod) -> void:
-	if militaryModifierList.has(milMod):
-		milMod.queue_free()
-		militaryModifierList.erase(milMod)
+	# Callers pass either the copy or the template it was copied from (belief/commander mods).
+	# Before 2026-10-27 only the copy matched, so template removals silently failed and
+	# copies stacked up every re-apply (and leaked as orphan nodes).
+	if milMod == null:
+		return
+	var sid: int = milMod.get_instance_id()
+	for m in militaryModifierList.duplicate():
+		if m == milMod or (is_instance_valid(m) and m.has_meta("src_id") and int(m.get_meta("src_id")) == sid):
+			militaryModifierList.erase(m)
+			if is_instance_valid(m):
+				m.queue_free()
 
 func disableMilModType(Type: String) -> void:
 	for MilMod in militaryModifierList:

@@ -74,13 +74,18 @@ class SnakeLetter extends Node2D:
 			return
 		# Rasterise at a stepped size and scale the remainder: crisp at any size,
 		# but the glyph cache only ever holds a handful of sizes while letters tween.
-		var base := _quantize(size_px)
+		# Fix 2026-10-27: cap the raster size. A continent-sized USA asked for 400–800px
+		# glyphs (plus outlines) at every 12% step on the way up; each is megabytes in the
+		# glyph cache, and a big late game ran out of memory. Past the cap we just scale.
+		var base := mini(_quantize(size_px), MAX_RASTER_PX)
 		var k := size_px / float(base)
 		draw_set_transform(Vector2.ZERO, 0.0, Vector2(k, k))
 		var w := font.get_char_size(ch.unicode_at(0), base).x
 		var p := Vector2(-w * 0.5, font.get_ascent(base) * 0.36)   # capitals centred on the origin
 		draw_char_outline(font, p, ch, base, maxi(2, int(base * 0.12)), outline)
 		draw_char(font, p, ch, base, fill)
+
+	const MAX_RASTER_PX := 128
 
 	static func _quantize(s: float) -> int:
 		var e := roundi(log(maxf(s, 4.0)) / log(1.12))
@@ -324,13 +329,15 @@ func _make_piece(comp: Array) -> Dictionary:
 
 	var pts := PackedVector2Array()
 	var hw := 0.0
-	if comp.size() == 1:
+	var path: Array = [] if comp.size() == 1 else _diameter_path(comp, inSet)
+	if path.size() < 2:
+		# One tile, or a component whose spine collapses to one tile (fix 2026-10-27:
+		# this used to read pts[1] on a 1-point path and throw on every relayout).
 		var t: Dictionary = _tiles[comp[0]]
 		pts.append(t.c - Vector2(t.r, 0.0))
 		pts.append(t.c + Vector2(t.r, 0.0))
 		hw = t.r
 	else:
-		var path := _diameter_path(comp, inSet)
 		for id in path:
 			pts.append(_tiles[id].c)
 		# run the spine on into the end tiles instead of stopping at their centres
@@ -444,6 +451,8 @@ func _dijkstra(src, inSet: Dictionary) -> Array:
 				open[n] = true
 	return [dist, prev]
 
+
+const MAX_SPINE_SAMPLES := 2000
 
 func _recentre(pts: PackedVector2Array, inSet: Dictionary) -> Array:
 	# Slide each spine point to the middle of the land across it, and measure how wide
@@ -662,6 +671,13 @@ func _chaikin(pts: PackedVector2Array, iters: int) -> PackedVector2Array:
 
 func _resample(pts: PackedVector2Array, step: float) -> PackedVector2Array:
 	var total := _poly_len(pts)
+	# Fix 2026-10-27: a degenerate spine can measure inf/NaN or absurdly long; the point
+	# count below then ran into the billions and ate all memory in seconds.
+	if not is_finite(total) or step <= 0.0 or total / step > MAX_SPINE_SAMPLES:
+		push_warning("snake names: spine length %s too long to resample; clamped" % str(total))
+		if not is_finite(total) or pts.size() < 2:
+			return pts
+		step = total / float(MAX_SPINE_SAMPLES)
 	var n := maxi(2, int(ceil(total / step)) + 1)
 	var out := PackedVector2Array()
 	var seg := 0

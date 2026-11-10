@@ -110,7 +110,7 @@ const USA_PROT_TILES: Dictionary = {
 	"PROT_13":  80,   # Green Mountain Ghost  — Montpelier, VT (Green Mountains)
 
 	"PROT_15": 177,   # Skunk Ape             — Gainesville, FL (Wetlands)
-	"PROT_16":  71,   # Eternal Minuteman     — Springfield, MA (Gun Valley / Armory)
+	"PROT_16":  14,   # Agent 355             — New York City, NY (the Culper Ring's home ground)
 	"PROT_17": 188,   # Lincoln's Ghost       — Washington, DC (White House)
 }
 
@@ -304,6 +304,7 @@ func newGameBuild(CID, gameLang, isCoop: bool = false):
 				# _spawn_ai_starting_armies(ai_country)
 	_apply_war_timing()   # establish the pre-war ceasefire (peace until turn 10)
 	var coop_country_id: String = "COOP" if isCoopMode else playerCountry
+	$CanvasLayer/WarRoomPanel.resetProtectors()   # new game: start every spirit's file fresh
 	$CanvasLayer/WarRoomPanel.setupAllProtectors($TileController.get_children(), coop_country_id)
 	_assign_vice_president()
 	_build_turn_order()
@@ -1719,7 +1720,8 @@ func _resolve_ai_and_advance_round() -> void:
 	# Replay the AI's turn with camera + damage numbers so the player can watch it
 	await _play_ai_turn()
 	_tick_sieges()
-	$CanvasLayer/WarRoomPanel.checkObjectives($TileController.get_children(), currentWorldTurn)
+	_raise_pending_protector_towers()
+	$CanvasLayer/WarRoomPanel.checkObjectives($TileController.get_children(), currentWorldTurn + 1)
 	currentWorldTurn += 1
 	_advance_fortnight()
 	_tick_storms()
@@ -1835,8 +1837,12 @@ func updatePlayerUI():
 	$CanvasLayer/WarRoomPanel.buildSelf(playerCountryNode)
 	if not $CanvasLayer/WarRoomPanel.requestEventFire.is_connected(_on_arc_event_requested):
 		$CanvasLayer/WarRoomPanel.requestEventFire.connect(_on_arc_event_requested)
-	if not $CanvasLayer/WarRoomPanel.protectorSummoned.is_connected(_on_protector_summoned):
-		$CanvasLayer/WarRoomPanel.protectorSummoned.connect(_on_protector_summoned)
+	# Belief purchases: this signal had no listener at all (the scene connection was
+	# lost), so buying an Icon or a Social Contract did nothing.
+	if not $CanvasLayer/BeliefControl.purchasedBelief.is_connected(_on_belief_control_purchased_belief):
+		$CanvasLayer/BeliefControl.purchasedBelief.connect(_on_belief_control_purchased_belief)
+	if not $CanvasLayer/WarRoomPanel.protectorReady.is_connected(_on_protector_ready):
+		$CanvasLayer/WarRoomPanel.protectorReady.connect(_on_protector_ready)
 	if not $CanvasLayer/TechTree.investmentChanged.is_connected(_refresh_next_turn_ui):
 		$CanvasLayer/TechTree.investmentChanged.connect(_refresh_next_turn_ui)
 	updateResourceBar()
@@ -2245,14 +2251,14 @@ func _apply_war_timing() -> void:
 	if not _farmers_fired and currentWorldTurn >= (3 if DEBUG_AGENT355_TEST else 2):   # keep turn 2 clear for the Agent 355 reel
 		_farmers_fired = true
 		_fire_farmers_event()
-	if not _trailer_intimate_fired and currentWorldTurn >= 4:
+	if TRAILER_MONSTER_PARADE and not _trailer_intimate_fired and currentWorldTurn >= 4:
 		_trailer_intimate_fired = true
 		_fire_csv_event("PROT_01_AGREE_INTIMATE")
-	if not _trailer_agree_fired and currentWorldTurn >= 5:
+	if TRAILER_MONSTER_PARADE and not _trailer_agree_fired and currentWorldTurn >= 5:
 		_trailer_agree_fired = true
 		_fire_csv_event("PROT_01_AGREE")
 	# Monster parade: fire the next scheduled protector tame/agree flash (one per turn).
-	if _trailer_arc_index < TRAILER_ARC_SCHEDULE.size() \
+	if TRAILER_MONSTER_PARADE and _trailer_arc_index < TRAILER_ARC_SCHEDULE.size() \
 			and currentWorldTurn >= int(TRAILER_ARC_SCHEDULE[_trailer_arc_index][0]):
 		_fire_csv_event(str(TRAILER_ARC_SCHEDULE[_trailer_arc_index][1]))
 		_trailer_arc_index += 1
@@ -3113,7 +3119,8 @@ var _defer_events: bool = false  # true during an AI turn — events queue, then
 const _ARCS_DISABLED := true      # TEMP: mute commander/protector arcs for a later focused writing pass
 const DEMO_MODE := true            # July-4 limited demo: only intro chain + protectors + White House events fire
 const RESOURCE_SLIM := true        # show only Dollars/Manpower/Weapons/Science/Culture; hide the rest
-const DEBUG_AGENT355_TEST := true  # ARTIST DEMO: Agent 355 arc plays back-to-back on turn 2; F8 replays it. Set false after the screenshare.
+const DEBUG_AGENT355_TEST := false # ARTIST DEMO: true = Agent 355 arc plays back-to-back on turn 2 and F8 replays it. Off so the real chain (War Room file) runs.
+const TRAILER_MONSTER_PARADE := false  # FILMING AID: true = scripted protector scenes pop on turns 4-16 with no outcomes. Off so spirits arrive through their War Room files.
 const DEMO_END_TURN := 20          # demo ends here (war opens turn 10 -> ~10 war turns). Tune freely.
 var _cycle_index: int = -1        # last unit index visited by the cycle-units button
 var _border_warning_fired: bool = false
@@ -3150,6 +3157,10 @@ func _on_arc_event_requested(event_id: String, tile) -> void:
 	createNewEvent(event_id, tile)
 
 
+func _on_protector_ready(protector_name: String) -> void:
+	_show_notice(protector_name + " is ready for contact — open the War Room")
+
+
 func _on_protector_summoned(origin_tile, protector_name: String, protector_id: String) -> void:
 	if origin_tile != null:
 		var school: String = _protector_id_to_school(protector_id)
@@ -3165,14 +3176,24 @@ func _on_protector_summoned(origin_tile, protector_name: String, protector_id: S
 # Called when any protector AGREE event button sets a "*_agreed" flag.
 # Builds a Tower at the protector's home tile (if none exists), assigns the protector
 # as that tile's wizard, and grants the associated Presidential Power spell.
+var _protectors_granted: Dictionary = {}     # pid -> true once the accord rewards are paid
+var _protector_towers_pending: Array = []   # pids whose home is still occupied: Tower waits for liberation
+
 func _on_protector_agreed(agreed_flag: String) -> void:
 	# "prot_01_agreed" → "PROT_01",  "ca_prot_01_agreed" → "CA_PROT_01"
 	var pid: String = agreed_flag.replace("_agreed", "").to_upper()
+	if _protectors_granted.has(pid):
+		return   # several buttons can seal the same accord; pay the rewards once
+	_protectors_granted[pid] = true
 	var prot_name: String = _protector_id_to_name(pid)
 
 	var home_tile = _get_ca_prot_tile(pid) if pid.begins_with("CA_") else _get_prot_tile(pid)
 
-	if home_tile != null:
+	if home_tile != null and home_tile.tileOwner != playerCountryNode.CID:
+		# Their home is behind enemy lines (Agent 355 and occupied New York):
+		# the Tower is raised the turn the tile is liberated.
+		_protector_towers_pending.append(pid)
+	elif home_tile != null:
 		# Build a Tower at the home tile if one doesn't exist yet
 		var has_tower: bool = false
 		for b in home_tile.tileBuildingsList:
@@ -3218,6 +3239,23 @@ func _on_protector_agreed(agreed_flag: String) -> void:
 		)
 
 
+func _raise_pending_protector_towers() -> void:
+	for pid in _protector_towers_pending.duplicate():
+		var home_tile = _get_ca_prot_tile(pid) if pid.begins_with("CA_") else _get_prot_tile(pid)
+		if home_tile == null or home_tile.tileOwner != playerCountryNode.CID:
+			continue
+		_protector_towers_pending.erase(pid)
+		var has_tower: bool = false
+		for b in home_tile.tileBuildingsList:
+			if b.buildingType == "Tower":
+				has_tower = true
+				break
+		if not has_tower:
+			home_tile.addBuilding("Tower", 1)
+		home_tile.addWizard(_protector_id_to_name(pid), _protector_id_to_school(pid))
+		_show_notice(_protector_id_to_name(pid) + " raises a Tower at " + home_tile.tileName)
+
+
 func _protector_id_to_name(pid: String) -> String:
 	match pid:
 		"PROT_01": return "Mothman"
@@ -3234,7 +3272,7 @@ func _protector_id_to_name(pid: String) -> String:
 		"PROT_12": return "Liberty Bell"
 		"PROT_13": return "Green Mountain Ghost"
 		"PROT_15": return "Skunk Ape"
-		"PROT_16": return "Eternal Minuteman"
+		"PROT_16": return "Agent 355"
 		"PROT_17": return "Lincoln's Ghost"
 		"CA_PROT_01": return "Le Wendigo"
 		"CA_PROT_02": return "Le Loup-Garou"
@@ -3251,8 +3289,8 @@ func _protector_id_to_school(pid: String) -> String:
 	match pid:
 		"PROT_01", "PROT_02", "PROT_03", "PROT_10", "PROT_15": return "cryptid"
 		"PROT_04", "PROT_06", "PROT_07":                        return "storm"
-		"PROT_05", "PROT_13", "PROT_17":                        return "spectral"
-		"PROT_08", "PROT_09", "PROT_16":                        return "iron"
+		"PROT_05", "PROT_13", "PROT_16", "PROT_17":             return "spectral"
+		"PROT_08", "PROT_09":                                   return "iron"
 		"PROT_11", "PROT_12":                                   return "liberty"
 	return "manifest"
 
@@ -3273,7 +3311,7 @@ func _protector_id_to_spell(pid: String) -> String:
 		"PROT_12": return "FREEDOM RESONANCE AMPLIFICATION DECREE"
 		"PROT_13": return "RURAL SPECTRAL INVESTMENT INITIATIVE"
 		"PROT_15": return "FLORIDA CRYPTID INTEGRATION TASK FORCE"
-		"PROT_16": return "PERMANENT READINESS MANDATE (EXPIRES NEVER)"
+		"PROT_16": return "CULPER RING"
 		"PROT_17": return "EMANCIPATION PROCLAMATION 2: STILL EMANCIPATING"
 	return ""
 
@@ -3419,10 +3457,7 @@ func _on_event_button_pressed(button_id: String, event_id: String,
 		outcome_value: String, outcome_amount: int,
 		next_event_id: String) -> void:
 	executeOutcome(outcome_type, outcome_value, outcome_amount, null)
-	if outcome_type == "set_flag" and outcome_value.ends_with("_agreed") \
-			and (outcome_value.begins_with("prot_") or outcome_value.begins_with("ca_prot_")):
-		#AudioManager.play_sfx("protector_agree")
-		_on_protector_agreed(outcome_value)
+	_note_protector_scene_answered(event_id, outcome_type)
 	if next_event_id != "":
 		createNewEvent(next_event_id, null, true)
 
@@ -3431,12 +3466,34 @@ func _on_tile_event_button_pressed(button_id: String, event_id: String,
 		outcome_value: String, outcome_amount: int,
 		next_event_id: String, tile: Tile) -> void:
 	executeOutcome(outcome_type, outcome_value, outcome_amount, tile)
-	if outcome_type == "set_flag" and outcome_value.ends_with("_agreed") \
-			and (outcome_value.begins_with("prot_") or outcome_value.begins_with("ca_prot_")):
-		#AudioManager.play_sfx("protector_agree")
-		_on_protector_agreed(outcome_value)
+	_note_protector_scene_answered(event_id, outcome_type)
 	if next_event_id != "":
 		createNewEvent(next_event_id, tile, true)
+
+
+# A spirit's three scenes (PROT_xx_SUMMON / _TAME / _AGREE) each move its War Room
+# file one step. Answering a scene sets that step's flag here, so a chain keeps
+# moving even if its buttons were written without the matching set_flag.
+#   - "nothing" on a SUMMON or TAME is a decline: the step stays open.
+#   - an AGREE button that opens another scene (trigger_event) is not the accord yet;
+#     the scene it opens (PROT_xx_AGREE_INTIMATE) seals it when it closes.
+func _note_protector_scene_answered(event_id: String, outcome_type: String) -> void:
+	var stage_flags := {"_SUMMON": "_summoned", "_TAME": "_tame", "_AGREE": "_agreed", "_AGREE_INTIMATE": "_agreed"}
+	for suffix in ["_AGREE_INTIMATE", "_AGREE", "_TAME", "_SUMMON"]:
+		if not event_id.ends_with(suffix):
+			continue
+		var pid: String = event_id.trim_suffix(suffix)
+		if not (pid.begins_with("PROT_") or pid.begins_with("CA_PROT_")):
+			return
+		if outcome_type == "nothing" and suffix in ["_SUMMON", "_TAME"]:
+			return
+		if outcome_type == "trigger_event" and suffix == "_AGREE":
+			return
+		var flag: String = pid.to_lower() + stage_flags[suffix]
+		playerCountryNode.CountryFlags[flag] = true
+		if flag.ends_with("_agreed"):
+			_on_protector_agreed(flag)
+		return
 
 func executeOutcome(outcome_type: String, outcome_value: String,
 		outcome_amount: int, tile) -> void:
@@ -3539,6 +3596,18 @@ func executeOutcome(outcome_type: String, outcome_value: String,
 					break
 		"set_flag":
 			playerCountryNode.CountryFlags[outcome_value] = true
+			if outcome_value.ends_with("_agreed") \
+					and (outcome_value.begins_with("prot_") or outcome_value.begins_with("ca_prot_")):
+				_on_protector_agreed(outcome_value)
+		"multi":
+			# Several outcomes on one button. outcome_value is a |-separated list of
+			# type:value:amount, e.g. "resource_change:gold:-150|reveal_british_tiles|set_flag:prot_16_summoned"
+			for part in outcome_value.split("|", false):
+				var bits: PackedStringArray = part.strip_edges().split(":")
+				if bits[0] == "" or bits[0] == "multi":
+					continue
+				executeOutcome(bits[0], bits[1] if bits.size() > 1 else "",
+						int(bits[2]) if bits.size() > 2 else 0, tile)
 		"clear_flag":
 			playerCountryNode.CountryFlags.erase(outcome_value)
 		"set_mission_flag":
@@ -5802,6 +5871,8 @@ func _check_protector_summons() -> void:
 	for pid in PROTECTOR_IDS:
 		if pid == "PROT_08" or pid == "PROT_17":
 			continue  # DMA-investigation gated — handled by dedicated summon functions
+		if $CanvasLayer/WarRoomPanel.owns_contact(pid):
+			continue  # this spirit's first contact is fired by its War Room file
 		if not _is_protector_wild(pid):
 			continue
 		var min_turn: int = PROTECTOR_SUMMON_TURNS.get(pid, 999)

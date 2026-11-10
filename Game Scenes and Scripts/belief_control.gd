@@ -382,10 +382,9 @@ func purchasePanel(bbName, bbCost, bbImage, beliefDesc, beliefBorder):
 	$BeliefPanel/PurchasePanel/FaithIcon.visible = true
 	$BeliefPanel/PurchasePanel/RichTextLabel.clear()
 	$BeliefPanel/PurchasePanel/RichTextLabel.append_text(beliefDesc)
-	$BeliefPanel/PurchasePanel/Price.clear()
-	$BeliefPanel/PurchasePanel/Price.append_text("1 Culture Token")
 	pendingCost = bbCost
 	pendingBelief = bbName
+	_refresh_purchase_state()
 	$BeliefPanel/PurchasePanel/PPBorderSprite.texture = beliefBorder
 	$BeliefPanel/PurchasePanel.visible = true
 
@@ -421,8 +420,8 @@ func refreshDisplay() -> void:
 				beliefButton.cantAfford()
 		else:
 			beliefButton.purchased()
-	if pendingBelief != "" and pendingCost != 0:
-		$BeliefPanel/PurchasePanel/PurchaseButton.disabled = player.TotalCulture < pendingCost
+	if pendingBelief != "":
+		_refresh_purchase_state()
 	match player.churchLevel:
 		3:  $BeliefPanel/testLabel.text = "Rational III"
 		2:  $BeliefPanel/testLabel.text = "Rational II"
@@ -438,10 +437,28 @@ func _get_uniform_belief_cost() -> int:
 		return 10
 	return max(10, int(10.0 * pow(1.2, float(player.beliefPurchaseCount))))
 
+# Beliefs cost one Culture token (earned by liberating monuments). With none in hand
+# the button is disabled and the price line says why.
+func _refresh_purchase_state() -> void:
+	var tokens: int = int(player.cultureTokens) if is_instance_valid(player) else 0
+	var btn = $BeliefPanel/PurchasePanel/PurchaseButton
+	btn.disabled = tokens <= 0
+	btn.tooltip_text = "" if tokens > 0 else "No Culture tokens. Liberate a tile with a Monument to earn one."
+	$BeliefPanel/PurchasePanel/Price.clear()
+	if tokens > 0:
+		$BeliefPanel/PurchasePanel/Price.append_text("1 Culture Token  (you have %d)" % tokens)
+	else:
+		$BeliefPanel/PurchasePanel/Price.append_text("[color=#ffb4a2]No Culture tokens — liberate a Monument[/color]")
+
+
 signal purchasedBelief
 func _on_purchase_button_pressed() -> void:
+	if not is_instance_valid(player) or int(player.cultureTokens) <= 0:
+		_refresh_purchase_state()
+		return
+	var owned_before: int = player.selectedBeliefs.size()
 	emit_signal("purchasedBelief", pendingBelief, pendingCost)
-	if is_instance_valid(player):
+	if player.selectedBeliefs.size() > owned_before:
 		player.beliefPurchaseCount += 1
 	pendingBelief = ""
 	pendingCost = 0

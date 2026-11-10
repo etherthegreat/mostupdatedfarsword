@@ -1,0 +1,6850 @@
+[
+[
+" path with or without .png",
+false,
+[
+"event_scene.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/End Art/IMG_1775.PNG",
+true,
+[
+"Game Scenes and Scripts/ending_scene_control.gd",
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/End Art/IMG_1777.PNG",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/End Art/IMG_1778.PNG",
+true,
+[
+"Game Scenes and Scripts/ending_scene_control.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/End Art/IMG_1782.PNG",
+true,
+[
+"Game Scenes and Scripts/ending_scene_control.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/End Art/IMG_1783.PNG",
+true,
+[
+"Game Scenes and Scripts/ending_scene_control.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/End Art/IMG_1784.PNG",
+true,
+[
+"Game Scenes and Scripts/ending_scene_control.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/EventArt/agent_355.png",
+true,
+[
+"GalleryTab.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/EventArt/agent_355_intimate.png",
+true,
+[
+"GalleryTab.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/EventArt/agent_355_summon.png",
+true,
+[
+"GalleryTab.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/EventArt/agent_355_tame.png",
+true,
+[
+"GalleryTab.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/EventArt/bell_witch.png",
+true,
+[
+"GalleryTab.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/EventArt/bell_witch_intimate.png",
+true,
+[
+"GalleryTab.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/EventArt/bell_witch_summon.png",
+true,
+[
+"GalleryTab.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/EventArt/bell_witch_tame.png",
+true,
+[
+"GalleryTab.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/EventArt/ca_pm_battlefield_scene.png",
+true,
+[
+"GalleryTab.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/EventArt/ca_pm_legacy_scene.png",
+true,
+[
+"GalleryTab.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/EventArt/can_alliance_signed_intimate.png",
+true,
+[
+"GalleryTab.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/EventArt/can_alliance_signed_scene.png",
+true,
+[
+"GalleryTab.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/EventArt/goatman.png",
+true,
+[
+"GalleryTab.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/EventArt/goatman_intimate.png",
+true,
+[
+"GalleryTab.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/EventArt/goatman_summon.png",
+true,
+[
+"GalleryTab.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/EventArt/goatman_tame.png",
+true,
+[
+"GalleryTab.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/EventArt/gov_lvl3_ceremony_scene.png",
+true,
+[
+"GalleryTab.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/EventArt/gov_reward_scene.png",
+true,
+[
+"GalleryTab.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/EventArt/jersey devil agree nsfw.png",
+true,
+[
+"GalleryTab.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/EventArt/jersey devil agree sfw.png",
+true,
+[
+"GalleryTab.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/EventArt/jersey devil tame.png",
+true,
+[
+"GalleryTab.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/EventArt/jersey_devil_summon.png",
+true,
+[
+"GalleryTab.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/EventArt/lincoln ghost agree nsfw.png",
+true,
+[
+"GalleryTab.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/EventArt/lincoln ghost agree sfw.png",
+true,
+[
+"GalleryTab.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/EventArt/lincoln ghost tame.png",
+true,
+[
+"GalleryTab.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/EventArt/lincolns_ghostSummon.png",
+true,
+[
+"GalleryTab.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/EventArt/mothman agree sfw.png",
+true,
+[
+"GalleryTab.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/EventArt/mothman_summon.png",
+true,
+[
+"GalleryTab.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/EventArt/mothmantame_scene.png",
+true,
+[
+"GalleryTab.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/EventArt/old ironsides agree nsfw.png",
+true,
+[
+"GalleryTab.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/EventArt/old ironsides agree sfw.png",
+true,
+[
+"GalleryTab.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/EventArt/old ironsides tame.png",
+true,
+[
+"GalleryTab.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/EventArt/old_ironsidesSummon.png",
+true,
+[
+"GalleryTab.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/EventArt/penoit_solidarity.png",
+true,
+[
+"GalleryTab.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/EventArt/wh_secret_Juneteenth.png",
+true,
+[
+"GalleryTab.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/EventArt/wh_secret_cherry blossoms.png",
+true,
+[
+"GalleryTab.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/EventArt/wh_secret_christmas.png",
+true,
+[
+"GalleryTab.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/EventArt/wh_secret_halloween.png",
+true,
+[
+"GalleryTab.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/EventArt/wh_secret_independenceday.png",
+true,
+[
+"GalleryTab.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/EventArt/wh_secret_pride.png",
+true,
+[
+"GalleryTab.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/Panel/IMG_1688.PNG",
+true,
+[
+"eventScene.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/Panel/IMG_1690.PNG",
+true,
+[
+"event_button.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/Panel/america2.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/Panel/border.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/apfs/apf ca background.png",
+true,
+[
+"army_path_follow.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/apfs/apf uk background.png",
+true,
+[
+"army_path_follow.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/apfs/apf us backgrounnd.png",
+true,
+[
+"army_path_follow.gd",
+"army_path_follow.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/menuart/PAX AMERICANA.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/menuart/Title - Copy.png",
+true,
+[
+"Menu Scenes and Scripts/main_menu.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/menuart/UPRISINGS.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/sisterspacedesklanding/etherspacedesksignature.png",
+true,
+[
+"studio_intro.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/sisterspacedesklanding/forage cap.png",
+true,
+[
+"armor.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/sisterspacedesklanding/hardee hat.png",
+true,
+[
+"armor.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/sisterspacedesklanding/sisterspacedesksignature.png",
+true,
+[
+"studio_intro.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/sisterspacedesklanding/tombstone hat.png",
+true,
+[
+"armor.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/sisterspacedesklanding/tricourne hat.png",
+true,
+[
+"armor.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/technology sprites/Early_Rocket.png",
+true,
+[
+"Game Scenes and Scripts/world.gd",
+"weapon.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/technology sprites/arty 1.png",
+true,
+[
+"tech_unlock_button.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/technology sprites/arty 2.png",
+true,
+[
+"tech_unlock_button.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/technology sprites/arty 3.png",
+true,
+[
+"tech_unlock_button.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/technology sprites/arty 4.png",
+true,
+[
+"tech_unlock_button.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/technology sprites/construction 2.png",
+true,
+[
+"tech_unlock_button.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/technology sprites/construction 3.png",
+true,
+[
+"tech_unlock_button.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/technology sprites/construction 4.png",
+true,
+[
+"tech_unlock_button.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/technology sprites/construction I.png",
+true,
+[
+"tech_unlock_button.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/technology sprites/rifle 1.png",
+true,
+[
+"tech_unlock_button.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/technology sprites/rifle 2.png",
+true,
+[
+"tech_unlock_button.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/technology sprites/rifle 3.png",
+true,
+[
+"tech_unlock_button.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/technology sprites/rifle 4.png",
+true,
+[
+"tech_unlock_button.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/technology sprites/sabre 1.png",
+true,
+[
+"tech_unlock_button.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/technology sprites/sabre 2.png",
+true,
+[
+"tech_unlock_button.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/technology sprites/sabre 3.png",
+true,
+[
+"tech_unlock_button.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/technology sprites/sabre 4.png",
+true,
+[
+"tech_unlock_button.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/technology sprites/uniform 1.png",
+true,
+[
+"tech_unlock_button.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/technology sprites/uniform 2.png",
+true,
+[
+"tech_unlock_button.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/technology sprites/uniform 3.png",
+true,
+[
+"tech_unlock_button.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/technology sprites/uniform 4.png",
+true,
+[
+"tech_unlock_button.gd"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tempArt/Larkin Love10.jpg",
+true,
+[
+"Menu Scenes and Scripts/new_game_selection.gd",
+"Menu Scenes and Scripts/new_game_selection.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tempArt/Screenshot (2027).png",
+true,
+[
+"Menu Scenes and Scripts/new_game_selection.gd",
+"Menu Scenes and Scripts/new_game_selection.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tempArt/Screenshot (2028).png",
+true,
+[
+"Menu Scenes and Scripts/new_game_selection.gd",
+"Menu Scenes and Scripts/new_game_selection.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tempArt/claim.png",
+true,
+[
+"ProtectorArcEntry.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tempArt/starfire_again.jpg",
+true,
+[
+"Game Scenes and Scripts/world.tscn",
+"Menu Scenes and Scripts/new_game_selection.gd",
+"Menu Scenes and Scripts/new_game_selection.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/maps/usamap-borderless.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/1-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/1.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/10-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/10.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/100-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/100.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/101-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/101.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/102-R.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/102.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/103-R.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/103.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/104-R.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/104.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/105-R.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/105.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/106-R.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/106.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/107-R.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/107.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/108-R.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/108.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/109-R.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/109.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/11-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/11.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/110-R.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/110.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/111-R.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/111.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/112-R.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/112.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/113-R.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/113.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/114-R.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/114.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/115-R.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/115.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/116-R.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/116.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/117-R.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/117.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/118-R.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/118.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/119-R.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/119.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/12-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/12.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/120-R.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/120.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/121-R.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/121.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/122-R.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/122.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/123-R.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/123.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/124-R.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/124.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/126-R.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/126.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/127-R.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/127.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/128-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/128.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/129-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/129.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/13-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/13.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/130-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/130.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/131-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/131.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/132-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/132.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/133-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/133.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/134-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/134.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/135-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/135.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/136-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/136.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/137-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/137.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/139-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/139.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/14-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/14.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/140-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/140.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/141-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/141.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/142-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/142.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/143-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/143.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/144-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/144.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/145-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/145.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/146-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/146.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/147-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/147.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/148-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/148.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/149-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/149.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/15-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/15.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/150-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/150.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/151-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/151.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/152-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/152.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/153-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/153.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/154-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/154.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/155-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/155.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/156-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/156.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/157-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/157.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/158-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/158.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/159-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/159.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/16-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/16.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/160-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/160.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/161-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/161.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/162-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/162.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/163-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/163.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/164-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/164.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/165-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/165.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/166-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/166.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/167-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/167.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/168-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/168.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/169-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/169.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/17-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/17.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/170-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/170.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/171-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/171.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/172-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/172.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/173-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/173.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/174-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/174.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/175-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/175.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/176-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/176.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/177-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/177.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/178-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/178.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/179-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/179.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/18-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/18.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/180-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/180.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/181-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/181.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/182-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/182.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/183-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/183.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/184-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/184.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/185-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/185.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/186-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/186.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/187-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/187.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/188-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/188.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/189-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/189.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/19-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/19.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/190-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/190.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/191-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/191.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/192-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/192.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/193-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/193.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/194-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/194.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/195-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/195.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/196-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/196.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/197-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/197.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/198-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/198.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/199-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/199.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/2-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/2.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/20-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/20.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/200-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/200.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/201-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/201.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/22-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/22.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/23-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/23.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/24-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/24.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/25-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/25.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/26-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/26.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/27-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/27.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/28-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/28.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/29-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/29.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/3-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/3.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/30-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/30.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/31-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/31.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/32-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/32.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/33-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/33.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/34-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/34.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/35-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/35.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/36-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/36.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/37-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/37.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/38-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/38.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/39-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/39.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/4-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/4.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/40-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/40.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/41-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/41.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/42-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/42.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/43-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/43.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/44-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/44.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/45-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/45.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/46-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/46.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/47-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/47.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/48-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/48.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/49-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/49.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/50-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/50.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/51-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/51.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/52-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/52.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/53-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/53.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/54-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/54.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/55-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/55.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/56-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/56.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/57-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/57.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/58-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/58.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/59-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/59.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/6-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/6.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/60-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/60.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/61-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/61.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/62-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/62.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/63-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/63.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/64-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/64.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/65-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/65.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/66-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/66.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/67-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/67.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/68-7.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/68.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/69-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/69.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/7-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/7.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/70-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/70.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/71-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/71.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/72-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/72.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/73-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/73.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/74-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/74.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/75-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/75.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/76-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/76.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/77-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/77.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/78-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/78.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/79-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/79.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/8-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/8.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/80-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/80.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/81-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/81.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/82-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/82.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/83-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/83.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/84-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/84.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/85-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/85.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/86-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/86.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/87-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/87.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/88-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/88.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/89-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/89.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/9-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/9.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/90-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/90.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/91-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/91.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/92-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/92.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/93-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/93.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/94-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/94.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/95-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/95.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/96-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/96.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/97-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/97.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/98-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/98.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/99-r.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/99.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/AmericanRevolutionArt/tileandMaps/tiles/usamapintotal.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/Map Art/Coastal Tiles/Test Black.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/ModifierIcons/TileEcoModifiers/CorruptionHeavy.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn",
+"modifier_sprite.tscn",
+"tile_eco_modifier.gd",
+"tile_info_panel.gd"
+]
+],
+[
+"art assets/ModifierIcons/TileEcoModifiers/CorruptionLight.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn",
+"tile_eco_modifier.gd",
+"tile_info_panel.gd"
+]
+],
+[
+"art assets/ModifierIcons/TileEcoModifiers/CorruptionModerate.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn",
+"tile_eco_modifier.gd",
+"tile_info_panel.gd"
+]
+],
+[
+"art assets/ModifierIcons/TileEcoModifiers/CorruptionNo.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn",
+"tile_eco_modifier.gd",
+"tile_info_panel.gd"
+]
+],
+[
+"art assets/ModifierIcons/TileEcoModifiers/CorruptionTotal.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn",
+"tile_eco_modifier.gd",
+"tile_info_panel.gd"
+]
+],
+[
+"art assets/ModifierIcons/TileEcoModifiers/FreshWater.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn",
+"spell_unlock_icon.gd",
+"tile_eco_modifier.gd"
+]
+],
+[
+"art assets/ModifierIcons/milMods/bleed.png",
+true,
+[
+"faction_reward.tscn"
+]
+],
+[
+"art assets/ModifierIcons/milMods/green cross.png",
+true,
+[
+"faction.gd",
+"mil_mod.gd"
+]
+],
+[
+"art assets/ModifierIcons/milMods/portal.png",
+true,
+[
+"faction.gd"
+]
+],
+[
+"art assets/ModifierIcons/milMods/purple vines.png",
+true,
+[
+"faction.gd"
+]
+],
+[
+"art assets/ModifierIcons/milMods/sun.png",
+true,
+[
+"mil_mod.gd"
+]
+],
+[
+"art assets/ModifierIcons/milMods/weird shape.png",
+true,
+[
+"mil_mod.gd",
+"tech_reward_icon.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/Draught of Knowledge.PNG",
+true,
+[
+"spell.gd",
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/Fireworks.PNG",
+true,
+[
+"spell.gd",
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/Fleeting Foot.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/Focus Dust.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/Golden Touch.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/Green 1.PNG",
+true,
+[
+"Game Scenes and Scripts/army.tscn",
+"spell_branch_unlock.gd",
+"spell_branch_unlock.tscn"
+]
+],
+[
+"art assets/Placeholder Art/Spells/Green 2.PNG",
+true,
+[
+"spell_branch_unlock.gd",
+"spell_branch_unlock.tscn"
+]
+],
+[
+"art assets/Placeholder Art/Spells/Green 3.PNG",
+true,
+[
+"spell_branch_unlock.gd",
+"spell_branch_unlock.tscn"
+]
+],
+[
+"art assets/Placeholder Art/Spells/Health Potion.PNG",
+true,
+[
+"spell.gd",
+"spell_branch_unlock.gd",
+"spell_branch_unlock.tscn"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1316.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1317.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1318.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1319.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1320.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1321.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1322.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1323.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1324.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1325.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1326.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1327.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1328.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1329.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1330.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1331.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1332.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1333.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1334.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1335.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1336.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1337.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1338.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1339.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1351.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1352.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1353.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1354.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1355.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1356.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1357.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1358.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1359.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1360.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1361.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1362.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1363.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1364.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1365.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1366.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1367.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1368.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1369.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1370.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1371.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1372.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1373.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1374.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1375.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1376.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1377.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1378.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1379.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1380.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1381.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1382.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1383.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1384.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1385.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/IMG_1386.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/Paralysis.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/Plentify - disabled.png",
+true,
+[
+"spell_unlock_icon.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/Poison.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/RaiseSpring - disbled.png",
+true,
+[
+"spell_unlock_icon.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/Slime Soldier.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/Slime Spitter.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/Slime Weapons.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/Waterbreathing.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/Spells/healingwinds - disabled.png",
+false,
+[
+"spell_unlock_icon.gd"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/Bath.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn",
+"kit.gd"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/Faire.png",
+true,
+[
+"kit.gd"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/Temp Event Background 2.png",
+true,
+[
+"CommanderArcEntry.tscn",
+"ProtectorArcEntry.tscn"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/Workshop.png",
+true,
+[
+"Civilian.tscn",
+"Game Scenes and Scripts/world.tscn",
+"kit.gd"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/book.jpg",
+true,
+[
+"Game Scenes and Scripts/world.tscn",
+"spellbook.tscn"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/camp.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn",
+"kit.gd"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/forge.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn",
+"kit.gd"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/library.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn",
+"kit.gd"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/mine.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn",
+"kit.gd"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/4-15-Eli-Prompt.png",
+true,
+[
+"tech_tree.tscn",
+"tool.gd"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/Farm.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn",
+"barracks_button.tscn",
+"new_building_button.tscn",
+"tool_kit_control.tscn"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/Green Circle.png",
+true,
+[
+"tile_eco_modifier.gd"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/Irish.png",
+true,
+[
+"Menu Scenes and Scripts/main_menu.tscn"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/Magic.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/Metal.png",
+true,
+[
+"building_panel_panel.tscn",
+"new_building_button.tscn",
+"tool.gd"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/Older Icons/IMG_2814.jpg",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/Older Icons/Magic.png",
+true,
+[
+"Game Scenes and Scripts/resource_info_panel.gd",
+"Game Scenes and Scripts/world.tscn",
+"building_panel_panel.tscn",
+"spell_unlock_icon.gd"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/Older Icons/Metal.png",
+true,
+[
+"Game Scenes and Scripts/resource_info_panel.gd",
+"building_panel_panel.tscn"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/Older Icons/Science.png",
+true,
+[
+"Game Scenes and Scripts/resource_info_panel.gd",
+"Game Scenes and Scripts/world.tscn",
+"building_panel_panel.tscn"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/Older Icons/alchemy big.png",
+true,
+[
+"magic_amount_control.gd",
+"magic_amount_control.tscn"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/Older Icons/church unlockables.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/Older Icons/culture 100 x 100.png",
+true,
+[
+"Game Scenes and Scripts/resource_info_panel.gd",
+"Game Scenes and Scripts/world.tscn",
+"building_panel_panel.tscn"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/Older Icons/divinity big.png",
+true,
+[
+"magic_amount_control.gd"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/Older Icons/druid big.png",
+true,
+[
+"magic_amount_control.gd"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/Older Icons/elementalistbig.png",
+true,
+[
+"magic_amount_control.gd"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/Older Icons/faith.png",
+true,
+[
+"Game Scenes and Scripts/resource_info_panel.gd",
+"Game Scenes and Scripts/world.tscn",
+"building_panel_panel.tscn",
+"law.gd"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/Older Icons/food.png",
+true,
+[
+"Game Scenes and Scripts/resource_info_panel.gd",
+"Game Scenes and Scripts/world.tscn",
+"building_panel_panel.tscn"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/Older Icons/god dimensions 215 x 180.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/Older Icons/gold.png",
+true,
+[
+"Game Scenes and Scripts/resource_info_panel.gd",
+"building_panel_panel.tscn"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/Older Icons/harmony 100 x 100.png",
+true,
+[
+"Game Scenes and Scripts/resource_info_panel.gd",
+"Game Scenes and Scripts/world.tscn",
+"law.gd"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/Older Icons/illusion big.png",
+true,
+[
+"magic_amount_control.gd"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/Older Icons/influence 100 x 100.png",
+true,
+[
+"Game Scenes and Scripts/resource_info_panel.gd",
+"Game Scenes and Scripts/world.tscn",
+"building_panel_panel.tscn"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/Older Icons/mandate 100 x 100.png",
+true,
+[
+"Game Scenes and Scripts/resource_info_panel.gd",
+"Game Scenes and Scripts/world.tscn",
+"building_panel_panel.tscn",
+"faction.tscn"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/Older Icons/manpower 100 x 100.png",
+true,
+[
+"Game Scenes and Scripts/resource_info_panel.gd",
+"Game Scenes and Scripts/world.tscn",
+"building_panel_panel.tscn",
+"civilian_path_follow.tscn",
+"law.gd"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/Older Icons/summoner big.png",
+true,
+[
+"magic_amount_control.gd"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/Older Icons/target.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/Older Icons/test 1.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/Older Icons/test 3.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/Older Icons/test 4.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/Older Icons/tiny unlockabes.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/Older Icons/weapons.png",
+true,
+[
+"Game Scenes and Scripts/resource_info_panel.gd",
+"Game Scenes and Scripts/world.tscn",
+"building_panel_panel.tscn"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/Older Icons/wood.png",
+true,
+[
+"Game Scenes and Scripts/resource_info_panel.gd",
+"Game Scenes and Scripts/world.tscn",
+"building_panel_panel.tscn"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/Orange Circle.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn",
+"tile_eco_modifier.gd"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/Plentify.png",
+true,
+[
+"eventScene.tscn",
+"spell_scene.tscn",
+"spell_unlock_icon.gd",
+"spell_unlock_icon.tscn",
+"spellbook.tscn"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/Science.png",
+true,
+[
+"tech_tree.tscn",
+"tool.gd"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/Yellow Circle.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn",
+"tile_eco_modifier.gd"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/atlatlreallysmall.png",
+true,
+[
+"mil_mod.gd"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/atlatlsmall.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/black circle.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn",
+"tile_eco_modifier.gd"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/black.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/bleed.png",
+true,
+[
+"mil_mod.gd",
+"path_point_button.tscn"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/blue water.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn",
+"tile_eco_modifier.gd"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/chinese.png",
+true,
+[
+"Menu Scenes and Scripts/main_menu.tscn"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/clubsmall.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn",
+"law.gd"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/english.png",
+true,
+[
+"Menu Scenes and Scripts/main_menu.tscn"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/faith.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/food.png",
+true,
+[
+"new_building_button.tscn",
+"tool.gd"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/french.png",
+true,
+[
+"Menu Scenes and Scripts/main_menu.tscn"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/german.png",
+true,
+[
+"Menu Scenes and Scripts/main_menu.tscn"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/gold.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn",
+"building_panel_panel.tscn",
+"law.gd",
+"new_building_button.tscn"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/italian.png",
+true,
+[
+"Menu Scenes and Scripts/main_menu.tscn"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/japanese.png",
+true,
+[
+"Menu Scenes and Scripts/main_menu.tscn"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/manpowerREALLYSMALL.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn",
+"mil_mod.gd",
+"mil_mod.tscn"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/portuguese.png",
+true,
+[
+"Menu Scenes and Scripts/main_menu.tscn"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/red circle.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/russian.png",
+true,
+[
+"Menu Scenes and Scripts/main_menu.tscn"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/spanish.png",
+true,
+[
+"Menu Scenes and Scripts/main_menu.tscn"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/weapons.png",
+true,
+[
+"law.gd",
+"law.tscn",
+"tool.gd"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/resources/wood.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn",
+"building_panel_panel.tscn",
+"new_building_button.tscn",
+"tool.gd"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/temple.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn",
+"kit.gd"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/terrain/IMG_1422.PNG",
+true,
+[
+"RecordsDatabase.gd",
+"tile_info_panel.gd",
+"tile_info_panel.tscn"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/terrain/IMG_1424.PNG",
+true,
+[
+"RecordsDatabase.gd",
+"tile_info_panel.gd"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/terrain/IMG_1425.PNG",
+true,
+[
+"RecordsDatabase.gd",
+"tile_info_panel.gd"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/terrain/IMG_1426.PNG",
+true,
+[
+"RecordsDatabase.gd",
+"tile_info_panel.gd"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/terrain/IMG_1427.PNG",
+true,
+[
+"RecordsDatabase.gd",
+"tile_info_panel.gd"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/terrain/IMG_1428.PNG",
+true,
+[
+"RecordsDatabase.gd",
+"tile_info_panel.gd"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/terrain/IMG_1434.PNG",
+true,
+[
+"RecordsDatabase.gd",
+"tile_info_panel.gd"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/terrain/IMG_1436.PNG",
+true,
+[
+"RecordsDatabase.gd",
+"tile_info_panel.gd"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/terrain/IMG_1437.PNG",
+true,
+[
+"RecordsDatabase.gd",
+"tile_info_panel.gd"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/terrain/IMG_1438.PNG",
+true,
+[
+"RecordsDatabase.gd",
+"tile_info_panel.gd"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/terrain/IMG_1439.PNG",
+true,
+[
+"RecordsDatabase.gd",
+"tile_info_panel.gd"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/terrain/IMG_1440.PNG",
+true,
+[
+"RecordsDatabase.gd",
+"tile_info_panel.gd"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/terrain/IMG_1441.PNG",
+true,
+[
+"RecordsDatabase.gd",
+"tile_info_panel.gd"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/terrain/IMG_1442.PNG",
+true,
+[
+"RecordsDatabase.gd",
+"tile_info_panel.gd"
+]
+],
+[
+"art assets/Placeholder Art/UI Art/tower.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/Placeholder Art/atlatl.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/Placeholder Art/character/4-22-Ikra-Colors - Copy.png",
+true,
+[
+"CommanderArcEntry.tscn",
+"Game Scenes and Scripts/world.gd"
+]
+],
+[
+"art assets/Placeholder Art/character/8 11 experimental.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn",
+"tile_info_panel.gd"
+]
+],
+[
+"art assets/Placeholder Art/character/F12 - Copy.png",
+true,
+[
+"faction.tscn"
+]
+],
+[
+"art assets/Placeholder Art/character/F13 - Copy.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/Placeholder Art/character/F3 - Copy.png",
+true,
+[
+"Civilian.tscn",
+"Game Scenes and Scripts/world.tscn",
+"sprite.tscn"
+]
+],
+[
+"art assets/Placeholder Art/inf.png",
+true,
+[
+"Game Scenes and Scripts/country.gd"
+]
+],
+[
+"art assets/Placeholder Art/rang.png",
+true,
+[
+"Game Scenes and Scripts/country.gd"
+]
+],
+[
+"art assets/Placeholder Art/sig.png",
+true,
+[
+"Game Scenes and Scripts/country.gd"
+]
+],
+[
+"art assets/Placeholder Art/spellbacks/Blue 1.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/spellbacks/Blue 2.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/spellbacks/Blue 3.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/spellbacks/Orange 1.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/spellbacks/Orange 2.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/spellbacks/Orange 3.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/spellbacks/Purple 1.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/spellbacks/Purple 2.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/spellbacks/Purple 3.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/spellbacks/Red 1.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/spellbacks/Red 2.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/spellbacks/Red 3.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/spellbacks/Yellow 1.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/spellbacks/Yellow 2.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/spellbacks/Yellow 3.PNG",
+true,
+[
+"spell_branch_unlock.gd"
+]
+],
+[
+"art assets/Placeholder Art/sword.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn",
+"barracks_button.tscn"
+]
+],
+[
+"art assets/PresidentialLibrary/classified_stamp.png",
+true,
+[
+"JournalTab.gd"
+]
+],
+[
+"art assets/PresidentialLibrary/eagle_seal_transparent.png",
+true,
+[
+"JournalTab.gd",
+"Menu Scenes and Scripts/main_menu.tscn",
+"PresidentialLibraryPanel.gd",
+"event_scene.gd"
+]
+],
+[
+"art assets/finishedAssets/Panels/IMG_1205.PNG",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/finishedAssets/Panels/IMG_1206.PNG",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/finishedAssets/Panels/IMG_1207.PNG",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/finishedAssets/Panels/IMG_1208.PNG",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/finishedAssets/Panels/UnitPanelUI/IMG_1578.PNG",
+true,
+[
+"unit_ui.tscn"
+]
+],
+[
+"art assets/finishedAssets/Panels/UnitPanelUI/IMG_1581.PNG",
+true,
+[
+"unit_ui.tscn"
+]
+],
+[
+"art assets/finishedAssets/Panels/armypanelfinishedui/IMG_1548.PNG",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/finishedAssets/Panels/armypanelfinishedui/IMG_1549.PNG",
+true,
+[
+"Game Scenes and Scripts/army.tscn"
+]
+],
+[
+"art assets/finishedAssets/Panels/armypanelfinishedui/IMG_1551.PNG",
+true,
+[
+"Game Scenes and Scripts/army.tscn"
+]
+],
+[
+"art assets/finishedAssets/Panels/armypanelfinishedui/IMG_1552.PNG",
+true,
+[
+"Game Scenes and Scripts/army.tscn"
+]
+],
+[
+"art assets/finishedAssets/Panels/armypanelfinishedui/IMG_1553.PNG",
+true,
+[
+"Game Scenes and Scripts/army.tscn"
+]
+],
+[
+"art assets/finishedAssets/Panels/armypanelfinishedui/IMG_1555.PNG",
+true,
+[
+"Game Scenes and Scripts/army.tscn"
+]
+],
+[
+"art assets/finishedAssets/Panels/armypanelfinishedui/IMG_1556.PNG",
+true,
+[
+"Game Scenes and Scripts/army.tscn"
+]
+],
+[
+"art assets/finishedAssets/Panels/armypanelfinishedui/IMG_1558.PNG",
+true,
+[
+"Game Scenes and Scripts/battle.tscn",
+"army_cost_ui.gd",
+"unit_ui.tscn"
+]
+],
+[
+"art assets/finishedAssets/Panels/armypanelfinishedui/IMG_1559.PNG",
+true,
+[
+"army_cost_ui.gd",
+"unit_ui.tscn"
+]
+],
+[
+"art assets/finishedAssets/Panels/armypanelfinishedui/IMG_1561.PNG",
+true,
+[
+"Game Scenes and Scripts/battle.tscn",
+"army_cost_ui.gd",
+"army_cost_ui.tscn",
+"unit_ui.tscn"
+]
+],
+[
+"art assets/finishedAssets/Panels/armypanelfinishedui/IMG_1562.PNG",
+true,
+[
+"army_cost_ui.gd"
+]
+],
+[
+"art assets/finishedAssets/Panels/armypanelfinishedui/IMG_1563.PNG",
+true,
+[
+"Game Scenes and Scripts/battle.tscn",
+"army_cost_ui.gd"
+]
+],
+[
+"art assets/finishedAssets/Panels/armypanelfinishedui/IMG_1564.PNG",
+true,
+[
+"Game Scenes and Scripts/army.gd",
+"Game Scenes and Scripts/army.tscn"
+]
+],
+[
+"art assets/finishedAssets/Panels/grey building panel.png",
+true,
+[
+"Menu Scenes and Scripts/main_menu.tscn"
+]
+],
+[
+"art assets/finishedAssets/Panels/tilePanel.PNG",
+true,
+[
+"Civilian.tscn",
+"Game Scenes and Scripts/battle.tscn",
+"Game Scenes and Scripts/world.tscn",
+"building_info_panel.tscn",
+"building_panel_panel.tscn",
+"governor_selection.tscn",
+"spell_branch_unlock.tscn",
+"sprite.tscn",
+"tech_tree.tscn",
+"tile_info_panel.tscn"
+]
+],
+[
+"art assets/finishedAssets/Panels/topbarresources/IMG_1521.PNG",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/finishedAssets/Panels/topbarresources/IMG_1528.PNG",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/finishedAssets/Panels/topbarresources/IMG_1530.PNG",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/finishedAssets/Panels/topbarresources/IMG_1535.PNG",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/finishedAssets/Panels/topbarresources/IMG_1538.PNG",
+true,
+[
+"Game Scenes and Scripts/world.tscn",
+"mana_panel.tscn"
+]
+],
+[
+"art assets/finishedAssets/Panels/topbarresources/IMG_1539.PNG",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/finishedAssets/Panels/topbarresources/IMG_1542.PNG",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/finishedAssets/Panels/topbarresources/IMG_1545.PNG",
+true,
+[
+"mana_panel.tscn"
+]
+],
+[
+"art assets/finishedAssets/Panels/topbarresources/IMG_1546.PNG",
+true,
+[
+"mana_panel.gd"
+]
+],
+[
+"art assets/finishedAssets/Panels/yellow building panel.png",
+true,
+[
+"Game Scenes and Scripts/army.tscn",
+"tech_reward_icon.tscn",
+"tech_unlock_button.tscn"
+]
+],
+[
+"art assets/finishedAssets/Weapons/Brown_Bess.png",
+true,
+[
+"tech_reward_icon.gd",
+"weapon.gd",
+"weapon_template.gd"
+]
+],
+[
+"art assets/finishedAssets/Weapons/Cast.png",
+false,
+[
+"armor.gd"
+]
+],
+[
+"art assets/finishedAssets/Weapons/Chain.png",
+false,
+[
+"armor.gd"
+]
+],
+[
+"art assets/finishedAssets/Weapons/Club.png",
+true,
+[
+"armor.gd",
+"weapon.gd"
+]
+],
+[
+"art assets/finishedAssets/Weapons/Double_Axe.png",
+true,
+[
+"armor.gd",
+"weapon.gd"
+]
+],
+[
+"art assets/finishedAssets/Weapons/Early_Rocket.png",
+true,
+[
+"tech_reward_icon.gd"
+]
+],
+[
+"art assets/finishedAssets/Weapons/Early_Rockets.png",
+false,
+[
+"weapon.gd",
+"weapon_template.gd"
+]
+],
+[
+"art assets/finishedAssets/Weapons/Flail.png",
+true,
+[
+"armor.gd",
+"weapon.gd"
+]
+],
+[
+"art assets/finishedAssets/Weapons/Flintlock.png",
+true,
+[
+"army_path_follow.tscn",
+"tech_reward_icon.gd",
+"weapon.gd",
+"weapon_template.gd"
+]
+],
+[
+"art assets/finishedAssets/Weapons/Howitzer.png",
+true,
+[
+"army_path_follow.tscn",
+"tech_reward_icon.gd",
+"weapon.gd",
+"weapon_template.gd"
+]
+],
+[
+"art assets/finishedAssets/Weapons/Lever_Repeater.png",
+true,
+[
+"tech_reward_icon.gd",
+"weapon.gd",
+"weapon_template.gd"
+]
+],
+[
+"art assets/finishedAssets/Weapons/Longsword.png",
+true,
+[
+"armor.gd",
+"weapon.gd"
+]
+],
+[
+"art assets/finishedAssets/Weapons/Mace.png",
+true,
+[
+"armor.gd",
+"weapon.gd"
+]
+],
+[
+"art assets/finishedAssets/Weapons/Machete.png",
+true,
+[
+"armor.gd",
+"weapon.gd"
+]
+],
+[
+"art assets/finishedAssets/Weapons/Macuahuitl.png",
+true,
+[
+"armor.gd",
+"weapon.gd",
+"weapon_button.tscn"
+]
+],
+[
+"art assets/finishedAssets/Weapons/Mortar.png",
+true,
+[
+"tech_reward_icon.gd",
+"weapon.gd",
+"weapon_template.gd"
+]
+],
+[
+"art assets/finishedAssets/Weapons/Padded.png",
+false,
+[
+"armor.gd"
+]
+],
+[
+"art assets/finishedAssets/Weapons/Percussion_Cap.png",
+true,
+[
+"tech_reward_icon.gd",
+"weapon.gd",
+"weapon_template.gd"
+]
+],
+[
+"art assets/finishedAssets/Weapons/Pike.png",
+true,
+[
+"armor.gd",
+"weapon.gd"
+]
+],
+[
+"art assets/finishedAssets/Weapons/Plate.png",
+false,
+[
+"armor.gd"
+]
+],
+[
+"art assets/finishedAssets/Weapons/Scale.png",
+false,
+[
+"armor.gd"
+]
+],
+[
+"art assets/finishedAssets/Weapons/Scout.png",
+false,
+[
+"armor.gd"
+]
+],
+[
+"art assets/finishedAssets/Weapons/Shortsword.png",
+true,
+[
+"armor.gd",
+"weapon.gd"
+]
+],
+[
+"art assets/finishedAssets/Weapons/Single_Axe.png",
+true,
+[
+"armor.gd",
+"weapon.gd"
+]
+],
+[
+"art assets/finishedAssets/Weapons/Spear.png",
+true,
+[
+"armor.gd",
+"unit_ui.tscn",
+"weapon.gd"
+]
+],
+[
+"art assets/finishedAssets/Weapons/atlatl.png",
+true,
+[
+"armor.gd",
+"unit_ui.tscn",
+"weapon.gd"
+]
+],
+[
+"art assets/finishedAssets/Weapons/cavalry_sword.png",
+true,
+[
+"tech_reward_icon.gd",
+"weapon.gd",
+"weapon_template.gd"
+]
+],
+[
+"art assets/finishedAssets/Weapons/cutlass.png",
+true,
+[
+"tech_reward_icon.gd",
+"weapon.gd",
+"weapon_template.gd"
+]
+],
+[
+"art assets/finishedAssets/Weapons/marine_mameluke.png",
+true,
+[
+"tech_reward_icon.gd",
+"weapon.gd",
+"weapon_template.gd"
+]
+],
+[
+"art assets/finishedAssets/Weapons/officer_sword.png",
+true,
+[
+"tech_reward_icon.gd",
+"weapon.gd",
+"weapon_template.gd"
+]
+],
+[
+"art assets/finishedAssets/armyicons/finished/circle.png",
+true,
+[
+"Game Scenes and Scripts/country.gd"
+]
+],
+[
+"art assets/finishedAssets/armyicons/finished/heart.png",
+true,
+[
+"Game Scenes and Scripts/country.gd",
+"army_path_follow.tscn"
+]
+],
+[
+"art assets/finishedAssets/armyicons/finished/horse.png",
+true,
+[
+"Game Scenes and Scripts/country.gd"
+]
+],
+[
+"art assets/finishedAssets/armyicons/finished/spade.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn",
+"ProtectorArcEntry.tscn"
+]
+],
+[
+"art assets/finishedAssets/armyicons/finished/star1.png",
+true,
+[
+"GalleryTile.tscn"
+]
+],
+[
+"art assets/finishedAssets/armyicons/finished/star2.png",
+true,
+[
+"CommanderArcEntry.tscn"
+]
+],
+[
+"art assets/finishedAssets/armyicons/finished/zBlue.png",
+true,
+[
+"ProtectorArcEntry.tscn"
+]
+],
+[
+"art assets/finishedAssets/armyicons/finished/zGreen.png",
+true,
+[
+"CommanderArcEntry.tscn"
+]
+],
+[
+"art assets/finishedAssets/armyicons/finished/zOrange.png",
+true,
+[
+"CommanderArcEntry.tscn"
+]
+],
+[
+"art assets/finishedAssets/armyicons/finished/zRed.png",
+true,
+[
+"ProtectorArcEntry.tscn"
+]
+],
+[
+"art assets/finishedAssets/armyicons/test/3.png",
+true,
+[
+"Game Scenes and Scripts/army.tscn"
+]
+],
+[
+"art assets/finishedAssets/armyicons/test/6.png",
+true,
+[
+"banner_button.tscn"
+]
+],
+[
+"art assets/finishedAssets/buildingsketches/barracks.png",
+true,
+[
+"Game Scenes and Scripts/building.gd",
+"building_panel_panel.tscn",
+"building_sprite.gd",
+"tech_reward_icon.gd"
+]
+],
+[
+"art assets/finishedAssets/buildingsketches/bath.png",
+true,
+[
+"Game Scenes and Scripts/building.gd",
+"building_sprite.gd",
+"tech_reward_icon.gd"
+]
+],
+[
+"art assets/finishedAssets/buildingsketches/camp.png",
+true,
+[
+"Game Scenes and Scripts/building.gd",
+"building_sprite.gd",
+"tech_reward_icon.gd"
+]
+],
+[
+"art assets/finishedAssets/buildingsketches/courthouse.png",
+true,
+[
+"Game Scenes and Scripts/building.gd",
+"tech_reward_icon.gd"
+]
+],
+[
+"art assets/finishedAssets/buildingsketches/dock.png",
+true,
+[
+"tech_reward_icon.gd"
+]
+],
+[
+"art assets/finishedAssets/buildingsketches/faire.png",
+true,
+[
+"Game Scenes and Scripts/building.gd",
+"building_sprite.gd",
+"building_sprite.tscn",
+"tech_reward_icon.gd"
+]
+],
+[
+"art assets/finishedAssets/buildingsketches/farm.png",
+true,
+[
+"Game Scenes and Scripts/building.gd",
+"building_sprite.gd",
+"tech_reward_icon.gd",
+"tech_reward_icon.tscn"
+]
+],
+[
+"art assets/finishedAssets/buildingsketches/forge.png",
+true,
+[
+"Game Scenes and Scripts/building.gd",
+"building_sprite.gd",
+"tech_reward_icon.gd"
+]
+],
+[
+"art assets/finishedAssets/buildingsketches/granary.png",
+true,
+[
+"Game Scenes and Scripts/building.gd",
+"building_sprite.gd",
+"tech_reward_icon.gd"
+]
+],
+[
+"art assets/finishedAssets/buildingsketches/library.png",
+true,
+[
+"Game Scenes and Scripts/building.gd",
+"building_sprite.gd",
+"tech_reward_icon.gd"
+]
+],
+[
+"art assets/finishedAssets/buildingsketches/mine.png",
+true,
+[
+"Game Scenes and Scripts/building.gd",
+"building_sprite.gd",
+"tech_reward_icon.gd"
+]
+],
+[
+"art assets/finishedAssets/buildingsketches/temple.png",
+true,
+[
+"Game Scenes and Scripts/building.gd",
+"building_sprite.gd",
+"tech_reward_icon.gd"
+]
+],
+[
+"art assets/finishedAssets/buildingsketches/tower.png",
+true,
+[
+"Game Scenes and Scripts/building.gd",
+"building_sprite.gd",
+"tech_reward_icon.gd"
+]
+],
+[
+"art assets/finishedAssets/buildingsketches/workshop.png",
+true,
+[
+"Game Scenes and Scripts/building.gd",
+"building_sprite.gd",
+"tech_reward_icon.gd"
+]
+],
+[
+"art assets/finishedAssets/civilians/civilian_farmer.png",
+true,
+[
+"tech_reward_icon.gd"
+]
+],
+[
+"art assets/finishedAssets/governors/abigail_adams.png",
+false,
+[
+"governor.gd"
+]
+],
+[
+"art assets/finishedAssets/governors/agent_355.png",
+true,
+[
+"spell.gd"
+]
+],
+[
+"art assets/finishedAssets/governors/anarchist.png",
+true,
+[
+"governor.gd"
+]
+],
+[
+"art assets/finishedAssets/governors/baseball_legend.png",
+true,
+[
+"governor.gd"
+]
+],
+[
+"art assets/finishedAssets/governors/bell_witch.png",
+true,
+[
+"spell.gd"
+]
+],
+[
+"art assets/finishedAssets/governors/benjamin_tallmadge.png",
+false,
+[
+"governor.gd"
+]
+],
+[
+"art assets/finishedAssets/governors/blue_mountaineer_01.png",
+true,
+[
+"governor.gd"
+]
+],
+[
+"art assets/finishedAssets/governors/blue_mountaineer_02.png",
+true,
+[
+"governor.gd"
+]
+],
+[
+"art assets/finishedAssets/governors/calico_jack.png",
+false,
+[
+"governor.gd"
+]
+],
+[
+"art assets/finishedAssets/governors/daniel_shays.png",
+false,
+[
+"governor.gd"
+]
+],
+[
+"art assets/finishedAssets/governors/francis_asbury.png",
+false,
+[
+"governor.gd"
+]
+],
+[
+"art assets/finishedAssets/governors/goatman.png",
+true,
+[
+"spell.gd"
+]
+],
+[
+"art assets/finishedAssets/governors/green_minuteman_05.png",
+true,
+[
+"governor.gd",
+"tech_reward_icon.gd"
+]
+],
+[
+"art assets/finishedAssets/governors/green_minuteman_06.png",
+true,
+[
+"governor.gd",
+"tech_reward_icon.gd"
+]
+],
+[
+"art assets/finishedAssets/governors/green_minuteman_07.png",
+true,
+[
+"governor.gd",
+"tech_reward_icon.gd"
+]
+],
+[
+"art assets/finishedAssets/governors/green_minuteman_08.png",
+true,
+[
+"governor.gd",
+"tech_reward_icon.gd"
+]
+],
+[
+"art assets/finishedAssets/governors/green_minuteman_09.png",
+true,
+[
+"governor.gd"
+]
+],
+[
+"art assets/finishedAssets/governors/green_minuteman_10.png",
+true,
+[
+"governor.gd"
+]
+],
+[
+"art assets/finishedAssets/governors/green_minuteman_11.png",
+true,
+[
+"governor.gd"
+]
+],
+[
+"art assets/finishedAssets/governors/green_minuteman_12.png",
+true,
+[
+"governor.gd"
+]
+],
+[
+"art assets/finishedAssets/governors/green_minuteman_13.png",
+true,
+[
+"governor.gd"
+]
+],
+[
+"art assets/finishedAssets/governors/green_mountaineer_01.png",
+true,
+[
+"governor.gd"
+]
+],
+[
+"art assets/finishedAssets/governors/green_mountaineer_02.png",
+true,
+[
+"governor.gd"
+]
+],
+[
+"art assets/finishedAssets/governors/jessica_commanda_odjick.png",
+false,
+[
+"governor.gd"
+]
+],
+[
+"art assets/finishedAssets/governors/lincolns_ghost.png",
+true,
+[
+"governor.gd"
+]
+],
+[
+"art assets/finishedAssets/governors/louis_tremblant.png",
+false,
+[
+"governor.gd"
+]
+],
+[
+"art assets/finishedAssets/governors/marc_penoit.png",
+false,
+[
+"governor.gd"
+]
+],
+[
+"art assets/finishedAssets/governors/mercy_otis_warren.png",
+false,
+[
+"governor.gd"
+]
+],
+[
+"art assets/finishedAssets/governors/minuteman_01.png",
+true,
+[
+"governor.gd"
+]
+],
+[
+"art assets/finishedAssets/governors/minuteman_02.png",
+true,
+[
+"governor.gd"
+]
+],
+[
+"art assets/finishedAssets/governors/minuteman_03.png",
+true,
+[
+"governor.gd"
+]
+],
+[
+"art assets/finishedAssets/governors/minuteman_04.png",
+true,
+[
+"governor.gd"
+]
+],
+[
+"art assets/finishedAssets/governors/minuteman_05.png",
+true,
+[
+"governor.gd"
+]
+],
+[
+"art assets/finishedAssets/governors/minuteman_06.png",
+true,
+[
+"governor.gd"
+]
+],
+[
+"art assets/finishedAssets/governors/minuteman_07.png",
+true,
+[
+"governor.gd"
+]
+],
+[
+"art assets/finishedAssets/governors/minuteman_08.png",
+true,
+[
+"governor.gd"
+]
+],
+[
+"art assets/finishedAssets/governors/minuteman_09.png",
+true,
+[
+"governor.gd"
+]
+],
+[
+"art assets/finishedAssets/governors/minuteman_10.png",
+true,
+[
+"governor.gd"
+]
+],
+[
+"art assets/finishedAssets/governors/minuteman_11.png",
+true,
+[
+"governor.gd"
+]
+],
+[
+"art assets/finishedAssets/governors/minuteman_12.png",
+true,
+[
+"governor.gd"
+]
+],
+[
+"art assets/finishedAssets/governors/minuteman_13.png",
+true,
+[
+"governor.gd"
+]
+],
+[
+"art assets/finishedAssets/governors/mothman.png",
+true,
+[
+"governor.gd"
+]
+],
+[
+"art assets/finishedAssets/governors/patrick_henry.png",
+false,
+[
+"governor.gd"
+]
+],
+[
+"art assets/finishedAssets/governors/phillis_wheatley.png",
+false,
+[
+"governor.gd"
+]
+],
+[
+"art assets/finishedAssets/governors/pierre_renard.png",
+false,
+[
+"governor.gd"
+]
+],
+[
+"art assets/finishedAssets/governors/secret_service_detail.png",
+true,
+[
+"governor.gd"
+]
+],
+[
+"art assets/finishedAssets/governors/thomas_paine.png",
+false,
+[
+"governor.gd"
+]
+],
+[
+"art assets/finishedAssets/governors/turkey_god.png",
+true,
+[
+"governor.gd"
+]
+],
+[
+"art assets/finishedAssets/governors/ualani_carlisle.png",
+false,
+[
+"governor.gd"
+]
+],
+[
+"art assets/finishedAssets/lawIcons/accessible_canada_act.png",
+true,
+[
+"Game Scenes and Scripts/belief_control.gd"
+]
+],
+[
+"art assets/finishedAssets/lawIcons/can_citizenship_act.png",
+true,
+[
+"law.gd"
+]
+],
+[
+"art assets/finishedAssets/lawIcons/can_shipping_act.png",
+true,
+[
+"Game Scenes and Scripts/belief_control.gd",
+"law.gd"
+]
+],
+[
+"art assets/finishedAssets/lawIcons/homestead_act.png",
+true,
+[
+"Game Scenes and Scripts/belief_control.gd"
+]
+],
+[
+"art assets/finishedAssets/manaicons/Culture.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn",
+"RecordsDatabase.gd",
+"mana_panel.gd"
+]
+],
+[
+"art assets/finishedAssets/manaicons/Harmony.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn",
+"RecordsDatabase.gd",
+"mana_panel.gd"
+]
+],
+[
+"art assets/finishedAssets/manaicons/Influence 1.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn",
+"RecordsDatabase.gd",
+"mana_panel.gd"
+]
+],
+[
+"art assets/finishedAssets/manaicons/Magic.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn",
+"RecordsDatabase.gd",
+"mana_panel.gd"
+]
+],
+[
+"art assets/finishedAssets/manaicons/Mandate.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn",
+"RecordsDatabase.gd",
+"mana_panel.gd"
+]
+],
+[
+"art assets/finishedAssets/manaicons/Weapons.png",
+true,
+[
+"Game Scenes and Scripts/army.tscn",
+"Game Scenes and Scripts/battle.tscn",
+"Game Scenes and Scripts/world.tscn",
+"RecordsDatabase.gd",
+"mana_panel.gd",
+"unit_ui.tscn"
+]
+],
+[
+"art assets/finishedAssets/manaicons/currency.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn",
+"RecordsDatabase.gd",
+"mana_panel.gd"
+]
+],
+[
+"art assets/finishedAssets/manaicons/faith.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn",
+"RecordsDatabase.gd",
+"mana_panel.gd"
+]
+],
+[
+"art assets/finishedAssets/manaicons/fooda.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn",
+"RecordsDatabase.gd",
+"mana_panel.gd"
+]
+],
+[
+"art assets/finishedAssets/manaicons/manpower.png",
+true,
+[
+"Game Scenes and Scripts/army.tscn",
+"Game Scenes and Scripts/battle.tscn",
+"Game Scenes and Scripts/world.tscn",
+"RecordsDatabase.gd",
+"mana_panel.gd",
+"mana_panel.tscn",
+"unit_ui.tscn"
+]
+],
+[
+"art assets/finishedAssets/manaicons/metal.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn",
+"RecordsDatabase.gd",
+"mana_panel.gd"
+]
+],
+[
+"art assets/finishedAssets/manaicons/science2.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn",
+"RecordsDatabase.gd",
+"mana_panel.gd"
+]
+],
+[
+"art assets/finishedAssets/manaicons/wood.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn",
+"RecordsDatabase.gd",
+"mana_panel.gd"
+]
+],
+[
+"art assets/finishedAssets/ores/Bamboo.PNG",
+true,
+[
+"tile_info_panel.gd"
+]
+],
+[
+"art assets/finishedAssets/ores/Bananas.PNG",
+true,
+[
+"Game Scenes and Scripts/world.tscn",
+"tile_info_panel.gd"
+]
+],
+[
+"art assets/finishedAssets/ores/Cannabis.PNG",
+true,
+[
+"Game Scenes and Scripts/world.tscn",
+"tile_info_panel.gd"
+]
+],
+[
+"art assets/finishedAssets/ores/Copper.PNG",
+true,
+[
+"ore.gd",
+"unit_ui.tscn"
+]
+],
+[
+"art assets/finishedAssets/ores/Emerald.PNG",
+true,
+[
+"ore.gd"
+]
+],
+[
+"art assets/finishedAssets/ores/Floodstone.PNG",
+true,
+[
+"Game Scenes and Scripts/world.tscn",
+"ore.gd"
+]
+],
+[
+"art assets/finishedAssets/ores/Gold.PNG",
+true,
+[
+"ore.gd",
+"tech_reward_icon.gd"
+]
+],
+[
+"art assets/finishedAssets/ores/Iron.PNG",
+true,
+[
+"ore.gd"
+]
+],
+[
+"art assets/finishedAssets/ores/Ivoroid.PNG",
+true,
+[
+"ore.gd"
+]
+],
+[
+"art assets/finishedAssets/ores/Marble.PNG",
+true,
+[
+"ore.gd"
+]
+],
+[
+"art assets/finishedAssets/ores/Moonbone.PNG",
+true,
+[
+"ore.gd"
+]
+],
+[
+"art assets/finishedAssets/ores/Razorberry.PNG",
+true,
+[
+"Game Scenes and Scripts/world.tscn",
+"tile_info_panel.gd"
+]
+],
+[
+"art assets/finishedAssets/ores/Seaweed.PNG",
+true,
+[
+"tile_info_panel.gd"
+]
+],
+[
+"art assets/finishedAssets/ores/Wereroot.PNG",
+true,
+[
+"tile_info_panel.gd"
+]
+],
+[
+"art assets/finishedAssets/ores/Wheat.PNG",
+true,
+[
+"tile_info_panel.gd"
+]
+],
+[
+"art assets/finishedAssets/ores/Wood.PNG",
+true,
+[
+"ore.gd",
+"ore_button.tscn"
+]
+],
+[
+"art assets/finishedAssets/ores/Zylfire.PNG",
+true,
+[
+"ore.gd"
+]
+],
+[
+"art assets/finishedAssets/ores/copper60.png",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/IMG_1146.PNG",
+true,
+[
+"Game Scenes and Scripts/world.tscn",
+"belief_button.tscn",
+"purchased_doctrine.tscn",
+"religion_data.gd"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/IMG_1152.PNG",
+true,
+[
+"religion_data.gd"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/IMG_1153.PNG",
+true,
+[
+"religion_data.gd"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/IMG_1154.PNG",
+true,
+[
+"religion_data.gd"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/IMG_1155.PNG",
+true,
+[
+"religion_data.gd"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/IMG_1166.PNG",
+true,
+[
+"Game Scenes and Scripts/world.tscn",
+"belief_button.tscn"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/IMG_1169.PNG",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/IMG_1170 - Copy (2).PNG",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/IMG_1170 - Copy (3).PNG",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/IMG_1170 - Copy.PNG",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/IMG_1170.PNG",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/IMG_1171.PNG",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/IMG_1173 - Copy (2).PNG",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/IMG_1173 - Copy (3).PNG",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/IMG_1173 - Copy.PNG",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/IMG_1173.PNG",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/IMG_1174.PNG",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/IMG_1175 - Copy.PNG",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/IMG_1175.PNG",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/IMG_1194 - Copy.PNG",
+true,
+[
+"religion_data.gd"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/IMG_1194.PNG",
+true,
+[
+"religion_data.gd"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/IMG_1195 - Copy.PNG",
+true,
+[
+"religion_data.gd"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/IMG_1195.PNG",
+true,
+[
+"religion_data.gd"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/IMG_1196 - Copy.PNG",
+true,
+[
+"religion_data.gd"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/IMG_1196.PNG",
+true,
+[
+"religion_data.gd"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/IMG_1197 - Copy.PNG",
+true,
+[
+"religion_data.gd"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/IMG_1197.PNG",
+true,
+[
+"religion_data.gd"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/IMG_1198 - Copy.PNG",
+true,
+[
+"religion_data.gd"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/IMG_1198.PNG",
+true,
+[
+"religion_data.gd"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/IMG_1199 - Copy.PNG",
+true,
+[
+"religion_data.gd"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/IMG_1199.PNG",
+true,
+[
+"religion_data.gd"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/IMG_1201 - Copy.PNG",
+true,
+[
+"religion_data.gd"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/IMG_1201.PNG",
+true,
+[
+"religion_data.gd"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/IMG_1202.PNG",
+true,
+[
+"religion_data.gd"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/IMG_1202copy.PNG",
+true,
+[
+"religion_data.gd"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/abraham_lincoln.png",
+true,
+[
+"religion_data.gd"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/abraham_lincoln_bw.png",
+true,
+[
+"religion_data.gd"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/agnes_macphail.png",
+true,
+[
+"religion_data.gd"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/agnes_macphail_bw.png",
+true,
+[
+"religion_data.gd"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/benjamin_franklin.png",
+true,
+[
+"religion_data.gd"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/benjamin_franklin_bw.png",
+true,
+[
+"religion_data.gd"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/cropIconEmpty.PNG",
+true,
+[
+"tile_info_panel.gd"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/cropIconFilled.PNG",
+true,
+[
+"Game Scenes and Scripts/world.tscn",
+"tile_info_panel.gd"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/eleanor_roosevelt.png",
+true,
+[
+"religion_data.gd"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/eleanor_roosevelt_bw.png",
+true,
+[
+"religion_data.gd"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/eliza_hamilton.png",
+true,
+[
+"religion_data.gd"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/eliza_hamilton_bw.png",
+true,
+[
+"religion_data.gd"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/frederick_douglass.png",
+true,
+[
+"religion_data.gd"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/frederick_douglass_bw.png",
+true,
+[
+"religion_data.gd"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/george_washington.png",
+true,
+[
+"religion_data.gd"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/george_washington_bw.png",
+true,
+[
+"religion_data.gd"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/harriet_tubman.png",
+true,
+[
+"RecordsDatabase.gd"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/john_brown.png",
+true,
+[
+"religion_data.gd"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/john_brown_bw.png",
+true,
+[
+"religion_data.gd"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/louis_hippolyte_lafontaine.png",
+true,
+[
+"religion_data.gd"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/louis_hippolyte_lafontaine_bw.png",
+true,
+[
+"religion_data.gd"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/malcolm_x.png",
+true,
+[
+"religion_data.gd"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/malcolm_x_bw.png",
+true,
+[
+"religion_data.gd"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/mark_twain.png",
+true,
+[
+"religion_data.gd"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/mark_twain_bw.png",
+true,
+[
+"religion_data.gd"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/martin_luther_king.png",
+true,
+[
+"religion_data.gd"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/martin_luther_king_bw.png",
+true,
+[
+"religion_data.gd"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/mary_edwards_walker.png",
+true,
+[
+"religion_data.gd"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/mary_edwards_walker_bw.png",
+true,
+[
+"religion_data.gd"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/oreIconFilled.PNG",
+true,
+[
+"Game Scenes and Scripts/world.tscn"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/sojourner_truth.png",
+true,
+[
+"religion_data.gd"
+]
+],
+[
+"art assets/finishedAssets/religiousIcons/sojourner_truth_bw.png",
+true,
+[
+"religion_data.gd"
+]
+],
+[
+"art assets/finishedAssets/score/ualani/S/ualani_S_000.png",
+false,
+[
+"Game Scenes and Scripts/run_progress.gd"
+]
+],
+[
+"art assets/finishedAssets/spellschools/IMG_1255.PNG",
+true,
+[
+"magic_amount_control.gd",
+"magic_amount_control.tscn"
+]
+],
+[
+"art assets/finishedAssets/spellschools/IMG_1256.PNG",
+true,
+[
+"magic_amount_control.gd"
+]
+],
+[
+"art assets/finishedAssets/spellschools/IMG_1257.PNG",
+true,
+[
+"magic_amount_control.gd"
+]
+],
+[
+"art assets/finishedAssets/spellschools/IMG_1258.PNG",
+true,
+[
+"magic_amount_control.gd"
+]
+],
+[
+"art assets/finishedAssets/spellschools/IMG_1259.PNG",
+true,
+[
+"magic_amount_control.gd"
+]
+],
+[
+"art assets/finishedAssets/spellschools/IMG_1260.PNG",
+true,
+[
+"magic_amount_control.gd"
+]
+],
+[
+"art assets/finishedAssets/technology images/authority.png",
+true,
+[
+"tech_unlock_button.gd"
+]
+],
+[
+"art assets/finishedAssets/technology images/banking.png",
+true,
+[
+"tech_reward_icon.gd"
+]
+],
+[
+"art assets/finishedAssets/technology images/craftmanship.png",
+true,
+[
+"tech_reward_icon.gd"
+]
+],
+[
+"art assets/finishedAssets/technology images/logistics.png",
+true,
+[
+"tech_unlock_button.gd"
+]
+],
+[
+"art assets/finishedAssets/technology images/metal casting.png",
+true,
+[
+"tech_reward_icon.gd"
+]
+],
+[
+"art assets/finishedAssets/technology images/organization.png",
+true,
+[
+"tech_unlock_button.gd"
+]
+],
+[
+"art assets/finishedAssets/technology images/shipbuilding.png",
+true,
+[
+"tech_unlock_button.tscn"
+]
+]
+]

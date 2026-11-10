@@ -35,6 +35,8 @@ func buildSelf(id, image, bwImage, purch, cost, hint, border):
 # country node is reachable. Returns the plain hint when it isn't (e.g. this
 # button is built before it's added to the scene tree, so get_tree() is null).
 func _enriched_desc() -> String:
+	if not is_inside_tree():
+		return _rawHint
 	var _tree = get_tree()
 	if _tree == null:
 		return _rawHint

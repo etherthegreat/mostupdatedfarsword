@@ -1,0 +1,17 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://d382dfbs7ayox"
+
+[deps]
+
+files=["res://_event_pass_backup_20261028/events.event.translation", "res://_event_pass_backup_20261028/events.country.translation", "res://_event_pass_backup_20261028/events.headline.translation", "res://_event_pass_backup_20261028/events.short.translation", "res://_event_pass_backup_20261028/events.long.translation", "res://_event_pass_backup_20261028/events.image.translation", "res://_event_pass_backup_20261028/events.tone.translation", "res://_event_pass_backup_20261028/events.tile.translation", "res://_event_pass_backup_20261028/events.tile.translation", "res://_event_pass_backup_20261028/events.tile.translation", "res://_event_pass_backup_20261028/events.content.translation", "res://_event_pass_backup_20261028/events.repeatable.translation", "res://_event_pass_backup_20261028/events.cooldown.translation"]
+
+source_file="res://_event_pass_backup_20261028/events.csv"
+dest_files=["res://_event_pass_backup_20261028/events.event.translation", "res://_event_pass_backup_20261028/events.country.translation", "res://_event_pass_backup_20261028/events.headline.translation", "res://_event_pass_backup_20261028/events.short.translation", "res://_event_pass_backup_20261028/events.long.translation", "res://_event_pass_backup_20261028/events.image.translation", "res://_event_pass_backup_20261028/events.tone.translation", "res://_event_pass_backup_20261028/events.tile.translation", "res://_event_pass_backup_20261028/events.tile.translation", "res://_event_pass_backup_20261028/events.tile.translation", "res://_event_pass_backup_20261028/events.content.translation", "res://_event_pass_backup_20261028/events.repeatable.translation", "res://_event_pass_backup_20261028/events.cooldown.translation"]
+
+[params]
+
+compress=true
+delimiter=0

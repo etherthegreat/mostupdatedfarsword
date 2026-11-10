@@ -18,7 +18,7 @@ const SS := preload("res://Game Scenes and Scripts/score_screen.gd")
 # Any file names work (they play in alphabetical order). A single PNG = a still.
 # A missing folder shows a labelled placeholder so the slot is easy to find.
 const UALANI_DIR := "res://art assets/finishedAssets/score/ualani/"
-const UALANI_FPS := 12.0
+const UALANI_FPS := 30.0   # Score A Bold draft: 90 frames = 3 s loop (was 12)
 const UALANI_BOX := Vector2(380, 500)
 
 const BG := Color(0.07, 0.09, 0.16, 0.97)

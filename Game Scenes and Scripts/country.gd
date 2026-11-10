@@ -784,14 +784,19 @@ func addReligiousBelief(Name):
 	var newBelief = belief.new()
 	newBelief.beliefType = Name
 	newBelief.buildBelief(Name)
+	# The picker list a belief came from is the authority on which side of the
+	# Romantic <-> Rational axis it sits: Icons pull Romantic, Social Contracts Rational.
+	if availableGods.has(Name):
+		newBelief.faithBelief = true
+		newBelief.countsOnAxis = true
+	elif availableDocs.has(Name):
+		newBelief.faithBelief = false
+		newBelief.countsOnAxis = true
 	selectedBeliefs.append(newBelief)
 	apply_belief_effect(Name)
-	for String in availableDocs:
-		if String == Name:
-			availableDocs.erase(String)
-	for String in availableGods:
-		if String == Name:
-			availableGods.erase(String)
+	availableDocs.erase(Name)
+	availableGods.erase(Name)
+	recalculateChurchLevel()   # the axis moves the moment you buy, not at end of turn
 
 
 signal updateBeliefsSignal
@@ -877,6 +882,7 @@ func recalculateLawQuadrant() -> void:
 			"Reformatory":   ref += 1
 			"Conservatory":  con += 1
 			"Liberator":     lib += 1
+		tempLaw.free()   # data-only helper, never enters the tree
 	var total := float(rev + ref + con + lib)
 	if total == 0:
 		lawQuadrantX = 0.0
@@ -897,9 +903,12 @@ func addGovernmentLaw(Name):
 	unlockedLaws.append(newLaw)
 
 func addLawToConstitution(newLaw):
-	for law in unlockedLaws:
-		if law.lawType == newLaw:
-			unlockedLaws.erase(law)
+	for enacted in lawsInConstitution:
+		if enacted.lawType == newLaw:
+			return   # already in the Constitution — never enact twice
+	for l in unlockedLaws.duplicate():   # iterate a copy: erasing while looping skips entries
+		if l.lawType == newLaw:
+			unlockedLaws.erase(l)
 	var newSelection = law.new()
 	newSelection.lawType = newLaw
 	lawsInConstitution.append(newSelection)
@@ -1520,29 +1529,24 @@ func calculateUniqueBuildingAttributes():
 		mandateFromGranaries = true
 	else:
 		mandateFromGranaries = false
+	recalculateChurchLevel()
+
+
+# Romantic <-> Rational axis. churchLevel = Social Contracts - Romantic Icons, clamped
+# to +/-3 (the rule the Records entry and the Belief panel tooltips describe): every
+# purchase moves the marker one step. Beliefs that are neither (legacy starting
+# beliefs) do not count.
+func recalculateChurchLevel() -> void:
 	churchBeliefs = 0
 	faithBeliefs = 0
-	for belief in selectedBeliefs:
-		if belief.faithBelief == false:
-			churchBeliefs +=1
-		elif belief.faithBelief == true:
-			faithBeliefs +=1
-	var beliefDifference = (churchBeliefs - faithBeliefs)
-	if beliefDifference >= -1 && beliefDifference <= 1:
-		churchLevel = 0
-	elif beliefDifference >= 2 && beliefDifference <= 3:
-		churchLevel = 1
-	elif beliefDifference >= 4 && beliefDifference <= 5:
-		churchLevel = 2
-	elif beliefDifference >= 6:
-		churchLevel = 3
-	elif beliefDifference >= -3 && beliefDifference <= -2:
-		churchLevel = -1
-	elif beliefDifference >= -5 && beliefDifference <= -4:
-		churchLevel = -2
-	elif beliefDifference <= -6:
-		churchLevel = -3  
-	#here is where the modifier for 
+	for b in selectedBeliefs:
+		if not b.countsOnAxis:
+			continue
+		if b.faithBelief:
+			faithBeliefs += 1
+		else:
+			churchBeliefs += 1
+	churchLevel = clampi(churchBeliefs - faithBeliefs, -3, 3)
 
 func calculateTurn() -> void:
 	match CID:
