@@ -1,5 +1,7 @@
 extends Control
 
+const PaxText = preload("res://fonts/pax_text.gd")
+
 const EventButtonScene = preload("res://event_button.tscn")
 
 var event_id: String
@@ -100,6 +102,7 @@ func _start_intro() -> void:
 		get_node_or_null("EventPanel/EventNameLabel"),
 		get_node_or_null("EventPanel/EventShortDescriptionLabel"),
 		get_node_or_null("EventPanel/EventLongDescriptionLabel"),
+		_body_hint,
 	]
 	var img = get_node_or_null("EventPanel/EventSprite2D")
 	var btns = get_node_or_null("EventPanel/eventButtons")
@@ -139,6 +142,22 @@ func _set_buttons_live(on: bool) -> void:
 
 
 func _input(event: InputEvent) -> void:
+	# Long body text: wheel or keys scroll it a few lines at a time.
+	if _body_scroll_max > 0 and event.is_pressed():
+		var step: int = 0
+		if event is InputEventMouseButton:
+			if event.button_index == MOUSE_BUTTON_WHEEL_DOWN: step = 2
+			elif event.button_index == MOUSE_BUTTON_WHEEL_UP: step = -2
+		elif event is InputEventKey:
+			match event.keycode:
+				KEY_DOWN: step = 2
+				KEY_UP: step = -2
+				KEY_PAGEDOWN: step = 10
+				KEY_PAGEUP: step = -10
+		if step != 0:
+			_scroll_body(step)
+			get_viewport().set_input_as_handled()
+			return
 	# Impatient click/key during the entrance: snap everything into place.
 	if _intro_tween == null or not _intro_tween.is_valid():
 		return
@@ -432,39 +451,89 @@ func _check_prerequisite(prereq: String) -> bool:
 	return player_country.CountryFlags.has(prereq)
 
 
-# Shrink the headline so long titles fit on one line within the label instead of
-# spilling across the panel and over the short-description text.
+# Pick the largest clean pixel size at which the headline fits its box. Short
+# titles sit on one big line; long ones drop a size or wrap onto a second line
+# instead of spilling across the panel and over the short-description text.
+const HEADLINE_BOX := Vector2(789.0, 66.0)
+
 func _apply_headline(title: String) -> void:
 	var lbl: Label = $EventPanel/EventNameLabel
 	lbl.text = title
 	lbl.clip_text = true                          # hard stop — never overflow the panel
-	lbl.autowrap_mode = TextServer.AUTOWRAP_OFF   # keep it a single line; shrink instead of wrap
-	var n := title.length()
-	var fs := 46
-	if n > 52: fs = 24
-	elif n > 44: fs = 28
-	elif n > 36: fs = 33
-	elif n > 28: fs = 39
-	lbl.add_theme_font_size_override("font_size", fs)
+	lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	lbl.add_theme_constant_override("line_spacing", 0)
+	PaxText.fit(lbl, HEADLINE_BOX, PaxText.SIZES_HEADLINE)
+	lbl.size = HEADLINE_BOX
 
 
-# Thresholds sized for the body box that ends above the button row + reward strip.
+# The body box ends above the button row. The text is set at the largest clean
+# pixel size that fits it; anything longer than the box holds at the smallest
+# size scrolls a line at a time (mouse wheel, or Up / Down / PageUp / PageDown).
+const BODY_BOX := Vector2(897.0, 409.0)
+var _body_scroll_max: int = 0
+var _body_hint: Label = null
+
 func _apply_long_desc(body: String) -> void:
 	var lbl: Label = $EventPanel/EventLongDescriptionLabel
 	lbl.text = body
-	var n := body.length()
-	var fs := 31
-	if n > 1580: fs = 12
-	elif n > 1140: fs = 15
-	elif n > 790: fs = 19
-	elif n > 440: fs = 24
+	var font: Font = lbl.get_theme_font("font")
+	var spacing: float = float(lbl.get_theme_constant("line_spacing"))
+	var fs: int = PaxText.best_size(font, body, BODY_BOX, PaxText.SIZES_BODY, true, spacing)
 	lbl.add_theme_font_size_override("font_size", fs)
-	if n > 440:
+	if body.length() > 440:
 		lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
 		lbl.vertical_alignment = VERTICAL_ALIGNMENT_TOP
 	else:
 		lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	lbl.lines_skipped = 0
+	lbl.max_lines_visible = -1
+	_body_scroll_max = 0
+	if not PaxText.fits(font, body, BODY_BOX, fs, true, spacing):
+		var line_h: float = font.get_height(fs) + spacing
+		var shown: int = maxi(1, int(floor((BODY_BOX.y + spacing) / line_h)))
+		lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+		lbl.vertical_alignment = VERTICAL_ALIGNMENT_TOP
+		lbl.max_lines_visible = shown
+		_body_scroll_max = maxi(0, PaxText.line_count(font, body, fs, BODY_BOX.x) - shown)
+	lbl.size = BODY_BOX
+	# While this text needs scrolling, the wheel belongs to it and not to map zoom.
+	if _body_scroll_max > 0:
+		add_to_group("pax_wheel_capture")
+	elif is_in_group("pax_wheel_capture"):
+		remove_from_group("pax_wheel_capture")
+	_update_body_hint()
+
+
+func _scroll_body(lines: int) -> void:
+	if _body_scroll_max <= 0:
+		return
+	var lbl: Label = $EventPanel/EventLongDescriptionLabel
+	lbl.lines_skipped = clampi(lbl.lines_skipped + lines, 0, _body_scroll_max)
+	lbl.size = BODY_BOX
+	_update_body_hint()
+
+
+# A small "more" marker under the text, shown only while there is more to read.
+func _update_body_hint() -> void:
+	var lbl: Label = $EventPanel/EventLongDescriptionLabel
+	if _body_hint == null:
+		_body_hint = Label.new()
+		_body_hint.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_body_hint.add_theme_font_size_override("font_size", PaxText.X2)
+		_body_hint.add_theme_color_override("font_color", Color(1.0, 0.86, 0.45))
+		_body_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		_body_hint.position = Vector2(lbl.position.x + BODY_BOX.x + 12.0, lbl.position.y + BODY_BOX.y - 22.0)
+		$EventPanel.add_child(_body_hint)
+	if _body_scroll_max <= 0:
+		_body_hint.visible = false
+		return
+	_body_hint.visible = true
+	if lbl.lines_skipped >= _body_scroll_max:
+		_body_hint.text = "^ top"
+	else:
+		_body_hint.text = "\u2228 scroll for more"
 
 
 func _substitute(text: String) -> String:

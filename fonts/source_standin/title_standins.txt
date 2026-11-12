@@ -1,0 +1,232 @@
+# STAND-IN GLYPHS for the two-toned font (pax_title).
+# Sister SpaceDesk drew A-Z; these digits and marks are placeholders by Claude
+# for her to approve or redraw.
+# Draw only the LIGHT inner pixels here ('o'). The dark outline is added
+# automatically around them, the way hers wraps her letters.
+# Format: see body_standins.txt. Run python3 scripts/build_fonts.py after editing.
+
+@ U+0030             # 0
+..oooo..
+.oo..oo.
+.o....o.
+oo....oo
+o......o
+o......o
+o......o
+o......o
+o......o
+oo....oo
+.o....o.
+.oo..oo.
+..oooo..
+
+@ U+0031             # 1
+...o...
+..oo...
+.ooo...
+...o...
+...o...
+...o...
+...o...
+...o...
+...o...
+...o...
+...o...
+...o...
+.ooooo.
+
+@ U+0032             # 2
+..oooo..
+.oo..oo.
+oo....oo
+o......o
+.......o
+......oo
+.....oo.
+....oo..
+...oo...
+..oo....
+.oo.....
+oo.....o
+oooooooo
+
+@ U+0033             # 3
+.oooooo.
+oo....oo
+o......o
+.......o
+.......o
+......oo
+...oooo.
+......oo
+.......o
+.......o
+o......o
+oo....oo
+.oooooo.
+
+@ U+0034             # 4
+.....oo..
+....ooo..
+....o.o..
+...oo.o..
+...o..o..
+..oo..o..
+..o...o..
+.oo...o..
+.o....o..
+ooooooooo
+......o..
+......o..
+....ooooo
+
+@ U+0035             # 5
+oooooooo
+o.......
+o.......
+o.......
+o.......
+o.oooo..
+ooo..oo.
+.......o
+.......o
+.......o
+o......o
+oo....oo
+.oooooo.
+
+@ U+0036             # 6
+..ooooo.
+.oo....o
+.o......
+oo......
+o.......
+o.oooo..
+ooo..oo.
+oo....oo
+o......o
+o......o
+o......o
+oo....oo
+.oooooo.
+
+@ U+0037             # 7
+oooooooo
+o......o
+......oo
+......o.
+.....oo.
+.....o..
+....oo..
+....o...
+...oo...
+...o....
+...o....
+...o....
+..ooo...
+
+@ U+0038             # 8
+.oooooo.
+oo....oo
+o......o
+o......o
+o......o
+oo....oo
+.oooooo.
+oo....oo
+o......o
+o......o
+o......o
+oo....oo
+.oooooo.
+
+@ U+0039             # 9
+.oooooo.
+oo....oo
+o......o
+o......o
+o......o
+oo....oo
+.oo..ooo
+..oooo.o
+.......o
+......oo
+......o.
+o....oo.
+.ooooo..
+
+@ U+002E             # period
+oo
+oo
+
+@ U+002C desc=2      # comma
+oo
+oo
+.o
+o.
+
+@ U+0027 rise=10     # apostrophe
+oo
+oo
+o.
+
+@ U+0021             # exclamation
+oo
+oo
+oo
+oo
+oo
+oo
+oo
+oo
+oo
+..
+..
+oo
+oo
+
+@ U+003F             # question
+.oooooo.
+oo....oo
+o......o
+.......o
+......oo
+.....oo.
+....oo..
+....o...
+....o...
+........
+........
+....oo..
+....oo..
+
+@ U+003A rise=1      # colon
+oo
+oo
+..
+..
+..
+..
+oo
+oo
+
+@ U+002D rise=6      # hyphen
+oooooo
+
+@ U+2014 rise=6      # em dash
+oooooooooo
+
+@ U+0026             # ampersand
+..oooo...
+.oo..oo..
+.o....o..
+.o....o..
+.oo..oo..
+..oooo...
+.ooo.....
+oo.oo..oo
+o...oo.o.
+o....ooo.
+o.....oo.
+oo...oooo
+.ooooo..o

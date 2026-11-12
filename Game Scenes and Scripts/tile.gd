@@ -2303,8 +2303,9 @@ func ensureNameLabel() -> void:
 		_tileNameLabel.clip_text = true
 		_tileNameLabel.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		_tileNameLabel.add_theme_color_override("font_color", Color(1, 1, 1))
-		_tileNameLabel.add_theme_color_override("font_outline_color", Color(0, 0, 0))
-		_tileNameLabel.add_theme_constant_override("outline_size", 4)
+		# Map names are fitted to the tile at any size, so they use the map font
+		# (outline drawn in, free-scaling) instead of the whole-step UI font.
+		_tileNameLabel.add_theme_font_override("font", load("res://fonts/pax_map.fnt"))
 		add_child(_tileNameLabel)
 
 # GUI pass 2026-10-25 (step 2): names sit at the tile's most-interior point, sized to
@@ -2438,7 +2439,6 @@ func refreshTileNameLabel() -> void:
 	_tileLabelFont = fs
 	_tileNameLabel.text = "\n".join(lines)
 	_tileNameLabel.add_theme_font_size_override("font_size", fs)
-	_tileNameLabel.add_theme_constant_override("outline_size", max(2, int(fs * 0.18)))
 	_tileNameLabel.add_theme_constant_override("line_spacing", -int(fs * 0.15))
 	var sz := Vector2(maxW, fs * 1.25 * lines.size())
 	if font != null:

@@ -1,0 +1,17 @@
+[remap]
+
+importer="font_data_bmfont"
+type="FontFile"
+uid="uid://fahnlf8uwc6p"
+path="res://.godot/imported/pax_body_bold.fnt-66f6c328b1d4f13a6dc9cfbc97689978.fontdata"
+
+[deps]
+
+source_file="res://fonts/pax_body_bold.fnt"
+dest_files=["res://.godot/imported/pax_body_bold.fnt-66f6c328b1d4f13a6dc9cfbc97689978.fontdata"]
+
+[params]
+
+fallbacks=[]
+compress=true
+scaling_mode=1

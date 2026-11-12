@@ -1,0 +1,17 @@
+[remap]
+
+importer="font_data_bmfont"
+type="FontFile"
+uid="uid://bced7s5xtgxwv"
+path="res://.godot/imported/pax_map.fnt-e91c3320e41b950b1038bb3b52dacb79.fontdata"
+
+[deps]
+
+source_file="res://fonts/pax_map.fnt"
+dest_files=["res://.godot/imported/pax_map.fnt-e91c3320e41b950b1038bb3b52dacb79.fontdata"]
+
+[params]
+
+fallbacks=[]
+compress=true
+scaling_mode=2

@@ -92,7 +92,11 @@ func show_army(a, view_only: bool) -> void:
 	_font = base
 	_bold = FontVariation.new()
 	_bold.base_font = base
-	_bold.variation_embolden = 0.8
+	if base is FontFile and (base as FontFile).fixed_size > 0:
+		# Pixel fonts cannot be thickened on the fly; use the pre-built bold.
+		_bold.base_font = load("res://fonts/pax_body_bold.fnt")
+	else:
+		_bold.variation_embolden = 0.8
 	var sb := StyleBoxFlat.new()
 	sb.bg_color = BG
 	sb.border_color = BORDER

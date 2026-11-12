@@ -1,5 +1,7 @@
 extends Control
 
+const PaxText = preload("res://fonts/pax_text.gd")
+
 #class_name EventButtonControl
 
 var _btn_data: Dictionary = {}
@@ -44,23 +46,14 @@ const BEAT_SEP  := "   "
 func setup(btn_data: Dictionary) -> void:
 	_btn_data = btn_data
 	var b: Button = $EventButton
-	b.text = btn_data.get("button_text", "Choose")
+	var label: String = str(btn_data.get("button_text", "Choose"))
 	b.tooltip_text = _describe_effect(btn_data)
 	# No focus outline (it was highlighting the first button on open).
 	b.focus_mode = Control.FOCUS_NONE
-	# Wrap long labels and clip so nothing spills past the button art.
-	b.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	# Largest clean pixel size at which the label sits inside the button art,
+	# clipped as a last resort so nothing spills past it.
 	b.clip_text = true
-	# Shrink the font for longer labels so they stay on the button.
-	var n: int = b.text.length()
-	var fs: int = 27
-	if n > 30:
-		fs = 18
-	elif n > 22:
-		fs = 21
-	elif n > 16:
-		fs = 24
-	b.add_theme_font_size_override("font_size", fs)
+	PaxText.fit_button(b, label, Vector2(b.size.x - 36.0, b.size.y - 24.0), PaxText.SIZES_BODY)
 	# Scene buttons carry a warm tint so the tiers read before the text does.
 	b.self_modulate = SCENE_TINTS.get(str(btn_data.get("button_type", "standard")), Color.WHITE)
 	_apply_rewards(btn_data)
@@ -70,6 +63,17 @@ func _apply_rewards(d: Dictionary) -> void:
 	var lbl = get_node_or_null("RewardLabel")
 	if lbl == null:
 		return
+	# The strip under the button: outlined so it reads over the panel, and allowed
+	# a second line (and the gap between buttons) so long effects are not cut off.
+	var outline_font: Font = load("res://fonts/pax_body_outline.fnt")
+	for slot in ["normal_font", "italics_font", "bold_font", "bold_italics_font"]:
+		lbl.add_theme_font_override(slot, outline_font)
+	for slot in ["normal_font_size", "italics_font_size", "bold_font_size", "bold_italics_font_size"]:
+		lbl.add_theme_font_size_override(slot, PaxText.X2)
+	lbl.add_theme_constant_override("outline_size", 0)
+	lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	lbl.position = Vector2(-30.0, 127.0)
+	lbl.size = Vector2(412.0, 46.0)
 	lbl.text = "[center]" + BEAT_SEP.join(_reward_beats(d)) + "[/center]"
 
 

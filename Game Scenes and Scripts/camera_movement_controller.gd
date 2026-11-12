@@ -66,6 +66,9 @@ func _physics_process(_delta: float) -> void:
 
 func _input(event: InputEvent) -> void:
 	# Zoom is bound to the mouse wheel (momentary), so it must be event-driven.
+	# An event popup with long text is using the wheel to scroll; leave the map still.
+	if not get_tree().get_nodes_in_group("pax_wheel_capture").is_empty():
+		return
 	if event.is_action_pressed("Zoom In"):
 		_zoom_at_cursor(ZOOM_STEP)
 	elif event.is_action_pressed("Zoom Out"):

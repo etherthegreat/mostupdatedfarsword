@@ -2,6 +2,8 @@ extends Control
 
 class_name beliefButton
 
+const PaxText = preload("res://fonts/pax_text.gd")
+
 var bbName: String
 var bbImage: Texture
 var bbPurchased: bool
@@ -28,6 +30,7 @@ func buildSelf(id, image, bwImage, purch, cost, hint, border):
 	borderImage = border
 	$BeliefPanel/BeliefBorderSprite.texture = border
 	$BeliefPanel/BeliefSprite.texture = image
+	_fit_title()
 	$TitleRichLabel.push_hint(str(beliefDesc, "Faith: ", bbCost))
 	$TitleRichLabel.append_text(bbName)
 
@@ -86,3 +89,14 @@ func _on_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) 
 	if event is InputEventMouseButton and event.is_action_pressed("Left Click"):
 		if bbPurchased == false:
 			emit_signal("LabelClicked", bbName, bbCost, bbImage, beliefDesc, borderImage)
+
+
+# The name sits in a 208x64 slot beside the portrait. Use the larger pixel size
+# when the name fits there on two lines, the smaller one for long names.
+const TITLE_BOX := Vector2(208.0, 64.0)
+
+func _fit_title() -> void:
+	var lbl: RichTextLabel = $TitleRichLabel
+	var font: Font = lbl.get_theme_font("normal_font")
+	var fs: int = PaxText.best_size(font, str(bbName), TITLE_BOX, PaxText.SIZES_SMALL, true, 0.0)
+	lbl.add_theme_font_size_override("normal_font_size", fs)

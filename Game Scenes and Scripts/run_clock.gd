@@ -7,7 +7,7 @@ extends Button
 # ═════════════════════════════════════════════════════════════════════════════
 
 const SS := preload("res://Game Scenes and Scripts/score_screen.gd")
-const SIZE := Vector2(300, 100)
+const SIZE := Vector2(360, 100)   # wide enough for "100 TURNS LEFT" in the pixel font
 const CENTER_X := 960.0          # sits on the red centre stripe of the bottom flag band
 const TOP_Y := 974.0
 const BG := Color(0.07, 0.09, 0.16, 0.94)
@@ -39,7 +39,11 @@ func _ready() -> void:
 	_font = th.default_font if th != null and th.default_font != null else ThemeDB.fallback_font
 	_bold = FontVariation.new()
 	_bold.base_font = _font
-	_bold.variation_embolden = 0.9
+	if _font is FontFile and (_font as FontFile).fixed_size > 0:
+		# Pixel fonts cannot be thickened on the fly; use the pre-built bold.
+		_bold.base_font = load("res://fonts/pax_body_bold.fnt")
+	else:
+		_bold.variation_embolden = 0.9
 	mouse_entered.connect(queue_redraw)
 	mouse_exited.connect(queue_redraw)
 
@@ -93,13 +97,17 @@ func _draw() -> void:
 	var pulse := 0.5 + 0.5 * sin(_t * 6.0) if hot else 0.0
 	var ncol: Color = HOT.lerp(Color.WHITE, pulse * 0.35) if hot else Color.WHITE
 	var num := str(turns_left)
-	var nfs := 58
+	var nfs := 42
 	draw_string(_bold, Vector2(104, 62), num, HORIZONTAL_ALIGNMENT_LEFT, -1, nfs, ncol)
 	var nw := _bold.get_string_size(num, HORIZONTAL_ALIGNMENT_LEFT, -1, nfs).x
 	var cap := "LAST TURN" if turns_left == 1 else "TURNS LEFT"
 	if turns_left <= 0:
 		cap = "ELECTION"
-	draw_string(_bold, Vector2(112 + nw, 38), cap, HORIZONTAL_ALIGNMENT_LEFT, -1, 15, HOT if hot else PALE)
+	# Bold caption when there is room for it, regular beside a three-digit count.
+	var capf: Font = _bold
+	if 112 + nw + _bold.get_string_size(cap, HORIZONTAL_ALIGNMENT_LEFT, -1, 15).x > size.x - 12:
+		capf = _font
+	draw_string(capf, Vector2(112 + nw, 38), cap, HORIZONTAL_ALIGNMENT_LEFT, -1, 15, HOT if hot else PALE)
 	draw_string(_font, Vector2(112 + nw, 60), "score %d" % score, HORIZONTAL_ALIGNMENT_LEFT, -1, 15, gc)
 
 	# elapsed bar: fills toward the election

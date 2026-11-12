@@ -1,0 +1,17 @@
+[remap]
+
+importer="font_data_bmfont"
+type="FontFile"
+uid="uid://dfefb4gm1doq"
+path="res://.godot/imported/pax_header.fnt-e0c183bd265add6bf39142140ce44529.fontdata"
+
+[deps]
+
+source_file="res://fonts/pax_header.fnt"
+dest_files=["res://.godot/imported/pax_header.fnt-e0c183bd265add6bf39142140ce44529.fontdata"]
+
+[params]
+
+fallbacks=[]
+compress=true
+scaling_mode=1

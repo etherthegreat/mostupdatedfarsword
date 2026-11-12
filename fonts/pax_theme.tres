@@ -1,0 +1,32 @@
+[gd_resource type="Theme" load_steps=7 format=3 uid="uid://bhbckp7p65qv5"]
+
+[ext_resource type="FontFile" uid="uid://ius4cgn6t2va" path="res://fonts/pax_body.fnt" id="1_body"]
+[ext_resource type="FontFile" uid="uid://fahnlf8uwc6p" path="res://fonts/pax_body_bold.fnt" id="2_bold"]
+[ext_resource type="FontFile" uid="uid://dfefb4gm1doq" path="res://fonts/pax_header.fnt" id="3_head"]
+[ext_resource type="FontFile" uid="uid://db6l077avmqlu" path="res://fonts/pax_title.fnt" id="4_title"]
+
+[sub_resource type="FontVariation" id="FontVariation_head"]
+fallbacks = Array[Font]([ExtResource("1_body")])
+base_font = ExtResource("3_head")
+
+[sub_resource type="FontVariation" id="FontVariation_title"]
+fallbacks = Array[Font]([ExtResource("1_body")])
+base_font = ExtResource("4_title")
+
+[resource]
+default_font = ExtResource("1_body")
+default_font_size = 16
+PaxHeader/base_type = &"Label"
+PaxHeader/font_sizes/font_size = 20
+PaxHeader/fonts/font = SubResource("FontVariation_head")
+PaxHeaderButton/base_type = &"Button"
+PaxHeaderButton/font_sizes/font_size = 20
+PaxHeaderButton/fonts/font = SubResource("FontVariation_head")
+PaxTitle/base_type = &"Label"
+PaxTitle/colors/font_color = Color(1, 1, 1, 1)
+PaxTitle/font_sizes/font_size = 30
+PaxTitle/fonts/font = SubResource("FontVariation_title")
+RichTextLabel/fonts/bold_font = ExtResource("2_bold")
+RichTextLabel/fonts/bold_italics_font = ExtResource("2_bold")
+RichTextLabel/fonts/italics_font = ExtResource("1_body")
+RichTextLabel/fonts/mono_font = ExtResource("1_body")

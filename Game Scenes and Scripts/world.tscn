@@ -8044,9 +8044,11 @@ texture = ExtResource("34_pqr4i")
 [node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/BeliefControl/BeliefPanel/PurchasePanel"]
 layout_mode = 0
 offset_left = 124.0
-offset_top = 47.0
-offset_right = 359.0
-offset_bottom = 197.0
+offset_top = 46.0
+offset_right = 361.0
+offset_bottom = 172.0
+theme_override_font_sizes/normal_font_size = 14
+theme_override_font_sizes/bold_font_size = 14
 
 [node name="PurchaseButton" type="Button" parent="CanvasLayer/BeliefControl/BeliefPanel/PurchasePanel"]
 layout_mode = 0
@@ -8060,26 +8062,28 @@ text = "Purchase"
 
 [node name="Price" type="RichTextLabel" parent="CanvasLayer/BeliefControl/BeliefPanel/PurchasePanel"]
 layout_mode = 0
-offset_left = 69.7499
-offset_top = 162.75
-offset_right = 124.75
-offset_bottom = 192.75
+offset_left = 40.0
+offset_top = 188.0
+offset_right = 361.0
+offset_bottom = 232.0
+theme_override_font_sizes/normal_font_size = 14
 bbcode_enabled = true
 text = "500 "
+scroll_active = false
 
 [node name="FaithIcon" type="Sprite2D" parent="CanvasLayer/BeliefControl/BeliefPanel/PurchasePanel"]
-position = Vector2(53.75, 173.75)
+position = Vector2(22, 199)
 scale = Vector2(0.235001, 0.235001)
 texture = ExtResource("15_gxwbr")
 
 [node name="Label" type="Label" parent="CanvasLayer/BeliefControl/BeliefPanel/PurchasePanel"]
 layout_mode = 0
-offset_left = 3.0
-offset_top = -3.0
-offset_right = 141.0
-offset_bottom = 51.0
+offset_left = 8.0
+offset_top = 2.0
+offset_right = 359.0
+offset_bottom = 42.0
+theme_override_font_sizes/font_size = 14
 text = "Healing Waters"
-horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
@@ -10221,7 +10225,7 @@ theme_override_colors/font_disabled_color = Color(0.731385, 0.428597, 0.13852, 1
 theme_override_colors/font_hover_color = Color(0.749831, 3.85046e-07, 0.386302, 1)
 theme_override_colors/icon_hover_color = Color(0.76998, 0.592736, 0, 1)
 theme_override_colors/icon_pressed_color = Color(0.414039, 0.313543, 0, 1)
-theme_override_font_sizes/font_size = 35
+theme_override_font_sizes/font_size = 21
 theme_override_styles/focus = SubResource("StyleBoxEmpty_fwltf")
 text = "Next Turn"
 icon = ExtResource("521_mfggh")
@@ -10240,7 +10244,7 @@ theme_override_colors/font_disabled_color = Color(0.731385, 0.428597, 0.13852, 1
 theme_override_colors/font_hover_color = Color(0.749831, 3.85046e-07, 0.386302, 1)
 theme_override_colors/icon_hover_color = Color(0.76998, 0.592736, 0, 1)
 theme_override_colors/icon_pressed_color = Color(0.414039, 0.313543, 0, 1)
-theme_override_font_sizes/font_size = 35
+theme_override_font_sizes/font_size = 21
 theme_override_styles/focus = SubResource("StyleBoxEmpty_fwltf")
 text = "Pick Tech"
 icon = ExtResource("509_xr50o")
@@ -10424,78 +10428,120 @@ shape = SubResource("RectangleShape2D_2v3gw")
 layout_mode = 2
 
 [node name="Label" type="Label" parent="CanvasLayer/Resource Bar (TOP)/container/GoldLabel"]
-layout_mode = 2
-offset_left = 27.0
-offset_top = 38.0
-offset_right = 73.0
-offset_bottom = 61.0
+layout_mode = 0
+offset_left = -7.0
+offset_top = 31.0
+offset_right = 63.0
+offset_bottom = 49.0
+scale = Vector2(1.71309, 1.71309)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.85)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 14
 text = "10000"
+horizontal_alignment = 1
 
 [node name="FoodLabel" type="Control" parent="CanvasLayer/Resource Bar (TOP)/container"]
 layout_mode = 2
 
 [node name="Label" type="Label" parent="CanvasLayer/Resource Bar (TOP)/container/FoodLabel"]
-layout_mode = 2
-offset_left = 27.0
-offset_top = 38.0
-offset_right = 73.0
-offset_bottom = 61.0
+layout_mode = 0
+offset_left = -7.0
+offset_top = 31.0
+offset_right = 63.0
+offset_bottom = 49.0
+scale = Vector2(1.71309, 1.71309)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.85)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 14
 text = "10000"
+horizontal_alignment = 1
 
 [node name="ManpowerLabel" type="Control" parent="CanvasLayer/Resource Bar (TOP)/container"]
 layout_mode = 2
 
 [node name="Label" type="Label" parent="CanvasLayer/Resource Bar (TOP)/container/ManpowerLabel"]
-layout_mode = 2
-offset_left = 27.0
-offset_top = 38.0
-offset_right = 73.0
-offset_bottom = 61.0
+layout_mode = 0
+offset_left = -7.0
+offset_top = 31.0
+offset_right = 63.0
+offset_bottom = 49.0
+scale = Vector2(1.71309, 1.71309)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.85)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 14
 text = "10000"
+horizontal_alignment = 1
 
 [node name="ScienceLabel" type="Control" parent="CanvasLayer/Resource Bar (TOP)/container"]
 layout_mode = 2
 
 [node name="Label" type="Label" parent="CanvasLayer/Resource Bar (TOP)/container/ScienceLabel"]
-layout_mode = 2
-offset_left = 27.0
-offset_top = 38.0
-offset_right = 73.0
-offset_bottom = 61.0
+layout_mode = 0
+offset_left = -7.0
+offset_top = 31.0
+offset_right = 63.0
+offset_bottom = 49.0
+scale = Vector2(1.71309, 1.71309)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.85)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 14
 text = "10000"
+horizontal_alignment = 1
 
 [node name="FaithLabel" type="Control" parent="CanvasLayer/Resource Bar (TOP)/container"]
 layout_mode = 2
 
 [node name="Label" type="Label" parent="CanvasLayer/Resource Bar (TOP)/container/FaithLabel"]
-layout_mode = 2
-offset_left = 27.0
-offset_top = 38.0
-offset_right = 73.0
-offset_bottom = 61.0
+layout_mode = 0
+offset_left = -7.0
+offset_top = 31.0
+offset_right = 63.0
+offset_bottom = 49.0
+scale = Vector2(1.71309, 1.71309)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.85)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 14
 text = "10000"
+horizontal_alignment = 1
 
 [node name="MagicLabel" type="Control" parent="CanvasLayer/Resource Bar (TOP)/container"]
 layout_mode = 2
 
 [node name="Label" type="Label" parent="CanvasLayer/Resource Bar (TOP)/container/MagicLabel"]
-layout_mode = 2
-offset_left = 27.0
-offset_top = 38.0
-offset_right = 73.0
-offset_bottom = 61.0
+layout_mode = 0
+offset_left = -7.0
+offset_top = 31.0
+offset_right = 63.0
+offset_bottom = 49.0
+scale = Vector2(1.71309, 1.71309)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.85)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 14
 text = "10000"
+horizontal_alignment = 1
 
 [node name="MandateLabel" type="Control" parent="CanvasLayer/Resource Bar (TOP)/container"]
 layout_mode = 2
 
 [node name="Label" type="Label" parent="CanvasLayer/Resource Bar (TOP)/container/MandateLabel"]
-layout_mode = 2
-offset_left = 27.0
-offset_top = 38.0
-offset_right = 73.0
-offset_bottom = 61.0
+layout_mode = 0
+offset_left = -7.0
+offset_top = 31.0
+offset_right = 63.0
+offset_bottom = 49.0
+scale = Vector2(1.71309, 1.71309)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.85)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 14
 text = "10000"
+horizontal_alignment = 1
 
 [node name="Button" type="Button" parent="CanvasLayer/Resource Bar (TOP)"]
 z_index = 50
@@ -11110,18 +11156,24 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="TurnLabel" type="Label" parent="CanvasLayer"]
-offset_left = 34.0
-offset_top = 60.0
-offset_right = 84.0
-offset_bottom = 83.0
-text = "Turn 1"
+offset_left = 990.0
+offset_top = 30.0
+offset_right = 1500.0
+offset_bottom = 60.0
+theme_override_font_sizes/font_size = 21
+text = "July 4, 2026"
 
 [node name="DateLabel" type="Label" parent="CanvasLayer"]
-offset_left = 382.0
+offset_left = 366.0
 offset_top = 60.0
-offset_right = 469.0
-offset_bottom = 83.0
+offset_right = 456.0
+offset_bottom = 80.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.85)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 14
 text = "Turn 1"
+horizontal_alignment = 1
 
 [node name="EndingSceneControl" type="Control" parent="CanvasLayer"]
 visible = false

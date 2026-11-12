@@ -99,6 +99,9 @@ func _ready() -> void:
 func _font() -> Font:
 	if name_font != null:
 		return name_font
+	# Country names curve along the map at any size: use the free-scaling map font.
+	if ResourceLoader.exists("res://fonts/pax_map.fnt"):
+		return load("res://fonts/pax_map.fnt")
 	var th := ThemeDB.get_project_theme()
 	if th != null and th.default_font != null:
 		return th.default_font

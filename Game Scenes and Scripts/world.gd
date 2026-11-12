@@ -194,7 +194,9 @@ func updateResourceBar() -> void:
 		for _grp in ["FoodLabel","WoodLabel","MetalLabel","FaithLabel","MagicLabel","MandateLabel","HarmonyLabel","InfluenceLabel"]:
 			var _n = get_node_or_null("CanvasLayer/Resource Bar (TOP)/container/" + _grp)
 			if _n != null:
-				_n.visible = false
+				# Hide the number but keep its slot, so the numbers that stay
+				# remain under their own icons instead of sliding left.
+				_n.modulate.a = 0.0
 		# Declaw the hidden resources — keep them abundant so they never starve/unrest or block builds.
 		var _pc = playerCountryNode
 		if _pc != null:
@@ -241,6 +243,7 @@ func newGameBuild(CID, gameLang, isCoop: bool = false):
 	year = 2026
 	day = 0
 	dayOfMonth = 4  # July 4, 2026 — inauguration day
+	$CanvasLayer/TurnLabel.text = _format_game_date()
 	age = 2
 	armyMode = false
 	$TileController.connectTileSignals()

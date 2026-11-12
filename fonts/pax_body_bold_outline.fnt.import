@@ -1,0 +1,17 @@
+[remap]
+
+importer="font_data_bmfont"
+type="FontFile"
+uid="uid://dhh3s80u2eva3"
+path="res://.godot/imported/pax_body_bold_outline.fnt-046f6db32a1d4062b40afcea3103a839.fontdata"
+
+[deps]
+
+source_file="res://fonts/pax_body_bold_outline.fnt"
+dest_files=["res://.godot/imported/pax_body_bold_outline.fnt-046f6db32a1d4062b40afcea3103a839.fontdata"]
+
+[params]
+
+fallbacks=[]
+compress=true
+scaling_mode=1

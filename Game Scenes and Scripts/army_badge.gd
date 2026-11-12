@@ -71,7 +71,11 @@ func _ready() -> void:
 		base = th.default_font
 	var fv := FontVariation.new()
 	fv.base_font = base
-	fv.variation_embolden = 0.8
+	if base is FontFile and (base as FontFile).fixed_size > 0:
+		# Pixel fonts cannot be thickened on the fly; use the pre-built bold.
+		fv.base_font = load("res://fonts/pax_body_bold.fnt")
+	else:
+		fv.variation_embolden = 0.8
 	_font = fv
 
 

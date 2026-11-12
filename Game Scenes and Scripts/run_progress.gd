@@ -51,7 +51,11 @@ func show_report(rep: Dictionary, recs: Dictionary = {}) -> void:
 	_font = th.default_font if th != null and th.default_font != null else ThemeDB.fallback_font
 	_bold = FontVariation.new()
 	_bold.base_font = _font
-	_bold.variation_embolden = 0.9
+	if _font is FontFile and (_font as FontFile).fixed_size > 0:
+		# Pixel fonts cannot be thickened on the fly; use the pre-built bold.
+		_bold.base_font = load("res://fonts/pax_body_bold.fnt")
+	else:
+		_bold.variation_embolden = 0.9
 	_build()
 	_root.modulate.a = 0.0
 	create_tween().tween_property(_root, "modulate:a", 1.0, 0.15)

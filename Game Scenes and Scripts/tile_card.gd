@@ -1,4 +1,6 @@
 extends Panel
+
+const PaxText = preload("res://fonts/pax_text.gd")
 # ═════════════════════════════════════════════════════════════════════════════
 # TILE CARD — GUI pass 2026-10-26
 # The click-a-tile readout, rebuilt to read in one glance:
@@ -179,15 +181,16 @@ func _banner(parent: Control) -> void:
 	holder.add_child(stripe)
 
 	var name_l := _label(str(_tile.tileName), 22, Color.WHITE)
-	name_l.position = Vector2(12, 64)
-	name_l.add_theme_constant_override("outline_size", 6)
-	name_l.add_theme_color_override("font_outline_color", Color.BLACK)
+	PaxText.outline(name_l)
+	PaxText.fit(name_l, Vector2(W - 24, 30), PaxText.SIZES_SMALL, false)   # long names drop a size
+	name_l.position = Vector2(12, 86 - name_l.get_theme_font("font").get_height(name_l.get_theme_font_size("font_size")))
 	holder.add_child(name_l)
 
 	var sub := _label("%s  •  %s  •  %s" % [str(_tile.tileContinent), str(_tile.terrain), OWNER_NAMES.get(owner, owner)], 13, Color(0.92, 0.94, 1.0))
-	sub.position = Vector2(13, 92)
-	sub.add_theme_constant_override("outline_size", 4)
-	sub.add_theme_color_override("font_outline_color", Color.BLACK)
+	sub.position = Vector2(13, 90)
+	sub.size = Vector2(W - 26, 20)
+	sub.clip_text = true
+	PaxText.outline(sub)
 	holder.add_child(sub)
 
 	# crop / ore medallions in the top-right corner of the painting
@@ -244,8 +247,8 @@ func _pills(parent: Control) -> void:
 	if row.get_child_count() > 0:
 		parent.add_child(row)
 	if siege_note != "":
-		parent.add_child(_label(siege_note, 12, Color(0.95, 0.75, 0.55)))
-	var note := _label(str(TERRAIN_NOTE.get(str(_tile.terrain), "")), 12, DIM)
+		parent.add_child(_wrapped(_label(siege_note, 12, Color(0.95, 0.75, 0.55))))
+	var note := _wrapped(_label(str(TERRAIN_NOTE.get(str(_tile.terrain), "")), 12, DIM))
 	if note.text != "":
 		parent.add_child(note)
 
@@ -275,7 +278,7 @@ func _headline(parent: Control) -> void:
 			else:
 				chips.add_child(_chip(sp[0], float(sp[1]), 26, true, sp[2]))
 		if chips.get_child_count() == 0:
-			chips.add_child(_label("Open ground — no spoils, just the map", 14, DIM))
+			chips.add_child(_wrapped(_label("Open ground — no spoils, just the map", 14, DIM)))
 	box.add_child(chips)
 	var frame := PanelContainer.new()
 	var sb := StyleBoxFlat.new()
@@ -539,8 +542,7 @@ func _chip(res: String, amount: float, icon_px: int, plus_always: bool = false, 
 		if amount < 0:
 			sgn = "-"
 	var l := _label(sgn + num, int(icon_px * 0.72), info[1] if amount >= 0 else BAD)
-	l.add_theme_constant_override("outline_size", 4)
-	l.add_theme_color_override("font_outline_color", Color(0, 0, 0, 0.8))
+	PaxText.outline(l)
 	h.add_child(l)
 	if caption != "":
 		h.add_child(_label(caption, 12, DIM))
@@ -549,8 +551,7 @@ func _chip(res: String, amount: float, icon_px: int, plus_always: bool = false, 
 
 func _text_chip(txt: String, col: Color, px: int) -> Control:
 	var l := _label(txt, px, col)
-	l.add_theme_constant_override("outline_size", 4)
-	l.add_theme_color_override("font_outline_color", Color(0, 0, 0, 0.8))
+	PaxText.outline(l)
 	return l
 
 
@@ -596,9 +597,16 @@ func _icon(tex: Texture2D, px: int) -> TextureRect:
 func _label(txt: String, px: int, col: Color) -> Label:
 	var l := Label.new()
 	l.text = txt
-	l.add_theme_font_size_override("font_size", px)
+	l.add_theme_font_size_override("font_size", maxi(px, 11))   # below 11 the pixel font is too small to read
 	l.add_theme_color_override("font_color", col)
 	l.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	return l
+
+
+# Let a line wrap inside the card instead of running off its right edge.
+func _wrapped(l: Label) -> Label:
+	l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	l.custom_minimum_size = Vector2(W - 24, 0)
 	return l
 
 

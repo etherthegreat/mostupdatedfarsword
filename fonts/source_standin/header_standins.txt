@@ -1,0 +1,151 @@
+# STAND-IN GLYPHS for the large grey font (pax_header).
+# Sister SpaceDesk drew capitals and digits; this is punctuation by Claude in the
+# same 2-pixel stroke, as placeholders for her to approve or redraw.
+# Format: see body_standins.txt. Run python3 scripts/build_fonts.py after editing.
+
+@ U+002E             # period
+##
+##
+
+@ U+002C desc=2      # comma
+##
+##
+.#
+#.
+
+@ U+0027 rise=7      # apostrophe
+##
+##
+#.
+
+@ U+0022 rise=7      # double quote
+##.##
+##.##
+#..#.
+
+@ U+0021             # exclamation
+##
+##
+##
+##
+##
+##
+##
+..
+##
+##
+
+@ U+003F             # question
+.######.
+##....##
+##....##
+.....##.
+....##..
+...##...
+...##...
+........
+...##...
+...##...
+
+@ U+003A rise=1      # colon
+##
+##
+..
+..
+..
+##
+##
+
+@ U+003B desc=2 rise=0   # semicolon
+##
+##
+..
+..
+..
+##
+##
+.#
+#.
+
+@ U+002D rise=4      # hyphen
+######
+######
+
+@ U+2014 rise=4      # em dash
+##########
+##########
+
+@ U+0028             # open paren
+..##
+.##.
+##..
+##..
+##..
+##..
+##..
+##..
+.##.
+..##
+
+@ U+0029             # close paren
+##..
+.##.
+..##
+..##
+..##
+..##
+..##
+..##
+.##.
+##..
+
+@ U+002F             # slash
+....##
+....##
+...##.
+...##.
+..##..
+..##..
+.##...
+.##...
+##....
+##....
+
+@ U+002B rise=2      # plus
+..##..
+..##..
+######
+######
+..##..
+..##..
+
+@ U+003D rise=2      # equals
+######
+######
+......
+######
+######
+
+@ U+0025             # percent
+.##.....##
+#..#...##.
+#..#..##..
+.##..##...
+....##....
+...##.....
+..##..##..
+.##..#..#.
+##...#..#.
+#.....##..
+
+@ U+0026             # ampersand
+..####....
+.##..##...
+.##..##...
+..####....
+.###......
+##.##..##.
+##..####..
+##...##...
+.##.####..
+..###..##.

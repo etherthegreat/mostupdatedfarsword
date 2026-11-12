@@ -244,7 +244,11 @@ func show_report(rep: Dictionary, recs: Dictionary = {}) -> void:
 	_font = _base_font()
 	_bold = FontVariation.new()
 	_bold.base_font = _font
-	_bold.variation_embolden = 0.9
+	if _font is FontFile and (_font as FontFile).fixed_size > 0:
+		# Pixel fonts cannot be thickened on the fly; use the pre-built bold.
+		_bold.base_font = load("res://fonts/pax_body_bold.fnt")
+	else:
+		_bold.variation_embolden = 0.9
 	_build()
 	_animate()
 

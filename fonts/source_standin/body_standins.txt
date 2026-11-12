@@ -1,0 +1,138 @@
+# STAND-IN GLYPHS for the small black font (pax_body).
+# Drawn by Claude to fill characters the game uses that Sister SpaceDesk has not
+# drawn yet. Each is a placeholder for her to approve or redraw.
+#
+# '#' is a pixel, '.' is empty. The bottom row sits on the baseline.
+#   rise=N  lifts the glyph N pixels above the baseline
+#   desc=N  drops it N pixels below (like the tail of a comma)
+#   compose=letter,accent  reuses HER letter and adds an accent mark on top
+# After editing, run:  python3 scripts/build_fonts.py
+
+@ U+0027 rise=3      # apostrophe (also used for curly quotes)
+#
+#
+
+@ U+005F desc=1      # underscore
+####
+
+@ U+007C desc=1      # vertical bar
+#
+#
+#
+#
+#
+#
+#
+
+@ U+0026             # ampersand
+.##..
+#..#.
+.##.#
+#..#.
+.##.#
+
+@ U+003C             # less than
+..#
+.#.
+#..
+.#.
+..#
+
+@ U+003E             # greater than
+#..
+.#.
+..#
+.#.
+#..
+
+@ U+0040             # at sign
+.###.
+#.#.#
+#.###
+#....
+.###.
+
+@ U+002A rise=2      # asterisk
+#.#
+.#.
+#.#
+
+@ U+00B7 rise=2      # middle dot
+#
+
+@ U+2022 rise=1      # bullet
+##
+##
+
+@ U+2026             # ellipsis
+#.#.#
+
+@ U+2192             # right arrow
+..#..
+...#.
+#####
+...#.
+..#..
+
+@ U+21BB             # clockwise arrow (cycle)
+.##.#
+#..##
+#.###
+#....
+.###.
+
+@ U+2194 rise=1      # left-right arrow
+.#...#.
+#######
+.#...#.
+
+@ U+25CF             # filled circle
+.##.
+####
+####
+.##.
+
+@ U+25CB             # empty circle
+.##.
+#..#
+#..#
+.##.
+
+@ U+2713             # check mark
+....#
+...#.
+#.#..
+.#...
+
+@ U+00B1             # plus-minus
+.#.
+###
+.#.
+...
+###
+
+@ U+2248             # approximately
+.##.#
+#.##.
+.....
+.##.#
+#.##.
+
+@ U+203A rise=1      # single right angle quote
+#.
+.#
+#.
+
+@ U+2605             # star
+..#..
+#####
+.###.
+##.##
+#...#
+
+@ U+00E9 compose=e,acute
+@ U+00E8 compose=e,grave
+@ U+00C9 compose=E,acute
+@ U+00C8 compose=E,grave
+@ U+00D3 compose=O,acute
+@ U+0101 compose=a,macron

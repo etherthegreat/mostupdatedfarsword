@@ -382,6 +382,7 @@ func purchasePanel(bbName, bbCost, bbImage, beliefDesc, beliefBorder):
 	$BeliefPanel/PurchasePanel/FaithIcon.visible = true
 	$BeliefPanel/PurchasePanel/RichTextLabel.clear()
 	$BeliefPanel/PurchasePanel/RichTextLabel.append_text(beliefDesc)
+	$BeliefPanel/PurchasePanel/Label.text = str(bbName)
 	pendingCost = bbCost
 	pendingBelief = bbName
 	_refresh_purchase_state()
