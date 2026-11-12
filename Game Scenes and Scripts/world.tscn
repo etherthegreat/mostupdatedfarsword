@@ -1,4 +1,4 @@
-[gd_scene load_steps=545 format=3 uid="uid://bfbouq3jfwkxl"]
+[gd_scene load_steps=539 format=3 uid="uid://bfbouq3jfwkxl"]
 
 [ext_resource type="Script" uid="uid://dthx176t72xxr" path="res://Game Scenes and Scripts/world.gd" id="1_6bnro"]
 [ext_resource type="Texture2D" uid="uid://co1xqkk2trdfd" path="res://art assets/AmericanRevolutionArt/tileandMaps/maps/usamap-borderless.png" id="2_8oo0e"]
@@ -503,28 +503,22 @@
 [ext_resource type="PackedScene" uid="uid://c5r5ers4csm4f" path="res://WarRoomPanel.tscn" id="404_c5kbx"]
 [ext_resource type="PackedScene" uid="uid://cg4m30v3rp4n1" path="res://GameOverPanel.tscn" id="405_gov01"]
 [ext_resource type="Texture2D" uid="uid://yll6mlw1sya0" path="res://art assets/AmericanRevolutionArt/Panel/america2.png" id="432_ld12t"]
-[ext_resource type="Texture2D" uid="uid://bidt76inkwvb8" path="res://art assets/AmericanRevolutionArt/tempArt/starfire_again.jpg" id="471_vx15h"]
+[ext_resource type="Texture2D" uid="uid://dmxk2bsytr16v" path="res://art assets/AmericanRevolutionArt/Panel/War_Room_Checkers_Button.png" id="469_fq113"]
 [ext_resource type="Texture2D" uid="uid://byaqywypes15d" path="res://art assets/Placeholder Art/UI Art/resources/black.png" id="473_168he"]
 [ext_resource type="PackedScene" uid="uid://dxgbupy7n6qju" path="res://spell_branch_unlock.tscn" id="474_428lr"]
 [ext_resource type="Texture2D" uid="uid://db2hyfrnulqu8" path="res://art assets/finishedAssets/Panels/armypanelfinishedui/IMG_1548.PNG" id="478_8oo0e"]
-[ext_resource type="Texture2D" uid="uid://dslsee05i8goq" path="res://art assets/AmericanRevolutionArt/Panel/border.png" id="489_ijljf"]
+[ext_resource type="Texture2D" uid="uid://7lrpbsrgbvaa" path="res://art assets/AmericanRevolutionArt/menuart/unnamed.png" id="492_bnmh2"]
 [ext_resource type="Texture2D" uid="uid://b1bjec7tinrwh" path="res://art assets/finishedAssets/manaicons/currency.png" id="503_4x85c"]
 [ext_resource type="Texture2D" uid="uid://poghp383wtjv" path="res://art assets/finishedAssets/Panels/topbarresources/IMG_1530.PNG" id="503_34mra"]
 [ext_resource type="Texture2D" uid="uid://brmypyo0a6u7n" path="res://art assets/finishedAssets/Panels/topbarresources/IMG_1521.PNG" id="504_fwltf"]
 [ext_resource type="Texture2D" uid="uid://dpcl0pgmbwgcv" path="res://art assets/finishedAssets/manaicons/fooda.png" id="504_xr50o"]
 [ext_resource type="Texture2D" uid="uid://2jgmth1wc0sw" path="res://art assets/finishedAssets/Panels/topbarresources/IMG_1528.PNG" id="505_mfggh"]
-[ext_resource type="Texture2D" uid="uid://dte1t5xve8h3e" path="res://art assets/finishedAssets/manaicons/wood.png" id="505_xr50o"]
 [ext_resource type="Texture2D" uid="uid://wkj1gc2d3i5j" path="res://art assets/finishedAssets/Panels/topbarresources/IMG_1535.PNG" id="506_8oo0e"]
-[ext_resource type="Texture2D" uid="uid://dv2dfqvpoa70t" path="res://art assets/finishedAssets/manaicons/metal.png" id="506_xr50o"]
-[ext_resource type="Texture2D" uid="uid://2hyymtaje3ct" path="res://art assets/finishedAssets/manaicons/Weapons.png" id="507_ldxd8"]
 [ext_resource type="Texture2D" uid="uid://buwli7g6cmpkp" path="res://art assets/finishedAssets/manaicons/manpower.png" id="508_f44n6"]
 [ext_resource type="Texture2D" uid="uid://c5ma611qu2alb" path="res://art assets/finishedAssets/manaicons/science2.png" id="509_xr50o"]
 [ext_resource type="Texture2D" uid="uid://df1ds1iriphjs" path="res://art assets/finishedAssets/manaicons/faith.png" id="510_xr50o"]
 [ext_resource type="Texture2D" uid="uid://dws8vpwidlctw" path="res://art assets/finishedAssets/manaicons/Magic.png" id="510_yewkv"]
 [ext_resource type="Texture2D" uid="uid://d087h7ehc0kra" path="res://art assets/finishedAssets/manaicons/Mandate.png" id="511_34mra"]
-[ext_resource type="Texture2D" uid="uid://dur2fboendk0a" path="res://art assets/finishedAssets/manaicons/Harmony.png" id="512_fwltf"]
-[ext_resource type="Texture2D" uid="uid://bs6o3iev6cs7b" path="res://art assets/finishedAssets/manaicons/Culture.png" id="512_ldxd8"]
-[ext_resource type="Texture2D" uid="uid://be8m1m8igewog" path="res://art assets/finishedAssets/manaicons/Influence 1.png" id="515_ldxd8"]
 [ext_resource type="Texture2D" uid="uid://crap2pe6yc584" path="res://art assets/finishedAssets/Panels/topbarresources/IMG_1538.PNG" id="520_fwltf"]
 [ext_resource type="Texture2D" uid="uid://ba8w0kcfk7fl6" path="res://art assets/finishedAssets/Panels/topbarresources/IMG_1539.PNG" id="521_mfggh"]
 [ext_resource type="Script" uid="uid://b7qfpgq3yp5kp" path="res://Game Scenes and Scripts/ending_scene_control.gd" id="521_sovr1"]
@@ -542,8 +536,6 @@ _data = {
 }
 point_count = 2
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fwltf"]
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_y3tfg"]
 size = Vector2(365.324, 339.706)
 
@@ -552,6 +544,8 @@ size = Vector2(151, 132)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3ll13"]
 size = Vector2(127, 132)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fwltf"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2v3gw"]
 size = Vector2(100, 102)
@@ -7800,55 +7794,6 @@ offset_top = 487.0
 offset_right = 1342.0
 offset_bottom = 527.0
 
-[node name="NextTurnControl" type="Control" parent="CanvasLayer"]
-layout_mode = 3
-anchors_preset = 0
-offset_left = 1604.0
-offset_top = 792.0
-offset_right = 1644.0
-offset_bottom = 832.0
-
-[node name="nextTurn" type="Sprite2D" parent="CanvasLayer/NextTurnControl"]
-position = Vector2(104.5, 126.502)
-scale = Vector2(0.0730001, 0.095)
-texture = ExtResource("520_fwltf")
-
-[node name="NextTurn" type="Button" parent="CanvasLayer/NextTurnControl"]
-layout_mode = 0
-offset_left = -6.0
-offset_top = 73.0
-offset_right = 215.0
-offset_bottom = 179.0
-theme_override_colors/font_disabled_color = Color(0.731385, 0.428597, 0.13852, 1)
-theme_override_colors/font_hover_color = Color(0.749831, 3.85046e-07, 0.386302, 1)
-theme_override_colors/icon_hover_color = Color(0.76998, 0.592736, 0, 1)
-theme_override_colors/icon_pressed_color = Color(0.414039, 0.313543, 0, 1)
-theme_override_font_sizes/font_size = 35
-theme_override_styles/focus = SubResource("StyleBoxEmpty_fwltf")
-text = "Next Turn"
-icon = ExtResource("521_mfggh")
-flat = true
-autowrap_mode = 3
-expand_icon = true
-
-[node name="PickTech" type="Button" parent="CanvasLayer/NextTurnControl"]
-layout_mode = 0
-offset_left = -6.0
-offset_top = 73.0
-offset_right = 215.0
-offset_bottom = 179.0
-theme_override_colors/font_disabled_color = Color(0.731385, 0.428597, 0.13852, 1)
-theme_override_colors/font_hover_color = Color(0.749831, 3.85046e-07, 0.386302, 1)
-theme_override_colors/icon_hover_color = Color(0.76998, 0.592736, 0, 1)
-theme_override_colors/icon_pressed_color = Color(0.414039, 0.313543, 0, 1)
-theme_override_font_sizes/font_size = 35
-theme_override_styles/focus = SubResource("StyleBoxEmpty_fwltf")
-text = "Pick Tech"
-icon = ExtResource("509_xr50o")
-flat = true
-autowrap_mode = 3
-expand_icon = true
-
 [node name="TileInfoPanel" parent="CanvasLayer" groups=["ScreenPanels"] instance=ExtResource("10_7wljm")]
 visible = false
 offset_left = 2.0
@@ -10111,12 +10056,13 @@ texture = ExtResource("71_bgdvj")
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/PanelOpenerControl/ButtonPanel"]
 layout_mode = 0
 offset_left = 9.0
-offset_top = 1.0
+offset_top = 25.0
 offset_right = 109.0
 offset_bottom = 964.0
 theme_override_constants/separation = 85
 
 [node name="ResourcesControl" type="Control" parent="CanvasLayer/PanelOpenerControl/ButtonPanel/VBoxContainer"]
+visible = false
 layout_mode = 2
 
 [node name="ResourceButton" type="Button" parent="CanvasLayer/PanelOpenerControl/ButtonPanel/VBoxContainer/ResourcesControl"]
@@ -10177,6 +10123,7 @@ icon = ExtResource("35_o3iuu")
 expand_icon = true
 
 [node name="MagicControl" type="Control" parent="CanvasLayer/PanelOpenerControl/ButtonPanel/VBoxContainer"]
+visible = false
 layout_mode = 2
 
 [node name="MagicButton" type="Button" parent="CanvasLayer/PanelOpenerControl/ButtonPanel/VBoxContainer/MagicControl"]
@@ -10200,6 +10147,7 @@ icon = ExtResource("23_hjg8m")
 expand_icon = true
 
 [node name="CultureControl" type="Control" parent="CanvasLayer/PanelOpenerControl/ButtonPanel/VBoxContainer"]
+visible = false
 layout_mode = 2
 
 [node name="TechTreeButton" type="Button" parent="CanvasLayer/PanelOpenerControl/ButtonPanel/VBoxContainer/CultureControl"]
@@ -10224,6 +10172,7 @@ icon = ExtResource("26_trpjx")
 expand_icon = true
 
 [node name="FactionsControl" type="Control" parent="CanvasLayer/PanelOpenerControl/ButtonPanel/VBoxContainer"]
+visible = false
 layout_mode = 2
 
 [node name="FactionsButton" type="Button" parent="CanvasLayer/PanelOpenerControl/ButtonPanel/VBoxContainer/FactionsControl"]
@@ -10244,7 +10193,59 @@ offset_left = 6.0
 offset_top = -10.0
 offset_right = 86.0
 offset_bottom = 70.0
-icon = ExtResource("471_vx15h")
+icon = ExtResource("469_fq113")
+expand_icon = true
+
+[node name="NextTurnControl" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 1862.0
+offset_top = 963.0
+offset_right = 1902.0
+offset_bottom = 1003.0
+
+[node name="nextTurn" type="Sprite2D" parent="CanvasLayer/NextTurnControl"]
+position = Vector2(4.5, -63.498)
+rotation = 1.5708
+scale = Vector2(0.0730001, 0.095)
+texture = ExtResource("520_fwltf")
+
+[node name="NextTurn" type="Button" parent="CanvasLayer/NextTurnControl"]
+layout_mode = 0
+offset_left = 61.0
+offset_top = -174.0
+offset_right = 282.0
+offset_bottom = -68.0
+rotation = 1.5708
+theme_override_colors/font_disabled_color = Color(0.731385, 0.428597, 0.13852, 1)
+theme_override_colors/font_hover_color = Color(0.749831, 3.85046e-07, 0.386302, 1)
+theme_override_colors/icon_hover_color = Color(0.76998, 0.592736, 0, 1)
+theme_override_colors/icon_pressed_color = Color(0.414039, 0.313543, 0, 1)
+theme_override_font_sizes/font_size = 35
+theme_override_styles/focus = SubResource("StyleBoxEmpty_fwltf")
+text = "Next Turn"
+icon = ExtResource("521_mfggh")
+flat = true
+autowrap_mode = 3
+expand_icon = true
+
+[node name="PickTech" type="Button" parent="CanvasLayer/NextTurnControl"]
+layout_mode = 0
+offset_left = 59.0
+offset_top = -173.0
+offset_right = 280.0
+offset_bottom = -67.0
+rotation = 1.5708
+theme_override_colors/font_disabled_color = Color(0.731385, 0.428597, 0.13852, 1)
+theme_override_colors/font_hover_color = Color(0.749831, 3.85046e-07, 0.386302, 1)
+theme_override_colors/icon_hover_color = Color(0.76998, 0.592736, 0, 1)
+theme_override_colors/icon_pressed_color = Color(0.414039, 0.313543, 0, 1)
+theme_override_font_sizes/font_size = 35
+theme_override_styles/focus = SubResource("StyleBoxEmpty_fwltf")
+text = "Pick Tech"
+icon = ExtResource("509_xr50o")
+flat = true
+autowrap_mode = 3
 expand_icon = true
 
 [node name="Resource Bar (TOP)" type="Control" parent="CanvasLayer"]
@@ -10259,45 +10260,47 @@ mouse_filter = 2
 script = ExtResource("15_b2ctf")
 
 [node name="TopBar" type="Sprite2D" parent="CanvasLayer/Resource Bar (TOP)"]
-position = Vector2(777.745, -6.45203)
-scale = Vector2(1.79366, 0.0867968)
+position = Vector2(814.577, -27.0092)
+scale = Vector2(1.88903, 0.073092)
 texture = ExtResource("63_pqkb6")
 
 [node name="BottomBar" type="Sprite2D" parent="CanvasLayer/Resource Bar (TOP)"]
-position = Vector2(778.378, -143.43)
+position = Vector2(778.378, -166.231)
 rotation = 3.14159
-scale = Vector2(1.62264, 2.0173)
+scale = Vector2(1.62264, 1.6795)
 texture = ExtResource("432_ld12t")
 
 [node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/Resource Bar (TOP)"]
-position = Vector2(237.897, 53.9066)
+position = Vector2(-588.672, 14.9057)
 scale = Vector2(0.124944, 0.124944)
 texture = ExtResource("503_34mra")
 
 [node name="Sprite2D2" type="Sprite2D" parent="CanvasLayer/Resource Bar (TOP)"]
-position = Vector2(609.638, 53.9066)
+visible = false
+position = Vector2(-216.931, 14.9057)
 scale = Vector2(0.124944, 0.124944)
 texture = ExtResource("504_fwltf")
 
 [node name="Sprite2D3" type="Sprite2D" parent="CanvasLayer/Resource Bar (TOP)"]
-position = Vector2(981.38, 53.9066)
+visible = false
+position = Vector2(154.811, 14.9057)
 scale = Vector2(0.124944, 0.124944)
 texture = ExtResource("505_mfggh")
 
 [node name="Sprite2D4" type="Sprite2D" parent="CanvasLayer/Resource Bar (TOP)"]
-position = Vector2(1416.51, 53.9066)
+position = Vector2(-151.609, 14.1051)
 scale = Vector2(0.124944, 0.124944)
 texture = ExtResource("506_8oo0e")
 
 [node name="container" type="GridContainer" parent="CanvasLayer/Resource Bar (TOP)"]
 layout_mode = 0
-offset_left = -7.07603
-offset_top = -0.912438
-offset_right = 1587.92
-offset_bottom = 136.088
+offset_left = -833.645
+offset_top = -39.9133
+offset_right = 761.351
+offset_bottom = 97.0871
 theme_override_constants/h_separation = 125
 theme_override_constants/v_separation = 53
-columns = 13
+columns = 7
 
 [node name="GoldControl" type="Control" parent="CanvasLayer/Resource Bar (TOP)/container"]
 layout_mode = 2
@@ -10333,40 +10336,6 @@ collision_mask = 3
 position = Vector2(53, 52)
 shape = SubResource("RectangleShape2D_2v3gw")
 
-[node name="WoodControl" type="Control" parent="CanvasLayer/Resource Bar (TOP)/container"]
-layout_mode = 2
-mouse_filter = 2
-
-[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/Resource Bar (TOP)/container/WoodControl"]
-position = Vector2(53.2177, 51.3928)
-scale = Vector2(0.827995, 0.856547)
-texture = ExtResource("505_xr50o")
-
-[node name="WoodArea2D" type="Area2D" parent="CanvasLayer/Resource Bar (TOP)/container/WoodControl"]
-collision_layer = 3
-collision_mask = 3
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/Resource Bar (TOP)/container/WoodControl/WoodArea2D"]
-position = Vector2(53, 52)
-shape = SubResource("RectangleShape2D_2v3gw")
-
-[node name="MetalControl" type="Control" parent="CanvasLayer/Resource Bar (TOP)/container"]
-layout_mode = 2
-mouse_filter = 2
-
-[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/Resource Bar (TOP)/container/MetalControl"]
-position = Vector2(53.2736, 62.5279)
-scale = Vector2(0.942201, 1.09924)
-texture = ExtResource("506_xr50o")
-
-[node name="MetalArea2D" type="Area2D" parent="CanvasLayer/Resource Bar (TOP)/container/MetalControl"]
-collision_layer = 3
-collision_mask = 3
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/Resource Bar (TOP)/container/MetalControl/MetalArea2D"]
-position = Vector2(53, 52)
-shape = SubResource("RectangleShape2D_2v3gw")
-
 [node name="ManpowerControl" type="Control" parent="CanvasLayer/Resource Bar (TOP)/container"]
 layout_mode = 2
 mouse_filter = 2
@@ -10381,23 +10350,6 @@ collision_layer = 3
 collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/Resource Bar (TOP)/container/ManpowerControl/ManpowerArea"]
-position = Vector2(53, 52)
-shape = SubResource("RectangleShape2D_2v3gw")
-
-[node name="WeaponsControl" type="Control" parent="CanvasLayer/Resource Bar (TOP)/container"]
-layout_mode = 2
-mouse_filter = 2
-
-[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/Resource Bar (TOP)/container/WeaponsControl"]
-position = Vector2(53.3295, 52.2494)
-scale = Vector2(0.827995, 0.842271)
-texture = ExtResource("507_ldxd8")
-
-[node name="WeaponsArea" type="Area2D" parent="CanvasLayer/Resource Bar (TOP)/container/WeaponsControl"]
-collision_layer = 3
-collision_mask = 3
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/Resource Bar (TOP)/container/WeaponsControl/WeaponsArea"]
 position = Vector2(53, 52)
 shape = SubResource("RectangleShape2D_2v3gw")
 
@@ -10451,23 +10403,6 @@ collision_mask = 3
 position = Vector2(53, 52)
 shape = SubResource("RectangleShape2D_2v3gw")
 
-[node name="CultureControl" type="Control" parent="CanvasLayer/Resource Bar (TOP)/container"]
-layout_mode = 2
-mouse_filter = 2
-
-[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/Resource Bar (TOP)/container/CultureControl"]
-position = Vector2(53.609, 53.1059)
-scale = Vector2(0.870823, 0.885836)
-texture = ExtResource("512_ldxd8")
-
-[node name="CultureArea" type="Area2D" parent="CanvasLayer/Resource Bar (TOP)/container/CultureControl"]
-collision_layer = 3
-collision_mask = 3
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/Resource Bar (TOP)/container/CultureControl/CultureArea"]
-position = Vector2(53, 52)
-shape = SubResource("RectangleShape2D_2v3gw")
-
 [node name="MandateControl" type="Control" parent="CanvasLayer/Resource Bar (TOP)/container"]
 layout_mode = 2
 mouse_filter = 2
@@ -10482,40 +10417,6 @@ collision_layer = 3
 collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/Resource Bar (TOP)/container/MandateControl/MandateArea"]
-position = Vector2(53, 52)
-shape = SubResource("RectangleShape2D_2v3gw")
-
-[node name="HarmonyControl" type="Control" parent="CanvasLayer/Resource Bar (TOP)/container"]
-layout_mode = 2
-mouse_filter = 2
-
-[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/Resource Bar (TOP)/container/HarmonyControl"]
-position = Vector2(53.7207, 52.2494)
-scale = Vector2(0.827994, 0.842271)
-texture = ExtResource("512_fwltf")
-
-[node name="HarmonyArea" type="Area2D" parent="CanvasLayer/Resource Bar (TOP)/container/HarmonyControl"]
-collision_layer = 3
-collision_mask = 3
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/Resource Bar (TOP)/container/HarmonyControl/HarmonyArea"]
-position = Vector2(53, 52)
-shape = SubResource("RectangleShape2D_2v3gw")
-
-[node name="InfluenceControl" type="Control" parent="CanvasLayer/Resource Bar (TOP)/container"]
-layout_mode = 2
-mouse_filter = 2
-
-[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/Resource Bar (TOP)/container/InfluenceControl"]
-position = Vector2(53.7769, 52.2494)
-scale = Vector2(0.827998, 0.842272)
-texture = ExtResource("515_ldxd8")
-
-[node name="InfluenceArea" type="Area2D" parent="CanvasLayer/Resource Bar (TOP)/container/InfluenceControl"]
-collision_layer = 3
-collision_mask = 3
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/Resource Bar (TOP)/container/InfluenceControl/InfluenceArea"]
 position = Vector2(53, 52)
 shape = SubResource("RectangleShape2D_2v3gw")
 
@@ -10541,43 +10442,10 @@ offset_right = 73.0
 offset_bottom = 61.0
 text = "10000"
 
-[node name="WoodLabel" type="Control" parent="CanvasLayer/Resource Bar (TOP)/container"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="CanvasLayer/Resource Bar (TOP)/container/WoodLabel"]
-layout_mode = 2
-offset_left = 27.0
-offset_top = 38.0
-offset_right = 73.0
-offset_bottom = 61.0
-text = "10000"
-
-[node name="MetalLabel" type="Control" parent="CanvasLayer/Resource Bar (TOP)/container"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="CanvasLayer/Resource Bar (TOP)/container/MetalLabel"]
-layout_mode = 2
-offset_left = 27.0
-offset_top = 38.0
-offset_right = 73.0
-offset_bottom = 61.0
-text = "10000"
-
 [node name="ManpowerLabel" type="Control" parent="CanvasLayer/Resource Bar (TOP)/container"]
 layout_mode = 2
 
 [node name="Label" type="Label" parent="CanvasLayer/Resource Bar (TOP)/container/ManpowerLabel"]
-layout_mode = 2
-offset_left = 27.0
-offset_top = 38.0
-offset_right = 73.0
-offset_bottom = 61.0
-text = "10000"
-
-[node name="WeaponsLabel" type="Control" parent="CanvasLayer/Resource Bar (TOP)/container"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="CanvasLayer/Resource Bar (TOP)/container/WeaponsLabel"]
 layout_mode = 2
 offset_left = 27.0
 offset_top = 38.0
@@ -10618,43 +10486,10 @@ offset_right = 73.0
 offset_bottom = 61.0
 text = "10000"
 
-[node name="CultureLabel" type="Control" parent="CanvasLayer/Resource Bar (TOP)/container"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="CanvasLayer/Resource Bar (TOP)/container/CultureLabel"]
-layout_mode = 2
-offset_left = 27.0
-offset_top = 38.0
-offset_right = 73.0
-offset_bottom = 61.0
-text = "10000"
-
 [node name="MandateLabel" type="Control" parent="CanvasLayer/Resource Bar (TOP)/container"]
 layout_mode = 2
 
 [node name="Label" type="Label" parent="CanvasLayer/Resource Bar (TOP)/container/MandateLabel"]
-layout_mode = 2
-offset_left = 27.0
-offset_top = 38.0
-offset_right = 73.0
-offset_bottom = 61.0
-text = "10000"
-
-[node name="HarmonyLabel" type="Control" parent="CanvasLayer/Resource Bar (TOP)/container"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="CanvasLayer/Resource Bar (TOP)/container/HarmonyLabel"]
-layout_mode = 2
-offset_left = 27.0
-offset_top = 38.0
-offset_right = 73.0
-offset_bottom = 61.0
-text = "10000"
-
-[node name="InfluenceLabel" type="Control" parent="CanvasLayer/Resource Bar (TOP)/container"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="CanvasLayer/Resource Bar (TOP)/container/InfluenceLabel"]
 layout_mode = 2
 offset_left = 27.0
 offset_top = 38.0
@@ -10678,9 +10513,9 @@ expand_icon = true
 
 [node name="Sprite2D5" type="Sprite2D" parent="CanvasLayer/Resource Bar (TOP)"]
 z_index = -5
-position = Vector2(790.593, 952.881)
-scale = Vector2(0.855655, 0.769654)
-texture = ExtResource("489_ijljf")
+position = Vector2(686.951, 927.185)
+scale = Vector2(2.35836, 1.73023)
+texture = ExtResource("492_bnmh2")
 
 [node name="ResourceInfoControl" type="Control" parent="CanvasLayer" groups=["ScreenPanels"]]
 visible = false
@@ -11367,12 +11202,12 @@ horizontal_alignment = 2
 mouse_filter = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="CanvasLayer"]
-position = Vector2(244, 72)
+position = Vector2(639, 50)
 scale = Vector2(0.241667, 0.241667)
 texture = ExtResource("526_bnmh2")
 
 [node name="Sprite2D2" type="Sprite2D" parent="CanvasLayer"]
-position = Vector2(1636, 72)
+position = Vector2(856, 48)
 scale = Vector2(0.241667, 0.241667)
 texture = ExtResource("527_w3klr")
 
@@ -12042,8 +11877,6 @@ shape = SubResource("RectangleShape2D_qt86y")
 [connection signal="pressed" from="CanvasLayer/MapModes/StatesModeButton" to="." method="_on_states_mode_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/MapModes/OutputsModeButton" to="." method="_on_outputs_mode_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/MapModes/TerrainModeButton" to="." method="_on_terrain_mode_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/NextTurnControl/NextTurn" to="." method="_on_next_turn_pressed"]
-[connection signal="pressed" from="CanvasLayer/NextTurnControl/PickTech" to="CanvasLayer" method="_on_pick_tech_pressed"]
 [connection signal="pressed" from="CanvasLayer/TileInfoPanel/governorButton" to="CanvasLayer/TileInfoPanel" method="_on_governor_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/TileInfoPanel/OpenBuildingsButton" to="CanvasLayer" method="_on_open_buildings_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/TileInfoPanel/WizardButton" to="CanvasLayer" method="_on_wizard_button_pressed"]
@@ -12081,32 +11914,22 @@ shape = SubResource("RectangleShape2D_qt86y")
 [connection signal="pressed" from="CanvasLayer/PanelOpenerControl/ButtonPanel/VBoxContainer/LawsControl/LawsButton" to="CanvasLayer" method="_on_laws_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/PanelOpenerControl/ButtonPanel/VBoxContainer/FactionsControl/FactionsButton" to="CanvasLayer" method="_on_factions_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/PanelOpenerControl/ButtonPanel/VBoxContainer/WarRoomControl/WarRoomButton" to="CanvasLayer" method="_on_war_room_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/NextTurnControl/NextTurn" to="." method="_on_next_turn_pressed"]
+[connection signal="pressed" from="CanvasLayer/NextTurnControl/PickTech" to="CanvasLayer" method="_on_pick_tech_pressed"]
 [connection signal="mouse_entered" from="CanvasLayer/Resource Bar (TOP)/container/GoldControl/GoldArea2D" to="." method="_on_gold_area_2d_mouse_entered"]
 [connection signal="mouse_exited" from="CanvasLayer/Resource Bar (TOP)/container/GoldControl/GoldArea2D" to="." method="_on_gold_area_2d_mouse_exited"]
 [connection signal="mouse_entered" from="CanvasLayer/Resource Bar (TOP)/container/FoodControl/FoodArea2D" to="." method="_on_food_area_2d_mouse_entered"]
 [connection signal="mouse_exited" from="CanvasLayer/Resource Bar (TOP)/container/FoodControl/FoodArea2D" to="." method="_on_food_area_2d_mouse_exited"]
-[connection signal="mouse_entered" from="CanvasLayer/Resource Bar (TOP)/container/WoodControl/WoodArea2D" to="." method="_on_wood_area_2d_mouse_entered"]
-[connection signal="mouse_exited" from="CanvasLayer/Resource Bar (TOP)/container/WoodControl/WoodArea2D" to="." method="_on_wood_area_2d_mouse_exited"]
-[connection signal="mouse_entered" from="CanvasLayer/Resource Bar (TOP)/container/MetalControl/MetalArea2D" to="." method="_on_metal_area_2d_mouse_entered"]
-[connection signal="mouse_exited" from="CanvasLayer/Resource Bar (TOP)/container/MetalControl/MetalArea2D" to="." method="_on_metal_area_2d_mouse_exited"]
 [connection signal="mouse_entered" from="CanvasLayer/Resource Bar (TOP)/container/ManpowerControl/ManpowerArea" to="." method="_on_manpower_area_mouse_entered"]
 [connection signal="mouse_exited" from="CanvasLayer/Resource Bar (TOP)/container/ManpowerControl/ManpowerArea" to="." method="_on_manpower_area_mouse_exited"]
-[connection signal="mouse_entered" from="CanvasLayer/Resource Bar (TOP)/container/WeaponsControl/WeaponsArea" to="." method="_on_weapons_area_mouse_entered"]
-[connection signal="mouse_exited" from="CanvasLayer/Resource Bar (TOP)/container/WeaponsControl/WeaponsArea" to="." method="_on_weapons_area_mouse_exited"]
 [connection signal="mouse_entered" from="CanvasLayer/Resource Bar (TOP)/container/ScienceControl/ScienceArea" to="." method="_on_science_area_mouse_entered"]
 [connection signal="mouse_exited" from="CanvasLayer/Resource Bar (TOP)/container/ScienceControl/ScienceArea" to="." method="_on_science_area_mouse_exited"]
 [connection signal="mouse_entered" from="CanvasLayer/Resource Bar (TOP)/container/FaithControl/FaithControl" to="." method="_on_faith_control_mouse_entered"]
 [connection signal="mouse_exited" from="CanvasLayer/Resource Bar (TOP)/container/FaithControl/FaithControl" to="." method="_on_faith_control_mouse_exited"]
 [connection signal="mouse_entered" from="CanvasLayer/Resource Bar (TOP)/container/MagicControl/MagicArea" to="." method="_on_magic_area_mouse_entered"]
 [connection signal="mouse_exited" from="CanvasLayer/Resource Bar (TOP)/container/MagicControl/MagicArea" to="." method="_on_magic_area_mouse_exited"]
-[connection signal="mouse_entered" from="CanvasLayer/Resource Bar (TOP)/container/CultureControl/CultureArea" to="." method="_on_culture_area_mouse_entered"]
-[connection signal="mouse_exited" from="CanvasLayer/Resource Bar (TOP)/container/CultureControl/CultureArea" to="." method="_on_culture_area_mouse_exited"]
 [connection signal="mouse_entered" from="CanvasLayer/Resource Bar (TOP)/container/MandateControl/MandateArea" to="." method="_on_mandate_area_mouse_entered"]
 [connection signal="mouse_exited" from="CanvasLayer/Resource Bar (TOP)/container/MandateControl/MandateArea" to="." method="_on_mandate_area_mouse_exited"]
-[connection signal="mouse_entered" from="CanvasLayer/Resource Bar (TOP)/container/HarmonyControl/HarmonyArea" to="." method="_on_harmony_area_mouse_entered"]
-[connection signal="mouse_exited" from="CanvasLayer/Resource Bar (TOP)/container/HarmonyControl/HarmonyArea" to="." method="_on_harmony_area_mouse_exited"]
-[connection signal="mouse_entered" from="CanvasLayer/Resource Bar (TOP)/container/InfluenceControl/InfluenceArea" to="." method="_on_influence_area_mouse_entered"]
-[connection signal="mouse_exited" from="CanvasLayer/Resource Bar (TOP)/container/InfluenceControl/InfluenceArea" to="." method="_on_influence_area_mouse_exited"]
 [connection signal="pressed" from="CanvasLayer/Resource Bar (TOP)/Button" to="." method="_on_button_pressed"]
 [connection signal="mouse_entered" from="CanvasLayer/ArmyPanel/ArmyButtonsContainer/MoveButtonControl/MoveButton" to="PathControl" method="_on_move_button_mouse_entered"]
 [connection signal="mouse_exited" from="CanvasLayer/ArmyPanel/ArmyButtonsContainer/MoveButtonControl/MoveButton" to="PathControl" method="_on_move_button_mouse_exited"]
